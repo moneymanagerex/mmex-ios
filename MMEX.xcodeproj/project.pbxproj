@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,35 @@
 		A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422C2C89751500D3CEC0 /* ContentView.swift */; };
 		A3C1422F2C89751600D3CEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C1422E2C89751600D3CEC0 /* Assets.xcassets */; };
 		A3C142322C89751600D3CEC0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C142312C89751600D3CEC0 /* Preview Assets.xcassets */; };
+		A3C1423A2C89754C00D3CEC0 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3C142392C89754C00D3CEC0 /* SQLite */; };
+		A3C1423C2C89758C00D3CEC0 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1423B2C89758C00D3CEC0 /* DocumentPicker.swift */; };
+		A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1423D2C89760600D3CEC0 /* AccountListView.swift */; };
+		A3C142442C89C8FA00D3CEC0 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142432C89C8FA00D3CEC0 /* Account.swift */; };
+		A3C142472C89CB4200D3CEC0 /* AccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142462C89CB4200D3CEC0 /* AccountDetailView.swift */; };
+		A3C1424C2C8AB52600D3CEC0 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1424B2C8AB52600D3CEC0 /* Currency.swift */; };
+		A3C1424E2C8B335900D3CEC0 /* Payee.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1424D2C8B335900D3CEC0 /* Payee.swift */; };
+		A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */; };
+		A3C142522C8B37E700D3CEC0 /* PayeeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142512C8B37E700D3CEC0 /* PayeeDetailView.swift */; };
+		A3C142542C8B381400D3CEC0 /* PayeeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142532C8B381400D3CEC0 /* PayeeEditView.swift */; };
+		A3C1425F2C8DE70300D3CEC0 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1425E2C8DE70300D3CEC0 /* DatabaseManager.swift */; };
+		A3C142612C8E9DBF00D3CEC0 /* PayeeAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142602C8E9DBF00D3CEC0 /* PayeeAddView.swift */; };
+		A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142622C8ED8C000D3CEC0 /* AccountAddView.swift */; };
+		A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142642C8ED8EA00D3CEC0 /* AccountEditView.swift */; };
+		A3C142672C8F2AF500D3CEC0 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142662C8F2AF500D3CEC0 /* Transaction.swift */; };
+		A3C142922C8FE11700D3CEC0 /* AccountRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */; };
+		A3C142942C8FE13E00D3CEC0 /* PayeeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */; };
+		A3C142962C8FE15E00D3CEC0 /* TransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */; };
+		A3C142982C8FE62200D3CEC0 /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142972C8FE62200D3CEC0 /* TransactionListView.swift */; };
+		A3C1429A2C8FF77D00D3CEC0 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142992C8FF77D00D3CEC0 /* TransactionDetailView.swift */; };
+		A3C1429E2C8FFCF100D3CEC0 /* TransactionAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1429D2C8FFCF100D3CEC0 /* TransactionAddView.swift */; };
+		A3C142A02C9025D600D3CEC0 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1429F2C9025D600D3CEC0 /* Category.swift */; };
+		A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */; };
+		A3C142A42C9033E300D3CEC0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A32C9033E300D3CEC0 /* SettingsView.swift */; };
+		A3C142A62C90417700D3CEC0 /* TransactionAddView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */; };
+		A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */; };
+		A3C142AA2C90721800D3CEC0 /* TransactionListView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A92C90721800D3CEC0 /* TransactionListView2.swift */; };
+		A3C142AC2C909C1C00D3CEC0 /* TransactionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */; };
+		A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +48,35 @@
 		A3C1422C2C89751500D3CEC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A3C1422E2C89751600D3CEC0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A3C142312C89751600D3CEC0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A3C1423B2C89758C00D3CEC0 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
+		A3C1423D2C89760600D3CEC0 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
+		A3C142412C897BE600D3CEC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A3C142432C89C8FA00D3CEC0 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		A3C142462C89CB4200D3CEC0 /* AccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailView.swift; sourceTree = "<group>"; };
+		A3C1424B2C8AB52600D3CEC0 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		A3C1424D2C8B335900D3CEC0 /* Payee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payee.swift; sourceTree = "<group>"; };
+		A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeListView.swift; sourceTree = "<group>"; };
+		A3C142512C8B37E700D3CEC0 /* PayeeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeDetailView.swift; sourceTree = "<group>"; };
+		A3C142532C8B381400D3CEC0 /* PayeeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeEditView.swift; sourceTree = "<group>"; };
+		A3C1425E2C8DE70300D3CEC0 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		A3C142602C8E9DBF00D3CEC0 /* PayeeAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeAddView.swift; sourceTree = "<group>"; };
+		A3C142622C8ED8C000D3CEC0 /* AccountAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAddView.swift; sourceTree = "<group>"; };
+		A3C142642C8ED8EA00D3CEC0 /* AccountEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditView.swift; sourceTree = "<group>"; };
+		A3C142662C8F2AF500D3CEC0 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRepository.swift; sourceTree = "<group>"; };
+		A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeRepository.swift; sourceTree = "<group>"; };
+		A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRepository.swift; sourceTree = "<group>"; };
+		A3C142972C8FE62200D3CEC0 /* TransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView.swift; sourceTree = "<group>"; };
+		A3C142992C8FF77D00D3CEC0 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
+		A3C1429D2C8FFCF100D3CEC0 /* TransactionAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAddView.swift; sourceTree = "<group>"; };
+		A3C1429F2C9025D600D3CEC0 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
+		A3C142A32C9033E300D3CEC0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAddView2.swift; sourceTree = "<group>"; };
+		A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNumberPadView.swift; sourceTree = "<group>"; };
+		A3C142A92C90721800D3CEC0 /* TransactionListView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView2.swift; sourceTree = "<group>"; };
+		A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionEditView.swift; sourceTree = "<group>"; };
+		A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3C1423A2C89754C00D3CEC0 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,10 +110,19 @@
 		A3C142292C89751500D3CEC0 /* MMEX */ = {
 			isa = PBXGroup;
 			children = (
+				A3C142452C89CB1600D3CEC0 /* Views */,
+				A3C142422C89B83A00D3CEC0 /* Models */,
+				A3C142412C897BE600D3CEC0 /* Info.plist */,
 				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
 				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
 				A3C1422E2C89751600D3CEC0 /* Assets.xcassets */,
 				A3C142302C89751600D3CEC0 /* Preview Content */,
+				A3C1423B2C89758C00D3CEC0 /* DocumentPicker.swift */,
+				A3C1425E2C8DE70300D3CEC0 /* DatabaseManager.swift */,
+				A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */,
+				A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */,
+				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
+				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
 			);
 			path = MMEX;
 			sourceTree = "<group>";
@@ -65,6 +133,42 @@
 				A3C142312C89751600D3CEC0 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A3C142422C89B83A00D3CEC0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A3C142432C89C8FA00D3CEC0 /* Account.swift */,
+				A3C1424B2C8AB52600D3CEC0 /* Currency.swift */,
+				A3C1424D2C8B335900D3CEC0 /* Payee.swift */,
+				A3C142662C8F2AF500D3CEC0 /* Transaction.swift */,
+				A3C1429F2C9025D600D3CEC0 /* Category.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A3C142452C89CB1600D3CEC0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A3C1423D2C89760600D3CEC0 /* AccountListView.swift */,
+				A3C142462C89CB4200D3CEC0 /* AccountDetailView.swift */,
+				A3C142622C8ED8C000D3CEC0 /* AccountAddView.swift */,
+				A3C142642C8ED8EA00D3CEC0 /* AccountEditView.swift */,
+				A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */,
+				A3C142602C8E9DBF00D3CEC0 /* PayeeAddView.swift */,
+				A3C142512C8B37E700D3CEC0 /* PayeeDetailView.swift */,
+				A3C142532C8B381400D3CEC0 /* PayeeEditView.swift */,
+				A3C1429D2C8FFCF100D3CEC0 /* TransactionAddView.swift */,
+				A3C142972C8FE62200D3CEC0 /* TransactionListView.swift */,
+				A3C142A92C90721800D3CEC0 /* TransactionListView2.swift */,
+				A3C142992C8FF77D00D3CEC0 /* TransactionDetailView.swift */,
+				A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */,
+				A3C142A32C9033E300D3CEC0 /* SettingsView.swift */,
+				A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */,
+				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
+				A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +187,9 @@
 			dependencies = (
 			);
 			name = MMEX;
+			packageProductDependencies = (
+				A3C142392C89754C00D3CEC0 /* SQLite */,
+			);
 			productName = MMEX;
 			productReference = A3C142272C89751500D3CEC0 /* MMEX.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +218,9 @@
 				Base,
 			);
 			mainGroup = A3C1421E2C89751500D3CEC0;
+			packageReferences = (
+				A3C142382C89754C00D3CEC0 /* XCLocalSwiftPackageReference "../SQLite.swift" */,
+			);
 			productRefGroup = A3C142282C89751500D3CEC0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,8 +247,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3C1424C2C8AB52600D3CEC0 /* Currency.swift in Sources */,
+				A3C142612C8E9DBF00D3CEC0 /* PayeeAddView.swift in Sources */,
+				A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */,
+				A3C1425F2C8DE70300D3CEC0 /* DatabaseManager.swift in Sources */,
+				A3C1424E2C8B335900D3CEC0 /* Payee.swift in Sources */,
+				A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */,
+				A3C142672C8F2AF500D3CEC0 /* Transaction.swift in Sources */,
+				A3C142AC2C909C1C00D3CEC0 /* TransactionEditView.swift in Sources */,
+				A3C142962C8FE15E00D3CEC0 /* TransactionRepository.swift in Sources */,
 				A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */,
+				A3C1423C2C89758C00D3CEC0 /* DocumentPicker.swift in Sources */,
+				A3C142AA2C90721800D3CEC0 /* TransactionListView2.swift in Sources */,
+				A3C142A62C90417700D3CEC0 /* TransactionAddView2.swift in Sources */,
+				A3C142472C89CB4200D3CEC0 /* AccountDetailView.swift in Sources */,
+				A3C1429A2C8FF77D00D3CEC0 /* TransactionDetailView.swift in Sources */,
+				A3C142942C8FE13E00D3CEC0 /* PayeeRepository.swift in Sources */,
+				A3C1429E2C8FFCF100D3CEC0 /* TransactionAddView.swift in Sources */,
+				A3C142922C8FE11700D3CEC0 /* AccountRepository.swift in Sources */,
 				A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */,
+				A3C142522C8B37E700D3CEC0 /* PayeeDetailView.swift in Sources */,
+				A3C142442C89C8FA00D3CEC0 /* Account.swift in Sources */,
+				A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */,
+				A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */,
+				A3C142982C8FE62200D3CEC0 /* TransactionListView.swift in Sources */,
+				A3C142542C8B381400D3CEC0 /* PayeeEditView.swift in Sources */,
+				A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */,
+				A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */,
+				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
+				A3C142A02C9025D600D3CEC0 /* Category.swift in Sources */,
+				A3C142A42C9033E300D3CEC0 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,11 +413,13 @@
 				DEVELOPMENT_TEAM = 3N3NHU8X3F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MMEX/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,11 +444,13 @@
 				DEVELOPMENT_TEAM = 3N3NHU8X3F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MMEX/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -344,6 +486,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A3C142382C89754C00D3CEC0 /* XCLocalSwiftPackageReference "../SQLite.swift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../SQLite.swift;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A3C142392C89754C00D3CEC0 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A3C1421F2C89751500D3CEC0 /* Project object */;
 }

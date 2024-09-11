@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "mmex.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
