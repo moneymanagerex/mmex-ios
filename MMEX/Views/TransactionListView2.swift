@@ -11,6 +11,7 @@ struct TransactionListView2: View {
     let databaseURL: URL
     @State private var txns: [Transaction] = []
     @State private var txns_per_day: [String: [Transaction]] = [:]
+    @State private var payees: [Payee] = []
 
     private var repository: TransactionRepository
     
@@ -26,7 +27,7 @@ struct TransactionListView2: View {
                 ForEach(txns_per_day.keys.sorted(by: >), id: \.self) { day in
                     Section(header: Text(day).font(.headline)) { // Day as a separator (section header)
                         ForEach(txns_per_day[day]!, id: \.id) { txn in
-                            NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL)) {
+                            NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees)) {
                                 HStack {
                                     // Text(txn.transDate, style: .date)
                                     Text(txn.transDate)
@@ -43,6 +44,7 @@ struct TransactionListView2: View {
             }
         .onAppear {
             loadTransactions()
+            loadPayees()
         }
     }
     
@@ -59,6 +61,20 @@ struct TransactionListView2: View {
                 self.txns_per_day = Dictionary(grouping: txns) { txn in
                     txn.transDate // Format date to a string, e.g., "2024-09-12"
                 }
+            }
+        }
+    }
+    
+    func loadPayees() {
+        let repository = DataManager(databaseURL: self.databaseURL).getPayeeRepository()
+
+        // Fetch accounts using repository and update the view
+        DispatchQueue.global(qos: .background).async {
+            let loadedPayees = repository.loadPayees()
+            
+            // Update UI on the main thread
+            DispatchQueue.main.async {
+                self.payees = loadedPayees
             }
         }
     }

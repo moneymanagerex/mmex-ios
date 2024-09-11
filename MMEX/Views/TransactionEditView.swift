@@ -112,6 +112,7 @@ struct TransactionEditView: View {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
+            selectedPayee = txn.payeeID
         }
     }
 }

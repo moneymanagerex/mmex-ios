@@ -15,7 +15,7 @@ struct TransactionDetailView: View {
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
-    @State private var payees: [Payee] = []
+    @Binding var payees: [Payee]
     
     var body: some View {
         List {

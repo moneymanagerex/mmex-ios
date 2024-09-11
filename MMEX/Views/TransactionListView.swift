@@ -13,6 +13,8 @@ struct TransactionListView: View {
     @State private var newTxn = Transaction.empty
     @State private var isPresentingTransactionAddView = false
     
+    @State private var payees: [Payee] = []
+
     private var repository: TransactionRepository
     
     init(databaseURL: URL) {
@@ -23,7 +25,7 @@ struct TransactionListView: View {
     var body: some View {
         NavigationStack {
             List(txns) { txn in
-                NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL)) {
+                NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees)) {
                     HStack {
                         // Text(txn.transDate, style: .date)
                         Text(txn.transDate)
@@ -45,9 +47,10 @@ struct TransactionListView: View {
         }
         .onAppear {
             loadTransactions()
+            loadPayees()
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
-            TransactionAddView(newTxn: $newTxn, isPresentingTransactionAddView: $isPresentingTransactionAddView) { newTxn in
+            TransactionAddView(newTxn: $newTxn, isPresentingTransactionAddView: $isPresentingTransactionAddView, payees: $payees) { newTxn in
                 addTransaction(txn: &newTxn)
             }
         }
@@ -63,6 +66,20 @@ struct TransactionListView: View {
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.txns = loadTransactions
+            }
+        }
+    }
+    
+    func loadPayees() {
+        let repository = DataManager(databaseURL: self.databaseURL).getPayeeRepository()
+
+        // Fetch accounts using repository and update the view
+        DispatchQueue.global(qos: .background).async {
+            let loadedPayees = repository.loadPayees()
+            
+            // Update UI on the main thread
+            DispatchQueue.main.async {
+                self.payees = loadedPayees
             }
         }
     }

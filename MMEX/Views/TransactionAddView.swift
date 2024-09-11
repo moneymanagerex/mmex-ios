@@ -11,7 +11,7 @@ struct TransactionAddView: View {
     @Binding var newTxn: Transaction
     @Binding var isPresentingTransactionAddView: Bool
     
-    @State private var payees: [Payee] = []
+    @Binding var payees: [Payee]
     
     var onSave: (inout Transaction) -> Void
     
@@ -36,7 +36,7 @@ struct TransactionAddView: View {
 }
 
 #Preview {
-    TransactionAddView(newTxn: .constant(Transaction.empty), isPresentingTransactionAddView: .constant(true)) { newTxn in
+    TransactionAddView(newTxn: .constant(Transaction.empty), isPresentingTransactionAddView: .constant(true), payees: .constant(Payee.sampleData)) { newTxn in
         // Handle saving in preview
         print("New payee: \(newTxn.id)")
     }}
