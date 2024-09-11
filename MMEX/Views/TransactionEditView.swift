@@ -23,7 +23,7 @@ struct TransactionEditView: View {
             // Transaction type picker (Deposit/Withdrawal/Transfer)
             Picker("", selection: $txn.transcode) {
                 ForEach(Transcode.allCases) { transcode in
-                    Text(transcode.name).tag(transcode.id)
+                    Text(transcode.name).tag(transcode)
                 }
             }
             .pickerStyle(SegmentedPickerStyle())
