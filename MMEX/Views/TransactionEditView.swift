@@ -16,9 +16,9 @@ struct TransactionEditView: View {
     var body: some View {
         VStack {
             // Transaction type picker (Deposit/Withdrawal/Transfer)
-            Picker("Transaction type", selection: $txn.transode) {
+            Picker("Transaction type", selection: $txn.transcode) {
                 ForEach(Transcode.allCases) { transcode in
-                    Text(transcode.id).tag(transcode)
+                    Text(transcode.id).tag(transcode.id)
                 }
             }
             .pickerStyle(SegmentedPickerStyle())

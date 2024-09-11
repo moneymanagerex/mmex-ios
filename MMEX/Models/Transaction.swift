@@ -37,7 +37,7 @@ struct Transaction: Identifiable {
     var accountID: Int64
     var toAccountID: Int64?
     var payeeID: Int64
-    var transode: Transcode
+    var transcode: Transcode
     var transAmount: Double?
     var status: TransactionStatus
     var transactionNumber: String?
@@ -55,7 +55,7 @@ struct Transaction: Identifiable {
         self.accountID = accountID
         self.toAccountID = toAccountID
         self.payeeID = payeeID
-        self.transode = transCode
+        self.transcode = transCode
         self.transAmount = transAmount
         self.status = status
         self.transactionNumber = transactionNumber
@@ -74,7 +74,7 @@ struct Transaction: Identifiable {
         self.accountID = accountID
         self.payeeID = payeeID
         self.categID = 1 // TODO
-        self.transode = transCode
+        self.transcode = transCode
         self.status = status
         self.transAmount = transAmount
         self.transDate = transDate

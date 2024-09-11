@@ -28,7 +28,7 @@ struct TransactionListView: View {
                         // Text(txn.transDate, style: .date)
                         Text(txn.transDate)
                         Spacer()
-                        Text("\(txn.transode.id)") // todo name
+                        Text("\(txn.transcode.id)") // todo name
                         Spacer()
                         Text(String(format: "%.2f", txn.transAmount ?? 0.0))
                     }

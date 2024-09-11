@@ -18,12 +18,15 @@ struct TransactionDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Transaction Type")) {
-                Text("\(txn.transode)")
+                Text("\(txn.transcode)")
             }
             
-            // TODO full field
-            Button("Delete Transaction") {
-                deleteTxn()
+            // Section for actions like delete
+            Section {
+                Button("Delete Transaction") {
+                    deleteTxn()
+                }
+                .foregroundColor(.red)
             }
         }
         .toolbar {
