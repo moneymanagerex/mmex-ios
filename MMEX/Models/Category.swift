@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct Category {
+struct Category: Identifiable {
     var id: Int64
     var name: String
     var active: Bool

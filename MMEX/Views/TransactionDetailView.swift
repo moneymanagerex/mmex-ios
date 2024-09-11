@@ -15,6 +15,8 @@ struct TransactionDetailView: View {
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
+    @State private var payees: [Payee] = []
+    
     var body: some View {
         List {
             Section(header: Text("Transaction Type")) {
@@ -37,7 +39,7 @@ struct TransactionDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                TransactionEditView(txn: $editingTxn)
+                TransactionEditView(txn: $editingTxn, payees: $payees)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {

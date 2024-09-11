@@ -11,14 +11,19 @@ struct TransactionEditView: View {
     @Binding var txn: Transaction
     @State private var amountString: String = "0" // Temporary to store string input for amount
     @State private var selectedDate = Date()
-    @State private var selectedCategory = "Category"
+    
+    @State private var selectedPayee: Int64 = 0
+    @State private var selectedCategory: Int64 = 0
 
+    @Binding var payees: [Payee]
+    @State private var categories: [Category] = []
+    
     var body: some View {
         VStack {
             // Transaction type picker (Deposit/Withdrawal/Transfer)
-            Picker("Transaction type", selection: $txn.transcode) {
+            Picker("", selection: $txn.transcode) {
                 ForEach(Transcode.allCases) { transcode in
-                    Text(transcode.id).tag(transcode.id)
+                    Text(transcode.name).tag(transcode.id)
                 }
             }
             .pickerStyle(SegmentedPickerStyle())
@@ -48,7 +53,7 @@ struct TransactionEditView: View {
             .cornerRadius(10)
             .padding(.top)
             
-            // Horizontal stack for date picker and category
+            // Horizontal stack for date picker, status picker
             HStack {
                 DatePicker("Date", selection: $selectedDate, displayedComponents: .date)
                     .labelsHidden() // Hide label to save space
@@ -67,24 +72,40 @@ struct TransactionEditView: View {
                         Text(status.id).tag(status)
                     }
                 }
+            }
+            .padding(.horizontal)
+            
+            // 4. Payee and Category Pickers in One Row
+            HStack {
+
+                Picker("Select Payee", selection: $selectedPayee) {
+                    ForEach(payees) { payee in
+                        Text(payee.name).tag(payee.id)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .onChange(of: selectedPayee) { newValue in
+                    txn.payeeID = newValue
+                }
                 
                 Spacer()
-                // Category selection placeholder
-                Button(action: {
-                    // Action to open category selection
-                }) {
-                    Text(selectedCategory)
-                        .padding(.horizontal)
-                        .padding(.vertical, 8)
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(8)
+
+                Picker("Select Category", selection: $selectedCategory) {
+                    ForEach(categories) { category in
+                        Text(category.name).tag(category.id)
+                    }
                 }
+                .pickerStyle(MenuPickerStyle())
+                .onChange(of: selectedCategory) { newValue in
+                    txn.categID = newValue
+                }
+
             }
             .padding(.horizontal)
             
             Spacer()
         }
-        .padding()
+        .padding(.horizontal)
         .onAppear() {
             // Initialize state variables from the txn
             amountString = String(format: "%.2f", txn.transAmount ?? 0.0 )
@@ -96,5 +117,6 @@ struct TransactionEditView: View {
 }
 
 #Preview {
-    TransactionEditView(txn: .constant(Transaction.sampleData[0]))
+    TransactionEditView(txn: .constant(Transaction.sampleData[0])
+                        , payees: .constant(Payee.sampleData))
 }

@@ -11,11 +11,13 @@ struct TransactionAddView: View {
     @Binding var newTxn: Transaction
     @Binding var isPresentingTransactionAddView: Bool
     
+    @State private var payees: [Payee] = []
+    
     var onSave: (inout Transaction) -> Void
     
     var body: some View {
         NavigationStack {
-            TransactionEditView(txn: $newTxn)
+            TransactionEditView(txn: $newTxn, payees: $payees)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {

@@ -7,12 +7,7 @@
 
 import SwiftUI
 
-struct TransactionAddView2: View {
-    @State private var transCode: Transcode = .deposit // Default selection
-    @State private var amountString: String = "0" // Temporary to store string input for amount
-    @State private var selectedDate = Date()
-    @State private var selectedCategory = "Category"
-    
+struct TransactionAddView2: View {    
     @State var newTxn: Transaction = Transaction.empty
     let databaseURL: URL
     @Binding var selectedTab: Int // Bind to the selected tab
@@ -20,9 +15,11 @@ struct TransactionAddView2: View {
     // Dismiss environment action
     @Environment(\.dismiss) var dismiss
     
+    @State private var payees: [Payee] = []
+    
     var body: some View {
         NavigationStack {
-            TransactionEditView(txn: $newTxn)
+            TransactionEditView(txn: $newTxn, payees: $payees)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
@@ -41,6 +38,9 @@ struct TransactionAddView2: View {
         }
         .padding()
         // .navigationBarTitle("Add Transaction", displayMode: .inline)
+        .onAppear() {
+            loadPayees()
+        }
     }
 
     func addTransaction(txn: inout Transaction) {
@@ -51,4 +51,19 @@ struct TransactionAddView2: View {
             // TODO
         }
     }
+    
+    func loadPayees() {
+        let repository = DataManager(databaseURL: self.databaseURL).getPayeeRepository()
+
+        // Fetch accounts using repository and update the view
+        DispatchQueue.global(qos: .background).async {
+            let loadedPayees = repository.loadPayees()
+            
+            // Update UI on the main thread
+            DispatchQueue.main.async {
+                self.payees = loadedPayees
+            }
+        }
+    }
 }
+
