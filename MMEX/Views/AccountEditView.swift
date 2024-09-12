@@ -21,7 +21,7 @@ struct AccountEditView: View {
             Section(header: Text("Status")) {
                 Picker("Status", selection: $account.status) {
                     ForEach(Status.allCases) { status in
-                        Text(status.rawValue).tag(status)
+                        Text(status.name).tag(status)
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())

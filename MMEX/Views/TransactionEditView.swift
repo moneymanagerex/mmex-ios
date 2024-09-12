@@ -9,56 +9,67 @@ import SwiftUI
 
 struct TransactionEditView: View {
     @Binding var txn: Transaction
-    @State private var amountString: String = "0" // Temporary to store string input for amount
+    @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
-    
     @State private var selectedPayee: Int64 = 0
     @State private var selectedCategory: Int64 = 0
 
     @Binding var payees: [Payee]
     @State private var categories: [Category] = []
     
+    // Focus state for the Amount input to control keyboard focus
+    @FocusState private var isAmountFocused: Bool
+    
     var body: some View {
         VStack {
-            // Transaction type picker (Deposit/Withdrawal/Transfer)
+            // 1. Transaction type picker (Deposit/Withdrawal/Transfer)
             Picker("", selection: $txn.transcode) {
                 ForEach(Transcode.allCases) { transcode in
                     Text(transcode.name).tag(transcode)
                 }
             }
-            .pickerStyle(SegmentedPickerStyle())
+            .pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
             .padding(.horizontal)
             
-            // Unified Numeric Input for the Amount
+            // 2. Unified Numeric Input for the Amount with automatic keyboard focus
             TextField("¥0", text: $amountString)
-                .keyboardType(.decimalPad)
-                .font(.system(size: 48, weight: .bold))
-                .multilineTextAlignment(.center)
+                .keyboardType(.decimalPad) // Show numeric keyboard with decimal support
+                .font(.system(size: 48, weight: .bold)) // Large, bold text for amount input
+                .multilineTextAlignment(.center) // Center the text for better UX
                 .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
-                .padding(.bottom, 20)
+                .background(Color.gray.opacity(0.2)) // Background styling for the input field
+                .cornerRadius(10) // Rounded corners
+                .padding(.bottom, 20) // Space between the amount input and the next section
+                .focused($isAmountFocused)  // Bind the focus state to trigger keyboard display
+                .onAppear {
+                    // Automatically focus on the amount field when the view appears
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        isAmountFocused = true
+                    }
+                }
                 .onChange(of: amountString) { newValue in
-                    txn.transAmount = Double(newValue) ?? 0.0 // Update the transaction object
+                    // Update the transaction amount in the txn object, converting from String
+                    txn.transAmount = Double(newValue) ?? 0.0
                 }
             
-            // Input field for notes
+            // 3. Input field for notes
             TextField("Add Note", text: Binding(
-                get: { txn.notes ?? "" }, // Safely unwrap the optional notes
-                set: { txn.notes = $0.isEmpty ? nil : $0 } // Set to nil if the note is empty
+                get: { txn.notes ?? "" }, // Safely unwrap the optional notes field
+                set: { txn.notes = $0.isEmpty ? nil : $0 } // Set notes to nil if the input is empty
             ))
             .padding(.horizontal)
             .padding(.vertical, 10)
-            .background(Color.gray.opacity(0.2))
+            .background(Color.gray.opacity(0.2)) // Style the notes input field
             .cornerRadius(10)
             .padding(.top)
             
-            // Horizontal stack for date picker, status picker
+            // 4. Horizontal stack for date picker and status picker
             HStack {
+                // Date Picker to select transaction date
                 DatePicker("Date", selection: $selectedDate, displayedComponents: .date)
-                    .labelsHidden() // Hide label to save space
+                    .labelsHidden() // Hide the default label to save space
                     .onChange(of: selectedDate) { newDate in
-                        // You can format the date and store it as a string in txn.transDate
+                        // Format the date and store it in the txn object
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd"
                         txn.transDate = dateFormatter.string(from: newDate)
@@ -75,40 +86,40 @@ struct TransactionEditView: View {
             }
             .padding(.horizontal)
             
-            // 4. Payee and Category Pickers in One Row
+            // 5. Horizontal stack for Payee and Category pickers
             HStack {
-
+                // Payee picker
                 Picker("Select Payee", selection: $selectedPayee) {
                     ForEach(payees) { payee in
                         Text(payee.name).tag(payee.id)
                     }
                 }
-                .pickerStyle(MenuPickerStyle())
+                .pickerStyle(MenuPickerStyle()) // Show a menu for the payee picker
                 .onChange(of: selectedPayee) { newValue in
-                    txn.payeeID = newValue
+                    txn.payeeID = newValue // Update the transaction with the selected payee
                 }
                 
                 Spacer()
 
+                // Category picker
                 Picker("Select Category", selection: $selectedCategory) {
                     ForEach(categories) { category in
                         Text(category.name).tag(category.id)
                     }
                 }
-                .pickerStyle(MenuPickerStyle())
+                .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
                 .onChange(of: selectedCategory) { newValue in
-                    txn.categID = newValue
+                    txn.categID = newValue // Update the transaction with the selected category
                 }
-
             }
             .padding(.horizontal)
             
-            Spacer()
+            Spacer() // Push the contents to the top
         }
         .padding(.horizontal)
-        .onAppear() {
-            // Initialize state variables from the txn
-            amountString = String(format: "%.2f", txn.transAmount ?? 0.0 )
+        .onAppear {
+            // Initialize state variables from the txn object when the view appears
+            amountString = String(format: "%.2f", txn.transAmount ?? 0.0)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
@@ -118,6 +129,5 @@ struct TransactionEditView: View {
 }
 
 #Preview {
-    TransactionEditView(txn: .constant(Transaction.sampleData[0])
-                        , payees: .constant(Payee.sampleData))
+    TransactionEditView(txn: .constant(Transaction.sampleData[0]), payees: .constant(Payee.sampleData))
 }
