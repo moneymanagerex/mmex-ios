@@ -40,7 +40,6 @@ struct TransactionEditView: View {
                         Text(account.name).tag(account.id)
                     }
                 }
-                // .pickerStyle(MenuPickerStyle()) // Show a menu for the payee picker
                 .onChange(of: selectedPayee) { newValue in
                     txn.accountID = newValue // Update the transaction with the selected account
                 }
@@ -81,21 +80,14 @@ struct TransactionEditView: View {
             
             // 4. Horizontal stack for date picker and status picker
             HStack {
-                // Date Picker to select transaction date
-                DatePicker("Date", selection: $selectedDate, displayedComponents: .date)
+                // Date Picker to select transaction date and time
+                DatePicker("Date", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
                     .labelsHidden() // Hide the default label to save space
                     .onChange(of: selectedDate) { newDate in
-                        // Append current time to selected date and format as ISO-8601
-                        let currentTime = Calendar.current.dateComponents([.hour, .minute, .second], from: Date())
-                        let fullDate = Calendar.current.date(bySettingHour: currentTime.hour ?? 0,
-                                                             minute: currentTime.minute ?? 0,
-                                                             second: currentTime.second ?? 0,
-                                                             of: newDate) ?? newDate
-                        
                         // Format the date as 'YYYY-MM-DDTHH:MM:SS'
-                       let formatter = DateFormatter()
-                       formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-                       txn.transDate = formatter.string(from: fullDate) // Save as ISO-8601 formatted string without TZ
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                        txn.transDate = formatter.string(from: newDate) // Save as ISO-8601 formatted string without TZ
                     }
                 
                 Spacer()
@@ -144,7 +136,7 @@ struct TransactionEditView: View {
             // Initialize state variables from the txn object when the view appears
             amountString = String(format: "%.2f", txn.transAmount ?? 0.0)
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
             selectedPayee = txn.payeeID
         }
