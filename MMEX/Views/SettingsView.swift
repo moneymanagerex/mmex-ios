@@ -12,11 +12,11 @@ struct SettingsView: View {
     
     var body: some View {
         List {
-            NavigationLink(destination: PayeeListView(databaseURL: databaseURL)) {
-                Text("Manage Payees")
-            }
             NavigationLink(destination: AccountListView(databaseURL: databaseURL)) {
                 Text("Manage Accounts")
+            }
+            NavigationLink(destination: PayeeListView(databaseURL: databaseURL)) {
+                Text("Manage Payees")
             }
             NavigationLink(destination: TransactionListView(databaseURL: databaseURL)) {
                 Text("Manage Transactions")

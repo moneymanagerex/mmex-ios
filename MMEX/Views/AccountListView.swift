@@ -9,6 +9,7 @@ import SwiftUI
 struct AccountListView: View {
     let databaseURL: URL
     @State private var accounts: [Account] = []
+    @State private var accounts_by_type: [String:[Account]] = [:]
     @State private var newAccount = Account.empty
     @State private var isPresentingAccountAddView = false
     
@@ -21,9 +22,26 @@ struct AccountListView: View {
     
     var body: some View {
         NavigationStack {
-            List(accounts) { account in
-                NavigationLink(destination: AccountDetailView(account: account, databaseURL: databaseURL)) {
-                    Text(account.name)
+            List {
+                ForEach(self.accounts_by_type.keys.sorted(), id:\.self) { accountType in
+                    Section(
+                        header: HStack {
+                            // TODO icon
+                            Text(accountType)
+                                .font(.headline)
+                        }
+                    ) {
+                        ForEach(accounts_by_type[accountType]!) { account in
+                            NavigationLink(destination: AccountDetailView(account: account, databaseURL: databaseURL)) {
+                                HStack {
+                                    Text(account.name)
+                                    Text(account.status.id)
+                                    // TODO layout and more informationn
+                                }
+                            }
+                        }
+                    }
+                    
                 }
             }
             .toolbar {
@@ -53,6 +71,9 @@ struct AccountListView: View {
             let loadedAccounts = repository.loadAccounts()
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
+                self.accounts_by_type = Dictionary(grouping: accounts) { account in
+                    account.type
+                }
             }
         }
     }
