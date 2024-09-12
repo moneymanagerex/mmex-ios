@@ -158,8 +158,3 @@ struct TransactionEditView: View {
 #Preview {
     TransactionEditView(txn: .constant(Transaction.sampleData[0]), payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData), accounts: .constant(Account.sampleData))
 }
-
-
-#Preview {
-    TransactionEditView(txn: .constant(Transaction.sampleData[0]), payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData), accounts: .constant(Account.sampleData))
-}
