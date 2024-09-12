@@ -54,7 +54,7 @@ struct TransactionEditView: View {
                 .padding()
                 .background(Color.gray.opacity(0.2)) // Background styling for the input field
                 .cornerRadius(10) // Rounded corners
-                .padding(.bottom, 20) // Space between the amount input and the next section
+                .padding(.bottom, 0) // Space between the amount input and the next section
                 .focused($isAmountFocused)  // Bind the focus state to trigger keyboard display
                 .onAppear {
                     // Automatically focus on the amount field when the view appears
@@ -76,7 +76,7 @@ struct TransactionEditView: View {
             .padding(.vertical, 10)
             .background(Color.gray.opacity(0.2)) // Style the notes input field
             .cornerRadius(10)
-            .padding(.top)
+            .padding(.top, 0)
             
             // 4. Horizontal stack for date picker and status picker
             HStack {
