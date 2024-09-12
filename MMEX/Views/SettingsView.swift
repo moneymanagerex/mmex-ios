@@ -18,6 +18,9 @@ struct SettingsView: View {
             NavigationLink(destination: PayeeListView(databaseURL: databaseURL)) {
                 Text("Manage Payees")
             }
+            NavigationLink(destination: CategoryListView(databaseURL: databaseURL)) {
+                Text("Manage Categories")
+            }
             NavigationLink(destination: TransactionListView(databaseURL: databaseURL)) {
                 Text("Manage Transactions")
             }
