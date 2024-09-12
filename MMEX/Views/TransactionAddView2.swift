@@ -27,6 +27,7 @@ struct TransactionAddView2: View {
                         Button("Dismiss") {
                             dismiss()
                             selectedTab = 0
+                            newTxn = Transaction.empty
                         }
                     }
                     ToolbarItem(placement: .confirmationAction) {
@@ -34,6 +35,7 @@ struct TransactionAddView2: View {
                             addTransaction(txn: &newTxn)
                             dismiss()
                             selectedTab = 0
+                            newTxn = Transaction.empty
                         }
                     }
                 }
