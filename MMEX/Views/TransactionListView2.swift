@@ -80,6 +80,7 @@ struct TransactionListView2: View {
             loadTransactions()
             loadPayees()
             loadCategories()
+            loadAccounts()
         }
     }
     
