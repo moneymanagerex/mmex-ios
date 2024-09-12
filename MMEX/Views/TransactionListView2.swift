@@ -12,6 +12,7 @@ struct TransactionListView2: View {
     @State private var txns: [Transaction] = []
     @State private var txns_per_day: [String: [Transaction]] = [:]
     @State private var payees: [Payee] = []
+    @State private var categories: [Category] = []
 
     private var repository: TransactionRepository
     
@@ -39,8 +40,8 @@ struct TransactionListView2: View {
                                     // Combine left and middle columns closer
                                     HStack(spacing: 4) {
                                         // Left column: Icon (temporary: categID)
-                                        Text("\(txn.categID ?? 0)")
-                                            .frame(maxWidth: 20, alignment: .leading)
+                                        Text(getCategoryName(for: txn.categID ?? 0)) // Show the payee's name
+                                        
                                         
                                         // Middle column: Payee name and time (hh:mm a format)
                                         VStack(alignment: .leading, spacing: 2) {
@@ -63,6 +64,7 @@ struct TransactionListView2: View {
         .onAppear {
             loadTransactions()
             loadPayees()
+            loadCategories()
         }
     }
     
@@ -99,9 +101,26 @@ struct TransactionListView2: View {
         }
     }
     
+    func loadCategories() {
+        let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
+
+        DispatchQueue.global(qos: .background).async {
+            let loadedCategories = repository.loadCategories()
+            
+            DispatchQueue.main.async {
+                self.categories = loadedCategories
+            }
+        }
+    }
+    
     func getPayeeName(for payeeID: Int64) -> String {
         // Find the payee with the given ID
         return payees.first { $0.id == payeeID }?.name ?? "Unknown"
+    }
+    
+    func getCategoryName(for categoryID: Int64) -> String {
+        // Find the category with the given ID
+        return categories.first { $0.id == categoryID }?.name ?? "Unknown"
     }
     
     func calculateTotal(for day: String) -> String {
