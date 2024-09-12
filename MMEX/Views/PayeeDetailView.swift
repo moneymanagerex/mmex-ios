@@ -21,6 +21,29 @@ struct PayeeDetailView: View {
                 Text("\(payee.name)")
             }
             
+            Section(header: Text("Category ID")) {
+                Text(payee.categoryId != nil ? "\(payee.categoryId!)" : "N/A")
+            }
+
+            Section(header: Text("Number")) {
+                Text(payee.number ?? "N/A")
+            }
+
+            Section(header: Text("Website")) {
+                Text(payee.website ?? "N/A")
+            }
+
+            Section(header: Text("Notes")) {
+                Text(payee.notes ?? "No notes")
+            }
+
+            Section(header: Text("Active")) {
+                Text(payee.active == 1 ? "Yes" : "No")
+            }
+
+            Section(header: Text("Pattern")) {
+                Text(payee.pattern.isEmpty ? "No pattern" : payee.pattern)
+            }
             // TODO full field
             Button("Delete Payee") {
                 deletePayee()

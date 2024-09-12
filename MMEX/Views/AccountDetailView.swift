@@ -36,7 +36,7 @@ struct AccountDetailView: View {
                     Text("No notes available")  // Fallback text if notes are nil
                 }
             }
-            Button("Delete Payee") {
+            Button("Delete Account") {
                 deleteAccount()
             }
         }

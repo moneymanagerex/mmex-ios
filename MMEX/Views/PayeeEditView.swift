@@ -15,7 +15,48 @@ struct PayeeEditView: View {
             Section(header: Text("Payee Name")) {
                 TextField("Payee Name", text: $payee.name)
             }
+
+            Section(header: Text("Category ID")) {
+                TextField("Category ID", value: $payee.categoryId, formatter: NumberFormatter())
+                    .keyboardType(.numberPad)
+            }
+
+            Section(header: Text("Number")) {
+                TextField("Number", text: Binding(
+                    get: { payee.number ?? "" }, // Safely unwrap the optional notes field
+                    set: { payee.number = $0.isEmpty ? nil : $0 } // Set notes to nil if the input is empty
+                ))
+            }
+
+            Section(header: Text("Website")) {
+                TextField("Website", text: Binding(
+                    get: { payee.website ?? "" }, // Safely unwrap the optional notes field
+                    set: { payee.website = $0.isEmpty ? nil : $0 } // Set notes to nil if the input is empty
+                ))
+            }
+
+            Section(header: Text("Notes")) {
+                TextField("Notes", text: Binding(
+                    get: { payee.notes ?? "" },
+                    set: { payee.notes = $0.isEmpty ? nil : $0 }
+                ))
+            }
+
+            Section(header: Text("Active")) {
+                Toggle(isOn: Binding(get: {
+                    payee.active == 1
+                }, set: { newValue in
+                    payee.active = newValue ? 1 : 0
+                })) {
+                    Text("Is Active")
+                }
+            }
+
+            Section(header: Text("Pattern")) {
+                TextField("Pattern", text: $payee.pattern)
+            }
         }
+        .navigationTitle("Edit Payee")
     }
 }
 
