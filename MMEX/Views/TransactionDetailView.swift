@@ -21,7 +21,7 @@ struct TransactionDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Transaction Type")) {
-                Text("\(txn.transcode)")
+                Text("\(txn.transcode.id)")
             }
             
             // Section for actions like delete

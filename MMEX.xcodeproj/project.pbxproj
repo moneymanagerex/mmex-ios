@@ -115,14 +115,14 @@
 				A3C142412C897BE600D3CEC0 /* Info.plist */,
 				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
 				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
-				A3C1422E2C89751600D3CEC0 /* Assets.xcassets */,
-				A3C142302C89751600D3CEC0 /* Preview Content */,
 				A3C1423B2C89758C00D3CEC0 /* DocumentPicker.swift */,
 				A3C1425E2C8DE70300D3CEC0 /* DatabaseManager.swift */,
 				A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */,
 				A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */,
 				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
 				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
+				A3C1422E2C89751600D3CEC0 /* Assets.xcassets */,
+				A3C142302C89751600D3CEC0 /* Preview Content */,
 			);
 			path = MMEX;
 			sourceTree = "<group>";
