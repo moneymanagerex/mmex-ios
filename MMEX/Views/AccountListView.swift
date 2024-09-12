@@ -39,10 +39,14 @@ struct AccountListView: View {
                     ) {
                         ForEach(accounts_by_type[accountType]!) { account in
                             NavigationLink(destination: AccountDetailView(account: account, databaseURL: databaseURL)) {
-                                HStack {
+                                HStack{
                                     Text(account.name)
-                                    // Text(account.status.id)
-                                    // TODO layout and more informationn
+                                        .font(.subheadline)
+
+                                    Spacer()
+
+                                    Text(account.status.name)
+                                        .font(.subheadline)
                                 }
                             }
                         }

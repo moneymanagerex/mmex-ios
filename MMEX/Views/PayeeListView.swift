@@ -25,7 +25,10 @@ struct PayeeListView: View {
         NavigationStack {
             List(payees) { payee in
                 NavigationLink(destination: PayeeDetailView(payee: payee, databaseURL: databaseURL)) {
-                    Text(payee.name)
+                    HStack {
+                        Text(payee.name)
+                        Spacer()
+                    }
                 }
             }
             .toolbar {
