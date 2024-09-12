@@ -37,23 +37,30 @@ struct TransactionListView2: View {
                         ForEach(txns_per_day[day]!, id: \.id) { txn in
                             NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories)) {
                                 HStack {
-                                    // Combine left and middle columns closer
-                                    HStack(spacing: 4) {
-                                        // Left column: Icon (temporary: categID)
-                                        Text(getCategoryName(for: txn.categID ?? 0)) // Show the payee's name
-                                        
-                                        
-                                        // Middle column: Payee name and time (hh:mm a format)
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Text(getPayeeName(for: txn.payeeID)) // Show the payee's name
-                                            Text(formatTime(txn.lastUpdatedTime ?? txn.transDate)) // Show time in hh:mm a
-                                        }
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    // Left column (Category Icon or Category Name)
+                                    Text(getCategoryName(for: txn.categID ?? 0))
+                                        .frame(width: 80, alignment: .leading) // Adjust width as needed
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(.blue) // Customize the icon/category style
 
-                                    // Right column: Amount
+                                    // Middle column (Payee Name & Time)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(getPayeeName(for: txn.payeeID)) // Payee name
+                                            .font(.system(size: 16))
+                                            .lineLimit(1) // Prevent wrapping
+                                        Text(formatTime(txn.transDate)) // Show time in hh:mm a
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.gray)
+                                    }
+                                    .frame(width: 100, alignment: .leading) // Widen middle column, ensuring enough space
+
+                                    Spacer() // To push the amount to the right side
+
+                                    // Right column (Transaction Amount)
                                     Text(String(format: "%.2f", txn.transAmount ?? 0.0))
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
+                                        .frame(alignment: .trailing) // Ensure it's aligned to the right
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red) // Positive/negative amount color
                                 }
                             }
                         }
