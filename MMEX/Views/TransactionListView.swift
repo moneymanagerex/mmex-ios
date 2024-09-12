@@ -15,6 +15,7 @@ struct TransactionListView: View {
     
     @State private var payees: [Payee] = []
     @State private var categories: [Category] = []
+    @State private var accounts: [Account] = []
 
     private var repository: TransactionRepository
     
@@ -26,7 +27,7 @@ struct TransactionListView: View {
     var body: some View {
         NavigationStack {
             List(txns) { txn in
-                NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories)) {
+                NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
                     HStack {
                         // Left column: Date (truncated to day)
                         Text(formatDate(from: txn.transDate))
@@ -72,9 +73,10 @@ struct TransactionListView: View {
             loadTransactions()
             loadPayees()
             loadCategories()
+            loadAccounts()
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
-            TransactionAddView(newTxn: $newTxn, isPresentingTransactionAddView: $isPresentingTransactionAddView, payees: $payees, categories: $categories) { newTxn in
+            TransactionAddView(newTxn: $newTxn, isPresentingTransactionAddView: $isPresentingTransactionAddView, payees: $payees, categories: $categories, accounts: $accounts) { newTxn in
                 addTransaction(txn: &newTxn)
             }
         }
@@ -116,6 +118,18 @@ struct TransactionListView: View {
             
             DispatchQueue.main.async {
                 self.categories = loadedCategories
+            }
+        }
+    }
+    
+    func loadAccounts() {
+        let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
+
+        DispatchQueue.global(qos: .background).async {
+            let loadedAccounts = repository.loadAccounts()
+            
+            DispatchQueue.main.async {
+                self.accounts = loadedAccounts
             }
         }
     }

@@ -16,6 +16,7 @@ struct TransactionEditView: View {
 
     @Binding var payees: [Payee]
     @Binding var categories: [Category]
+    @Binding var accounts: [Account]
     
     // Focus state for the Amount input to control keyboard focus
     @FocusState private var isAmountFocused: Bool
@@ -23,13 +24,29 @@ struct TransactionEditView: View {
     var body: some View {
         VStack {
             // 1. Transaction type picker (Deposit/Withdrawal/Transfer)
-            Picker("", selection: $txn.transcode) {
-                ForEach(Transcode.allCases) { transcode in
-                    Text(transcode.name).tag(transcode)
+            HStack {
+                Picker("", selection: $txn.transcode) {
+                    ForEach(Transcode.allCases) { transcode in
+                        Text(transcode.name).tag(transcode)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
+                .padding(.horizontal)
+                
+                Spacer()
+                
+                Picker("Select account", selection: $txn.accountID) {
+                    ForEach(accounts) { account in
+                        Text(account.name).tag(account.id)
+                    }
+                }
+                // .pickerStyle(MenuPickerStyle()) // Show a menu for the payee picker
+                .onChange(of: selectedPayee) { newValue in
+                    txn.accountID = newValue // Update the transaction with the selected account
                 }
             }
-            .pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
             .padding(.horizontal)
+            .frame(width:.infinity, alignment: .leading)
             
             // 2. Unified Numeric Input for the Amount with automatic keyboard focus
             TextField("¥0", text: $amountString)
@@ -140,5 +157,5 @@ struct TransactionEditView: View {
 }
 
 #Preview {
-    TransactionEditView(txn: .constant(Transaction.sampleData[0]), payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData))
+    TransactionEditView(txn: .constant(Transaction.sampleData[0]), payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData), accounts: .constant(Account.sampleData))
 }

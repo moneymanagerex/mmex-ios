@@ -17,10 +17,11 @@ struct TransactionAddView2: View {
     
     @State private var payees: [Payee] = []
     @State private var categories: [Category] = []
+    @State private var accounts: [Account] = []
     
     var body: some View {
         NavigationStack {
-            TransactionEditView(txn: $newTxn, payees: $payees, categories: $categories)
+            TransactionEditView(txn: $newTxn, payees: $payees, categories: $categories, accounts: $accounts)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
@@ -42,6 +43,7 @@ struct TransactionAddView2: View {
         .onAppear() {
             loadPayees()
             loadCategories()
+            loadAccounts()
         }
     }
 
@@ -76,6 +78,18 @@ struct TransactionAddView2: View {
             
             DispatchQueue.main.async {
                 self.categories = loadedCategories
+            }
+        }
+    }
+    
+    func loadAccounts() {
+        let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
+
+        DispatchQueue.global(qos: .background).async {
+            let loadedAccounts = repository.loadAccounts()
+            
+            DispatchQueue.main.async {
+                self.accounts = loadedAccounts
             }
         }
     }

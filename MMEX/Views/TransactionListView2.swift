@@ -13,6 +13,7 @@ struct TransactionListView2: View {
     @State private var txns_per_day: [String: [Transaction]] = [:]
     @State private var payees: [Payee] = []
     @State private var categories: [Category] = []
+    @State private var accounts: [Account] = []
 
     private var repository: TransactionRepository
     
@@ -35,7 +36,7 @@ struct TransactionListView2: View {
                         }
                     ) {
                         ForEach(txns_per_day[day]!, id: \.id) { txn in
-                            NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories)) {
+                            NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
                                 HStack {
                                     // Left column (Category Icon or Category Name)
                                     if let categorySymbol = Category.categoryToSFSymbol[getCategoryName(for: txn.categID ?? 0)] {
@@ -123,6 +124,18 @@ struct TransactionListView2: View {
             
             DispatchQueue.main.async {
                 self.categories = loadedCategories
+            }
+        }
+    }
+    
+    func loadAccounts() {
+        let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
+
+        DispatchQueue.global(qos: .background).async {
+            let loadedAccounts = repository.loadAccounts()
+            
+            DispatchQueue.main.async {
+                self.accounts = loadedAccounts
             }
         }
     }

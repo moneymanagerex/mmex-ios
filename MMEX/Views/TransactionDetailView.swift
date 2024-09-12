@@ -17,6 +17,7 @@ struct TransactionDetailView: View {
     
     @Binding var payees: [Payee]
     @Binding var categories: [Category]
+    @Binding var accounts: [Account]
     
     var body: some View {
         List {
@@ -40,7 +41,7 @@ struct TransactionDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                TransactionEditView(txn: $editingTxn, payees: $payees, categories: $categories)
+                TransactionEditView(txn: $editingTxn, payees: $payees, categories: $categories, accounts: $accounts)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {
