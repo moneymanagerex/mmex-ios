@@ -38,10 +38,17 @@ struct TransactionListView2: View {
                             NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories)) {
                                 HStack {
                                     // Left column (Category Icon or Category Name)
-                                    Text(getCategoryName(for: txn.categID ?? 0))
-                                        .frame(width: 80, alignment: .leading) // Adjust width as needed
-                                        .font(.system(size: 16, weight: .bold))
-                                        .foregroundColor(.blue) // Customize the icon/category style
+                                    if let categorySymbol = Category.categoryToSFSymbol[getCategoryName(for: txn.categID ?? 0)] {
+                                        Image(systemName: categorySymbol)
+                                            .frame(width: 50, alignment: .leading) // Adjust width as needed
+                                            .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
+                                            .foregroundColor(.blue) // Customize icon style
+                                    } else {
+                                        Text(getCategoryName(for: txn.categID ?? 0)) // Fallback to category name if symbol is not found
+                                            .frame(width: 50, alignment: .leading)
+                                            .font(.system(size: 16, weight: .bold))
+                                            .foregroundColor(.blue)
+                                    }
 
                                     // Middle column (Payee Name & Time)
                                     VStack(alignment: .leading, spacing: 4) {
