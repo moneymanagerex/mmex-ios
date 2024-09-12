@@ -69,10 +69,17 @@ struct TransactionEditView: View {
                 DatePicker("Date", selection: $selectedDate, displayedComponents: .date)
                     .labelsHidden() // Hide the default label to save space
                     .onChange(of: selectedDate) { newDate in
-                        // Format the date and store it in the txn object
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd"
-                        txn.transDate = dateFormatter.string(from: newDate)
+                        // Append current time to selected date and format as ISO-8601
+                        let currentTime = Calendar.current.dateComponents([.hour, .minute, .second], from: Date())
+                        let fullDate = Calendar.current.date(bySettingHour: currentTime.hour ?? 0,
+                                                             minute: currentTime.minute ?? 0,
+                                                             second: currentTime.second ?? 0,
+                                                             of: newDate) ?? newDate
+                        
+                        // Format the date as 'YYYY-MM-DDTHH:MM:SS'
+                       let formatter = DateFormatter()
+                       formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                       txn.transDate = formatter.string(from: fullDate) // Save as ISO-8601 formatted string without TZ
                     }
                 
                 Spacer()

@@ -36,17 +36,20 @@ struct TransactionListView2: View {
                         ForEach(txns_per_day[day]!, id: \.id) { txn in
                             NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees)) {
                                 HStack {
-                                    // Left column: Icon (temporary: categID)
-                                    Text("\(txn.categID ?? 0)")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                    // Middle column: Payee ID and time (hh:mm a format)
-                                    VStack(alignment: .leading) {
-                                        Text("Payee: \(txn.payeeID)") // Placeholder for actual payee name
-                                        Text(formatTime(txn.lastUpdatedTime ?? txn.transDate)) // Show time in hh:mm a
+                                    // Combine left and middle columns closer
+                                    HStack(spacing: 4) {
+                                        // Left column: Icon (temporary: categID)
+                                        Text("\(txn.categID ?? 0)")
+                                            .frame(maxWidth: 20, alignment: .leading)
+                                        
+                                        // Middle column: Payee name and time (hh:mm a format)
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text(getPayeeName(for: txn.payeeID)) // Show the payee's name
+                                            Text(formatTime(txn.lastUpdatedTime ?? txn.transDate)) // Show time in hh:mm a
+                                        }
                                     }
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    
+
                                     // Right column: Amount
                                     Text(String(format: "%.2f", txn.transAmount ?? 0.0))
                                         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -64,15 +67,21 @@ struct TransactionListView2: View {
     }
     
     func loadTransactions() {
-        print("Loading txn in TransactionListView2...")
-        
         DispatchQueue.global(qos: .background).async {
             let loadTransactions = repository.loadRecentTransactions()
             
             DispatchQueue.main.async {
                 self.txns = loadTransactions
                 self.txns_per_day = Dictionary(grouping: txns) { txn in
-                    txn.transDate
+                    // Extract the date portion (ignoring the time) from ISO-8601 string
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
+                    
+                    if let date = formatter.date(from: txn.transDate) {
+                        formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
+                        return formatter.string(from: date)
+                    }
+                    return txn.transDate // If parsing fails, return original string
                 }
             }
         }
@@ -88,6 +97,11 @@ struct TransactionListView2: View {
                 self.payees = loadedPayees
             }
         }
+    }
+    
+    func getPayeeName(for payeeID: Int64) -> String {
+        // Find the payee with the given ID
+        return payees.first { $0.id == payeeID }?.name ?? "Unknown"
     }
     
     func calculateTotal(for day: String) -> String {
