@@ -125,6 +125,10 @@ struct TransactionEditView: View {
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
             selectedPayee = txn.payeeID
         }
+        .onDisappear {
+            // Resign the focus when the view disappears, hiding the keyboard
+            isAmountFocused = false
+        }
     }
 }
 
