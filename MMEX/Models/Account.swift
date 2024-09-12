@@ -64,3 +64,12 @@ extension Account {
     ]
 }
 
+extension Account {
+    static let accountTypeToSFSymbol: [String: String] = [
+        "Cash": "dollarsign.circle.fill",
+        "Checking": "banknote.fill",
+        "Credit Card": "creditcard.fill",
+        "Loan": "building.columns.fill",
+        "Term": "calendar.circle.fill"
+    ]
+}

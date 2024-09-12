@@ -26,16 +26,22 @@ struct AccountListView: View {
                 ForEach(self.accounts_by_type.keys.sorted(), id:\.self) { accountType in
                     Section(
                         header: HStack {
-                            // TODO icon
+                            if let accountSymbol = Account.accountTypeToSFSymbol[accountType] {
+                                Image(systemName: accountSymbol)
+                                    .frame(width: 5, alignment: .leading) // Adjust width as needed
+                                    .font(.system(size: 16, weight: .bold)) // Customize size and weight
+                                    .foregroundColor(.blue) // Customize icon style
+                            }
                             Text(accountType)
-                                .font(.headline)
+                                .font(.subheadline)
+                                .padding(.leading)
                         }
                     ) {
                         ForEach(accounts_by_type[accountType]!) { account in
                             NavigationLink(destination: AccountDetailView(account: account, databaseURL: databaseURL)) {
                                 HStack {
                                     Text(account.name)
-                                    Text(account.status.id)
+                                    // Text(account.status.id)
                                     // TODO layout and more informationn
                                 }
                             }
