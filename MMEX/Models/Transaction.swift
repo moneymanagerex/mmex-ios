@@ -69,11 +69,11 @@ struct Transaction: Identifiable {
         self.color = color
     }
     
-    init(id: Int64, accountID: Int64, payeeID: Int64, transCode: Transcode, status:TransactionStatus, transAmount: Double?, transDate: String) {
+    init(id: Int64, accountID: Int64, payeeID: Int64, categID: Int64?, transCode: Transcode, status:TransactionStatus, transAmount: Double?, transDate: String) {
         self.id = id
         self.accountID = accountID
         self.payeeID = payeeID
-        self.categID = 1 // TODO
+        self.categID = categID
         self.transcode = transCode
         self.status = status
         self.transAmount = transAmount
@@ -82,12 +82,12 @@ struct Transaction: Identifiable {
 }
 
 extension Transaction {
-    static var empty: Transaction {Transaction(id: 0, accountID: 1, payeeID: 1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())}
+    static var empty: Transaction {Transaction(id: 0, accountID: 1, payeeID: 1, categID:1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())}
     static let sampleData : [Transaction] =
     [
-        Transaction(id: 1, accountID: 1, payeeID: 0, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format()),
-        Transaction(id: 2, accountID: 2, payeeID: 0, transCode: Transcode.deposit, status: TransactionStatus.none,transAmount: 0.0, transDate: Date().ISO8601Format()),
-        Transaction(id: 3, accountID: 3, payeeID: 0, transCode: Transcode.transfer, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())
+        Transaction(id: 1, accountID: 1, payeeID: 1, categID:1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format()),
+        Transaction(id: 2, accountID: 2, payeeID: 2, categID:1, transCode: Transcode.deposit, status: TransactionStatus.none,transAmount: 0.0, transDate: Date().ISO8601Format()),
+        Transaction(id: 3, accountID: 3, payeeID: 3, categID:1, transCode: Transcode.transfer, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())
     ]
 }
 
