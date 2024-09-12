@@ -20,7 +20,7 @@ struct AccountEditView: View {
             }
             Section(header: Text("Status")) {
                 Picker("Status", selection: $account.status) {
-                    ForEach(Status.allCases) { status in
+                    ForEach(AccountStatus.allCases) { status in
                         Text(status.name).tag(status)
                     }
                 }

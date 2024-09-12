@@ -24,7 +24,7 @@ class AccountRepository {
                 accounts.append(Account(id: account[Account.accountID],
                                         name: account[Account.accountName],
                                         type: account[Account.accountType],
-                                        status: Status(rawValue: account[Account.status]) ?? Status.open,
+                                        status: AccountStatus(rawValue: account[Account.status]) ?? AccountStatus.open,
                                         favoriteAcct: account[Account.favoriteAcct],
                                         currencyId: account[Account.currencyID],
                                         balance: account[Account.balance],

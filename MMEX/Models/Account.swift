@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum Status: String, CaseIterable, Identifiable {
+enum AccountStatus: String, CaseIterable, Identifiable {
     case open = "Open"
     case closed = "Closed"
     
@@ -22,13 +22,13 @@ struct Account: Identifiable {
     var id: Int64
     var name: String
     var type: String
-    var status: Status
+    var status: AccountStatus
     var favoriteAcct: String
     var currencyId: Int64
     var balance: Double?
     var notes: String?
     
-    init(id: Int64, name: String, type: String, status: Status, favoriteAcct: String, currencyId: Int64, balance: Double? = nil, notes: String? = nil) {
+    init(id: Int64, name: String, type: String, status: AccountStatus, favoriteAcct: String, currencyId: Int64, balance: Double? = nil, notes: String? = nil) {
         self.id = id
         self.name = name
         self.type = type
@@ -53,14 +53,14 @@ extension Account {
     static let notes = Expression<String?>("NOTES")
     
     static var empty: Account {
-        Account(id: 0, name: "", type: "", status: Status.open, favoriteAcct: "TRUE", currencyId: 0, balance: 0.0, notes: "")
+        Account(id: 0, name: "", type: "", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 0, balance: 0.0, notes: "")
     }
 }
 extension Account {
     static let sampleData : [Account] = 
     [
-        Account(id: 1, name: "Account A", type: "Cash", status: Status.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:""),
-        Account(id: 2, name: "Account B", type: "Cash", status: Status.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:"")
+        Account(id: 1, name: "Account A", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:""),
+        Account(id: 2, name: "Account B", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:"")
     ]
 }
 
