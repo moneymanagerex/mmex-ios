@@ -11,7 +11,7 @@ import SQLite
 struct Category: Identifiable {
     var id: Int64
     var name: String
-    var active: Bool
+    var active: Bool?
     var parentId: Int64?
 }
 
@@ -31,6 +31,6 @@ extension Category {
     static let table = Table("CATEGORY_V1")
     static let categID = Expression<Int64>("CATEGID")
     static let categName = Expression<String>("CATEGNAME")
-    static let activeExpr = Expression<Int>("ACTIVE")
+    static let activeExpr = Expression<Int?>("ACTIVE")
     static let parentID = Expression<Int64?>("PARENTID")
 }
