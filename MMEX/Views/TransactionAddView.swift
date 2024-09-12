@@ -12,12 +12,13 @@ struct TransactionAddView: View {
     @Binding var isPresentingTransactionAddView: Bool
     
     @Binding var payees: [Payee]
+    @Binding var categories: [Category]
     
     var onSave: (inout Transaction) -> Void
     
     var body: some View {
         NavigationStack {
-            TransactionEditView(txn: $newTxn, payees: $payees)
+            TransactionEditView(txn: $newTxn, payees: $payees, categories: $categories)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
@@ -36,7 +37,8 @@ struct TransactionAddView: View {
 }
 
 #Preview {
-    TransactionAddView(newTxn: .constant(Transaction.empty), isPresentingTransactionAddView: .constant(true), payees: .constant(Payee.sampleData)) { newTxn in
+    TransactionAddView(newTxn: .constant(Transaction.empty), isPresentingTransactionAddView: .constant(true)
+                       , payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData)) { newTxn in
         // Handle saving in preview
         print("New payee: \(newTxn.id)")
     }}

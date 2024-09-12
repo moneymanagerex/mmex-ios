@@ -35,7 +35,7 @@ struct TransactionListView2: View {
                         }
                     ) {
                         ForEach(txns_per_day[day]!, id: \.id) { txn in
-                            NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees)) {
+                            NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories)) {
                                 HStack {
                                     // Combine left and middle columns closer
                                     HStack(spacing: 4) {

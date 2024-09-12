@@ -16,10 +16,11 @@ struct TransactionAddView2: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var payees: [Payee] = []
+    @State private var categories: [Category] = []
     
     var body: some View {
         NavigationStack {
-            TransactionEditView(txn: $newTxn, payees: $payees)
+            TransactionEditView(txn: $newTxn, payees: $payees, categories: $categories)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
@@ -40,6 +41,7 @@ struct TransactionAddView2: View {
         // .navigationBarTitle("Add Transaction", displayMode: .inline)
         .onAppear() {
             loadPayees()
+            loadCategories()
         }
     }
 
@@ -62,6 +64,18 @@ struct TransactionAddView2: View {
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
+            }
+        }
+    }
+    
+    func loadCategories() {
+        let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
+
+        DispatchQueue.global(qos: .background).async {
+            let loadedCategories = repository.loadCategories()
+            
+            DispatchQueue.main.async {
+                self.categories = loadedCategories
             }
         }
     }

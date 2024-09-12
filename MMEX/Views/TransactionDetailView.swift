@@ -16,6 +16,7 @@ struct TransactionDetailView: View {
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
     @Binding var payees: [Payee]
+    @Binding var categories: [Category]
     
     var body: some View {
         List {
@@ -39,7 +40,7 @@ struct TransactionDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                TransactionEditView(txn: $editingTxn, payees: $payees)
+                TransactionEditView(txn: $editingTxn, payees: $payees, categories: $categories)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {

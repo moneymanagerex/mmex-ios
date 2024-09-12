@@ -15,7 +15,7 @@ struct TransactionEditView: View {
     @State private var selectedCategory: Int64 = 0
 
     @Binding var payees: [Payee]
-    @State private var categories: [Category] = []
+    @Binding var categories: [Category]
     
     // Focus state for the Amount input to control keyboard focus
     @FocusState private var isAmountFocused: Bool
@@ -140,5 +140,5 @@ struct TransactionEditView: View {
 }
 
 #Preview {
-    TransactionEditView(txn: .constant(Transaction.sampleData[0]), payees: .constant(Payee.sampleData))
+    TransactionEditView(txn: .constant(Transaction.sampleData[0]), payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData))
 }
