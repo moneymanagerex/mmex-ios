@@ -65,6 +65,20 @@ extension Account {
 }
 
 extension Account {
+    static func fromRow(_ row: Row) -> Account {
+        return Account(id: row[Account.accountID],
+                       name: row[Account.accountName],
+                       type: row[Account.accountType],
+                       status: AccountStatus(rawValue: row[Account.status]) ?? AccountStatus.open,
+                       favoriteAcct: row[Account.favoriteAcct],
+                       currencyId: row[Account.currencyID],
+                       balance: row[Account.balance],
+                       notes: row[Account.notes]
+        )
+    }
+}
+
+extension Account {
     static let accountTypeToSFSymbol: [String: String] = [
         "Cash": "dollarsign.circle.fill",
         "Checking": "banknote.fill",

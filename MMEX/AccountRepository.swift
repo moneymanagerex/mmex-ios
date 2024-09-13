@@ -20,20 +20,34 @@ class AccountRepository {
         guard let db = db else { return [] }
 
         do {
-            for account in try db.prepare(Account.table) {
-                accounts.append(Account(id: account[Account.accountID],
-                                        name: account[Account.accountName],
-                                        type: account[Account.accountType],
-                                        status: AccountStatus(rawValue: account[Account.status]) ?? AccountStatus.open,
-                                        favoriteAcct: account[Account.favoriteAcct],
-                                        currencyId: account[Account.currencyID],
-                                        balance: account[Account.balance],
-                                        notes: account[Account.notes]))
+            for row in try db.prepare(Account.table) {
+                accounts.append(Account.fromRow(row))
             }
         } catch {
             print("Error loading accounts: \(error)")
         }
         return accounts
+    }
+
+    func loadAccountsWithCurrency() -> [(Account, Currency)] {
+        let query = Account.table
+            .join(Currency.table, on: Account.table[Account.currencyID] == Currency.table[Currency.currencyID])
+        // FIXME column name conflict
+        
+        var accountsWithCurrency: [(Account, Currency)] = []
+        guard let db = db else {return []}
+        
+        do {
+            for row in try db.prepare(query) {
+                let account = Account.fromRow(row)
+                let currency = Currency.fromRow(row)
+                accountsWithCurrency.append((account, currency))
+            }
+        } catch {
+            print("Error loading accountswithcurrency: \(error)")
+        }
+        
+        return accountsWithCurrency
     }
 
     func updateAccount(account: Account) -> Bool {

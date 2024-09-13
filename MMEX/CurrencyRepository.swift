@@ -21,21 +21,8 @@ class CurrencyRepository {
         guard let db = db else { return [] }
 
         do {
-            for currency in try db.prepare(Currency.table) {
-                currencies.append(Currency(
-                    id: currency[Currency.currencyID],
-                    name: currency[Currency.currencyName],
-                    prefixSymbol: currency[Currency.prefixSymbol] ?? "",
-                    suffixSymbol: currency[Currency.suffixSymbol] ?? "",
-                    decimalPoint: currency[Currency.decimalPoint] ?? ".",
-                    groupSeparator: currency[Currency.groupSeparator] ?? ",",
-                    unitName: currency[Currency.unitName] ?? "",
-                    centName: currency[Currency.centName] ?? "",
-                    scale: currency[Currency.scale],
-                    baseConversionRate: currency[Currency.baseConversionRate],
-                    symbol: currency[Currency.symbol],
-                    type: currency[Currency.type]
-                ))
+            for row in try db.prepare(Currency.table) {
+                currencies.append(Currency.fromRow(row))
             }
         } catch {
             print("Error loading currencies: \(error)")

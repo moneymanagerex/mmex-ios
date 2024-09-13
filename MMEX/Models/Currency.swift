@@ -34,10 +34,10 @@ extension Currency {
 extension Currency {
     // Define an empty currency
     static var empty: Currency { Currency(id: 0, name: "", prefixSymbol: nil, suffixSymbol: nil, decimalPoint: nil, groupSeparator: nil, unitName: nil, centName: nil, scale: 0, baseConversionRate: 0, symbol: "", type: "") }
-
+    
     // Define the table
     static let table = Table("CURRENCYFORMATS_V1")
-
+    
     // Define the columns as Expressions
     static let currencyID = Expression<Int64>("CURRENCYID")
     static let currencyName = Expression<String>("CURRENCYNAME")
@@ -51,6 +51,24 @@ extension Currency {
     static let baseConversionRate = Expression<Double?>("BASECONVRATE")
     static let symbol = Expression<String>("CURRENCY_SYMBOL")
     static let type = Expression<String>("CURRENCY_TYPE")
+}
+
+extension Currency {
+    static func fromRow(_ row: Row) -> Currency {
+        return Currency(id: row[Currency.currencyID],
+                        name: row[Currency.currencyName],
+                        prefixSymbol: row[Currency.prefixSymbol] ?? "",
+                        suffixSymbol: row[Currency.suffixSymbol] ?? "",
+                        decimalPoint: row[Currency.decimalPoint] ?? ".",
+                        groupSeparator: row[Currency.groupSeparator] ?? ",",
+                        unitName: row[Currency.unitName] ?? "",
+                        centName: row[Currency.centName] ?? "",
+                        scale: row[Currency.scale],
+                        baseConversionRate: row[Currency.baseConversionRate],
+                        symbol: row[Currency.symbol],
+                        type: row[Currency.type]
+        )
+    }
 }
 
 extension Currency {
