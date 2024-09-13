@@ -12,9 +12,12 @@ struct TransactionListView2: View {
     @State private var txns: [Transaction] = []
     @State private var txns_per_day: [String: [Transaction]] = [:]
     @State private var payees: [Payee] = []
+    @State private var payeeDict: [Int64: Payee] = [:] // for lookup
     @State private var categories: [Category] = []
+    @State private var categoryDict: [Int64: Category] = [:] // for lookup
     @State private var accounts: [Account] = []
-    @State private var accountsWithCurrency: [(Account, Currency)] = []
+    @State private var accountDict: [Int64: Account] = [: ] // for lookup
+    @State private var currencyDict: [Int64: Currency] = [:] // for lookup, accountId -> Currency
 
     private var repository: TransactionRepository
     
@@ -65,10 +68,10 @@ struct TransactionListView2: View {
 
                                     Spacer() // To push the amount to the right side
 
-                                    if let accountWithCurrency = getAccountWithCurrency(for: txn.accountID) {
+                                    if let currency = self.currencyDict[txn.accountID] {
                                         // Right column (Transaction Amount)
                                         //  Text(String(format: "%.2f", txn.transAmount ?? 0.0))
-                                        Text(accountWithCurrency.1.format(amount: txn.transAmount ?? 0.0))
+                                        Text(currency.format(amount: txn.transAmount ?? 0.0))
                                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                                             .font(.system(size: 16, weight: .bold))
                                             .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red) // Positive/negative amount color
@@ -123,6 +126,7 @@ struct TransactionListView2: View {
             
             DispatchQueue.main.async {
                 self.payees = loadedPayees
+                self.payeeDict = Dictionary(uniqueKeysWithValues: payees.map { ($0.id, $0) })
             }
         }
     }
@@ -135,6 +139,7 @@ struct TransactionListView2: View {
             
             DispatchQueue.main.async {
                 self.categories = loadedCategories
+                self.categoryDict = Dictionary(uniqueKeysWithValues: categories.map { ($0.id, $0) })
             }
         }
     }
@@ -148,7 +153,8 @@ struct TransactionListView2: View {
             
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
-                self.accountsWithCurrency = loadedAccountsWithCurrency
+                self.accountDict = Dictionary(uniqueKeysWithValues: accounts.map { ($0.id, $0) })
+                self.currencyDict = Dictionary(uniqueKeysWithValues: loadedAccountsWithCurrency.map { ($0.0.id, $0.1) })
             }
         }
     }
@@ -156,17 +162,19 @@ struct TransactionListView2: View {
     // TODO pre-join via SQL?
     func getPayeeName(for payeeID: Int64) -> String {
         // Find the payee with the given ID
-        return payees.first { $0.id == payeeID }?.name ?? "Unknown"
+        if let payee = self.payeeDict[payeeID] {
+            return payee.name
+        }
+        return "Unknown"
     }
     
     // TODO pre-join via SQL?
     func getCategoryName(for categoryID: Int64) -> String {
         // Find the category with the given ID
-        return categories.first { $0.id == categoryID }?.name ?? "Unknown"
-    }
-    
-    func getAccountWithCurrency(for accountID: Int64) -> (Account, Currency)? {
-        return accountsWithCurrency.first { $0.0.id == accountID}
+        if let category = self.categoryDict[categoryID] {
+            return category.name
+        } 
+        return "Unknown"
     }
 
     func calculateTotal(for day: String) -> String {
