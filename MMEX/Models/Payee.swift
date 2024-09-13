@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct Payee: Identifiable, Codable {
+struct Payee: ExportableEntity {
     var id: Int64
     var name: String
     var categoryId: Int64?

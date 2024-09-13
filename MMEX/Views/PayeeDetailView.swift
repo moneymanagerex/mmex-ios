@@ -65,10 +65,10 @@ struct PayeeDetailView: View {
                 // Export button for pasteboard and external storage
                 Menu {
                     Button("Copy to Clipboard") {
-                        copyToPasteboard()
+                        payee.copyToPasteboard()
                     }
                     Button("Export as JSON File") {
-                        exportPayeeToFile()
+                        isExporting = true
                     }
                 } label: {
                     Image(systemName: "square.and.arrow.up")
@@ -97,12 +97,15 @@ struct PayeeDetailView: View {
         }
         .fileExporter(
             isPresented: $isExporting,
-            document: ExportablePayee(payee: payee),
+            document: ExportableEntityDocument(entity: payee),
             contentType: .json,
             defaultFilename: "\(payee.name)_Payee"
         ) { result in
-            if case .success(let url) = result {
-                exportURL = url
+            switch result {
+            case .success(let url):
+                print("File saved to: \(url)")
+            case .failure(let error):
+                print("Error exporting file: \(error)")
             }
         }
     }
@@ -144,26 +147,6 @@ struct PayeeDetailView: View {
     // Export payee details to JSON file
     func exportPayeeToFile() {
         isExporting = true
-    }
-}
-
-// Struct for exporting payee as a JSON document
-struct ExportablePayee: FileDocument {
-    static var readableContentTypes: [UTType] { [.json] }
-    
-    var payee: Payee
-    
-    init(payee: Payee) {
-        self.payee = payee
-    }
-    
-    init(configuration: ReadConfiguration) throws {
-        self.payee = Payee.empty // Initialize with default or empty values
-    }
-    
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let jsonData = try JSONEncoder().encode(payee)
-        return FileWrapper(regularFileWithContents: jsonData)
     }
 }
 

@@ -13,6 +13,8 @@
 		A3363EE92C9326A1004696C7 /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE82C9326A1004696C7 /* CategoryListView.swift */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
 		A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F632C9426F500F79145 /* InsightsViewModel.swift */; };
+		A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F652C94854800F79145 /* ExportableEntity.swift */; };
+		A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */; };
 		A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */; };
 		A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422C2C89751500D3CEC0 /* ContentView.swift */; };
 		A3C1422F2C89751600D3CEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C1422E2C89751600D3CEC0 /* Assets.xcassets */; };
@@ -55,6 +57,8 @@
 		A3363EE82C9326A1004696C7 /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
 		A3462F632C9426F500F79145 /* InsightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewModel.swift; sourceTree = "<group>"; };
+		A3462F652C94854800F79145 /* ExportableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntity.swift; sourceTree = "<group>"; };
+		A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntityDocument.swift; sourceTree = "<group>"; };
 		A3C142272C89751500D3CEC0 /* MMEX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMEX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEXApp.swift; sourceTree = "<group>"; };
 		A3C1422C2C89751500D3CEC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -103,6 +107,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A3462F672C948C8400F79145 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A3462F652C94854800F79145 /* ExportableEntity.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A3462F682C948CAD00F79145 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */,
+			);
+			path = Export;
+			sourceTree = "<group>";
+		};
 		A3C1421E2C89751500D3CEC0 = {
 			isa = PBXGroup;
 			children = (
@@ -122,7 +142,9 @@
 		A3C142292C89751500D3CEC0 /* MMEX */ = {
 			isa = PBXGroup;
 			children = (
+				A3462F682C948CAD00F79145 /* Export */,
 				A3C142452C89CB1600D3CEC0 /* Views */,
+				A3462F672C948C8400F79145 /* Protocols */,
 				A3C142422C89B83A00D3CEC0 /* Models */,
 				A3C142412C897BE600D3CEC0 /* Info.plist */,
 				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
@@ -291,6 +313,8 @@
 				A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */,
 				A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */,
 				A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */,
+				A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */,
+				A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */,
 				A3C142982C8FE62200D3CEC0 /* TransactionListView.swift in Sources */,
 				A3C142542C8B381400D3CEC0 /* PayeeEditView.swift in Sources */,
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
