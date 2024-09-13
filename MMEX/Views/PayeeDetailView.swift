@@ -51,6 +51,7 @@ struct PayeeDetailView: View {
                 deletePayee()
             }
         }
+        .textSelection(.enabled)
         .toolbar {
             Button("Edit") {
                 isPresentingEditView = true

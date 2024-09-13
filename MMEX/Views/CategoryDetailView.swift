@@ -34,6 +34,7 @@ struct CategoryDetailView: View {
                 deleteCategory()
             }
         }
+        .textSelection(.enabled)
         .toolbar {
             Button("Edit") {
                 isPresentingEditView = true

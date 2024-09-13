@@ -45,6 +45,7 @@ struct AccountDetailView: View {
                 deleteAccount()
             }
         }
+        .textSelection(.enabled)
         .toolbar {
             Button("Edit") {
                 isPresentingEditView = true

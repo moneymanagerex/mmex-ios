@@ -25,6 +25,9 @@ struct TransactionDetailView: View {
                 Text("\(txn.transcode.id)")
             }
             
+            Section(header: Text("Transaction Status")) {
+                Text("\(txn.status.id)")
+            }
             // Section for actions like delete
             Section {
                 Button("Delete Transaction") {
@@ -33,6 +36,7 @@ struct TransactionDetailView: View {
                 .foregroundColor(.red)
             }
         }
+        .textSelection(.enabled)
         .toolbar {
             Button("Edit") {
                 isPresentingEditView = true
