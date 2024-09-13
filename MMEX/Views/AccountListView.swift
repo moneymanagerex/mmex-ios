@@ -10,6 +10,7 @@ struct AccountListView: View {
     let databaseURL: URL
     @State private var accounts: [Account] = []
     @State private var currencies: [Currency] = []
+    @State private var currencyDict: [Int64 : Currency] = [:] // lookup
     @State private var accounts_by_type: [String:[Account]] = [:]
     @State private var newAccount = Account.empty
     @State private var isPresentingAccountAddView = false
@@ -46,13 +47,15 @@ struct AccountListView: View {
 
                                     Spacer()
 
-                                    Text(account.status.name)
-                                        .font(.subheadline)
+                                    if let currency = self.currencyDict[account.id] {
+                                        Text(currency.name)
+                                            .font(.subheadline)
+                                    }
                                 }
+                                .padding(.horizontal)
                             }
                         }
                     }
-                    
                 }
             }
             .toolbar {
@@ -97,6 +100,7 @@ struct AccountListView: View {
             let loadedCurrencies = repo.loadCurrencies()
             DispatchQueue.main.async {
                 self.currencies = loadedCurrencies
+                self.currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
                 // other post op
             }
         }
