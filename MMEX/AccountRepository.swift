@@ -30,23 +30,22 @@ class AccountRepository {
     }
 
     func loadAccountsWithCurrency() -> [(Account, Currency)] {
-        let query = Account.table
-            .join(Currency.table, on: Account.table[Account.currencyID] == Currency.table[Currency.currencyID])
-        // FIXME column name conflict
-        
-        var accountsWithCurrency: [(Account, Currency)] = []
+        // TODO
         guard let db = db else {return []}
+        var accountsWithCurrency: [(Account, Currency)] = []
+
+        let accounts = loadAccounts();
+        let currencies = CurrencyRepository(db:db).loadCurrencies();
+
+        // Create a lookup dictionary for currencies by currencyId
+        let currencyDictionary = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
         
-        do {
-            for row in try db.prepare(query) {
-                let account = Account.fromRow(row)
-                let currency = Currency.fromRow(row)
+        for account in accounts {
+            if let currency = currencyDictionary[account.currencyId] {
                 accountsWithCurrency.append((account, currency))
             }
-        } catch {
-            print("Error loading accountswithcurrency: \(error)")
         }
-        
+
         return accountsWithCurrency
     }
 

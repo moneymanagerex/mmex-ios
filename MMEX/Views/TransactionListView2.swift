@@ -14,6 +14,7 @@ struct TransactionListView2: View {
     @State private var payees: [Payee] = []
     @State private var categories: [Category] = []
     @State private var accounts: [Account] = []
+    @State private var accountsWithCurrency: [(Account, Currency)] = []
 
     private var repository: TransactionRepository
     
@@ -64,11 +65,20 @@ struct TransactionListView2: View {
 
                                     Spacer() // To push the amount to the right side
 
-                                    // Right column (Transaction Amount)
-                                    Text(String(format: "%.2f", txn.transAmount ?? 0.0))
-                                        .frame(alignment: .trailing) // Ensure it's aligned to the right
-                                        .font(.system(size: 16, weight: .bold))
-                                        .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red) // Positive/negative amount color
+                                    if let accountWithCurrency = getAccountWithCurrency(for: txn.accountID) {
+                                        // Right column (Transaction Amount)
+                                        //  Text(String(format: "%.2f", txn.transAmount ?? 0.0))
+                                        Text(accountWithCurrency.1.format(amount: txn.transAmount ?? 0.0))
+                                            .frame(alignment: .trailing) // Ensure it's aligned to the right
+                                            .font(.system(size: 16, weight: .bold))
+                                            .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red) // Positive/negative amount color
+                                    } else {
+                                        // Right column (Transaction Amount)
+                                        Text(String(format: "%.2f", txn.transAmount ?? 0.0))
+                                            .frame(alignment: .trailing) // Ensure it's aligned to the right
+                                            .font(.system(size: 16, weight: .bold))
+                                            .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red) // Positive/negative amount color
+                                    }
                                 }
                             }
                         }
@@ -134,9 +144,11 @@ struct TransactionListView2: View {
 
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository.loadAccounts()
+            let loadedAccountsWithCurrency = repository.loadAccountsWithCurrency()
             
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
+                self.accountsWithCurrency = loadedAccountsWithCurrency
             }
         }
     }
@@ -153,6 +165,10 @@ struct TransactionListView2: View {
         return categories.first { $0.id == categoryID }?.name ?? "Unknown"
     }
     
+    func getAccountWithCurrency(for accountID: Int64) -> (Account, Currency)? {
+        return accountsWithCurrency.first { $0.0.id == accountID}
+    }
+
     func calculateTotal(for day: String) -> String {
         let transactions = txns_per_day[day] ?? []
         let totalAmount = transactions.reduce(0.0) { $0 + ( $1.transAmount ?? 0.0) }
