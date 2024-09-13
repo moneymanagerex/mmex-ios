@@ -19,6 +19,8 @@ struct TransactionDetailView: View {
     @Binding var categories: [Category]
     @Binding var accounts: [Account]
     
+    @State private var isExporting = false
+
     var body: some View {
         List {
             Section(header: Text("Transaction Type")) {
@@ -58,6 +60,17 @@ struct TransactionDetailView: View {
                 isPresentingEditView = true
                 editingTxn = txn
             }
+            // Export button for pasteboard and external storage
+            Menu {
+                Button("Copy to Clipboard") {
+                    txn.copyToPasteboard()
+                }
+                Button("Export as JSON File") {
+                    isExporting = true
+                }
+            } label: {
+                Image(systemName: "square.and.arrow.up")
+            }
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
@@ -76,6 +89,19 @@ struct TransactionDetailView: View {
                             }
                         }
                     }
+            }
+        }
+        .fileExporter(
+            isPresented: $isExporting,
+            document: ExportableEntityDocument(entity: txn),
+            contentType: .json,
+            defaultFilename: String(format: "%d_Transaction", txn.id)
+        ) { result in
+            switch result {
+            case .success(let url):
+                print("File saved to: \(url)")
+            case .failure(let error):
+                print("Error exporting file: \(error)")
             }
         }
     }

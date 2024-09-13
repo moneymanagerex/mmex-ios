@@ -8,7 +8,7 @@
 import SQLite
 import Foundation
 
-enum Transcode: String, CaseIterable, Identifiable {
+enum Transcode: String, CaseIterable, Identifiable, Codable{
     case withdrawal = "Withdrawal"
     case deposit = "Deposit"
     case transfer = "Transfer"
@@ -19,7 +19,7 @@ enum Transcode: String, CaseIterable, Identifiable {
     }
 }
 
-enum TransactionStatus: String, CaseIterable, Identifiable {
+enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
     case reconciled = "R" // Reconciled
     case void = "V" // Void
     case followUp = "F" // "Follow up"
@@ -41,7 +41,7 @@ enum TransactionStatus: String, CaseIterable, Identifiable {
     }
 }
 
-struct Transaction: Identifiable {
+struct Transaction: ExportableEntity {
     var id: Int64 // TRANSID
     var accountID: Int64
     var toAccountID: Int64?
