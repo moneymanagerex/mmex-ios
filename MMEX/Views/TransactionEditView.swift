@@ -40,9 +40,6 @@ struct TransactionEditView: View {
                         Text(account.name).tag(account.id)
                     }
                 }
-                .onChange(of: selectedPayee) { newValue in
-                    txn.accountID = newValue // Update the transaction with the selected account
-                }
             }
             .padding(.horizontal)
             
