@@ -53,7 +53,7 @@ extension Account {
     static let notes = Expression<String?>("NOTES")
     
     static var empty: Account {
-        Account(id: 0, name: "", type: "", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 0, balance: 0.0, notes: "")
+        Account(id: 0, name: "", type: "", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance: 0.0, notes: "")
     }
 }
 extension Account {

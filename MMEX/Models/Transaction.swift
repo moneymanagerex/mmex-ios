@@ -82,6 +82,20 @@ struct Transaction: Identifiable {
 }
 
 extension Transaction {
+    var day: String {
+        // Extract the date portion (ignoring the time) from ISO-8601 string
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
+ 
+        if let date = formatter.date(from: transDate) {
+            formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
+            return formatter.string(from: date)
+        }
+        return transDate // If parsing fails, return original string
+    }
+}
+
+extension Transaction {
     static var empty: Transaction {Transaction(id: 0, accountID: 1, payeeID: 1, categID:1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())}
     static let sampleData : [Transaction] =
     [

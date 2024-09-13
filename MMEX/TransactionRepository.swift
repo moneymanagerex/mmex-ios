@@ -115,11 +115,8 @@ class TransactionRepository {
         return results
     }
     
-    func loadRecentTransactions() -> [Transaction] {
-        let currentDate = Date()
-        var startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: currentDate)
-
-        
+    func loadRecentTransactions(startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date())
+                                , endDate: Date? = Date()) -> [Transaction] {
         var results: [Transaction] = []
         guard let db = db else { return [] }
 
