@@ -22,11 +22,27 @@ struct TransactionDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Transaction Type")) {
-                Text("\(txn.transcode.id)")
+                Text("\(txn.transcode.name)")
             }
-            
+
             Section(header: Text("Transaction Status")) {
                 Text("\(txn.status.fullName)")
+            }
+
+            Section(header: Text("Transaction Amount")) {
+                Text(txn.transAmount != nil ? String(format: "¥%.2f", txn.transAmount!) : "N/A")
+            }
+
+            Section(header: Text("Transaction Date")) {
+                Text(txn.transDate) // Display the transaction date
+            }
+
+//            Section(header: Text("Payee")) {
+//                Text(getPayeeName(txn.payeeID)) // Retrieve payee name
+//           }
+
+            Section(header: Text("Notes")) {
+                Text(txn.notes ?? "No notes")
             }
             // Section for actions like delete
             Section {
