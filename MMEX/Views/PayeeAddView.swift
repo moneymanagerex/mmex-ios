@@ -10,12 +10,13 @@ import SwiftUI
 struct PayeeAddView: View {
     @Binding var newPayee: Payee
     @Binding var isPresentingPayeeAddView: Bool
+    @Binding var categories: [Category]
     
     var onSave: (inout Payee) -> Void
     
     var body: some View {
         NavigationStack {
-            PayeeEditView(payee: $newPayee)
+            PayeeEditView(payee: $newPayee, categories: $categories)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
@@ -34,7 +35,7 @@ struct PayeeAddView: View {
 }
 
 #Preview {
-    PayeeAddView(newPayee: .constant(Payee.empty), isPresentingPayeeAddView: .constant(true)) { newPayee in
+    PayeeAddView(newPayee: .constant(Payee.empty), isPresentingPayeeAddView: .constant(true), categories: .constant(Category.sampleData)) { newPayee in
         // Handle saving in preview
         print("New payee: \(newPayee.name)")
     }

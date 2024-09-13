@@ -10,6 +10,7 @@ import SwiftUI
 struct PayeeDetailView: View {
     @State var payee: Payee
     let databaseURL: URL
+    @Binding var categories: [Category]
     
     @State private var editingPayee = Payee.empty
     @State private var isPresentingEditView = false
@@ -57,7 +58,7 @@ struct PayeeDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                PayeeEditView(payee: $editingPayee)
+                PayeeEditView(payee: $editingPayee, categories: $categories)
                     .navigationTitle(payee.name)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -99,9 +100,9 @@ struct PayeeDetailView: View {
 }
 
 #Preview {
-    PayeeDetailView(payee: Payee.sampleData[0], databaseURL: URL(string: "path/to/database")!)
+    PayeeDetailView(payee: Payee.sampleData[0], databaseURL: URL(string: "path/to/database")!, categories: .constant(Category.sampleData))
 }
 
 #Preview {
-    PayeeDetailView(payee: Payee.sampleData[1], databaseURL: URL(string: "path/to/database")!)
+    PayeeDetailView(payee: Payee.sampleData[1], databaseURL: URL(string: "path/to/database")!, categories: .constant(Category.sampleData))
 }

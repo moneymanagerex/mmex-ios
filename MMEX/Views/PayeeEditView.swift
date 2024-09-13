@@ -9,16 +9,22 @@ import SwiftUI
 
 struct PayeeEditView: View {
     @Binding var payee: Payee
-    
+    @Binding var categories: [Category]
+
     var body: some View {
         Form {
             Section(header: Text("Payee Name")) {
                 TextField("Payee Name", text: $payee.name)
             }
 
-            Section(header: Text("Category ID")) {
-                TextField("Category ID", value: $payee.categoryId, formatter: NumberFormatter())
-                    .keyboardType(.numberPad)
+            Section(header: Text("Category")) {
+                Picker("Category", selection: $payee.categoryId) {
+                    ForEach(categories) { category in
+                        Text(category.name).tag(category.id) // Use currency.name to display and tag by id
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
             }
 
             Section(header: Text("Number")) {
@@ -61,9 +67,9 @@ struct PayeeEditView: View {
 }
 
 #Preview {
-    PayeeEditView(payee: .constant(Payee.sampleData[0]))
+    PayeeEditView(payee: .constant(Payee.sampleData[0]), categories: .constant(Category.sampleData))
 }
 
 #Preview {
-    PayeeEditView(payee: .constant(Payee.sampleData[1]))
+    PayeeEditView(payee: .constant(Payee.sampleData[1]), categories: .constant(Category.sampleData))
 }

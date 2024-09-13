@@ -10,6 +10,7 @@ import SwiftUI
 struct PayeeListView: View {
     let databaseURL: URL
     @State private var payees: [Payee] = []
+    @State private var categories: [Category] = []
     @State private var newPayee = Payee.empty
     @State private var isPresentingPayeeAddView = false
     
@@ -24,7 +25,7 @@ struct PayeeListView: View {
     var body: some View {
         NavigationStack {
             List(payees) { payee in
-                NavigationLink(destination: PayeeDetailView(payee: payee, databaseURL: databaseURL)) {
+                NavigationLink(destination: PayeeDetailView(payee: payee, databaseURL: databaseURL, categories: $categories)) {
                     HStack {
                         Text(payee.name)
                         Spacer()
@@ -44,9 +45,10 @@ struct PayeeListView: View {
         .navigationTitle("Payees")
         .onAppear {
             loadPayees()
+            loadCategories()
         }
         .sheet(isPresented: $isPresentingPayeeAddView) {
-            PayeeAddView(newPayee: $newPayee, isPresentingPayeeAddView: $isPresentingPayeeAddView) { newPayee in
+            PayeeAddView(newPayee: $newPayee, isPresentingPayeeAddView: $isPresentingPayeeAddView, categories: $categories) { newPayee in
                 addPayee(payee: &newPayee)
             }
         }
@@ -65,7 +67,19 @@ struct PayeeListView: View {
             }
         }
     }
-    
+
+    func loadCategories() {
+        let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
+
+        DispatchQueue.global(qos: .background).async {
+            let loadedCategories = repository.loadCategories()
+
+            DispatchQueue.main.async {
+                self.categories = loadedCategories
+            }
+        }
+    }
+
     func addPayee(payee: inout Payee) {
         // TODO
         if self.repository.addPayee(payee: &payee) {
@@ -75,4 +89,8 @@ struct PayeeListView: View {
             // TODO
         }
     }
+}
+
+#Preview {
+    PayeeListView(databaseURL: URL(string: "path/to/database")!)
 }
