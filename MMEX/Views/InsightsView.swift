@@ -38,7 +38,7 @@ struct InsightsView: View {
                     // Transactions Over Time Chart Section
                     Section {
                         Chart(viewModel.stats) {
-                            LineMark(
+                            BarMark(
                                 x: .value("Day", $0.day),
                                 y: .value("Amount", $0.transAmount ?? 0.0)
                             )
@@ -81,10 +81,6 @@ struct InsightsView: View {
             .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
         }
     }
-}
-
-#Preview {
-    InsightsView(viewModel: InsightsViewModel(databaseURL: URL(string: "path/to/database")!))
 }
 
 #Preview {

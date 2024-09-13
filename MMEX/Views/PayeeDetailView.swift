@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct PayeeDetailView: View {
     @State var payee: Payee
@@ -15,6 +16,9 @@ struct PayeeDetailView: View {
     @State private var editingPayee = Payee.empty
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
+
+    @State private var isExporting = false
+    @State private var exportURL: URL?
     
     var body: some View {
         List {
@@ -22,7 +26,6 @@ struct PayeeDetailView: View {
                 Text("\(payee.name)")
             }
 
-            // link to category detail
             Section(header: Text("Category")) {
                 Text(payee.categoryId != nil ? getCategoryName(for: payee.categoryId!) : "N/A")
             }
@@ -46,16 +49,30 @@ struct PayeeDetailView: View {
             Section(header: Text("Pattern")) {
                 Text(payee.pattern.isEmpty ? "No pattern" : payee.pattern)
             }
-            // TODO full field
+
             Button("Delete Payee") {
                 deletePayee()
             }
         }
         .textSelection(.enabled)
         .toolbar {
-            Button("Edit") {
-                isPresentingEditView = true
-                editingPayee = payee
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button("Edit") {
+                    isPresentingEditView = true
+                    editingPayee = payee
+                }
+                
+                // Export button for pasteboard and external storage
+                Menu {
+                    Button("Copy to Clipboard") {
+                        copyToPasteboard()
+                    }
+                    Button("Export as JSON File") {
+                        exportPayeeToFile()
+                    }
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                }
             }
         }
         .sheet(isPresented: $isPresentingEditView) {
@@ -76,6 +93,16 @@ struct PayeeDetailView: View {
                             }
                         }
                     }
+            }
+        }
+        .fileExporter(
+            isPresented: $isExporting,
+            document: ExportablePayee(payee: payee),
+            contentType: .json,
+            defaultFilename: "\(payee.name)_Payee"
+        ) { result in
+            if case .success(let url) = result {
+                exportURL = url
             }
         }
     }
@@ -104,6 +131,39 @@ struct PayeeDetailView: View {
     func getCategoryName(for categoryID: Int64) -> String {
         // Find the category with the given ID
         return categories.first { $0.id == categoryID }?.name ?? "Unknown"
+    }
+    
+    // Copy payee details to clipboard as JSON
+    func copyToPasteboard() {
+        if let jsonData = try? JSONEncoder().encode(payee),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            UIPasteboard.general.string = jsonString
+        }
+    }
+    
+    // Export payee details to JSON file
+    func exportPayeeToFile() {
+        isExporting = true
+    }
+}
+
+// Struct for exporting payee as a JSON document
+struct ExportablePayee: FileDocument {
+    static var readableContentTypes: [UTType] { [.json] }
+    
+    var payee: Payee
+    
+    init(payee: Payee) {
+        self.payee = payee
+    }
+    
+    init(configuration: ReadConfiguration) throws {
+        self.payee = Payee.empty // Initialize with default or empty values
+    }
+    
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        let jsonData = try JSONEncoder().encode(payee)
+        return FileWrapper(regularFileWithContents: jsonData)
     }
 }
 

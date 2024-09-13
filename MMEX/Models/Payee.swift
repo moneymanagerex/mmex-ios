@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct Payee: Identifiable {
+struct Payee: Identifiable, Codable {
     var id: Int64
     var name: String
     var categoryId: Int64?
@@ -17,7 +17,6 @@ struct Payee: Identifiable {
     var notes: String?
     var active: Int
     var pattern: String
-    var category: Category?
     
     init(id: Int64, name: String, categoryId: Int64? = nil, number: String? = nil, website: String? = nil, notes: String? = nil, active: Int = 1, pattern: String = "") {
         self.id = id
