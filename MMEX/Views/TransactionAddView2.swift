@@ -46,6 +46,8 @@ struct TransactionAddView2: View {
             loadPayees()
             loadCategories()
             loadAccounts()
+            // TODO update initial payee (e.g. last used)
+            // TODO update category, payee associated?
         }
     }
 
@@ -96,4 +98,3 @@ struct TransactionAddView2: View {
         }
     }
 }
-
