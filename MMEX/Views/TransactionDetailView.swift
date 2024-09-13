@@ -26,7 +26,7 @@ struct TransactionDetailView: View {
             }
             
             Section(header: Text("Transaction Status")) {
-                Text("\(txn.status.id)")
+                Text("\(txn.status.fullName)")
             }
             // Section for actions like delete
             Section {

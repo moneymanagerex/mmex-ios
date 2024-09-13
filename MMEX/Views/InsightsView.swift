@@ -43,7 +43,7 @@ struct InsightsView: View {
                                 x: .value("Day", $0.day),
                                 y: .value("Amount", $0.transAmount ?? 0.0)
                             )
-                            .foregroundStyle(by: .value("Status", $0.status.name))
+                            .foregroundStyle(by: .value("Status", $0.status.fullName))
                         }
                     }
                 }

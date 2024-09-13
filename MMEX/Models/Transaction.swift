@@ -30,6 +30,15 @@ enum TransactionStatus: String, CaseIterable, Identifiable {
     var name: String {
         rawValue.capitalized
     }
+    var fullName: String {
+        switch self {
+        case .reconciled: return "Reconciled"
+        case .void: return "Void"
+        case .followUp: return "Follow up"
+        case .duplicate: return "Duplicate"
+        case .none: return "None"
+        }
+    }
 }
 
 struct Transaction: Identifiable {
