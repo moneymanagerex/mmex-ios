@@ -52,3 +52,34 @@ extension Currency {
     static let symbol = Expression<String>("CURRENCY_SYMBOL")
     static let type = Expression<String>("CURRENCY_TYPE")
 }
+
+extension Currency {
+    /// A `NumberFormatter` configured specifically for the currency.
+    var formatter: NumberFormatter {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        
+        // Apply currency-specific formatting based on this Currency instance
+        numberFormatter.currencySymbol = self.prefixSymbol ?? self.symbol
+        numberFormatter.currencyGroupingSeparator = self.groupSeparator ?? ","
+        numberFormatter.currencyDecimalSeparator = self.decimalPoint ?? "."
+        numberFormatter.maximumFractionDigits = self.scale
+        
+        return numberFormatter
+    }
+    
+    /// Format a given amount using the currency's `NumberFormatter`.
+    func format(amount: Double) -> String {
+        return formatter.string(from: NSNumber(value: amount)) ?? "\(amount)"
+    }
+    
+    /// Helper method to convert and format the amount into base currency using the exchange rate.
+    func formatAsBaseCurrency(amount: Double, baseCurrencyRate: Double?) -> String {
+        guard let conversionRate = baseCurrencyRate ?? self.baseConversionRate else {
+            return format(amount: amount)
+        }
+        
+        let baseAmount = amount * conversionRate
+        return formatter.string(from: NSNumber(value: baseAmount)) ?? "\(baseAmount)"
+    }
+}

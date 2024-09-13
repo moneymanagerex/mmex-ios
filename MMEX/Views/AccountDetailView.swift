@@ -14,6 +14,7 @@ struct AccountDetailView: View {
 
     @State private var editingAccount = Account.empty
     @State private var isPresentingEditView = false
+    @State private var currency: Currency?
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -29,10 +30,17 @@ struct AccountDetailView: View {
             }
             // TODO link to currency details
             Section(header: Text("Currency")) {
-                Text(getCurrencyName(for: account.currencyId))
-            }
+                if let currency = currency {
+                    Text(currency.name)
+                } else {
+                    Text("Loading currency...")
+                }            }
             Section(header: Text("Balance")) {
-                Text("\(account.balance ?? 0.0)")
+                if let currency = currency {
+                    Text(currency.format(amount: account.balance ?? 0.0))
+                } else {
+                    Text("\(account.balance ?? 0.0)")
+                }
             }
             Section(header: Text("Notes")) {
                 if let notes = account.notes {
@@ -46,6 +54,9 @@ struct AccountDetailView: View {
             }
         }
         .textSelection(.enabled)
+        .onAppear() {
+            loadCurrency()
+        }
         .toolbar {
             Button("Edit") {
                 isPresentingEditView = true
@@ -74,7 +85,11 @@ struct AccountDetailView: View {
         }
         .navigationTitle("Account Details")
     }
-    
+
+    func loadCurrency() {
+        currency = currencies.first { $0.id == account.currencyId }
+    }
+
     func saveChanges() {
         let repository = DataManager(databaseURL: databaseURL).getAccountRepository()
         if repository.updateAccount(account: account) {
@@ -91,12 +106,6 @@ struct AccountDetailView: View {
         } else {
             // Handle deletion failure
         }
-    }
-
-    // TODO pre-join via SQL?
-    func getCurrencyName(for currencyID: Int64) -> String {
-        // Find the currency with the given ID
-        return currencies.first { $0.id == currencyID }?.name ?? "Unknown"
     }
 }
 
