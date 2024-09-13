@@ -9,69 +9,84 @@ import SwiftUI
 import Charts
 
 struct InsightsView: View {
-    let databaseURL: URL
-
-    // main stats soure, TODO, repalce with dedicated struct
-    @State private var stats: [Transaction] = Transaction.sampleData
-
-    // State variables for the date filter
-    @State private var startDate: Date = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
-    @State private var endDate: Date = Date()
+    @ObservedObject var viewModel: InsightsViewModel
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
-                VStack {
-                    // Date Range Filters
-                    Section(header: Text("").font(.headline)) {
+                VStack(spacing: 20) {
+                    
+                    // Date Range Filters Section
+                    Section {
                         HStack {
-                            DatePicker("Start Date", selection: $startDate, displayedComponents: .date)
+                            DatePicker("Start Date", selection: $viewModel.startDate, displayedComponents: .date)
                                 .labelsHidden()
-                                .onChange(of: startDate) { newDate in
-                                    // TODO
-                                }
-                            DatePicker("End Date", selection: $endDate, displayedComponents: .date).labelsHidden()
+                                .datePickerStyle(.compact)
+
+                            Spacer()
+
+                            DatePicker("End Date", selection: $viewModel.endDate, displayedComponents: .date)
+                                .labelsHidden()
+                                .datePickerStyle(.compact)
                         }
                         .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
                     }
 
-                    Spacer()
-                    // line Chart for Transactions Over Time (Filtered by Date)
-                    Section(header: Text("").font(.headline)) {
-                        Chart(stats) {
+                    // Transactions Over Time Chart Section
+                    Section {
+                        Chart(viewModel.stats) {
                             LineMark(
                                 x: .value("Day", $0.day),
                                 y: .value("Amount", $0.transAmount ?? 0.0)
                             )
                             .foregroundStyle(by: .value("Status", $0.status.fullName))
                         }
+                        .frame(height: 200)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
+                    } header: {
+                        Text("Transactions Over Time")
+                            .font(.headline)
+                            .padding(.horizontal)
                     }
+
+                    // Placeholder for Future Sections
+                    Section {
+                        VStack {
+                            Text("More Insights Coming Soon...")
+                                .foregroundColor(.gray)
+                                .padding()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
+                    } header: {
+                        Text("Upcoming Features")
+                            .font(.headline)
+                            .padding(.horizontal)
+                    }
+
                 }
-                .navigationBarTitle("Reports & Insights", displayMode: .inline)
+                .padding(.horizontal)
+                .padding(.top, 10) // Reduce the top padding for less space at the top
             }
-            .padding(.horizontal)
-        }
-        .onAppear() {
-            loadTransactions()
-        }
-    }
-
-    func loadTransactions() {
-        let repository = DataManager(databaseURL: self.databaseURL).getTransactionRepository()
-
-        // Fetch accounts using repository and update the view
-        DispatchQueue.global(qos: .background).async {
-            let loadTransactions = repository.loadRecentTransactions(startDate: startDate, endDate: endDate)
-
-            // Update UI on the main thread
-            DispatchQueue.main.async {
-                self.stats = loadTransactions
-            }
+            .navigationTitle("Reports & Insights")
+            .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
         }
     }
 }
 
+#Preview {
+    InsightsView(viewModel: InsightsViewModel(databaseURL: URL(string: "path/to/database")!))
+}
 
 #Preview {
-    InsightsView(databaseURL: URL(string: "path/to/database")!)
+    InsightsView(viewModel: InsightsViewModel(databaseURL: URL(string: "path/to/database")!))
 }

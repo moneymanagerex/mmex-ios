@@ -39,7 +39,7 @@ struct ContentView: View {
                     
                     // Insights module
                     NavigationView {
-                        InsightsView(databaseURL: url)
+                        InsightsView(viewModel: InsightsViewModel(databaseURL: url))
                             .navigationBarTitle("Reports and Insights", displayMode: .inline)
                     }
                     .tabItem {
