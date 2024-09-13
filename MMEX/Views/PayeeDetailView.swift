@@ -135,19 +135,6 @@ struct PayeeDetailView: View {
         // Find the category with the given ID
         return categories.first { $0.id == categoryID }?.name ?? "Unknown"
     }
-    
-    // Copy payee details to clipboard as JSON
-    func copyToPasteboard() {
-        if let jsonData = try? JSONEncoder().encode(payee),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            UIPasteboard.general.string = jsonString
-        }
-    }
-    
-    // Export payee details to JSON file
-    func exportPayeeToFile() {
-        isExporting = true
-    }
 }
 
 #Preview {

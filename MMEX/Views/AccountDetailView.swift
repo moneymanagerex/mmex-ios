@@ -17,6 +17,8 @@ struct AccountDetailView: View {
     @State private var currency: Currency?
     @Environment(\.presentationMode) var presentationMode
     
+    @State private var isExporting = false
+
     var body: some View {
         List {
             Section(header: Text("Account Name")) {
@@ -62,6 +64,17 @@ struct AccountDetailView: View {
                 isPresentingEditView = true
                 editingAccount = account
             }
+            // Export button for pasteboard and external storage
+            Menu {
+                Button("Copy to Clipboard") {
+                    account.copyToPasteboard()
+                }
+                Button("Export as JSON File") {
+                    isExporting = true
+                }
+            } label: {
+                Image(systemName: "square.and.arrow.up")
+            }
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
@@ -83,7 +96,19 @@ struct AccountDetailView: View {
                     }
             }
         }
-        .navigationTitle("Account Details")
+        .fileExporter(
+            isPresented: $isExporting,
+            document: ExportableEntityDocument(entity: account),
+            contentType: .json,
+            defaultFilename: "\(account.name)_Account"
+        ) { result in
+            switch result {
+            case .success(let url):
+                print("File saved to: \(url)")
+            case .failure(let error):
+                print("Error exporting file: \(error)")
+            }
+        }
     }
 
     func loadCurrency() {

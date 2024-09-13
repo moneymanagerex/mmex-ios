@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum AccountStatus: String, CaseIterable, Identifiable {
+enum AccountStatus: String, CaseIterable, Identifiable, Codable {
     case open = "Open"
     case closed = "Closed"
     
@@ -18,7 +18,7 @@ enum AccountStatus: String, CaseIterable, Identifiable {
     }
 }
 
-struct Account: Identifiable {
+struct Account: ExportableEntity {
     var id: Int64
     var name: String
     var type: String
