@@ -63,3 +63,7 @@ struct PayeeEditView: View {
 #Preview {
     PayeeEditView(payee: .constant(Payee.sampleData[0]))
 }
+
+#Preview {
+    PayeeEditView(payee: .constant(Payee.sampleData[1]))
+}

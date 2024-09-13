@@ -65,6 +65,10 @@ class DataManager {
         return CategoryRepository(db: db)
     }
 
+    func getCurrencyRepository() -> CurrencyRepository {
+        return CurrencyRepository(db: db)
+    }
+
     func getTransactionRepository() -> TransactionRepository {
         return TransactionRepository(db: db)
     }

@@ -97,3 +97,11 @@ struct PayeeDetailView: View {
         }
     }
 }
+
+#Preview {
+    PayeeDetailView(payee: Payee.sampleData[0], databaseURL: URL(string: "path/to/database")!)
+}
+
+#Preview {
+    PayeeDetailView(payee: Payee.sampleData[1], databaseURL: URL(string: "path/to/database")!)
+}

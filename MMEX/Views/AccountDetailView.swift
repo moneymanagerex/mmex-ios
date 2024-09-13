@@ -10,7 +10,8 @@ import SwiftUI
 struct AccountDetailView: View {
     @State var account: Account
     let databaseURL: URL
-    
+    @Binding var currencies: [Currency] // Bind to the list of available currencies
+
     @State private var editingAccount = Account.empty
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode
@@ -48,7 +49,7 @@ struct AccountDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                AccountEditView(account: $editingAccount)
+                AccountEditView(account: $editingAccount, currencies: $currencies)
                     .navigationTitle(account.name)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -86,4 +87,8 @@ struct AccountDetailView: View {
             // Handle deletion failure
         }
     }
+}
+
+#Preview {
+    AccountDetailView(account: Account.sampleData[0], databaseURL: URL(string: "path/to/database")!, currencies: .constant(Currency.sampleData))
 }

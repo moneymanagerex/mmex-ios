@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AccountEditView: View {
     @Binding var account: Account
-    
+    @Binding var currencies: [Currency] // Bind to the list of available currencies
+
     var body: some View {
         Form {
             Section(header: Text("Account Name")) {
@@ -26,8 +27,13 @@ struct AccountEditView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
             }
-            Section(header: Text("Currency ID")) {
-                TextField("Currency ID", value: $account.currencyId, format: .number)
+            Section(header: Text("Currency")) {
+                Picker("Currency", selection: $account.currencyId) {
+                    ForEach(currencies) { currency in
+                        Text(currency.name).tag(currency.id) // Use currency.name to display and tag by id
+                    }
+                }
+                .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
             }
             Section(header: Text("Favorite Account")) {
                 TextField("Favorite Account", text: $account.favoriteAcct)
@@ -46,5 +52,9 @@ struct AccountEditView: View {
 }
 
 #Preview {
-    AccountEditView(account: .constant(Account.empty))
+    AccountEditView(account: .constant(Account.sampleData[0]), currencies: .constant(Currency.sampleData))
+}
+
+#Preview {
+    AccountEditView(account: .constant(Account.sampleData[1]), currencies: .constant(Currency.sampleData))
 }

@@ -84,3 +84,7 @@ struct CategoryDetailView: View {
 #Preview {
     CategoryDetailView(category: Category.sampleData[0], databaseURL: URL(string: "path/to/database")!)
 }
+
+#Preview {
+    CategoryDetailView(category: Category.sampleData[1], databaseURL: URL(string: "path/to/database")!)
+}
