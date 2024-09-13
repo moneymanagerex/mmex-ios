@@ -25,6 +25,7 @@ struct CategoryDetailView: View {
                 Text(category.active == true ? "Yes" : "No")
             }
             
+            // TODO show name and link to its partent
             Section(header: Text("Parent ID")) {
                 Text(category.parentId != nil ? "\(category.parentId!)" : "No Parent")
             }

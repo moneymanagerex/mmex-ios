@@ -140,12 +140,14 @@ struct TransactionListView2: View {
             }
         }
     }
-    
+
+    // TODO pre-join via SQL?
     func getPayeeName(for payeeID: Int64) -> String {
         // Find the payee with the given ID
         return payees.first { $0.id == payeeID }?.name ?? "Unknown"
     }
     
+    // TODO pre-join via SQL?
     func getCategoryName(for categoryID: Int64) -> String {
         // Find the category with the given ID
         return categories.first { $0.id == categoryID }?.name ?? "Unknown"

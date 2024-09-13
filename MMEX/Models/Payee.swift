@@ -17,6 +17,7 @@ struct Payee: Identifiable {
     var notes: String?
     var active: Int
     var pattern: String
+    var category: Category?
     
     init(id: Int64, name: String, categoryId: Int64? = nil, number: String? = nil, website: String? = nil, notes: String? = nil, active: Int = 1, pattern: String = "") {
         self.id = id
@@ -33,8 +34,8 @@ struct Payee: Identifiable {
 extension Payee {
     static let sampleData: [Payee] =
     [
-        Payee(id: 1, name: "Payee A", number: "123456", website: "www.payeeA.com", notes: "Frequent payee"),
-        Payee(id: 2, name: "Payee B", number: "654321", website: "www.payeeB.com", notes: "Rare payee", active: 0)
+        Payee(id: 1, name: "Payee A", categoryId: 1, number: "123456", website: "www.payeeA.com", notes: "Frequent payee"),
+        Payee(id: 2, name: "Payee B", categoryId: 2, number: "654321", website: "www.payeeB.com", notes: "Rare payee", active: 0)
     ]
 }
 

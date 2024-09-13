@@ -26,7 +26,11 @@ struct CategoryListView: View {
             List {
                 ForEach(categories) { category in
                     NavigationLink(destination: CategoryDetailView(category: category, databaseURL: databaseURL)) {
-                        Text(category.name)
+                        HStack {
+                            Text(category.name)
+                            Spacer()
+                            Text(category.isRoot ? "Root" : "Non Root")
+                        }
                     }
                 }
             }

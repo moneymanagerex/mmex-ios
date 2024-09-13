@@ -13,6 +13,10 @@ struct Category: Identifiable {
     var name: String
     var active: Bool?
     var parentId: Int64?
+    
+    var isRoot: Bool {
+        return parentId == nil || parentId! <= 0
+    }
 }
 
 extension Category {

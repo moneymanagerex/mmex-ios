@@ -21,9 +21,10 @@ struct PayeeDetailView: View {
             Section(header: Text("Payee Name")) {
                 Text("\(payee.name)")
             }
-            
-            Section(header: Text("Category ID")) {
-                Text(payee.categoryId != nil ? "\(payee.categoryId!)" : "N/A")
+
+            // link to category detail
+            Section(header: Text("Category")) {
+                Text(payee.categoryId != nil ? getCategoryName(for: payee.categoryId!) : "N/A")
             }
 
             Section(header: Text("Number")) {
@@ -96,6 +97,12 @@ struct PayeeDetailView: View {
             // TODO
             // handle deletion failure
         }
+    }
+
+    // TODO pre-join via SQL?
+    func getCategoryName(for categoryID: Int64) -> String {
+        // Find the category with the given ID
+        return categories.first { $0.id == categoryID }?.name ?? "Unknown"
     }
 }
 

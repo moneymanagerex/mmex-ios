@@ -27,6 +27,10 @@ struct AccountDetailView: View {
             Section(header: Text("Status")) {
                 Text(account.status.id)
             }
+            // TODO link to currency details
+            Section(header: Text("Currency")) {
+                Text(getCurrencyName(for: account.currencyId))
+            }
             Section(header: Text("Balance")) {
                 Text("\(account.balance ?? 0.0)")
             }
@@ -86,6 +90,12 @@ struct AccountDetailView: View {
         } else {
             // Handle deletion failure
         }
+    }
+
+    // TODO pre-join via SQL?
+    func getCurrencyName(for currencyID: Int64) -> String {
+        // Find the currency with the given ID
+        return currencies.first { $0.id == currencyID }?.name ?? "Unknown"
     }
 }
 
