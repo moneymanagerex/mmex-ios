@@ -29,11 +29,11 @@ TBD
 #### Build
 - XCode, and an iPhone/iPad device (optional)
 - SQLite.swift dependency via [Manual Installation](https://github.com/stephencelis/SQLite.swift?tab=readme-ov-file#manual)
-- That's it, checkout the code and build/run it.
+- That's it, check out the code and build/run it.
 
 #### Contribute
 
-This project is in a very early stage, and we got inspired by [Dime](https://github.com/rarfell/dimeApp). you would play as
+This project is very early, and we got inspired by [Dime](https://github.com/rarfell/dimeApp). you would play as
 
 - Developer, you can take this app dev training online course: [Getting started with Scrumdinger](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger)
 - Art and designer, for better looks, workflow, and design
