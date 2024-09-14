@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct Category: Identifiable {
+struct Category: ExportableEntity {
     var id: Int64
     var name: String
     var active: Bool?

@@ -15,6 +15,8 @@ struct CategoryDetailView: View {
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
+    @State private var isExporting = false
+
     var body: some View {
         List {
             Section(header: Text("Category Name")) {
@@ -40,6 +42,17 @@ struct CategoryDetailView: View {
                 isPresentingEditView = true
                 editingCategory = category
             }
+            // Export button for pasteboard and external storage
+            Menu {
+                Button("Copy to Clipboard") {
+                    category.copyToPasteboard()
+                }
+                Button("Export as JSON File") {
+                    isExporting = true
+                }
+            } label: {
+                Image(systemName: "square.and.arrow.up")
+            }
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
@@ -59,6 +72,19 @@ struct CategoryDetailView: View {
                             }
                         }
                     }
+            }
+        }
+        .fileExporter(
+            isPresented: $isExporting,
+            document: ExportableEntityDocument(entity: category),
+            contentType: .json,
+            defaultFilename: "\(category.name)_Category"
+        ) { result in
+            switch result {
+            case .success(let url):
+                print("File saved to: \(url)")
+            case .failure(let error):
+                print("Error exporting file: \(error)")
             }
         }
     }
