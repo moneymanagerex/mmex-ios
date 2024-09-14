@@ -18,7 +18,10 @@ struct PayeeEditView: View {
             }
 
             Section(header: Text("Category")) {
-                Picker("Category", selection: $payee.categoryId) {
+                Picker("Category", selection: Binding(
+                    get: { payee.categoryId ?? 0 }, // Safely unwrap the optional notes field
+                    set: { payee.categoryId = $0 } // Set
+                )) {
                     ForEach(categories) { category in
                         Text(category.name).tag(category.id) // Use currency.name to display and tag by id
                     }
@@ -30,14 +33,14 @@ struct PayeeEditView: View {
             Section(header: Text("Number")) {
                 TextField("Number", text: Binding(
                     get: { payee.number ?? "" }, // Safely unwrap the optional notes field
-                    set: { payee.number = $0.isEmpty ? nil : $0 } // Set notes to nil if the input is empty
+                    set: { payee.number = $0.isEmpty ? nil : $0 } // Set to nil if the input is empty
                 ))
             }
 
             Section(header: Text("Website")) {
                 TextField("Website", text: Binding(
                     get: { payee.website ?? "" }, // Safely unwrap the optional notes field
-                    set: { payee.website = $0.isEmpty ? nil : $0 } // Set notes to nil if the input is empty
+                    set: { payee.website = $0.isEmpty ? nil : $0 } // Set to nil if the input is empty
                 ))
             }
 

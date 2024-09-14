@@ -11,8 +11,6 @@ struct TransactionEditView: View {
     @Binding var txn: Transaction
     @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
-    @State private var selectedPayee: Int64 = 0
-    @State private var selectedCategory: Int64 = 0
 
     @Binding var payees: [Payee]
     @Binding var categories: [Category]
@@ -101,28 +99,25 @@ struct TransactionEditView: View {
             // 5. Horizontal stack for Payee and Category pickers
             HStack {
                 // Payee picker
-                Picker("Select Payee", selection: $selectedPayee) {
+                Picker("Select Payee", selection: $txn.payeeID) {
                     ForEach(payees) { payee in
                         Text(payee.name).tag(payee.id)
                     }
                 }
                 .pickerStyle(MenuPickerStyle()) // Show a menu for the payee picker
-                .onChange(of: selectedPayee) { newValue in
-                    txn.payeeID = newValue // Update the transaction with the selected payee
-                }
                 
                 Spacer()
 
                 // Category picker
-                Picker("Select Category", selection: $selectedCategory) {
+                Picker("Select Category", selection: Binding(
+                    get: { txn.categID ?? 0 }, // Safely unwrap the optional notes field
+                    set: { txn.categID = $0 } // Set
+                )) {
                     ForEach(categories) { category in
                         Text(category.name).tag(category.id)
                     }
                 }
                 .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
-                .onChange(of: selectedCategory) { newValue in
-                    txn.categID = newValue // Update the transaction with the selected category
-                }
             }
             .padding(.horizontal)
             
@@ -135,7 +130,6 @@ struct TransactionEditView: View {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
-            selectedPayee = txn.payeeID
         }
         .onDisappear {
             // Resign the focus when the view disappears, hiding the keyboard
