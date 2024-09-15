@@ -145,3 +145,9 @@ struct TransactionDetailView: View {
         }
     }
 }
+
+#Preview {
+    TransactionDetailView(txn: Transaction.sampleData[0], databaseURL: URL(string: "path/to/database")!
+                          , payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData)
+                          , accounts: .constant(Account.sampleData))
+}

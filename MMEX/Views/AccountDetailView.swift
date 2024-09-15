@@ -132,3 +132,7 @@ struct AccountDetailView: View {
 #Preview {
     AccountDetailView(account: Account.sampleData[0], databaseURL: URL(string: "path/to/database")!, currencies: .constant(Currency.sampleData))
 }
+
+#Preview {
+    AccountDetailView(account: Account.sampleData[1], databaseURL: URL(string: "path/to/database")!, currencies: .constant(Currency.sampleData))
+}

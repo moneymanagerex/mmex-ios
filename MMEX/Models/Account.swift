@@ -29,7 +29,7 @@ struct Account: ExportableEntity {
     var notes: String?
     var currency: Currency?
     
-    init(id: Int64, name: String, type: String, status: AccountStatus, favoriteAcct: String, currencyId: Int64, balance: Double? = nil, notes: String? = nil) {
+    init(id: Int64, name: String, type: String, status: AccountStatus, favoriteAcct: String, currencyId: Int64, balance: Double? = nil, notes: String? = nil, currency: Currency? = nil) {
         self.id = id
         self.name = name
         self.type = type
@@ -38,6 +38,7 @@ struct Account: ExportableEntity {
         self.currencyId = currencyId
         self.balance = balance
         self.notes = notes
+        self.currency = currency
     }
 }
 
@@ -60,8 +61,8 @@ extension Account {
 extension Account {
     static let sampleData : [Account] = 
     [
-        Account(id: 1, name: "Account A", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:""),
-        Account(id: 2, name: "Account B", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:"")
+        Account(id: 1, name: "Account A", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:"", currency: Currency.sampleData[0]),
+        Account(id: 2, name: "Account B", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 2, balance:0.0, notes:"", currency: Currency.sampleData[1])
     ]
 }
 

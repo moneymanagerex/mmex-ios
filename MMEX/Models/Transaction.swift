@@ -108,9 +108,9 @@ extension Transaction {
     static var empty: Transaction {Transaction(id: 0, accountID: 1, payeeID: 1, categID:1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())}
     static let sampleData : [Transaction] =
     [
-        Transaction(id: 1, accountID: 1, payeeID: 1, categID:1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format()),
-        Transaction(id: 2, accountID: 2, payeeID: 2, categID:1, transCode: Transcode.deposit, status: TransactionStatus.none,transAmount: 0.0, transDate: Date().ISO8601Format()),
-        Transaction(id: 3, accountID: 3, payeeID: 3, categID:1, transCode: Transcode.transfer, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())
+        Transaction(id: 1, accountID: 1, payeeID: 1, categID:1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 10.01, transDate: Date().ISO8601Format()),
+        Transaction(id: 2, accountID: 2, payeeID: 2, categID:1, transCode: Transcode.deposit, status: TransactionStatus.none,transAmount: 20.02, transDate: Date().ISO8601Format()),
+        Transaction(id: 3, accountID: 3, payeeID: 3, categID:1, transCode: Transcode.transfer, status: TransactionStatus.none, transAmount: 30.03, transDate: Date().ISO8601Format())
     ]
 }
 
