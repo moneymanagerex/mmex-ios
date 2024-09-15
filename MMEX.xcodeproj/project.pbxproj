@@ -15,6 +15,8 @@
 		A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F632C9426F500F79145 /* InsightsViewModel.swift */; };
 		A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F652C94854800F79145 /* ExportableEntity.swift */; };
 		A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */; };
+		A3B374C52C96A23E00943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C42C96A23E00943FDB /* SQLite */; };
+		A3B374C72C96A27800943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C62C96A27800943FDB /* SQLite */; };
 		A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */; };
 		A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422C2C89751500D3CEC0 /* ContentView.swift */; };
 		A3C1422F2C89751600D3CEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C1422E2C89751600D3CEC0 /* Assets.xcassets */; };
@@ -100,6 +102,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3B374C72C96A27800943FDB /* SQLite in Frameworks */,
+				A3B374C52C96A23E00943FDB /* SQLite in Frameworks */,
 				A3C1423A2C89754C00D3CEC0 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -229,6 +233,8 @@
 			name = MMEX;
 			packageProductDependencies = (
 				A3C142392C89754C00D3CEC0 /* SQLite */,
+				A3B374C42C96A23E00943FDB /* SQLite */,
+				A3B374C62C96A27800943FDB /* SQLite */,
 			);
 			productName = MMEX;
 			productReference = A3C142272C89751500D3CEC0 /* MMEX.app */;
@@ -552,6 +558,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A3B374C42C96A23E00943FDB /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SQLite;
+		};
+		A3B374C62C96A27800943FDB /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SQLite;
+		};
 		A3C142392C89754C00D3CEC0 /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SQLite;

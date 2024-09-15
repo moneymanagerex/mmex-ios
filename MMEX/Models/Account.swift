@@ -27,6 +27,7 @@ struct Account: ExportableEntity {
     var currencyId: Int64
     var balance: Double?
     var notes: String?
+    var currency: Currency?
     
     init(id: Int64, name: String, type: String, status: AccountStatus, favoriteAcct: String, currencyId: Int64, balance: Double? = nil, notes: String? = nil) {
         self.id = id

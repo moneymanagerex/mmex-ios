@@ -19,6 +19,7 @@ struct TransactionDetailView: View {
     @Binding var categories: [Category]
     @Binding var accounts: [Account]
     
+    @State private var account: Account?
     @State private var isExporting = false
 
     var body: some View {
@@ -32,11 +33,23 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Transaction Amount")) {
-                Text(txn.transAmount != nil ? String(format: "¥%.2f", txn.transAmount!) : "N/A")
+                if let currency = account?.currency {
+                    Text(currency.format(amount: txn.transAmount ?? 0.0))
+                } else {
+                    Text("\(txn.transAmount ?? 0.0)")
+                }
             }
 
             Section(header: Text("Transaction Date")) {
                 Text(txn.transDate) // Display the transaction date
+            }
+
+            Section(header: Text("Account Name")) {
+                if let account = account {
+                    Text("\(account.name)")
+                } else {
+                    Text("n/a")
+                }
             }
 
 //            Section(header: Text("Payee")) {
@@ -104,8 +117,14 @@ struct TransactionDetailView: View {
                 print("Error exporting file: \(error)")
             }
         }
+        .onAppear(){
+            loadAccount()
+        }
     }
     
+    func loadAccount() {
+        account = accounts.first { $0.id == txn.accountID}
+    }
     func saveChanges() {
         let repository = DataManager(databaseURL: databaseURL).getTransactionRepository() // pass URL here
         if repository.updateTransaction(txn: txn) {

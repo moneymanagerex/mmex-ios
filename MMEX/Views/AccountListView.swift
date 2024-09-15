@@ -10,7 +10,6 @@ struct AccountListView: View {
     let databaseURL: URL
     @State private var accounts: [Account] = []
     @State private var currencies: [Currency] = []
-    @State private var currencyDict: [Int64 : Currency] = [:] // lookup
     @State private var accounts_by_type: [String:[Account]] = [:]
     @State private var newAccount = Account.empty
     @State private var isPresentingAccountAddView = false
@@ -47,7 +46,7 @@ struct AccountListView: View {
 
                                     Spacer()
 
-                                    if let currency = self.currencyDict[account.id] {
+                                    if let currency = account.currency {
                                         Text(currency.name)
                                             .font(.subheadline)
                                     }
@@ -83,7 +82,7 @@ struct AccountListView: View {
         print("Loading payees in AccountListView...")
 
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository.loadAccounts()
+            let loadedAccounts = repository.loadAccountsWithCurrency()
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
                 self.accounts_by_type = Dictionary(grouping: accounts) { account in
@@ -100,7 +99,6 @@ struct AccountListView: View {
             let loadedCurrencies = repo.loadCurrencies()
             DispatchQueue.main.async {
                 self.currencies = loadedCurrencies
-                self.currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
                 // other post op
             }
         }

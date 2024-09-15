@@ -126,7 +126,7 @@ struct TransactionListView: View {
         let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository.loadAccounts()
+            let loadedAccounts = repository.loadAccountsWithCurrency()
             
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts

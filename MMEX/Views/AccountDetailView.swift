@@ -14,7 +14,6 @@ struct AccountDetailView: View {
 
     @State private var editingAccount = Account.empty
     @State private var isPresentingEditView = false
-    @State private var currency: Currency?
     @Environment(\.presentationMode) var presentationMode
     
     @State private var isExporting = false
@@ -32,13 +31,13 @@ struct AccountDetailView: View {
             }
             // TODO link to currency details
             Section(header: Text("Currency")) {
-                if let currency = currency {
+                if let currency = account.currency {
                     Text(currency.name)
                 } else {
                     Text("Loading currency...")
                 }            }
             Section(header: Text("Balance")) {
-                if let currency = currency {
+                if let currency = account.currency {
                     Text(currency.format(amount: account.balance ?? 0.0))
                 } else {
                     Text("\(account.balance ?? 0.0)")
@@ -57,7 +56,7 @@ struct AccountDetailView: View {
         }
         .textSelection(.enabled)
         .onAppear() {
-            loadCurrency()
+            // TODO
         }
         .toolbar {
             Button("Edit") {
@@ -109,10 +108,6 @@ struct AccountDetailView: View {
                 print("Error exporting file: \(error)")
             }
         }
-    }
-
-    func loadCurrency() {
-        currency = currencies.first { $0.id == account.currencyId }
     }
 
     func saveChanges() {

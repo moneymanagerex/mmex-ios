@@ -17,7 +17,6 @@ struct TransactionListView2: View {
     @State private var categoryDict: [Int64: Category] = [:] // for lookup
     @State private var accounts: [Account] = []
     @State private var accountDict: [Int64: Account] = [: ] // for lookup
-    @State private var currencyDict: [Int64: Currency] = [:] // for lookup, accountId -> Currency
 
     private var repository: TransactionRepository
     
@@ -68,7 +67,7 @@ struct TransactionListView2: View {
 
                                     Spacer() // To push the amount to the right side
 
-                                    if let currency = self.currencyDict[txn.accountID] {
+                                    if let currency = self.accountDict[txn.accountID]?.currency {
                                         // Right column (Transaction Amount)
                                         //  Text(String(format: "%.2f", txn.transAmount ?? 0.0))
                                         Text(currency.format(amount: txn.transAmount ?? 0.0))
@@ -148,13 +147,11 @@ struct TransactionListView2: View {
         let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository.loadAccounts()
-            let loadedAccountsWithCurrency = repository.loadAccountsWithCurrency()
+            let loadedAccounts = repository.loadAccountsWithCurrency()
             
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
                 self.accountDict = Dictionary(uniqueKeysWithValues: accounts.map { ($0.id, $0) })
-                self.currencyDict = Dictionary(uniqueKeysWithValues: loadedAccountsWithCurrency.map { ($0.0.id, $0.1) })
             }
         }
     }

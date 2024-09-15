@@ -29,24 +29,22 @@ class AccountRepository {
         return accounts
     }
 
-    func loadAccountsWithCurrency() -> [(Account, Currency)] {
+    func loadAccountsWithCurrency() -> [Account] {
         // TODO
         guard let db = db else {return []}
-        var accountsWithCurrency: [(Account, Currency)] = []
 
-        let accounts = loadAccounts();
+        var accounts = loadAccounts();
         let currencies = CurrencyRepository(db:db).loadCurrencies();
 
         // Create a lookup dictionary for currencies by currencyId
         let currencyDictionary = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
         
-        for account in accounts {
-            if let currency = currencyDictionary[account.currencyId] {
-                accountsWithCurrency.append((account, currency))
-            }
+        for index in 0...accounts.count - 1 {
+            // TODO via join?
+            accounts[index].currency = currencyDictionary[accounts[index].currencyId]
         }
 
-        return accountsWithCurrency
+        return accounts
     }
 
     func updateAccount(account: Account) -> Bool {

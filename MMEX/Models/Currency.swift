@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct Currency: Identifiable {
+struct Currency: ExportableEntity {
     var id: Int64 // CURRENCYID
     var name: String // CURRENCYNAME
     var prefixSymbol: String? // PFX_SYMBOL
