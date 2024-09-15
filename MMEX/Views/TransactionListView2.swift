@@ -73,13 +73,13 @@ struct TransactionListView2: View {
                                         Text(currency.format(amount: txn.transAmount ?? 0.0))
                                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                                             .font(.system(size: 16, weight: .bold))
-                                            .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red) // Positive/negative amount color
+                                            .foregroundColor(txn.transcode == Transcode.deposit ? .green : .red) // Positive/negative amount color
                                     } else {
                                         // Right column (Transaction Amount)
                                         Text(String(format: "%.2f", txn.transAmount ?? 0.0))
                                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                                             .font(.system(size: 16, weight: .bold))
-                                            .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red) // Positive/negative amount color
+                                            .foregroundColor(txn.transcode == Transcode.deposit ? .green : .red) // Positive/negative amount color
                                     }
                                 }
                             }
