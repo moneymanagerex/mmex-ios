@@ -16,10 +16,10 @@ struct ContentView: View {
     @State private var isPresentingTransactionAddView = false
 
     init() {
-        // Load the stored file URL on app start
-        // if let savedURL = UserDefaults.standard.url(forKey: "selectedFileURL") {
-        //    _selectedFileURL = State(initialValue: savedURL)
-        //}
+         // Load the stored file URL on app start
+         // if let savedURL = UserDefaults.standard.url(forKey: "selectedFileURL") {
+         //   _selectedFileURL = State(initialValue: savedURL)
+         // }
     }
 
     var body: some View {
@@ -103,22 +103,34 @@ struct ContentView: View {
                 }
             }
         }
-        .sheet(isPresented: $isDocumentPickerPresented, onDismiss: {
-            // Navigate back to the landing page after selecting the new database
-            if selectedFileURL != nil {
-                // Delay before switching back to tag(0) to ensure data is loaded
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    selectedTab = 0 // Navigate back to the first tab
+        .fileImporter(
+            isPresented: $isDocumentPickerPresented, // Toggle state for presentation
+            allowedContentTypes: [.item], // Allowed types, you can customize it
+            allowsMultipleSelection: false // Single file selection
+        ) { result in
+            switch result {
+            case .success(let urls):
+                if let selectedURL = urls.first {
+                    // Handle security-scoped resource access
+                    if selectedURL.startAccessingSecurityScopedResource() {
+                        selectedFileURL = selectedURL
+
+                        // Save the file path for later access
+                        UserDefaults.standard.set(selectedURL.path, forKey: "SelectedFilePath")
+
+                        selectedURL.stopAccessingSecurityScopedResource() // Stop when done
+                    } else {
+                        print("Unable to access file at URL: \(selectedURL)")
+                    }
+
+                    // Navigate back to the first tab with delay to ensure data is loaded
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        selectedTab = 0
+                    }
                 }
+            case .failure(let error):
+                print("Failed to pick a document: \(error.localizedDescription)")
             }
-        }) {
-            DocumentPicker(selectedFileURL: $selectedFileURL)
-        }
-        .onChange(of: selectedFileURL) { newURL in
-            // Save the selected file URL to UserDefaults when it's set
-             if let url = newURL {
-                UserDefaults.standard.set(url.absoluteString, forKey: "selectedFileURL")
-             }
         }
     }
 }
