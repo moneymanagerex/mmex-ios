@@ -126,7 +126,7 @@ struct TransactionEditView: View {
         .padding(.horizontal)
         .onAppear {
             // Initialize state variables from the txn object when the view appears
-            amountString = String(format: "%.2f", txn.transAmount ?? 0.0)
+            amountString = String(format: "%.2f", txn.transAmount)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()

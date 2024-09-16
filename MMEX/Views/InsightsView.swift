@@ -40,7 +40,7 @@ struct InsightsView: View {
                         Chart(viewModel.stats) {
                             BarMark(
                                 x: .value("Day", $0.day),
-                                y: .value("Amount", $0.transAmount ?? 0.0)
+                                y: .value("Amount", $0.transAmount)
                             )
                             .foregroundStyle(by: .value("Status", $0.status.fullName))
                         }

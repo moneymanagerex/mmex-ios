@@ -53,10 +53,10 @@ struct TransactionListView: View {
                         Spacer()
 
                         // Right column: Amount
-                        Text(String(format: "%.2f", txn.transAmount ?? 0.0))
+                        Text(String(format: "%.2f", txn.transAmount))
                             .frame(alignment: .trailing)
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red)
+                            .foregroundColor(txn.transAmount >= 0 ? .green : .red)
                     }
                 }
             }

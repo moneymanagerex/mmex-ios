@@ -70,13 +70,13 @@ struct TransactionListView2: View {
                                     if let currency = self.accountDict[txn.accountID]?.currency {
                                         // Right column (Transaction Amount)
                                         //  Text(String(format: "%.2f", txn.transAmount ?? 0.0))
-                                        Text(currency.format(amount: txn.transAmount ?? 0.0))
+                                        Text(currency.format(amount: txn.transAmount))
                                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                                             .font(.system(size: 16, weight: .bold))
                                             .foregroundColor(txn.transcode == Transcode.deposit ? .green : .red) // Positive/negative amount color
                                     } else {
                                         // Right column (Transaction Amount)
-                                        Text(String(format: "%.2f", txn.transAmount ?? 0.0))
+                                        Text(String(format: "%.2f", txn.transAmount))
                                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                                             .font(.system(size: 16, weight: .bold))
                                             .foregroundColor(txn.transcode == Transcode.deposit ? .green : .red) // Positive/negative amount color
@@ -176,7 +176,7 @@ struct TransactionListView2: View {
 
     func calculateTotal(for day: String) -> String {
         let transactions = txns_per_day[day] ?? []
-        let totalAmount = transactions.reduce(0.0) { $0 + ( $1.transAmount ?? 0.0) }
+        let totalAmount = transactions.reduce(0.0) { $0 + $1.transAmount }
         return String(format: "%.2f", totalAmount)
     }
 

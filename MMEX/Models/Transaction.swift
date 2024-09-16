@@ -47,7 +47,7 @@ struct Transaction: ExportableEntity {
     var toAccountID: Int64?
     var payeeID: Int64
     var transcode: Transcode
-    var transAmount: Double?
+    var transAmount: Double
     var status: TransactionStatus
     var transactionNumber: String?
     var notes: String?
@@ -59,7 +59,7 @@ struct Transaction: ExportableEntity {
     var toTransAmount: Double?
     var color: Int64?
     
-    init(id: Int64, accountID: Int64, toAccountID: Int64? = nil, payeeID: Int64, transCode: Transcode, transAmount: Double?, status: TransactionStatus, transactionNumber: String? = nil, notes: String? = nil, categID: Int64? = nil, transDate: String, lastUpdatedTime: String? = nil, deletedTime: String? = nil, followUpID: Int64? = nil, toTransAmount: Double? = nil, color: Int64? = nil) {
+    init(id: Int64, accountID: Int64, toAccountID: Int64? = nil, payeeID: Int64, transCode: Transcode, transAmount: Double, status: TransactionStatus, transactionNumber: String? = nil, notes: String? = nil, categID: Int64? = nil, transDate: String, lastUpdatedTime: String? = nil, deletedTime: String? = nil, followUpID: Int64? = nil, toTransAmount: Double? = nil, color: Int64? = nil) {
         self.id = id
         self.accountID = accountID
         self.toAccountID = toAccountID
@@ -78,7 +78,7 @@ struct Transaction: ExportableEntity {
         self.color = color
     }
     
-    init(id: Int64, accountID: Int64, payeeID: Int64, categID: Int64?, transCode: Transcode, status:TransactionStatus, transAmount: Double?, transDate: String) {
+    init(id: Int64, accountID: Int64, payeeID: Int64, categID: Int64?, transCode: Transcode, status:TransactionStatus, transAmount: Double, transDate: String) {
         self.id = id
         self.accountID = accountID
         self.payeeID = payeeID
@@ -123,7 +123,7 @@ extension Transaction
     static let toAccountIDExpr = Expression<Int64?>("TOACCOUNTID")
     static let payeeIDExpr = Expression<Int64>("PAYEEID")
     static let transCodeExpr = Expression<String>("TRANSCODE")
-    static let transAmountExpr = Expression<Double?>("TRANSAMOUNT")
+    static let transAmountExpr = Expression<Double>("TRANSAMOUNT")
     static let statusExpr = Expression<String?>("STATUS")
     static let transactionNumberExpr = Expression<String?>("TRANSACTIONNUMBER")
     static let notesExpr = Expression<String?>("NOTES")

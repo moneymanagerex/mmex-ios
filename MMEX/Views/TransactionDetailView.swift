@@ -34,9 +34,9 @@ struct TransactionDetailView: View {
 
             Section(header: Text("Transaction Amount")) {
                 if let currency = account?.currency {
-                    Text(currency.format(amount: txn.transAmount ?? 0.0))
+                    Text(currency.format(amount: txn.transAmount))
                 } else {
-                    Text("\(txn.transAmount ?? 0.0)")
+                    Text("\(txn.transAmount)")
                 }
             }
 

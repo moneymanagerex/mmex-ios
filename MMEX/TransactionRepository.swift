@@ -134,7 +134,7 @@ class TransactionRepository {
                     toAccountID: txn[Transaction.toAccountIDExpr],
                     payeeID: txn[Transaction.payeeIDExpr],
                     transCode: Transcode(rawValue: txn[Transaction.transCodeExpr]) ?? Transcode.deposit,
-                    transAmount: txn[Transaction.transAmountExpr] ?? 0.0,
+                    transAmount: txn[Transaction.transAmountExpr],
                     status: TransactionStatus(rawValue: txn[Transaction.statusExpr] ?? "") ?? TransactionStatus.none,
                     transactionNumber: txn[Transaction.transactionNumberExpr],
                     notes: txn[Transaction.notesExpr],
