@@ -12,6 +12,9 @@ struct PayeeAddView: View {
     @Binding var isPresentingPayeeAddView: Bool
     @Binding var categories: [Category]
     
+    @State private var isShowingAlert = false
+    @State private var alertMessage = ""
+
     var onSave: (inout Payee) -> Void
     
     var body: some View {
@@ -25,12 +28,29 @@ struct PayeeAddView: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Add") {
-                            isPresentingPayeeAddView = false
-                            onSave(&newPayee)
+                            if validatePayee() {
+                                isPresentingPayeeAddView = false
+                                onSave(&newPayee)
+                            } else {
+                                isShowingAlert = true
+                            }
                         }
                     }
                 }
         }
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+
+    func validatePayee() -> Bool {
+        if newPayee.name.isEmpty {
+            alertMessage = "Payee name cannot be empty."
+            return false
+        }
+
+        // Add more validation logic here if needed (e.g., category selection)
+        return true
     }
 }
 
