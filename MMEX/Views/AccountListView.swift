@@ -13,9 +13,10 @@ struct AccountListView: View {
     @State private var accounts_by_type: [String:[Account]] = [:]
     @State private var newAccount = Account.empty
     @State private var isPresentingAccountAddView = false
-    
+    @State private var expandedSections: [String: Bool] = [:] // Tracks the expanded/collapsed state
+
     private var repository: AccountRepository
-    
+
     init(databaseURL: URL) {
         self.databaseURL = databaseURL
         self.repository = DataManager(databaseURL: databaseURL).getAccountRepository()
@@ -24,34 +25,50 @@ struct AccountListView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(self.accounts_by_type.keys.sorted(), id:\.self) { accountType in
+                ForEach(self.accounts_by_type.keys.sorted(), id: \.self) { accountType in
                     Section(
                         header: HStack {
-                            if let accountSymbol = Account.accountTypeToSFSymbol[accountType] {
-                                Image(systemName: accountSymbol)
-                                    .frame(width: 5, alignment: .leading) // Adjust width as needed
-                                    .font(.system(size: 16, weight: .bold)) // Customize size and weight
-                                    .foregroundColor(.blue) // Customize icon style
-                            }
-                            Text(accountType)
-                                .font(.subheadline)
-                                .padding(.leading)
-                        }
-                    ) {
-                        ForEach(accounts_by_type[accountType]!) { account in
-                            NavigationLink(destination: AccountDetailView(account: account, databaseURL: databaseURL, currencies: $currencies)) {
-                                HStack{
-                                    Text(account.name)
+                            Button(action: {
+                                // Toggle expanded/collapsed state
+                                expandedSections[accountType]?.toggle()
+                            }) {
+                                HStack {
+                                    if let accountSymbol = Account.accountTypeToSFSymbol[accountType] {
+                                        Image(systemName: accountSymbol)
+                                            .frame(width: 5, alignment: .leading) // Adjust width as needed
+                                            .font(.system(size: 16, weight: .bold)) // Customize size and weight
+                                            .foregroundColor(.blue) // Customize icon style
+                                    }
+                                    Text(accountType)
                                         .font(.subheadline)
+                                        .padding(.leading)
 
                                     Spacer()
 
-                                    if let currency = account.currency {
-                                        Text(currency.name)
-                                            .font(.subheadline)
-                                    }
+                                    // Expand or collapse indicator
+                                    Image(systemName: expandedSections[accountType] == true ? "chevron.down" : "chevron.right")
+                                        .foregroundColor(.gray)
                                 }
-                                .padding(.horizontal)
+                            }
+                        }
+                    ) {
+                        // Show account list based on expandedSections state
+                        if expandedSections[accountType] == true {
+                            ForEach(accounts_by_type[accountType]!) { account in
+                                NavigationLink(destination: AccountDetailView(account: account, databaseURL: databaseURL, currencies: $currencies)) {
+                                    HStack {
+                                        Text(account.name)
+                                            .font(.subheadline)
+
+                                        Spacer()
+
+                                        if let currency = account.currency {
+                                            Text(currency.name)
+                                                .font(.subheadline)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
                             }
                         }
                     }
@@ -77,6 +94,13 @@ struct AccountListView: View {
             }
         }
     }
+
+    // Initialize the expanded state for each account type
+    private func initializeExpandedSections() {
+        for accountType in accounts_by_type.keys {
+            expandedSections[accountType] = true // Default to expanded
+        }
+    }
     
     func loadAccounts() {
         print("Loading payees in AccountListView...")
@@ -88,6 +112,7 @@ struct AccountListView: View {
                 self.accounts_by_type = Dictionary(grouping: accounts) { account in
                     account.type
                 }
+                self.initializeExpandedSections() // Initialize expanded states
             }
         }
     }
