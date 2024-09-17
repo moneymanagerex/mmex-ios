@@ -22,6 +22,7 @@ struct PayeeEditView: View {
                     get: { payee.categoryId ?? 0 }, // Safely unwrap the optional notes field
                     set: { payee.categoryId = $0 } // Set
                 )) {
+                    Text("Category").tag(0 as Int64) // not set
                     ForEach(categories) { category in
                         Text(category.name).tag(category.id) // Use currency.name to display and tag by id
                     }

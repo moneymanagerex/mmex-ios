@@ -29,7 +29,7 @@ extension Category {
 
 extension Category {
     //
-    static var empty : Category {Category(id: 1, name: "cateogry name", active: true, parentId: nil)}
+    static var empty : Category {Category(id: 1, name: "cateogry name", active: true, parentId: 0)}
 
     //
     static let table = Table("CATEGORY_V1")

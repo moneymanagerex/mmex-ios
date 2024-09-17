@@ -105,7 +105,7 @@ extension Transaction {
 }
 
 extension Transaction {
-    static var empty: Transaction {Transaction(id: 0, accountID: 1, payeeID: 1, categID:1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())}
+    static var empty: Transaction {Transaction(id: 0, accountID: 0, payeeID: 0, categID:0, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 0.0, transDate: Date().ISO8601Format())}
     static let sampleData : [Transaction] =
     [
         Transaction(id: 1, accountID: 1, payeeID: 1, categID:1, transCode: Transcode.withdrawal, status: TransactionStatus.none, transAmount: 10.01, transDate: Date().ISO8601Format()),

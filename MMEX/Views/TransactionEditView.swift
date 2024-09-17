@@ -34,6 +34,7 @@ struct TransactionEditView: View {
                 Spacer()
                 
                 Picker("Select account", selection: $txn.accountID) {
+                    Text("Account").tag(0 as Int64) // not set
                     ForEach(accounts) { account in
                         Text(account.name).tag(account.id)
                     }
@@ -100,6 +101,7 @@ struct TransactionEditView: View {
             HStack {
                 // Payee picker
                 Picker("Select Payee", selection: $txn.payeeID) {
+                    Text("Payee").tag(0 as Int64) // not set
                     ForEach(payees) { payee in
                         Text(payee.name).tag(payee.id)
                     }
@@ -113,6 +115,7 @@ struct TransactionEditView: View {
                     get: { txn.categID ?? 0 }, // Safely unwrap the optional notes field
                     set: { txn.categID = $0 } // Set
                 )) {
+                    Text("Category").tag(0 as Int64) // not set
                     ForEach(categories) { category in
                         Text(category.name).tag(category.id)
                     }

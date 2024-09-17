@@ -39,7 +39,7 @@ extension Payee {
 }
 
 extension Payee {
-    static var empty: Payee { Payee(id: 0, name: "") }
+    static var empty: Payee { Payee(id: 0, name: "", categoryId: 0) }
     
     static let table = Table("PAYEE_V1")
     

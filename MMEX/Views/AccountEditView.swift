@@ -29,6 +29,7 @@ struct AccountEditView: View {
             }
             Section(header: Text("Currency")) {
                 Picker("Currency", selection: $account.currencyId) {
+                    Text("Currency").tag(0 as Int64) // not set
                     ForEach(currencies) { currency in
                         Text(currency.name).tag(currency.id) // Use currency.name to display and tag by id
                     }
