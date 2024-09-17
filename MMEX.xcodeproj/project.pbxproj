@@ -15,6 +15,10 @@
 		A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F632C9426F500F79145 /* InsightsViewModel.swift */; };
 		A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F652C94854800F79145 /* ExportableEntity.swift */; };
 		A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */; };
+		A39B1B322C99A084003E5562 /* CurrencyAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B312C99A084003E5562 /* CurrencyAddView.swift */; };
+		A39B1B342C99A0A8003E5562 /* CurrencyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */; };
+		A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */; };
+		A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */; };
 		A3B374C52C96A23E00943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C42C96A23E00943FDB /* SQLite */; };
 		A3B374C72C96A27800943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C62C96A27800943FDB /* SQLite */; };
 		A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */; };
@@ -60,6 +64,10 @@
 		A3462F632C9426F500F79145 /* InsightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewModel.swift; sourceTree = "<group>"; };
 		A3462F652C94854800F79145 /* ExportableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntity.swift; sourceTree = "<group>"; };
 		A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntityDocument.swift; sourceTree = "<group>"; };
+		A39B1B312C99A084003E5562 /* CurrencyAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyAddView.swift; sourceTree = "<group>"; };
+		A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDetailView.swift; sourceTree = "<group>"; };
+		A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEditView.swift; sourceTree = "<group>"; };
+		A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListView.swift; sourceTree = "<group>"; };
 		A3C142272C89751500D3CEC0 /* MMEX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMEX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEXApp.swift; sourceTree = "<group>"; };
 		A3C1422C2C89751500D3CEC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -190,6 +198,10 @@
 				A3C142462C89CB4200D3CEC0 /* AccountDetailView.swift */,
 				A3C142622C8ED8C000D3CEC0 /* AccountAddView.swift */,
 				A3C142642C8ED8EA00D3CEC0 /* AccountEditView.swift */,
+				A39B1B312C99A084003E5562 /* CurrencyAddView.swift */,
+				A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */,
+				A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */,
+				A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */,
 				A3363EE82C9326A1004696C7 /* CategoryListView.swift */,
 				A3363EE22C9323A5004696C7 /* CategoryEditView.swift */,
 				A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */,
@@ -293,14 +305,17 @@
 			files = (
 				A3C1424C2C8AB52600D3CEC0 /* Currency.swift in Sources */,
 				A3C142612C8E9DBF00D3CEC0 /* PayeeAddView.swift in Sources */,
+				A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */,
 				A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */,
 				A3C1425F2C8DE70300D3CEC0 /* DatabaseManager.swift in Sources */,
 				A3C1424E2C8B335900D3CEC0 /* Payee.swift in Sources */,
+				A39B1B322C99A084003E5562 /* CurrencyAddView.swift in Sources */,
 				A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* Transaction.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
 				A3C142AC2C909C1C00D3CEC0 /* TransactionEditView.swift in Sources */,
 				A3C142962C8FE15E00D3CEC0 /* TransactionRepository.swift in Sources */,
+				A39B1B342C99A0A8003E5562 /* CurrencyDetailView.swift in Sources */,
 				A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */,
 				A3C142AA2C90721800D3CEC0 /* TransactionListView2.swift in Sources */,
 				A3C142A62C90417700D3CEC0 /* TransactionAddView2.swift in Sources */,
@@ -310,6 +325,7 @@
 				A3C1429E2C8FFCF100D3CEC0 /* TransactionAddView.swift in Sources */,
 				A3C142922C8FE11700D3CEC0 /* AccountRepository.swift in Sources */,
 				A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */,
+				A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */,
 				A3363EE72C93249D004696C7 /* CategoryAddView.swift in Sources */,
 				A3C142522C8B37E700D3CEC0 /* PayeeDetailView.swift in Sources */,
 				A3C142442C89C8FA00D3CEC0 /* Account.swift in Sources */,

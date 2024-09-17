@@ -12,17 +12,22 @@ struct SettingsView: View {
     
     var body: some View {
         List {
-            NavigationLink(destination: AccountListView(databaseURL: databaseURL)) {
-                Text("Manage Accounts")
-            }
-            NavigationLink(destination: PayeeListView(databaseURL: databaseURL)) {
-                Text("Manage Payees")
-            }
-            NavigationLink(destination: CategoryListView(databaseURL: databaseURL)) {
-                Text("Manage Categories")
-            }
-            NavigationLink(destination: TransactionListView(databaseURL: databaseURL)) {
-                Text("Manage Transactions")
+            Section(header: Text("Manage Data")) {
+                NavigationLink(destination: AccountListView(databaseURL: databaseURL)) {
+                    Text("Manage Accounts")
+                }
+                NavigationLink(destination: PayeeListView(databaseURL: databaseURL)) {
+                    Text("Manage Payees")
+                }
+                NavigationLink(destination: CategoryListView(databaseURL: databaseURL)) {
+                    Text("Manage Categories")
+                }
+                NavigationLink(destination: TransactionListView(databaseURL: databaseURL)) {
+                    Text("Manage Transactions")
+                }
+                NavigationLink(destination: CurrencyListView(databaseURL: databaseURL)) {
+                    Text("Manage Currencies")
+                }
             }
         }
     }

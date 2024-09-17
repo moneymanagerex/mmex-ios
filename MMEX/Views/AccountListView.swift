@@ -8,7 +8,6 @@ import SwiftUI
 
 struct AccountListView: View {
     let databaseURL: URL
-    @State private var accounts: [Account] = []
     @State private var currencies: [Currency] = []
     @State private var accounts_by_type: [String:[Account]] = [:]
     @State private var newAccount = Account.empty
@@ -108,8 +107,7 @@ struct AccountListView: View {
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository.loadAccountsWithCurrency()
             DispatchQueue.main.async {
-                self.accounts = loadedAccounts
-                self.accounts_by_type = Dictionary(grouping: accounts) { account in
+                self.accounts_by_type = Dictionary(grouping: loadedAccounts) { account in
                     account.type
                 }
                 self.initializeExpandedSections() // Initialize expanded states
@@ -131,7 +129,8 @@ struct AccountListView: View {
 
     func addAccount(account: inout Account) {
         if repository.addAccount(account: &account) {
-            self.accounts.append(account)
+            // self.accounts.append(account)
+            self.loadAccounts()
         }
     }
 }
