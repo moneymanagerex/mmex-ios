@@ -90,6 +90,7 @@ struct AccountListView: View {
         .sheet(isPresented: $isPresentingAccountAddView) {
             AccountAddView(newAccount: $newAccount, isPresentingAccountAddView: $isPresentingAccountAddView, currencies: $currencies) { newAccount in
                 addAccount(account: &newAccount)
+                newAccount = Account.empty
             }
         }
     }

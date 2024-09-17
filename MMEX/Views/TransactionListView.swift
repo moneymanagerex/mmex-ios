@@ -78,6 +78,7 @@ struct TransactionListView: View {
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(newTxn: $newTxn, isPresentingTransactionAddView: $isPresentingTransactionAddView, payees: $payees, categories: $categories, accounts: $accounts) { newTxn in
                 addTransaction(txn: &newTxn)
+                newTxn = Transaction.empty
             }
         }
     }

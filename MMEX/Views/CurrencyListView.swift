@@ -46,6 +46,7 @@ struct CurrencyListView: View {
         .sheet(isPresented: $isPresentingCurrencyAddView) {
             CurrencyAddView(newCurrency: $newCurrency, isPresentingCurrencyAddView: $isPresentingCurrencyAddView) { currency in
                 addCurrency(&currency)
+                newCurrency = Currency.empty
             }
         }
     }

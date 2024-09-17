@@ -133,6 +133,19 @@ struct TransactionEditView: View {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
+
+            // Automatically set if there's only one item in the list
+            if self.payees.count == 1 {
+                txn.payeeID = self.payees.first!.id
+            }
+
+            if self.accounts.count == 1 {
+                txn.accountID = self.accounts.first!.id
+            }
+
+            if self.categories.count == 1 {
+                txn.categID = self.categories.first!.id
+            }
         }
         .onDisappear {
             // Resign the focus when the view disappears, hiding the keyboard

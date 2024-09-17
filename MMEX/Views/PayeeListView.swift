@@ -50,6 +50,7 @@ struct PayeeListView: View {
         .sheet(isPresented: $isPresentingPayeeAddView) {
             PayeeAddView(newPayee: $newPayee, isPresentingPayeeAddView: $isPresentingPayeeAddView, categories: $categories) { newPayee in
                 addPayee(payee: &newPayee)
+                newPayee = Payee.empty
             }
         }
     }
