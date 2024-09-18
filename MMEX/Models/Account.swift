@@ -18,10 +18,26 @@ enum AccountStatus: String, CaseIterable, Identifiable, Codable {
     }
 }
 
+enum AccountType: String, CaseIterable, Identifiable, Codable {
+    case cash = "Cash"
+    case checking = "Checking"
+    case creditCard = "Credit Card"
+    case loan = "Loan"
+    case term = "Term"
+    case investment = "Investment"
+    case asset = "Asset"
+    case shares = "Shares"
+
+    var id: String { self.rawValue }
+    var name: String {
+        rawValue.capitalized
+    }
+}
+
 struct Account: ExportableEntity {
     var id: Int64
     var name: String
-    var type: String
+    var type: AccountType
     var status: AccountStatus
     var favoriteAcct: String
     var currencyId: Int64
@@ -29,7 +45,7 @@ struct Account: ExportableEntity {
     var notes: String?
     var currency: Currency?
     
-    init(id: Int64, name: String, type: String, status: AccountStatus, favoriteAcct: String, currencyId: Int64, balance: Double? = nil, notes: String? = nil, currency: Currency? = nil) {
+    init(id: Int64, name: String, type: AccountType, status: AccountStatus, favoriteAcct: String, currencyId: Int64, balance: Double? = nil, notes: String? = nil, currency: Currency? = nil) {
         self.id = id
         self.name = name
         self.type = type
@@ -55,14 +71,14 @@ extension Account {
     static let notes = Expression<String?>("NOTES")
     
     static var empty: Account {
-        Account(id: 0, name: "", type: "", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 0, balance: 0.0, notes: "")
+        Account(id: 0, name: "", type: AccountType.cash, status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 0, balance: 0.0, notes: "")
     }
 }
 extension Account {
     static let sampleData : [Account] = 
     [
-        Account(id: 1, name: "Account A", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:"", currency: Currency.sampleData[0]),
-        Account(id: 2, name: "Account B", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 2, balance:0.0, notes:"", currency: Currency.sampleData[1])
+        Account(id: 1, name: "Account A", type: AccountType.cash, status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:"", currency: Currency.sampleData[0]),
+        Account(id: 2, name: "Account B", type: AccountType.cash, status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 2, balance:0.0, notes:"", currency: Currency.sampleData[1])
     ]
 }
 
@@ -70,7 +86,7 @@ extension Account {
     static func fromRow(_ row: Row) -> Account {
         return Account(id: row[Account.accountID],
                        name: row[Account.accountName],
-                       type: row[Account.accountType],
+                       type: AccountType(rawValue: row[Account.accountType]) ?? AccountType.cash,
                        status: AccountStatus(rawValue: row[Account.status]) ?? AccountStatus.open,
                        favoriteAcct: row[Account.favoriteAcct],
                        currencyId: row[Account.currencyID],

@@ -79,7 +79,7 @@ class AccountRepository {
         do {
             let insert = Account.table.insert(
                 Account.accountName <- account.name,
-                Account.accountType <- account.type,
+                Account.accountType <- account.type.id,
                 Account.status <- account.status.id,
                 Account.favoriteAcct <- account.favoriteAcct,
                 Account.currencyID <- account.currencyId,

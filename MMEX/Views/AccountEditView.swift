@@ -17,7 +17,13 @@ struct AccountEditView: View {
                 TextField("Account Name", text: $account.name)
             }
             Section(header: Text("Account Type")) {
-                TextField("Account Type", text: $account.type)
+                Picker("Account Type", selection: $account.type) {
+                    ForEach(AccountType.allCases) { type in
+                        Text(type.name).tag(type)
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
             }
             Section(header: Text("Status")) {
                 Picker("Status", selection: $account.status) {
@@ -37,7 +43,13 @@ struct AccountEditView: View {
                 .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
             }
             Section(header: Text("Favorite Account")) {
-                TextField("Favorite Account", text: $account.favoriteAcct)
+                Toggle(isOn: Binding(get: {
+                    account.favoriteAcct == "TRUE"
+                }, set: { newValue in
+                    account.favoriteAcct = newValue ? "TRUE" : "FALSE"
+                })) {
+                    Text("Favorite Account")
+                }
             }
             Section(header: Text("Balance")) {
                 TextField("Balance", value: $account.balance, format: .number)

@@ -109,7 +109,7 @@ struct AccountListView: View {
             let loadedAccounts = repository.loadAccountsWithCurrency()
             DispatchQueue.main.async {
                 self.accounts_by_type = Dictionary(grouping: loadedAccounts) { account in
-                    account.type
+                    account.type.name
                 }
                 self.initializeExpandedSections() // Initialize expanded states
             }

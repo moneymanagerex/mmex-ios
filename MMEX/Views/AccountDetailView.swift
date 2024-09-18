@@ -24,7 +24,7 @@ struct AccountDetailView: View {
                 Text(account.name)
             }
             Section(header: Text("Account Type")) {
-                Text(account.type)
+                Text(account.type.name)
             }
             Section(header: Text("Status")) {
                 Text(account.status.id)
