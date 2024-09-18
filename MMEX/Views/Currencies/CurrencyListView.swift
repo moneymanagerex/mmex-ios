@@ -9,9 +9,10 @@ import SwiftUI
 
 struct CurrencyListView: View {
     let databaseURL: URL
-    @State private var currencies: [Currency] = []
+    @State private var currencies: [Bool: [Currency]] = [:]
     @State private var newCurrency = Currency.empty
     @State private var isPresentingCurrencyAddView = false
+    @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
     
     private var repository: CurrencyRepository
     
@@ -22,13 +23,61 @@ struct CurrencyListView: View {
     
     var body: some View {
         NavigationStack {
-            List(currencies) { currency in
-                NavigationLink(destination: CurrencyDetailView(currency: currency, databaseURL: databaseURL)) {
-                    HStack {
-                        Text(currency.name)
+            List {
+                Section(header: HStack {
+                    Button(action: {
+                        expandedSections[true]?.toggle()
+                    }) {
+                        Text("In-Use")
+                            .font(.subheadline)
+                            .padding(.leading)
                         Spacer()
-                        Text(currency.symbol)
+                        // Expand or collapse indicator
+                        Image(systemName: expandedSections[true] == true ? "chevron.down" : "chevron.right")
+                            .foregroundColor(.gray)
                     }
+                }) {
+                    if let inUseCurrencies = currencies[true] {
+                        ForEach(inUseCurrencies) { currency in
+                            NavigationLink(destination: CurrencyDetailView(currency: currency, databaseURL: databaseURL)) {
+                                HStack {
+                                    Text(currency.name)
+                                    Spacer()
+                                    Text(currency.symbol)
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                Section(header: HStack {
+                    Button(action: {
+                        expandedSections[false]?.toggle()
+                    }) {
+                        Text("Not-In-Use")
+                            .font(.subheadline)
+                            .padding(.leading)
+                        Spacer()
+                        // Expand or collapse indicator
+                        Image(systemName: expandedSections[false] == true ? "chevron.down" : "chevron.right")
+                            .foregroundColor(.gray)
+                    }
+                }) {
+                    // Show account list based on expandedSections state
+                    if expandedSections[false] == true {
+                        if let notInUseCurrencies = currencies[false] {
+                            ForEach(notInUseCurrencies) { currency in
+                                NavigationLink(destination: CurrencyDetailView(currency: currency, databaseURL: databaseURL)) {
+                                    HStack {
+                                        Text(currency.name)
+                                        Spacer()
+                                        Text(currency.symbol)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                 }
             }
             .toolbar {
@@ -55,10 +104,17 @@ struct CurrencyListView: View {
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
             let loadedCurrencies = repository.loadCurrencies()
+            let loadedAccounts = DataManager(databaseURL: databaseURL).getAccountRepository().loadAccounts()
+
+            // Get a set of all currency IDs used by accounts
+            let usedCurrencyIds = Set(loadedAccounts.map { $0.currencyId })
+            
+            // Categorize currencies into in-use (true) and not-in-use (false)
+            let categorized = Dictionary(grouping: loadedCurrencies, by: { usedCurrencyIds.contains($0.id) })
             
             // Update UI on the main thread
             DispatchQueue.main.async {
-                self.currencies = loadedCurrencies
+                self.currencies = categorized
             }
         }
     }
