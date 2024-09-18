@@ -19,7 +19,10 @@ struct PayeeDetailView: View {
 
     @State private var isExporting = false
     @State private var exportURL: URL?
-    
+
+    @State private var isShowingAlert = false
+    @State private var alertMessage = ""
+
     var body: some View {
         List {
             Section(header: Text("Payee Name")) {
@@ -27,7 +30,7 @@ struct PayeeDetailView: View {
             }
 
             Section(header: Text("Category")) {
-                Text(payee.categoryId != nil ? getCategoryName(for: payee.categoryId!) : "N/A")
+                Text(payee.categoryId != 0 ? getCategoryName(for: payee.categoryId!) : "N/A")
             }
 
             Section(header: Text("Number")) {
@@ -87,9 +90,13 @@ struct PayeeDetailView: View {
                         }
                         ToolbarItem(placement: .confirmationAction) {
                             Button("Done") {
-                                isPresentingEditView = false
-                                payee = editingPayee
-                                saveChanges()
+                                if validatePayee() {
+                                    isPresentingEditView = false
+                                    payee = editingPayee
+                                    saveChanges()
+                                } else {
+                                    isShowingAlert = true
+                                }
                             }
                         }
                     }
@@ -107,6 +114,9 @@ struct PayeeDetailView: View {
             case .failure(let error):
                 print("Error exporting file: \(error)")
             }
+        }
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -134,6 +144,16 @@ struct PayeeDetailView: View {
     func getCategoryName(for categoryID: Int64) -> String {
         // Find the category with the given ID
         return categories.first { $0.id == categoryID }?.name ?? "Unknown"
+    }
+
+    func validatePayee() -> Bool {
+        if editingPayee.name.isEmpty {
+            alertMessage = "Payee name cannot be empty."
+            return false
+        }
+
+        // Add more validation logic here if needed (e.g., category selection)
+        return true
     }
 }
 
