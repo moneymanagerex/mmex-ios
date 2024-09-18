@@ -10,11 +10,15 @@ import SwiftUI
 struct VersionInfoView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("App Version")
-                .font(.largeTitle)
+            Text("Version")
+                .font(.title)
                 .fontWeight(.bold)
+            Text(appVersion)
             
-            Text("Version 1.0.0")
+            Text("Build")
+                .font(.title)
+                .fontWeight(.bold)
+            Text(appBuild)
             
             Text("Release Notes")
                 .font(.headline)
@@ -25,6 +29,14 @@ struct VersionInfoView: View {
         }
         .padding()
         .navigationTitle("Version Info")
+    }
+
+    var appVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A"
+    }
+
+    var appBuild: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "N/A"
     }
 }
 
