@@ -50,13 +50,7 @@ class AccountRepository {
     func updateAccount(account: Account) -> Bool {
         let accountToUpdate = Account.table.filter(Account.accountID == account.id)
         do {
-            try db?.run(accountToUpdate.update(
-                Account.accountName <- account.name,
-                Account.status <- account.status.id,
-                Account.favoriteAcct <- account.favoriteAcct,
-                Account.currencyID <- account.currencyId,
-                Account.notes <- account.notes
-            ))
+            try db?.run(accountToUpdate.update(Account.getSetters(account)))
             return true
         } catch {
             print("Failed to update account: \(error)")
@@ -77,14 +71,7 @@ class AccountRepository {
 
     func addAccount(account: inout Account) -> Bool {
         do {
-            let insert = Account.table.insert(
-                Account.accountName <- account.name,
-                Account.accountType <- account.type.id,
-                Account.status <- account.status.id,
-                Account.favoriteAcct <- account.favoriteAcct,
-                Account.currencyID <- account.currencyId,
-                Account.notes <- account.notes
-            )
+            let insert = Account.table.insert(Account.getSetters(account))
             let rowid = try db?.run(insert)
             account.id = rowid!
             print("Successfully added account: \(account.name), \(account.id)")

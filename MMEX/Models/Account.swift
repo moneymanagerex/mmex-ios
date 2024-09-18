@@ -94,6 +94,17 @@ extension Account {
                        notes: row[Account.notes]
         )
     }
+
+    static func getSetters(_ account: Account) -> [Setter] {
+        return  [Account.accountName <- account.name,
+                 Account.accountType <- account.type.id,
+                 Account.status <- account.status.id,
+                 Account.favoriteAcct <- account.favoriteAcct,
+                 Account.currencyID <- account.currencyId,
+                 Account.balance <- account.balance,
+                 Account.notes <- account.notes
+                 ]
+    }
 }
 
 extension Account {
