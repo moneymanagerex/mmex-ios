@@ -72,4 +72,8 @@ class DataManager {
     func getTransactionRepository() -> TransactionRepository {
         return TransactionRepository(db: db)
     }
+
+    func getInfotableRepository() -> InfotableRepository {
+        return InfotableRepository(db: db)
+    }
 }

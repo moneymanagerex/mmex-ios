@@ -23,6 +23,9 @@
 		A37E7D8E2C9AC4C900B4ECFC /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D8D2C9AC4C900B4ECFC /* PrivacyPolicyView.swift */; };
 		A37E7D902C9AC4F300B4ECFC /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D8F2C9AC4F300B4ECFC /* TermsOfServiceView.swift */; };
 		A37E7D922C9AC60000B4ECFC /* ContactSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D912C9AC60000B4ECFC /* ContactSupportView.swift */; };
+		A37E7D942C9B217500B4ECFC /* Infotable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D932C9B217500B4ECFC /* Infotable.swift */; };
+		A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */; };
+		A37E7D982C9B22B700B4ECFC /* InfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D972C9B22B700B4ECFC /* InfoTableView.swift */; };
 		A39B1B322C99A084003E5562 /* CurrencyAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B312C99A084003E5562 /* CurrencyAddView.swift */; };
 		A39B1B342C99A0A8003E5562 /* CurrencyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */; };
 		A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */; };
@@ -80,6 +83,9 @@
 		A37E7D8D2C9AC4C900B4ECFC /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		A37E7D8F2C9AC4F300B4ECFC /* TermsOfServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceView.swift; sourceTree = "<group>"; };
 		A37E7D912C9AC60000B4ECFC /* ContactSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSupportView.swift; sourceTree = "<group>"; };
+		A37E7D932C9B217500B4ECFC /* Infotable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Infotable.swift; sourceTree = "<group>"; };
+		A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfotableRepository.swift; sourceTree = "<group>"; };
+		A37E7D972C9B22B700B4ECFC /* InfoTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableView.swift; sourceTree = "<group>"; };
 		A39B1B312C99A084003E5562 /* CurrencyAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyAddView.swift; sourceTree = "<group>"; };
 		A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDetailView.swift; sourceTree = "<group>"; };
 		A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEditView.swift; sourceTree = "<group>"; };
@@ -152,6 +158,7 @@
 		A37E7D7E2C9ABEA900B4ECFC /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				A37E7D972C9B22B700B4ECFC /* InfoTableView.swift */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -236,6 +243,7 @@
 				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
 				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
 				A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */,
+				A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -290,6 +298,7 @@
 				A3C1424D2C8B335900D3CEC0 /* Payee.swift */,
 				A3C142662C8F2AF500D3CEC0 /* Transaction.swift */,
 				A3C1429F2C9025D600D3CEC0 /* Category.swift */,
+				A37E7D932C9B217500B4ECFC /* Infotable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -419,10 +428,12 @@
 				A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */,
 				A3363EE72C93249D004696C7 /* CategoryAddView.swift in Sources */,
 				A3C142522C8B37E700D3CEC0 /* PayeeDetailView.swift in Sources */,
+				A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */,
 				A3C142442C89C8FA00D3CEC0 /* Account.swift in Sources */,
 				A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */,
 				A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */,
 				A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */,
+				A37E7D942C9B217500B4ECFC /* Infotable.swift in Sources */,
 				A37E7D882C9AC2E600B4ECFC /* VersionInfoView.swift in Sources */,
 				A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */,
 				A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */,
@@ -433,6 +444,7 @@
 				A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */,
 				A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */,
 				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
+				A37E7D982C9B22B700B4ECFC /* InfoTableView.swift in Sources */,
 				A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */,
 				A3363EE92C9326A1004696C7 /* CategoryListView.swift in Sources */,
 				A3C142A02C9025D600D3CEC0 /* Category.swift in Sources */,
