@@ -60,24 +60,16 @@ struct ContentView: View {
                     }
                     .tag(2)
                     
-                    // Re-open Database Tab
+                    // Combined Management Tab
                     NavigationView {
-                        VStack {
-                            Button("Re-open Database") {
-                                isDocumentPickerPresented = true
-                            }
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                        }
-                        .navigationBarTitle("Re-open Database", displayMode: .inline)
+                        ManagementView(databaseURL: url, isDocumentPickerPresented: $isDocumentPickerPresented)
+                            .navigationBarTitle("Management", displayMode: .inline)
                     }
                     .tabItem {
                         Image(systemName: "folder")
-                        Text("Re-open")
+                        Text("Management")
                     }
-                    .tag(3) // Tag for the Re-open Database tab
+                    .tag(3)
                     
                     // Settings Tab
                     NavigationView {

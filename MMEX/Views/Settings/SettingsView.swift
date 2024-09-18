@@ -9,26 +9,36 @@ import SwiftUI
 
 struct SettingsView: View {
     let databaseURL: URL
-    
+
     var body: some View {
         List {
-            Section(header: Text("Manage Data")) {
-                NavigationLink(destination: AccountListView(databaseURL: databaseURL)) {
-                    Text("Manage Accounts")
+            // Section: App Information
+            Section(header: Text("App Information")) {
+                NavigationLink(destination: AboutView()) {
+                    Text("About")
                 }
-                NavigationLink(destination: PayeeListView(databaseURL: databaseURL)) {
-                    Text("Manage Payees")
+                NavigationLink(destination: VersionInfoView()) {
+                    Text("Version")
                 }
-                NavigationLink(destination: CategoryListView(databaseURL: databaseURL)) {
-                    Text("Manage Categories")
+                NavigationLink(destination: LegalView()) {
+                    Text("Legal (Terms & Privacy)")
                 }
-                NavigationLink(destination: TransactionListView(databaseURL: databaseURL)) {
-                    Text("Manage Transactions")
+            }
+            
+            // Section: Support and Help
+            Section(header: Text("Support and Help")) {
+                NavigationLink(destination: HelpFAQView()) {
+                    Text("Help / FAQ")
                 }
-                NavigationLink(destination: CurrencyListView(databaseURL: databaseURL)) {
-                    Text("Manage Currencies")
+                NavigationLink(destination: ContactSupportView()) {
+                    Text("Contact Support")
                 }
             }
         }
+        .navigationTitle("Settings")
     }
+}
+
+#Preview {
+    SettingsView(databaseURL: URL(string: "path/to/database")!)
 }

@@ -15,6 +15,14 @@
 		A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F632C9426F500F79145 /* InsightsViewModel.swift */; };
 		A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F652C94854800F79145 /* ExportableEntity.swift */; };
 		A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */; };
+		A37E7D842C9AC14800B4ECFC /* ManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D832C9AC14800B4ECFC /* ManagementView.swift */; };
+		A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D852C9AC2D000B4ECFC /* AboutView.swift */; };
+		A37E7D882C9AC2E600B4ECFC /* VersionInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D872C9AC2E600B4ECFC /* VersionInfoView.swift */; };
+		A37E7D8A2C9AC30700B4ECFC /* HelpFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D892C9AC30700B4ECFC /* HelpFAQView.swift */; };
+		A37E7D8C2C9AC36800B4ECFC /* LegalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D8B2C9AC36800B4ECFC /* LegalView.swift */; };
+		A37E7D8E2C9AC4C900B4ECFC /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D8D2C9AC4C900B4ECFC /* PrivacyPolicyView.swift */; };
+		A37E7D902C9AC4F300B4ECFC /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D8F2C9AC4F300B4ECFC /* TermsOfServiceView.swift */; };
+		A37E7D922C9AC60000B4ECFC /* ContactSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D912C9AC60000B4ECFC /* ContactSupportView.swift */; };
 		A39B1B322C99A084003E5562 /* CurrencyAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B312C99A084003E5562 /* CurrencyAddView.swift */; };
 		A39B1B342C99A0A8003E5562 /* CurrencyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */; };
 		A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */; };
@@ -64,6 +72,14 @@
 		A3462F632C9426F500F79145 /* InsightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewModel.swift; sourceTree = "<group>"; };
 		A3462F652C94854800F79145 /* ExportableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntity.swift; sourceTree = "<group>"; };
 		A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntityDocument.swift; sourceTree = "<group>"; };
+		A37E7D832C9AC14800B4ECFC /* ManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementView.swift; sourceTree = "<group>"; };
+		A37E7D852C9AC2D000B4ECFC /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		A37E7D872C9AC2E600B4ECFC /* VersionInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionInfoView.swift; sourceTree = "<group>"; };
+		A37E7D892C9AC30700B4ECFC /* HelpFAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpFAQView.swift; sourceTree = "<group>"; };
+		A37E7D8B2C9AC36800B4ECFC /* LegalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalView.swift; sourceTree = "<group>"; };
+		A37E7D8D2C9AC4C900B4ECFC /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		A37E7D8F2C9AC4F300B4ECFC /* TermsOfServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceView.swift; sourceTree = "<group>"; };
+		A37E7D912C9AC60000B4ECFC /* ContactSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSupportView.swift; sourceTree = "<group>"; };
 		A39B1B312C99A084003E5562 /* CurrencyAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyAddView.swift; sourceTree = "<group>"; };
 		A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDetailView.swift; sourceTree = "<group>"; };
 		A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEditView.swift; sourceTree = "<group>"; };
@@ -133,6 +149,13 @@
 			path = Export;
 			sourceTree = "<group>";
 		};
+		A37E7D7E2C9ABEA900B4ECFC /* Info */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
 		A39B1B392C9A668F003E5562 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +217,13 @@
 			isa = PBXGroup;
 			children = (
 				A3C142A32C9033E300D3CEC0 /* SettingsView.swift */,
+				A37E7D852C9AC2D000B4ECFC /* AboutView.swift */,
+				A37E7D872C9AC2E600B4ECFC /* VersionInfoView.swift */,
+				A37E7D892C9AC30700B4ECFC /* HelpFAQView.swift */,
+				A37E7D8B2C9AC36800B4ECFC /* LegalView.swift */,
+				A37E7D8D2C9AC4C900B4ECFC /* PrivacyPolicyView.swift */,
+				A37E7D8F2C9AC4F300B4ECFC /* TermsOfServiceView.swift */,
+				A37E7D912C9AC60000B4ECFC /* ContactSupportView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -267,6 +297,7 @@
 		A3C142452C89CB1600D3CEC0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A37E7D7E2C9ABEA900B4ECFC /* Info */,
 				A39B1B3E2C9A6714003E5562 /* Settings */,
 				A39B1B3D2C9A66F7003E5562 /* Currencies */,
 				A39B1B3C2C9A66E6003E5562 /* Categories */,
@@ -276,6 +307,7 @@
 				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
 				A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */,
+				A37E7D832C9AC14800B4ECFC /* ManagementView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -360,12 +392,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3C1424C2C8AB52600D3CEC0 /* Currency.swift in Sources */,
+				A37E7D8E2C9AC4C900B4ECFC /* PrivacyPolicyView.swift in Sources */,
 				A3C142612C8E9DBF00D3CEC0 /* PayeeAddView.swift in Sources */,
 				A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */,
 				A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */,
+				A37E7D8C2C9AC36800B4ECFC /* LegalView.swift in Sources */,
 				A3C1425F2C8DE70300D3CEC0 /* DatabaseManager.swift in Sources */,
 				A3C1424E2C8B335900D3CEC0 /* Payee.swift in Sources */,
 				A39B1B322C99A084003E5562 /* CurrencyAddView.swift in Sources */,
+				A37E7D922C9AC60000B4ECFC /* ContactSupportView.swift in Sources */,
 				A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* Transaction.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
@@ -388,18 +423,23 @@
 				A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */,
 				A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */,
 				A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */,
+				A37E7D882C9AC2E600B4ECFC /* VersionInfoView.swift in Sources */,
 				A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */,
 				A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */,
 				A3C142982C8FE62200D3CEC0 /* TransactionListView.swift in Sources */,
 				A3C142542C8B381400D3CEC0 /* PayeeEditView.swift in Sources */,
+				A37E7D8A2C9AC30700B4ECFC /* HelpFAQView.swift in Sources */,
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
 				A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */,
 				A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */,
 				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
+				A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */,
 				A3363EE92C9326A1004696C7 /* CategoryListView.swift in Sources */,
 				A3C142A02C9025D600D3CEC0 /* Category.swift in Sources */,
 				A3C142A42C9033E300D3CEC0 /* SettingsView.swift in Sources */,
 				A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */,
+				A37E7D842C9AC14800B4ECFC /* ManagementView.swift in Sources */,
+				A37E7D902C9AC4F300B4ECFC /* TermsOfServiceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
