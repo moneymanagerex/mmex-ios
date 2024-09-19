@@ -16,6 +16,9 @@ struct TransactionEditView: View {
     @Binding var categories: [Category]
     @Binding var accounts: [Account]
     
+    @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
+    @AppStorage("defaultStatus") private var defaultStatus: TransactionStatus = .none
+
     // Focus state for the Amount input to control keyboard focus
     @FocusState private var isAmountFocused: Bool
     
@@ -143,6 +146,8 @@ struct TransactionEditView: View {
             // Automatically set if there's only one item in the list
             if self.payees.count == 1 {
                 txn.payeeID = self.payees.first!.id
+            } else if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed) {
+                // TODO
             }
 
             if self.accounts.count == 1 {
@@ -151,6 +156,10 @@ struct TransactionEditView: View {
 
             if self.categories.count == 1 {
                 txn.categID = self.categories.first!.id
+            }
+
+            if (txn.id == 0) {
+                txn.status = defaultStatus
             }
         }
         .onDisappear {

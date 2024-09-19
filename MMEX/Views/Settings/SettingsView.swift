@@ -9,6 +9,9 @@ import SwiftUI
 
 struct SettingsView: View {
     let databaseURL: URL
+    
+    @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
+    @AppStorage("defaultStatus") private var defaultStatus: TransactionStatus = .none
 
     var body: some View {
         List {
@@ -34,9 +37,31 @@ struct SettingsView: View {
                     Text("Contact Support")
                 }
             }
+            // Section: Default Behavior Setting
+            Section(header: Text("Behavior")) {
+                Picker("Default Payee", selection: $defaultPayeeSetting) {
+                    Text("None").tag(DefaultPayeeSetting.none)
+                    Text("Last Used").tag(DefaultPayeeSetting.lastUsed)
+                }
+                .pickerStyle(NavigationLinkPickerStyle())
+ 
+                Picker("Default Status", selection: $defaultStatus) {
+                    ForEach(TransactionStatus.allCases) { status in
+                        Text(status.fullName).tag(status)
+                    }
+                }
+                .pickerStyle(NavigationLinkPickerStyle())
+            } 
         }
         .navigationTitle("Settings")
     }
+}
+
+enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
+    case none = "None"
+    case lastUsed = "Last Used"
+
+    var id: String { rawValue }
 }
 
 #Preview {
