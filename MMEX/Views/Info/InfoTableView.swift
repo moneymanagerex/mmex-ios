@@ -18,21 +18,25 @@ struct InfoTableView: View {
     }
     
     var body: some View {
-        List {
+        VStack {
             if let userVersion = repository.db?.userVersion {
                 keyValueRow(key: "Schema Version", value: "\(userVersion)")
+                Divider()
             }
 
             if let baseCurrencyID = infoItems[.baseCurrencyID]?.getValue(Int.self) {
                 keyValueRow(key: "Base Currency", value: "\(baseCurrencyID)")
+                Divider()
             }
 
             if let uid = infoItems[.uid]?.getValue(String.self) {
                 keyValueRow(key: "UID", value: uid)
+                Divider()
             }
 
             if let dateFormat = infoItems[.dateFormat]?.getValue(String.self) {
                 keyValueRow(key: "Date Format", value: dateFormat)
+                Divider()
             }
         }
         .onAppear {

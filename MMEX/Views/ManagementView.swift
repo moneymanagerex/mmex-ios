@@ -30,10 +30,8 @@ struct ManagementView: View {
                     Text("Manage Currencies")
                 }
             }
-            Section(header: Text("Manage Info")) {
-                NavigationLink(destination: InfoTableView(databaseURL: databaseURL)) {
-                    Text("Per Database Info")
-                }
+            Section(header: Text("Database Level Info")) {
+                InfoTableView(databaseURL: databaseURL)
             }
             Section(header: Text("Database")) {
                 Button("Re-open Database") {
