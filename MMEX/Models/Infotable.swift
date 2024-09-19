@@ -9,9 +9,10 @@ import Foundation
 import SQLite
 
 enum InfoKey: String {
-    case dataVersion = "DATAVERSION"
+    case userName = "USERNAME"
     case baseCurrencyID = "BASECURRENCYID"
     case dateFormat = "DATEFORMAT"
+    case createDate = "CREATEDATE"
     case uid = "UID"
 
     var id: String { return rawValue }

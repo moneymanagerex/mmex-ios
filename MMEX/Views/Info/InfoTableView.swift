@@ -19,6 +19,10 @@ struct InfoTableView: View {
     
     var body: some View {
         List {
+            if let userVersion = repository.db?.userVersion {
+                keyValueRow(key: "Schema Version", value: "\(userVersion)")
+            }
+
             if let baseCurrencyID = infoItems[.baseCurrencyID]?.getValue(Int.self) {
                 keyValueRow(key: "Base Currency", value: "\(baseCurrencyID)")
             }
@@ -50,7 +54,7 @@ struct InfoTableView: View {
     }
     
     func loadInfo() {
-        let keysToLoad: [InfoKey] = [.dataVersion, .baseCurrencyID, .uid, .dateFormat]
+        let keysToLoad: [InfoKey] = [.userName, .createDate, .baseCurrencyID, .uid, .dateFormat]
         infoItems = repository.loadInfo(for: keysToLoad)
     }
 }
