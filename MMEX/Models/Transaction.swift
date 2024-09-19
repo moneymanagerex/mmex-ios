@@ -88,6 +88,25 @@ struct Transaction: ExportableEntity {
         self.transAmount = transAmount
         self.transDate = transDate
     }
+    
+    init(row: Row) {
+        self.id = row[Transaction.transID]
+        self.accountID = row[Transaction.accountIDExpr]
+        self.toAccountID = row[Transaction.toAccountIDExpr]
+        self.payeeID = row[Transaction.payeeIDExpr]
+        self.transcode = Transcode(rawValue: row[Transaction.transCodeExpr]) ?? Transcode.deposit
+        self.transAmount = row.getNumeric(Transaction.transAmountExpr, Transaction.transAmountInt)
+        self.status = TransactionStatus(rawValue: row[Transaction.statusExpr] ?? "") ?? TransactionStatus.none
+        self.transactionNumber = row[Transaction.transactionNumberExpr]
+        self.notes = row[Transaction.notesExpr]
+        self.categID = row[Transaction.categIDExpr]
+        self.transDate = row[Transaction.transDateExpr]
+        self.lastUpdatedTime = row[Transaction.lastUpdatedTimeExpr]
+        self.deletedTime = row[Transaction.deletedTimeExpr]
+        self.followUpID = row[Transaction.followUpIDExpr]
+        self.toTransAmount = row[Transaction.toTransAmountExpr]
+        self.color = row[Transaction.colorExpr]
+    }
 }
 
 extension Transaction {
@@ -124,6 +143,7 @@ extension Transaction
     static let payeeIDExpr = Expression<Int64>("PAYEEID")
     static let transCodeExpr = Expression<String>("TRANSCODE")
     static let transAmountExpr = Expression<Double?>("TRANSAMOUNT")
+    static let transAmountInt = Expression<Int64?>("TRANSAMOUNT")
     static let statusExpr = Expression<String?>("STATUS")
     static let transactionNumberExpr = Expression<String?>("TRANSACTIONNUMBER")
     static let notesExpr = Expression<String?>("NOTES")
@@ -133,5 +153,6 @@ extension Transaction
     static let deletedTimeExpr = Expression<String?>("DELETEDTIME")
     static let followUpIDExpr = Expression<Int64?>("FOLLOWUPID")
     static let toTransAmountExpr = Expression<Double?>("TOTRANSAMOUNT")
+    static let toTransAmountInt = Expression<Int64?>("TOTRANSAMOUNT")
     static let colorExpr = Expression<Int64?>("COLOR")
 }

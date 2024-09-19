@@ -89,24 +89,7 @@ class TransactionRepository {
 
         do {
             for txn in try db.prepare(Transaction.table) {
-                results.append(Transaction(
-                    id: txn[Transaction.transID],
-                    accountID: txn[Transaction.accountIDExpr],
-                    toAccountID: txn[Transaction.toAccountIDExpr],
-                    payeeID: txn[Transaction.payeeIDExpr],
-                    transCode: Transcode(rawValue: txn[Transaction.transCodeExpr]) ?? Transcode.deposit,
-                    transAmount: txn[Transaction.transAmountExpr],
-                    status: TransactionStatus(rawValue: txn[Transaction.statusExpr] ?? "") ?? TransactionStatus.none,
-                    transactionNumber: txn[Transaction.transactionNumberExpr],
-                    notes: txn[Transaction.notesExpr],
-                    categID: txn[Transaction.categIDExpr],
-                    transDate: txn[Transaction.transDateExpr],
-                    lastUpdatedTime: txn[Transaction.lastUpdatedTimeExpr],
-                    deletedTime: txn[Transaction.deletedTimeExpr],
-                    followUpID: txn[Transaction.followUpIDExpr],
-                    toTransAmount: txn[Transaction.toTransAmountExpr],
-                    color: txn[Transaction.colorExpr]
-                ))
+                results.append(Transaction(row: txn))
             }
         } catch {
             print("Failed to fetch transactions: \(error)")
@@ -128,24 +111,7 @@ class TransactionRepository {
             }
             
             for txn in try db.prepare(query) {
-                results.append(Transaction(
-                    id: txn[Transaction.transID],
-                    accountID: txn[Transaction.accountIDExpr],
-                    toAccountID: txn[Transaction.toAccountIDExpr],
-                    payeeID: txn[Transaction.payeeIDExpr],
-                    transCode: Transcode(rawValue: txn[Transaction.transCodeExpr]) ?? Transcode.deposit,
-                    transAmount: txn[Transaction.transAmountExpr] ?? 0.0,
-                    status: TransactionStatus(rawValue: txn[Transaction.statusExpr] ?? "") ?? TransactionStatus.none,
-                    transactionNumber: txn[Transaction.transactionNumberExpr],
-                    notes: txn[Transaction.notesExpr],
-                    categID: txn[Transaction.categIDExpr],
-                    transDate: txn[Transaction.transDateExpr],
-                    lastUpdatedTime: txn[Transaction.lastUpdatedTimeExpr],
-                    deletedTime: txn[Transaction.deletedTimeExpr],
-                    followUpID: txn[Transaction.followUpIDExpr],
-                    toTransAmount: txn[Transaction.toTransAmountExpr],
-                    color: txn[Transaction.colorExpr]
-                ))
+                results.append(Transaction(row: txn))
             }
         } catch {
             print("Failed to fetch transactions: \(error)")

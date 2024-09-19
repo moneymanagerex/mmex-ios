@@ -49,6 +49,7 @@ extension Currency {
     static let centName = Expression<String?>("CENT_NAME")
     static let scale = Expression<Int>("SCALE")
     static let baseConversionRate = Expression<Double?>("BASECONVRATE")
+    static let baseConversionRateInt = Expression<Int64?>("BASECONVRATE")
     static let symbol = Expression<String>("CURRENCY_SYMBOL")
     static let type = Expression<String>("CURRENCY_TYPE")
 }
@@ -64,7 +65,7 @@ extension Currency {
                         unitName: row[Currency.unitName] ?? "",
                         centName: row[Currency.centName] ?? "",
                         scale: row[Currency.scale],
-                        baseConversionRate: row[Currency.baseConversionRate],
+                        baseConversionRate: row.getNumeric(Currency.baseConversionRate, Currency.baseConversionRateInt),
                         symbol: row[Currency.symbol],
                         type: row[Currency.type]
         )
