@@ -56,6 +56,17 @@ struct Account: ExportableEntity {
         self.notes = notes
         self.currency = currency
     }
+    
+    init(row: Row) {
+        self.id = row[Account.accountID]
+        self.name = row[Account.accountName]
+        self.type = AccountType(rawValue: row[Account.accountType]) ?? AccountType.cash
+        self.status = AccountStatus(rawValue: row[Account.status]) ?? AccountStatus.open
+        self.favoriteAcct = row[Account.favoriteAcct]
+        self.currencyId = row[Account.currencyID]
+        self.balance = row.getNumeric(Account.balance, Account.balanceInt)
+        self.notes = row[Account.notes]
+    }
 }
 
 extension Account {
@@ -68,6 +79,7 @@ extension Account {
     static let favoriteAcct = Expression<String>("FAVORITEACCT")
     static let currencyID = Expression<Int64>("CURRENCYID")
     static let balance = Expression<Double?>("INITIALBAL")
+    static let balanceInt = Expression<Int64?>("INITIALBAL")
     static let notes = Expression<String?>("NOTES")
     
     static var empty: Account {
@@ -83,18 +95,7 @@ extension Account {
 }
 
 extension Account {
-    static func fromRow(_ row: Row) -> Account {
-        return Account(id: row[Account.accountID],
-                       name: row[Account.accountName],
-                       type: AccountType(rawValue: row[Account.accountType]) ?? AccountType.cash,
-                       status: AccountStatus(rawValue: row[Account.status]) ?? AccountStatus.open,
-                       favoriteAcct: row[Account.favoriteAcct],
-                       currencyId: row[Account.currencyID],
-                       balance: row[Account.balance],
-                       notes: row[Account.notes]
-        )
-    }
-
+    
     static func getSetters(_ account: Account) -> [Setter] {
         return  [Account.accountName <- account.name,
                  Account.accountType <- account.type.id,

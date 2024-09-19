@@ -21,7 +21,7 @@ class AccountRepository {
 
         do {
             for row in try db.prepare(Account.table) {
-                accounts.append(Account.fromRow(row))
+                accounts.append(Account(row:row))
             }
         } catch {
             print("Error loading accounts: \(error)")
