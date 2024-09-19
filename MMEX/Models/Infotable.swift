@@ -11,6 +11,7 @@ import SQLite
 enum InfoKey: String {
     case userName = "USERNAME"
     case baseCurrencyID = "BASECURRENCYID"
+    case defaultAccountID = "DEFAULTACCOUNTID"
     case dateFormat = "DATEFORMAT"
     case createDate = "CREATEDATE"
     case uid = "UID"

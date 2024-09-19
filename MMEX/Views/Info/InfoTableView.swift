@@ -24,11 +24,6 @@ struct InfoTableView: View {
                 Divider()
             }
 
-            if let baseCurrencyID = infoItems[.baseCurrencyID]?.getValue(Int.self) {
-                keyValueRow(key: "Base Currency", value: "\(baseCurrencyID)")
-                Divider()
-            }
-
             if let uid = infoItems[.uid]?.getValue(String.self) {
                 keyValueRow(key: "UID", value: uid)
                 Divider()

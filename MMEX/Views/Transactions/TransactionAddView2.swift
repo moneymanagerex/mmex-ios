@@ -48,6 +48,12 @@ struct TransactionAddView2: View {
             loadAccounts()
             // TODO update initial payee (e.g. last used)
             // TODO update category, payee associated?
+            
+            // database level setting
+            let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
+            if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
+                newTxn.accountID = storedDefaultAccount
+            }
         }
     }
 

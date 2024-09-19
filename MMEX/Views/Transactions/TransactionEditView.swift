@@ -16,6 +16,7 @@ struct TransactionEditView: View {
     @Binding var categories: [Category]
     @Binding var accounts: [Account]
     
+    // app level setting
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus: TransactionStatus = .none
 

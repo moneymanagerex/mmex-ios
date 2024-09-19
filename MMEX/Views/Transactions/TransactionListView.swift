@@ -74,6 +74,12 @@ struct TransactionListView: View {
             loadPayees()
             loadCategories()
             loadAccounts()
+            
+            // database level setting
+            let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
+            if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
+                newTxn.accountID = storedDefaultAccount
+            }
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(newTxn: $newTxn, isPresentingTransactionAddView: $isPresentingTransactionAddView, payees: $payees, categories: $categories, accounts: $accounts) { newTxn in
