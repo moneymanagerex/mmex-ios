@@ -13,6 +13,8 @@ struct ManagementView: View {
     
     @State private var currencies: [Currency] = []
     @State private var accounts: [Account] = []
+    @State private var schemaVersion: Int32 = 0
+    @State private var dateFormat: String = ""
     @State private var baseCurrencyID: Int64 = 0
     @State private var defaultAccountID: Int64 = 0
     
@@ -35,12 +37,19 @@ struct ManagementView: View {
                     Text("Manage Currencies")
                 }
             }
-            Section(header: Text("Database Level Info")) {
-                InfoTableView(databaseURL: databaseURL)
-            }
-            
+
             // Section: Default Behavior Setting
-            Section(header: Text("Behavior")) {
+            Section(header: Text("Per-Database Data")) {
+                HStack {
+                    Text("Schema Version")
+                    Spacer()
+                    Text("\(schemaVersion)")
+                }
+                HStack {
+                    Text("Date Format")
+                    Spacer()
+                    Text("\(dateFormat)")
+                }
                 Picker("Base Currency", selection: $baseCurrencyID) {
                     ForEach(currencies) { currency in
                         Text(currency.name).tag(currency.id) // Use currency.name to display and tag by id
@@ -78,6 +87,10 @@ struct ManagementView: View {
             loadAccounts()
             loadCurrencies()
             let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
+            schemaVersion = repository.db?.userVersion ?? 0
+            if let storedDateFormat = repository.getValue(for: InfoKey.dateFormat.id, as: String.self) {
+                dateFormat = storedDateFormat
+            }
             if let storedBaseCurrency = repository.getValue(for:InfoKey.baseCurrencyID.id, as: Int64.self) {
                 baseCurrencyID = storedBaseCurrency
             }

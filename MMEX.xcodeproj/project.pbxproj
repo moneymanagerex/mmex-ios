@@ -25,7 +25,6 @@
 		A37E7D922C9AC60000B4ECFC /* ContactSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D912C9AC60000B4ECFC /* ContactSupportView.swift */; };
 		A37E7D942C9B217500B4ECFC /* Infotable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D932C9B217500B4ECFC /* Infotable.swift */; };
 		A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */; };
-		A37E7D982C9B22B700B4ECFC /* InfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D972C9B22B700B4ECFC /* InfoTableView.swift */; };
 		A37E7D9A2C9BC28900B4ECFC /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D992C9BC28900B4ECFC /* Row.swift */; };
 		A39B1B322C99A084003E5562 /* CurrencyAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B312C99A084003E5562 /* CurrencyAddView.swift */; };
 		A39B1B342C99A0A8003E5562 /* CurrencyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */; };
@@ -86,7 +85,6 @@
 		A37E7D912C9AC60000B4ECFC /* ContactSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSupportView.swift; sourceTree = "<group>"; };
 		A37E7D932C9B217500B4ECFC /* Infotable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Infotable.swift; sourceTree = "<group>"; };
 		A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfotableRepository.swift; sourceTree = "<group>"; };
-		A37E7D972C9B22B700B4ECFC /* InfoTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableView.swift; sourceTree = "<group>"; };
 		A37E7D992C9BC28900B4ECFC /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
 		A39B1B312C99A084003E5562 /* CurrencyAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyAddView.swift; sourceTree = "<group>"; };
 		A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDetailView.swift; sourceTree = "<group>"; };
@@ -155,14 +153,6 @@
 				A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */,
 			);
 			path = Export;
-			sourceTree = "<group>";
-		};
-		A37E7D7E2C9ABEA900B4ECFC /* Info */ = {
-			isa = PBXGroup;
-			children = (
-				A37E7D972C9B22B700B4ECFC /* InfoTableView.swift */,
-			);
-			path = Info;
 			sourceTree = "<group>";
 		};
 		A39B1B392C9A668F003E5562 /* Accounts */ = {
@@ -309,7 +299,6 @@
 		A3C142452C89CB1600D3CEC0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A37E7D7E2C9ABEA900B4ECFC /* Info */,
 				A39B1B3E2C9A6714003E5562 /* Settings */,
 				A39B1B3D2C9A66F7003E5562 /* Currencies */,
 				A39B1B3C2C9A66E6003E5562 /* Categories */,
@@ -448,7 +437,6 @@
 				A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */,
 				A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */,
 				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
-				A37E7D982C9B22B700B4ECFC /* InfoTableView.swift in Sources */,
 				A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */,
 				A3363EE92C9326A1004696C7 /* CategoryListView.swift in Sources */,
 				A3C142A02C9025D600D3CEC0 /* Category.swift in Sources */,
