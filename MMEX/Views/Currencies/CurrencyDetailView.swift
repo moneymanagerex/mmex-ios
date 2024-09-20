@@ -26,7 +26,7 @@ struct CurrencyDetailView: View {
                 Text(currency.suffixSymbol ?? "N/A")
             }
             Section(header: Text("Scale")) {
-                Text("\(currency.scale)")
+                Text("\(currency.scale ?? 0)")
             }
             Section(header: Text("Conversion Rate")) {
                 Text("\(currency.baseConversionRate ?? 0)")

@@ -25,7 +25,7 @@ struct TransactionDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Transaction Type")) {
-                Text("\(txn.transcode.name)")
+                Text("\(txn.transCode.name)")
             }
 
             Section(header: Text("Transaction Status")) {
@@ -34,14 +34,14 @@ struct TransactionDetailView: View {
 
             Section(header: Text("Transaction Amount")) {
                 if let currency = account?.currency {
-                    Text(currency.format(amount: txn.transAmount ?? 0.0))
+                    Text(currency.format(amount: txn.transAmount))
                 } else {
-                    Text("\(txn.transAmount ?? 0.0)")
+                    Text("\(txn.transAmount)")
                 }
             }
 
             Section(header: Text("Transaction Date")) {
-                Text(txn.transDate) // Display the transaction date
+                Text(txn.transDate ?? "") // Display the transaction date
             }
 
             Section(header: Text("Account Name")) {
@@ -123,7 +123,7 @@ struct TransactionDetailView: View {
     }
     
     func loadAccount() {
-        account = accounts.first { $0.id == txn.accountID}
+        account = accounts.first { $0.id == txn.accountId}
     }
     func saveChanges() {
         let repository = DataManager(databaseURL: databaseURL).getTransactionRepository() // pass URL here

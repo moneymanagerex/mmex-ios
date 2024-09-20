@@ -42,13 +42,13 @@ struct TransactionListView2: View {
                             NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
                                 HStack {
                                     // Left column (Category Icon or Category Name)
-                                    if let categorySymbol = Category.categoryToSFSymbol[getCategoryName(for: txn.categID ?? 0)] {
+                                    if let categorySymbol = Category.categoryToSFSymbol[getCategoryName(for: txn.categId ?? 0)] {
                                         Image(systemName: categorySymbol)
                                             .frame(width: 50, alignment: .leading) // Adjust width as needed
                                             .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
                                             .foregroundColor(.blue) // Customize icon style
                                     } else {
-                                        Text(getCategoryName(for: txn.categID ?? 0)) // Fallback to category name if symbol is not found
+                                        Text(getCategoryName(for: txn.categId ?? 0)) // Fallback to category name if symbol is not found
                                             .frame(width: 50, alignment: .leading)
                                             .font(.system(size: 16, weight: .bold))
                                             .foregroundColor(.blue)
@@ -56,10 +56,10 @@ struct TransactionListView2: View {
 
                                     // Middle column (Payee Name & Time)
                                     VStack(alignment: .leading, spacing: 4) {
-                                        Text(getPayeeName(for: txn.payeeID)) // Payee name
+                                        Text(getPayeeName(for: txn.payeeId)) // Payee name
                                             .font(.system(size: 16))
                                             .lineLimit(1) // Prevent wrapping
-                                        Text(formatTime(txn.transDate)) // Show time in hh:mm a
+                                        Text(formatTime(txn.transDate ?? "")) // Show time in hh:mm a
                                             .font(.system(size: 14))
                                             .foregroundColor(.gray)
                                     }
@@ -67,19 +67,19 @@ struct TransactionListView2: View {
 
                                     Spacer() // To push the amount to the right side
 
-                                    if let currency = self.accountDict[txn.accountID]?.currency {
+                                    if let currency = self.accountDict[txn.accountId]?.currency {
                                         // Right column (Transaction Amount)
                                         //  Text(String(format: "%.2f", txn.transAmount ?? 0.0))
-                                        Text(currency.format(amount: txn.transAmount ?? 0.0))
+                                        Text(currency.format(amount: txn.transAmount))
                                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                                             .font(.system(size: 16, weight: .bold))
-                                            .foregroundColor(txn.transcode == Transcode.deposit ? .green : .red) // Positive/negative amount color
+                                            .foregroundColor(txn.transCode == Transcode.deposit ? .green : .red) // Positive/negative amount color
                                     } else {
                                         // Right column (Transaction Amount)
-                                        Text(String(format: "%.2f", txn.transAmount ?? 0.0))
+                                        Text(String(format: "%.2f", txn.transAmount))
                                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                                             .font(.system(size: 16, weight: .bold))
-                                            .foregroundColor(txn.transcode == Transcode.deposit ? .green : .red) // Positive/negative amount color
+                                            .foregroundColor(txn.transCode == Transcode.deposit ? .green : .red) // Positive/negative amount color
                                     }
                                 }
                             }
@@ -107,11 +107,11 @@ struct TransactionListView2: View {
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
                     
-                    if let date = formatter.date(from: txn.transDate) {
+                    if let date = formatter.date(from: txn.transDate ?? "") {
                         formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
                         return formatter.string(from: date)
                     }
-                    return txn.transDate // If parsing fails, return original string
+                    return txn.transDate ?? "" // If parsing fails, return original string
                 }
             }
         }
@@ -176,7 +176,7 @@ struct TransactionListView2: View {
 
     func calculateTotal(for day: String) -> String {
         let transactions = txns_per_day[day] ?? []
-        let totalAmount = transactions.reduce(0.0) { $0 + ( $1.transAmount ?? 0.0) }
+        let totalAmount = transactions.reduce(0.0) { $0 + $1.transAmount }
         return String(format: "%.2f", totalAmount)
     }
 

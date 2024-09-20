@@ -30,7 +30,7 @@ struct TransactionListView: View {
                 NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
                     HStack {
                         // Left column: Date (truncated to day)
-                        Text(formatDate(from: txn.transDate))
+                        Text(formatDate(from: txn.transDate ?? ""))
                             .frame(width: 90, alignment: .leading)
                             .font(.system(size: 16))
                             .foregroundColor(.gray)
@@ -40,10 +40,10 @@ struct TransactionListView: View {
 
                         // Middle column: Payee name and Category icon (or ID)
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(getPayeeName(for: txn.payeeID))
+                            Text(getPayeeName(for: txn.payeeId))
                                 .font(.system(size: 16))
                                 .lineLimit(1) // Prevent wrapping
-                            Text("\(txn.transcode.id)") // Replace with transcode name if available
+                            Text("\(txn.transCode.id)") // Replace with transcode name if available
                                 .font(.system(size: 14))
                                 .foregroundColor(.gray)
                         }
@@ -53,10 +53,10 @@ struct TransactionListView: View {
                         Spacer()
 
                         // Right column: Amount
-                        Text(String(format: "%.2f", txn.transAmount ?? 0.0))
+                        Text(String(format: "%.2f", txn.transAmount))
                             .frame(alignment: .trailing)
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(txn.transAmount ?? 0.0 >= 0 ? .green : .red)
+                            .foregroundColor(txn.transAmount >= 0 ? .green : .red)
                     }
                 }
             }
@@ -78,7 +78,7 @@ struct TransactionListView: View {
             // database level setting
             let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
             if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
-                newTxn.accountID = storedDefaultAccount
+                newTxn.accountId = storedDefaultAccount
             }
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
