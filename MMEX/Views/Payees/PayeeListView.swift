@@ -10,9 +10,11 @@ import SwiftUI
 struct PayeeListView: View {
     let databaseURL: URL
     @State private var payees: [Payee] = []
+    @State private var filteredPayees: [Payee] = [] // New: Filtered payees for search results
     @State private var categories: [Category] = []
     @State private var newPayee = Payee.empty
     @State private var isPresentingPayeeAddView = false
+    @State private var searchQuery: String = "" // New: Search query
     
     // Initialize repository with the databaseURL
     private var repository: PayeeRepository
@@ -24,7 +26,7 @@ struct PayeeListView: View {
     
     var body: some View {
         NavigationStack {
-            List(payees) { payee in
+            List(filteredPayees) { payee in // Use filteredPayees instead of payees
                 NavigationLink(destination: PayeeDetailView(payee: payee, databaseURL: databaseURL, categories: $categories)) {
                     HStack {
                         Text(payee.name)
@@ -41,6 +43,10 @@ struct PayeeListView: View {
                 })
                 .accessibilityLabel("New Payee")
             }
+            .searchable(text: $searchQuery) // New: Search bar
+            .onChange(of: searchQuery, perform: { query in
+                filterPayees(by: query)
+            })
         }
         .navigationTitle("Payees")
         .onAppear {
@@ -65,6 +71,7 @@ struct PayeeListView: View {
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
+                self.filteredPayees = loadedPayees // Ensure filteredPayees is initialized with all payees
             }
         }
     }
@@ -88,6 +95,15 @@ struct PayeeListView: View {
             // loadPayees()
         } else {
             // TODO
+        }
+    }
+
+    // New: Filter payees based on the search query
+    func filterPayees(by query: String) {
+        if query.isEmpty {
+            filteredPayees = payees
+        } else {
+            filteredPayees = payees.filter { $0.name.localizedCaseInsensitiveContains(query) }
         }
     }
 }
