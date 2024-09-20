@@ -38,9 +38,9 @@ struct AccountDetailView: View {
                 }            }
             Section(header: Text("Balance")) {
                 if let currency = account.currency {
-                    Text(currency.format(amount: account.balance ?? 0.0))
+                    Text(currency.format(amount: account.initialBal ?? 0.0))
                 } else {
-                    Text("\(account.balance ?? 0.0)")
+                    Text("\(account.initialBal ?? 0.0)")
                 }
             }
             Section(header: Text("Notes")) {

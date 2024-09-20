@@ -30,7 +30,7 @@ struct PayeeDetailView: View {
             }
 
             Section(header: Text("Category")) {
-                Text(payee.categoryId != 0 ? getCategoryName(for: payee.categoryId!) : "N/A")
+                Text(payee.categoryId != nil ? getCategoryName(for: payee.categoryId!) : "N/A")
             }
 
             Section(header: Text("Number")) {

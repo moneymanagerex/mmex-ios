@@ -52,7 +52,7 @@ struct TransactionAddView2: View {
             // database level setting
             let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
             if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
-                newTxn.accountID = storedDefaultAccount
+                newTxn.accountId = storedDefaultAccount
             }
         }
     }

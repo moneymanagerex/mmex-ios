@@ -27,9 +27,9 @@ struct TransactionEditView: View {
         VStack {
             // 1. Transaction type picker (Deposit/Withdrawal/Transfer)
             HStack {
-                Picker("", selection: $txn.transcode) {
-                    ForEach(Transcode.allCases) { transcode in
-                        Text(transcode.name).tag(transcode)
+                Picker("", selection: $txn.transCode) {
+                    ForEach(Transcode.allCases) { transCode in
+                        Text(transCode.name).tag(transCode)
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
@@ -37,8 +37,8 @@ struct TransactionEditView: View {
                 
                 Spacer()
                 
-                Picker("Select account", selection: $txn.accountID) {
-                    if (txn.accountID == 0) {
+                Picker("Select account", selection: $txn.accountId) {
+                    if (txn.accountId == 0) {
                         Text("Account").tag(0 as Int64) // not set
                     }
                     ForEach(accounts) { account in
@@ -106,8 +106,8 @@ struct TransactionEditView: View {
             // 5. Horizontal stack for Payee and Category pickers
             HStack {
                 // Payee picker
-                Picker("Select Payee", selection: $txn.payeeID) {
-                    if (txn.payeeID == 0) {
+                Picker("Select Payee", selection: $txn.payeeId) {
+                    if (txn.payeeId == 0) {
                         Text("Payee").tag(0 as Int64) // not set
                     }
                     ForEach(payees) { payee in
@@ -120,10 +120,10 @@ struct TransactionEditView: View {
 
                 // Category picker
                 Picker("Select Category", selection: Binding(
-                    get: { txn.categID ?? 0 }, // Safely unwrap the optional notes field
-                    set: { txn.categID = $0 } // Set
+                    get: { txn.categId ?? 0 }, // Safely unwrap the optional notes field
+                    set: { txn.categId = $0 } // Set
                 )) {
-                    if (txn.categID == 0 ) {
+                    if (txn.categId == 0 ) {
                         Text("Category").tag(0 as Int64) // not set
                     }
                     ForEach(categories) { category in
@@ -139,24 +139,24 @@ struct TransactionEditView: View {
         .padding(.horizontal)
         .onAppear {
             // Initialize state variables from the txn object when the view appears
-            amountString = String(format: "%.2f", txn.transAmount ?? 0.0)
+            amountString = String(format: "%.2f", txn.transAmount)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
+            selectedDate = dateFormatter.date(from: txn.transDate ?? "") ?? Date()
 
             // Automatically set if there's only one item in the list
             if self.payees.count == 1 {
-                txn.payeeID = self.payees.first!.id
+                txn.payeeId = self.payees.first!.id
             } else if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed) {
                 // TODO
             }
 
             if self.accounts.count == 1 {
-                txn.accountID = self.accounts.first!.id
+                txn.accountId = self.accounts.first!.id
             }
 
             if self.categories.count == 1 {
-                txn.categID = self.categories.first!.id
+                txn.categId = self.categories.first!.id
             }
 
             if (txn.id == 0) {

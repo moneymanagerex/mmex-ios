@@ -14,28 +14,165 @@ class TransactionRepository {
     init(db: Connection?) {
         self.db = db
     }
+}
+
+extension TransactionRepository {
+    // table query
+    static let table = Table("CHECKINGACCOUNT_V1")
+
+    // table columns
+    static let col_id                = Expression<Int64>("TRANSID")
+    static let col_accountId         = Expression<Int64>("ACCOUNTID")
+    static let col_toAccountId       = Expression<Int64?>("TOACCOUNTID")
+    static let col_payeeId           = Expression<Int64>("PAYEEID")
+    static let col_transCode         = Expression<String>("TRANSCODE")
+    static let col_transAmount       = Expression<Double>("TRANSAMOUNT")
+    static let col_status            = Expression<String?>("STATUS")
+    static let col_transactionNumber = Expression<String?>("TRANSACTIONNUMBER")
+    static let col_notes             = Expression<String?>("NOTES")
+    static let col_categId           = Expression<Int64?>("CATEGID")
+    static let col_transDate         = Expression<String?>("TRANSDATE")
+    static let col_lastUpdatedTime   = Expression<String?>("LASTUPDATEDTIME")
+    static let col_deletedTime       = Expression<String?>("DELETEDTIME")
+    static let col_followUpId        = Expression<Int64?>("FOLLOWUPID")
+    static let col_toTransAmount     = Expression<Double?>("TOTRANSAMOUNT")
+    static let col_color             = Expression<Int64>("COLOR")
+
+    // cast NUMERIC to REAL
+    static let cast_transAmount   = cast(col_transAmount)   as Expression<Double>
+    static let cast_toTransAmount = cast(col_toTransAmount) as Expression<Double?>
+}
     
-    func addTransaction(txn: inout Transaction) -> Bool {
+extension TransactionRepository {
+    // select query
+    static func selectQuery(from: Table) -> Table {
+        return from.select(
+            col_id,
+            col_accountId,
+            col_toAccountId,
+            col_payeeId,
+            col_transCode,
+            cast_transAmount,
+            col_status,
+            col_transactionNumber,
+            col_notes,
+            col_categId,
+            col_transDate,
+            col_lastUpdatedTime,
+            col_deletedTime,
+            col_followUpId,
+            cast_toTransAmount,
+            col_color
+        )
+    }
+
+    // select result
+    static func selectResult(_ row: Row) -> Transaction {
+        return Transaction(
+          id                : row[col_id],
+          accountId         : row[col_accountId],
+          toAccountId       : row[col_toAccountId],
+          payeeId           : row[col_payeeId],
+          transCode         : Transcode(rawValue: row[col_transCode]) ?? Transcode.deposit,
+          transAmount       : row[cast_transAmount],
+          status            : TransactionStatus(rawValue: row[col_status] ?? "") ?? TransactionStatus.none,
+          transactionNumber : row[col_transactionNumber],
+          notes             : row[col_notes],
+          categId           : row[col_categId],
+          transDate         : row[col_transDate],
+          lastUpdatedTime   : row[col_lastUpdatedTime],
+          deletedTime       : row[col_deletedTime],
+          followUpId        : row[col_followUpId],
+          toTransAmount     : row[cast_toTransAmount],
+          color             : row[col_color]
+        )
+    }
+
+    static func insertSetters(_ txn: Transaction) -> [Setter] {
+        return [
+            col_accountId         <- txn.accountId,
+            col_toAccountId       <- txn.toAccountId,
+            col_payeeId           <- txn.payeeId,
+            col_transCode         <- txn.transCode.id,
+            col_transAmount       <- txn.transAmount,
+            col_status            <- txn.status.id,
+            col_transactionNumber <- txn.transactionNumber,
+            col_notes             <- txn.notes,
+            col_categId           <- txn.categId,
+            col_transDate         <- txn.transDate,
+            col_lastUpdatedTime   <- txn.lastUpdatedTime,
+            col_deletedTime       <- txn.deletedTime,
+            col_followUpId        <- txn.followUpId,
+            col_toTransAmount     <- txn.toTransAmount,
+            col_color             <- txn.color,
+        ]
+    }
+
+    // insert query
+    static func insertQuery(_ txn: Transaction) -> Insert {
+        return table.insert(insertSetters(txn))
+    }
+
+    // update query
+    static func updateQuery(_ txn: Transaction) -> Update {
+        return table.filter(col_id == txn.id).update(insertSetters(txn))
+    }
+
+    // delete query
+    static func deleteQuery(_ txn: Transaction) -> Delete {
+        return table.filter(col_id == txn.id).delete()
+    }
+}
+    
+extension TransactionRepository {
+    // load all transactions
+    func loadTransactions() -> [Transaction] {
+        guard let db else { return [] }
         do {
-            let insert = Transaction.table.insert(
-                Transaction.accountIDExpr <- txn.accountID,
-                Transaction.toAccountIDExpr <- txn.toAccountID,
-                Transaction.payeeIDExpr <- txn.payeeID,
-                Transaction.transCodeExpr <- txn.transcode.id,
-                Transaction.transAmountExpr <- txn.transAmount,
-                Transaction.statusExpr <- txn.status.id,
-                Transaction.transactionNumberExpr <- txn.transactionNumber,
-                Transaction.notesExpr <- txn.notes,
-                Transaction.categIDExpr <- txn.categID,
-                Transaction.transDateExpr <- txn.transDate,
-                Transaction.lastUpdatedTimeExpr <- txn.lastUpdatedTime,
-                Transaction.deletedTimeExpr <- txn.deletedTime,
-                Transaction.followUpIDExpr <- txn.followUpID,
-                Transaction.toTransAmountExpr <- txn.toTransAmount,
-                Transaction.colorExpr <- txn.color
-            )
-            let rowid = try db?.run(insert)
-            txn.id = rowid!
+            var results: [Transaction]   = []
+            let query = TransactionRepository.selectQuery(from: TransactionRepository.table)
+            for row in try db.prepare(query) {
+                results.append(TransactionRepository.selectResult(row))
+            }
+            print("Successfully loaded transactions: \(results.count)")
+            return results
+        } catch {
+            print("Failed to fetch transactions: \(error)")
+            return []
+        }
+    }
+    
+    // load recent transactions
+    func loadRecentTransactions(
+        startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date()),
+        endDate: Date? = Date()
+    ) -> [Transaction] {
+        guard let db else { return [] }
+        do {
+            var results: [Transaction] = []
+            var from = TransactionRepository.table
+            // If startDate is set, add filtering by date range
+            if let startDate {
+                from = from.filter(TransactionRepository.col_transDate >= startDate.ISO8601Format())
+            }
+            let query = TransactionRepository.selectQuery(from: from)
+            for row in try db.prepare(query) {
+                results.append(TransactionRepository.selectResult(row))
+            }
+            print("Successfully loaded transactions: \(results.count)")
+            return results
+        } catch {
+            print("Failed to fetch transactions: \(error)")
+            return []
+        }
+    }
+
+    // add a new transaction
+    func addTransaction(txn: inout Transaction) -> Bool {
+        guard let db else { return false }
+        do {
+            let rowid = try db.run(TransactionRepository.insertQuery(txn))
+            txn.id = rowid
             print("Successfully added transaction with ID: \(txn.id), \(txn)")
             return true
         } catch {
@@ -43,27 +180,13 @@ class TransactionRepository {
             return false
         }
     }
-    
+
+    // update an existing transaction
     func updateTransaction(txn: Transaction) -> Bool {
-        let accountToUpdate = Transaction.table.filter(Transaction.transID == txn.id)
+        guard let db else { return false }
         do {
-            try db?.run(accountToUpdate.update(
-                Transaction.accountIDExpr <- txn.accountID,
-                Transaction.toAccountIDExpr <- txn.toAccountID,
-                Transaction.payeeIDExpr <- txn.payeeID,
-                Transaction.transCodeExpr <- txn.transcode.id,
-                Transaction.transAmountExpr <- txn.transAmount,
-                Transaction.statusExpr <- txn.status.id,
-                Transaction.transactionNumberExpr <- txn.transactionNumber,
-                Transaction.notesExpr <- txn.notes,
-                Transaction.categIDExpr <- txn.categID,
-                Transaction.transDateExpr <- txn.transDate,
-                Transaction.lastUpdatedTimeExpr <- txn.lastUpdatedTime,
-                Transaction.deletedTimeExpr <- txn.deletedTime,
-                Transaction.followUpIDExpr <- txn.followUpID,
-                Transaction.toTransAmountExpr <- txn.toTransAmount,
-                Transaction.colorExpr <- txn.color
-            ))
+            try db.run(TransactionRepository.updateQuery(txn))
+            print("Successfully updated transaction: \(txn.id)")
             return true
         } catch {
             print("Failed to update transaction: \(error)")
@@ -72,51 +195,14 @@ class TransactionRepository {
     }
     
     func deleteTransaction(txn: Transaction) -> Bool {
-        let accountToDelete = Transaction.table.filter(Transaction.transID == txn.id)
+        guard let db else { return false }
         do {
-            try db?.run(accountToDelete.delete())
+            try db.run(TransactionRepository.deleteQuery(txn))
+            print("Successfully deleted transaction: \(txn.id)")
             return true
         } catch {
             print("Failed to delete transaction: \(error)")
             return false
         }
-    }
-    
-    // Fetch all Checking Accounts
-    func loadTransactions() -> [Transaction] {
-        var results: [Transaction] = []
-        guard let db = db else { return [] }
-
-        do {
-            for txn in try db.prepare(Transaction.table) {
-                results.append(Transaction(row: txn))
-            }
-        } catch {
-            print("Failed to fetch transactions: \(error)")
-        }
-        
-        return results
-    }
-    
-    func loadRecentTransactions(startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date())
-                                , endDate: Date? = Date()) -> [Transaction] {
-        var results: [Transaction] = []
-        guard let db = db else { return [] }
-
-        do {
-            var query = Transaction.table
-            // If startDate is set, add filtering by date range
-            if let startDate = startDate {
-                query = query.filter(Transaction.transDateExpr >= startDate.ISO8601Format())
-            }
-            
-            for txn in try db.prepare(query) {
-                results.append(Transaction(row: txn))
-            }
-        } catch {
-            print("Failed to fetch transactions: \(error)")
-        }
-        
-        return results
     }
 }

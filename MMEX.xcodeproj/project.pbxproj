@@ -230,12 +230,12 @@
 		A39B1B3F2C9A6741003E5562 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */,
+				A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */,
 				A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */,
+				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
 				A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */,
 				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
-				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
-				A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */,
-				A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -285,12 +285,12 @@
 		A3C142422C89B83A00D3CEC0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A3C142432C89C8FA00D3CEC0 /* Account.swift */,
+				A37E7D932C9B217500B4ECFC /* Infotable.swift */,
 				A3C1424B2C8AB52600D3CEC0 /* Currency.swift */,
+				A3C142432C89C8FA00D3CEC0 /* Account.swift */,
+				A3C1429F2C9025D600D3CEC0 /* Category.swift */,
 				A3C1424D2C8B335900D3CEC0 /* Payee.swift */,
 				A3C142662C8F2AF500D3CEC0 /* Transaction.swift */,
-				A3C1429F2C9025D600D3CEC0 /* Category.swift */,
-				A37E7D932C9B217500B4ECFC /* Infotable.swift */,
 				A37E7D992C9BC28900B4ECFC /* Row.swift */,
 			);
 			path = Models;
