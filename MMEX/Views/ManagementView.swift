@@ -52,7 +52,12 @@ struct ManagementView: View {
                 }
                 Picker("Base Currency", selection: $baseCurrencyID) {
                     ForEach(currencies) { currency in
-                        Text(currency.name).tag(currency.id) // Use currency.name to display and tag by id
+                        HStack {
+                            Text(currency.symbol)
+                            Spacer()
+                            Text(currency.name)
+                        }
+                        .tag(currency.id) // Use currency.name to display and tag by id
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())

@@ -172,7 +172,7 @@ extension AccountRepository {
         // Create a lookup dictionary for currencies by currencyId
         let currencyDictionary = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
 
-        for index in 0...accounts.count - 1 {
+        for index in accounts.indices {
             // TODO via join?
             accounts[index].currency = currencyDictionary[accounts[index].currencyId]
         }
