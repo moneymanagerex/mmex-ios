@@ -119,7 +119,9 @@ extension CurrencyRepository {
         guard let db else { return [] }
         do {
             var currencies: [Currency] = []
-            for row in try db.prepare(CurrencyRepository.selectQuery) {
+            for row in try db.prepare(CurrencyRepository.selectQuery
+                .order(CurrencyRepository.col_name)
+            ) {
                 currencies.append(CurrencyRepository.selectResult(row))
             }
             print("Successfully loaded currencies: \(currencies.count)")
