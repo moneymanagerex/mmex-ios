@@ -10,7 +10,7 @@ import SQLite
 
 struct Currency: ExportableEntity {
     var id: Int64                   // CURRENCYID INTEGER PRIMARY KEY
-    var name: String                // CURRENCYNAME TEXT COLLATE NOCASE UNIQUE
+    var name: String                // CURRENCYNAME TEXT COLLATE NOCASE NOT NULL UNIQUE
     var prefixSymbol: String?       // PFX_SYMBOL TEXT
     var suffixSymbol: String?       // SFX_SYMBOL TEXT
     var decimalPoint: String?       // DECIMAL_POINT TEXT
@@ -19,8 +19,8 @@ struct Currency: ExportableEntity {
     var centName: String?           // CENT_NAME TEXT COLLATE NOCASE
     var scale: Int?                 // SCALE INTEGER
     var baseConversionRate: Double? // BASECONVRATE NUMERIC
-    var symbol: String              // CURRENCY_SYMBOL TEXT COLLATE NOCASE UNIQUE
-    var type: String                // CURRENCY_TYPE TEXT (Fiat, Crypto)
+    var symbol: String              // CURRENCY_SYMBOL TEXT COLLATE NOCASE NOT NULL UNIQUE
+    var type: String                // CURRENCY_TYPE TEXT NOT NULL (Fiat, Crypto)
 }
 
 extension Currency {

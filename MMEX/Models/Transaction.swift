@@ -43,12 +43,12 @@ enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
 
 struct Transaction: ExportableEntity {
     var id: Int64                  // TRANSID INTEGER PRIMARY KEY
-    var accountId: Int64           // ACCOUNTID INTEGER
+    var accountId: Int64           // ACCOUNTID INTEGER NOT NULL
     var toAccountId: Int64?        // TOACCOUNTID INTEGER
-    var payeeId: Int64             // PAYEEID INTEGER
-    var transCode: Transcode       // TRANSCODE TEXT
-    var transAmount: Double        // TRANSAMOUNT NUMERIC
-    var status: TransactionStatus  // STATUS TEXT (can be NULL)
+    var payeeId: Int64             // PAYEEID INTEGER NOT NULL
+    var transCode: Transcode       // TRANSCODE TEXT NOT NULL
+    var transAmount: Double        // TRANSAMOUNT NUMERIC NOT NULL
+    var status: TransactionStatus  // STATUS TEXT
     var transactionNumber: String? // TRANSACTIONNUMBER TEXT
     var notes: String?             // NOTES TEXT
     var categId: Int64?            // CATEGID INTEGER

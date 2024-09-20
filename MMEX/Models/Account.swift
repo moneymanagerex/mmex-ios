@@ -36,10 +36,10 @@ enum AccountType: String, CaseIterable, Identifiable, Codable {
 
 struct Account: ExportableEntity {
     var id: Int64               // ACCOUNTID INTEGER PRIMARY KEY
-    var name: String            // ACCOUNTNAME TEXT COLLATE NOCASE UNIQUE
-    var type: AccountType       // ACCOUNTTYPE TEXT (Cash, Checking, Credit Card, Loan, ...)
+    var name: String            // ACCOUNTNAME TEXT COLLATE NOCASE NOT NULL UNIQUE
+    var type: AccountType       // ACCOUNTTYPE TEXT NOT NULL (Cash, Checking, ...)
     var num: String?            // ACCOUNTNUM TEXT
-    var status: AccountStatus   // STATUS TEXT (Open, Closed)
+    var status: AccountStatus   // STATUS TEXT NOT NULL (Open, Closed)
     var notes: String?          // NOTES TEXT
     var heldAt: String?         // HELDAT TEXT
     var website: String?        // WEBSITE TEXT
@@ -47,8 +47,8 @@ struct Account: ExportableEntity {
     var accessInfo: String?     // ACCESSINFO TEXT
     var initialDate: String?    // INITIALDATE TEXT
     var initialBal: Double?     // INITIALBAL NUMERIC
-    var favoriteAcct: String    // FAVORITEACCT TEXT
-    var currencyId: Int64       // CURRENCYID INTEGER
+    var favoriteAcct: String    // FAVORITEACCT NOT NULL TEXT
+    var currencyId: Int64       // CURRENCYID NOT NULL INTEGER
     var statementLocked: Bool?  // STATEMENTLOCKED INTEGER
     var statementDate: String?  // STATEMENTDATE TEXT
     var minimumBalance: Double? // MINIMUMBALANCE NUMERIC
