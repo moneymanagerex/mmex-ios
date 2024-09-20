@@ -39,7 +39,7 @@ struct AccountEditView: View {
                 TextField("Favorite Account", text: $account.favoriteAcct)
             }
             Section(header: Text("Balance")) {
-                TextField("Balance", value: $account.balance, format: .number)
+                TextField("Balance", value: $account.initialBal, format: .number)
             }
             Section(header: Text("Notes")) {
                 TextField("Notes", text: Binding(

@@ -95,7 +95,7 @@ class TransactionRepository {
                     toAccountID: txn[Transaction.toAccountIDExpr],
                     payeeID: txn[Transaction.payeeIDExpr],
                     transCode: Transcode(rawValue: txn[Transaction.transCodeExpr]) ?? Transcode.deposit,
-                    transAmount: txn[Transaction.transAmountExpr],
+                    transAmount: txn[Transaction.transAmountCast],
                     status: TransactionStatus(rawValue: txn[Transaction.statusExpr] ?? "") ?? TransactionStatus.none,
                     transactionNumber: txn[Transaction.transactionNumberExpr],
                     notes: txn[Transaction.notesExpr],
@@ -104,7 +104,7 @@ class TransactionRepository {
                     lastUpdatedTime: txn[Transaction.lastUpdatedTimeExpr],
                     deletedTime: txn[Transaction.deletedTimeExpr],
                     followUpID: txn[Transaction.followUpIDExpr],
-                    toTransAmount: txn[Transaction.toTransAmountExpr],
+                    toTransAmount: txn[Transaction.toTransAmountCast],
                     color: txn[Transaction.colorExpr]
                 ))
             }
@@ -134,7 +134,7 @@ class TransactionRepository {
                     toAccountID: txn[Transaction.toAccountIDExpr],
                     payeeID: txn[Transaction.payeeIDExpr],
                     transCode: Transcode(rawValue: txn[Transaction.transCodeExpr]) ?? Transcode.deposit,
-                    transAmount: txn[Transaction.transAmountExpr],
+                    transAmount: txn[Transaction.transAmountCast],
                     status: TransactionStatus(rawValue: txn[Transaction.statusExpr] ?? "") ?? TransactionStatus.none,
                     transactionNumber: txn[Transaction.transactionNumberExpr],
                     notes: txn[Transaction.notesExpr],
@@ -143,7 +143,7 @@ class TransactionRepository {
                     lastUpdatedTime: txn[Transaction.lastUpdatedTimeExpr],
                     deletedTime: txn[Transaction.deletedTimeExpr],
                     followUpID: txn[Transaction.followUpIDExpr],
-                    toTransAmount: txn[Transaction.toTransAmountExpr],
+                    toTransAmount: txn[Transaction.toTransAmountCast],
                     color: txn[Transaction.colorExpr]
                 ))
             }

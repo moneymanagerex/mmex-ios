@@ -19,73 +19,95 @@ enum AccountStatus: String, CaseIterable, Identifiable, Codable {
 }
 
 struct Account: ExportableEntity {
-    var id: Int64
-    var name: String
-    var type: String
-    var status: AccountStatus
-    var favoriteAcct: String
-    var currencyId: Int64
-    var balance: Double?
-    var notes: String?
+    var id: Int64               // ACCOUNTID INTEGER PRIMARY KEY
+    var name: String            // ACCOUNTNAME TEXT COLLATE NOCASE UNIQUE
+    var type: String            // ACCOUNTTYPE TEXT (Cash, Checking, Credit Card, Loan, ...)
+    var num: String?            // ACCOUNTNUM TEXT
+    var status: AccountStatus   // STATUS TEXT (Open, Closed)
+    var notes: String?          // NOTES TEXT
+    var heldAt: String?         // HELDAT TEXT
+    var website: String?        // WEBSITE TEXT
+    var contactInfo: String?    // CONTACTINFO TEXT
+    var accessInfo: String?     // ACCESSINFO TEXT
+    var initialDate: String?    // INITIALDATE TEXT
+    var initialBal: Double?     // INITIALBAL NUMERIC
+    var favoriteAcct: String    // FAVORITEACCT TEXT
+    var currencyId: Int64       // CURRENCYID INTEGER
+    var statementLocked: Bool?  // STATEMENTLOCKED INTEGER
+    var statementDate: String?  // STATEMENTDATE TEXT
+    var minimumBalance: Double? // MINIMUMBALANCE NUMERIC
+    var creditLimit: Double?    // CREDITLIMIT NUMERIC
+    var interestRate: Double?   // INTERESTRATE NUMERIC
+    var paymentDueDate: String? // PAYMENTDUEDATE TEXT
+    var minimumPayment: Double? // MINIMUMPAYMENT NUMERIC
+
     var currency: Currency?
     
-    init(id: Int64, name: String, type: String, status: AccountStatus, favoriteAcct: String, currencyId: Int64, balance: Double? = nil, notes: String? = nil, currency: Currency? = nil) {
-        self.id = id
-        self.name = name
-        self.type = type
-        self.status = status
-        self.favoriteAcct = favoriteAcct
-        self.currencyId = currencyId
-        self.balance = balance
-        self.notes = notes
-        self.currency = currency
+    init(
+        id: Int64, name: String, type: String,
+        num: String? = nil, status: AccountStatus, notes: String? = nil,
+        heldAt: String? = nil, website: String? = nil, contactInfo: String? = nil,
+        accessInfo: String? = nil, initialDate: String? = nil, initialBal: Double? = nil,
+        favoriteAcct: String, currencyId: Int64, statementLocked: Bool? = nil,
+        statementDate: String? = nil, minimumBalance: Double? = nil, creditLimit: Double? = nil,
+        interestRate: Double? = nil, paymentDueDate: String? = nil, minimumPayment: Double? = nil,
+        currency: Currency? = nil
+    ) {
+        self.id              = id
+        self.name            = name
+        self.type            = type
+        self.num             = num
+        self.status          = status
+        self.notes           = notes
+        self.heldAt          = heldAt
+        self.website         = website
+        self.contactInfo     = contactInfo
+        self.accessInfo      = accessInfo
+        self.initialDate     = initialDate
+        self.initialBal      = initialBal
+        self.favoriteAcct    = favoriteAcct
+        self.currencyId      = currencyId
+        self.statementLocked = statementLocked
+        self.statementDate   = statementDate
+        self.minimumBalance  = minimumBalance
+        self.creditLimit     = creditLimit
+        self.interestRate    = interestRate
+        self.paymentDueDate  = paymentDueDate
+        self.minimumPayment  = minimumPayment
+        self.currency        = currency
     }
 }
 
 extension Account {
-    static let table = Table("ACCOUNTLIST_V1")
-    
-    static let accountID = Expression<Int64>("ACCOUNTID")
-    static let accountName = Expression<String>("ACCOUNTNAME")
-    static let accountType = Expression<String>("ACCOUNTTYPE")
-    static let status = Expression<String>("STATUS")
-    static let favoriteAcct = Expression<String>("FAVORITEACCT")
-    static let currencyID = Expression<Int64>("CURRENCYID")
-    static let balance = Expression<Double?>("INITIALBAL")
-    static let notes = Expression<String?>("NOTES")
-    
-    static var empty: Account {
-        Account(id: 0, name: "", type: "", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance: 0.0, notes: "")
-    }
+    static var empty: Account { Account(
+        id: 0, name: "", type: "", status: AccountStatus.open, notes: "",
+        initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1
+    ) }
 }
+
 extension Account {
-    static let sampleData : [Account] = 
-    [
-        Account(id: 1, name: "Account A", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 1, balance:0.0, notes:"", currency: Currency.sampleData[0]),
-        Account(id: 2, name: "Account B", type: "Cash", status: AccountStatus.open, favoriteAcct: "TRUE", currencyId: 2, balance:0.0, notes:"", currency: Currency.sampleData[1])
+    static let sampleData : [Account] = [
+        Account(
+            id: 1, name: "Account A", type: "Cash",
+            status: AccountStatus.open, notes:"",
+            initialBal:0.0, favoriteAcct: "TRUE", currencyId: 1,
+            currency: Currency.sampleData[0]
+        ),
+        Account(
+            id: 2, name: "Account B", type: "Cash",
+            status: AccountStatus.open, notes:"",
+            initialBal:0.0, favoriteAcct: "TRUE", currencyId: 2,
+            currency: Currency.sampleData[1]
+        ),
     ]
 }
 
 extension Account {
-    static func fromRow(_ row: Row) -> Account {
-        return Account(id: row[Account.accountID],
-                       name: row[Account.accountName],
-                       type: row[Account.accountType],
-                       status: AccountStatus(rawValue: row[Account.status]) ?? AccountStatus.open,
-                       favoriteAcct: row[Account.favoriteAcct],
-                       currencyId: row[Account.currencyID],
-                       balance: row[Account.balance],
-                       notes: row[Account.notes]
-        )
-    }
-}
-
-extension Account {
     static let accountTypeToSFSymbol: [String: String] = [
-        "Cash": "dollarsign.circle.fill",
-        "Checking": "banknote.fill",
-        "Credit Card": "creditcard.fill",
-        "Loan": "building.columns.fill",
-        "Term": "calendar.circle.fill"
+        "Cash"        : "dollarsign.circle.fill",
+        "Checking"    : "banknote.fill",
+        "Credit Card" : "creditcard.fill",
+        "Loan"        : "building.columns.fill",
+        "Term"        : "calendar.circle.fill",
     ]
 }

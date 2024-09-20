@@ -117,7 +117,6 @@ extension Transaction {
 extension Transaction
 {
     // SQLite columns
-    static let table = Table("CHECKINGACCOUNT_V1")
     static let transID = Expression<Int64>("TRANSID")
     static let accountIDExpr = Expression<Int64>("ACCOUNTID")
     static let toAccountIDExpr = Expression<Int64?>("TOACCOUNTID")
@@ -134,4 +133,26 @@ extension Transaction
     static let followUpIDExpr = Expression<Int64?>("FOLLOWUPID")
     static let toTransAmountExpr = Expression<Double?>("TOTRANSAMOUNT")
     static let colorExpr = Expression<Int64?>("COLOR")
+
+    static let transAmountCast = cast(transAmountExpr) as Expression<Double>
+    static let toTransAmountCast = cast(toTransAmountExpr) as Expression<Double?>
+
+    static let table = Table("CHECKINGACCOUNT_V1").select(
+        transID,
+        accountIDExpr,
+        toAccountIDExpr,
+        payeeIDExpr,
+        transCodeExpr,
+        transAmountCast,
+        statusExpr,
+        transactionNumberExpr,
+        notesExpr,
+        categIDExpr,
+        transDateExpr,
+        lastUpdatedTimeExpr,
+        deletedTimeExpr,
+        followUpIDExpr,
+        toTransAmountCast,
+        colorExpr
+    )
 }

@@ -9,66 +9,27 @@ import Foundation
 import SQLite
 
 struct Currency: ExportableEntity {
-    var id: Int64 // CURRENCYID
-    var name: String // CURRENCYNAME
-    var prefixSymbol: String? // PFX_SYMBOL
-    var suffixSymbol: String? // SFX_SYMBOL
-    var decimalPoint: String? // DECIMAL_POINT
-    var groupSeparator: String? // GROUP_SEPARATOR
-    var unitName: String? // UNIT_NAME
-    var centName: String? // CENT_NAME
-    var scale: Int // SCALE
-    var baseConversionRate: Double? // BASECONVRATE
-    var symbol: String // CURRENCY_SYMBOL
-    var type: String // CURRENCY_TYPE (Fiat, Crypto)
+    var id: Int64                   // CURRENCYID INTEGER PRIMARY KEY
+    var name: String                // CURRENCYNAME TEXT COLLATE NOCASE UNIQUE
+    var prefixSymbol: String?       // PFX_SYMBOL TEXT
+    var suffixSymbol: String?       // SFX_SYMBOL TEXT
+    var decimalPoint: String?       // DECIMAL_POINT TEXT
+    var groupSeparator: String?     // GROUP_SEPARATOR TEXT
+    var unitName: String?           // UNIT_NAME TEXT COLLATE NOCASE
+    var centName: String?           // CENT_NAME TEXT COLLATE NOCASE
+    var scale: Int?                 // SCALE INTEGER
+    var baseConversionRate: Double? // BASECONVRATE NUMERIC
+    var symbol: String              // CURRENCY_SYMBOL TEXT COLLATE NOCASE UNIQUE
+    var type: String                // CURRENCY_TYPE TEXT (Fiat, Crypto)
 }
 
 extension Currency {
-    static let sampleData: [Currency] = [
-        Currency(id: 1, name: "US dollar", prefixSymbol: "$", suffixSymbol: "", decimalPoint: ".", groupSeparator: ",", unitName: "Dollar", centName: "Cent", scale: 100, baseConversionRate: 1.0, symbol: "USD", type: "Fiat"),
-        Currency(id: 2, name: "Euro", prefixSymbol: "€", suffixSymbol: "", decimalPoint: ".", groupSeparator: " ", unitName: nil, centName: nil, scale: 100, baseConversionRate: 1.0, symbol: "EUR", type: "Fiat"),
-        Currency(id: 3, name: "British pound", prefixSymbol: "£", suffixSymbol: "", decimalPoint: ".", groupSeparator: " ", unitName: "Pound", centName: "Pence", scale: 100, baseConversionRate: 1.0, symbol: "GBP", type: "Fiat")
-    ]
-}
-
-extension Currency {
-    // Define an empty currency
-    static var empty: Currency { Currency(id: 0, name: "", prefixSymbol: nil, suffixSymbol: nil, decimalPoint: nil, groupSeparator: nil, unitName: nil, centName: nil, scale: 0, baseConversionRate: 0, symbol: "", type: "") }
-    
-    // Define the table
-    static let table = Table("CURRENCYFORMATS_V1")
-    
-    // Define the columns as Expressions
-    static let currencyID = Expression<Int64>("CURRENCYID")
-    static let currencyName = Expression<String>("CURRENCYNAME")
-    static let prefixSymbol = Expression<String?>("PFX_SYMBOL")
-    static let suffixSymbol = Expression<String?>("SFX_SYMBOL")
-    static let decimalPoint = Expression<String?>("DECIMAL_POINT")
-    static let groupSeparator = Expression<String?>("GROUP_SEPARATOR")
-    static let unitName = Expression<String?>("UNIT_NAME")
-    static let centName = Expression<String?>("CENT_NAME")
-    static let scale = Expression<Int>("SCALE")
-    static let baseConversionRate = Expression<Double?>("BASECONVRATE")
-    static let symbol = Expression<String>("CURRENCY_SYMBOL")
-    static let type = Expression<String>("CURRENCY_TYPE")
-}
-
-extension Currency {
-    static func fromRow(_ row: Row) -> Currency {
-        return Currency(id: row[Currency.currencyID],
-                        name: row[Currency.currencyName],
-                        prefixSymbol: row[Currency.prefixSymbol] ?? "",
-                        suffixSymbol: row[Currency.suffixSymbol] ?? "",
-                        decimalPoint: row[Currency.decimalPoint] ?? ".",
-                        groupSeparator: row[Currency.groupSeparator] ?? ",",
-                        unitName: row[Currency.unitName] ?? "",
-                        centName: row[Currency.centName] ?? "",
-                        scale: row[Currency.scale],
-                        baseConversionRate: row[Currency.baseConversionRate],
-                        symbol: row[Currency.symbol],
-                        type: row[Currency.type]
-        )
-    }
+    // empty currency
+    static var empty: Currency { Currency(
+        id: 0, name: "", prefixSymbol: nil, suffixSymbol: nil,
+        decimalPoint: nil, groupSeparator: nil, unitName: nil, centName: nil,
+        scale: 0, baseConversionRate: 0, symbol: "", type: ""
+    ) }
 }
 
 extension Currency {
@@ -81,7 +42,7 @@ extension Currency {
         numberFormatter.currencySymbol = self.prefixSymbol ?? self.symbol
         numberFormatter.currencyGroupingSeparator = self.groupSeparator ?? ","
         numberFormatter.currencyDecimalSeparator = self.decimalPoint ?? "."
-        numberFormatter.maximumFractionDigits = self.scale
+        numberFormatter.maximumFractionDigits = self.scale ?? 0
         
         return numberFormatter
     }
@@ -101,3 +62,24 @@ extension Currency {
         return formatter.string(from: NSNumber(value: baseAmount)) ?? "\(baseAmount)"
     }
 }
+
+extension Currency {
+    static let sampleData: [Currency] = [
+        Currency(
+            id: 1, name: "US dollar", prefixSymbol: "$", suffixSymbol: "",
+            decimalPoint: ".", groupSeparator: ",", unitName: "Dollar", centName: "Cent",
+            scale: 100, baseConversionRate: 1.0, symbol: "USD", type: "Fiat"
+        ),
+        Currency(
+            id: 2, name: "Euro", prefixSymbol: "€", suffixSymbol: "",
+            decimalPoint: ".", groupSeparator: " ", unitName: nil, centName: nil,
+            scale: 100, baseConversionRate: 1.0, symbol: "EUR", type: "Fiat"
+        ),
+        Currency(
+            id: 3, name: "British pound", prefixSymbol: "£", suffixSymbol: "",
+            decimalPoint: ".", groupSeparator: " ", unitName: "Pound", centName: "Pence",
+            scale: 100, baseConversionRate: 1.0, symbol: "GBP", type: "Fiat"
+        )
+    ]
+}
+
