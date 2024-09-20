@@ -151,7 +151,9 @@ extension AccountRepository {
         guard let db else { return [] }
         do {
             var accounts: [Account] = []
-            for row in try db.prepare(AccountRepository.selectQuery) {
+            for row in try db.prepare(AccountRepository.selectQuery
+                .order(AccountRepository.col_name)
+            ) {
                 accounts.append(AccountRepository.selectResult(row))
             }
             print("Successfully loaded accountss: \(accounts.count)")
