@@ -95,7 +95,9 @@ extension PayeeRepository {
         guard let db else { return [] }
         do {
             var payees: [Payee] = []
-            for row in try db.prepare(PayeeRepository.selectQuery) {
+            for row in try db.prepare(PayeeRepository.selectQuery
+                .order(PayeeRepository.col_active.desc, PayeeRepository.col_name)
+            ) {
                 payees.append(PayeeRepository.selectResult(row))
             }
             print("Successfully loaded payees: \(payees.count)")
