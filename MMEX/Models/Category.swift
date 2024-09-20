@@ -10,7 +10,7 @@ import SQLite
 
 struct Category: ExportableEntity {
     var id: Int64        // CATEGID INTEGER PRIMARY KEY
-    var name: String     // CATEGNAME TEXT COLLATE NOCASE
+    var name: String     // CATEGNAME TEXT COLLATE NOCASE NOT NULL
     var active: Bool?    // ACTIVE INTEGER
     var parentId: Int64? // PARENTID INTEGER
                          // UNIQUE(CATEGNAME, PARENTID)

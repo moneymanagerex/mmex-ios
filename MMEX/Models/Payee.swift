@@ -10,7 +10,7 @@ import SQLite
 
 struct Payee: ExportableEntity {
     var id: Int64          // PAYEEID INTEGER PRIMARY KEY
-    var name: String       // PAYEENAME TEXT COLLATE NOCASE UNIQUE
+    var name: String       // PAYEENAME TEXT COLLATE NOCASE NOT NULL UNIQUE
     var categoryId: Int64? // CATEGID INTEGER
     var number: String?    // NUMBER TEXT
     var website: String?   // WEBSITE TEXT
