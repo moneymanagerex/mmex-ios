@@ -18,34 +18,34 @@ class TransactionRepository {
 
 extension TransactionRepository {
     // table query
-    static let table = Table("CHECKINGACCOUNT_V1")
+    static let table = SQLite.Table("CHECKINGACCOUNT_V1")
 
     // table columns
-    static let col_id                = Expression<Int64>("TRANSID")
-    static let col_accountId         = Expression<Int64>("ACCOUNTID")
-    static let col_toAccountId       = Expression<Int64?>("TOACCOUNTID")
-    static let col_payeeId           = Expression<Int64>("PAYEEID")
-    static let col_transCode         = Expression<String>("TRANSCODE")
-    static let col_transAmount       = Expression<Double>("TRANSAMOUNT")
-    static let col_status            = Expression<String?>("STATUS")
-    static let col_transactionNumber = Expression<String?>("TRANSACTIONNUMBER")
-    static let col_notes             = Expression<String?>("NOTES")
-    static let col_categId           = Expression<Int64?>("CATEGID")
-    static let col_transDate         = Expression<String?>("TRANSDATE")
-    static let col_lastUpdatedTime   = Expression<String?>("LASTUPDATEDTIME")
-    static let col_deletedTime       = Expression<String?>("DELETEDTIME")
-    static let col_followUpId        = Expression<Int64?>("FOLLOWUPID")
-    static let col_toTransAmount     = Expression<Double?>("TOTRANSAMOUNT")
-    static let col_color             = Expression<Int64>("COLOR")
+    static let col_id                = SQLite.Expression<Int64>("TRANSID")
+    static let col_accountId         = SQLite.Expression<Int64>("ACCOUNTID")
+    static let col_toAccountId       = SQLite.Expression<Int64?>("TOACCOUNTID")
+    static let col_payeeId           = SQLite.Expression<Int64>("PAYEEID")
+    static let col_transCode         = SQLite.Expression<String>("TRANSCODE")
+    static let col_transAmount       = SQLite.Expression<Double>("TRANSAMOUNT")
+    static let col_status            = SQLite.Expression<String?>("STATUS")
+    static let col_transactionNumber = SQLite.Expression<String?>("TRANSACTIONNUMBER")
+    static let col_notes             = SQLite.Expression<String?>("NOTES")
+    static let col_categId           = SQLite.Expression<Int64?>("CATEGID")
+    static let col_transDate         = SQLite.Expression<String?>("TRANSDATE")
+    static let col_lastUpdatedTime   = SQLite.Expression<String?>("LASTUPDATEDTIME")
+    static let col_deletedTime       = SQLite.Expression<String?>("DELETEDTIME")
+    static let col_followUpId        = SQLite.Expression<Int64?>("FOLLOWUPID")
+    static let col_toTransAmount     = SQLite.Expression<Double?>("TOTRANSAMOUNT")
+    static let col_color             = SQLite.Expression<Int64>("COLOR")
 
     // cast NUMERIC to REAL
-    static let cast_transAmount   = cast(col_transAmount)   as Expression<Double>
-    static let cast_toTransAmount = cast(col_toTransAmount) as Expression<Double?>
+    static let cast_transAmount   = cast(col_transAmount)   as SQLite.Expression<Double>
+    static let cast_toTransAmount = cast(col_toTransAmount) as SQLite.Expression<Double?>
 }
     
 extension TransactionRepository {
     // select query
-    static func selectQuery(from: Table) -> Table {
+    static func selectQuery(from: SQLite.Table) -> SQLite.Table {
         return from.select(
             col_id,
             col_accountId,
@@ -123,7 +123,7 @@ extension TransactionRepository {
         return table.filter(col_id == txn.id).delete()
     }
 }
-    
+
 extension TransactionRepository {
     // load all transactions
     func loadTransactions() -> [Transaction] {
@@ -141,7 +141,7 @@ extension TransactionRepository {
             return []
         }
     }
-    
+
     // load recent transactions
     func loadRecentTransactions(
         startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date()),

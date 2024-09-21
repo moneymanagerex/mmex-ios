@@ -18,17 +18,17 @@ class PayeeRepository {
 
 extension PayeeRepository {
     // table query
-    static let table = Table("PAYEE_V1")
+    static let table = SQLite.Table("PAYEE_V1")
 
     // table columns
-    static let col_id         = Expression<Int64>("PAYEEID")
-    static let col_name       = Expression<String>("PAYEENAME")
-    static let col_categoryId = Expression<Int64?>("CATEGID")
-    static let col_number     = Expression<String?>("NUMBER")
-    static let col_website    = Expression<String?>("WEBSITE")
-    static let col_notes      = Expression<String?>("NOTES")
-    static let col_active     = Expression<Int?>("ACTIVE")
-    static let col_pattern    = Expression<String>("PATTERN")
+    static let col_id         = SQLite.Expression<Int64>("PAYEEID")
+    static let col_name       = SQLite.Expression<String>("PAYEENAME")
+    static let col_categoryId = SQLite.Expression<Int64?>("CATEGID")
+    static let col_number     = SQLite.Expression<String?>("NUMBER")
+    static let col_website    = SQLite.Expression<String?>("WEBSITE")
+    static let col_notes      = SQLite.Expression<String?>("NOTES")
+    static let col_active     = SQLite.Expression<Int?>("ACTIVE")
+    static let col_pattern    = SQLite.Expression<String>("PATTERN")
 }
 
 extension PayeeRepository {

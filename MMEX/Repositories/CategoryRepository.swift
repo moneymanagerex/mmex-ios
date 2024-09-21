@@ -17,13 +17,13 @@ class CategoryRepository {
 
 extension CategoryRepository {
     // table query
-    static let table = Table("CATEGORY_V1")
+    static let table = SQLite.Table("CATEGORY_V1")
 
     // table columns
-    static let col_id       = Expression<Int64>("CATEGID")
-    static let col_name     = Expression<String>("CATEGNAME")
-    static let col_active   = Expression<Int?>("ACTIVE")
-    static let col_parentId = Expression<Int64?>("PARENTID")
+    static let col_id       = SQLite.Expression<Int64>("CATEGID")
+    static let col_name     = SQLite.Expression<String>("CATEGNAME")
+    static let col_active   = SQLite.Expression<Int?>("ACTIVE")
+    static let col_parentId = SQLite.Expression<Int64?>("PARENTID")
 }
 
 extension CategoryRepository {

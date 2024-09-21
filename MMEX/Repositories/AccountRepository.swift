@@ -18,37 +18,37 @@ class AccountRepository {
 
 extension AccountRepository {
     // table query
-    static let table = Table("ACCOUNTLIST_V1")
+    static let table = SQLite.Table("ACCOUNTLIST_V1")
 
     // table columns
-    static let col_id              = Expression<Int64>("ACCOUNTID")
-    static let col_name            = Expression<String>("ACCOUNTNAME")
-    static let col_type            = Expression<String>("ACCOUNTTYPE")
-    static let col_num             = Expression<String?>("ACCOUNTNUM")
-    static let col_status          = Expression<String>("STATUS")
-    static let col_notes           = Expression<String?>("NOTES")
-    static let col_heldAt          = Expression<String?>("HELDAT")
-    static let col_website         = Expression<String?>("WEBSITE")
-    static let col_contactInfo     = Expression<String?>("CONTACTINFO")
-    static let col_accessInfo      = Expression<String?>("ACCESSINFO")
-    static let col_initialDate     = Expression<String?>("INITIALDATE")
-    static let col_initialBal      = Expression<Double?>("INITIALBAL")
-    static let col_favoriteAcct    = Expression<String>("FAVORITEACCT")
-    static let col_currencyId      = Expression<Int64>("CURRENCYID")
-    static let col_statementLocked = Expression<Int?>("STATEMENTLOCKED")
-    static let col_statementDate   = Expression<String?>("STATEMENTDATE")
-    static let col_minimumBalance  = Expression<Double?>("MINIMUMBALANCE")
-    static let col_creditLimit     = Expression<Double?>("CREDITLIMIT")
-    static let col_interestRate    = Expression<Double?>("INTERESTRATE")
-    static let col_paymentDueDate  = Expression<String?>("PAYMENTDUEDATE")
-    static let col_minimumPayment  = Expression<Double?>("MINIMUMPAYMENT")
+    static let col_id              = SQLite.Expression<Int64>("ACCOUNTID")
+    static let col_name            = SQLite.Expression<String>("ACCOUNTNAME")
+    static let col_type            = SQLite.Expression<String>("ACCOUNTTYPE")
+    static let col_num             = SQLite.Expression<String?>("ACCOUNTNUM")
+    static let col_status          = SQLite.Expression<String>("STATUS")
+    static let col_notes           = SQLite.Expression<String?>("NOTES")
+    static let col_heldAt          = SQLite.Expression<String?>("HELDAT")
+    static let col_website         = SQLite.Expression<String?>("WEBSITE")
+    static let col_contactInfo     = SQLite.Expression<String?>("CONTACTINFO")
+    static let col_accessInfo      = SQLite.Expression<String?>("ACCESSINFO")
+    static let col_initialDate     = SQLite.Expression<String?>("INITIALDATE")
+    static let col_initialBal      = SQLite.Expression<Double?>("INITIALBAL")
+    static let col_favoriteAcct    = SQLite.Expression<String>("FAVORITEACCT")
+    static let col_currencyId      = SQLite.Expression<Int64>("CURRENCYID")
+    static let col_statementLocked = SQLite.Expression<Int?>("STATEMENTLOCKED")
+    static let col_statementDate   = SQLite.Expression<String?>("STATEMENTDATE")
+    static let col_minimumBalance  = SQLite.Expression<Double?>("MINIMUMBALANCE")
+    static let col_creditLimit     = SQLite.Expression<Double?>("CREDITLIMIT")
+    static let col_interestRate    = SQLite.Expression<Double?>("INTERESTRATE")
+    static let col_paymentDueDate  = SQLite.Expression<String?>("PAYMENTDUEDATE")
+    static let col_minimumPayment  = SQLite.Expression<Double?>("MINIMUMPAYMENT")
 
     // cast NUMERIC to REAL
-    static let cast_initialBal     = cast(col_initialBal)     as Expression<Double?>
-    static let cast_minimumBalance = cast(col_minimumBalance) as Expression<Double?>
-    static let cast_creditLimit    = cast(col_creditLimit)    as Expression<Double?>
-    static let cast_interestRate   = cast(col_interestRate)   as Expression<Double?>
-    static let cast_minimumPayment = cast(col_minimumPayment) as Expression<Double?>
+    static let cast_initialBal     = cast(col_initialBal)     as SQLite.Expression<Double?>
+    static let cast_minimumBalance = cast(col_minimumBalance) as SQLite.Expression<Double?>
+    static let cast_creditLimit    = cast(col_creditLimit)    as SQLite.Expression<Double?>
+    static let cast_interestRate   = cast(col_interestRate)   as SQLite.Expression<Double?>
+    static let cast_minimumPayment = cast(col_minimumPayment) as SQLite.Expression<Double?>
 }
 
 extension AccountRepository {
