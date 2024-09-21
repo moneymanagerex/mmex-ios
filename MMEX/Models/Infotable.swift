@@ -56,9 +56,9 @@ extension Infotable {
 extension Infotable {
     static var empty: Infotable { Infotable(id: 0, name: "", value: "") }
 
-    static let table = Table("INFOTABLE_V1")
+    static let table = SQLite.Table("INFOTABLE_V1")
 
-    static let infoID = Expression<Int64>("INFOID")
-    static let infoName = Expression<String>("INFONAME")
-    static let infoValue = Expression<String>("INFOVALUE")
+    static let infoID    = SQLite.Expression<Int64>("INFOID")
+    static let infoName  = SQLite.Expression<String>("INFONAME")
+    static let infoValue = SQLite.Expression<String>("INFOVALUE")
 }
