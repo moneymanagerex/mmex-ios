@@ -20,6 +20,25 @@ extension TransactionRepository {
     // table query
     static let table = SQLite.Table("CHECKINGACCOUNT_V1")
 
+    // column            | type    | other
+    // ------------------+---------+------
+    // TRANSID           | INTEGER | PRIMARY KEY
+    // ACCOUNTID         | INTEGER | NOT NULL
+    // TOACCOUNTID       | INTEGER |
+    // PAYEEID           | INTEGER | NOT NULL
+    // TRANSCODE         | TEXT    | NOT NULL
+    // TRANSAMOUNT       | NUMERIC | NOT NULL
+    // STATUS            | TEXT    |
+    // TRANSACTIONNUMBER | TEXT    |
+    // NOTES             | TEXT    |
+    // CATEGID           | INTEGER |
+    // TRANSDATE         | TEXT    |
+    // LASTUPDATEDTIME   | TEXT    |
+    // DELETEDTIME       | TEXT    |
+    // FOLLOWUPID        | INTEGER |
+    // TOTRANSAMOUNT     | NUMERIC |
+    // COLOR             | INTEGER | DEFAULT -1
+
     // table columns
     static let col_id                = SQLite.Expression<Int64>("TRANSID")
     static let col_accountId         = SQLite.Expression<Int64>("ACCOUNTID")
@@ -109,17 +128,17 @@ extension TransactionRepository {
     }
 
     // insert query
-    static func insertQuery(_ txn: Transaction) -> Insert {
+    static func insertQuery(_ txn: Transaction) -> SQLite.Insert {
         return table.insert(insertSetters(txn))
     }
 
     // update query
-    static func updateQuery(_ txn: Transaction) -> Update {
+    static func updateQuery(_ txn: Transaction) -> SQLite.Update {
         return table.filter(col_id == txn.id).update(insertSetters(txn))
     }
 
     // delete query
-    static func deleteQuery(_ txn: Transaction) -> Delete {
+    static func deleteQuery(_ txn: Transaction) -> SQLite.Delete {
         return table.filter(col_id == txn.id).delete()
     }
 }

@@ -20,6 +20,21 @@ extension CurrencyRepository {
     // table query
     static let table = SQLite.Table("CURRENCYFORMATS_V1")
 
+    // column          | type    | other
+    // ----------------+---------+------
+    // CURRENCYID      | INTEGER | PRIMARY KEY
+    // CURRENCYNAME    | TEXT    | COLLATE NOCASE NOT NULL UNIQUE
+    // PFX_SYMBOL      | TEXT    |
+    // SFX_SYMBOL      | TEXT    |
+    // DECIMAL_POINT   | TEXT    |
+    // GROUP_SEPARATOR | TEXT    |
+    // UNIT_NAME       | TEXT    | COLLATE NOCASE
+    // CENT_NAME       | TEXT    | COLLATE NOCASE
+    // SCALE           | INTEGER |
+    // BASECONVRATE    | NUMERIC |
+    // CURRENCY_SYMBOL | TEXT    | COLLATE NOCASE NOT NULL UNIQUE
+    // CURRENCY_TYPE   | TEXT    | NOT NULL (Fiat, Crypto)
+
     // table columns
     static let col_id                 = SQLite.Expression<Int64>("CURRENCYID")
     static let col_name               = SQLite.Expression<String>("CURRENCYNAME")
@@ -74,7 +89,7 @@ extension CurrencyRepository {
     }
 
     // insert query
-    static func insertQuery(_ currency: Currency) -> Insert {
+    static func insertQuery(_ currency: Currency) -> SQLite.Insert {
         return table.insert(
             col_name               <- currency.name,
             col_prefixSymbol       <- currency.prefixSymbol,
@@ -91,7 +106,7 @@ extension CurrencyRepository {
     }
 
     // update query
-    static func updateQuery(_ currency: Currency) -> Update {
+    static func updateQuery(_ currency: Currency) -> SQLite.Update {
         return table.filter(col_id == currency.id).update(
             col_name               <- currency.name,
             col_prefixSymbol       <- currency.prefixSymbol,
@@ -108,7 +123,7 @@ extension CurrencyRepository {
     }
 
     // delete query
-    static func deleteQuery(_ currency: Currency) -> Delete {
+    static func deleteQuery(_ currency: Currency) -> SQLite.Delete {
         return table.filter(col_id == currency.id).delete()
     }
 }

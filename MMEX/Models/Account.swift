@@ -35,27 +35,27 @@ enum AccountType: String, CaseIterable, Identifiable, Codable {
 }
 
 struct Account: ExportableEntity {
-    var id: Int64               // ACCOUNTID INTEGER PRIMARY KEY
-    var name: String            // ACCOUNTNAME TEXT COLLATE NOCASE NOT NULL UNIQUE
-    var type: AccountType       // ACCOUNTTYPE TEXT NOT NULL (Cash, Checking, ...)
-    var num: String?            // ACCOUNTNUM TEXT
-    var status: AccountStatus   // STATUS TEXT NOT NULL (Open, Closed)
-    var notes: String?          // NOTES TEXT
-    var heldAt: String?         // HELDAT TEXT
-    var website: String?        // WEBSITE TEXT
-    var contactInfo: String?    // CONTACTINFO TEXT
-    var accessInfo: String?     // ACCESSINFO TEXT
-    var initialDate: String?    // INITIALDATE TEXT
-    var initialBal: Double?     // INITIALBAL NUMERIC
-    var favoriteAcct: String    // FAVORITEACCT NOT NULL TEXT
-    var currencyId: Int64       // CURRENCYID NOT NULL INTEGER
-    var statementLocked: Bool?  // STATEMENTLOCKED INTEGER
-    var statementDate: String?  // STATEMENTDATE TEXT
-    var minimumBalance: Double? // MINIMUMBALANCE NUMERIC
-    var creditLimit: Double?    // CREDITLIMIT NUMERIC
-    var interestRate: Double?   // INTERESTRATE NUMERIC
-    var paymentDueDate: String? // PAYMENTDUEDATE TEXT
-    var minimumPayment: Double? // MINIMUMPAYMENT NUMERIC
+    var id: Int64
+    var name: String
+    var type: AccountType
+    var num: String?
+    var status: AccountStatus
+    var notes: String?
+    var heldAt: String?
+    var website: String?
+    var contactInfo: String?
+    var accessInfo: String?
+    var initialDate: String?
+    var initialBal: Double?
+    var favoriteAcct: String
+    var currencyId: Int64
+    var statementLocked: Bool?
+    var statementDate: String?
+    var minimumBalance: Double?
+    var creditLimit: Double?
+    var interestRate: Double?
+    var paymentDueDate: String?
+    var minimumPayment: Double?
 
     var currency: Currency?
 
