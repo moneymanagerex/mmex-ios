@@ -47,18 +47,13 @@ struct Infotable: ExportableEntity {
 }
 
 extension Infotable {
-    static let sampleData: [Infotable] =
-    [
-        Infotable(id: 1, name: "DATAVERSION", value: "3")
-    ]
+    static var empty: Infotable { Infotable(
+        id: 0, name: "", value: ""
+    ) }
 }
 
 extension Infotable {
-    static var empty: Infotable { Infotable(id: 0, name: "", value: "") }
-
-    static let table = SQLite.Table("INFOTABLE_V1")
-
-    static let infoID    = SQLite.Expression<Int64>("INFOID")
-    static let infoName  = SQLite.Expression<String>("INFONAME")
-    static let infoValue = SQLite.Expression<String>("INFOVALUE")
+    static let sampleData: [Infotable] = [
+        Infotable(id: 1, name: "DATAVERSION", value: "3"),
+    ]
 }

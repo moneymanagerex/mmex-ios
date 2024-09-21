@@ -20,6 +20,30 @@ extension AccountRepository {
     // table query
     static let table = SQLite.Table("ACCOUNTLIST_V1")
 
+    // column          | type    | other
+    // ----------------+---------+------
+    // ACCOUNTID       | INTEGER | PRIMARY KEY
+    // ACCOUNTNAME     | TEXT    | COLLATE NOCASE NOT NULL UNIQUE
+    // ACCOUNTTYPE     | TEXT    | NOT NULL (Cash, Checking, ...)
+    // ACCOUNTNUM      | TEXT    |
+    // STATUS          | TEXT    | NOT NULL (Open, Closed)
+    // NOTES           | TEXT    |
+    // HELDAT          | TEXT    |
+    // WEBSITE         | TEXT    |
+    // CONTACTINFO     | TEXT    |
+    // ACCESSINFO      | TEXT    |
+    // INITIALDATE     | TEXT    |
+    // INITIALBAL      | NUMERIC |
+    // FAVORITEACCT    | TEXT    | NOT NULL
+    // CURRENCYID      | INTEGER | NOT NULL
+    // STATEMENTLOCKED | INTEGER |
+    // STATEMENTDATE   | TEXT    |
+    // MINIMUMBALANCE  | NUMERIC |
+    // CREDITLIMIT     | NUMERIC |
+    // INTERESTRATE    | NUMERIC |
+    // PAYMENTDUEDATE  | TEXT    |
+    // MINIMUMPAYMENT  | NUMERIC |
+
     // table columns
     static let col_id              = SQLite.Expression<Int64>("ACCOUNTID")
     static let col_name            = SQLite.Expression<String>("ACCOUNTNAME")
@@ -131,17 +155,17 @@ extension AccountRepository {
     }
 
     // insert query
-    static func insertQuery(_ account: Account) -> Insert {
+    static func insertQuery(_ account: Account) -> SQLite.Insert {
         return table.insert(insertSetters(account))
     }
 
     // update query
-    static func updateQuery(_ account: Account) -> Update {
+    static func updateQuery(_ account: Account) -> SQLite.Update {
         return table.filter(col_id == account.id).update(insertSetters(account))
     }
 
     // delete query
-    static func deleteQuery(_ account: Account) -> Delete {
+    static func deleteQuery(_ account: Account) -> SQLite.Delete {
         return table.filter(col_id == account.id).delete()
     }
 }

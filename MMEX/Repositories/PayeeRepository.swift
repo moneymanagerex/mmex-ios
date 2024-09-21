@@ -20,6 +20,17 @@ extension PayeeRepository {
     // table query
     static let table = SQLite.Table("PAYEE_V1")
 
+    // column    | type    | other
+    // ----------+---------+------
+    // PAYEEID   | INTEGER | PRIMARY KEY
+    // PAYEENAME | TEXT    | COLLATE NOCASE NOT NULL UNIQUE
+    // CATEGID   | INTEGER |
+    // NUMBER    | TEXT    |
+    // WEBSITE   | TEXT    |
+    // NOTES     | TEXT    |
+    // ACTIVE    | INTEGER |
+    // PATTERN   | TEXT    | DEFAULT ''
+
     // table columns
     static let col_id         = SQLite.Expression<Int64>("PAYEEID")
     static let col_name       = SQLite.Expression<String>("PAYEENAME")
@@ -59,7 +70,7 @@ extension PayeeRepository {
     }
 
     // insert query
-    static func insertQuery(_ payee: Payee) -> Insert {
+    static func insertQuery(_ payee: Payee) -> SQLite.Insert {
         return table.insert(
             col_name       <- payee.name,
             col_categoryId <- payee.categoryId,
@@ -72,7 +83,7 @@ extension PayeeRepository {
     }
 
     // update query
-    static func updateQuery(_ payee: Payee) -> Update {
+    static func updateQuery(_ payee: Payee) -> SQLite.Update {
         return table.filter(col_id == payee.id).update(
             col_name       <- payee.name,
             col_categoryId <- payee.categoryId,
@@ -85,7 +96,7 @@ extension PayeeRepository {
     }
 
     // delete query
-    static func deleteQuery(_ payee: Payee) -> Delete {
+    static func deleteQuery(_ payee: Payee) -> SQLite.Delete {
         return table.filter(col_id == payee.id).delete()
     }
 }

@@ -9,14 +9,14 @@ import Foundation
 import SQLite
 
 struct Payee: ExportableEntity {
-    var id: Int64          // PAYEEID INTEGER PRIMARY KEY
-    var name: String       // PAYEENAME TEXT COLLATE NOCASE NOT NULL UNIQUE
-    var categoryId: Int64? // CATEGID INTEGER
-    var number: String?    // NUMBER TEXT
-    var website: String?   // WEBSITE TEXT
-    var notes: String?     // NOTES TEXT
-    var active: Int?       // ACTIVE INTEGER
-    var pattern: String    // PATTERN TEXT DEFAULT ''
+    var id: Int64
+    var name: String
+    var categoryId: Int64?
+    var number: String?
+    var website: String?
+    var notes: String?
+    var active: Int?
+    var pattern: String
 
     init(
         id: Int64, name: String, categoryId: Int64? = nil, number: String? = nil,

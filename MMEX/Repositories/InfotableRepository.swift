@@ -14,97 +14,153 @@ class InfotableRepository {
     init(db: Connection?) {
         self.db = db
     }
+}
 
-    // Load specific keys into a dictionary
-    func loadInfo(for keys: [InfoKey]) -> [InfoKey: Infotable] {
-        var results: [InfoKey: Infotable] = [:]
-        guard let db = db else { return results }
+extension InfotableRepository {
+    // table query
+    static let table = SQLite.Table("INFOTABLE_V1")
 
-        do {
-            for key in keys {
-                if let row = try db.pluck(Infotable.table.filter(Infotable.infoName == key.rawValue)) {
-                    let info = Infotable(
-                        id: row[Infotable.infoID],
-                        name: row[Infotable.infoName],
-                        value: row[Infotable.infoValue]
-                    )
-                    results[key] = info
-                }
-            }
-        } catch {
-            print("Error loading info: \(error)")
-        }
-        return results
+    // column    | type    | other
+    // ----------+---------+------
+    // INFOID    | INTEGER | NOT NULL PRIMARY KEY
+    // INFONAME  | TEXT    | NOT NULL UNIQUE COLLATE NOCASE
+    // INFOVALUE | TEXT    | NOT NUL
+
+    // table columns
+    static let col_id    = SQLite.Expression<Int64>("INFOID")
+    static let col_name  = SQLite.Expression<String>("INFONAME")
+    static let col_value = SQLite.Expression<String>("INFOVALUE")
+}
+
+extension InfotableRepository {
+    // select query
+    static let selectQuery = table.select(
+        col_id,
+        col_name,
+        col_value
+    )
+
+    // select result
+    static func selectResult(_ row: Row) -> Infotable {
+        return Infotable(
+            id    : row[col_id],
+            name  : row[col_name],
+            value : row[col_value]
+        )
     }
 
-    func loadInfo() -> [Infotable] {
-        var infoItems: [Infotable] = []
-        guard let db = db else { return [] }
+    // insert query
+    static func insertQuery(_ info: Infotable) -> SQLite.Insert {
+        return table.insert(
+            col_name  <- info.name,
+            col_value <- info.value
+        )
+    }
 
+    // update query
+    static func updateQuery(_ info: Infotable) -> SQLite.Update {
+        return table.filter(col_id == info.id).update(
+            col_name  <- info.name,
+            col_value <- info.value
+        )
+    }
+
+    // delete query
+    static func deleteQuery(_ info: Infotable) -> SQLite.Delete {
+        return table.filter(col_id == info.id).delete()
+    }
+}
+
+extension InfotableRepository {
+    // load all keys
+    func loadInfo() -> [Infotable] {
+        guard let db else { return [] }
         do {
-            for info in try db.prepare(Infotable.table) {
-                infoItems.append(Infotable(
-                    id: info[Infotable.infoID],
-                    name: info[Infotable.infoName],
-                    value: info[Infotable.infoValue]
-                ))
+            var results: [Infotable] = []
+            for row in try db.prepare(InfotableRepository.selectQuery) {
+                results.append(InfotableRepository.selectResult(row))
             }
+            print("Successfully loaded infotable: \(results.count)")
+            return results
         } catch {
             print("Error loading infotable: \(error)")
-        }
-        return infoItems
-    }
-
-    func updateInfo(info: Infotable) -> Bool {
-        let infoToUpdate = Infotable.table.filter(Infotable.infoID == info.id)
-        do {
-            try db?.run(infoToUpdate.update(
-                Infotable.infoName <- info.name,
-                Infotable.infoValue <- info.value
-            ))
-            return true
-        } catch {
-            print("Failed to update infotable: \(error)")
-            return false
+            return []
         }
     }
 
-    func deleteInfo(info: Infotable) -> Bool {
-        let infoToDelete = Infotable.table.filter(Infotable.infoID == info.id)
+    // load specific keys into a dictionary
+    func loadInfo(for keys: [InfoKey]) -> [InfoKey: Infotable] {
+        guard let db else { return [:] }
         do {
-            try db?.run(infoToDelete.delete())
-            return true
+            var results: [InfoKey: Infotable] = [:]
+            for key in keys {
+                if let row = try db.pluck(InfotableRepository.selectQuery
+                    .filter(InfotableRepository.col_name == key.rawValue)
+                ) {
+                    results[key] = InfotableRepository.selectResult(row)
+                    print("Successfully loaded infokey: \(key.rawValue)")
+                }
+                else {
+                    print("Unknown infokey: \(key.rawValue)")
+                }
+            }
+            return results
         } catch {
-            print("Failed to delete infotable: \(error)")
-            return false
+            print("Error loading info: \(error)")
+            return [:]
         }
     }
 
     func addInfo(info: inout Infotable) -> Bool {
+        guard let db else { return false }
         do {
-            let insert = Infotable.table.insert(
-                Infotable.infoName <- info.name,
-                Infotable.infoValue <- info.value
-            )
-            let rowid = try db?.run(insert)
-            info.id = rowid!
-            print("Successfully added infotable: \(info.name), \(info.id)")
+            let rowid = try db.run(InfotableRepository.insertQuery(info))
+            info.id = rowid
+            print("Successfully added infokey: \(info.name), \(info.id)")
             return true
         } catch {
             print("Failed to add infotable: \(error)")
             return false
         }
     }
+
+    func updateInfo(info: Infotable) -> Bool {
+        guard let db else { return false }
+        do {
+            try db.run(InfotableRepository.updateQuery(info))
+            print("Successfully updated infokey: \(info.name)")
+            return true
+        } catch {
+            print("Failed to update info: \(error)")
+            return false
+        }
+    }
+
+    func deleteInfo(info: Infotable) -> Bool {
+        guard let db else { return false }
+        do {
+            try db.run(InfotableRepository.deleteQuery(info))
+            print("Successfully deleted infokey: \(info.name)")
+            return true
+        } catch {
+            print("Failed to delete infokey: \(error)")
+            return false
+        }
+    }
+
     // New Methods for Key-Value Pairs
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
-        guard let db = db else { return nil }
+        guard let db else { return nil }
         do {
-            if let row = try db.pluck(Infotable.table.filter(Infotable.infoName == key)) {
+            if let row = try db.pluck(InfotableRepository.selectQuery
+                .filter(InfotableRepository.col_name == key)
+            ) {
+                let value = row[InfotableRepository.col_value]
                 if type == String.self {
-                    return row[Infotable.infoValue] as? T
+                    return value as? T
                 } else if type == Int64.self {
-                    return Int64(row[Infotable.infoValue]) as? T
+                    return Int64(value) as? T
                 }
             }
         } catch {
@@ -115,7 +171,7 @@ class InfotableRepository {
 
     // Update or insert a setting with support for String or Int64 values
     func setValue<T>(_ value: T, for key: String) {
-        guard let db = db else { return }
+        guard let db else { return }
 
         var stringValue: String
         if let stringVal = value as? String {
@@ -127,14 +183,19 @@ class InfotableRepository {
             return
         }
 
-        let query = Infotable.table.filter(Infotable.infoName == key)
+        let query = InfotableRepository.table.filter(InfotableRepository.col_name == key)
         do {
             if let _ = try db.pluck(query) {
                 // Update existing setting
-                try db.run(query.update(Infotable.infoValue <- stringValue))
+                try db.run(query.update(
+                    InfotableRepository.col_value <- stringValue
+                ) )
             } else {
                 // Insert new setting
-                try db.run(Infotable.table.insert(Infotable.infoName <- key, Infotable.infoValue <- stringValue))
+                try db.run(InfotableRepository.table.insert(
+                    InfotableRepository.col_name  <- key,
+                    InfotableRepository.col_value <- stringValue
+                ) )
             }
         } catch {
             print("Error setting value for key \(key): \(error)")

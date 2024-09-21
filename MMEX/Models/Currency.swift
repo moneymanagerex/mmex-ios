@@ -9,18 +9,18 @@ import Foundation
 import SQLite
 
 struct Currency: ExportableEntity {
-    var id: Int64                   // CURRENCYID INTEGER PRIMARY KEY
-    var name: String                // CURRENCYNAME TEXT COLLATE NOCASE NOT NULL UNIQUE
-    var prefixSymbol: String?       // PFX_SYMBOL TEXT
-    var suffixSymbol: String?       // SFX_SYMBOL TEXT
-    var decimalPoint: String?       // DECIMAL_POINT TEXT
-    var groupSeparator: String?     // GROUP_SEPARATOR TEXT
-    var unitName: String?           // UNIT_NAME TEXT COLLATE NOCASE
-    var centName: String?           // CENT_NAME TEXT COLLATE NOCASE
-    var scale: Int?                 // SCALE INTEGER
-    var baseConversionRate: Double? // BASECONVRATE NUMERIC
-    var symbol: String              // CURRENCY_SYMBOL TEXT COLLATE NOCASE NOT NULL UNIQUE
-    var type: String                // CURRENCY_TYPE TEXT NOT NULL (Fiat, Crypto)
+    var id: Int64
+    var name: String
+    var prefixSymbol: String?
+    var suffixSymbol: String?
+    var decimalPoint: String?
+    var groupSeparator: String?
+    var unitName: String?
+    var centName: String?
+    var scale: Int?
+    var baseConversionRate: Double?
+    var symbol: String
+    var type: String
 }
 
 extension Currency {

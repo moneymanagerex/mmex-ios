@@ -19,6 +19,14 @@ extension CategoryRepository {
     // table query
     static let table = SQLite.Table("CATEGORY_V1")
 
+    // column    | type    | other
+    // ----------+---------+------
+    //           |         | UNIQUE(CATEGNAME, PARENTID)
+    // CATEGID   | INTEGER | PRIMARY KEY
+    // CATEGNAME | TEXT    | COLLATE NOCASE NOT NULL
+    // ACTIVE    | INTEGER |
+    // PARENTID  | INTEGER |
+
     // table columns
     static let col_id       = SQLite.Expression<Int64>("CATEGID")
     static let col_name     = SQLite.Expression<String>("CATEGNAME")
@@ -46,7 +54,7 @@ extension CategoryRepository {
     }
 
     // insert query
-    static func insertQuery(_ category: Category) -> Insert {
+    static func insertQuery(_ category: Category) -> SQLite.Insert {
         return table.insert(
             col_name     <- category.name,
             col_active   <- category.active ?? false ? 1 : 0,
@@ -55,7 +63,7 @@ extension CategoryRepository {
     }
 
     // update query
-    static func updateQuery(_ category: Category) -> Update {
+    static func updateQuery(_ category: Category) -> SQLite.Update {
         return table.filter(col_id == category.id).update(
             col_name     <- category.name,
             col_active   <- category.active ?? false ? 1 : 0,
@@ -64,7 +72,7 @@ extension CategoryRepository {
     }
 
     // delete query
-    static func deleteQuery(_ category: Category) -> Delete {
+    static func deleteQuery(_ category: Category) -> SQLite.Delete {
         return table.filter(col_id == category.id).delete()
     }
 }
