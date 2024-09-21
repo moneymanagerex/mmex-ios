@@ -18,24 +18,24 @@ class CurrencyRepository {
 
 extension CurrencyRepository {
     // table query
-    static let table = Table("CURRENCYFORMATS_V1")
+    static let table = SQLite.Table("CURRENCYFORMATS_V1")
 
     // table columns
-    static let col_id                 = Expression<Int64>("CURRENCYID")
-    static let col_name               = Expression<String>("CURRENCYNAME")
-    static let col_prefixSymbol       = Expression<String?>("PFX_SYMBOL")
-    static let col_suffixSymbol       = Expression<String?>("SFX_SYMBOL")
-    static let col_decimalPoint       = Expression<String?>("DECIMAL_POINT")
-    static let col_groupSeparator     = Expression<String?>("GROUP_SEPARATOR")
-    static let col_unitName           = Expression<String?>("UNIT_NAME")
-    static let col_centName           = Expression<String?>("CENT_NAME")
-    static let col_scale              = Expression<Int?>("SCALE")
-    static let col_baseConversionRate = Expression<Double?>("BASECONVRATE")
-    static let col_symbol             = Expression<String>("CURRENCY_SYMBOL")
-    static let col_type               = Expression<String>("CURRENCY_TYPE")
+    static let col_id                 = SQLite.Expression<Int64>("CURRENCYID")
+    static let col_name               = SQLite.Expression<String>("CURRENCYNAME")
+    static let col_prefixSymbol       = SQLite.Expression<String?>("PFX_SYMBOL")
+    static let col_suffixSymbol       = SQLite.Expression<String?>("SFX_SYMBOL")
+    static let col_decimalPoint       = SQLite.Expression<String?>("DECIMAL_POINT")
+    static let col_groupSeparator     = SQLite.Expression<String?>("GROUP_SEPARATOR")
+    static let col_unitName           = SQLite.Expression<String?>("UNIT_NAME")
+    static let col_centName           = SQLite.Expression<String?>("CENT_NAME")
+    static let col_scale              = SQLite.Expression<Int?>("SCALE")
+    static let col_baseConversionRate = SQLite.Expression<Double?>("BASECONVRATE")
+    static let col_symbol             = SQLite.Expression<String>("CURRENCY_SYMBOL")
+    static let col_type               = SQLite.Expression<String>("CURRENCY_TYPE")
 
     // cast NUMERIC to REAL
-    static let cast_baseConversionRate = cast(col_baseConversionRate) as Expression<Double?>
+    static let cast_baseConversionRate = cast(col_baseConversionRate) as SQLite.Expression<Double?>
 }
 
 extension CurrencyRepository {

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92D059CD2C9E057A000460F7 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 92D059CC2C9E057A000460F7 /* SQLite */; };
+		92D059CF2C9E08C7000460F7 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D059CA2C9E044E000460F7 /* libsqlite3.tbd */; };
 		A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE22C9323A5004696C7 /* CategoryEditView.swift */; };
 		A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */; };
 		A3363EE72C93249D004696C7 /* CategoryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE62C93249D004696C7 /* CategoryAddView.swift */; };
@@ -30,13 +32,10 @@
 		A39B1B342C99A0A8003E5562 /* CurrencyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */; };
 		A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */; };
 		A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */; };
-		A3B374C52C96A23E00943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C42C96A23E00943FDB /* SQLite */; };
-		A3B374C72C96A27800943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C62C96A27800943FDB /* SQLite */; };
 		A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */; };
 		A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422C2C89751500D3CEC0 /* ContentView.swift */; };
 		A3C1422F2C89751600D3CEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C1422E2C89751600D3CEC0 /* Assets.xcassets */; };
 		A3C142322C89751600D3CEC0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C142312C89751600D3CEC0 /* Preview Assets.xcassets */; };
-		A3C1423A2C89754C00D3CEC0 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3C142392C89754C00D3CEC0 /* SQLite */; };
 		A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1423D2C89760600D3CEC0 /* AccountListView.swift */; };
 		A3C142442C89C8FA00D3CEC0 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142432C89C8FA00D3CEC0 /* Account.swift */; };
 		A3C142472C89CB4200D3CEC0 /* AccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142462C89CB4200D3CEC0 /* AccountDetailView.swift */; };
@@ -67,6 +66,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		92D059CA2C9E044E000460F7 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		92D059CB2C9E046C000460F7 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		A3363EE22C9323A5004696C7 /* CategoryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditView.swift; sourceTree = "<group>"; };
 		A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailView.swift; sourceTree = "<group>"; };
 		A3363EE62C93249D004696C7 /* CategoryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAddView.swift; sourceTree = "<group>"; };
@@ -130,15 +131,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3B374C72C96A27800943FDB /* SQLite in Frameworks */,
-				A3B374C52C96A23E00943FDB /* SQLite in Frameworks */,
-				A3C1423A2C89754C00D3CEC0 /* SQLite in Frameworks */,
+				92D059CF2C9E08C7000460F7 /* libsqlite3.tbd in Frameworks */,
+				92D059CD2C9E057A000460F7 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		92D059C92C9E044E000460F7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				92D059CB2C9E046C000460F7 /* libsqlite3.0.tbd */,
+				92D059CA2C9E044E000460F7 /* libsqlite3.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A3462F672C948C8400F79145 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				A3C142292C89751500D3CEC0 /* MMEX */,
+				92D059C92C9E044E000460F7 /* Frameworks */,
 				A3C142282C89751500D3CEC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -330,9 +340,7 @@
 			);
 			name = MMEX;
 			packageProductDependencies = (
-				A3C142392C89754C00D3CEC0 /* SQLite */,
-				A3B374C42C96A23E00943FDB /* SQLite */,
-				A3B374C62C96A27800943FDB /* SQLite */,
+				92D059CC2C9E057A000460F7 /* SQLite */,
 			);
 			productName = MMEX;
 			productReference = A3C142272C89751500D3CEC0 /* MMEX.app */;
@@ -346,7 +354,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					A3C142262C89751500D3CEC0 = {
 						CreatedOnToolsVersion = 15.4;
@@ -455,6 +463,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -518,6 +527,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -670,16 +680,9 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A3B374C42C96A23E00943FDB /* SQLite */ = {
+		92D059CC2C9E057A000460F7 /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SQLite;
-		};
-		A3B374C62C96A27800943FDB /* SQLite */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SQLite;
-		};
-		A3C142392C89754C00D3CEC0 /* SQLite */ = {
-			isa = XCSwiftPackageProductDependency;
+			package = A3C142382C89754C00D3CEC0 /* XCLocalSwiftPackageReference "../SQLite.swift" */;
 			productName = SQLite;
 		};
 /* End XCSwiftPackageProductDependency section */

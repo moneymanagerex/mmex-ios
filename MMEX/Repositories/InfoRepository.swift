@@ -16,10 +16,11 @@ class InfoRepository {
     }
 
     func createTable() throws {
-        let infoTable = Table("INFOTABLE_V1")
-        let id = Expression<Int64>("ID")
-        let name = Expression<String>("INFONAME")
-        let value = Expression<String>("INFOVALUE")
+        let infoTable = SQLite.Table("INFOTABLE_V1")
+
+        let id    = SQLite.Expression<Int64>("ID")
+        let name  = SQLite.Expression<String>("INFONAME")
+        let value = SQLite.Expression<String>("INFOVALUE")
         
         try db.run(infoTable.create(ifNotExists: true) { t in
             t.column(id, primaryKey: .autoincrement)
@@ -29,12 +30,12 @@ class InfoRepository {
     }
 
     func fetchInfo(by name: String) -> Info? {
-        let infoTable = Table("INFOTABLE_V1")
-        let nameExp = Expression<String>("INFONAME")
-        let valueExp = Expression<String>("INFOVALUE")
+        let infoTable = SQLite.Table("INFOTABLE_V1")
+        let nameExp  = SQLite.Expression<String>("INFONAME")
+        let valueExp = SQLite.Expression<String>("INFOVALUE")
         
         if let row = try? db.pluck(infoTable.filter(nameExp == name)) {
-            let id = try row.get(Expression<Int64>("ID"))
+            let id = try row.get(SQLite.Expression<Int64>("ID"))
             let value = try row.get(valueExp)
             return Info(id: id, name: name, value: value)
         }
@@ -42,9 +43,9 @@ class InfoRepository {
     }
 
     func insertOrUpdate(info: Info) throws {
-        let infoTable = Table("INFOTABLE_V1")
-        let nameExp = Expression<String>("INFONAME")
-        let valueExp = Expression<String>("INFOVALUE")
+        let infoTable = SQLite.Table("INFOTABLE_V1")
+        let nameExp  = SQLite.Expression<String>("INFONAME")
+        let valueExp = SQLite.Expression<String>("INFOVALUE")
 
         if let existing = fetchInfo(by: info.name) {
             try db.run(infoTable.filter(nameExp == info.name).update(valueExp <- info.value))
