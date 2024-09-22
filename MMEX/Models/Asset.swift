@@ -36,27 +36,27 @@ enum AssetChangeMode: String, EnumCollateNoCase {
 
 struct Asset: ExportableEntity {
     var id         : Int64
-    var type       : AssetType?
-    var status     : AssetStatus?
+    var type       : AssetType
+    var status     : AssetStatus
     var name       : String
     var startDate  : String
     var currencyId : Int64
     var value      : Double
-    var change     : AssetChange?
-    var changeMode : AssetChangeMode?
+    var change     : AssetChange
+    var changeMode : AssetChangeMode
     var changeRate : Double
     var notes      : String
 
     init(
         id         : Int64            = 0,
-        type       : AssetType?       = nil,
-        status     : AssetStatus?     = nil,
+        type       : AssetType        = AssetType.property,
+        status     : AssetStatus      = AssetStatus.open,
         name       : String           = "",
         startDate  : String           = "",
         currencyId : Int64            = 0,
         value      : Double           = 0.0,
-        change     : AssetChange?     = nil,
-        changeMode : AssetChangeMode? = nil,
+        change     : AssetChange      = AssetChange.none,
+        changeMode : AssetChangeMode  = AssetChangeMode.percentage,
         changeRate : Double           = 0.0,
         notes      : String           = ""
     ) {
