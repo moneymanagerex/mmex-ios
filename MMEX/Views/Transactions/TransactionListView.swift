@@ -30,7 +30,7 @@ struct TransactionListView: View {
                 NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
                     HStack {
                         // Left column: Date (truncated to day)
-                        Text(formatDate(from: txn.transDate ?? ""))
+                        Text(formatDate(from: txn.transDate))
                             .frame(width: 90, alignment: .leading)
                             .font(.system(size: 16))
                             .foregroundColor(.gray)

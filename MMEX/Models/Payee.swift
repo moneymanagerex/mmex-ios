@@ -9,32 +9,36 @@ import Foundation
 import SQLite
 
 struct Payee: ExportableEntity {
-    var id: Int64
-    var name: String
-    var categoryId: Int64?
-    var number: String?
-    var website: String?
-    var notes: String?
-    var active: Int?
-    var pattern: String
+    var id         : Int64
+    var name       : String
+    var categoryId : Int64
+    var number     : String
+    var website    : String
+    var notes      : String
+    var active     : Bool
+    var pattern    : String
 
     init(
-        id: Int64, name: String, categoryId: Int64? = nil, number: String? = nil,
-        website: String? = nil, notes: String? = nil, active: Int = 1, pattern: String = ""
-    ) {
-        self.id = id
-        self.name = name
-        self.categoryId = categoryId
-        self.number = number
-        self.website = website
-        self.notes = notes
-        self.active = active
-        self.pattern = pattern
-    }
-}
+        id         : Int64   = 0,
+        name       : String  = "",
+        categoryId : Int64   = 0,
+        number     : String  = "",
+        website    : String  = "",
+        notes      : String  = "",
+        active     : Bool    = false,
+        pattern    : String  = ""
 
-extension Payee {
-    static var empty: Payee { Payee(id: 0, name: "", categoryId: 0) }
+    ) {
+        self.id         = id
+        self.name       = name
+        self.categoryId = categoryId
+        self.number     = number
+        self.website    = website
+        self.notes      = notes
+        self.active     = active
+        self.pattern    = pattern
+
+    }
 }
 
 extension Payee: ModelProtocol {
@@ -53,7 +57,7 @@ extension Payee {
         ),
         Payee(
             id: 2, name: "Payee B", categoryId: 2, number: "654321",
-            website: "www.payeeB.com", notes: "Rare payee", active: 0
+            website: "www.payeeB.com", notes: "Rare payee", active: false
         ),
     ]
 }

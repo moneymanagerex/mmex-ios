@@ -41,7 +41,7 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Transaction Date")) {
-                Text(txn.transDate ?? "") // Display the transaction date
+                Text(txn.transDate) // Display the transaction date
             }
 
             Section(header: Text("Account Name")) {
@@ -57,7 +57,7 @@ struct TransactionDetailView: View {
 //           }
 
             Section(header: Text("Notes")) {
-                Text(txn.notes ?? "No notes")
+                Text(txn.notes)
             }
             // Section for actions like delete
             Section {

@@ -10,29 +10,29 @@ import SQLite
 
 struct Stock: ExportableEntity {
     var id            : Int64
-    var accountId     : Int64?
+    var accountId     : Int64
     var name          : String
-    var symbol        : String?
-    var numShares     : Double?
+    var symbol        : String
+    var numShares     : Double
     var purchaseDate  : String
     var purchasePrice : Double
     var currentPrice  : Double
-    var value         : Double?
-    var commisison    : Double?
-    var notes         : String?
+    var value         : Double
+    var commisison    : Double
+    var notes         : String
 
     init(
         id            : Int64   = 0,
-        accountId     : Int64?  = nil,
+        accountId     : Int64   = 0,
         name          : String  = "",
-        symbol        : String? = nil,
-        numShares     : Double? = nil,
+        symbol        : String  = "",
+        numShares     : Double  = 0.0,
         purchaseDate  : String  = "",
         purchasePrice : Double  = 0.0,
         currentPrice  : Double  = 0.0,
-        value         : Double? = nil,
-        commisison    : Double? = nil,
-        notes         : String? = nil
+        value         : Double  = 0.0,
+        commisison    : Double  = 0.0,
+        notes         : String  = ""
     ) {
         self.id            = id
         self.accountId     = accountId

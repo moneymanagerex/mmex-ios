@@ -71,16 +71,16 @@ class StockRepository: RepositoryProtocol {
     static func selectResult(_ row: SQLite.Row) -> Stock {
         return Stock(
             id            : row[col_id],
-            accountId     : row[col_accountId],
+            accountId     : row[col_accountId] ?? 0,
             name          : row[col_name],
-            symbol        : row[col_symbol],
-            numShares     : row[cast_numShares],
+            symbol        : row[col_symbol] ?? "",
+            numShares     : row[cast_numShares] ?? 0.0,
             purchaseDate  : row[col_purchaseDate],
             purchasePrice : row[cast_purchasePrice],
             currentPrice  : row[cast_currentPrice],
-            value         : row[cast_value],
-            commisison    : row[cast_commisison],
-            notes         : row[col_notes]
+            value         : row[cast_value] ?? 0.0,
+            commisison    : row[cast_commisison] ?? 0.0,
+            notes         : row[col_notes] ?? ""
         )
     }
 

@@ -20,13 +20,17 @@ enum InfoKey: String {
 }
 
 struct Infotable: ExportableEntity {
-    var id: Int64
-    var name: String
-    var value: String
+    var id    : Int64
+    var name  : String
+    var value : String
 
-    init(id: Int64, name: String, value: String) {
-        self.id = id
-        self.name = name
+    init(
+        id    : Int64  = 0,
+        name  : String = "",
+        value : String = ""
+    ) {
+        self.id    = id
+        self.name  = name
         self.value = value
     }
 
@@ -34,6 +38,7 @@ struct Infotable: ExportableEntity {
     func getValue<T: LosslessStringConvertible>(_ type: T.Type) -> T? {
         return T(value)
     }
+
     mutating func setValue<T>(_ newValue: T) {
         // Convert the new value to a string before saving
         if let intValue = newValue as? Int {
@@ -44,12 +49,6 @@ struct Infotable: ExportableEntity {
             print("Unsupported type")
         }
     }
-}
-
-extension Infotable {
-    static var empty: Infotable { Infotable(
-        id: 0, name: "", value: ""
-    ) }
 }
 
 extension Infotable: ModelProtocol {

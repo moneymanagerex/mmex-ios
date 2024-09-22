@@ -9,26 +9,46 @@ import Foundation
 import SQLite
 
 struct Currency: ExportableEntity {
-    var id: Int64
-    var name: String
-    var prefixSymbol: String?
-    var suffixSymbol: String?
-    var decimalPoint: String?
-    var groupSeparator: String?
-    var unitName: String?
-    var centName: String?
-    var scale: Int?
-    var baseConversionRate: Double?
-    var symbol: String
-    var type: String
-}
+    var id             : Int64
+    var name           : String
+    var prefixSymbol   : String
+    var suffixSymbol   : String
+    var decimalPoint   : String
+    var groupSeparator : String
+    var unitName       : String
+    var centName       : String
+    var scale          : Int
+    var baseConvRate   : Double
+    var symbol         : String
+    var type           : String
 
-extension Currency {
-    static var empty: Currency { Currency(
-        id: 0, name: "", prefixSymbol: nil, suffixSymbol: nil,
-        decimalPoint: nil, groupSeparator: nil, unitName: nil, centName: nil,
-        scale: 0, baseConversionRate: 0, symbol: "", type: ""
-    ) }
+    init(
+        id             : Int64  = 0,
+        name           : String = "",
+        prefixSymbol   : String = "",
+        suffixSymbol   : String = "",
+        decimalPoint   : String = "",
+        groupSeparator : String = "",
+        unitName       : String = "",
+        centName       : String = "",
+        scale          : Int    = 0,
+        baseConvRate   : Double = 0.0,
+        symbol         : String = "",
+        type           : String = ""
+    ) {
+        self.id             = id
+        self.name           = name
+        self.prefixSymbol   = prefixSymbol
+        self.suffixSymbol   = suffixSymbol
+        self.decimalPoint   = decimalPoint
+        self.groupSeparator = groupSeparator
+        self.unitName       = unitName
+        self.centName       = centName
+        self.scale          = scale
+        self.baseConvRate   = baseConvRate
+        self.symbol         = symbol
+        self.type           = type
+    }
 }
 
 extension Currency: ModelProtocol {
@@ -42,30 +62,30 @@ extension Currency: ModelProtocol {
 extension Currency {
     /// A `NumberFormatter` configured specifically for the currency.
     var formatter: NumberFormatter {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .currency
+        let nf = NumberFormatter()
+        nf.numberStyle = .currency
 
         // Apply currency-specific formatting based on this Currency instance
-        numberFormatter.currencySymbol = self.prefixSymbol ?? self.symbol
-        numberFormatter.currencyGroupingSeparator = self.groupSeparator ?? ","
-        numberFormatter.currencyDecimalSeparator = self.decimalPoint ?? "."
-        numberFormatter.maximumFractionDigits = self.scale ?? 0
+        nf.currencySymbol = self.prefixSymbol
+        nf.currencyGroupingSeparator = self.groupSeparator
+        nf.currencyDecimalSeparator = self.decimalPoint
+        nf.maximumFractionDigits = self.scale
 
-        return numberFormatter
+        return nf
     }
 
     /// Format a given amount using the currency's `NumberFormatter`.
     func format(amount: Double) -> String {
-        return formatter.string(from: NSNumber(value: amount)) ?? "\(amount)"
+        return switch formatter.string(from: NSNumber(value: amount)) {
+        case .some(let s): s + self.suffixSymbol
+        case .none: "\(amount)"
+        }
     }
 
     /// Helper method to convert and format the amount into base currency using the exchange rate.
     func formatAsBaseCurrency(amount: Double, baseCurrencyRate: Double?) -> String {
-        guard let conversionRate = baseCurrencyRate ?? self.baseConversionRate else {
-            return format(amount: amount)
-        }
-
-        let baseAmount = amount * conversionRate
+        let baseAmount = amount * (baseCurrencyRate ?? self.baseConvRate)
+        // TODO: use the formatter of the base currency
         return formatter.string(from: NSNumber(value: baseAmount)) ?? "\(baseAmount)"
     }
 }
@@ -75,17 +95,17 @@ extension Currency {
         Currency(
             id: 1, name: "US dollar", prefixSymbol: "$", suffixSymbol: "",
             decimalPoint: ".", groupSeparator: ",", unitName: "Dollar", centName: "Cent",
-            scale: 100, baseConversionRate: 1.0, symbol: "USD", type: "Fiat"
+            scale: 100, baseConvRate: 1.0, symbol: "USD", type: "Fiat"
         ),
         Currency(
             id: 2, name: "Euro", prefixSymbol: "€", suffixSymbol: "",
-            decimalPoint: ".", groupSeparator: " ", unitName: nil, centName: nil,
-            scale: 100, baseConversionRate: 1.0, symbol: "EUR", type: "Fiat"
+            decimalPoint: ".", groupSeparator: " ", unitName: "", centName: "",
+            scale: 100, baseConvRate: 1.0, symbol: "EUR", type: "Fiat"
         ),
         Currency(
             id: 3, name: "British pound", prefixSymbol: "£", suffixSymbol: "",
             decimalPoint: ".", groupSeparator: " ", unitName: "Pound", centName: "Pence",
-            scale: 100, baseConversionRate: 1.0, symbol: "GBP", type: "Fiat"
+            scale: 100, baseConvRate: 1.0, symbol: "GBP", type: "Fiat"
         ),
     ]
 }

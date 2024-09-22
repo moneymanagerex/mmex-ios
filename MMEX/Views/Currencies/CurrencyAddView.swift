@@ -34,7 +34,10 @@ struct CurrencyAddView: View {
 }
 
 #Preview {
-    CurrencyAddView(newCurrency: .constant(Currency.empty), isPresentingCurrencyAddView: .constant(true)) { newCurrency in
+    CurrencyAddView(
+        newCurrency: .constant(Currency()),
+        isPresentingCurrencyAddView: .constant(true)
+    ) { newCurrency in
         // Handle saving in preview
         print("New currency: \(newCurrency.name)")
     }

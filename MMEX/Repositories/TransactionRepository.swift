@@ -85,20 +85,21 @@ class TransactionRepository: RepositoryProtocol {
         return Transaction(
           id                : row[col_id],
           accountId         : row[col_accountId],
-          toAccountId       : row[col_toAccountId],
+          toAccountId       : row[col_toAccountId] ?? 0,
           payeeId           : row[col_payeeId],
-          transCode         : Transcode(rawValue: row[col_transCode]) ?? Transcode.deposit,
+          transCode         : Transcode(collateNoCase: row[col_transCode]) ?? Transcode.withdrawal,
           transAmount       : row[cast_transAmount],
+          // TODO: case insersitive, convert either key or value
           status            : TransactionStatus(rawValue: row[col_status] ?? "") ?? TransactionStatus.none,
-          transactionNumber : row[col_transactionNumber],
-          notes             : row[col_notes],
-          categId           : row[col_categId],
-          transDate         : row[col_transDate],
-          lastUpdatedTime   : row[col_lastUpdatedTime],
-          deletedTime       : row[col_deletedTime],
-          followUpId        : row[col_followUpId],
-          toTransAmount     : row[cast_toTransAmount],
-          color             : row[col_color]
+          transactionNumber : row[col_transactionNumber] ?? "",
+          notes             : row[col_notes] ?? "",
+          categId           : row[col_categId] ?? 0,
+          transDate         : row[col_transDate] ?? "",
+          lastUpdatedTime   : row[col_lastUpdatedTime] ?? "",
+          deletedTime       : row[col_deletedTime] ?? "",
+          followUpId        : row[col_followUpId] ?? 0,
+          toTransAmount     : row[cast_toTransAmount] ?? 0.0,
+          color             : row[col_color] ?? 0
         )
     }
 

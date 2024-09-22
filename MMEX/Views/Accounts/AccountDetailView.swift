@@ -12,7 +12,7 @@ struct AccountDetailView: View {
     let databaseURL: URL
     @Binding var currencies: [Currency] // Bind to the list of available currencies
 
-    @State private var editingAccount = Account.empty
+    @State private var editingAccount = Account()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode
     
@@ -38,17 +38,13 @@ struct AccountDetailView: View {
                 }            }
             Section(header: Text("Balance")) {
                 if let currency = account.currency {
-                    Text(currency.format(amount: account.initialBal ?? 0.0))
+                    Text(currency.format(amount: account.initialBal))
                 } else {
-                    Text("\(account.initialBal ?? 0.0)")
+                    Text("\(account.initialBal)")
                 }
             }
             Section(header: Text("Notes")) {
-                if let notes = account.notes {
-                    Text(notes)  // Display notes if they are not nil
-                } else {
-                    Text("No notes available")  // Fallback text if notes are nil
-                }
+                Text(account.notes)  // Display notes if they are not nil
             }
             Button("Delete Account") {
                 deleteAccount()

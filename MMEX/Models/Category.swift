@@ -9,19 +9,27 @@ import Foundation
 import SQLite
 
 struct Category: ExportableEntity {
-    var id: Int64
-    var name: String
-    var active: Bool?
-    var parentId: Int64?
+    var id       : Int64
+    var name     : String
+    var active   : Bool
+    var parentId : Int64
+    
+    init(
+        id       : Int64  = 0,
+        name     : String = "",
+        active   : Bool   = false,
+        parentId : Int64  = 0
+    ) {
+        self.id       = id
+        self.name     = name
+        self.active   = active
+        self.parentId = parentId
+    }
 }
 
 extension Category {
-    static var empty : Category { Category(
-        id: 1, name: "cateogry name", active: true, parentId: nil
-    ) }
-
     var isRoot: Bool {
-        return parentId == nil || parentId! <= 0
+        return parentId <= 0
     }
 }
 
@@ -95,7 +103,7 @@ extension Category {
 
 extension Category {
     static let sampleData: [Category] = [
-        Category(id: 1, name: "root cateogry",     active: true, parentId: nil),
+        Category(id: 1, name: "root cateogry",     active: true, parentId: -1),
         Category(id: 2, name: "non-root category", active: true, parentId: 1),
     ]
 }

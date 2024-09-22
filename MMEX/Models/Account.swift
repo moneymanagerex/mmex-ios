@@ -9,7 +9,7 @@ import Foundation
 import SQLite
 
 enum AccountStatus: String, EnumCollateNoCase {
-    case open = "Open"
+    case open   = "Open"
     case closed = "Closed"
 }
 
@@ -25,39 +25,53 @@ enum AccountType: String, EnumCollateNoCase {
 }
 
 struct Account: ExportableEntity {
-    var id: Int64
-    var name: String
-    var type: AccountType
-    var num: String?
-    var status: AccountStatus
-    var notes: String?
-    var heldAt: String?
-    var website: String?
-    var contactInfo: String?
-    var accessInfo: String?
-    var initialDate: String?
-    var initialBal: Double?
-    var favoriteAcct: String
-    var currencyId: Int64
-    var statementLocked: Bool?
-    var statementDate: String?
-    var minimumBalance: Double?
-    var creditLimit: Double?
-    var interestRate: Double?
-    var paymentDueDate: String?
-    var minimumPayment: Double?
+    var id              : Int64
+    var name            : String
+    var type            : AccountType
+    var num             : String
+    var status          : AccountStatus
+    var notes           : String
+    var heldAt          : String
+    var website         : String
+    var contactInfo     : String
+    var accessInfo      : String
+    var initialDate     : String
+    var initialBal      : Double
+    var favoriteAcct    : String
+    var currencyId      : Int64
+    var statementLocked : Bool
+    var statementDate   : String
+    var minimumBalance  : Double
+    var creditLimit     : Double
+    var interestRate    : Double
+    var paymentDueDate  : String
+    var minimumPayment  : Double
 
     var currency: Currency?
 
     init(
-        id: Int64, name: String, type: AccountType,
-        num: String? = nil, status: AccountStatus, notes: String? = nil,
-        heldAt: String? = nil, website: String? = nil, contactInfo: String? = nil,
-        accessInfo: String? = nil, initialDate: String? = nil, initialBal: Double? = nil,
-        favoriteAcct: String, currencyId: Int64, statementLocked: Bool? = nil,
-        statementDate: String? = nil, minimumBalance: Double? = nil, creditLimit: Double? = nil,
-        interestRate: Double? = nil, paymentDueDate: String? = nil, minimumPayment: Double? = nil,
-        currency: Currency? = nil
+        id              : Int64         = 0,
+        name            : String        = "",
+        type            : AccountType   = AccountType.checking,
+        num             : String        = "",
+        status          : AccountStatus = AccountStatus.closed,
+        notes           : String        = "",
+        heldAt          : String        = "",
+        website         : String        = "",
+        contactInfo     : String        = "",
+        accessInfo      : String        = "",
+        initialDate     : String        = "",
+        initialBal      : Double        = 0.0,
+        favoriteAcct    : String        = "",
+        currencyId      : Int64         = 0,
+        statementLocked : Bool          = false,
+        statementDate   : String        = "",
+        minimumBalance  : Double        = 0.0,
+        creditLimit     : Double        = 0.0,
+        interestRate    : Double        = 0.0,
+        paymentDueDate  : String        = "",
+        minimumPayment  : Double        = 0.0,
+        currency        : Currency?     = nil
     ) {
         self.id              = id
         self.name            = name
@@ -82,13 +96,6 @@ struct Account: ExportableEntity {
         self.minimumPayment  = minimumPayment
         self.currency        = currency
     }
-}
-
-extension Account {
-    static var empty: Account { Account(
-        id: 0, name: "", type: AccountType.cash, status: AccountStatus.open, notes: "",
-        initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 0
-    ) }
 }
 
 extension Account: ModelProtocol {

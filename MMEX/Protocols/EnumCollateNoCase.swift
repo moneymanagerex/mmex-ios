@@ -22,7 +22,7 @@ extension EnumCollateNoCase {
             $0.rawValue.caseInsensitiveCompare(name) == .orderedSame
         } ) {
         case .some(let x): self = x
-        default: return nil
+        case .none: return nil
         }
     }
 

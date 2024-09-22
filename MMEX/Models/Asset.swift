@@ -40,12 +40,12 @@ struct Asset: ExportableEntity {
     var status     : AssetStatus?
     var name       : String
     var startDate  : String
-    var currencyId : Int64?
-    var value      : Double?
+    var currencyId : Int64
+    var value      : Double
     var change     : AssetChange?
     var changeMode : AssetChangeMode?
-    var changeRate : Double?
-    var notes      : String?
+    var changeRate : Double
+    var notes      : String
 
     init(
         id         : Int64            = 0,
@@ -53,12 +53,12 @@ struct Asset: ExportableEntity {
         status     : AssetStatus?     = nil,
         name       : String           = "",
         startDate  : String           = "",
-        currencyId : Int64?           = nil,
-        value      : Double?          = nil,
+        currencyId : Int64            = 0,
+        value      : Double           = 0.0,
         change     : AssetChange?     = nil,
         changeMode : AssetChangeMode? = nil,
-        changeRate : Double?          = nil,
-        notes      : String?          = nil
+        changeRate : Double           = 0.0,
+        notes      : String           = ""
     ) {
         self.id         = id
         self.type       = type

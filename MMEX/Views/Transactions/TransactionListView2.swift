@@ -42,13 +42,13 @@ struct TransactionListView2: View {
                             NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
                                 HStack {
                                     // Left column (Category Icon or Category Name)
-                                    if let categorySymbol = Category.categoryToSFSymbol[getCategoryName(for: txn.categId ?? 0)] {
+                                    if let categorySymbol = Category.categoryToSFSymbol[getCategoryName(for: txn.categId)] {
                                         Image(systemName: categorySymbol)
                                             .frame(width: 50, alignment: .leading) // Adjust width as needed
                                             .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
                                             .foregroundColor(.blue) // Customize icon style
                                     } else {
-                                        Text(getCategoryName(for: txn.categId ?? 0)) // Fallback to category name if symbol is not found
+                                        Text(getCategoryName(for: txn.categId)) // Fallback to category name if symbol is not found
                                             .frame(width: 50, alignment: .leading)
                                             .font(.system(size: 16, weight: .bold))
                                             .foregroundColor(.blue)
@@ -59,7 +59,7 @@ struct TransactionListView2: View {
                                         Text(getPayeeName(for: txn.payeeId)) // Payee name
                                             .font(.system(size: 16))
                                             .lineLimit(1) // Prevent wrapping
-                                        Text(formatTime(txn.transDate ?? "")) // Show time in hh:mm a
+                                        Text(formatTime(txn.transDate)) // Show time in hh:mm a
                                             .font(.system(size: 14))
                                             .foregroundColor(.gray)
                                     }
@@ -107,11 +107,11 @@ struct TransactionListView2: View {
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
                     
-                    if let date = formatter.date(from: txn.transDate ?? "") {
+                    if let date = formatter.date(from: txn.transDate) {
                         formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
                         return formatter.string(from: date)
                     }
-                    return txn.transDate ?? "" // If parsing fails, return original string
+                    return txn.transDate // If parsing fails, return original string
                 }
             }
         }

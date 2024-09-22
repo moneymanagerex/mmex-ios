@@ -73,12 +73,12 @@ class AssetRepository: RepositoryProtocol {
             status     : AssetStatus(collateNoCase: row[col_status]),
             name       : row[col_name],
             startDate  : row[col_startDate],
-            currencyId : row[col_currencyId],
-            value      : row[cast_value],
+            currencyId : row[col_currencyId] ?? 0,
+            value      : row[cast_value] ?? 0.0,
             change     : AssetChange(collateNoCase: row[col_change]),
             changeMode : AssetChangeMode(collateNoCase: row[col_changeMode]),
-            changeRate : row[cast_changeRate],
-            notes      : row[col_notes]
+            changeRate : row[cast_changeRate] ?? 0.0,
+            notes      : row[col_notes] ?? ""
         )
     }
 
