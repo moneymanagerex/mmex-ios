@@ -8,16 +8,13 @@
 import Foundation
 import SQLite
 
-class CurrencyRepository {
-    let db: Connection?
+class CurrencyRepository: RepositoryProtocol {
+    typealias RepositoryItem = Currency
 
+    let db: Connection?
     init(db: Connection?) {
         self.db = db
     }
-}
-
-extension CurrencyRepository: RepositoryProtocol {
-    typealias RepositoryItem = Currency
 
     static let repositoryName = "CURRENCYFORMATS_V1"
     static let repositoryTable = SQLite.Table(repositoryName)

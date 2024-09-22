@@ -8,16 +8,13 @@
 import Foundation
 import SQLite
 
-class TransactionRepository {
+class TransactionRepository: RepositoryProtocol {
+    typealias RepositoryItem = Transaction
+
     let db: Connection?
-    
     init(db: Connection?) {
         self.db = db
     }
-}
-
-extension TransactionRepository: RepositoryProtocol {
-    typealias RepositoryItem = Transaction
 
     static let repositoryName = "CHECKINGACCOUNT_V1"
     static let repositoryTable = SQLite.Table(repositoryName)

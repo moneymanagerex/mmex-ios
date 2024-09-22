@@ -8,16 +8,13 @@
 import Foundation
 import SQLite
 
-class InfotableRepository {
-    let db: Connection?
+class InfotableRepository: RepositoryProtocol {
+    typealias RepositoryItem = Infotable
 
+    let db: Connection?
     init(db: Connection?) {
         self.db = db
     }
-}
-
-extension InfotableRepository: RepositoryProtocol {
-    typealias RepositoryItem = Infotable
 
     static let repositoryName = "INFOTABLE_V1"
     static let repositoryTable = SQLite.Table(repositoryName)
@@ -28,7 +25,7 @@ extension InfotableRepository: RepositoryProtocol {
     // INFONAME  | TEXT    | NOT NULL UNIQUE COLLATE NOCASE
     // INFOVALUE | TEXT    | NOT NULL
 
-    // table columns
+    // columns
     static let col_id    = SQLite.Expression<Int64>("INFOID")
     static let col_name  = SQLite.Expression<String>("INFONAME")
     static let col_value = SQLite.Expression<String>("INFOVALUE")

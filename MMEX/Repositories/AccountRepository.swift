@@ -8,16 +8,13 @@
 import Foundation
 import SQLite
 
-class AccountRepository {
-    let db: Connection?
+class AccountRepository: RepositoryProtocol {
+    typealias RepositoryItem = Account
 
+    let db: Connection?
     init(db: Connection?) {
         self.db = db
     }
-}
-
-extension AccountRepository: RepositoryProtocol {
-    typealias RepositoryItem = Account
 
     static let repositoryName = "ACCOUNTLIST_V1"
     static let repositoryTable = SQLite.Table(repositoryName)

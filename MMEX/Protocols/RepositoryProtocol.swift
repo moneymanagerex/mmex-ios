@@ -11,14 +11,14 @@ import SQLite
 protocol RepositoryProtocol {
     associatedtype RepositoryItem: ModelProtocol
 
+    var db: Connection? { get }
+
     static var repositoryName: String { get }
     static var repositoryTable: SQLite.Table { get }
     static func selectQuery(from table: SQLite.Table) -> SQLite.Table
     static func selectResult(_ row: SQLite.Row) -> RepositoryItem
     static var col_id: SQLite.Expression<Int64> { get }
     static func itemSetters(_ item: RepositoryItem) -> [SQLite.Setter]
-
-    var db: Connection? { get }
 }
 
 extension RepositoryProtocol {

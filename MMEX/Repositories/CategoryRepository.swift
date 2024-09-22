@@ -7,16 +7,13 @@
 
 import SQLite
 
-class CategoryRepository {
-    let db: Connection?
+class CategoryRepository: RepositoryProtocol {
+    typealias RepositoryItem = Category
 
+    let db: Connection?
     init(db: Connection?) {
         self.db = db
     }
-}
-
-extension CategoryRepository: RepositoryProtocol {
-    typealias RepositoryItem = Category
 
     static let repositoryName = "CATEGORY_V1"
     static let repositoryTable = SQLite.Table(repositoryName)
