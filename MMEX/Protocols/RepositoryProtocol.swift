@@ -22,17 +22,35 @@ protocol RepositoryProtocol {
 }
 
 extension RepositoryProtocol {
-    func select(table: SQLite.Table = Self.repositoryTable) -> [RepositoryItem] {
+    func pluck(table: SQLite.Table, key: String) -> RepositoryItem? {
+        guard let db else { return nil }
+        do {
+            if let row = try db.pluck(Self.selectQuery(from: table)) {
+                let item = Self.selectResult(row)
+                print("Successfull search for \(key) in \(Self.repositoryName): \(item.shortDesc())")
+                return item
+            }
+            else {
+                print("Unsuccefull search for \(key) in \(Self.repositoryName)")
+                return nil
+            }
+        } catch {
+            print("Failed search for \(key) in \(Self.repositoryName): \(error)")
+            return nil
+        }
+    }
+
+    func select(table: SQLite.Table) -> [RepositoryItem] {
         guard let db else { return [] }
         do {
             var results: [RepositoryItem] = []
             for row in try db.prepare(Self.selectQuery(from: table)) {
                 results.append(Self.selectResult(row))
             }
-            print("Successfully loaded from \(Self.repositoryName): \(results.count)")
+            print("Successfull select in \(Self.repositoryName): \(results.count)")
             return results
         } catch {
-            print("Error loading from \(Self.repositoryName): \(error)")
+            print("Failed select in \(Self.repositoryName): \(error)")
             return []
         }
     }
@@ -44,10 +62,10 @@ extension RepositoryProtocol {
                 .insert(Self.itemSetters(item))
             let rowid = try db.run(query)
             item.id = rowid
-            print("Successfully added \(RepositoryItem.modelName): \(item.shortDesc())")
+            print("Successfull insert in \(RepositoryItem.modelName): \(item.shortDesc())")
             return true
         } catch {
-            print("Failed to add \(RepositoryItem.modelName): \(error)")
+            print("Failed insert in \(RepositoryItem.modelName): \(error)")
             return false
         }
     }
@@ -59,10 +77,10 @@ extension RepositoryProtocol {
                 .filter(Self.col_id == item.id)
                 .update(Self.itemSetters(item))
             try db.run(query)
-            print("Successfully updated \(RepositoryItem.modelName): \(item.shortDesc())")
+            print("Successfull update in \(RepositoryItem.modelName): \(item.shortDesc())")
             return true
         } catch {
-            print("Failed to update \(RepositoryItem.modelName): \(error)")
+            print("Failed update in \(RepositoryItem.modelName): \(error)")
             return false
         }
     }
@@ -74,10 +92,10 @@ extension RepositoryProtocol {
                 .filter(Self.col_id == item.id)
                 .delete()
             try db.run(query)
-            print("Successfully deleted \(RepositoryItem.modelName): \(item.shortDesc())")
+            print("Successfull delete in \(RepositoryItem.modelName): \(item.shortDesc())")
             return true
         } catch {
-            print("Failed to delete \(RepositoryItem.modelName): \(error)")
+            print("Failed delete in \(RepositoryItem.modelName): \(error)")
             return false
         }
     }
