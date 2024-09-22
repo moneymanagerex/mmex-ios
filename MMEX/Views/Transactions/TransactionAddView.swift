@@ -38,10 +38,13 @@ struct TransactionAddView: View {
 }
 
 #Preview {
-    TransactionAddView(newTxn: .constant(Transaction.empty), isPresentingTransactionAddView: .constant(true)
-                       , payees: .constant(Payee.sampleData)
-                       , categories: .constant(Category.sampleData)
-                       , accounts: .constant(Account.sampleData)) { newTxn in
+    TransactionAddView(
+        newTxn: .constant(Transaction()),
+        isPresentingTransactionAddView: .constant(true),
+        payees: .constant(Payee.sampleData),
+        categories: .constant(Category.sampleData),
+        accounts: .constant(Account.sampleData)
+    ) { newTxn in
         // Handle saving in preview
         print("New payee: \(newTxn.id)")
     }}

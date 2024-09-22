@@ -11,7 +11,7 @@ struct TransactionDetailView: View {
     @State var txn: Transaction
     let databaseURL: URL
     
-    @State private var editingTxn = Transaction.empty
+    @State private var editingTxn = Transaction()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     

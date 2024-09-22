@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionAddView2: View {    
-    @State var newTxn: Transaction = Transaction.empty
+    @State var newTxn: Transaction = Transaction()
     let databaseURL: URL
     @Binding var selectedTab: Int // Bind to the selected tab
 
@@ -27,7 +27,7 @@ struct TransactionAddView2: View {
                         Button("Dismiss") {
                             dismiss()
                             selectedTab = 0
-                            newTxn = Transaction.empty
+                            newTxn = Transaction()
                         }
                     }
                     ToolbarItem(placement: .confirmationAction) {
@@ -35,7 +35,7 @@ struct TransactionAddView2: View {
                             addTransaction(txn: &newTxn)
                             dismiss()
                             selectedTab = 0
-                            newTxn = Transaction.empty
+                            newTxn = Transaction()
                         }
                     }
                 }

@@ -37,66 +37,58 @@ enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
 }
 
 struct Transaction: ExportableEntity {
-    var id: Int64
-    var accountId: Int64
-    var toAccountId: Int64
-    var payeeId: Int64
-    var transCode: Transcode
-    var transAmount: Double
-    var status: TransactionStatus
-    var transactionNumber: String
-    var notes: String
-    var categId: Int64
-    var transDate: String
-    var lastUpdatedTime: String
-    var deletedTime: String
-    var followUpId: Int64
-    var toTransAmount: Double
-    var color: Int64
+    var id                : Int64
+    var accountId         : Int64
+    var toAccountId       : Int64
+    var payeeId           : Int64
+    var transCode         : Transcode
+    var transAmount       : Double
+    var status            : TransactionStatus
+    var transactionNumber : String
+    var notes             : String
+    var categId           : Int64
+    var transDate         : String
+    var lastUpdatedTime   : String
+    var deletedTime       : String
+    var followUpId        : Int64
+    var toTransAmount     : Double
+    var color             : Int64
 
     init(
-        id: Int64 = 0,
-        accountId: Int64 = 0,
-        toAccountId: Int64 = 0,
-        payeeId: Int64 = 0,
-        transCode: Transcode = Transcode.withdrawal,
-        transAmount: Double = 0.0,
-        status: TransactionStatus,
-        transactionNumber: String = "",
-        notes: String = "",
-        categId: Int64 = 0,
-        transDate: String = "",
-        lastUpdatedTime: String = "",
-        deletedTime: String = "",
-        followUpId: Int64 = 0,
-        toTransAmount: Double = 0.0,
-        color: Int64 = 0
+        id                : Int64             = 0,
+        accountId         : Int64             = 0,
+        toAccountId       : Int64             = 0,
+        payeeId           : Int64             = 0,
+        transCode         : Transcode         = Transcode.withdrawal,
+        transAmount       : Double            = 0.0,
+        status            : TransactionStatus = TransactionStatus.none,
+        transactionNumber : String            = "",
+        notes             : String            = "",
+        categId           : Int64             = 0,
+        transDate         : String            = "",
+        lastUpdatedTime   : String            = "",
+        deletedTime       : String            = "",
+        followUpId        : Int64             = 0,
+        toTransAmount     : Double            = 0.0,
+        color             : Int64             = 0
     ) {
-        self.id = id
-        self.accountId = accountId
-        self.toAccountId = toAccountId
-        self.payeeId = payeeId
-        self.transCode = transCode
-        self.transAmount = transAmount
-        self.status = status
+        self.id                = id
+        self.accountId         = accountId
+        self.toAccountId       = toAccountId
+        self.payeeId           = payeeId
+        self.transCode         = transCode
+        self.transAmount       = transAmount
+        self.status            = status
         self.transactionNumber = transactionNumber
-        self.notes = notes
-        self.categId = categId
-        self.transDate = transDate
-        self.lastUpdatedTime = lastUpdatedTime
-        self.deletedTime = deletedTime
-        self.followUpId = followUpId
-        self.toTransAmount = toTransAmount
-        self.color = color
+        self.notes             = notes
+        self.categId           = categId
+        self.transDate         = transDate
+        self.lastUpdatedTime   = lastUpdatedTime
+        self.deletedTime       = deletedTime
+        self.followUpId        = followUpId
+        self.toTransAmount     = toTransAmount
+        self.color             = color
     }
-}
-
-extension Transaction {
-    static var empty: Transaction { Transaction(
-        id: 0, accountId: 0, payeeId: 0, transCode: Transcode.withdrawal,
-        transAmount: 0.0, status: TransactionStatus.none, categId: 0,
-        transDate: Date().ISO8601Format()
-    ) }
 }
 
 extension Transaction: ModelProtocol {
