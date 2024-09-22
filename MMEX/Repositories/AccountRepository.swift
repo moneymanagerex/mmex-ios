@@ -106,9 +106,9 @@ extension AccountRepository {
         return Account(
             id              : row[col_id],
             name            : row[col_name],
-            type            : AccountType(rawValue: row[col_type]) ?? AccountType.cash,
+            type            : AccountType(collateNoCase: row[col_type]) ?? AccountType.checking,
             num             : row[col_num],
-            status          : AccountStatus(rawValue: row[col_status]) ?? AccountStatus.open,
+            status          : AccountStatus(collateNoCase: row[col_status]) ?? AccountStatus.closed,
             notes           : row[col_notes],
             heldAt          : row[col_heldAt],
             website         : row[col_website],

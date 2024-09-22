@@ -59,7 +59,6 @@ struct Asset: ExportableEntity {
         changeMode : AssetChangeMode? = nil,
         changeRate : Double?          = nil,
         notes      : String?          = nil
-
     ) {
         self.id         = id
         self.type       = type

@@ -8,17 +8,12 @@
 import Foundation
 import SQLite
 
-enum AccountStatus: String, CaseIterable, Identifiable, Codable {
+enum AccountStatus: String, EnumCollateNoCase {
     case open = "Open"
     case closed = "Closed"
-
-    var id: String { self.rawValue }
-    var name: String {
-        rawValue.capitalized
-    }
 }
 
-enum AccountType: String, CaseIterable, Identifiable, Codable {
+enum AccountType: String, EnumCollateNoCase {
     case cash       = "Cash"
     case checking   = "Checking"
     case creditCard = "Credit Card"
@@ -27,11 +22,6 @@ enum AccountType: String, CaseIterable, Identifiable, Codable {
     case investment = "Investment"
     case asset      = "Asset"
     case shares     = "Shares"
-
-    var id: String { self.rawValue }
-    var name: String {
-        rawValue.capitalized
-    }
 }
 
 struct Account: ExportableEntity {
