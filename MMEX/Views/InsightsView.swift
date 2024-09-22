@@ -77,7 +77,6 @@ struct InsightsView: View {
                 .padding(.horizontal)
                 .padding(.top, 10) // Reduce the top padding for less space at the top
             }
-            .navigationTitle("Reports & Insights")
             .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
         }
     }

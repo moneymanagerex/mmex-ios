@@ -104,7 +104,6 @@ struct ManagementView: View {
                 defaultAccountID = storedDefaultAccount
             }
         }
-        .navigationTitle("Management")
     }
     
     func loadAccounts() {
