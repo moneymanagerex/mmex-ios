@@ -84,7 +84,6 @@ class AssetRepository: RepositoryProtocol {
 
     static func itemSetters(_ asset: Asset) -> [SQLite.Setter] {
         return [
-            col_id         <- asset.id,
             col_type       <- asset.type.name,
             col_status     <- asset.status.name,
             col_name       <- asset.name,

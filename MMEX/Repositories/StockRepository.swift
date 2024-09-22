@@ -86,7 +86,6 @@ class StockRepository: RepositoryProtocol {
 
     static func itemSetters(_ stock: Stock) -> [SQLite.Setter] {
         return [
-            col_id            <- stock.id,
             col_accountId     <- stock.accountId,
             col_name          <- stock.name,
             col_symbol        <- stock.symbol,
