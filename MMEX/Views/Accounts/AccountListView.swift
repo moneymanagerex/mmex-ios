@@ -106,7 +106,7 @@ struct AccountListView: View {
         print("Loading payees in AccountListView...")
 
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository.loadAccountsWithCurrency()
+            let loadedAccounts = repository.loadWithCurrency()
             DispatchQueue.main.async {
                 self.accounts_by_type = Dictionary(grouping: loadedAccounts) { account in
                     account.type.name
@@ -120,7 +120,7 @@ struct AccountListView: View {
         let repo = DataManager(databaseURL: self.databaseURL).getCurrencyRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedCurrencies = repo.loadCurrencies()
+            let loadedCurrencies = repo.load()
             DispatchQueue.main.async {
                 self.currencies = loadedCurrencies
                 // other post op
@@ -129,7 +129,7 @@ struct AccountListView: View {
     }
 
     func addAccount(account: inout Account) {
-        if repository.addAccount(account: &account) {
+        if repository.insert(&account) {
             // self.accounts.append(account)
             self.loadAccounts()
         }

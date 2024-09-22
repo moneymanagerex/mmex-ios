@@ -52,6 +52,14 @@ extension Infotable {
     ) }
 }
 
+extension Infotable: ModelProtocol {
+    static let modelName = "Infotable"
+
+    func shortDesc() -> String {
+        "\(self.name)"
+    }
+}
+
 extension Infotable {
     static let sampleData: [Infotable] = [
         Infotable(id: 1, name: "DATAVERSION", value: "3"),

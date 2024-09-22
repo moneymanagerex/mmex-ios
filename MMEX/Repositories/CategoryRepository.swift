@@ -15,9 +15,11 @@ class CategoryRepository {
     }
 }
 
-extension CategoryRepository {
-    // table query
-    static let table = SQLite.Table("CATEGORY_V1")
+extension CategoryRepository: RepositoryProtocol {
+    typealias RepositoryItem = Category
+
+    static let repositoryName = "CATEGORY_V1"
+    static let table = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
@@ -32,10 +34,7 @@ extension CategoryRepository {
     static let col_name     = SQLite.Expression<String>("CATEGNAME")
     static let col_active   = SQLite.Expression<Int?>("ACTIVE")
     static let col_parentId = SQLite.Expression<Int64?>("PARENTID")
-}
 
-extension CategoryRepository {
-    // select query
     static let selectQuery = table.select(
         col_id,
         col_name,
@@ -43,8 +42,7 @@ extension CategoryRepository {
         col_parentId
     )
 
-    // select result
-    static func selectResult(_ row: Row) -> Category {
+    static func selectResult(_ row: SQLite.Row) -> Category {
         return Category(
             id       : row[col_id],
             name     : row[col_name],
@@ -53,84 +51,18 @@ extension CategoryRepository {
         )
     }
 
-    // insert query
-    static func insertQuery(_ category: Category) -> SQLite.Insert {
-        return table.insert(
+    static func itemSetters(_ category: Category) -> [SQLite.Setter] {
+        return [
             col_name     <- category.name,
             col_active   <- category.active ?? false ? 1 : 0,
             col_parentId <- category.parentId
-        )
-    }
-
-    // update query
-    static func updateQuery(_ category: Category) -> SQLite.Update {
-        return table.filter(col_id == category.id).update(
-            col_name     <- category.name,
-            col_active   <- category.active ?? false ? 1 : 0,
-            col_parentId <- category.parentId
-        )
-    }
-
-    // delete query
-    static func deleteQuery(_ category: Category) -> SQLite.Delete {
-        return table.filter(col_id == category.id).delete()
+        ]
     }
 }
 
 extension CategoryRepository {
     // load all categories
-    func loadCategories() -> [Category] {
-        guard let db = db else { return [] }
-        do {
-            var categories: [Category] = []
-            for row in try db.prepare(CategoryRepository.selectQuery) {
-                categories.append(CategoryRepository.selectResult(row))
-            }
-            print("Successfully loaded categories: \(categories.count)")
-            return categories
-        } catch {
-            print("Error loading categories: \(error)")
-            return []
-        }
-    }
-
-    // add a new category
-    func addCategory(category: inout Category) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(CategoryRepository.insertQuery(category))
-            category.id = rowid // Update the category ID with the inserted row ID
-            print("Successfully added category: \(category.name), \(category.id)")
-            return true
-        } catch {
-            print("Failed to add category: \(error)")
-            return false
-        }
-    }
-
-    // update an existing category
-    func updateCategory(category: Category) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(CategoryRepository.updateQuery(category))
-            print("Successfully updated category: \(category.name), \(category.id)")
-            return true
-        } catch {
-            print("Failed to update category: \(error)")
-            return false
-        }
-    }
-
-    // delete a category
-    func deleteCategory(category: Category) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(CategoryRepository.deleteQuery(category))
-            print("Successfully deleted category: \(category.name), \(category.id)")
-            return true
-        } catch {
-            print("Failed to delete category: \(error)")
-            return false
-        }
+    func load() -> [Category] {
+        return select(query: Self.selectQuery)
     }
 }

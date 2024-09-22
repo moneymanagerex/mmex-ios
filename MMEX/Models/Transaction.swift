@@ -89,6 +89,14 @@ extension Transaction {
     ) }
 }
 
+extension Transaction: ModelProtocol {
+    static let modelName = "Transaction"
+
+    func shortDesc() -> String {
+        "\(self.id)"
+    }
+}
+
 extension Transaction {
     var day: String {
         // Extract the date portion (ignoring the time) from ISO-8601 string

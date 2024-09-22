@@ -16,9 +16,11 @@ class InfotableRepository {
     }
 }
 
-extension InfotableRepository {
-    // table query
-    static let table = SQLite.Table("INFOTABLE_V1")
+extension InfotableRepository: RepositoryProtocol {
+    typealias RepositoryItem = Infotable
+
+    static let repositoryName = "INFOTABLE_V1"
+    static let table = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
@@ -30,18 +32,14 @@ extension InfotableRepository {
     static let col_id    = SQLite.Expression<Int64>("INFOID")
     static let col_name  = SQLite.Expression<String>("INFONAME")
     static let col_value = SQLite.Expression<String>("INFOVALUE")
-}
 
-extension InfotableRepository {
-    // select query
     static let selectQuery = table.select(
         col_id,
         col_name,
         col_value
     )
 
-    // select result
-    static func selectResult(_ row: Row) -> Infotable {
+    static func selectResult(_ row: SQLite.Row) -> Infotable {
         return Infotable(
             id    : row[col_id],
             name  : row[col_name],
@@ -49,47 +47,22 @@ extension InfotableRepository {
         )
     }
 
-    // insert query
-    static func insertQuery(_ info: Infotable) -> SQLite.Insert {
-        return table.insert(
+    static func itemSetters(_ info: Infotable) -> [SQLite.Setter] {
+        return [
             col_name  <- info.name,
             col_value <- info.value
-        )
-    }
-
-    // update query
-    static func updateQuery(_ info: Infotable) -> SQLite.Update {
-        return table.filter(col_id == info.id).update(
-            col_name  <- info.name,
-            col_value <- info.value
-        )
-    }
-
-    // delete query
-    static func deleteQuery(_ info: Infotable) -> SQLite.Delete {
-        return table.filter(col_id == info.id).delete()
+        ]
     }
 }
 
 extension InfotableRepository {
     // load all keys
-    func loadInfo() -> [Infotable] {
-        guard let db else { return [] }
-        do {
-            var results: [Infotable] = []
-            for row in try db.prepare(InfotableRepository.selectQuery) {
-                results.append(InfotableRepository.selectResult(row))
-            }
-            print("Successfully loaded infotable: \(results.count)")
-            return results
-        } catch {
-            print("Error loading infotable: \(error)")
-            return []
-        }
+    func load() -> [Infotable] {
+        return select()
     }
 
     // load specific keys into a dictionary
-    func loadInfo(for keys: [InfoKey]) -> [InfoKey: Infotable] {
+    func load(for keys: [InfoKey]) -> [InfoKey: Infotable] {
         guard let db else { return [:] }
         do {
             var results: [InfoKey: Infotable] = [:]
@@ -108,43 +81,6 @@ extension InfotableRepository {
         } catch {
             print("Error loading info: \(error)")
             return [:]
-        }
-    }
-
-    func addInfo(info: inout Infotable) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(InfotableRepository.insertQuery(info))
-            info.id = rowid
-            print("Successfully added infokey: \(info.name), \(info.id)")
-            return true
-        } catch {
-            print("Failed to add infotable: \(error)")
-            return false
-        }
-    }
-
-    func updateInfo(info: Infotable) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(InfotableRepository.updateQuery(info))
-            print("Successfully updated infokey: \(info.name)")
-            return true
-        } catch {
-            print("Failed to update info: \(error)")
-            return false
-        }
-    }
-
-    func deleteInfo(info: Infotable) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(InfotableRepository.deleteQuery(info))
-            print("Successfully deleted infokey: \(info.name)")
-            return true
-        } catch {
-            print("Failed to delete infokey: \(error)")
-            return false
         }
     }
 

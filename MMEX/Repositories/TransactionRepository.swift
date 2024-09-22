@@ -86,7 +86,7 @@ extension TransactionRepository {
     }
 
     // select result
-    static func selectResult(_ row: Row) -> Transaction {
+    static func selectResult(_ row: SQLite.Row) -> Transaction {
         return Transaction(
           id                : row[col_id],
           accountId         : row[col_accountId],

@@ -16,9 +16,11 @@ class AssetRepository {
     }
 }
 
-extension AssetRepository {
-    // table query
-    static let table = SQLite.Table("ASSETS_V1")
+extension AssetRepository: RepositoryProtocol {
+    typealias RepositoryItem = Asset
+
+    static let repositoryName = "ASSETS_V1"
+    static let table = SQLite.Table(repositoryName)
 
     // column          | type    | other
     // ----------------+---------+------
@@ -33,8 +35,8 @@ extension AssetRepository {
     // VALUECHANGEMODE | TEXT    | (Percentage, Linear)
     // VALUECHANGERATE | NUMERIC |
     // NOTES           | TEXT    |
-
-    // table columns
+    
+    // columns
     static let col_id         = SQLite.Expression<Int64>("ASSETID")
     static let col_type       = SQLite.Expression<String?>("ASSETTYPE")
     static let col_status     = SQLite.Expression<String?>("ASSETSTATUS")
@@ -46,14 +48,11 @@ extension AssetRepository {
     static let col_changeMode = SQLite.Expression<String?>("VALUECHANGEMODE")
     static let col_changeRate = SQLite.Expression<Double?>("VALUECHANGERATE")
     static let col_notes      = SQLite.Expression<String?>("NOTES")
-
+    
     // cast NUMERIC to REAL
     static let cast_value      = cast(col_value)      as SQLite.Expression<Double?>
     static let cast_changeRate = cast(col_changeRate) as SQLite.Expression<Double?>
-}
 
-extension AssetRepository {
-    // select query
     static let selectQuery = table.select(
         col_id,
         col_type,
@@ -68,8 +67,7 @@ extension AssetRepository {
         col_notes
     )
 
-    // select result
-    static func selectResult(_ row: Row) -> Asset {
+    static func selectResult(_ row: SQLite.Row) -> Asset {
         return Asset(
             id         : row[col_id],
             type       : AssetType(collateNoCase: row[col_type]),
@@ -85,7 +83,7 @@ extension AssetRepository {
         )
     }
 
-    static func insertSetters(_ asset: Asset) -> [Setter] {
+    static func itemSetters(_ asset: Asset) -> [SQLite.Setter] {
         return [
             col_id         <- asset.id,
             col_type       <- asset.type.map { $0.name },
@@ -100,75 +98,10 @@ extension AssetRepository {
             col_notes      <- asset.notes
         ]
     }
-
-    // insert query
-    static func insertQuery(_ asset: Asset) -> SQLite.Insert {
-        return table.insert(insertSetters(asset))
-    }
-
-    // update query
-    static func updateQuery(_ asset: Asset) -> SQLite.Update {
-        return table.filter(col_id == asset.id).update(insertSetters(asset))
-    }
-
-    // delete query
-    static func deleteQuery(_ asset: Asset) -> SQLite.Delete {
-        return table.filter(col_id == asset.id).delete()
-    }
 }
 
 extension AssetRepository {
-    func loadAssets() -> [Asset] {
-        guard let db else { return [] }
-        do {
-            var assets: [Asset] = []
-            for row in try db.prepare(AssetRepository.selectQuery
-                .order(AssetRepository.col_type, AssetRepository.col_status.desc, AssetRepository.col_name)
-            ) {
-                assets.append(AssetRepository.selectResult(row))
-            }
-            print("Successfully loaded assets: \(assets.count)")
-            return assets
-        } catch {
-            print("Error loading assets: \(error)")
-            return []
-        }
-    }
-
-    func addAsset(asset: inout Asset) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(AssetRepository.insertQuery(asset))
-            asset.id = rowid
-            print("Successfully added asset: \(asset.name), \(asset.id)")
-            return true
-        } catch {
-            print("Failed to add asset: \(error)")
-            return false
-        }
-    }
-
-    func updateAsset(asset: Asset) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(AssetRepository.updateQuery(asset))
-            print("Successfully updated asset: \(asset.name), \(asset.id)")
-            return true
-        } catch {
-            print("Failed to update asset: \(error)")
-            return false
-        }
-    }
-
-    func deleteAsset(asset: Asset) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(AssetRepository.deleteQuery(asset))
-            print("Successfully deleted asset: \(asset.name), \(asset.id)")
-            return true
-        } catch {
-            print("Failed to delete asset: \(error)")
-            return false
-        }
-    }
+    func load() -> [Asset] { select(query: AssetRepository.selectQuery
+        .order(Self.col_type, Self.col_status.desc, Self.col_name)
+    ) }
 }

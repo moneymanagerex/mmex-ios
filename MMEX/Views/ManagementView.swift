@@ -112,7 +112,7 @@ struct ManagementView: View {
         let repo = DataManager(databaseURL: self.databaseURL).getAccountRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repo.loadAccountsWithCurrency()
+            let loadedAccounts = repo.loadWithCurrency()
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
                 
@@ -127,7 +127,7 @@ struct ManagementView: View {
         let repo = DataManager(databaseURL: self.databaseURL).getCurrencyRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedCurrencies = repo.loadCurrencies()
+            let loadedCurrencies = repo.load()
             DispatchQueue.main.async {
                 self.currencies = loadedCurrencies
                 

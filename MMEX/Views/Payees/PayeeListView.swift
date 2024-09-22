@@ -66,7 +66,7 @@ struct PayeeListView: View {
         
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository.loadPayees()
+            let loadedPayees = repository.load()
             
             // Update UI on the main thread
             DispatchQueue.main.async {
@@ -80,7 +80,7 @@ struct PayeeListView: View {
         let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository.loadCategories()
+            let loadedCategories = repository.load()
 
             DispatchQueue.main.async {
                 self.categories = loadedCategories
@@ -90,7 +90,7 @@ struct PayeeListView: View {
 
     func addPayee(payee: inout Payee) {
         // TODO
-        if self.repository.addPayee(payee: &payee) {
+        if self.repository.insert(&payee) {
             self.payees.append(payee) // id is ready after repo call
             // loadPayees()
         } else {

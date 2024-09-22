@@ -70,7 +70,7 @@ struct CurrencyDetailView: View {
 
     func saveChanges() {
         let repository = DataManager(databaseURL: databaseURL).getCurrencyRepository()
-        if repository.updateCurrency(currency: currency) {
+        if repository.update(currency) {
             // Handle success
         } else {
             // Handle failure
@@ -79,7 +79,7 @@ struct CurrencyDetailView: View {
 
     func deleteCurrency() {
         let repository = DataManager(databaseURL: databaseURL).getCurrencyRepository()
-        if repository.deleteCurrency(currency: currency) {
+        if repository.delete(currency) {
             presentationMode.wrappedValue.dismiss()
         } else {
             // Handle deletion failure

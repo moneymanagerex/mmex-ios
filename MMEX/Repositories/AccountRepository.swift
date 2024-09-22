@@ -16,9 +16,11 @@ class AccountRepository {
     }
 }
 
-extension AccountRepository {
-    // table query
-    static let table = SQLite.Table("ACCOUNTLIST_V1")
+extension AccountRepository: RepositoryProtocol {
+    typealias RepositoryItem = Account
+
+    static let repositoryName = "ACCOUNTLIST_V1"
+    static let table = SQLite.Table(repositoryName)
 
     // column          | type    | other
     // ----------------+---------+------
@@ -73,10 +75,7 @@ extension AccountRepository {
     static let cast_creditLimit    = cast(col_creditLimit)    as SQLite.Expression<Double?>
     static let cast_interestRate   = cast(col_interestRate)   as SQLite.Expression<Double?>
     static let cast_minimumPayment = cast(col_minimumPayment) as SQLite.Expression<Double?>
-}
 
-extension AccountRepository {
-    // select query
     static let selectQuery = table.select(
         col_id,
         col_name,
@@ -101,8 +100,7 @@ extension AccountRepository {
         cast_minimumPayment
     )
 
-    // select result
-    static func selectResult(_ row: Row) -> Account {
+    static func selectResult(_ row: SQLite.Row) -> Account {
         return Account(
             id              : row[col_id],
             name            : row[col_name],
@@ -129,7 +127,7 @@ extension AccountRepository {
         )
     }
 
-    static func insertSetters(_ account: Account) -> [Setter] {
+    static func itemSetters(_ account: Account) -> [SQLite.Setter] {
         return [
             col_name            <- account.name,
             col_type            <- account.type.id,
@@ -153,47 +151,21 @@ extension AccountRepository {
             col_minimumPayment  <- account.minimumPayment
         ]
     }
-
-    // insert query
-    static func insertQuery(_ account: Account) -> SQLite.Insert {
-        return table.insert(insertSetters(account))
-    }
-
-    // update query
-    static func updateQuery(_ account: Account) -> SQLite.Update {
-        return table.filter(col_id == account.id).update(insertSetters(account))
-    }
-
-    // delete query
-    static func deleteQuery(_ account: Account) -> SQLite.Delete {
-        return table.filter(col_id == account.id).delete()
-    }
 }
 
 extension AccountRepository {
-    func loadAccounts() -> [Account] {
-        guard let db else { return [] }
-        do {
-            var accounts: [Account] = []
-            for row in try db.prepare(AccountRepository.selectQuery
-                .order(AccountRepository.col_name)
-            ) {
-                accounts.append(AccountRepository.selectResult(row))
-            }
-            print("Successfully loaded accountss: \(accounts.count)")
-            return accounts
-        } catch {
-            print("Error loading accounts: \(error)")
-            return []
-        }
+    func load() -> [Account] {
+        return select(query: Self.selectQuery
+            .order(Self.col_name)
+        )
     }
 
-    func loadAccountsWithCurrency() -> [Account] {
+    func loadWithCurrency() -> [Account] {
         // TODO
         guard let db else {return []}
 
-        var accounts = loadAccounts();
-        let currencies = CurrencyRepository(db: db).loadCurrencies();
+        var accounts = load();
+        let currencies = CurrencyRepository(db: db).load();
 
         // Create a lookup dictionary for currencies by currencyId
         let currencyDictionary = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
@@ -205,42 +177,5 @@ extension AccountRepository {
         }
 
         return accounts
-    }
-
-    func addAccount(account: inout Account) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(AccountRepository.insertQuery(account))
-            account.id = rowid
-            print("Successfully added account: \(account.name), \(account.id)")
-            return true
-        } catch {
-            print("Failed to add account: \(error)")
-            return false
-        }
-    }
-
-    func updateAccount(account: Account) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(AccountRepository.updateQuery(account))
-            print("Successfully updated account: \(account.name)")
-            return true
-        } catch {
-            print("Failed to update account: \(error)")
-            return false
-        }
-    }
-
-    func deleteAccount(account: Account) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(AccountRepository.deleteQuery(account))
-            print("Successfully deleted account: \(account.name)")
-            return true
-        } catch {
-            print("Failed to delete account: \(error)")
-            return false
-        }
     }
 }

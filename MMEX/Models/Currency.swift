@@ -24,12 +24,19 @@ struct Currency: ExportableEntity {
 }
 
 extension Currency {
-    // empty currency
     static var empty: Currency { Currency(
         id: 0, name: "", prefixSymbol: nil, suffixSymbol: nil,
         decimalPoint: nil, groupSeparator: nil, unitName: nil, centName: nil,
         scale: 0, baseConversionRate: 0, symbol: "", type: ""
     ) }
+}
+
+extension Currency: ModelProtocol {
+    static let modelName = "Currency"
+
+    func shortDesc() -> String {
+        "\(self.name)"
+    }
 }
 
 extension Currency {

@@ -16,13 +16,20 @@ struct Category: ExportableEntity {
 }
 
 extension Category {
-    // empty category
     static var empty : Category { Category(
         id: 1, name: "cateogry name", active: true, parentId: nil
     ) }
 
     var isRoot: Bool {
         return parentId == nil || parentId! <= 0
+    }
+}
+
+extension Category: ModelProtocol {
+    static let modelName = "Category"
+
+    func shortDesc() -> String {
+        "\(self.name), \(self.id)"
     }
 }
 

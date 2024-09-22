@@ -16,9 +16,11 @@ class PayeeRepository {
     }
 }
 
-extension PayeeRepository {
-    // table query
-    static let table = SQLite.Table("PAYEE_V1")
+extension PayeeRepository: RepositoryProtocol {
+    typealias RepositoryItem = Payee
+
+    static let repositoryName = "PAYEE_V1"
+    static let table = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
@@ -40,10 +42,7 @@ extension PayeeRepository {
     static let col_notes      = SQLite.Expression<String?>("NOTES")
     static let col_active     = SQLite.Expression<Int?>("ACTIVE")
     static let col_pattern    = SQLite.Expression<String>("PATTERN")
-}
 
-extension PayeeRepository {
-    // select query
     static let selectQuery = table.select(
         col_id,
         col_name,
@@ -55,8 +54,7 @@ extension PayeeRepository {
         col_pattern
     )
 
-    // select result
-    static func selectResult(_ row: Row) -> Payee {
+    static func selectResult(_ row: SQLite.Row) -> Payee {
         return Payee(
             id         : row[col_id],
             name       : row[col_name],
@@ -69,9 +67,8 @@ extension PayeeRepository {
         )
     }
 
-    // insert query
-    static func insertQuery(_ payee: Payee) -> SQLite.Insert {
-        return table.insert(
+    static func itemSetters(_ payee: Payee) -> [SQLite.Setter] {
+        return [
             col_name       <- payee.name,
             col_categoryId <- payee.categoryId,
             col_number     <- payee.number,
@@ -79,80 +76,14 @@ extension PayeeRepository {
             col_notes      <- payee.notes,
             col_active     <- payee.active,
             col_pattern    <- payee.pattern
-        )
-    }
-
-    // update query
-    static func updateQuery(_ payee: Payee) -> SQLite.Update {
-        return table.filter(col_id == payee.id).update(
-            col_name       <- payee.name,
-            col_categoryId <- payee.categoryId,
-            col_number     <- payee.number,
-            col_website    <- payee.website,
-            col_notes      <- payee.notes,
-            col_active     <- payee.active,
-            col_pattern    <- payee.pattern
-        )
-    }
-
-    // delete query
-    static func deleteQuery(_ payee: Payee) -> SQLite.Delete {
-        return table.filter(col_id == payee.id).delete()
+        ]
     }
 }
 
 extension PayeeRepository {
-    func loadPayees() -> [Payee] {
-        guard let db else { return [] }
-        do {
-            var payees: [Payee] = []
-            for row in try db.prepare(PayeeRepository.selectQuery
-                .order(PayeeRepository.col_active.desc, PayeeRepository.col_name)
-            ) {
-                payees.append(PayeeRepository.selectResult(row))
-            }
-            print("Successfully loaded payees: \(payees.count)")
-            return payees
-        } catch {
-            print("Error loading payees: \(error)")
-            return []
-        }
-    }
-
-    func addPayee(payee: inout Payee) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(PayeeRepository.insertQuery(payee))
-            payee.id = rowid
-            print("Successfully added payee: \(payee.name), \(payee.id)")
-            return true
-        } catch {
-            print("Failed to add payee: \(error)")
-            return false
-        }
-    }
-
-    func updatePayee(payee: Payee) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(PayeeRepository.updateQuery(payee))
-            print("Successfully updated payee: \(payee.name)")
-            return true
-        } catch {
-            print("Failed to update payee: \(error)")
-            return false
-        }
-    }
-
-    func deletePayee(payee: Payee) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(PayeeRepository.deleteQuery(payee))
-            print("Successfully deleted payee: \(payee.name)")
-            return true
-        } catch {
-            print("Failed to delete payee: \(error)")
-            return false
-        }
+    func load() -> [Payee] {
+        return select(query: Self.selectQuery
+            .order(Self.col_active.desc, Self.col_name)
+        )
     }
 }
