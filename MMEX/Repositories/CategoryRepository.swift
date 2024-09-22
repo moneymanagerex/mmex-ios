@@ -45,15 +45,15 @@ class CategoryRepository: RepositoryProtocol {
         return Category(
             id       : row[col_id],
             name     : row[col_name],
-            active   : row[col_active] ?? 0 == 1,
-            parentId : row[col_parentId]
+            active   : row[col_active] ?? 0 != 0,
+            parentId : row[col_parentId] ?? 0
         )
     }
 
     static func itemSetters(_ category: Category) -> [SQLite.Setter] {
         return [
             col_name     <- category.name,
-            col_active   <- category.active ?? false ? 1 : 0,
+            col_active   <- category.active ? 1 : 0,
             col_parentId <- category.parentId
         ]
     }

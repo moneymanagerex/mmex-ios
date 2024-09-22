@@ -12,7 +12,7 @@ struct CategoryListView: View {
     let databaseURL: URL
     
     @State private var isPresentingAddView = false
-    @State private var newCategory = Category.empty
+    @State private var newCategory = Category()
 
     private var repository: CategoryRepository
     

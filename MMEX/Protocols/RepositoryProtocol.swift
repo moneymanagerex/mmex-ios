@@ -72,6 +72,7 @@ extension RepositoryProtocol {
 
     func update(_ item: RepositoryItem) -> Bool {
         guard let db else { return false }
+        guard item.id > 0 else { return false }
         do {
             let query = Self.repositoryTable
                 .filter(Self.col_id == item.id)
@@ -87,6 +88,7 @@ extension RepositoryProtocol {
 
     func delete(_ item: RepositoryItem) -> Bool {
         guard let db else { return false }
+        guard item.id > 0 else { return false }
         do {
             let query = Self.repositoryTable
                 .filter(Self.col_id == item.id)

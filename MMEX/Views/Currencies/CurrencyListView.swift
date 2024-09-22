@@ -10,7 +10,7 @@ import SwiftUI
 struct CurrencyListView: View {
     let databaseURL: URL
     @State private var currencies: [Bool: [Currency]] = [:]
-    @State private var newCurrency = Currency.empty
+    @State private var newCurrency = Currency()
     @State private var isPresentingCurrencyAddView = false
     @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
     
@@ -95,7 +95,7 @@ struct CurrencyListView: View {
         .sheet(isPresented: $isPresentingCurrencyAddView) {
             CurrencyAddView(newCurrency: $newCurrency, isPresentingCurrencyAddView: $isPresentingCurrencyAddView) { currency in
                 addCurrency(&currency)
-                newCurrency = Currency.empty
+                newCurrency = Currency()
             }
         }
     }

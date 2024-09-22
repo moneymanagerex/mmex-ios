@@ -58,8 +58,8 @@ struct AccountEditView: View {
             }
             Section(header: Text("Notes")) {
                 TextField("Notes", text: Binding(
-                    get: { account.notes ?? "" },  // Provide a default value if nil
-                    set: { account.notes = $0.isEmpty ? nil : $0 }  // Set nil if empty
+                    get: { account.notes },  // Provide a default value if nil
+                    set: { account.notes = $0 }  // Set nil if empty
                 ))
             }
         }

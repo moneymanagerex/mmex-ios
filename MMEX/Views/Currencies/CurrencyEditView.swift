@@ -17,21 +17,21 @@ struct CurrencyEditView: View {
             }
             Section(header: Text("Prefix Symbol")) {
                 TextField("Prefix Symbol", text: Binding(
-                    get: { currency.prefixSymbol ?? "" },
-                    set: { currency.prefixSymbol = $0.isEmpty ? nil : $0 }
+                    get: { currency.prefixSymbol },
+                    set: { currency.prefixSymbol = $0 }
                 ))
             }
             Section(header: Text("Suffix Symbol")) {
                 TextField("Suffix Symbol", text: Binding(
-                    get: { currency.suffixSymbol ?? "" },
-                    set: { currency.suffixSymbol = $0.isEmpty ? nil : $0 }
+                    get: { currency.suffixSymbol },
+                    set: { currency.suffixSymbol = $0 }
                 ))
             }
             Section(header: Text("Scale")) {
                 TextField("Scale", value: $currency.scale, format: .number)
             }
             Section(header: Text("Conversion Rate")) {
-                TextField("Conversion Rate", value: $currency.baseConversionRate, format: .number)
+                TextField("Conversion Rate", value: $currency.baseConvRate, format: .number)
             }
             Section(header: Text("Currency Type")) {
                 TextField("Currency Type", text: $currency.type)

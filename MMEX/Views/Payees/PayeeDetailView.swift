@@ -13,7 +13,7 @@ struct PayeeDetailView: View {
     let databaseURL: URL
     @Binding var categories: [Category]
     
-    @State private var editingPayee = Payee.empty
+    @State private var editingPayee = Payee()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
 
@@ -30,27 +30,27 @@ struct PayeeDetailView: View {
             }
 
             Section(header: Text("Category")) {
-                Text(payee.categoryId != nil ? getCategoryName(for: payee.categoryId!) : "N/A")
+                Text(getCategoryName(for: payee.categoryId))
             }
 
             Section(header: Text("Number")) {
-                Text(payee.number ?? "N/A")
+                Text(payee.number)
             }
 
             Section(header: Text("Website")) {
-                Text(payee.website ?? "N/A")
+                Text(payee.website)
             }
 
             Section(header: Text("Notes")) {
-                Text(payee.notes ?? "No notes")
+                Text(payee.notes)
             }
 
             Section(header: Text("Active")) {
-                Text(payee.active == 1 ? "Yes" : "No")
+                Text(payee.active ? "Yes" : "No")
             }
 
             Section(header: Text("Pattern")) {
-                Text(payee.pattern.isEmpty ? "No pattern" : payee.pattern)
+                Text(payee.pattern)
             }
 
             Button("Delete Payee") {

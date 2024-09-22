@@ -71,18 +71,18 @@ class CurrencyRepository: RepositoryProtocol {
 
     static func selectResult(_ row: SQLite.Row) -> Currency {
         return Currency(
-            id                 : row[col_id],
-            name               : row[col_name],
-            prefixSymbol       : row[col_prefixSymbol],
-            suffixSymbol       : row[col_suffixSymbol],
-            decimalPoint       : row[col_decimalPoint],
-            groupSeparator     : row[col_groupSeparator],
-            unitName           : row[col_unitName],
-            centName           : row[col_centName],
-            scale              : row[col_scale],
-            baseConversionRate : row[cast_baseConversionRate],
-            symbol             : row[col_symbol],
-            type               : row[col_type]
+            id             : row[col_id],
+            name           : row[col_name],
+            prefixSymbol   : row[col_prefixSymbol] ?? "",
+            suffixSymbol   : row[col_suffixSymbol] ?? "",
+            decimalPoint   : row[col_decimalPoint] ?? "",
+            groupSeparator : row[col_groupSeparator] ?? "",
+            unitName       : row[col_unitName] ?? "",
+            centName       : row[col_centName] ?? "",
+            scale          : row[col_scale] ?? 0,
+            baseConvRate   : row[cast_baseConversionRate] ?? 0.0,
+            symbol         : row[col_symbol],
+            type           : row[col_type]
         )
     }
 
@@ -96,7 +96,7 @@ class CurrencyRepository: RepositoryProtocol {
             col_unitName           <- currency.unitName,
             col_centName           <- currency.centName,
             col_scale              <- currency.scale,
-            col_baseConversionRate <- currency.baseConversionRate,
+            col_baseConversionRate <- currency.baseConvRate,
             col_symbol             <- currency.symbol,
             col_type               <- currency.type
         ]

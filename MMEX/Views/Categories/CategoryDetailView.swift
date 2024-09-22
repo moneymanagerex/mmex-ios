@@ -11,7 +11,7 @@ struct CategoryDetailView: View {
     @State var category: Category
     let databaseURL: URL
     
-    @State private var editingCategory = Category.empty
+    @State private var editingCategory = Category()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
@@ -29,7 +29,7 @@ struct CategoryDetailView: View {
             
             // TODO show name and link to its partent
             Section(header: Text("Parent ID")) {
-                Text(category.parentId != nil ? "\(category.parentId!)" : "No Parent")
+                Text("\(category.parentId)")
             }
             
             Button("Delete Category") {

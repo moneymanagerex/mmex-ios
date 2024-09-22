@@ -255,6 +255,7 @@
 				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
 				A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */,
 				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
+				A37E7D992C9BC28900B4ECFC /* Row.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -312,7 +313,6 @@
 				A3C1429F2C9025D600D3CEC0 /* Category.swift */,
 				A3C1424D2C8B335900D3CEC0 /* Payee.swift */,
 				A3C142662C8F2AF500D3CEC0 /* Transaction.swift */,
-				A37E7D992C9BC28900B4ECFC /* Row.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

@@ -19,7 +19,7 @@ struct PayeeEditView: View {
 
             Section(header: Text("Category")) {
                 Picker("Category", selection: Binding(
-                    get: { payee.categoryId ?? 0 }, // Safely unwrap the optional notes field
+                    get: { payee.categoryId }, // Safely unwrap the optional notes field
                     set: { payee.categoryId = $0 } // Set
                 )) {
                     Text("Category").tag(0 as Int64) // not set
@@ -33,30 +33,30 @@ struct PayeeEditView: View {
 
             Section(header: Text("Number")) {
                 TextField("Number", text: Binding(
-                    get: { payee.number ?? "" }, // Safely unwrap the optional notes field
-                    set: { payee.number = $0.isEmpty ? nil : $0 } // Set to nil if the input is empty
+                    get: { payee.number }, // Safely unwrap the optional notes field
+                    set: { payee.number = $0 } // Set to nil if the input is empty
                 ))
             }
 
             Section(header: Text("Website")) {
                 TextField("Website", text: Binding(
-                    get: { payee.website ?? "" }, // Safely unwrap the optional notes field
-                    set: { payee.website = $0.isEmpty ? nil : $0 } // Set to nil if the input is empty
+                    get: { payee.website }, // Safely unwrap the optional notes field
+                    set: { payee.website = $0 } // Set to nil if the input is empty
                 ))
             }
 
             Section(header: Text("Notes")) {
                 TextField("Notes", text: Binding(
-                    get: { payee.notes ?? "" },
-                    set: { payee.notes = $0.isEmpty ? nil : $0 }
+                    get: { payee.notes },
+                    set: { payee.notes = $0 }
                 ))
             }
 
             Section(header: Text("Active")) {
                 Toggle(isOn: Binding(get: {
-                    payee.active == 1
+                    payee.active
                 }, set: { newValue in
-                    payee.active = newValue ? 1 : 0
+                    payee.active = newValue
                 })) {
                     Text("Is Active")
                 }

@@ -12,7 +12,7 @@ struct PayeeListView: View {
     @State private var payees: [Payee] = []
     @State private var filteredPayees: [Payee] = [] // New: Filtered payees for search results
     @State private var categories: [Category] = []
-    @State private var newPayee = Payee.empty
+    @State private var newPayee = Payee()
     @State private var isPresentingPayeeAddView = false
     @State private var searchQuery: String = "" // New: Search query
     
@@ -31,7 +31,7 @@ struct PayeeListView: View {
                     HStack {
                         Text(payee.name)
                         Spacer()
-                        Text(payee.active == 1 ? "ACTIVE" : "INACTIVE")
+                        Text(payee.active ? "ACTIVE" : "INACTIVE")
                     }
                 }
             }
@@ -56,7 +56,7 @@ struct PayeeListView: View {
         .sheet(isPresented: $isPresentingPayeeAddView) {
             PayeeAddView(newPayee: $newPayee, isPresentingPayeeAddView: $isPresentingPayeeAddView, categories: $categories) { newPayee in
                 addPayee(payee: &newPayee)
-                newPayee = Payee.empty
+                newPayee = Payee()
             }
         }
     }

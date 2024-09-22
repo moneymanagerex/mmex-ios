@@ -10,7 +10,7 @@ import SwiftUI
 struct CurrencyDetailView: View {
     @State var currency: Currency
     let databaseURL: URL
-    @State private var editingCurrency = Currency.empty
+    @State private var editingCurrency = Currency()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode
 
@@ -20,16 +20,16 @@ struct CurrencyDetailView: View {
                 Text(currency.name)
             }
             Section(header: Text("Prefix Symbol")) {
-                Text(currency.prefixSymbol ?? "N/A")
+                Text(currency.prefixSymbol)
             }
             Section(header: Text("Suffix Symbol")) {
-                Text(currency.suffixSymbol ?? "N/A")
+                Text(currency.suffixSymbol)
             }
             Section(header: Text("Scale")) {
-                Text("\(currency.scale ?? 0)")
+                Text("\(currency.scale)")
             }
             Section(header: Text("Conversion Rate")) {
-                Text("\(currency.baseConversionRate ?? 0)")
+                Text("\(currency.baseConvRate)")
             }
             Section(header: Text("Currency Type")) {
                 Text(currency.type)

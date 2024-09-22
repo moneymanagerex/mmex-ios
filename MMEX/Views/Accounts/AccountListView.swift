@@ -10,7 +10,7 @@ struct AccountListView: View {
     let databaseURL: URL
     @State private var currencies: [Currency] = []
     @State private var accounts_by_type: [String:[Account]] = [:]
-    @State private var newAccount = Account.empty
+    @State private var newAccount = Account()
     @State private var isPresentingAccountAddView = false
     @State private var expandedSections: [String: Bool] = [:] // Tracks the expanded/collapsed state
 
@@ -90,7 +90,7 @@ struct AccountListView: View {
         .sheet(isPresented: $isPresentingAccountAddView) {
             AccountAddView(newAccount: $newAccount, isPresentingAccountAddView: $isPresentingAccountAddView, currencies: $currencies) { newAccount in
                 addAccount(account: &newAccount)
-                newAccount = Account.empty
+                newAccount = Account()
             }
         }
     }

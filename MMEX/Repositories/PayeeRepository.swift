@@ -57,11 +57,11 @@ class PayeeRepository: RepositoryProtocol {
         return Payee(
             id         : row[col_id],
             name       : row[col_name],
-            categoryId : row[col_categoryId],
-            number     : row[col_number],
-            website    : row[col_website],
-            notes      : row[col_notes],
-            active     : row[col_active] ?? 1,
+            categoryId : row[col_categoryId] ?? 0,
+            number     : row[col_number] ?? "",
+            website    : row[col_website] ?? "",
+            notes      : row[col_notes] ?? "",
+            active     : row[col_active] ?? 0 != 0,
             pattern    : row[col_pattern] ?? ""
         )
     }
@@ -73,7 +73,7 @@ class PayeeRepository: RepositoryProtocol {
             col_number     <- payee.number,
             col_website    <- payee.website,
             col_notes      <- payee.notes,
-            col_active     <- payee.active,
+            col_active     <- payee.active ? 1 : 0,
             col_pattern    <- payee.pattern
         ]
     }

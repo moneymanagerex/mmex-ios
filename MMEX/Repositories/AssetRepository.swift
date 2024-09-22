@@ -69,30 +69,29 @@ class AssetRepository: RepositoryProtocol {
     static func selectResult(_ row: SQLite.Row) -> Asset {
         return Asset(
             id         : row[col_id],
-            type       : AssetType(collateNoCase: row[col_type]),
-            status     : AssetStatus(collateNoCase: row[col_status]),
+            type       : AssetType(collateNoCase: row[col_type]) ?? AssetType.property,
+            status     : AssetStatus(collateNoCase: row[col_status]) ?? AssetStatus.open,
             name       : row[col_name],
             startDate  : row[col_startDate],
-            currencyId : row[col_currencyId],
-            value      : row[cast_value],
-            change     : AssetChange(collateNoCase: row[col_change]),
-            changeMode : AssetChangeMode(collateNoCase: row[col_changeMode]),
-            changeRate : row[cast_changeRate],
-            notes      : row[col_notes]
+            currencyId : row[col_currencyId] ?? 0,
+            value      : row[cast_value] ?? 0.0,
+            change     : AssetChange(collateNoCase: row[col_change]) ?? AssetChange.none,
+            changeMode : AssetChangeMode(collateNoCase: row[col_changeMode]) ?? AssetChangeMode.percentage,
+            changeRate : row[cast_changeRate] ?? 0.0,
+            notes      : row[col_notes] ?? ""
         )
     }
 
     static func itemSetters(_ asset: Asset) -> [SQLite.Setter] {
         return [
-            col_id         <- asset.id,
-            col_type       <- asset.type.map { $0.name },
-            col_status     <- asset.status.map { $0.name },
+            col_type       <- asset.type.name,
+            col_status     <- asset.status.name,
             col_name       <- asset.name,
             col_startDate  <- asset.startDate,
             col_currencyId <- asset.currencyId,
             col_value      <- asset.value,
-            col_change     <- asset.change.map { $0.name },
-            col_changeMode <- asset.changeMode.map { $0.name },
+            col_change     <- asset.change.name,
+            col_changeMode <- asset.changeMode.name,
             col_changeRate <- asset.changeRate,
             col_notes      <- asset.notes
         ]

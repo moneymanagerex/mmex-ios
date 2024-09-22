@@ -18,7 +18,7 @@ struct CategoryEditView: View {
             
             Section(header: Text("Active")) {
                 Toggle("Is Active", isOn: Binding(
-                    get: { category.active ?? false },
+                    get: { category.active },
                     set: { category.active = $0 }
                 ))
             }

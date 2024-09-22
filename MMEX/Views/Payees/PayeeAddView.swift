@@ -55,7 +55,11 @@ struct PayeeAddView: View {
 }
 
 #Preview {
-    PayeeAddView(newPayee: .constant(Payee.empty), isPresentingPayeeAddView: .constant(true), categories: .constant(Category.sampleData)) { newPayee in
+    PayeeAddView(
+        newPayee: .constant(Payee()),
+        isPresentingPayeeAddView: .constant(true),
+        categories: .constant(Category.sampleData)
+    ) { newPayee in
         // Handle saving in preview
         print("New payee: \(newPayee.name)")
     }

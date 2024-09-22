@@ -71,8 +71,8 @@ struct TransactionEditView: View {
             
             // 3. Input field for notes
             TextField("Add Note", text: Binding(
-                get: { txn.notes ?? "" }, // Safely unwrap the optional notes field
-                set: { txn.notes = $0.isEmpty ? nil : $0 } // Set notes to nil if the input is empty
+                get: { txn.notes }, // Safely unwrap the optional notes field
+                set: { txn.notes = $0 } // Set notes to nil if the input is empty
             ))
             .padding(.horizontal)
             .padding(.vertical, 10)
@@ -120,7 +120,7 @@ struct TransactionEditView: View {
 
                 // Category picker
                 Picker("Select Category", selection: Binding(
-                    get: { txn.categId ?? 0 }, // Safely unwrap the optional notes field
+                    get: { txn.categId }, // Safely unwrap the optional notes field
                     set: { txn.categId = $0 } // Set
                 )) {
                     if (txn.categId == 0 ) {
@@ -142,7 +142,7 @@ struct TransactionEditView: View {
             amountString = String(format: "%.2f", txn.transAmount)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            selectedDate = dateFormatter.date(from: txn.transDate ?? "") ?? Date()
+            selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
 
             // Automatically set if there's only one item in the list
             if self.payees.count == 1 {
