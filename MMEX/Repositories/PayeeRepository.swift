@@ -20,7 +20,7 @@ extension PayeeRepository: RepositoryProtocol {
     typealias RepositoryItem = Payee
 
     static let repositoryName = "PAYEE_V1"
-    static let table = SQLite.Table(repositoryName)
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
@@ -84,7 +84,7 @@ extension PayeeRepository: RepositoryProtocol {
 
 extension PayeeRepository {
     func load() -> [Payee] {
-        return select(table: Self.table
+        return select(table: Self.repositoryTable
             .order(Self.col_active.desc, Self.col_name)
         )
     }

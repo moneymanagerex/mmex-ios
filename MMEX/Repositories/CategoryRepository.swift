@@ -19,7 +19,7 @@ extension CategoryRepository: RepositoryProtocol {
     typealias RepositoryItem = Category
 
     static let repositoryName = "CATEGORY_V1"
-    static let table = SQLite.Table(repositoryName)
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
@@ -65,6 +65,6 @@ extension CategoryRepository: RepositoryProtocol {
 extension CategoryRepository {
     // load all categories
     func load() -> [Category] {
-        return select(table: Self.table)
+        return select(table: Self.repositoryTable)
     }
 }

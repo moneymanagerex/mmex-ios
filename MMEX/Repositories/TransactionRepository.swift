@@ -20,7 +20,7 @@ extension TransactionRepository: RepositoryProtocol {
     typealias RepositoryItem = Transaction
 
     static let repositoryName = "CHECKINGACCOUNT_V1"
-    static let table = SQLite.Table(repositoryName)
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column            | type    | other
     // ------------------+---------+------
@@ -129,7 +129,7 @@ extension TransactionRepository: RepositoryProtocol {
 extension TransactionRepository {
     // load all transactions
     func load() -> [Transaction] {
-        return select(table: Self.table)
+        return select(table: Self.repositoryTable)
     }
 
     // load recent transactions
@@ -138,9 +138,10 @@ extension TransactionRepository {
         endDate: Date? = Date()
     ) -> [Transaction] {
         let table = if let startDate {
-            Self.table.filter(Self.col_transDate >= startDate.ISO8601Format())
+            Self.repositoryTable
+                .filter(Self.col_transDate >= startDate.ISO8601Format())
         } else {
-            Self.table
+            Self.repositoryTable
         }
         return select(table: table)
     }

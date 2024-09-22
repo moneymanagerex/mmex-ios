@@ -20,7 +20,7 @@ extension InfotableRepository: RepositoryProtocol {
     typealias RepositoryItem = Infotable
 
     static let repositoryName = "INFOTABLE_V1"
-    static let table = SQLite.Table(repositoryName)
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
@@ -69,7 +69,7 @@ extension InfotableRepository {
         do {
             var results: [InfoKey: Infotable] = [:]
             for key in keys {
-                if let row = try db.pluck(Self.selectQuery(from: Self.table
+                if let row = try db.pluck(Self.selectQuery(from: Self.repositoryTable
                     .filter(Self.col_name == key.rawValue)
                 ) ) {
                     results[key] = Self.selectResult(row)
@@ -91,7 +91,7 @@ extension InfotableRepository {
     func getValue<T>(for key: String, as type: T.Type) -> T? {
         guard let db else { return nil }
         do {
-            if let row = try db.pluck(Self.selectQuery(from: Self.table
+            if let row = try db.pluck(Self.selectQuery(from: Self.repositoryTable
                 .filter(Self.col_name == key)
             ) ) {
                 let value = row[Self.col_value]
@@ -121,7 +121,7 @@ extension InfotableRepository {
             return
         }
 
-        let query = InfotableRepository.table.filter(Self.col_name == key)
+        let query = Self.repositoryTable.filter(Self.col_name == key)
         do {
             if let _ = try db.pluck(query) {
                 // Update existing setting
@@ -130,7 +130,7 @@ extension InfotableRepository {
                 ) )
             } else {
                 // Insert new setting
-                try db.run(Self.table.insert(
+                try db.run(Self.repositoryTable.insert(
                     Self.col_name  <- key,
                     Self.col_value <- stringValue
                 ) )

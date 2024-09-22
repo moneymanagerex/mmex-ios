@@ -20,7 +20,7 @@ extension AssetRepository: RepositoryProtocol {
     typealias RepositoryItem = Asset
 
     static let repositoryName = "ASSETS_V1"
-    static let table = SQLite.Table(repositoryName)
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column          | type    | other
     // ----------------+---------+------
@@ -103,7 +103,7 @@ extension AssetRepository: RepositoryProtocol {
 }
 
 extension AssetRepository {
-    func load() -> [Asset] { select(table: Self.table
+    func load() -> [Asset] { select(table: Self.repositoryTable
         .order(Self.col_type, Self.col_status.desc, Self.col_name)
     ) }
 }

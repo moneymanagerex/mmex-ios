@@ -20,7 +20,7 @@ extension CurrencyRepository: RepositoryProtocol {
     typealias RepositoryItem = Currency
 
     static let repositoryName = "CURRENCYFORMATS_V1"
-    static let table = SQLite.Table(repositoryName)
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column          | type    | other
     // ----------------+---------+------
@@ -109,7 +109,7 @@ extension CurrencyRepository: RepositoryProtocol {
 extension CurrencyRepository {
     // load all currencies
     func load() -> [Currency] {
-        return select(table: Self.table
+        return select(table: Self.repositoryTable
             .order(Self.col_name)
         )
     }

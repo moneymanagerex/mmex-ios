@@ -20,7 +20,7 @@ extension StockRepository: RepositoryProtocol {
     typealias RepositoryItem = Stock
 
     static let repositoryName = "STOCK_V1"
-    static let table = SQLite.Table(repositoryName)
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column        | type    | other
     // --------------+---------+------
@@ -107,7 +107,7 @@ extension StockRepository: RepositoryProtocol {
 
 extension StockRepository {
     func load() -> [Stock] {
-        return select(table: Self.table
+        return select(table: Self.repositoryTable
             .order(Self.col_name)
         )
     }
