@@ -26,7 +26,7 @@ extension InfotableRepository: RepositoryProtocol {
     // ----------+---------+------
     // INFOID    | INTEGER | NOT NULL PRIMARY KEY
     // INFONAME  | TEXT    | NOT NULL UNIQUE COLLATE NOCASE
-    // INFOVALUE | TEXT    | NOT NUL
+    // INFOVALUE | TEXT    | NOT NULL
 
     // table columns
     static let col_id    = SQLite.Expression<Int64>("INFOID")
