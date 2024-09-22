@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum AssetType: String, CaseIterable, Identifiable, Codable {
+enum AssetType: String, EnumCollateNoCase {
     case property   = "Property"
     case automobile = "Automobile"
     case household  = "Household Object"
@@ -16,70 +16,22 @@ enum AssetType: String, CaseIterable, Identifiable, Codable {
     case jewellery  = "Jewellery"
     case cash       = "Cash"
     case other      = "Other"
-
-    init?(collateNoCase name: String?) {
-        guard let name else { return nil }
-        switch Self.allCases.first(where: {
-            $0.rawValue.caseInsensitiveCompare(name) == .orderedSame
-        } ) {
-        case .some(let x): self = x
-        default: return nil
-        }
-    }
-    var id: String { self.rawValue }
-    var name: String { rawValue.capitalized }
 }
 
-enum AssetStatus: String, CaseIterable, Identifiable, Codable {
+enum AssetStatus: String, EnumCollateNoCase {
     case closed = "Closed"
     case open   = "Open"
-
-    init?(collateNoCase name: String?) {
-        guard let name else { return nil }
-        switch Self.allCases.first(where: {
-            $0.rawValue.caseInsensitiveCompare(name) == .orderedSame
-        } ) {
-        case .some(let x): self = x
-        default: return nil
-        }
-    }
-    var id: String { self.rawValue }
-    var name: String { rawValue.capitalized }
 }
 
-enum AssetChange: String, CaseIterable, Identifiable, Codable {
+enum AssetChange: String, EnumCollateNoCase {
     case none        = "None"
     case appreciates = "Appreciates"
     case depreciates = "Depreciates"
-
-    init?(collateNoCase name: String?) {
-        guard let name else { return nil }
-        switch Self.allCases.first(where: {
-            $0.rawValue.caseInsensitiveCompare(name) == .orderedSame
-        } ) {
-        case .some(let x): self = x
-        default: return nil
-        }
-    }
-    var id: String { self.rawValue }
-    var name: String { rawValue.capitalized }
 }
 
-enum AssetChangeMode: String, CaseIterable, Identifiable, Codable {
+enum AssetChangeMode: String, EnumCollateNoCase {
     case percentage = "Percentage"
     case linear     = "Linear"
-
-    init?(collateNoCase name: String?) {
-        guard let name else { return nil }
-        switch Self.allCases.first(where: {
-            $0.rawValue.caseInsensitiveCompare(name) == .orderedSame
-        } ) {
-        case .some(let x): self = x
-        default: return nil
-        }
-    }
-    var id: String { self.rawValue }
-    var name: String { rawValue.capitalized }
 }
 
 struct Asset: ExportableEntity {
