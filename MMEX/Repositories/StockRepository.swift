@@ -56,19 +56,21 @@ extension StockRepository: RepositoryProtocol {
     static let cast_value         = cast(col_value)         as SQLite.Expression<Double?>
     static let cast_commisison    = cast(col_commisison)    as SQLite.Expression<Double?>
 
-    static let selectQuery = table.select(
-        col_id,
-        col_accountId,
-        col_name,
-        col_symbol,
-        cast_numShares,
-        col_purchaseDate,
-        cast_purchasePrice,
-        cast_currentPrice,
-        cast_value,
-        cast_commisison,
-        col_notes
-    )
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_accountId,
+            col_name,
+            col_symbol,
+            cast_numShares,
+            col_purchaseDate,
+            cast_purchasePrice,
+            cast_currentPrice,
+            cast_value,
+            cast_commisison,
+            col_notes
+        )
+    }
 
     static func selectResult(_ row: SQLite.Row) -> Stock {
         return Stock(
@@ -86,7 +88,7 @@ extension StockRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ stock: Stock) -> [Setter] {
+    static func itemSetters(_ stock: Stock) -> [SQLite.Setter] {
         return [
             col_id            <- stock.id,
             col_accountId     <- stock.accountId,
@@ -105,7 +107,7 @@ extension StockRepository: RepositoryProtocol {
 
 extension StockRepository {
     func load() -> [Stock] {
-        return select(query: Self.selectQuery
+        return select(table: Self.table
             .order(Self.col_name)
         )
     }

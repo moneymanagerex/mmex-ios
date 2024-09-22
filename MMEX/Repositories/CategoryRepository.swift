@@ -35,12 +35,14 @@ extension CategoryRepository: RepositoryProtocol {
     static let col_active   = SQLite.Expression<Int?>("ACTIVE")
     static let col_parentId = SQLite.Expression<Int64?>("PARENTID")
 
-    static let selectQuery = table.select(
-        col_id,
-        col_name,
-        col_active,
-        col_parentId
-    )
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_name,
+            col_active,
+            col_parentId
+        )
+    }
 
     static func selectResult(_ row: SQLite.Row) -> Category {
         return Category(
@@ -63,6 +65,6 @@ extension CategoryRepository: RepositoryProtocol {
 extension CategoryRepository {
     // load all categories
     func load() -> [Category] {
-        return select(query: Self.selectQuery)
+        return select(table: Self.table)
     }
 }

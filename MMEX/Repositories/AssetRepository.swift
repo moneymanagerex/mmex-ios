@@ -53,19 +53,21 @@ extension AssetRepository: RepositoryProtocol {
     static let cast_value      = cast(col_value)      as SQLite.Expression<Double?>
     static let cast_changeRate = cast(col_changeRate) as SQLite.Expression<Double?>
 
-    static let selectQuery = table.select(
-        col_id,
-        col_type,
-        col_status,
-        col_name,
-        col_startDate,
-        col_currencyId,
-        cast_value,
-        col_change,
-        col_changeMode,
-        cast_changeRate,
-        col_notes
-    )
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_type,
+            col_status,
+            col_name,
+            col_startDate,
+            col_currencyId,
+            cast_value,
+            col_change,
+            col_changeMode,
+            cast_changeRate,
+            col_notes
+        )
+    }
 
     static func selectResult(_ row: SQLite.Row) -> Asset {
         return Asset(
@@ -101,7 +103,7 @@ extension AssetRepository: RepositoryProtocol {
 }
 
 extension AssetRepository {
-    func load() -> [Asset] { select(query: AssetRepository.selectQuery
+    func load() -> [Asset] { select(table: Self.table
         .order(Self.col_type, Self.col_status.desc, Self.col_name)
     ) }
 }

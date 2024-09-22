@@ -54,20 +54,23 @@ extension CurrencyRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_baseConversionRate = cast(col_baseConversionRate) as SQLite.Expression<Double?>
 
-    static let selectQuery = table.select(
-        col_id,
-        col_name,
-        col_prefixSymbol,
-        col_suffixSymbol,
-        col_decimalPoint,
-        col_groupSeparator,
-        col_unitName,
-        col_centName,
-        col_scale,
-        cast_baseConversionRate,
-        col_symbol,
-        col_type
-    )
+
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_name,
+            col_prefixSymbol,
+            col_suffixSymbol,
+            col_decimalPoint,
+            col_groupSeparator,
+            col_unitName,
+            col_centName,
+            col_scale,
+            cast_baseConversionRate,
+            col_symbol,
+            col_type
+        )
+    }
 
     static func selectResult(_ row: SQLite.Row) -> Currency {
         return Currency(
@@ -106,7 +109,7 @@ extension CurrencyRepository: RepositoryProtocol {
 extension CurrencyRepository {
     // load all currencies
     func load() -> [Currency] {
-        return select(query: Self.selectQuery
+        return select(table: Self.table
             .order(Self.col_name)
         )
     }

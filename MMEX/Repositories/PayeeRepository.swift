@@ -43,16 +43,18 @@ extension PayeeRepository: RepositoryProtocol {
     static let col_active     = SQLite.Expression<Int?>("ACTIVE")
     static let col_pattern    = SQLite.Expression<String>("PATTERN")
 
-    static let selectQuery = table.select(
-        col_id,
-        col_name,
-        col_categoryId,
-        col_number,
-        col_website,
-        col_notes,
-        col_active,
-        col_pattern
-    )
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_name,
+            col_categoryId,
+            col_number,
+            col_website,
+            col_notes,
+            col_active,
+            col_pattern
+        )
+    }
 
     static func selectResult(_ row: SQLite.Row) -> Payee {
         return Payee(
@@ -82,7 +84,7 @@ extension PayeeRepository: RepositoryProtocol {
 
 extension PayeeRepository {
     func load() -> [Payee] {
-        return select(query: Self.selectQuery
+        return select(table: Self.table
             .order(Self.col_active.desc, Self.col_name)
         )
     }

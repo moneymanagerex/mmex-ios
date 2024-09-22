@@ -16,9 +16,11 @@ class TransactionRepository {
     }
 }
 
-extension TransactionRepository {
-    // table query
-    static let table = SQLite.Table("CHECKINGACCOUNT_V1")
+extension TransactionRepository: RepositoryProtocol {
+    typealias RepositoryItem = Transaction
+
+    static let repositoryName = "CHECKINGACCOUNT_V1"
+    static let table = SQLite.Table(repositoryName)
 
     // column            | type    | other
     // ------------------+---------+------
@@ -60,12 +62,9 @@ extension TransactionRepository {
     // cast NUMERIC to REAL
     static let cast_transAmount   = cast(col_transAmount)   as SQLite.Expression<Double>
     static let cast_toTransAmount = cast(col_toTransAmount) as SQLite.Expression<Double?>
-}
-    
-extension TransactionRepository {
-    // select query
-    static func selectQuery(from: SQLite.Table) -> SQLite.Table {
-        return from.select(
+
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
             col_id,
             col_accountId,
             col_toAccountId,
@@ -85,7 +84,6 @@ extension TransactionRepository {
         )
     }
 
-    // select result
     static func selectResult(_ row: SQLite.Row) -> Transaction {
         return Transaction(
           id                : row[col_id],
@@ -107,7 +105,7 @@ extension TransactionRepository {
         )
     }
 
-    static func insertSetters(_ txn: Transaction) -> [Setter] {
+    static func itemSetters(_ txn: Transaction) -> [SQLite.Setter] {
         return [
             col_accountId         <- txn.accountId,
             col_toAccountId       <- txn.toAccountId,
@@ -126,102 +124,24 @@ extension TransactionRepository {
             col_color             <- txn.color,
         ]
     }
-
-    // insert query
-    static func insertQuery(_ txn: Transaction) -> SQLite.Insert {
-        return table.insert(insertSetters(txn))
-    }
-
-    // update query
-    static func updateQuery(_ txn: Transaction) -> SQLite.Update {
-        return table.filter(col_id == txn.id).update(insertSetters(txn))
-    }
-
-    // delete query
-    static func deleteQuery(_ txn: Transaction) -> SQLite.Delete {
-        return table.filter(col_id == txn.id).delete()
-    }
 }
 
 extension TransactionRepository {
     // load all transactions
-    func loadTransactions() -> [Transaction] {
-        guard let db else { return [] }
-        do {
-            var results: [Transaction]   = []
-            let query = TransactionRepository.selectQuery(from: TransactionRepository.table)
-            for row in try db.prepare(query) {
-                results.append(TransactionRepository.selectResult(row))
-            }
-            print("Successfully loaded transactions: \(results.count)")
-            return results
-        } catch {
-            print("Failed to fetch transactions: \(error)")
-            return []
-        }
+    func load() -> [Transaction] {
+        return select(table: Self.table)
     }
 
     // load recent transactions
-    func loadRecentTransactions(
+    func loadRecent(
         startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date()),
         endDate: Date? = Date()
     ) -> [Transaction] {
-        guard let db else { return [] }
-        do {
-            var results: [Transaction] = []
-            var from = TransactionRepository.table
-            // If startDate is set, add filtering by date range
-            if let startDate {
-                from = from.filter(TransactionRepository.col_transDate >= startDate.ISO8601Format())
-            }
-            let query = TransactionRepository.selectQuery(from: from)
-            for row in try db.prepare(query) {
-                results.append(TransactionRepository.selectResult(row))
-            }
-            print("Successfully loaded transactions: \(results.count)")
-            return results
-        } catch {
-            print("Failed to fetch transactions: \(error)")
-            return []
+        let table = if let startDate {
+            Self.table.filter(Self.col_transDate >= startDate.ISO8601Format())
+        } else {
+            Self.table
         }
-    }
-
-    // add a new transaction
-    func addTransaction(txn: inout Transaction) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(TransactionRepository.insertQuery(txn))
-            txn.id = rowid
-            print("Successfully added transaction with ID: \(txn.id), \(txn)")
-            return true
-        } catch {
-            print("Failed to add transaction: \(error)")
-            return false
-        }
-    }
-
-    // update an existing transaction
-    func updateTransaction(txn: Transaction) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(TransactionRepository.updateQuery(txn))
-            print("Successfully updated transaction: \(txn.id)")
-            return true
-        } catch {
-            print("Failed to update transaction: \(error)")
-            return false
-        }
-    }
-    
-    func deleteTransaction(txn: Transaction) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(TransactionRepository.deleteQuery(txn))
-            print("Successfully deleted transaction: \(txn.id)")
-            return true
-        } catch {
-            print("Failed to delete transaction: \(error)")
-            return false
-        }
+        return select(table: table)
     }
 }

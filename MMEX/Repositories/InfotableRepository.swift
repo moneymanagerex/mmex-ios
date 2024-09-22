@@ -33,11 +33,13 @@ extension InfotableRepository: RepositoryProtocol {
     static let col_name  = SQLite.Expression<String>("INFONAME")
     static let col_value = SQLite.Expression<String>("INFOVALUE")
 
-    static let selectQuery = table.select(
-        col_id,
-        col_name,
-        col_value
-    )
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_name,
+            col_value
+        )
+    }
 
     static func selectResult(_ row: SQLite.Row) -> Infotable {
         return Infotable(
@@ -67,10 +69,10 @@ extension InfotableRepository {
         do {
             var results: [InfoKey: Infotable] = [:]
             for key in keys {
-                if let row = try db.pluck(InfotableRepository.selectQuery
-                    .filter(InfotableRepository.col_name == key.rawValue)
-                ) {
-                    results[key] = InfotableRepository.selectResult(row)
+                if let row = try db.pluck(Self.selectQuery(from: Self.table
+                    .filter(Self.col_name == key.rawValue)
+                ) ) {
+                    results[key] = Self.selectResult(row)
                     print("Successfully loaded infokey: \(key.rawValue)")
                 }
                 else {
@@ -89,10 +91,10 @@ extension InfotableRepository {
     func getValue<T>(for key: String, as type: T.Type) -> T? {
         guard let db else { return nil }
         do {
-            if let row = try db.pluck(InfotableRepository.selectQuery
-                .filter(InfotableRepository.col_name == key)
-            ) {
-                let value = row[InfotableRepository.col_value]
+            if let row = try db.pluck(Self.selectQuery(from: Self.table
+                .filter(Self.col_name == key)
+            ) ) {
+                let value = row[Self.col_value]
                 if type == String.self {
                     return value as? T
                 } else if type == Int64.self {
@@ -119,18 +121,18 @@ extension InfotableRepository {
             return
         }
 
-        let query = InfotableRepository.table.filter(InfotableRepository.col_name == key)
+        let query = InfotableRepository.table.filter(Self.col_name == key)
         do {
             if let _ = try db.pluck(query) {
                 // Update existing setting
                 try db.run(query.update(
-                    InfotableRepository.col_value <- stringValue
+                    Self.col_value <- stringValue
                 ) )
             } else {
                 // Insert new setting
-                try db.run(InfotableRepository.table.insert(
-                    InfotableRepository.col_name  <- key,
-                    InfotableRepository.col_value <- stringValue
+                try db.run(Self.table.insert(
+                    Self.col_name  <- key,
+                    Self.col_value <- stringValue
                 ) )
             }
         } catch {

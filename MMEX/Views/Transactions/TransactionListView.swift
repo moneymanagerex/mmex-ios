@@ -94,7 +94,7 @@ struct TransactionListView: View {
         
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadTransactions = repository.loadTransactions()
+            let loadTransactions = repository.load()
             
             // Update UI on the main thread
             DispatchQueue.main.async {
@@ -153,7 +153,7 @@ struct TransactionListView: View {
     
     func addTransaction(txn: inout Transaction) {
         // TODO
-        if self.repository.addTransaction(txn:&txn) {
+        if self.repository.insert(&txn) {
             self.txns.append(txn) // id is ready after repo call
         } else {
             // TODO

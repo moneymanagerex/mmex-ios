@@ -98,7 +98,7 @@ struct TransactionListView2: View {
     
     func loadTransactions() {
         DispatchQueue.global(qos: .background).async {
-            let loadTransactions = repository.loadRecentTransactions()
+            let loadTransactions = repository.loadRecent()
             
             DispatchQueue.main.async {
                 self.txns = loadTransactions

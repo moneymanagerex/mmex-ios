@@ -76,29 +76,32 @@ extension AccountRepository: RepositoryProtocol {
     static let cast_interestRate   = cast(col_interestRate)   as SQLite.Expression<Double?>
     static let cast_minimumPayment = cast(col_minimumPayment) as SQLite.Expression<Double?>
 
-    static let selectQuery = table.select(
-        col_id,
-        col_name,
-        col_type,
-        col_num,
-        col_status,
-        col_notes,
-        col_heldAt,
-        col_website,
-        col_contactInfo,
-        col_accessInfo,
-        col_initialDate,
-        cast_initialBal,
-        col_favoriteAcct,
-        col_currencyId,
-        col_statementLocked,
-        col_statementDate,
-        cast_minimumBalance,
-        cast_creditLimit,
-        cast_interestRate,
-        col_paymentDueDate,
-        cast_minimumPayment
-    )
+    
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_name,
+            col_type,
+            col_num,
+            col_status,
+            col_notes,
+            col_heldAt,
+            col_website,
+            col_contactInfo,
+            col_accessInfo,
+            col_initialDate,
+            cast_initialBal,
+            col_favoriteAcct,
+            col_currencyId,
+            col_statementLocked,
+            col_statementDate,
+            cast_minimumBalance,
+            cast_creditLimit,
+            cast_interestRate,
+            col_paymentDueDate,
+            cast_minimumPayment
+        )
+    }
 
     static func selectResult(_ row: SQLite.Row) -> Account {
         return Account(
@@ -155,7 +158,7 @@ extension AccountRepository: RepositoryProtocol {
 
 extension AccountRepository {
     func load() -> [Account] {
-        return select(query: Self.selectQuery
+        return select(table: Self.table
             .order(Self.col_name)
         )
     }

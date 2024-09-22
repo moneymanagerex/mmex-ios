@@ -59,7 +59,7 @@ struct TransactionAddView2: View {
 
     func addTransaction(txn: inout Transaction) {
         let repository = DataManager(databaseURL: self.databaseURL).getTransactionRepository()
-        if repository.addTransaction(txn:&txn) {
+        if repository.insert(&txn) {
             // id is ready after repo call
         } else {
             // TODO

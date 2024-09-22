@@ -13,7 +13,7 @@ protocol RepositoryProtocol {
 
     static var repositoryName: String { get }
     static var table: SQLite.Table { get }
-    static var selectQuery: SQLite.Table { get }
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table
     static func selectResult(_ row: SQLite.Row) -> RepositoryItem
     static var col_id: SQLite.Expression<Int64> { get }
     static func itemSetters(_ item: RepositoryItem) -> [SQLite.Setter]
@@ -22,11 +22,11 @@ protocol RepositoryProtocol {
 }
 
 extension RepositoryProtocol {
-    func select(query: SQLite.Table = Self.selectQuery) -> [RepositoryItem] {
+    func select(table: SQLite.Table = Self.table) -> [RepositoryItem] {
         guard let db else { return [] }
         do {
             var results: [RepositoryItem] = []
-            for row in try db.prepare(query) {
+            for row in try db.prepare(Self.selectQuery(from: table)) {
                 results.append(Self.selectResult(row))
             }
             print("Successfully loaded from \(Self.repositoryName): \(results.count)")
