@@ -8,15 +8,13 @@
 import SQLite
 import Foundation
 
-enum Transcode: String, CaseIterable, Identifiable, Codable{
+enum Transcode: String, CaseIterable, Identifiable, Codable {
     case withdrawal = "Withdrawal"
     case deposit = "Deposit"
     case transfer = "Transfer"
 
     var id: String { self.rawValue }
-    var name: String {
-        rawValue.capitalized
-    }
+    var name: String { rawValue.capitalized }
 }
 
 enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
@@ -26,17 +24,15 @@ enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
     case duplicate  = "D" // Duplicate
     case none       = "N" // None
     
-    var id: String {self.rawValue}
-    var name: String {
-        rawValue.capitalized
-    }
+    var id: String { self.rawValue }
+    var name: String { rawValue.capitalized }
     var fullName: String {
-        switch self {
-        case .reconciled : return "Reconciled"
-        case .void       : return "Void"
-        case .followUp   : return "Follow up"
-        case .duplicate  : return "Duplicate"
-        case .none       : return "None"
+        return switch self {
+        case .reconciled : "Reconciled"
+        case .void       : "Void"
+        case .followUp   : "Follow up"
+        case .duplicate  : "Duplicate"
+        case .none       : "None"
         }
     }
 }

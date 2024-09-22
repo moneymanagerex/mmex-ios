@@ -102,6 +102,16 @@ extension Account {
 }
 
 extension Account {
+    static let accountTypeToSFSymbol: [String: String] = [
+        "Cash"        : "dollarsign.circle.fill",
+        "Checking"    : "banknote.fill",
+        "Credit Card" : "creditcard.fill",
+        "Loan"        : "building.columns.fill",
+        "Term"        : "calendar.circle.fill",
+    ]
+}
+
+extension Account {
     static let sampleData : [Account] = [
         Account(
             id: 1, name: "Account A", type: AccountType.cash,
@@ -115,15 +125,11 @@ extension Account {
             initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2,
             currency: Currency.sampleData[1]
         ),
-    ]
-}
-
-extension Account {
-    static let accountTypeToSFSymbol: [String: String] = [
-        "Cash"        : "dollarsign.circle.fill",
-        "Checking"    : "banknote.fill",
-        "Credit Card" : "creditcard.fill",
-        "Loan"        : "building.columns.fill",
-        "Term"        : "calendar.circle.fill",
+        Account(
+            id: 3, name: "Investment Account", type: AccountType.investment,
+            status: AccountStatus.open, notes:"",
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2,
+            currency: Currency.sampleData[1]
+        ),
     ]
 }

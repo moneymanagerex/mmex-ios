@@ -23,7 +23,7 @@ extension PayeeRepository {
     // column    | type    | other
     // ----------+---------+------
     // PAYEEID   | INTEGER | PRIMARY KEY
-    // PAYEENAME | TEXT    | COLLATE NOCASE NOT NULL UNIQUE
+    // PAYEENAME | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
     // CATEGID   | INTEGER |
     // NUMBER    | TEXT    |
     // WEBSITE   | TEXT    |

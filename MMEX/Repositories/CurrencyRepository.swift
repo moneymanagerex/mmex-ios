@@ -23,7 +23,7 @@ extension CurrencyRepository {
     // column          | type    | other
     // ----------------+---------+------
     // CURRENCYID      | INTEGER | PRIMARY KEY
-    // CURRENCYNAME    | TEXT    | COLLATE NOCASE NOT NULL UNIQUE
+    // CURRENCYNAME    | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
     // PFX_SYMBOL      | TEXT    |
     // SFX_SYMBOL      | TEXT    |
     // DECIMAL_POINT   | TEXT    |
@@ -32,7 +32,7 @@ extension CurrencyRepository {
     // CENT_NAME       | TEXT    | COLLATE NOCASE
     // SCALE           | INTEGER |
     // BASECONVRATE    | NUMERIC |
-    // CURRENCY_SYMBOL | TEXT    | COLLATE NOCASE NOT NULL UNIQUE
+    // CURRENCY_SYMBOL | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
     // CURRENCY_TYPE   | TEXT    | NOT NULL (Fiat, Crypto)
 
     // table columns

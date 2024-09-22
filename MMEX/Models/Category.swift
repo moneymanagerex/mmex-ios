@@ -27,13 +27,6 @@ extension Category {
 }
 
 extension Category {
-    static let sampleData: [Category] = [
-        Category(id: 1, name: "root cateogry",     active: true, parentId: nil),
-        Category(id: 2, name: "non-root category", active: true, parentId: 1),
-    ]
-}
-
-extension Category {
     static let categoryToSFSymbol: [String: String] = [
         "Unknown": "camera.metering.unknown",
         "Auto": "car.fill",
@@ -90,5 +83,12 @@ extension Category {
         "Video Rental": "play.rectangle.fill",
         "Water": "drop.fill",
         "Water Tax": "building.columns.fill"
+    ]
+}
+
+extension Category {
+    static let sampleData: [Category] = [
+        Category(id: 1, name: "root cateogry",     active: true, parentId: nil),
+        Category(id: 2, name: "non-root category", active: true, parentId: 1),
     ]
 }
