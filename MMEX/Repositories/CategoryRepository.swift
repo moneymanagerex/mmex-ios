@@ -23,7 +23,7 @@ extension CategoryRepository {
     // ----------+---------+------
     //           |         | UNIQUE(CATEGNAME, PARENTID)
     // CATEGID   | INTEGER | PRIMARY KEY
-    // CATEGNAME | TEXT    | COLLATE NOCASE NOT NULL
+    // CATEGNAME | TEXT    | NOT NULL COLLATE NOCASE
     // ACTIVE    | INTEGER |
     // PARENTID  | INTEGER |
 

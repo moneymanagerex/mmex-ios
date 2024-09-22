@@ -23,7 +23,7 @@ extension AccountRepository {
     // column          | type    | other
     // ----------------+---------+------
     // ACCOUNTID       | INTEGER | PRIMARY KEY
-    // ACCOUNTNAME     | TEXT    | COLLATE NOCASE NOT NULL UNIQUE
+    // ACCOUNTNAME     | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
     // ACCOUNTTYPE     | TEXT    | NOT NULL (Cash, Checking, ...)
     // ACCOUNTNUM      | TEXT    |
     // STATUS          | TEXT    | NOT NULL (Open, Closed)
