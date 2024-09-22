@@ -54,7 +54,7 @@ class TransactionRepository: RepositoryProtocol {
     static let col_deletedTime       = SQLite.Expression<String?>("DELETEDTIME")
     static let col_followUpId        = SQLite.Expression<Int64?>("FOLLOWUPID")
     static let col_toTransAmount     = SQLite.Expression<Double?>("TOTRANSAMOUNT")
-    static let col_color             = SQLite.Expression<Int64>("COLOR")
+    static let col_color             = SQLite.Expression<Int64?>("COLOR")
 
     // cast NUMERIC to REAL
     static let cast_transAmount   = cast(col_transAmount)   as SQLite.Expression<Double>

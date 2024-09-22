@@ -53,14 +53,14 @@ struct Transaction: ExportableEntity {
     var deletedTime: String?
     var followUpId: Int64?
     var toTransAmount: Double?
-    var color: Int64
+    var color: Int64?
 
     init(
         id: Int64, accountId: Int64, toAccountId: Int64? = nil, payeeId: Int64,
         transCode: Transcode, transAmount: Double, status: TransactionStatus,
         transactionNumber: String? = nil, notes: String? = nil, categId: Int64? = nil,
         transDate: String?, lastUpdatedTime: String? = nil, deletedTime: String? = nil,
-        followUpId: Int64? = nil, toTransAmount: Double? = nil, color: Int64 = -1
+        followUpId: Int64? = nil, toTransAmount: Double? = nil, color: Int64? = nil
     ) {
         self.id = id
         self.accountId = accountId

@@ -38,7 +38,7 @@ class PayeeRepository: RepositoryProtocol {
     static let col_website    = SQLite.Expression<String?>("WEBSITE")
     static let col_notes      = SQLite.Expression<String?>("NOTES")
     static let col_active     = SQLite.Expression<Int?>("ACTIVE")
-    static let col_pattern    = SQLite.Expression<String>("PATTERN")
+    static let col_pattern    = SQLite.Expression<String?>("PATTERN")
 
     static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
@@ -62,7 +62,7 @@ class PayeeRepository: RepositoryProtocol {
             website    : row[col_website],
             notes      : row[col_notes],
             active     : row[col_active] ?? 1,
-            pattern    : row[col_pattern]
+            pattern    : row[col_pattern] ?? ""
         )
     }
 

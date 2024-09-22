@@ -62,7 +62,7 @@ extension InfotableRepository {
 
     // load specific keys into a dictionary
     func load(for keys: [InfoKey]) -> [InfoKey: Infotable] {
-        guard let db else { return [:] }
+        if db == nil { return [:] }
         var results: [InfoKey: Infotable] = [:]
         for key in keys {
             if let info = pluck(
