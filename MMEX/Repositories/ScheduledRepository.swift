@@ -84,30 +84,34 @@ class ScheduledRepository: RepositoryProtocol {
         )
     }
 
+    static let repeatBase = 100
+
     static func selectResult(_ row: SQLite.Row) -> Scheduled {
         return Scheduled(
-          id                 : row[col_id],
-          accountId          : row[col_accountId],
-          toAccountId        : row[col_toAccountId] ?? 0,
-          payeeId            : row[col_payeeId],
-          transCode          : Transcode(collateNoCase: row[col_transCode]) ?? Transcode.withdrawal,
-          transAmount        : row[cast_transAmount],
+          id                : row[col_id],
+          accountId         : row[col_accountId],
+          toAccountId       : row[col_toAccountId] ?? 0,
+          payeeId           : row[col_payeeId],
+          transCode         : Transcode(collateNoCase: row[col_transCode]) ?? Transcode.withdrawal,
+          transAmount       : row[cast_transAmount],
           // TODO: case insersitive, convert either key or value
-          status             : TransactionStatus(rawValue: row[col_status] ?? "") ?? TransactionStatus.none,
-          transactionNumber  : row[col_transactionNumber] ?? "",
-          notes              : row[col_notes] ?? "",
-          categId            : row[col_categId] ?? 0,
-          transDate          : row[col_transDate] ?? "",
-          followUpId         : row[col_followUpId] ?? 0,
-          toTransAmount      : row[cast_toTransAmount] ?? 0.0,
-          repeats            : Int(row[col_repeats] ?? 0),
-          nextOccurrenceDate : row[col_nextOccurrenceDate] ?? "",
-          numOccurrences     : Int(row[col_numOccurrences] ?? 0),
-          color              : row[col_color] ?? 0
+          status            : TransactionStatus(rawValue: row[col_status] ?? "") ?? TransactionStatus.none,
+          transactionNumber : row[col_transactionNumber] ?? "",
+          notes             : row[col_notes] ?? "",
+          categId           : row[col_categId] ?? 0,
+          transDate         : row[col_transDate] ?? "",
+          followUpId        : row[col_followUpId] ?? 0,
+          toTransAmount     : row[cast_toTransAmount] ?? 0.0,
+          dueDate           : row[col_nextOccurrenceDate] ?? "",
+          repeatAuto        : RepeatAuto(rawValue: Int(row[col_repeats] ?? 0) / repeatBase) ?? RepeatAuto.none,
+          repeatType        : RepeatType(rawValue: Int(row[col_repeats] ?? 0) % repeatBase) ?? RepeatType.once,
+          repeatNum         : Int(row[col_numOccurrences] ?? 0),
+          color             : row[col_color] ?? 0
         )
     }
 
     static func itemSetters(_ sched: Scheduled) -> [SQLite.Setter] {
+        let repeats = sched.repeatAuto.rawValue * repeatBase + sched.repeatType.rawValue
         return [
             col_accountId          <- sched.accountId,
             col_toAccountId        <- sched.toAccountId,
@@ -121,9 +125,9 @@ class ScheduledRepository: RepositoryProtocol {
             col_transDate          <- sched.transDate,
             col_followUpId         <- sched.followUpId,
             col_toTransAmount      <- sched.toTransAmount,
-            col_repeats            <- Int64(sched.repeats),
-            col_nextOccurrenceDate <- sched.nextOccurrenceDate,
-            col_numOccurrences     <- Int64(sched.numOccurrences),
+            col_repeats            <- Int64(repeats),
+            col_nextOccurrenceDate <- sched.dueDate,
+            col_numOccurrences     <- Int64(sched.repeatNum),
             col_color              <- sched.color,
         ]
     }
