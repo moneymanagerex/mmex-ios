@@ -32,7 +32,7 @@ class StockRepository: RepositoryProtocol {
     // COMMISSION    | NUMERIC |
     // NOTES         | TEXT    |
 
-    // table columns
+    // columns
     static let col_id            = SQLite.Expression<Int64>("STOCKID")
     static let col_accountId     = SQLite.Expression<Int64?>("HELDAT")
     static let col_name          = SQLite.Expression<String>("STOCKNAME")

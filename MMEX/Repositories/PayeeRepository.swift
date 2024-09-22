@@ -30,7 +30,7 @@ class PayeeRepository: RepositoryProtocol {
     // ACTIVE    | INTEGER |
     // PATTERN   | TEXT    | DEFAULT ''
 
-    // table columns
+    // columns
     static let col_id         = SQLite.Expression<Int64>("PAYEEID")
     static let col_name       = SQLite.Expression<String>("PAYEENAME")
     static let col_categoryId = SQLite.Expression<Int64?>("CATEGID")

@@ -34,7 +34,7 @@ class CurrencyRepository: RepositoryProtocol {
     // CURRENCY_SYMBOL | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
     // CURRENCY_TYPE   | TEXT    | NOT NULL (Fiat, Crypto)
 
-    // table columns
+    // columns
     static let col_id                 = SQLite.Expression<Int64>("CURRENCYID")
     static let col_name               = SQLite.Expression<String>("CURRENCYNAME")
     static let col_prefixSymbol       = SQLite.Expression<String?>("PFX_SYMBOL")

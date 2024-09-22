@@ -26,7 +26,7 @@ class CategoryRepository: RepositoryProtocol {
     // ACTIVE    | INTEGER |
     // PARENTID  | INTEGER |
 
-    // table columns
+    // columns
     static let col_id       = SQLite.Expression<Int64>("CATEGID")
     static let col_name     = SQLite.Expression<String>("CATEGNAME")
     static let col_active   = SQLite.Expression<Int?>("ACTIVE")

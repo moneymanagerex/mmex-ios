@@ -38,7 +38,7 @@ class TransactionRepository: RepositoryProtocol {
     // TOTRANSAMOUNT     | NUMERIC |
     // COLOR             | INTEGER | DEFAULT -1
 
-    // table columns
+    // columns
     static let col_id                = SQLite.Expression<Int64>("TRANSID")
     static let col_accountId         = SQLite.Expression<Int64>("ACCOUNTID")
     static let col_toAccountId       = SQLite.Expression<Int64?>("TOACCOUNTID")

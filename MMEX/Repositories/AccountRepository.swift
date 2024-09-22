@@ -43,7 +43,7 @@ class AccountRepository: RepositoryProtocol {
     // PAYMENTDUEDATE  | TEXT    |
     // MINIMUMPAYMENT  | NUMERIC |
 
-    // table columns
+    // columns
     static let col_id              = SQLite.Expression<Int64>("ACCOUNTID")
     static let col_name            = SQLite.Expression<String>("ACCOUNTNAME")
     static let col_type            = SQLite.Expression<String>("ACCOUNTTYPE")
@@ -73,7 +73,6 @@ class AccountRepository: RepositoryProtocol {
     static let cast_interestRate   = cast(col_interestRate)   as SQLite.Expression<Double?>
     static let cast_minimumPayment = cast(col_minimumPayment) as SQLite.Expression<Double?>
 
-    
     static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
