@@ -1,42 +1,70 @@
 //
-//  Transaction.swift
+//  Scheduled.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/9.
+//  Created 2024-09-22 by George Ef (george.a.ef@gmail.com)
 //
 
 import SQLite
 import Foundation
 
-enum Transcode: String, EnumCollateNoCase {
-    case withdrawal = "Withdrawal"
-    case deposit    = "Deposit"
-    case transfer   = "Transfer"
+enum RepeatAuto: Int, CaseIterable, Identifiable, Codable {
+    case none = 0
+    case manual
+    case silent
+
+    static let names = [
+        "None",
+        "Manual",
+        "Silent"
+    ]
+    var id: Int { self.rawValue }
+    var name: String { Self.names[self.rawValue] }
 }
 
-enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
-    // TODO: MMEX Desktop defines "" for none
-    case none       = "N" // None
-    case reconciled = "R" // Reconciled
-    case void       = "V" // Void
-    case followUp   = "F" // Follow up
-    case duplicate  = "D" // Duplicate
-    
-    var id: String { self.rawValue }
-    var name: String { rawValue.capitalized }
-    var fullName: String {
-        return switch self {
-        // TODO: MMEX Desktop defines "Unreconciled" for none
-        case .none       : "None"
-        case .reconciled : "Reconciled"
-        case .void       : "Void"
-        case .followUp   : "Follow up"
-        case .duplicate  : "Duplicate"
-        }
-    }
+enum RepeatType: Int, CaseIterable, Identifiable, Codable {
+    case once = 0
+    case weekly
+    case every2Weeks
+    case monthly
+    case every2Months
+    case every3Months
+    case every6Months
+    case yearly
+    case every4Months
+    case every4Weeks
+    case daily
+    case inXDays
+    case inXMonths
+    case everyXDays
+    case everyXMonths
+    case monthlyLastDay
+    case monthlyLastBusinessDay
+
+    static let names = [
+        "Once",
+        "Weekly",
+        "Fortnightly",
+        "Monthly",
+        "Every 2 Months",
+        "Quarterly",
+        "Half-Yearly",
+        "Yearly",
+        "Four Months",
+        "Four Weeks",
+        "Daily",
+        "In (n) Days",
+        "In (n) Months",
+        "Every (n) Days",
+        "Every (n) Months",
+        "Monthly (last day)",
+        "Monthly (last business day)",
+    ]
+    var id: Int { self.rawValue }
+    var name: String { Self.names[self.rawValue] }
 }
 
-struct Transaction: ExportableEntity {
+struct Scheduled: ExportableEntity {
     var id                : Int64
     var accountId         : Int64
     var toAccountId       : Int64
@@ -48,10 +76,12 @@ struct Transaction: ExportableEntity {
     var notes             : String
     var categId           : Int64
     var transDate         : String
-    var lastUpdatedTime   : String
-    var deletedTime       : String
     var followUpId        : Int64
     var toTransAmount     : Double
+    var dueDate           : String
+    var repeatAuto        : RepeatAuto
+    var repeatType        : RepeatType
+    var repeatNum         : Int
     var color             : Int64
 
     init(
@@ -66,10 +96,12 @@ struct Transaction: ExportableEntity {
         notes             : String            = "",
         categId           : Int64             = 0,
         transDate         : String            = "",
-        lastUpdatedTime   : String            = "",
-        deletedTime       : String            = "",
         followUpId        : Int64             = 0,
         toTransAmount     : Double            = 0.0,
+        dueDate           : String            = "",
+        repeatAuto        : RepeatAuto        = RepeatAuto.none,
+        repeatType        : RepeatType        = RepeatType.once,
+        repeatNum         : Int               = 0,
         color             : Int64             = 0
     ) {
         self.id                = id
@@ -83,49 +115,37 @@ struct Transaction: ExportableEntity {
         self.notes             = notes
         self.categId           = categId
         self.transDate         = transDate
-        self.lastUpdatedTime   = lastUpdatedTime
-        self.deletedTime       = deletedTime
         self.followUpId        = followUpId
         self.toTransAmount     = toTransAmount
+        self.dueDate           = dueDate
+        self.repeatAuto        = repeatAuto
+        self.repeatType        = repeatType
+        self.repeatNum         = repeatNum
         self.color             = color
     }
 }
 
-extension Transaction: ModelProtocol {
-    static let modelName = "Transaction"
+extension Scheduled: ModelProtocol {
+    static let modelName = "Scheduled"
 
     func shortDesc() -> String {
         "\(self.id)"
     }
 }
 
-extension Transaction {
-    var day: String {
-        // Extract the date portion (ignoring the time) from ISO-8601 string
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
- 
-        if let date = formatter.date(from: transDate) {
-            formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
-            return formatter.string(from: date)
-        }
-        return transDate // If parsing fails, return original string
-    }
-}
-
-extension Transaction {
-    static let sampleData : [Transaction] = [
-        Transaction(
+extension Scheduled {
+    static let sampleData : [Scheduled] = [
+        Scheduled(
             id: 1, accountId: 1, payeeId: 1, transCode: Transcode.withdrawal,
             transAmount: 10.01, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
-        Transaction(
+        Scheduled(
             id: 2, accountId: 2, payeeId: 2, transCode: Transcode.deposit,
             transAmount: 20.02, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
-        Transaction(
+        Scheduled(
             id: 3, accountId: 3, payeeId: 3, transCode: Transcode.transfer,
             transAmount: 30.03, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()

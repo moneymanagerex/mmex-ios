@@ -1,5 +1,5 @@
 //
-//  CheckingRepository.swift
+//  TransactionRepository.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
@@ -25,9 +25,9 @@ class TransactionRepository: RepositoryProtocol {
     // ACCOUNTID         | INTEGER | NOT NULL
     // TOACCOUNTID       | INTEGER |
     // PAYEEID           | INTEGER | NOT NULL
-    // TRANSCODE         | TEXT    | NOT NULL
+    // TRANSCODE         | TEXT    | NOT NULL (Withdrawal, Deposit, Transfer)
     // TRANSAMOUNT       | NUMERIC | NOT NULL
-    // STATUS            | TEXT    |
+    // STATUS            | TEXT    | (Unrecnciled, Reconciled, Void, Follow up, Duplicate)
     // TRANSACTIONNUMBER | TEXT    |
     // NOTES             | TEXT    |
     // CATEGID           | INTEGER |

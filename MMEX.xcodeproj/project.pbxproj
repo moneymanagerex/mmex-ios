@@ -14,6 +14,8 @@
 		929EF6672CA023EE0051A3E6 /* EnumCollateNoCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6662CA023EE0051A3E6 /* EnumCollateNoCase.swift */; };
 		929EF6692CA034770051A3E6 /* RepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6682CA034770051A3E6 /* RepositoryProtocol.swift */; };
 		929EF66B2CA03AF90051A3E6 /* ModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66A2CA03AF90051A3E6 /* ModelProtocol.swift */; };
+		929EF66D2CA0BA5E0051A3E6 /* Scheduled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66C2CA0BA5E0051A3E6 /* Scheduled.swift */; };
+		929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */; };
 		A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE22C9323A5004696C7 /* CategoryEditView.swift */; };
 		A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */; };
 		A3363EE72C93249D004696C7 /* CategoryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE62C93249D004696C7 /* CategoryAddView.swift */; };
@@ -81,6 +83,8 @@
 		929EF6662CA023EE0051A3E6 /* EnumCollateNoCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumCollateNoCase.swift; sourceTree = "<group>"; };
 		929EF6682CA034770051A3E6 /* RepositoryProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryProtocol.swift; sourceTree = "<group>"; };
 		929EF66A2CA03AF90051A3E6 /* ModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelProtocol.swift; sourceTree = "<group>"; };
+		929EF66C2CA0BA5E0051A3E6 /* Scheduled.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scheduled.swift; sourceTree = "<group>"; };
+		929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledRepository.swift; sourceTree = "<group>"; };
 		A3363EE22C9323A5004696C7 /* CategoryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditView.swift; sourceTree = "<group>"; };
 		A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailView.swift; sourceTree = "<group>"; };
 		A3363EE62C93249D004696C7 /* CategoryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAddView.swift; sourceTree = "<group>"; };
@@ -255,6 +259,7 @@
 				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
 				A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */,
 				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
+				929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */,
 				A37E7D992C9BC28900B4ECFC /* Row.swift */,
 			);
 			path = Repositories;
@@ -313,6 +318,7 @@
 				A3C1429F2C9025D600D3CEC0 /* Category.swift */,
 				A3C1424D2C8B335900D3CEC0 /* Payee.swift */,
 				A3C142662C8F2AF500D3CEC0 /* Transaction.swift */,
+				929EF66C2CA0BA5E0051A3E6 /* Scheduled.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -460,6 +466,7 @@
 				A3C142982C8FE62200D3CEC0 /* TransactionListView.swift in Sources */,
 				A3C142542C8B381400D3CEC0 /* PayeeEditView.swift in Sources */,
 				A37E7D8A2C9AC30700B4ECFC /* HelpFAQView.swift in Sources */,
+				929EF66D2CA0BA5E0051A3E6 /* Scheduled.swift in Sources */,
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
 				A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */,
 				A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */,
@@ -470,6 +477,7 @@
 				A3C142A02C9025D600D3CEC0 /* Category.swift in Sources */,
 				A3C142A42C9033E300D3CEC0 /* SettingsView.swift in Sources */,
 				A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */,
+				929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */,
 				A37E7D842C9AC14800B4ECFC /* ManagementView.swift in Sources */,
 				A37E7D902C9AC4F300B4ECFC /* TermsOfServiceView.swift in Sources */,
 			);
