@@ -8,17 +8,15 @@
 import Foundation
 import SQLite
 
-class StockRepository {
-    let db: Connection?
+class StockRepository: RepositoryProtocol {
+    typealias RepositoryItem = Stock
 
+    let db: Connection?
     init(db: Connection?) {
         self.db = db
     }
-}
-
-extension StockRepository {
-    // table query
-    static let table = SQLite.Table("STOCK_V1")
+    static let repositoryName = "STOCK_V1"
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column        | type    | other
     // --------------+---------+------
@@ -34,7 +32,7 @@ extension StockRepository {
     // COMMISSION    | NUMERIC |
     // NOTES         | TEXT    |
 
-    // table columns
+    // columns
     static let col_id            = SQLite.Expression<Int64>("STOCKID")
     static let col_accountId     = SQLite.Expression<Int64?>("HELDAT")
     static let col_name          = SQLite.Expression<String>("STOCKNAME")
@@ -53,26 +51,24 @@ extension StockRepository {
     static let cast_currentPrice  = cast(col_currentPrice)  as SQLite.Expression<Double>
     static let cast_value         = cast(col_value)         as SQLite.Expression<Double?>
     static let cast_commisison    = cast(col_commisison)    as SQLite.Expression<Double?>
-}
 
-extension StockRepository {
-    // select query
-    static let selectQuery = table.select(
-        col_id,
-        col_accountId,
-        col_name,
-        col_symbol,
-        cast_numShares,
-        col_purchaseDate,
-        cast_purchasePrice,
-        cast_currentPrice,
-        cast_value,
-        cast_commisison,
-        col_notes
-    )
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_accountId,
+            col_name,
+            col_symbol,
+            cast_numShares,
+            col_purchaseDate,
+            cast_purchasePrice,
+            cast_currentPrice,
+            cast_value,
+            cast_commisison,
+            col_notes
+        )
+    }
 
-    // select result
-    static func selectResult(_ row: Row) -> Stock {
+    static func selectResult(_ row: SQLite.Row) -> Stock {
         return Stock(
             id            : row[col_id],
             accountId     : row[col_accountId],
@@ -88,7 +84,7 @@ extension StockRepository {
         )
     }
 
-    static func insertSetters(_ stock: Stock) -> [Setter] {
+    static func itemSetters(_ stock: Stock) -> [SQLite.Setter] {
         return [
             col_id            <- stock.id,
             col_accountId     <- stock.accountId,
@@ -103,75 +99,12 @@ extension StockRepository {
             col_notes         <- stock.notes
         ]
     }
-
-    // insert query
-    static func insertQuery(_ stock: Stock) -> SQLite.Insert {
-        return table.insert(insertSetters(stock))
-    }
-
-    // update query
-    static func updateQuery(_ stock: Stock) -> SQLite.Update {
-        return table.filter(col_id == stock.id).update(insertSetters(stock))
-    }
-
-    // delete query
-    static func deleteQuery(_ stock: Stock) -> SQLite.Delete {
-        return table.filter(col_id == stock.id).delete()
-    }
 }
 
 extension StockRepository {
-    func loadStocks() -> [Stock] {
-        guard let db else { return [] }
-        do {
-            var stocks: [Stock] = []
-            for row in try db.prepare(StockRepository.selectQuery
-                .order(StockRepository.col_name)
-            ) {
-                stocks.append(StockRepository.selectResult(row))
-            }
-            print("Successfully loaded stocks: \(stocks.count)")
-            return stocks
-        } catch {
-            print("Error loading stocks: \(error)")
-            return []
-        }
-    }
-
-    func addStock(stock: inout Stock) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(StockRepository.insertQuery(stock))
-            stock.id = rowid
-            print("Successfully added stock: \(stock.name), \(stock.id)")
-            return true
-        } catch {
-            print("Failed to add stock: \(error)")
-            return false
-        }
-    }
-
-    func updateStock(stock: Stock) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(StockRepository.updateQuery(stock))
-            print("Successfully updated stock: \(stock.name), \(stock.id)")
-            return true
-        } catch {
-            print("Failed to update stock: \(error)")
-            return false
-        }
-    }
-
-    func deleteStock(stock: Stock) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(StockRepository.deleteQuery(stock))
-            print("Successfully deleted stock: \(stock.name), \(stock.id)")
-            return true
-        } catch {
-            print("Failed to delete stock: \(error)")
-            return false
-        }
+    func load() -> [Stock] {
+        return select(table: Self.repositoryTable
+            .order(Self.col_name)
+        )
     }
 }

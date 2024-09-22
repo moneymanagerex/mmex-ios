@@ -12,6 +12,8 @@
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
 		929EF6652C9FF3FB0051A3E6 /* StockRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6642C9FF3FB0051A3E6 /* StockRepository.swift */; };
 		929EF6672CA023EE0051A3E6 /* EnumCollateNoCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6662CA023EE0051A3E6 /* EnumCollateNoCase.swift */; };
+		929EF6692CA034770051A3E6 /* RepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6682CA034770051A3E6 /* RepositoryProtocol.swift */; };
+		929EF66B2CA03AF90051A3E6 /* ModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66A2CA03AF90051A3E6 /* ModelProtocol.swift */; };
 		A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE22C9323A5004696C7 /* CategoryEditView.swift */; };
 		A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */; };
 		A3363EE72C93249D004696C7 /* CategoryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE62C93249D004696C7 /* CategoryAddView.swift */; };
@@ -77,6 +79,8 @@
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
 		929EF6642C9FF3FB0051A3E6 /* StockRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockRepository.swift; sourceTree = "<group>"; };
 		929EF6662CA023EE0051A3E6 /* EnumCollateNoCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumCollateNoCase.swift; sourceTree = "<group>"; };
+		929EF6682CA034770051A3E6 /* RepositoryProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryProtocol.swift; sourceTree = "<group>"; };
+		929EF66A2CA03AF90051A3E6 /* ModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelProtocol.swift; sourceTree = "<group>"; };
 		A3363EE22C9323A5004696C7 /* CategoryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditView.swift; sourceTree = "<group>"; };
 		A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailView.swift; sourceTree = "<group>"; };
 		A3363EE62C93249D004696C7 /* CategoryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAddView.swift; sourceTree = "<group>"; };
@@ -154,6 +158,8 @@
 			children = (
 				A3462F652C94854800F79145 /* ExportableEntity.swift */,
 				929EF6662CA023EE0051A3E6 /* EnumCollateNoCase.swift */,
+				929EF66A2CA03AF90051A3E6 /* ModelProtocol.swift */,
+				929EF6682CA034770051A3E6 /* RepositoryProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -316,10 +322,10 @@
 			children = (
 				A39B1B3E2C9A6714003E5562 /* Settings */,
 				A39B1B3D2C9A66F7003E5562 /* Currencies */,
-				A39B1B3C2C9A66E6003E5562 /* Categories */,
-				A39B1B3B2C9A66CB003E5562 /* Transactions */,
-				A39B1B3A2C9A66B8003E5562 /* Payees */,
 				A39B1B392C9A668F003E5562 /* Accounts */,
+				A39B1B3C2C9A66E6003E5562 /* Categories */,
+				A39B1B3A2C9A66B8003E5562 /* Payees */,
+				A39B1B3B2C9A66CB003E5562 /* Transactions */,
 				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
 				A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */,
@@ -435,6 +441,7 @@
 				A3C1429A2C8FF77D00D3CEC0 /* TransactionDetailView.swift in Sources */,
 				A3C142942C8FE13E00D3CEC0 /* PayeeRepository.swift in Sources */,
 				A3C1429E2C8FFCF100D3CEC0 /* TransactionAddView.swift in Sources */,
+				929EF66B2CA03AF90051A3E6 /* ModelProtocol.swift in Sources */,
 				A3C142922C8FE11700D3CEC0 /* AccountRepository.swift in Sources */,
 				A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */,
 				A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */,
@@ -456,6 +463,7 @@
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
 				A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */,
 				A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */,
+				929EF6692CA034770051A3E6 /* RepositoryProtocol.swift in Sources */,
 				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
 				A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */,
 				A3363EE92C9326A1004696C7 /* CategoryListView.swift in Sources */,

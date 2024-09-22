@@ -57,11 +57,11 @@ struct CategoryListView: View {
     
     func loadCategories() {
         let repository = DataManager(databaseURL: databaseURL).getCategoryRepository()
-        categories = repository.loadCategories()
+        categories = repository.load()
     }
 
     func addCategory(category: inout Category) {
-        if repository.addCategory(category: &category) {
+        if repository.insert(&category) {
             self.categories.append(category)
         }
     }

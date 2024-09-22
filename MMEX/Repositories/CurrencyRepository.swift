@@ -8,17 +8,16 @@
 import Foundation
 import SQLite
 
-class CurrencyRepository {
-    let db: Connection?
+class CurrencyRepository: RepositoryProtocol {
+    typealias RepositoryItem = Currency
 
+    let db: Connection?
     init(db: Connection?) {
         self.db = db
     }
-}
 
-extension CurrencyRepository {
-    // table query
-    static let table = SQLite.Table("CURRENCYFORMATS_V1")
+    static let repositoryName = "CURRENCYFORMATS_V1"
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column          | type    | other
     // ----------------+---------+------
@@ -35,7 +34,7 @@ extension CurrencyRepository {
     // CURRENCY_SYMBOL | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
     // CURRENCY_TYPE   | TEXT    | NOT NULL (Fiat, Crypto)
 
-    // table columns
+    // columns
     static let col_id                 = SQLite.Expression<Int64>("CURRENCYID")
     static let col_name               = SQLite.Expression<String>("CURRENCYNAME")
     static let col_prefixSymbol       = SQLite.Expression<String?>("PFX_SYMBOL")
@@ -51,27 +50,26 @@ extension CurrencyRepository {
 
     // cast NUMERIC to REAL
     static let cast_baseConversionRate = cast(col_baseConversionRate) as SQLite.Expression<Double?>
-}
 
-extension CurrencyRepository {
-    // select query
-    static let selectQuery = table.select(
-        col_id,
-        col_name,
-        col_prefixSymbol,
-        col_suffixSymbol,
-        col_decimalPoint,
-        col_groupSeparator,
-        col_unitName,
-        col_centName,
-        col_scale,
-        cast_baseConversionRate,
-        col_symbol,
-        col_type
-    )
 
-    // select result
-    static func selectResult(_ row: Row) -> Currency {
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_name,
+            col_prefixSymbol,
+            col_suffixSymbol,
+            col_decimalPoint,
+            col_groupSeparator,
+            col_unitName,
+            col_centName,
+            col_scale,
+            cast_baseConversionRate,
+            col_symbol,
+            col_type
+        )
+    }
+
+    static func selectResult(_ row: SQLite.Row) -> Currency {
         return Currency(
             id                 : row[col_id],
             name               : row[col_name],
@@ -88,9 +86,8 @@ extension CurrencyRepository {
         )
     }
 
-    // insert query
-    static func insertQuery(_ currency: Currency) -> SQLite.Insert {
-        return table.insert(
+    static func itemSetters(_ currency: Currency) -> [SQLite.Setter] {
+        return [
             col_name               <- currency.name,
             col_prefixSymbol       <- currency.prefixSymbol,
             col_suffixSymbol       <- currency.suffixSymbol,
@@ -102,88 +99,15 @@ extension CurrencyRepository {
             col_baseConversionRate <- currency.baseConversionRate,
             col_symbol             <- currency.symbol,
             col_type               <- currency.type
-        )
-    }
-
-    // update query
-    static func updateQuery(_ currency: Currency) -> SQLite.Update {
-        return table.filter(col_id == currency.id).update(
-            col_name               <- currency.name,
-            col_prefixSymbol       <- currency.prefixSymbol,
-            col_suffixSymbol       <- currency.suffixSymbol,
-            col_decimalPoint       <- currency.decimalPoint,
-            col_groupSeparator     <- currency.groupSeparator,
-            col_unitName           <- currency.unitName,
-            col_centName           <- currency.centName,
-            col_scale              <- currency.scale,
-            col_baseConversionRate <- currency.baseConversionRate,
-            col_symbol             <- currency.symbol,
-            col_type               <- currency.type
-        )
-    }
-
-    // delete query
-    static func deleteQuery(_ currency: Currency) -> SQLite.Delete {
-        return table.filter(col_id == currency.id).delete()
+        ]
     }
 }
 
 extension CurrencyRepository {
     // load all currencies
-    func loadCurrencies() -> [Currency] {
-        guard let db else { return [] }
-        do {
-            var currencies: [Currency] = []
-            for row in try db.prepare(CurrencyRepository.selectQuery
-                .order(CurrencyRepository.col_name)
-            ) {
-                currencies.append(CurrencyRepository.selectResult(row))
-            }
-            print("Successfully loaded currencies: \(currencies.count)")
-            return currencies
-        } catch {
-            print("Error loading currencies: \(error)")
-            return []
-        }
-    }
-
-    // add a new currency
-    func addCurrency(currency: inout Currency) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(CurrencyRepository.insertQuery(currency))
-            currency.id = rowid
-            print("Successfully added currency: \(currency.name), \(currency.id)")
-            return true
-        } catch {
-            print("Failed to add currency: \(error)")
-            return false
-        }
-    }
-
-    // update an existing currency
-    func updateCurrency(currency: Currency) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(CurrencyRepository.updateQuery(currency))
-            print("Successfully updated currency: \(currency.name)")
-            return true
-        } catch {
-            print("Failed to update currency: \(error)")
-            return false
-        }
-    }
-
-    // delete a currency
-    func deleteCurrency(currency: Currency) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(CurrencyRepository.deleteQuery(currency))
-            print("Successfully deleted currency: \(currency.name)")
-            return true
-        } catch {
-            print("Failed to delete currency: \(error)")
-            return false
-        }
+    func load() -> [Currency] {
+        return select(table: Self.repositoryTable
+            .order(Self.col_name)
+        )
     }
 }

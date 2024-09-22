@@ -112,7 +112,7 @@ struct AccountDetailView: View {
 
     func saveChanges() {
         let repository = DataManager(databaseURL: databaseURL).getAccountRepository()
-        if repository.updateAccount(account: account) {
+        if repository.update(account) {
             // Successfully updated
         } else {
             // Handle failure
@@ -121,7 +121,7 @@ struct AccountDetailView: View {
     
     func deleteAccount() {
         let repository = DataManager(databaseURL: databaseURL).getAccountRepository()
-        if repository.deleteAccount(account: account) {
+        if repository.delete(account) {
             presentationMode.wrappedValue.dismiss()
         } else {
             // Handle deletion failure

@@ -1,5 +1,5 @@
 //
-//  Asset.swift
+//  EnumCollateNoCase.swift
 //  MMEX
 //
 //  Created 2024-09-22 by George Ef (george.a.ef@gmail.com)

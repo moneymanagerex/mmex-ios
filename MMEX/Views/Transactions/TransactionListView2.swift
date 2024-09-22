@@ -98,7 +98,7 @@ struct TransactionListView2: View {
     
     func loadTransactions() {
         DispatchQueue.global(qos: .background).async {
-            let loadTransactions = repository.loadRecentTransactions()
+            let loadTransactions = repository.loadRecent()
             
             DispatchQueue.main.async {
                 self.txns = loadTransactions
@@ -121,7 +121,7 @@ struct TransactionListView2: View {
         let repository = DataManager(databaseURL: self.databaseURL).getPayeeRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository.loadPayees()
+            let loadedPayees = repository.load()
             
             DispatchQueue.main.async {
                 self.payees = loadedPayees
@@ -134,7 +134,7 @@ struct TransactionListView2: View {
         let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository.loadCategories()
+            let loadedCategories = repository.load()
             
             DispatchQueue.main.async {
                 self.categories = loadedCategories
@@ -147,7 +147,7 @@ struct TransactionListView2: View {
         let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
 
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository.loadAccountsWithCurrency()
+            let loadedAccounts = repository.loadWithCurrency()
             
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts

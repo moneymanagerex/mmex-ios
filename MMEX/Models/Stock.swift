@@ -48,6 +48,14 @@ struct Stock: ExportableEntity {
     }
 }
 
+extension Stock: ModelProtocol {
+    static let modelName = "Stock"
+
+    func shortDesc() -> String {
+        "\(self.name), \(self.id)"
+    }
+}
+
 extension Stock {
     static let sampleData: [Stock] = [
         Stock(

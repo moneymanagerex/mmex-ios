@@ -91,6 +91,14 @@ extension Account {
     ) }
 }
 
+extension Account: ModelProtocol {
+    static let modelName = "Account"
+
+    func shortDesc() -> String {
+        "\(self.name)"
+    }
+}
+
 extension Account {
     static let accountTypeToSFSymbol: [String: String] = [
         "Cash"        : "dollarsign.circle.fill",

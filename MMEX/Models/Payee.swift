@@ -34,8 +34,15 @@ struct Payee: ExportableEntity {
 }
 
 extension Payee {
-    // empty payee
     static var empty: Payee { Payee(id: 0, name: "", categoryId: 0) }
+}
+
+extension Payee: ModelProtocol {
+    static let modelName = "Payee"
+
+    func shortDesc() -> String {
+        "\(self.name)"
+    }
 }
 
 extension Payee {

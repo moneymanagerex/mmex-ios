@@ -8,40 +8,37 @@
 import Foundation
 import SQLite
 
-class InfotableRepository {
-    let db: Connection?
+class InfotableRepository: RepositoryProtocol {
+    typealias RepositoryItem = Infotable
 
+    let db: Connection?
     init(db: Connection?) {
         self.db = db
     }
-}
 
-extension InfotableRepository {
-    // table query
-    static let table = SQLite.Table("INFOTABLE_V1")
+    static let repositoryName = "INFOTABLE_V1"
+    static let repositoryTable = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
     // INFOID    | INTEGER | NOT NULL PRIMARY KEY
     // INFONAME  | TEXT    | NOT NULL UNIQUE COLLATE NOCASE
-    // INFOVALUE | TEXT    | NOT NUL
+    // INFOVALUE | TEXT    | NOT NULL
 
-    // table columns
+    // columns
     static let col_id    = SQLite.Expression<Int64>("INFOID")
     static let col_name  = SQLite.Expression<String>("INFONAME")
     static let col_value = SQLite.Expression<String>("INFOVALUE")
-}
 
-extension InfotableRepository {
-    // select query
-    static let selectQuery = table.select(
-        col_id,
-        col_name,
-        col_value
-    )
+    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_name,
+            col_value
+        )
+    }
 
-    // select result
-    static func selectResult(_ row: Row) -> Infotable {
+    static func selectResult(_ row: SQLite.Row) -> Infotable {
         return Infotable(
             id    : row[col_id],
             name  : row[col_name],
@@ -49,129 +46,57 @@ extension InfotableRepository {
         )
     }
 
-    // insert query
-    static func insertQuery(_ info: Infotable) -> SQLite.Insert {
-        return table.insert(
+    static func itemSetters(_ info: Infotable) -> [SQLite.Setter] {
+        return [
             col_name  <- info.name,
             col_value <- info.value
-        )
-    }
-
-    // update query
-    static func updateQuery(_ info: Infotable) -> SQLite.Update {
-        return table.filter(col_id == info.id).update(
-            col_name  <- info.name,
-            col_value <- info.value
-        )
-    }
-
-    // delete query
-    static func deleteQuery(_ info: Infotable) -> SQLite.Delete {
-        return table.filter(col_id == info.id).delete()
+        ]
     }
 }
 
 extension InfotableRepository {
     // load all keys
-    func loadInfo() -> [Infotable] {
-        guard let db else { return [] }
-        do {
-            var results: [Infotable] = []
-            for row in try db.prepare(InfotableRepository.selectQuery) {
-                results.append(InfotableRepository.selectResult(row))
-            }
-            print("Successfully loaded infotable: \(results.count)")
-            return results
-        } catch {
-            print("Error loading infotable: \(error)")
-            return []
-        }
+    func load() -> [Infotable] {
+        return select(table: Self.repositoryTable)
     }
 
     // load specific keys into a dictionary
-    func loadInfo(for keys: [InfoKey]) -> [InfoKey: Infotable] {
-        guard let db else { return [:] }
-        do {
-            var results: [InfoKey: Infotable] = [:]
-            for key in keys {
-                if let row = try db.pluck(InfotableRepository.selectQuery
-                    .filter(InfotableRepository.col_name == key.rawValue)
-                ) {
-                    results[key] = InfotableRepository.selectResult(row)
-                    print("Successfully loaded infokey: \(key.rawValue)")
-                }
-                else {
-                    print("Unknown infokey: \(key.rawValue)")
-                }
+    func load(for keys: [InfoKey]) -> [InfoKey: Infotable] {
+        if db == nil { return [:] }
+        var results: [InfoKey: Infotable] = [:]
+        for key in keys {
+            if let info = pluck(
+                table: Self.repositoryTable
+                    .filter(Self.col_name == key.rawValue),
+                key: key.rawValue
+            ) {
+                results[key] = info
             }
-            return results
-        } catch {
-            print("Error loading info: \(error)")
-            return [:]
         }
-    }
-
-    func addInfo(info: inout Infotable) -> Bool {
-        guard let db else { return false }
-        do {
-            let rowid = try db.run(InfotableRepository.insertQuery(info))
-            info.id = rowid
-            print("Successfully added infokey: \(info.name), \(info.id)")
-            return true
-        } catch {
-            print("Failed to add infotable: \(error)")
-            return false
-        }
-    }
-
-    func updateInfo(info: Infotable) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(InfotableRepository.updateQuery(info))
-            print("Successfully updated infokey: \(info.name)")
-            return true
-        } catch {
-            print("Failed to update info: \(error)")
-            return false
-        }
-    }
-
-    func deleteInfo(info: Infotable) -> Bool {
-        guard let db else { return false }
-        do {
-            try db.run(InfotableRepository.deleteQuery(info))
-            print("Successfully deleted infokey: \(info.name)")
-            return true
-        } catch {
-            print("Failed to delete infokey: \(error)")
-            return false
-        }
+        return results
     }
 
     // New Methods for Key-Value Pairs
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
-        guard let db else { return nil }
-        do {
-            if let row = try db.pluck(InfotableRepository.selectQuery
-                .filter(InfotableRepository.col_name == key)
-            ) {
-                let value = row[InfotableRepository.col_value]
-                if type == String.self {
-                    return value as? T
-                } else if type == Int64.self {
-                    return Int64(value) as? T
-                }
+        if db == nil { return nil }
+        if let info = pluck(
+            table: Self.repositoryTable
+                .filter(Self.col_name == key),
+            key: key
+        ) {
+            if type == String.self {
+                return info.value as? T
+            } else if type == Int64.self {
+                return Int64(info.value) as? T
             }
-        } catch {
-            print("Error fetching value for key \(key): \(error)")
         }
         return nil
     }
 
     // Update or insert a setting with support for String or Int64 values
     func setValue<T>(_ value: T, for key: String) {
-        guard let db else { return }
+        if db == nil { return }
 
         var stringValue: String
         if let stringVal = value as? String {
@@ -183,22 +108,17 @@ extension InfotableRepository {
             return
         }
 
-        let query = InfotableRepository.table.filter(InfotableRepository.col_name == key)
-        do {
-            if let _ = try db.pluck(query) {
-                // Update existing setting
-                try db.run(query.update(
-                    InfotableRepository.col_value <- stringValue
-                ) )
-            } else {
-                // Insert new setting
-                try db.run(InfotableRepository.table.insert(
-                    InfotableRepository.col_name  <- key,
-                    InfotableRepository.col_value <- stringValue
-                ) )
-            }
-        } catch {
-            print("Error setting value for key \(key): \(error)")
+        if var info = pluck(
+            table: Self.repositoryTable.filter(Self.col_name == key),
+            key: key
+        ) {
+            // Update existing setting
+            info.value = stringValue
+            _ = update(info)
+        } else {
+            // Insert new setting
+            var info = Infotable(id: 0, name: key, value: stringValue)
+            _ = insert(&info)
         }
     }
 }
