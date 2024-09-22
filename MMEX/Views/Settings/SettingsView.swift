@@ -53,7 +53,6 @@ struct SettingsView: View {
                 .pickerStyle(NavigationLinkPickerStyle())
             } 
         }
-        .navigationTitle("Settings")
     }
 }
 
