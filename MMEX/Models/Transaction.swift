@@ -36,7 +36,7 @@ enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
     }
 }
 
-struct Transaction: ExportableEntity {
+struct TransactionData: ExportableEntity {
     var id                : Int64
     var accountId         : Int64
     var toAccountId       : Int64
@@ -91,7 +91,7 @@ struct Transaction: ExportableEntity {
     }
 }
 
-extension Transaction: ModelProtocol {
+extension TransactionData: DataProtocol {
     static let modelName = "Transaction"
 
     func shortDesc() -> String {
@@ -99,7 +99,21 @@ extension Transaction: ModelProtocol {
     }
 }
 
-extension Transaction {
+struct TransactionFull: FullProtocol {
+    var data: TransactionData
+    var accountName       : String?
+    var accountCurrency   : CurrencyData?
+    var toAccountName     : String?
+    var toAccountCurrency : String?
+    var assets            : [AssetData] = []
+    var stocks            : [StockData] = []
+    var categoryName      : String?
+    var payeeName         : String?
+  //var tags              : [TagData]
+  //var fields            : [(FieldData, String?)]
+}
+
+extension TransactionData {
     var day: String {
         // Extract the date portion (ignoring the time) from ISO-8601 string
         let formatter = DateFormatter()
@@ -113,19 +127,19 @@ extension Transaction {
     }
 }
 
-extension Transaction {
-    static let sampleData : [Transaction] = [
-        Transaction(
+extension TransactionData {
+    static let sampleData : [TransactionData] = [
+        TransactionData(
             id: 1, accountId: 1, payeeId: 1, transCode: Transcode.withdrawal,
             transAmount: 10.01, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
-        Transaction(
+        TransactionData(
             id: 2, accountId: 2, payeeId: 2, transCode: Transcode.deposit,
             transAmount: 20.02, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
-        Transaction(
+        TransactionData(
             id: 3, accountId: 3, payeeId: 3, transCode: Transcode.transfer,
             transAmount: 30.03, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()

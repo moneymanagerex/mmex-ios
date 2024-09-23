@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct CurrencyDetailView: View {
-    @State var currency: Currency
+    @State var currency: CurrencyData
     let databaseURL: URL
-    @State private var editingCurrency = Currency()
+    @State private var editingCurrency = CurrencyData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode
 
@@ -88,5 +88,8 @@ struct CurrencyDetailView: View {
 }
 
 #Preview {
-    CurrencyDetailView(currency: Currency.sampleData[0], databaseURL: URL(string: "path/to/database")!)
+    CurrencyDetailView(
+        currency: CurrencyData.sampleData[0],
+        databaseURL: URL(string: "path/to/database")!
+    )
 }

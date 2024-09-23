@@ -13,7 +13,7 @@ class InsightsViewModel: ObservableObject {
     let databaseURL: URL
 
     // Published properties for the view to observe
-    @Published var stats: [Transaction] = []
+    @Published var stats: [TransactionData] = []
     @Published var startDate: Date
     @Published var endDate: Date
 

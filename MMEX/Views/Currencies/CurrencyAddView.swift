@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CurrencyAddView: View {
-    @Binding var newCurrency: Currency
+    @Binding var newCurrency: CurrencyData
     @Binding var isPresentingCurrencyAddView: Bool
 
-    var onSave: (inout Currency) -> Void
+    var onSave: (inout CurrencyData) -> Void
 
     var body: some View {
         NavigationStack {
@@ -35,7 +35,7 @@ struct CurrencyAddView: View {
 
 #Preview {
     CurrencyAddView(
-        newCurrency: .constant(Currency()),
+        newCurrency: .constant(CurrencyData()),
         isPresentingCurrencyAddView: .constant(true)
     ) { newCurrency in
         // Handle saving in preview

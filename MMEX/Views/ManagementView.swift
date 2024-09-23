@@ -11,8 +11,8 @@ struct ManagementView: View {
     let databaseURL: URL
     @Binding var isDocumentPickerPresented: Bool
     
-    @State private var currencies: [Currency] = []
-    @State private var accounts: [Account] = []
+    @State private var currencies: [CurrencyData] = []
+    @State private var accounts: [AccountFull] = []
     @State private var schemaVersion: Int32 = 0
     @State private var dateFormat: String = ""
     @State private var baseCurrencyID: Int64 = 0
@@ -68,7 +68,7 @@ struct ManagementView: View {
  
                 Picker("Default Account", selection: $defaultAccountID) {
                     ForEach(accounts) { account in
-                        Text(account.name).tag(account.id)
+                        Text(account.data.name).tag(account.data.id)
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())

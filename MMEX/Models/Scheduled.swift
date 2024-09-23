@@ -64,7 +64,7 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
     var name: String { Self.names[self.rawValue] }
 }
 
-struct Scheduled: ExportableEntity {
+struct ScheduledData: ExportableEntity {
     var id                : Int64
     var accountId         : Int64
     var toAccountId       : Int64
@@ -125,7 +125,7 @@ struct Scheduled: ExportableEntity {
     }
 }
 
-extension Scheduled: ModelProtocol {
+extension ScheduledData: DataProtocol {
     static let modelName = "Scheduled"
 
     func shortDesc() -> String {
@@ -133,19 +133,31 @@ extension Scheduled: ModelProtocol {
     }
 }
 
-extension Scheduled {
-    static let sampleData : [Scheduled] = [
-        Scheduled(
+struct ScheduledFull: FullProtocol {
+    var data: ScheduledData
+    var accountName       : String?
+    var accountCurrency   : CurrencyData?
+    var toAccountName     : String?
+    var toAccountCurrency : String?
+    var categoryName      : String?
+    var payeeName         : String?
+  //var tags              : [TagData]
+  //var fields            : [(FieldData, String?)]
+}
+
+extension ScheduledData {
+    static let sampleData : [ScheduledData] = [
+        ScheduledData(
             id: 1, accountId: 1, payeeId: 1, transCode: Transcode.withdrawal,
             transAmount: 10.01, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
-        Scheduled(
+        ScheduledData(
             id: 2, accountId: 2, payeeId: 2, transCode: Transcode.deposit,
             transAmount: 20.02, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
-        Scheduled(
+        ScheduledData(
             id: 3, accountId: 3, payeeId: 3, transCode: Transcode.transfer,
             transAmount: 30.03, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()

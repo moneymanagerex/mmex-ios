@@ -9,7 +9,8 @@ import Foundation
 import SQLite
 
 class AssetRepository: RepositoryProtocol {
-    typealias RepositoryItem = Asset
+    typealias RepositoryData = AssetData
+    typealias RepositoryFull = AssetFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -66,8 +67,8 @@ class AssetRepository: RepositoryProtocol {
         )
     }
 
-    static func selectResult(_ row: SQLite.Row) -> Asset {
-        return Asset(
+    static func selectData(_ row: SQLite.Row) -> AssetData {
+        return AssetData(
             id         : row[col_id],
             type       : AssetType(collateNoCase: row[col_type]) ?? AssetType.property,
             status     : AssetStatus(collateNoCase: row[col_status]) ?? AssetStatus.open,
@@ -82,7 +83,14 @@ class AssetRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ asset: Asset) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> AssetFull {
+        let full = AssetFull(
+            data: Self.selectData(row)
+        )
+        return full
+    }
+
+    static func itemSetters(_ asset: AssetData) -> [SQLite.Setter] {
         return [
             col_type       <- asset.type.name,
             col_status     <- asset.status.name,
@@ -99,7 +107,9 @@ class AssetRepository: RepositoryProtocol {
 }
 
 extension AssetRepository {
-    func load() -> [Asset] { select(table: Self.repositoryTable
-        .order(Self.col_type, Self.col_status.desc, Self.col_name)
-    ) }
+    func load() -> [AssetData] {
+        return selectData(from: Self.repositoryTable
+            .order(Self.col_type, Self.col_status.desc, Self.col_name)
+        )
+    }
 }

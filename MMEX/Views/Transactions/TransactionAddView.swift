@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct TransactionAddView: View {
-    @Binding var newTxn: Transaction
+    @Binding var newTxn: TransactionData
     @Binding var isPresentingTransactionAddView: Bool
     
-    @Binding var payees: [Payee]
-    @Binding var categories: [Category]
-    @Binding var accounts: [Account]
+    @Binding var payees: [PayeeData]
+    @Binding var categories: [CategoryData]
+    @Binding var accounts: [AccountFull]
     
-    var onSave: (inout Transaction) -> Void
+    var onSave: (inout TransactionData) -> Void
     
     var body: some View {
         NavigationStack {
@@ -39,11 +39,11 @@ struct TransactionAddView: View {
 
 #Preview {
     TransactionAddView(
-        newTxn: .constant(Transaction()),
+        newTxn: .constant(TransactionData()),
         isPresentingTransactionAddView: .constant(true),
-        payees: .constant(Payee.sampleData),
-        categories: .constant(Category.sampleData),
-        accounts: .constant(Account.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        categories: .constant(CategoryData.sampleData),
+        accounts: .constant(AccountFull.sampleFull)
     ) { newTxn in
         // Handle saving in preview
         print("New payee: \(newTxn.id)")

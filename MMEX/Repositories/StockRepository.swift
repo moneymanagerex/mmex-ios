@@ -9,7 +9,8 @@ import Foundation
 import SQLite
 
 class StockRepository: RepositoryProtocol {
-    typealias RepositoryItem = Stock
+    typealias RepositoryData = StockData
+    typealias RepositoryFull = StockFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -68,8 +69,8 @@ class StockRepository: RepositoryProtocol {
         )
     }
 
-    static func selectResult(_ row: SQLite.Row) -> Stock {
-        return Stock(
+    static func selectData(_ row: SQLite.Row) -> StockData {
+        return StockData(
             id            : row[col_id],
             accountId     : row[col_accountId] ?? 0,
             name          : row[col_name],
@@ -84,7 +85,14 @@ class StockRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ stock: Stock) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> StockFull {
+        let full = StockFull(
+            data: Self.selectData(row)
+        )
+        return full
+    }
+
+    static func itemSetters(_ stock: StockData) -> [SQLite.Setter] {
         return [
             col_accountId     <- stock.accountId,
             col_name          <- stock.name,
@@ -101,8 +109,8 @@ class StockRepository: RepositoryProtocol {
 }
 
 extension StockRepository {
-    func load() -> [Stock] {
-        return select(table: Self.repositoryTable
+    func load() -> [StockData] {
+        return selectData(from: Self.repositoryTable
             .order(Self.col_name)
         )
     }

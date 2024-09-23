@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct Category: ExportableEntity {
+struct CategoryData: ExportableEntity {
     var id       : Int64
     var name     : String
     var active   : Bool
@@ -27,13 +27,13 @@ struct Category: ExportableEntity {
     }
 }
 
-extension Category {
+extension CategoryData {
     var isRoot: Bool {
         return parentId <= 0
     }
 }
 
-extension Category: ModelProtocol {
+extension CategoryData: DataProtocol {
     static let modelName = "Category"
 
     func shortDesc() -> String {
@@ -41,7 +41,11 @@ extension Category: ModelProtocol {
     }
 }
 
-extension Category {
+struct CategoryFull: FullProtocol {
+    var data:  CategoryData
+}
+
+extension CategoryData {
     static let categoryToSFSymbol: [String: String] = [
         "Unknown": "camera.metering.unknown",
         "Auto": "car.fill",
@@ -101,9 +105,9 @@ extension Category {
     ]
 }
 
-extension Category {
-    static let sampleData: [Category] = [
-        Category(id: 1, name: "root cateogry",     active: true, parentId: -1),
-        Category(id: 2, name: "non-root category", active: true, parentId: 1),
+extension CategoryData {
+    static let sampleData: [CategoryData] = [
+        CategoryData(id: 1, name: "root cateogry",     active: true, parentId: -1),
+        CategoryData(id: 2, name: "non-root category", active: true, parentId: 1),
     ]
 }

@@ -9,7 +9,8 @@ import Foundation
 import SQLite
 
 class PayeeRepository: RepositoryProtocol {
-    typealias RepositoryItem = Payee
+    typealias RepositoryData = PayeeData
+    typealias RepositoryFull = PayeeFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -53,8 +54,8 @@ class PayeeRepository: RepositoryProtocol {
         )
     }
 
-    static func selectResult(_ row: SQLite.Row) -> Payee {
-        return Payee(
+    static func selectData(_ row: SQLite.Row) -> PayeeData {
+        return PayeeData(
             id         : row[col_id],
             name       : row[col_name],
             categoryId : row[col_categoryId] ?? 0,
@@ -66,7 +67,14 @@ class PayeeRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ payee: Payee) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> PayeeFull {
+        let full = PayeeFull(
+            data: Self.selectData(row)
+        )
+        return full
+    }
+
+    static func itemSetters(_ payee: PayeeData) -> [SQLite.Setter] {
         return [
             col_name       <- payee.name,
             col_categoryId <- payee.categoryId,
@@ -80,8 +88,8 @@ class PayeeRepository: RepositoryProtocol {
 }
 
 extension PayeeRepository {
-    func load() -> [Payee] {
-        return select(table: Self.repositoryTable
+    func load() -> [PayeeData] {
+        return selectData(from: Self.repositoryTable
             .order(Self.col_active.desc, Self.col_name)
         )
     }

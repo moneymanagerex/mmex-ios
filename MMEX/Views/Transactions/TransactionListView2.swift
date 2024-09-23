@@ -9,14 +9,14 @@ import SwiftUI
 
 struct TransactionListView2: View {
     let databaseURL: URL
-    @State private var txns: [Transaction] = []
-    @State private var txns_per_day: [String: [Transaction]] = [:]
-    @State private var payees: [Payee] = []
-    @State private var payeeDict: [Int64: Payee] = [:] // for lookup
-    @State private var categories: [Category] = []
-    @State private var categoryDict: [Int64: Category] = [:] // for lookup
-    @State private var accounts: [Account] = []
-    @State private var accountDict: [Int64: Account] = [: ] // for lookup
+    @State private var txns: [TransactionData] = []
+    @State private var txns_per_day: [String: [TransactionData]] = [:]
+    @State private var payees: [PayeeData] = []
+    @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
+    @State private var categories: [CategoryData] = []
+    @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
+    @State private var accounts: [AccountFull] = []
+    @State private var accountDict: [Int64: AccountFull] = [: ] // for lookup
 
     private var repository: TransactionRepository
     
@@ -42,7 +42,7 @@ struct TransactionListView2: View {
                             NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
                                 HStack {
                                     // Left column (Category Icon or Category Name)
-                                    if let categorySymbol = Category.categoryToSFSymbol[getCategoryName(for: txn.categId)] {
+                                    if let categorySymbol = CategoryData.categoryToSFSymbol[getCategoryName(for: txn.categId)] {
                                         Image(systemName: categorySymbol)
                                             .frame(width: 50, alignment: .leading) // Adjust width as needed
                                             .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed

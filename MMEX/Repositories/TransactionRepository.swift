@@ -9,7 +9,8 @@ import Foundation
 import SQLite
 
 class TransactionRepository: RepositoryProtocol {
-    typealias RepositoryItem = Transaction
+    typealias RepositoryData = TransactionData
+    typealias RepositoryFull = TransactionFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -81,8 +82,8 @@ class TransactionRepository: RepositoryProtocol {
         )
     }
 
-    static func selectResult(_ row: SQLite.Row) -> Transaction {
-        return Transaction(
+    static func selectData(_ row: SQLite.Row) -> TransactionData {
+        return TransactionData(
           id                : row[col_id],
           accountId         : row[col_accountId],
           toAccountId       : row[col_toAccountId] ?? 0,
@@ -103,7 +104,14 @@ class TransactionRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ txn: Transaction) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> TransactionFull {
+        let full = TransactionFull(
+            data: Self.selectData(row)
+        )
+        return full
+    }
+
+    static func itemSetters(_ txn: TransactionData) -> [SQLite.Setter] {
         return [
             col_accountId         <- txn.accountId,
             col_toAccountId       <- txn.toAccountId,
@@ -125,22 +133,22 @@ class TransactionRepository: RepositoryProtocol {
 }
 
 extension TransactionRepository {
-    // load all transactions
-    func load() -> [Transaction] {
-        return select(table: Self.repositoryTable)
+    // load data from all transactions
+    func load() -> [TransactionData] {
+        return selectData(from: Self.repositoryTable)
     }
 
     // load recent transactions
     func loadRecent(
         startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date()),
         endDate: Date? = Date()
-    ) -> [Transaction] {
+    ) -> [TransactionData] {
         let table = if let startDate {
             Self.repositoryTable
                 .filter(Self.col_transDate >= startDate.ISO8601Format())
         } else {
             Self.repositoryTable
         }
-        return select(table: table)
+        return selectData(from: table)
     }
 }

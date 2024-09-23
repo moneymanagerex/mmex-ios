@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct PayeeAddView: View {
-    @Binding var newPayee: Payee
+    @Binding var newPayee: PayeeData
     @Binding var isPresentingPayeeAddView: Bool
-    @Binding var categories: [Category]
+    @Binding var categories: [CategoryData]
     
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
 
-    var onSave: (inout Payee) -> Void
+    var onSave: (inout PayeeData) -> Void
     
     var body: some View {
         NavigationStack {
@@ -56,9 +56,9 @@ struct PayeeAddView: View {
 
 #Preview {
     PayeeAddView(
-        newPayee: .constant(Payee()),
+        newPayee: .constant(PayeeData()),
         isPresentingPayeeAddView: .constant(true),
-        categories: .constant(Category.sampleData)
+        categories: .constant(CategoryData.sampleData)
     ) { newPayee in
         // Handle saving in preview
         print("New payee: \(newPayee.name)")

@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct AccountDetailView: View {
-    @State var account: Account
+    @State var account: AccountFull
     let databaseURL: URL
-    @Binding var currencies: [Currency] // Bind to the list of available currencies
+    @Binding var currencies: [CurrencyData] // Bind to the list of available currencies
 
-    @State private var editingAccount = Account()
+    @State private var editingAccount = AccountFull()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode
     
@@ -21,13 +21,13 @@ struct AccountDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Account Name")) {
-                Text(account.name)
+                Text(account.data.name)
             }
             Section(header: Text("Account Type")) {
-                Text(account.type.name)
+                Text(account.data.type.name)
             }
             Section(header: Text("Status")) {
-                Text(account.status.id)
+                Text(account.data.status.id)
             }
             // TODO link to currency details
             Section(header: Text("Currency")) {
@@ -38,13 +38,13 @@ struct AccountDetailView: View {
                 }            }
             Section(header: Text("Balance")) {
                 if let currency = account.currency {
-                    Text(currency.format(amount: account.initialBal))
+                    Text(currency.format(amount: account.data.initialBal))
                 } else {
-                    Text("\(account.initialBal)")
+                    Text("\(account.data.initialBal)")
                 }
             }
             Section(header: Text("Notes")) {
-                Text(account.notes)  // Display notes if they are not nil
+                Text(account.data.notes)  // Display notes if they are not nil
             }
             Button("Delete Account") {
                 deleteAccount()
@@ -74,7 +74,7 @@ struct AccountDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 AccountEditView(account: $editingAccount, currencies: $currencies)
-                    .navigationTitle(account.name)
+                    .navigationTitle(account.data.name)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {
@@ -95,7 +95,7 @@ struct AccountDetailView: View {
             isPresented: $isExporting,
             document: ExportableEntityDocument(entity: account),
             contentType: .json,
-            defaultFilename: "\(account.name)_Account"
+            defaultFilename: "\(account.data.name)_Account"
         ) { result in
             switch result {
             case .success(let url):
@@ -108,7 +108,7 @@ struct AccountDetailView: View {
 
     func saveChanges() {
         let repository = DataManager(databaseURL: databaseURL).getAccountRepository()
-        if repository.update(account) {
+        if repository.update(account.data) {
             // Successfully updated
         } else {
             // Handle failure
@@ -117,7 +117,7 @@ struct AccountDetailView: View {
     
     func deleteAccount() {
         let repository = DataManager(databaseURL: databaseURL).getAccountRepository()
-        if repository.delete(account) {
+        if repository.delete(account.data) {
             presentationMode.wrappedValue.dismiss()
         } else {
             // Handle deletion failure
@@ -126,9 +126,16 @@ struct AccountDetailView: View {
 }
 
 #Preview {
-    AccountDetailView(account: Account.sampleData[0], databaseURL: URL(string: "path/to/database")!, currencies: .constant(Currency.sampleData))
+    AccountDetailView(
+        account: AccountFull.sampleFull[0],
+        databaseURL: URL(string: "path/to/database")!,
+        currencies: .constant(CurrencyData.sampleData))
 }
 
 #Preview {
-    AccountDetailView(account: Account.sampleData[1], databaseURL: URL(string: "path/to/database")!, currencies: .constant(Currency.sampleData))
+    AccountDetailView(
+        account: AccountFull.sampleFull[1],
+        databaseURL: URL(string: "path/to/database")!,
+        currencies: .constant(CurrencyData.sampleData)
+    )
 }

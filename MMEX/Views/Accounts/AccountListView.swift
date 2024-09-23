@@ -8,9 +8,9 @@ import SwiftUI
 
 struct AccountListView: View {
     let databaseURL: URL
-    @State private var currencies: [Currency] = []
-    @State private var accounts_by_type: [String:[Account]] = [:]
-    @State private var newAccount = Account()
+    @State private var currencies: [CurrencyData] = []
+    @State private var accounts_by_type: [String:[AccountFull]] = [:]
+    @State private var newAccount = AccountFull()
     @State private var isPresentingAccountAddView = false
     @State private var expandedSections: [String: Bool] = [:] // Tracks the expanded/collapsed state
 
@@ -32,7 +32,7 @@ struct AccountListView: View {
                                 expandedSections[accountType]?.toggle()
                             }) {
                                 HStack {
-                                    if let accountSymbol = Account.accountTypeToSFSymbol[accountType] {
+                                    if let accountSymbol = AccountData.accountTypeToSFSymbol[accountType] {
                                         Image(systemName: accountSymbol)
                                             .frame(width: 5, alignment: .leading) // Adjust width as needed
                                             .font(.system(size: 16, weight: .bold)) // Customize size and weight
@@ -56,7 +56,7 @@ struct AccountListView: View {
                             ForEach(accounts_by_type[accountType]!) { account in
                                 NavigationLink(destination: AccountDetailView(account: account, databaseURL: databaseURL, currencies: $currencies)) {
                                     HStack {
-                                        Text(account.name)
+                                        Text(account.data.name)
                                             .font(.subheadline)
 
                                         Spacer()
@@ -90,7 +90,7 @@ struct AccountListView: View {
         .sheet(isPresented: $isPresentingAccountAddView) {
             AccountAddView(newAccount: $newAccount, isPresentingAccountAddView: $isPresentingAccountAddView, currencies: $currencies) { newAccount in
                 addAccount(account: &newAccount)
-                newAccount = Account()
+                newAccount = AccountFull()
             }
         }
     }
@@ -109,7 +109,7 @@ struct AccountListView: View {
             let loadedAccounts = repository.loadWithCurrency()
             DispatchQueue.main.async {
                 self.accounts_by_type = Dictionary(grouping: loadedAccounts) { account in
-                    account.type.name
+                    account.data.type.name
                 }
                 self.initializeExpandedSections() // Initialize expanded states
             }
@@ -128,8 +128,8 @@ struct AccountListView: View {
         }
     }
 
-    func addAccount(account: inout Account) {
-        if repository.insert(&account) {
+    func addAccount(account: inout AccountFull) {
+        if repository.insert(&(account.data)) {
             // self.accounts.append(account)
             self.loadAccounts()
         }

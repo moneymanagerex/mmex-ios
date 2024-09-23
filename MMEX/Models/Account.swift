@@ -24,7 +24,7 @@ enum AccountType: String, EnumCollateNoCase {
     case shares     = "Shares"
 }
 
-struct Account: ExportableEntity {
+struct AccountData: ExportableEntity {
     var id              : Int64
     var name            : String
     var type            : AccountType
@@ -47,8 +47,6 @@ struct Account: ExportableEntity {
     var paymentDueDate  : String
     var minimumPayment  : Double
 
-    var currency: Currency?
-
     init(
         id              : Int64         = 0,
         name            : String        = "",
@@ -70,8 +68,7 @@ struct Account: ExportableEntity {
         creditLimit     : Double        = 0.0,
         interestRate    : Double        = 0.0,
         paymentDueDate  : String        = "",
-        minimumPayment  : Double        = 0.0,
-        currency        : Currency?     = nil
+        minimumPayment  : Double        = 0.0
     ) {
         self.id              = id
         self.name            = name
@@ -94,11 +91,10 @@ struct Account: ExportableEntity {
         self.interestRate    = interestRate
         self.paymentDueDate  = paymentDueDate
         self.minimumPayment  = minimumPayment
-        self.currency        = currency
     }
 }
 
-extension Account: ModelProtocol {
+extension AccountData: DataProtocol {
     static let modelName = "Account"
 
     func shortDesc() -> String {
@@ -106,7 +102,17 @@ extension Account: ModelProtocol {
     }
 }
 
-extension Account {
+struct AccountFull: ExportableEntity, FullProtocol {
+    var data: AccountData
+    var currency: CurrencyData?
+    var id: Int64 { data.id }
+    init(data: AccountData = AccountData(), currency: CurrencyData? = nil) {
+        self.data     = data
+        self.currency = currency
+    }
+}
+
+extension AccountData {
     static let accountTypeToSFSymbol: [String: String] = [
         "Cash"        : "dollarsign.circle.fill",
         "Checking"    : "banknote.fill",
@@ -116,25 +122,42 @@ extension Account {
     ]
 }
 
-extension Account {
-    static let sampleData : [Account] = [
-        Account(
+extension AccountData {
+    static let sampleData : [AccountData] = [
+        AccountData(
             id: 1, name: "Account A", type: AccountType.cash,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1,
-            currency: Currency.sampleData[0]
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1
         ),
-        Account(
+        AccountData(
             id: 2, name: "Account B", type: AccountType.cash,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2,
-            currency: Currency.sampleData[1]
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
         ),
-        Account(
+        AccountData(
             id: 3, name: "Investment Account", type: AccountType.investment,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2,
-            currency: Currency.sampleData[1]
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
         ),
+    ]
+}
+
+extension AccountFull {
+    static let sampleFull : [AccountFull] = [
+        AccountFull(data:AccountData(
+            id: 1, name: "Account A", type: AccountType.cash,
+            status: AccountStatus.open, notes:"",
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1
+        ), currency: CurrencyData.sampleData[0]),
+        AccountFull(data:AccountData(
+            id: 2, name: "Account B", type: AccountType.cash,
+            status: AccountStatus.open, notes:"",
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
+        ), currency: CurrencyData.sampleData[1]),
+        AccountFull(data:AccountData(
+            id: 3, name: "Investment Account", type: AccountType.investment,
+            status: AccountStatus.open, notes:"",
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
+        ), currency: CurrencyData.sampleData[1]),
     ]
 }

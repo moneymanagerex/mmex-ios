@@ -9,9 +9,16 @@ import Foundation
 import SQLite
 
 class ScheduledRepository: RepositoryProtocol {
-    typealias RepositoryItem = Scheduled
+    typealias RepositoryData = ScheduledData
+    typealias RepositoryFull = ScheduledFull
 
     let db: Connection?
+    var accountDict  : [Int64: (String, CurrencyData?)] = [:]
+    var categoryDict : [Int64: String] = [:]
+    var payeeDict    : [Int64: String] = [:]
+  //var tagDict      : [Int64: String] = [:]
+  //var fieldDict    : [Int64: FieldData] = [:]
+
     init(db: Connection?) {
         self.db = db
     }
@@ -86,8 +93,8 @@ class ScheduledRepository: RepositoryProtocol {
 
     static let repeatBase = 100
 
-    static func selectResult(_ row: SQLite.Row) -> Scheduled {
-        return Scheduled(
+    static func selectData(_ row: SQLite.Row) -> ScheduledData {
+        return ScheduledData(
           id                : row[col_id],
           accountId         : row[col_accountId],
           toAccountId       : row[col_toAccountId] ?? 0,
@@ -110,7 +117,14 @@ class ScheduledRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ sched: Scheduled) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> ScheduledFull {
+        let full = ScheduledFull(
+            data: Self.selectData(row)
+        )
+        return full
+    }
+
+    static func itemSetters(_ sched: ScheduledData) -> [SQLite.Setter] {
         let repeats = sched.repeatAuto.rawValue * repeatBase + sched.repeatType.rawValue
         return [
             col_accountId          <- sched.accountId,
@@ -134,8 +148,13 @@ class ScheduledRepository: RepositoryProtocol {
 }
 
 extension ScheduledRepository {
-    // load all scheduled transactions
-    func load() -> [Scheduled] {
-        return select(table: Self.repositoryTable)
+    // load data from all scheduled transactions
+    func load() -> [ScheduledData] {
+        return selectData(from: Self.repositoryTable)
+    }
+
+    // load full data from all scheduled transactions
+    func loadFull(from table: SQLite.Table) -> [ScheduledFull] {
+        return selectFull(from: Self.repositoryTable)
     }
 }
