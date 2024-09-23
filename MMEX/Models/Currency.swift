@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct Currency: ExportableEntity {
+struct CurrencyData: ExportableEntity {
     var id             : Int64
     var name           : String
     var prefixSymbol   : String
@@ -51,7 +51,7 @@ struct Currency: ExportableEntity {
     }
 }
 
-extension Currency: ModelProtocol {
+extension CurrencyData: DataProtocol {
     static let modelName = "Currency"
 
     func shortDesc() -> String {
@@ -59,7 +59,11 @@ extension Currency: ModelProtocol {
     }
 }
 
-extension Currency {
+struct CurrencyFull: FullProtocol {
+    var data: CurrencyData
+}
+
+extension CurrencyData {
     /// A `NumberFormatter` configured specifically for the currency.
     var formatter: NumberFormatter {
         let nf = NumberFormatter()
@@ -90,19 +94,19 @@ extension Currency {
     }
 }
 
-extension Currency {
-    static let sampleData: [Currency] = [
-        Currency(
+extension CurrencyData {
+    static let sampleData: [CurrencyData] = [
+        CurrencyData(
             id: 1, name: "US dollar", prefixSymbol: "$", suffixSymbol: "",
             decimalPoint: ".", groupSeparator: ",", unitName: "Dollar", centName: "Cent",
             scale: 100, baseConvRate: 1.0, symbol: "USD", type: "Fiat"
         ),
-        Currency(
+        CurrencyData(
             id: 2, name: "Euro", prefixSymbol: "€", suffixSymbol: "",
             decimalPoint: ".", groupSeparator: " ", unitName: "", centName: "",
             scale: 100, baseConvRate: 1.0, symbol: "EUR", type: "Fiat"
         ),
-        Currency(
+        CurrencyData(
             id: 3, name: "British pound", prefixSymbol: "£", suffixSymbol: "",
             decimalPoint: ".", groupSeparator: " ", unitName: "Pound", centName: "Pence",
             scale: 100, baseConvRate: 1.0, symbol: "GBP", type: "Fiat"

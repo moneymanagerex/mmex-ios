@@ -9,9 +9,11 @@ import Foundation
 import SQLite
 
 class AccountRepository: RepositoryProtocol {
-    typealias RepositoryItem = Account
+    typealias RepositoryData = AccountData
+    typealias RepositoryFull = AccountFull
 
     let db: Connection?
+    var currencyDict: [Int64: CurrencyData] = [:]
     init(db: Connection?) {
         self.db = db
     }
@@ -99,8 +101,8 @@ class AccountRepository: RepositoryProtocol {
         )
     }
 
-    static func selectResult(_ row: SQLite.Row) -> Account {
-        return Account(
+    static func selectData(_ row: SQLite.Row) -> AccountData {
+        return AccountData(
             id              : row[col_id],
             name            : row[col_name],
             type            : AccountType(collateNoCase: row[col_type]) ?? AccountType.checking,
@@ -121,12 +123,19 @@ class AccountRepository: RepositoryProtocol {
             creditLimit     : row[cast_creditLimit] ?? 0.0,
             interestRate    : row[cast_interestRate] ?? 0.0,
             paymentDueDate  : row[col_paymentDueDate] ?? "",
-            minimumPayment  : row[cast_minimumPayment] ?? 0.0,
-            currency        : nil
+            minimumPayment  : row[cast_minimumPayment] ?? 0.0
         )
     }
 
-    static func itemSetters(_ account: Account) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> AccountFull {
+        var full = AccountFull(
+            data: Self.selectData(row)
+        )
+        full.currency = currencyDict[full.data.currencyId]
+        return full
+    }
+
+    static func itemSetters(_ account: AccountData) -> [SQLite.Setter] {
         return [
             col_name            <- account.name,
             col_type            <- account.type.id,
@@ -153,28 +162,22 @@ class AccountRepository: RepositoryProtocol {
 }
 
 extension AccountRepository {
-    func load() -> [Account] {
-        return select(table: Self.repositoryTable
+    func load() -> [AccountData] {
+        return selectData(from: Self.repositoryTable
             .order(Self.col_name)
         )
     }
 
-    func loadWithCurrency() -> [Account] {
-        // TODO
+    func loadWithCurrency() -> [AccountFull] {
+        // TODO via join?
         guard let db else {return []}
-
-        var accounts = load();
-        let currencies = CurrencyRepository(db: db).load();
-
+        
         // Create a lookup dictionary for currencies by currencyId
-        let currencyDictionary = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
-
-
-        for index in accounts.indices {
-            // TODO via join?
-            accounts[index].currency = currencyDictionary[accounts[index].currencyId]
-        }
-
-        return accounts
+        let currencies = CurrencyRepository(db: db).load();
+        currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
+        
+        return selectFull(from: Self.repositoryTable
+            .order(Self.col_name)
+        )
     }
 }

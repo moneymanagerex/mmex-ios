@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CategoryListView: View {
-    @State private var categories: [Category] = []
+    @State private var categories: [CategoryData] = []
     let databaseURL: URL
     
     @State private var isPresentingAddView = false
-    @State private var newCategory = Category()
+    @State private var newCategory = CategoryData()
 
     private var repository: CategoryRepository
     
@@ -60,7 +60,7 @@ struct CategoryListView: View {
         categories = repository.load()
     }
 
-    func addCategory(category: inout Category) {
+    func addCategory(category: inout CategoryData) {
         if repository.insert(&category) {
             self.categories.append(category)
         }
@@ -68,5 +68,7 @@ struct CategoryListView: View {
 }
 
 #Preview {
-    CategoryListView(databaseURL: URL(string: "path/to/database")!)
+    CategoryListView(
+        databaseURL: URL(string: "path/to/database")!
+    )
 }

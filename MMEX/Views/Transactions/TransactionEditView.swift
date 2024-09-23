@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct TransactionEditView: View {
-    @Binding var txn: Transaction
+    @Binding var txn: TransactionData
     @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
 
-    @Binding var payees: [Payee]
-    @Binding var categories: [Category]
-    @Binding var accounts: [Account]
+    @Binding var payees: [PayeeData]
+    @Binding var categories: [CategoryData]
+    @Binding var accounts: [AccountFull]
     
     // app level setting
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
@@ -42,7 +42,7 @@ struct TransactionEditView: View {
                         Text("Account").tag(0 as Int64) // not set
                     }
                     ForEach(accounts) { account in
-                        Text(account.name).tag(account.id)
+                        Text(account.data.name).tag(account.data.id)
                     }
                 }
             }
@@ -171,5 +171,10 @@ struct TransactionEditView: View {
 }
 
 #Preview {
-    TransactionEditView(txn: .constant(Transaction.sampleData[0]), payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData), accounts: .constant(Account.sampleData))
+    TransactionEditView(
+        txn: .constant(TransactionData.sampleData[0]),
+        payees: .constant(PayeeData.sampleData),
+        categories: .constant(CategoryData.sampleData),
+        accounts: .constant(AccountFull.sampleFull)
+    )
 }

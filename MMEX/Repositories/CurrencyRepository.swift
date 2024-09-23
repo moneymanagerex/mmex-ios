@@ -9,7 +9,8 @@ import Foundation
 import SQLite
 
 class CurrencyRepository: RepositoryProtocol {
-    typealias RepositoryItem = Currency
+    typealias RepositoryData = CurrencyData
+    typealias RepositoryFull = CurrencyFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -69,8 +70,8 @@ class CurrencyRepository: RepositoryProtocol {
         )
     }
 
-    static func selectResult(_ row: SQLite.Row) -> Currency {
-        return Currency(
+    static func selectData(_ row: SQLite.Row) -> CurrencyData {
+        return CurrencyData(
             id             : row[col_id],
             name           : row[col_name],
             prefixSymbol   : row[col_prefixSymbol] ?? "",
@@ -86,7 +87,14 @@ class CurrencyRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ currency: Currency) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> CurrencyFull {
+        let full = CurrencyFull(
+            data: Self.selectData(row)
+        )
+        return full
+    }
+
+    static func itemSetters(_ currency: CurrencyData) -> [SQLite.Setter] {
         return [
             col_name               <- currency.name,
             col_prefixSymbol       <- currency.prefixSymbol,
@@ -104,9 +112,9 @@ class CurrencyRepository: RepositoryProtocol {
 }
 
 extension CurrencyRepository {
-    // load all currencies
-    func load() -> [Currency] {
-        return select(table: Self.repositoryTable
+    // load data from all currencies
+    func load() -> [CurrencyData] {
+        return selectData(from: Self.repositoryTable
             .order(Self.col_name)
         )
     }

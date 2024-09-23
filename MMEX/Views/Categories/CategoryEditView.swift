@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CategoryEditView: View {
-    @Binding var category: Category
+    @Binding var category: CategoryData
     
     var body: some View {
         Form {
@@ -31,5 +31,7 @@ struct CategoryEditView: View {
 }
 
 #Preview {
-    CategoryEditView(category: .constant(Category.sampleData[0]))
+    CategoryEditView(
+        category: .constant(CategoryData.sampleData[0])
+    )
 }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PayeeEditView: View {
-    @Binding var payee: Payee
-    @Binding var categories: [Category]
+    @Binding var payee: PayeeData
+    @Binding var categories: [CategoryData]
 
     var body: some View {
         Form {
@@ -71,9 +71,15 @@ struct PayeeEditView: View {
 }
 
 #Preview {
-    PayeeEditView(payee: .constant(Payee.sampleData[0]), categories: .constant(Category.sampleData))
+    PayeeEditView(
+        payee: .constant(PayeeData.sampleData[0]),
+        categories: .constant(CategoryData.sampleData)
+    )
 }
 
 #Preview {
-    PayeeEditView(payee: .constant(Payee.sampleData[1]), categories: .constant(Category.sampleData))
+    PayeeEditView(
+        payee: .constant(PayeeData.sampleData[1]),
+        categories: .constant(CategoryData.sampleData)
+    )
 }

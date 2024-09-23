@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CategoryAddView: View {
-    @Binding var newCategory: Category
+    @Binding var newCategory: CategoryData
     @Binding var isPresentingCategoryAddView: Bool
 
-    var onSave: (inout Category) -> Void
+    var onSave: (inout CategoryData) -> Void
 
     var body: some View {
         NavigationStack {
@@ -35,7 +35,7 @@ struct CategoryAddView: View {
 
 #Preview {
     CategoryAddView(
-        newCategory: .constant(Category()),
+        newCategory: .constant(CategoryData()),
         isPresentingCategoryAddView: .constant(true)
     ) { newCategory in
         // Handle saving in preview

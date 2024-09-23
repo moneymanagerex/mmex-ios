@@ -7,9 +7,14 @@
 
 import Foundation
 
-protocol ModelProtocol {
+protocol DataProtocol {
     static var modelName: String { get }
 
     var id: Int64 { get set }
     func shortDesc() -> String
+}
+
+protocol FullProtocol {
+    associatedtype Data: DataProtocol
+    var data: Data { get set }
 }

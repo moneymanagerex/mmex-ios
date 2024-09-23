@@ -19,7 +19,7 @@ enum InfoKey: String {
     var id: String { return rawValue }
 }
 
-struct Infotable: ExportableEntity {
+struct InfotableData: ExportableEntity {
     var id    : Int64
     var name  : String
     var value : String
@@ -51,7 +51,7 @@ struct Infotable: ExportableEntity {
     }
 }
 
-extension Infotable: ModelProtocol {
+extension InfotableData: DataProtocol {
     static let modelName = "Infotable"
 
     func shortDesc() -> String {
@@ -59,8 +59,12 @@ extension Infotable: ModelProtocol {
     }
 }
 
-extension Infotable {
-    static let sampleData: [Infotable] = [
-        Infotable(id: 1, name: "DATAVERSION", value: "3"),
+struct InfotableFull: FullProtocol {
+    var data: InfotableData
+}
+
+extension InfotableData {
+    static let sampleData: [InfotableData] = [
+        InfotableData(id: 1, name: "DATAVERSION", value: "3"),
     ]
 }

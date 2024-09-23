@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CurrencyEditView: View {
-    @Binding var currency: Currency
+    @Binding var currency: CurrencyData
 
     var body: some View {
         Form {
@@ -42,5 +42,7 @@ struct CurrencyEditView: View {
 }
 
 #Preview {
-    CurrencyEditView(currency: .constant(Currency.sampleData[0]))
+    CurrencyEditView(
+        currency: .constant(CurrencyData.sampleData[0])
+    )
 }
