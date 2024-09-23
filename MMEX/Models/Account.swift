@@ -11,6 +11,7 @@ import SQLite
 enum AccountStatus: String, EnumCollateNoCase {
     case open   = "Open"
     case closed = "Closed"
+    static let defaultValue = Self.closed
 }
 
 enum AccountType: String, EnumCollateNoCase {
@@ -22,6 +23,7 @@ enum AccountType: String, EnumCollateNoCase {
     case investment = "Investment"
     case asset      = "Asset"
     case shares     = "Shares"
+    static let defaultValue = Self.checking
 }
 
 struct AccountData: ExportableEntity {
@@ -50,9 +52,9 @@ struct AccountData: ExportableEntity {
     init(
         id              : Int64         = 0,
         name            : String        = "",
-        type            : AccountType   = AccountType.checking,
+        type            : AccountType   = AccountType.defaultValue,
         num             : String        = "",
-        status          : AccountStatus = AccountStatus.closed,
+        status          : AccountStatus = AccountStatus.defaultValue,
         notes           : String        = "",
         heldAt          : String        = "",
         website         : String        = "",

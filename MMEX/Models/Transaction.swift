@@ -8,22 +8,22 @@
 import SQLite
 import Foundation
 
-enum Transcode: String, EnumCollateNoCase {
+enum TransactionType: String, EnumCollateNoCase {
     case withdrawal = "Withdrawal"
     case deposit    = "Deposit"
     case transfer   = "Transfer"
+    static let defaultValue = Self.withdrawal
 }
 
-enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
+enum TransactionStatus: String, EnumCollateNoCase {
     // TODO: MMEX Desktop defines "" for none
     case none       = "N" // None
     case reconciled = "R" // Reconciled
     case void       = "V" // Void
     case followUp   = "F" // Follow up
     case duplicate  = "D" // Duplicate
-    
-    var id: String { self.rawValue }
-    var name: String { rawValue.capitalized }
+    static let defaultValue = Self.none
+
     var fullName: String {
         return switch self {
         // TODO: MMEX Desktop defines "Unreconciled" for none
@@ -34,6 +34,19 @@ enum TransactionStatus: String, CaseIterable, Identifiable, Codable {
         case .duplicate  : "Duplicate"
         }
     }
+
+    init(collateNoCase name: String?) {
+        guard let name else { self = Self.defaultValue; return }
+        for x in Self.allCases {
+            if x.rawValue.caseInsensitiveCompare(name) == .orderedSame ||
+                x.fullName.caseInsensitiveCompare(name) == .orderedSame
+            {
+                self = x
+                return
+            }
+        }
+        self = Self.defaultValue
+    }
 }
 
 struct TransactionData: ExportableEntity {
@@ -41,7 +54,7 @@ struct TransactionData: ExportableEntity {
     var accountId         : Int64
     var toAccountId       : Int64
     var payeeId           : Int64
-    var transCode         : Transcode
+    var transCode         : TransactionType
     var transAmount       : Double
     var status            : TransactionStatus
     var transactionNumber : String
@@ -59,9 +72,9 @@ struct TransactionData: ExportableEntity {
         accountId         : Int64             = 0,
         toAccountId       : Int64             = 0,
         payeeId           : Int64             = 0,
-        transCode         : Transcode         = Transcode.withdrawal,
+        transCode         : TransactionType   = TransactionType.defaultValue,
         transAmount       : Double            = 0.0,
-        status            : TransactionStatus = TransactionStatus.none,
+        status            : TransactionStatus = TransactionStatus.defaultValue,
         transactionNumber : String            = "",
         notes             : String            = "",
         categId           : Int64             = 0,
@@ -130,17 +143,17 @@ extension TransactionData {
 extension TransactionData {
     static let sampleData : [TransactionData] = [
         TransactionData(
-            id: 1, accountId: 1, payeeId: 1, transCode: Transcode.withdrawal,
+            id: 1, accountId: 1, payeeId: 1, transCode: TransactionType.withdrawal,
             transAmount: 10.01, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
         TransactionData(
-            id: 2, accountId: 2, payeeId: 2, transCode: Transcode.deposit,
+            id: 2, accountId: 2, payeeId: 2, transCode: TransactionType.deposit,
             transAmount: 20.02, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
         TransactionData(
-            id: 3, accountId: 3, payeeId: 3, transCode: Transcode.transfer,
+            id: 3, accountId: 3, payeeId: 3, transCode: TransactionType.transfer,
             transAmount: 30.03, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),

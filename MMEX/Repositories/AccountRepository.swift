@@ -105,9 +105,9 @@ class AccountRepository: RepositoryProtocol {
         return AccountData(
             id              : row[col_id],
             name            : row[col_name],
-            type            : AccountType(collateNoCase: row[col_type]) ?? AccountType.checking,
+            type            : AccountType(collateNoCase: row[col_type]),
             num             : row[col_num] ?? "",
-            status          : AccountStatus(collateNoCase: row[col_status]) ?? AccountStatus.closed,
+            status          : AccountStatus(collateNoCase: row[col_status]),
             notes           : row[col_notes] ?? "",
             heldAt          : row[col_heldAt] ?? "",
             website         : row[col_website] ?? "",

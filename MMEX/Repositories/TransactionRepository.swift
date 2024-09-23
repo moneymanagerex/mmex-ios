@@ -88,10 +88,10 @@ class TransactionRepository: RepositoryProtocol {
           accountId         : row[col_accountId],
           toAccountId       : row[col_toAccountId] ?? 0,
           payeeId           : row[col_payeeId],
-          transCode         : Transcode(collateNoCase: row[col_transCode]) ?? Transcode.withdrawal,
+          transCode         : TransactionType(collateNoCase: row[col_transCode]),
           transAmount       : row[cast_transAmount],
           // TODO: case insersitive, convert either key or value
-          status            : TransactionStatus(rawValue: row[col_status] ?? "") ?? TransactionStatus.none,
+          status            : TransactionStatus(collateNoCase: row[col_status]),
           transactionNumber : row[col_transactionNumber] ?? "",
           notes             : row[col_notes] ?? "",
           categId           : row[col_categId] ?? 0,
@@ -118,7 +118,7 @@ class TransactionRepository: RepositoryProtocol {
             col_payeeId           <- txn.payeeId,
             col_transCode         <- txn.transCode.id,
             col_transAmount       <- txn.transAmount,
-            col_status            <- txn.status.id,
+            col_status            <- txn.status.id,  // TODO: MMEX Desktop writes '' for .none
             col_transactionNumber <- txn.transactionNumber,
             col_notes             <- txn.notes,
             col_categId           <- txn.categId,

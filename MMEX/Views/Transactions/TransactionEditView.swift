@@ -18,7 +18,7 @@ struct TransactionEditView: View {
     
     // app level setting
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
-    @AppStorage("defaultStatus") private var defaultStatus: TransactionStatus = .none
+    @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
 
     // Focus state for the Amount input to control keyboard focus
     @FocusState private var isAmountFocused: Bool
@@ -28,7 +28,7 @@ struct TransactionEditView: View {
             // 1. Transaction type picker (Deposit/Withdrawal/Transfer)
             HStack {
                 Picker("", selection: $txn.transCode) {
-                    ForEach(Transcode.allCases) { transCode in
+                    ForEach(TransactionType.allCases) { transCode in
                         Text(transCode.name).tag(transCode)
                     }
                 }

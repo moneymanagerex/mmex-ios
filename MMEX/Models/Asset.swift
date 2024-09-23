@@ -16,22 +16,26 @@ enum AssetType: String, EnumCollateNoCase {
     case jewellery  = "Jewellery"
     case cash       = "Cash"
     case other      = "Other"
+    static let defaultValue = Self.property
 }
 
 enum AssetStatus: String, EnumCollateNoCase {
     case closed = "Closed"
     case open   = "Open"
+    static let defaultValue = Self.open
 }
 
 enum AssetChange: String, EnumCollateNoCase {
     case none        = "None"
     case appreciates = "Appreciates"
     case depreciates = "Depreciates"
+    static let defaultValue = Self.none
 }
 
 enum AssetChangeMode: String, EnumCollateNoCase {
     case percentage = "Percentage"
     case linear     = "Linear"
+    static let defaultValue = Self.percentage
 }
 
 struct AssetData: ExportableEntity {
@@ -49,14 +53,14 @@ struct AssetData: ExportableEntity {
 
     init(
         id         : Int64            = 0,
-        type       : AssetType        = AssetType.property,
-        status     : AssetStatus      = AssetStatus.open,
+        type       : AssetType        = AssetType.defaultValue,
+        status     : AssetStatus      = AssetStatus.defaultValue,
         name       : String           = "",
         startDate  : String           = "",
         currencyId : Int64            = 0,
         value      : Double           = 0.0,
-        change     : AssetChange      = AssetChange.none,
-        changeMode : AssetChangeMode  = AssetChangeMode.percentage,
+        change     : AssetChange      = AssetChange.defaultValue,
+        changeMode : AssetChangeMode  = AssetChangeMode.defaultValue,
         changeRate : Double           = 0.0,
         notes      : String           = ""
     ) {

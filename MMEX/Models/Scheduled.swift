@@ -12,6 +12,7 @@ enum RepeatAuto: Int, CaseIterable, Identifiable, Codable {
     case none = 0
     case manual
     case silent
+    static let defaultValue = Self.none
 
     static let names = [
         "None",
@@ -40,6 +41,7 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
     case everyXMonths
     case monthlyLastDay
     case monthlyLastBusinessDay
+    static let defaultValue = Self.once
 
     static let names = [
         "Once",
@@ -69,7 +71,7 @@ struct ScheduledData: ExportableEntity {
     var accountId         : Int64
     var toAccountId       : Int64
     var payeeId           : Int64
-    var transCode         : Transcode
+    var transCode         : TransactionType
     var transAmount       : Double
     var status            : TransactionStatus
     var transactionNumber : String
@@ -89,9 +91,9 @@ struct ScheduledData: ExportableEntity {
         accountId         : Int64             = 0,
         toAccountId       : Int64             = 0,
         payeeId           : Int64             = 0,
-        transCode         : Transcode         = Transcode.withdrawal,
+        transCode         : TransactionType   = TransactionType.defaultValue,
         transAmount       : Double            = 0.0,
-        status            : TransactionStatus = TransactionStatus.none,
+        status            : TransactionStatus = TransactionStatus.defaultValue,
         transactionNumber : String            = "",
         notes             : String            = "",
         categId           : Int64             = 0,
@@ -99,8 +101,8 @@ struct ScheduledData: ExportableEntity {
         followUpId        : Int64             = 0,
         toTransAmount     : Double            = 0.0,
         dueDate           : String            = "",
-        repeatAuto        : RepeatAuto        = RepeatAuto.none,
-        repeatType        : RepeatType        = RepeatType.once,
+        repeatAuto        : RepeatAuto        = RepeatAuto.defaultValue,
+        repeatType        : RepeatType        = RepeatType.defaultValue,
         repeatNum         : Int               = 0,
         color             : Int64             = 0
     ) {
@@ -148,17 +150,17 @@ struct ScheduledFull: FullProtocol {
 extension ScheduledData {
     static let sampleData : [ScheduledData] = [
         ScheduledData(
-            id: 1, accountId: 1, payeeId: 1, transCode: Transcode.withdrawal,
+            id: 1, accountId: 1, payeeId: 1, transCode: TransactionType.withdrawal,
             transAmount: 10.01, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
         ScheduledData(
-            id: 2, accountId: 2, payeeId: 2, transCode: Transcode.deposit,
+            id: 2, accountId: 2, payeeId: 2, transCode: TransactionType.deposit,
             transAmount: 20.02, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),
         ScheduledData(
-            id: 3, accountId: 3, payeeId: 3, transCode: Transcode.transfer,
+            id: 3, accountId: 3, payeeId: 3, transCode: TransactionType.transfer,
             transAmount: 30.03, status: TransactionStatus.none, categId: 1,
             transDate: Date().ISO8601Format()
         ),

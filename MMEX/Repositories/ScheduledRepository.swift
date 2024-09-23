@@ -99,10 +99,10 @@ class ScheduledRepository: RepositoryProtocol {
           accountId         : row[col_accountId],
           toAccountId       : row[col_toAccountId] ?? 0,
           payeeId           : row[col_payeeId],
-          transCode         : Transcode(collateNoCase: row[col_transCode]) ?? Transcode.withdrawal,
+          transCode         : TransactionType(collateNoCase: row[col_transCode]),
           transAmount       : row[cast_transAmount],
           // TODO: case insersitive, convert either key or value
-          status            : TransactionStatus(rawValue: row[col_status] ?? "") ?? TransactionStatus.none,
+          status            : TransactionStatus(collateNoCase: row[col_status]),
           transactionNumber : row[col_transactionNumber] ?? "",
           notes             : row[col_notes] ?? "",
           categId           : row[col_categId] ?? 0,
@@ -110,8 +110,8 @@ class ScheduledRepository: RepositoryProtocol {
           followUpId        : row[col_followUpId] ?? 0,
           toTransAmount     : row[cast_toTransAmount] ?? 0.0,
           dueDate           : row[col_nextOccurrenceDate] ?? "",
-          repeatAuto        : RepeatAuto(rawValue: Int(row[col_repeats] ?? 0) / repeatBase) ?? RepeatAuto.none,
-          repeatType        : RepeatType(rawValue: Int(row[col_repeats] ?? 0) % repeatBase) ?? RepeatType.once,
+          repeatAuto        : RepeatAuto(rawValue: Int(row[col_repeats] ?? 0) / repeatBase) ?? RepeatAuto.defaultValue,
+          repeatType        : RepeatType(rawValue: Int(row[col_repeats] ?? 0) % repeatBase) ?? RepeatType.defaultValue,
           repeatNum         : Int(row[col_numOccurrences] ?? 0),
           color             : row[col_color] ?? 0
         )

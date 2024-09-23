@@ -70,14 +70,14 @@ class AssetRepository: RepositoryProtocol {
     static func selectData(_ row: SQLite.Row) -> AssetData {
         return AssetData(
             id         : row[col_id],
-            type       : AssetType(collateNoCase: row[col_type]) ?? AssetType.property,
-            status     : AssetStatus(collateNoCase: row[col_status]) ?? AssetStatus.open,
+            type       : AssetType(collateNoCase: row[col_type]),
+            status     : AssetStatus(collateNoCase: row[col_status]),
             name       : row[col_name],
             startDate  : row[col_startDate],
             currencyId : row[col_currencyId] ?? 0,
             value      : row[cast_value] ?? 0.0,
-            change     : AssetChange(collateNoCase: row[col_change]) ?? AssetChange.none,
-            changeMode : AssetChangeMode(collateNoCase: row[col_changeMode]) ?? AssetChangeMode.percentage,
+            change     : AssetChange(collateNoCase: row[col_change]),
+            changeMode : AssetChangeMode(collateNoCase: row[col_changeMode]),
             changeRate : row[cast_changeRate] ?? 0.0,
             notes      : row[col_notes] ?? ""
         )
