@@ -127,8 +127,6 @@ struct SettingsView: View {
         }
     }
     func loadAccounts() {
-        print("Loading payees in ManagementView...")
-
         let repo = DataManager(databaseURL: self.databaseURL).getAccountRepository()
 
         DispatchQueue.global(qos: .background).async {
