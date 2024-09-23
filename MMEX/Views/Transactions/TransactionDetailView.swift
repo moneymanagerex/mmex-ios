@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct TransactionDetailView: View {
-    @State var txn: Transaction
+    @State var txn: TransactionData
     let databaseURL: URL
     
-    @State private var editingTxn = Transaction()
+    @State private var editingTxn = TransactionData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
-    @Binding var payees: [Payee]
-    @Binding var categories: [Category]
-    @Binding var accounts: [Account]
+    @Binding var payees: [PayeeData]
+    @Binding var categories: [CategoryData]
+    @Binding var accounts: [AccountFull]
     
-    @State private var account: Account?
+    @State private var account: AccountFull?
     @State private var isExporting = false
 
     var body: some View {
@@ -46,7 +46,7 @@ struct TransactionDetailView: View {
 
             Section(header: Text("Account Name")) {
                 if let account = account {
-                    Text("\(account.name)")
+                    Text("\(account.data.name)")
                 } else {
                     Text("n/a")
                 }
@@ -147,7 +147,11 @@ struct TransactionDetailView: View {
 }
 
 #Preview {
-    TransactionDetailView(txn: Transaction.sampleData[0], databaseURL: URL(string: "path/to/database")!
-                          , payees: .constant(Payee.sampleData), categories: .constant(Category.sampleData)
-                          , accounts: .constant(Account.sampleData))
+    TransactionDetailView(
+        txn: TransactionData.sampleData[0],
+        databaseURL: URL(string: "path/to/database")!,
+        payees: .constant(PayeeData.sampleData),
+        categories: .constant(CategoryData.sampleData),
+        accounts: .constant(AccountFull.sampleFull)
+    )
 }

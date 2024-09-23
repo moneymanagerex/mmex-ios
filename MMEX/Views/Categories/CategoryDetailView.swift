@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CategoryDetailView: View {
-    @State var category: Category
+    @State var category: CategoryData
     let databaseURL: URL
     
-    @State private var editingCategory = Category()
+    @State private var editingCategory = CategoryData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
@@ -110,9 +110,15 @@ struct CategoryDetailView: View {
 }
 
 #Preview {
-    CategoryDetailView(category: Category.sampleData[0], databaseURL: URL(string: "path/to/database")!)
+    CategoryDetailView(
+        category: CategoryData.sampleData[0],
+        databaseURL: URL(string: "path/to/database")!
+    )
 }
 
 #Preview {
-    CategoryDetailView(category: Category.sampleData[1], databaseURL: URL(string: "path/to/database")!)
+    CategoryDetailView(
+        category: CategoryData.sampleData[1],
+        databaseURL: URL(string: "path/to/database")!
+    )
 }

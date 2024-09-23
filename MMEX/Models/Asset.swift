@@ -34,7 +34,7 @@ enum AssetChangeMode: String, EnumCollateNoCase {
     case linear     = "Linear"
 }
 
-struct Asset: ExportableEntity {
+struct AssetData: ExportableEntity {
     var id         : Int64
     var type       : AssetType
     var status     : AssetStatus
@@ -74,7 +74,7 @@ struct Asset: ExportableEntity {
     }
 }
 
-extension Asset: ModelProtocol {
+extension AssetData: DataProtocol {
     static let modelName = "Asset"
 
     func shortDesc() -> String {
@@ -82,14 +82,19 @@ extension Asset: ModelProtocol {
     }
 }
 
-extension Asset {
-    static let sampleData: [Asset] = [
-        Asset(
+struct AssetFull: FullProtocol {
+    var data: AssetData
+    var currency: CurrencyData?
+}
+
+extension AssetData {
+    static let sampleData: [AssetData] = [
+        AssetData(
             id: 1, type: AssetType.property, status: AssetStatus.open, name: "House",
             startDate: "2010-01-01", currencyId: 1, value: 100_000.0,
             change: AssetChange.none, notes: "Address"
         ),
-        Asset(
+        AssetData(
             id: 2, type: AssetType.automobile, status: AssetStatus.open, name: "Car",
             startDate: "2020-01-01", currencyId: 1, value: 10_000.0,
             change: AssetChange.depreciates,

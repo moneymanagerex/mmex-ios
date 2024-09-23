@@ -13,8 +13,8 @@ struct SettingsView: View {
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus: TransactionStatus = .none
 
-    @State private var currencies: [Currency] = []
-    @State private var accounts: [Account] = []
+    @State private var currencies: [CurrencyData] = []
+    @State private var accounts: [AccountFull] = []
     @State private var schemaVersion: Int32 = 19
     @State private var dateFormat: String = "%Y-%m-%d"
     @State private var baseCurrencyID: Int64 = 0
@@ -95,7 +95,7 @@ struct SettingsView: View {
                 Picker("Default Account", selection: $defaultAccountID) {
                     ForEach(accounts) { account in
                         HStack {
-                            Text(account.name)
+                            Text(account.data.name)
                             Spacer()
                             Text(account.currency?.symbol ?? "")
                         }

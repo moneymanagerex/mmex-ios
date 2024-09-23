@@ -9,10 +9,10 @@ import SwiftUI
 
 struct PayeeListView: View {
     let databaseURL: URL
-    @State private var payees: [Payee] = []
-    @State private var filteredPayees: [Payee] = [] // New: Filtered payees for search results
-    @State private var categories: [Category] = []
-    @State private var newPayee = Payee()
+    @State private var payees: [PayeeData] = []
+    @State private var filteredPayees: [PayeeData] = [] // New: Filtered payees for search results
+    @State private var categories: [CategoryData] = []
+    @State private var newPayee = PayeeData()
     @State private var isPresentingPayeeAddView = false
     @State private var searchQuery: String = "" // New: Search query
     
@@ -56,7 +56,7 @@ struct PayeeListView: View {
         .sheet(isPresented: $isPresentingPayeeAddView) {
             PayeeAddView(newPayee: $newPayee, isPresentingPayeeAddView: $isPresentingPayeeAddView, categories: $categories) { newPayee in
                 addPayee(payee: &newPayee)
-                newPayee = Payee()
+                newPayee = PayeeData()
             }
         }
     }
@@ -88,7 +88,7 @@ struct PayeeListView: View {
         }
     }
 
-    func addPayee(payee: inout Payee) {
+    func addPayee(payee: inout PayeeData) {
         // TODO
         if self.repository.insert(&payee) {
             self.payees.append(payee) // id is ready after repo call
@@ -109,5 +109,7 @@ struct PayeeListView: View {
 }
 
 #Preview {
-    PayeeListView(databaseURL: URL(string: "path/to/database")!)
+    PayeeListView(
+        databaseURL: URL(string: "path/to/database")!
+    )
 }

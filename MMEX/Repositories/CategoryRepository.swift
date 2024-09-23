@@ -8,7 +8,8 @@
 import SQLite
 
 class CategoryRepository: RepositoryProtocol {
-    typealias RepositoryItem = Category
+    typealias RepositoryData = CategoryData
+    typealias RepositoryFull = CategoryFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -41,8 +42,8 @@ class CategoryRepository: RepositoryProtocol {
         )
     }
 
-    static func selectResult(_ row: SQLite.Row) -> Category {
-        return Category(
+    static func selectData(_ row: SQLite.Row) -> CategoryData {
+        return CategoryData(
             id       : row[col_id],
             name     : row[col_name],
             active   : row[col_active] ?? 0 != 0,
@@ -50,7 +51,14 @@ class CategoryRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ category: Category) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> CategoryFull {
+        let full = CategoryFull(
+            data: Self.selectData(row)
+        )
+        return full
+    }
+
+    static func itemSetters(_ category: CategoryData) -> [SQLite.Setter] {
         return [
             col_name     <- category.name,
             col_active   <- category.active ? 1 : 0,
@@ -60,8 +68,8 @@ class CategoryRepository: RepositoryProtocol {
 }
 
 extension CategoryRepository {
-    // load all categories
-    func load() -> [Category] {
-        return select(table: Self.repositoryTable)
+    // load data from all categories
+    func load() -> [CategoryData] {
+        return selectData(from: Self.repositoryTable)
     }
 }

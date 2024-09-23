@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct Payee: ExportableEntity {
+struct PayeeData: ExportableEntity {
     var id         : Int64
     var name       : String
     var categoryId : Int64
@@ -41,7 +41,7 @@ struct Payee: ExportableEntity {
     }
 }
 
-extension Payee: ModelProtocol {
+extension PayeeData: DataProtocol {
     static let modelName = "Payee"
 
     func shortDesc() -> String {
@@ -49,13 +49,18 @@ extension Payee: ModelProtocol {
     }
 }
 
-extension Payee {
-    static let sampleData: [Payee] = [
-        Payee(
+struct PayeeFull: FullProtocol {
+    var data: PayeeData
+    var category: CategoryFull?
+}
+
+extension PayeeData {
+    static let sampleData: [PayeeData] = [
+        PayeeData(
             id: 1, name: "Payee A", categoryId: 1, number: "123456",
             website: "www.payeeA.com", notes: "Frequent payee"
         ),
-        Payee(
+        PayeeData(
             id: 2, name: "Payee B", categoryId: 2, number: "654321",
             website: "www.payeeB.com", notes: "Rare payee", active: false
         ),

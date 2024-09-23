@@ -9,13 +9,13 @@ import SwiftUI
 
 struct TransactionListView: View {
     let databaseURL: URL
-    @State private var txns: [Transaction] = []
-    @State private var newTxn = Transaction()
+    @State private var txns: [TransactionData] = []
+    @State private var newTxn = TransactionData()
     @State private var isPresentingTransactionAddView = false
     
-    @State private var payees: [Payee] = []
-    @State private var categories: [Category] = []
-    @State private var accounts: [Account] = []
+    @State private var payees: [PayeeData] = []
+    @State private var categories: [CategoryData] = []
+    @State private var accounts: [AccountFull] = []
 
     private var repository: TransactionRepository
     
@@ -84,7 +84,7 @@ struct TransactionListView: View {
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(newTxn: $newTxn, isPresentingTransactionAddView: $isPresentingTransactionAddView, payees: $payees, categories: $categories, accounts: $accounts) { newTxn in
                 addTransaction(txn: &newTxn)
-                newTxn = Transaction()
+                newTxn = TransactionData()
             }
         }
     }
@@ -151,7 +151,7 @@ struct TransactionListView: View {
         return categories.first { $0.id == categoryID }?.name ?? "Unknown"
     }
     
-    func addTransaction(txn: inout Transaction) {
+    func addTransaction(txn: inout TransactionData) {
         // TODO
         if self.repository.insert(&txn) {
             self.txns.append(txn) // id is ready after repo call

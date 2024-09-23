@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct TransactionAddView2: View {    
-    @State var newTxn: Transaction = Transaction()
+    @State var newTxn: TransactionData = TransactionData()
     let databaseURL: URL
     @Binding var selectedTab: Int // Bind to the selected tab
 
     // Dismiss environment action
     @Environment(\.dismiss) var dismiss
     
-    @State private var payees: [Payee] = []
-    @State private var categories: [Category] = []
-    @State private var accounts: [Account] = []
+    @State private var payees: [PayeeData] = []
+    @State private var categories: [CategoryData] = []
+    @State private var accounts: [AccountFull] = []
     
     var body: some View {
         NavigationStack {
@@ -27,7 +27,7 @@ struct TransactionAddView2: View {
                         Button("Dismiss") {
                             dismiss()
                             selectedTab = 0
-                            newTxn = Transaction()
+                            newTxn = TransactionData()
                         }
                     }
                     ToolbarItem(placement: .confirmationAction) {
@@ -35,7 +35,7 @@ struct TransactionAddView2: View {
                             addTransaction(txn: &newTxn)
                             dismiss()
                             selectedTab = 0
-                            newTxn = Transaction()
+                            newTxn = TransactionData()
                         }
                     }
                 }
@@ -57,7 +57,7 @@ struct TransactionAddView2: View {
         }
     }
 
-    func addTransaction(txn: inout Transaction) {
+    func addTransaction(txn: inout TransactionData) {
         let repository = DataManager(databaseURL: self.databaseURL).getTransactionRepository()
         if repository.insert(&txn) {
             // id is ready after repo call

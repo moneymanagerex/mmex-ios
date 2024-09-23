@@ -9,7 +9,8 @@ import Foundation
 import SQLite
 
 class InfotableRepository: RepositoryProtocol {
-    typealias RepositoryItem = Infotable
+    typealias RepositoryData = InfotableData
+    typealias RepositoryFull = InfotableFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -38,15 +39,22 @@ class InfotableRepository: RepositoryProtocol {
         )
     }
 
-    static func selectResult(_ row: SQLite.Row) -> Infotable {
-        return Infotable(
+    static func selectData(_ row: SQLite.Row) -> InfotableData {
+        return InfotableData(
             id    : row[col_id],
             name  : row[col_name],
             value : row[col_value]
         )
     }
 
-    static func itemSetters(_ info: Infotable) -> [SQLite.Setter] {
+    func selectFull(_ row: SQLite.Row) -> InfotableFull {
+        let full = InfotableFull(
+            data: Self.selectData(row)
+        )
+        return full
+    }
+
+    static func itemSetters(_ info: InfotableData) -> [SQLite.Setter] {
         return [
             col_name  <- info.name,
             col_value <- info.value
@@ -55,17 +63,17 @@ class InfotableRepository: RepositoryProtocol {
 }
 
 extension InfotableRepository {
-    // load all keys
-    func load() -> [Infotable] {
-        return select(table: Self.repositoryTable)
+    // load data from all keys
+    func load() -> [InfotableData] {
+        return selectData(from: Self.repositoryTable)
     }
 
     // load specific keys into a dictionary
-    func load(for keys: [InfoKey]) -> [InfoKey: Infotable] {
+    func load(for keys: [InfoKey]) -> [InfoKey: InfotableData] {
         if db == nil { return [:] }
-        var results: [InfoKey: Infotable] = [:]
+        var results: [InfoKey: InfotableData] = [:]
         for key in keys {
-            if let info = pluck(
+            if let info = pluckData(
                 table: Self.repositoryTable
                     .filter(Self.col_name == key.rawValue),
                 key: key.rawValue
@@ -80,7 +88,7 @@ extension InfotableRepository {
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
         if db == nil { return nil }
-        if let info = pluck(
+        if let info = pluckData(
             table: Self.repositoryTable
                 .filter(Self.col_name == key),
             key: key
@@ -108,7 +116,7 @@ extension InfotableRepository {
             return
         }
 
-        if var info = pluck(
+        if var info = pluckData(
             table: Self.repositoryTable.filter(Self.col_name == key),
             key: key
         ) {
@@ -117,7 +125,7 @@ extension InfotableRepository {
             _ = update(info)
         } else {
             // Insert new setting
-            var info = Infotable(id: 0, name: key, value: stringValue)
+            var info = InfotableData(id: 0, name: key, value: stringValue)
             _ = insert(&info)
         }
     }
