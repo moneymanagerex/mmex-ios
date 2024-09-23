@@ -10,7 +10,7 @@ import SwiftUI
 struct AboutView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("About This App")
+            Text("About MMEX4iOS")
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
@@ -19,7 +19,7 @@ struct AboutView: View {
             Text("Credits")
                 .font(.headline)
             
-            Text("Developed by XYZ Developer")
+            Text("Developed by Lisheng Guan, George Ef")
             Text("Special thanks to all open-source contributors!")
             
             Spacer()
