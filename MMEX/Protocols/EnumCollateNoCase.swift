@@ -10,19 +10,17 @@ import Foundation
 protocol EnumCollateNoCase: RawRepresentable, CaseIterable, Identifiable, Codable
     where RawValue == String
 {
-    init?(collateNoCase name: String?)
-    var id: String { get }
-    var name: String { get }
+    static var defaultValue: Self { get }
 }
 
 extension EnumCollateNoCase {
-    init?(collateNoCase name: String?) {
-        guard let name else { return nil }
+    init(collateNoCase name: String?) {
+        guard let name else { self = Self.defaultValue; return }
         switch Self.allCases.first(where: {
             $0.rawValue.caseInsensitiveCompare(name) == .orderedSame
         } ) {
         case .some(let x): self = x
-        case .none: return nil
+        default: self = Self.defaultValue
         }
     }
 

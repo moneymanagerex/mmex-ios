@@ -11,7 +11,7 @@ struct SettingsView: View {
     let databaseURL: URL
     
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
-    @AppStorage("defaultStatus") private var defaultStatus: TransactionStatus = .none
+    @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
 
     @State private var currencies: [CurrencyData] = []
     @State private var accounts: [AccountFull] = []
