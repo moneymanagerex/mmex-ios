@@ -24,8 +24,8 @@ struct CategoryListView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(categories) { category in
-                    NavigationLink(destination: CategoryDetailView(category: category, databaseURL: databaseURL)) {
+                ForEach($categories) { $category in
+                    NavigationLink(destination: CategoryDetailView(category: $category, databaseURL: databaseURL)) {
                         HStack {
                             Text(category.name)
                             Spacer()

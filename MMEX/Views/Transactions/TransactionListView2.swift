@@ -11,27 +11,22 @@ struct TransactionListView2: View {
     let databaseURL: URL
     @ObservedObject var viewModel: InfotableViewModel
 
-    @State private var txns: [TransactionData] = []
-    @State private var txns_per_day: [String: [TransactionData]] = [:]
     @State private var payees: [PayeeData] = []
     @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
     @State private var categories: [CategoryData] = []
     @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
     @State private var accounts: [AccountFull] = []
     @State private var accountDict: [Int64: AccountFull] = [: ] // for lookup
-
-    private var repository: TransactionRepository
     
     init(databaseURL: URL) {
         self.databaseURL = databaseURL
-        self.repository = DataManager(databaseURL: databaseURL).getTransactionRepository()
         self.viewModel = InfotableViewModel(databaseURL: databaseURL) // TODO shared instance with Settings?
     }
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(txns_per_day.keys.sorted(by: >), id: \.self) { day in
+                ForEach(viewModel.txns_per_day.keys.sorted(by: >), id: \.self) { day in
                     Section(
                         header: HStack {
                             Text(humanReadableDate(day))
@@ -41,7 +36,7 @@ struct TransactionListView2: View {
                                 .font(.subheadline)
                         }
                     ) {
-                        ForEach(txns_per_day[day]!, id: \.id) { txn in
+                        ForEach(viewModel.txns_per_day[day]!, id: \.id) { txn in
                             NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
                                 HStack {
                                     // Left column (Category Icon or Category Name)
@@ -99,36 +94,42 @@ struct TransactionListView2: View {
                     }
                 }
             }
+            .toolbar {
+                // Search box on the top-left corner
+                ToolbarItem(placement: .navigationBarLeading) {
+                    HStack {
+                        Image(systemName: "magnifyingglass") // Search icon
+                        // TODO search by notes
+                    }
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Picker("Select Account", selection: $viewModel.defaultAccountId) {
+                        ForEach(self.accounts) { account in
+                            HStack{
+                                // TODO SFSymbol
+                                if let accountSymbol = AccountData.accountTypeToSFSymbol[account.data.type.name] {
+                                    Image(systemName: accountSymbol)
+                                        .frame(width: 5, alignment: .leading) // Adjust width as needed
+                                        .font(.system(size: 16, weight: .bold)) // Customize size and weight
+                                        .foregroundColor(.blue) // Customize icon style
+                                }
+                                Text(account.data.name)
+                            }.tag(account.id)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
+                }
+            }
         }
         .onAppear {
-            loadTransactions()
+            viewModel.loadTransactions()
             loadPayees()
             loadCategories()
             loadAccounts()
         }
     }
-    
-    func loadTransactions() {
-        DispatchQueue.global(qos: .background).async {
-            let loadTransactions = repository.loadRecent()
-            
-            DispatchQueue.main.async {
-                self.txns = loadTransactions
-                self.txns_per_day = Dictionary(grouping: txns) { txn in
-                    // Extract the date portion (ignoring the time) from ISO-8601 string
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
-                    
-                    if let date = formatter.date(from: txn.transDate) {
-                        formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
-                        return formatter.string(from: date)
-                    }
-                    return txn.transDate // If parsing fails, return original string
-                }
-            }
-        }
-    }
-    
+
     func loadPayees() {
         let repository = DataManager(databaseURL: self.databaseURL).getPayeeRepository()
 
@@ -187,7 +188,7 @@ struct TransactionListView2: View {
     }
 
     func calculateTotal(for day: String) -> String {
-        let transactions = txns_per_day[day] ?? []
+        let transactions = viewModel.txns_per_day[day] ?? []
         // TODO convert and format via viewModel.baseCurrency
         let totalAmount = transactions.reduce(0.0) { $0 + $1.transAmount }
         return String(format: "%.2f", totalAmount)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CategoryDetailView: View {
-    @State var category: CategoryData
+    @Binding var category: CategoryData
     let databaseURL: URL
     
     @State private var editingCategory = CategoryData()
@@ -111,14 +111,14 @@ struct CategoryDetailView: View {
 
 #Preview {
     CategoryDetailView(
-        category: CategoryData.sampleData[0],
+        category: .constant(CategoryData.sampleData[0]),
         databaseURL: URL(string: "path/to/database")!
     )
 }
 
 #Preview {
     CategoryDetailView(
-        category: CategoryData.sampleData[1],
+        category: .constant(CategoryData.sampleData[1]),
         databaseURL: URL(string: "path/to/database")!
     )
 }

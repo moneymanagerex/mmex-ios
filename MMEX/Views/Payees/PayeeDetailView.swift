@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct PayeeDetailView: View {
-    @State var payee: PayeeData
+    @Binding var payee: PayeeData
     let databaseURL: URL
     @Binding var categories: [CategoryData]
     
@@ -159,7 +159,7 @@ struct PayeeDetailView: View {
 
 #Preview {
     PayeeDetailView(
-        payee: PayeeData.sampleData[0],
+        payee: .constant(PayeeData.sampleData[0]),
         databaseURL: URL(string: "path/to/database")!,
         categories: .constant(CategoryData.sampleData)
     )
@@ -167,7 +167,7 @@ struct PayeeDetailView: View {
 
 #Preview {
     PayeeDetailView(
-        payee: PayeeData.sampleData[1],
+        payee: .constant(PayeeData.sampleData[1]),
         databaseURL: URL(string: "path/to/database")!,
         categories: .constant(CategoryData.sampleData)
     )

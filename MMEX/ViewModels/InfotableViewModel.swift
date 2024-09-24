@@ -23,17 +23,22 @@ class InfotableViewModel: ObservableObject {
     //
     private var dataManager: DataManager
     private var infotableRepo: InfotableRepository
+    private var transactionRepo: TransactionRepository
     private var accountRepo: AccountRepository
     private var currencyRepo: CurrencyRepository
 
     @Published var currencies: [CurrencyData] = []
     @Published var accounts: [AccountFull] = []
 
+    @Published var txns: [TransactionData] = []
+    @Published var txns_per_day: [String: [TransactionData]] = [:]
+
     init(databaseURL: URL) {
         self.databaseURL = databaseURL
         self.dataManager = DataManager(databaseURL: databaseURL)
 
         self.infotableRepo = self.dataManager.getInfotableRepository()
+        self.transactionRepo = self.dataManager.getTransactionRepository()
         self.accountRepo = self.dataManager.getAccountRepository()
         self.currencyRepo = self.dataManager.getCurrencyRepository()
         loadInfo()
@@ -62,6 +67,7 @@ class InfotableViewModel: ObservableObject {
             .dropFirst() // Ignore the first emitted value
             .sink { [weak self] accountId in
                 self?.saveDefaultAccount(accountId)
+                self?.loadTransactions()
             }
             .store(in: &cancellables)
 
@@ -104,6 +110,27 @@ class InfotableViewModel: ObservableObject {
 
                 if (loadedCurrencies.count == 1) {
                     self.baseCurrencyId = loadedCurrencies.first!.id
+                }
+            }
+        }
+    }
+
+    func loadTransactions() {
+        DispatchQueue.global(qos: .background).async {
+            let loadTransactions = self.transactionRepo.loadRecent(accountId: self.defaultAccountId)
+
+            DispatchQueue.main.async {
+                self.txns = loadTransactions
+                self.txns_per_day = Dictionary(grouping: self.txns) { txn in
+                    // Extract the date portion (ignoring the time) from ISO-8601 string
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
+
+                    if let date = formatter.date(from: txn.transDate) {
+                        formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
+                        return formatter.string(from: date)
+                    }
+                    return txn.transDate // If parsing fails, return original string
                 }
             }
         }

@@ -26,8 +26,8 @@ struct PayeeListView: View {
     
     var body: some View {
         NavigationStack {
-            List(filteredPayees) { payee in // Use filteredPayees instead of payees
-                NavigationLink(destination: PayeeDetailView(payee: payee, databaseURL: databaseURL, categories: $categories)) {
+            List($filteredPayees) { $payee in // Use filteredPayees instead of payees
+                NavigationLink(destination: PayeeDetailView(payee: $payee, databaseURL: databaseURL, categories: $categories)) {
                     HStack {
                         Text(payee.name)
                         Spacer()
