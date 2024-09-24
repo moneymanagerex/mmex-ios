@@ -151,9 +151,9 @@ extension TransactionRepository {
             filter = filter && (Self.col_transDate >= startDate.ISO8601Format())
         }
 
-        if let endDate {
-            filter = filter && (Self.col_transDate <= endDate.ISO8601Format())
-        }
+        //if let endDate {
+        //    filter = filter && (Self.col_transDate <= endDate.ISO8601Format())
+        //}
 
         if let accountId {
             filter = filter && ((Self.col_accountId == accountId) || (Self.col_toAccountId == accountId))
