@@ -179,6 +179,6 @@ struct TabContentView: View {
     }
 }
 
-// #Preview {
-//    ContentView()
-// }
+#Preview {
+    ContentView()
+}
