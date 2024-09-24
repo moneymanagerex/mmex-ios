@@ -10,7 +10,6 @@ import SQLite
 
 class InfotableRepository: RepositoryProtocol {
     typealias RepositoryData = InfotableData
-    typealias RepositoryFull = InfotableFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -18,7 +17,7 @@ class InfotableRepository: RepositoryProtocol {
     }
 
     static let repositoryName = "INFOTABLE_V1"
-    static let repositoryTable = SQLite.Table(repositoryName)
+    static let table = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
@@ -47,13 +46,6 @@ class InfotableRepository: RepositoryProtocol {
         )
     }
 
-    func selectFull(_ row: SQLite.Row) -> InfotableFull {
-        let full = InfotableFull(
-            data: Self.selectData(row)
-        )
-        return full
-    }
-
     static func itemSetters(_ info: InfotableData) -> [SQLite.Setter] {
         return [
             col_name  <- info.name,
@@ -63,9 +55,9 @@ class InfotableRepository: RepositoryProtocol {
 }
 
 extension InfotableRepository {
-    // load data from all keys
+    // load all keys
     func load() -> [InfotableData] {
-        return selectData(from: Self.repositoryTable)
+        return select(from: Self.table)
     }
 
     // load specific keys into a dictionary
@@ -73,9 +65,8 @@ extension InfotableRepository {
         if db == nil { return [:] }
         var results: [InfoKey: InfotableData] = [:]
         for key in keys {
-            if let info = pluckData(
-                table: Self.repositoryTable
-                    .filter(Self.col_name == key.rawValue),
+            if let info = pluck(
+                from: Self.table.filter(Self.col_name == key.rawValue),
                 key: key.rawValue
             ) {
                 results[key] = info
@@ -88,9 +79,8 @@ extension InfotableRepository {
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
         if db == nil { return nil }
-        if let info = pluckData(
-            table: Self.repositoryTable
-                .filter(Self.col_name == key),
+        if let info = pluck(
+            from: Self.table.filter(Self.col_name == key),
             key: key
         ) {
             if type == String.self {
@@ -116,8 +106,8 @@ extension InfotableRepository {
             return
         }
 
-        if var info = pluckData(
-            table: Self.repositoryTable.filter(Self.col_name == key),
+        if var info = pluck(
+            from: Self.table.filter(Self.col_name == key),
             key: key
         ) {
             // Update existing setting

@@ -67,74 +67,35 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
 }
 
 struct ScheduledData: ExportableEntity {
-    var id                : Int64
-    var accountId         : Int64
-    var toAccountId       : Int64
-    var payeeId           : Int64
-    var transCode         : TransactionType
-    var transAmount       : Double
-    var status            : TransactionStatus
-    var transactionNumber : String
-    var notes             : String
-    var categId           : Int64
-    var transDate         : String
-    var followUpId        : Int64
-    var toTransAmount     : Double
-    var dueDate           : String
-    var repeatAuto        : RepeatAuto
-    var repeatType        : RepeatType
-    var repeatNum         : Int
-    var color             : Int64
-
-    init(
-        id                : Int64             = 0,
-        accountId         : Int64             = 0,
-        toAccountId       : Int64             = 0,
-        payeeId           : Int64             = 0,
-        transCode         : TransactionType   = TransactionType.defaultValue,
-        transAmount       : Double            = 0.0,
-        status            : TransactionStatus = TransactionStatus.defaultValue,
-        transactionNumber : String            = "",
-        notes             : String            = "",
-        categId           : Int64             = 0,
-        transDate         : String            = "",
-        followUpId        : Int64             = 0,
-        toTransAmount     : Double            = 0.0,
-        dueDate           : String            = "",
-        repeatAuto        : RepeatAuto        = RepeatAuto.defaultValue,
-        repeatType        : RepeatType        = RepeatType.defaultValue,
-        repeatNum         : Int               = 0,
-        color             : Int64             = 0
-    ) {
-        self.id                = id
-        self.accountId         = accountId
-        self.toAccountId       = toAccountId
-        self.payeeId           = payeeId
-        self.transCode         = transCode
-        self.transAmount       = transAmount
-        self.status            = status
-        self.transactionNumber = transactionNumber
-        self.notes             = notes
-        self.categId           = categId
-        self.transDate         = transDate
-        self.followUpId        = followUpId
-        self.toTransAmount     = toTransAmount
-        self.dueDate           = dueDate
-        self.repeatAuto        = repeatAuto
-        self.repeatType        = repeatType
-        self.repeatNum         = repeatNum
-        self.color             = color
-    }
+    var id                : Int64             = 0
+    var accountId         : Int64             = 0
+    var toAccountId       : Int64             = 0
+    var payeeId           : Int64             = 0
+    var transCode         : TransactionType   = TransactionType.defaultValue
+    var transAmount       : Double            = 0.0
+    var status            : TransactionStatus = TransactionStatus.defaultValue
+    var transactionNumber : String            = ""
+    var notes             : String            = ""
+    var categId           : Int64             = 0
+    var transDate         : String            = ""
+    var followUpId        : Int64             = 0
+    var toTransAmount     : Double            = 0.0
+    var dueDate           : String            = ""
+    var repeatAuto        : RepeatAuto        = RepeatAuto.defaultValue
+    var repeatType        : RepeatType        = RepeatType.defaultValue
+    var repeatNum         : Int               = 0
+    var color             : Int64             = 0
 }
 
 extension ScheduledData: DataProtocol {
-    static let modelName = "Scheduled"
+    static let dataName = "Scheduled"
 
     func shortDesc() -> String {
         "\(self.id)"
     }
 }
 
+/* TODO: move to ViewModels
 struct ScheduledFull: FullProtocol {
     var data: ScheduledData
     var accountName       : String?
@@ -146,6 +107,7 @@ struct ScheduledFull: FullProtocol {
   //var tags              : [TagData]
   //var fields            : [(FieldData, String?)]
 }
+*/
 
 extension ScheduledData {
     static let sampleData : [ScheduledData] = [

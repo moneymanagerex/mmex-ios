@@ -9,58 +9,26 @@ import Foundation
 import SQLite
 
 struct CurrencyData: ExportableEntity {
-    var id             : Int64
-    var name           : String
-    var prefixSymbol   : String
-    var suffixSymbol   : String
-    var decimalPoint   : String
-    var groupSeparator : String
-    var unitName       : String
-    var centName       : String
-    var scale          : Int
-    var baseConvRate   : Double
-    var symbol         : String
-    var type           : String
-
-    init(
-        id             : Int64  = 0,
-        name           : String = "",
-        prefixSymbol   : String = "",
-        suffixSymbol   : String = "",
-        decimalPoint   : String = "",
-        groupSeparator : String = "",
-        unitName       : String = "",
-        centName       : String = "",
-        scale          : Int    = 0,
-        baseConvRate   : Double = 0.0,
-        symbol         : String = "",
-        type           : String = ""
-    ) {
-        self.id             = id
-        self.name           = name
-        self.prefixSymbol   = prefixSymbol
-        self.suffixSymbol   = suffixSymbol
-        self.decimalPoint   = decimalPoint
-        self.groupSeparator = groupSeparator
-        self.unitName       = unitName
-        self.centName       = centName
-        self.scale          = scale
-        self.baseConvRate   = baseConvRate
-        self.symbol         = symbol
-        self.type           = type
-    }
+    var id             : Int64  = 0
+    var name           : String = ""
+    var prefixSymbol   : String = ""
+    var suffixSymbol   : String = ""
+    var decimalPoint   : String = ""
+    var groupSeparator : String = ""
+    var unitName       : String = ""
+    var centName       : String = ""
+    var scale          : Int    = 0
+    var baseConvRate   : Double = 0.0
+    var symbol         : String = ""
+    var type           : String = ""
 }
 
 extension CurrencyData: DataProtocol {
-    static let modelName = "Currency"
+    static let dataName = "Currency"
 
     func shortDesc() -> String {
         "\(self.name)"
     }
-}
-
-struct CurrencyFull: FullProtocol {
-    var data: CurrencyData
 }
 
 extension CurrencyData {

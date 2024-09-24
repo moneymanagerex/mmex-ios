@@ -28,7 +28,7 @@ class InfotableViewModel: ObservableObject {
     private var currencyRepo: CurrencyRepository
 
     @Published var currencies: [CurrencyData] = []
-    @Published var accounts: [AccountFull] = []
+    @Published var accounts: [AccountWithCurrency] = []
 
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
@@ -51,12 +51,18 @@ class InfotableViewModel: ObservableObject {
     func loadInfo() {
         if let baseCurrencyId = infotableRepo.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
             self.baseCurrencyId = baseCurrencyId
-            baseCurrency = currencyRepo.pluckData(table: CurrencyRepository.repositoryTable.filter(CurrencyRepository.col_id == baseCurrencyId), key: InfoKey.baseCurrencyID.id)
+            baseCurrency = currencyRepo.pluck(
+                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId),
+                key: InfoKey.baseCurrencyID.id
+            )
         }
 
         if let defaultAccountId = infotableRepo.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
             self.defaultAccountId = defaultAccountId
-            defaultAccount = accountRepo.pluckData(table: AccountRepository.repositoryTable.filter(AccountRepository.col_id == defaultAccountId), key: InfoKey.defaultAccountID.id)
+            defaultAccount = accountRepo.pluck(
+                from: AccountRepository.table.filter(AccountRepository.col_id == defaultAccountId),
+                key: InfoKey.defaultAccountID.id
+            )
         }
     }
 
@@ -96,7 +102,7 @@ class InfotableViewModel: ObservableObject {
                 self.accounts = loadedAccounts
 
                 if (loadedAccounts.count == 1) {
-                    self.defaultAccountId = loadedAccounts.first!.id
+                    self.defaultAccountId = loadedAccounts.first!.data.id
                 }
             }
         }

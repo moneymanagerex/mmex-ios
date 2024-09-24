@@ -50,68 +50,33 @@ enum TransactionStatus: String, EnumCollateNoCase {
 }
 
 struct TransactionData: ExportableEntity {
-    var id                : Int64
-    var accountId         : Int64
-    var toAccountId       : Int64
-    var payeeId           : Int64
-    var transCode         : TransactionType
-    var transAmount       : Double
-    var status            : TransactionStatus
-    var transactionNumber : String
-    var notes             : String
-    var categId           : Int64
-    var transDate         : String
-    var lastUpdatedTime   : String
-    var deletedTime       : String
-    var followUpId        : Int64
-    var toTransAmount     : Double
-    var color             : Int64
-
-    init(
-        id                : Int64             = 0,
-        accountId         : Int64             = 0,
-        toAccountId       : Int64             = 0,
-        payeeId           : Int64             = 0,
-        transCode         : TransactionType   = TransactionType.defaultValue,
-        transAmount       : Double            = 0.0,
-        status            : TransactionStatus = TransactionStatus.defaultValue,
-        transactionNumber : String            = "",
-        notes             : String            = "",
-        categId           : Int64             = 0,
-        transDate         : String            = "",
-        lastUpdatedTime   : String            = "",
-        deletedTime       : String            = "",
-        followUpId        : Int64             = 0,
-        toTransAmount     : Double            = 0.0,
-        color             : Int64             = 0
-    ) {
-        self.id                = id
-        self.accountId         = accountId
-        self.toAccountId       = toAccountId
-        self.payeeId           = payeeId
-        self.transCode         = transCode
-        self.transAmount       = transAmount
-        self.status            = status
-        self.transactionNumber = transactionNumber
-        self.notes             = notes
-        self.categId           = categId
-        self.transDate         = transDate
-        self.lastUpdatedTime   = lastUpdatedTime
-        self.deletedTime       = deletedTime
-        self.followUpId        = followUpId
-        self.toTransAmount     = toTransAmount
-        self.color             = color
-    }
+    var id                : Int64             = 0
+    var accountId         : Int64             = 0
+    var toAccountId       : Int64             = 0
+    var payeeId           : Int64             = 0
+    var transCode         : TransactionType   = TransactionType.defaultValue
+    var transAmount       : Double            = 0.0
+    var status            : TransactionStatus = TransactionStatus.defaultValue
+    var transactionNumber : String            = ""
+    var notes             : String            = ""
+    var categId           : Int64             = 0
+    var transDate         : String            = ""
+    var lastUpdatedTime   : String            = ""
+    var deletedTime       : String            = ""
+    var followUpId        : Int64             = 0
+    var toTransAmount     : Double            = 0.0
+    var color             : Int64             = 0
 }
 
 extension TransactionData: DataProtocol {
-    static let modelName = "Transaction"
+    static let dataName = "Transaction"
 
     func shortDesc() -> String {
         "\(self.id)"
     }
 }
 
+/* TODO: move to ViewModels
 struct TransactionFull: FullProtocol {
     var data: TransactionData
     var accountName       : String?
@@ -125,6 +90,7 @@ struct TransactionFull: FullProtocol {
   //var tags              : [TagData]
   //var fields            : [(FieldData, String?)]
 }
+*/
 
 extension TransactionData {
     var day: String {

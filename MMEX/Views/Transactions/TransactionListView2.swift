@@ -15,8 +15,8 @@ struct TransactionListView2: View {
     @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
     @State private var categories: [CategoryData] = []
     @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
-    @State private var accounts: [AccountFull] = []
-    @State private var accountDict: [Int64: AccountFull] = [: ] // for lookup
+    @State private var accounts: [AccountWithCurrency] = []
+    @State private var accountDict: [Int64: AccountWithCurrency] = [: ] // for lookup
     
     init(databaseURL: URL) {
         self.databaseURL = databaseURL

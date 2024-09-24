@@ -10,7 +10,6 @@ import SQLite
 
 class PayeeRepository: RepositoryProtocol {
     typealias RepositoryData = PayeeData
-    typealias RepositoryFull = PayeeFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -18,7 +17,7 @@ class PayeeRepository: RepositoryProtocol {
     }
 
     static let repositoryName = "PAYEE_V1"
-    static let repositoryTable = SQLite.Table(repositoryName)
+    static let table = SQLite.Table(repositoryName)
 
     // column    | type    | other
     // ----------+---------+------
@@ -67,13 +66,6 @@ class PayeeRepository: RepositoryProtocol {
         )
     }
 
-    func selectFull(_ row: SQLite.Row) -> PayeeFull {
-        let full = PayeeFull(
-            data: Self.selectData(row)
-        )
-        return full
-    }
-
     static func itemSetters(_ payee: PayeeData) -> [SQLite.Setter] {
         return [
             col_name       <- payee.name,
@@ -88,8 +80,9 @@ class PayeeRepository: RepositoryProtocol {
 }
 
 extension PayeeRepository {
+    // load all payees
     func load() -> [PayeeData] {
-        return selectData(from: Self.repositoryTable
+        return select(from: Self.table
             .order(Self.col_active.desc, Self.col_name)
         )
     }

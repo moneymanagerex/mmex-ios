@@ -10,7 +10,6 @@ import SQLite
 
 class AssetRepository: RepositoryProtocol {
     typealias RepositoryData = AssetData
-    typealias RepositoryFull = AssetFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -18,7 +17,7 @@ class AssetRepository: RepositoryProtocol {
     }
 
     static let repositoryName = "ASSETS_V1"
-    static let repositoryTable = SQLite.Table(repositoryName)
+    static let table = SQLite.Table(repositoryName)
 
     // column          | type    | other
     // ----------------+---------+------
@@ -83,13 +82,6 @@ class AssetRepository: RepositoryProtocol {
         )
     }
 
-    func selectFull(_ row: SQLite.Row) -> AssetFull {
-        let full = AssetFull(
-            data: Self.selectData(row)
-        )
-        return full
-    }
-
     static func itemSetters(_ asset: AssetData) -> [SQLite.Setter] {
         return [
             col_type       <- asset.type.name,
@@ -107,8 +99,9 @@ class AssetRepository: RepositoryProtocol {
 }
 
 extension AssetRepository {
+    // load all assets
     func load() -> [AssetData] {
-        return selectData(from: Self.repositoryTable
+        return select(from: Self.table
             .order(Self.col_type, Self.col_status.desc, Self.col_name)
         )
     }

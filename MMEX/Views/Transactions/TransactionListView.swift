@@ -15,7 +15,7 @@ struct TransactionListView: View {
     
     @State private var payees: [PayeeData] = []
     @State private var categories: [CategoryData] = []
-    @State private var accounts: [AccountFull] = []
+    @State private var accounts: [AccountWithCurrency] = []
 
     private var repository: TransactionRepository
     

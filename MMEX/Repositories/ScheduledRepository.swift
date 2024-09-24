@@ -10,21 +10,14 @@ import SQLite
 
 class ScheduledRepository: RepositoryProtocol {
     typealias RepositoryData = ScheduledData
-    typealias RepositoryFull = ScheduledFull
 
     let db: Connection?
-    var accountDict  : [Int64: (String, CurrencyData?)] = [:]
-    var categoryDict : [Int64: String] = [:]
-    var payeeDict    : [Int64: String] = [:]
-  //var tagDict      : [Int64: String] = [:]
-  //var fieldDict    : [Int64: FieldData] = [:]
-
     init(db: Connection?) {
         self.db = db
     }
 
     static let repositoryName = "BILLSDEPOSITS_V1"
-    static let repositoryTable = SQLite.Table(repositoryName)
+    static let table = SQLite.Table(repositoryName)
 
     // column             | type    | other
     // -------------------+---------+------
@@ -117,13 +110,6 @@ class ScheduledRepository: RepositoryProtocol {
         )
     }
 
-    func selectFull(_ row: SQLite.Row) -> ScheduledFull {
-        let full = ScheduledFull(
-            data: Self.selectData(row)
-        )
-        return full
-    }
-
     static func itemSetters(_ sched: ScheduledData) -> [SQLite.Setter] {
         let repeats = sched.repeatAuto.rawValue * repeatBase + sched.repeatType.rawValue
         return [
@@ -148,13 +134,8 @@ class ScheduledRepository: RepositoryProtocol {
 }
 
 extension ScheduledRepository {
-    // load data from all scheduled transactions
+    // load all scheduled transactions
     func load() -> [ScheduledData] {
-        return selectData(from: Self.repositoryTable)
-    }
-
-    // load full data from all scheduled transactions
-    func loadFull(from table: SQLite.Table) -> [ScheduledFull] {
-        return selectFull(from: Self.repositoryTable)
+        return select(from: Self.table)
     }
 }
