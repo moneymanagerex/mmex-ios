@@ -144,22 +144,17 @@ extension TransactionRepository {
         startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date()),
         endDate: Date? = Date()
     ) -> [TransactionData] {
-
-        var filter = Expression<Bool?>(value: true)
-
-        if let startDate {
-            filter = filter && (Self.col_transDate >= startDate.ISO8601Format())
-        }
-
-        //if let endDate {
-        //    filter = filter && (Self.col_transDate <= endDate.ISO8601Format())
-        //}
+        var table = Self.repositoryTable
 
         if let accountId {
-            filter = filter && ((Self.col_accountId == accountId) || (Self.col_toAccountId == accountId))
+            table = table.filter(Self.col_accountId == accountId || Self.col_toAccountId == accountId)
         }
-
-        let table = Self.repositoryTable.filter(filter)
+        if let startDate {
+            table = table.filter(Self.col_transDate >= startDate.ISO8601Format())
+        }
+        //if let endDate {
+        //    table = table.filter(Self.col_transDate <= endDate.ISO8601Format())
+        //}
 
         return selectData(from: table)
     }
