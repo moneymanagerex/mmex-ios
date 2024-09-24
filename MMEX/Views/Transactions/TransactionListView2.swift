@@ -17,12 +17,9 @@ struct TransactionListView2: View {
     @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
     @State private var accounts: [AccountFull] = []
     @State private var accountDict: [Int64: AccountFull] = [: ] // for lookup
-
-    private var repository: TransactionRepository
     
     init(databaseURL: URL) {
         self.databaseURL = databaseURL
-        self.repository = DataManager(databaseURL: databaseURL).getTransactionRepository()
         self.viewModel = InfotableViewModel(databaseURL: databaseURL) // TODO shared instance with Settings?
     }
     
