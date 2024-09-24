@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TransactionListView2: View {
     let databaseURL: URL
+    @ObservedObject var viewModel: InfotableViewModel
+
     @State private var txns: [TransactionData] = []
     @State private var txns_per_day: [String: [TransactionData]] = [:]
     @State private var payees: [PayeeData] = []
@@ -23,6 +25,7 @@ struct TransactionListView2: View {
     init(databaseURL: URL) {
         self.databaseURL = databaseURL
         self.repository = DataManager(databaseURL: databaseURL).getTransactionRepository()
+        self.viewModel = InfotableViewModel(databaseURL: databaseURL) // TODO shared instance with Settings?
     }
     
     var body: some View {
@@ -69,11 +72,20 @@ struct TransactionListView2: View {
 
                                     if let currency = self.accountDict[txn.accountId]?.currency {
                                         // Right column (Transaction Amount)
-                                        //  Text(String(format: "%.2f", txn.transAmount ?? 0.0))
-                                        Text(currency.format(amount: txn.transAmount))
-                                            .frame(alignment: .trailing) // Ensure it's aligned to the right
-                                            .font(.system(size: 16, weight: .bold))
-                                            .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                                        VStack {
+                                            // amount in account currency
+                                            Text(currency.format(amount: txn.transAmount))
+                                                .frame(alignment: .trailing) // Ensure it's aligned to the right
+                                                .font(.system(size: 16, weight: .bold))
+                                                .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                                            // amount in base currency
+                                            if let baseCurrency = viewModel.baseCurrency {
+                                                Text(baseCurrency.format(amount: txn.transAmount * currency.baseConvRate))
+                                                    .frame(alignment: .trailing) // Ensure it's aligned to the right
+                                                    .font(.system(size: 14, weight: .medium))
+                                                    .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                                            }
+                                        }
                                     } else {
                                         // Right column (Transaction Amount)
                                         Text(String(format: "%.2f", txn.transAmount))
@@ -176,6 +188,7 @@ struct TransactionListView2: View {
 
     func calculateTotal(for day: String) -> String {
         let transactions = txns_per_day[day] ?? []
+        // TODO convert and format via viewModel.baseCurrency
         let totalAmount = transactions.reduce(0.0) { $0 + $1.transAmount }
         return String(format: "%.2f", totalAmount)
     }

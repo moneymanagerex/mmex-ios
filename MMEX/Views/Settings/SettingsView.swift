@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct SettingsView: View {
-    let databaseURL: URL
+    @ObservedObject var viewModel: InfotableViewModel
     
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
 
-    @State private var currencies: [CurrencyData] = []
-    @State private var accounts: [AccountFull] = []
     @State private var schemaVersion: Int32 = 19
     @State private var dateFormat: String = "%Y-%m-%d"
-    @State private var baseCurrencyID: Int64 = 0
-    @State private var defaultAccountID: Int64 = 0
 
     var body: some View {
         List {
@@ -64,7 +60,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Database File")
                     Spacer()
-                    Text(databaseURL.lastPathComponent)
+                    Text(viewModel.databaseURL.lastPathComponent)
                 }
                 HStack {
                     Text("Schema Version")
@@ -76,8 +72,8 @@ struct SettingsView: View {
                     Spacer()
                     Text("\(dateFormat)")
                 }
-                Picker("Base Currency", selection: $baseCurrencyID) {
-                    ForEach(currencies) { currency in
+                Picker("Base Currency", selection: $viewModel.baseCurrencyId) {
+                    ForEach(viewModel.currencies) { currency in
                         HStack {
                             Text(currency.symbol)
                             Spacer()
@@ -87,13 +83,9 @@ struct SettingsView: View {
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
-                .onChange(of: baseCurrencyID) { baseCurrencyID in
-                    let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
-                    repository.setValue(baseCurrencyID, for: InfoKey.baseCurrencyID.id)
-                }
  
-                Picker("Default Account", selection: $defaultAccountID) {
-                    ForEach(accounts) { account in
+                Picker("Default Account", selection: $viewModel.defaultAccountId) {
+                    ForEach(viewModel.accounts) { account in
                         HStack {
                             Text(account.data.name)
                             Spacer()
@@ -103,56 +95,10 @@ struct SettingsView: View {
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
-                .onChange(of: defaultAccountID) { defaultAccountID in
-                    let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
-                    repository.setValue(defaultAccountID, for: InfoKey.defaultAccountID.id)
-                }
             }
         }
         .onAppear() {
-            loadAccounts()
-            loadCurrencies()
-            let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
-            schemaVersion = repository.db?.userVersion ?? 0
-            if let storedDateFormat = repository.getValue(for: InfoKey.dateFormat.id, as: String.self) {
-                dateFormat = storedDateFormat
-            }
-            if let storedBaseCurrency = repository.getValue(for:InfoKey.baseCurrencyID.id, as: Int64.self) {
-                baseCurrencyID = storedBaseCurrency
-            }
-            
-            if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
-                defaultAccountID = storedDefaultAccount
-            }
-        }
-    }
-    func loadAccounts() {
-        let repo = DataManager(databaseURL: self.databaseURL).getAccountRepository()
-
-        DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repo.loadWithCurrency()
-            DispatchQueue.main.async {
-                self.accounts = loadedAccounts
-                
-                if (loadedAccounts.count == 1) {
-                    defaultAccountID = loadedAccounts.first!.id
-                }
-            }
-        }
-    }
-    
-    func loadCurrencies() {
-        let repo = DataManager(databaseURL: self.databaseURL).getCurrencyRepository()
-
-        DispatchQueue.global(qos: .background).async {
-            let loadedCurrencies = repo.load()
-            DispatchQueue.main.async {
-                self.currencies = loadedCurrencies
-                
-                if (loadedCurrencies.count == 1) {
-                    baseCurrencyID = loadedCurrencies.first!.id
-                }
-            }
+            // TODO
         }
     }
 }
@@ -165,5 +111,5 @@ enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
 }
 
 #Preview {
-    SettingsView(databaseURL: URL(string: "path/to/database")!)
+    SettingsView(viewModel: InfotableViewModel(databaseURL: URL(string: "path/to/database")!))
 }
