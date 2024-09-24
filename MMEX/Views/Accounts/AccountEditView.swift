@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountEditView: View {
-    @Binding var account: AccountFull
+    @Binding var account: AccountWithCurrency
     @Binding var currencies: [CurrencyData] // Bind to the list of available currencies
 
     var body: some View {
@@ -68,14 +68,14 @@ struct AccountEditView: View {
 
 #Preview {
     AccountEditView(
-        account: .constant(AccountFull.sampleFull[0]),
+        account: .constant(AccountData.sampleDataWithCurrency[0]),
         currencies: .constant(CurrencyData.sampleData)
     )
 }
 
 #Preview {
     AccountEditView(
-        account: .constant(AccountFull.sampleFull[1]),
+        account: .constant(AccountData.sampleDataWithCurrency[1]),
         currencies: .constant(CurrencyData.sampleData)
     )
 }

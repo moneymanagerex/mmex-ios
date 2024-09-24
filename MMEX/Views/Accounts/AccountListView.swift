@@ -9,8 +9,8 @@ import SwiftUI
 struct AccountListView: View {
     let databaseURL: URL
     @State private var currencies: [CurrencyData] = []
-    @State private var accounts_by_type: [String:[AccountFull]] = [:]
-    @State private var newAccount = AccountFull()
+    @State private var accounts_by_type: [String:[AccountWithCurrency]] = [:]
+    @State private var newAccount = AccountWithCurrency()
     @State private var isPresentingAccountAddView = false
     @State private var expandedSections: [String: Bool] = [:] // Tracks the expanded/collapsed state
 
@@ -90,7 +90,7 @@ struct AccountListView: View {
         .sheet(isPresented: $isPresentingAccountAddView) {
             AccountAddView(newAccount: $newAccount, isPresentingAccountAddView: $isPresentingAccountAddView, currencies: $currencies) { newAccount in
                 addAccount(account: &newAccount)
-                newAccount = AccountFull()
+                newAccount = AccountWithCurrency()
             }
         }
     }
@@ -128,7 +128,7 @@ struct AccountListView: View {
         }
     }
 
-    func addAccount(account: inout AccountFull) {
+    func addAccount(account: inout AccountWithCurrency) {
         if repository.insert(&(account.data)) {
             // self.accounts.append(account)
             self.loadAccounts()

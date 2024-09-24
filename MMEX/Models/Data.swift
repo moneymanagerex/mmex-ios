@@ -1,11 +1,18 @@
 //
-//  EnumCollateNoCase.swift
+//  ModelProtocal.swift
 //  MMEX
 //
 //  Created 2024-09-22 by George Ef (george.a.ef@gmail.com)
 //
 
 import Foundation
+
+protocol DataProtocol {
+    static var dataName: String { get }
+
+    var id: Int64 { get set }
+    func shortDesc() -> String
+}
 
 protocol EnumCollateNoCase: RawRepresentable, CaseIterable, Identifiable, Codable
     where RawValue == String

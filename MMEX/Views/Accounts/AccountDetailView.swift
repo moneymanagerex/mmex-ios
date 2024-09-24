@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct AccountDetailView: View {
-    @State var account: AccountFull
+    @State var account: AccountWithCurrency
     let databaseURL: URL
     @Binding var currencies: [CurrencyData] // Bind to the list of available currencies
 
-    @State private var editingAccount = AccountFull()
+    @State private var editingAccount = AccountWithCurrency()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode
     
@@ -127,14 +127,14 @@ struct AccountDetailView: View {
 
 #Preview {
     AccountDetailView(
-        account: AccountFull.sampleFull[0],
+        account: AccountData.sampleDataWithCurrency[0],
         databaseURL: URL(string: "path/to/database")!,
         currencies: .constant(CurrencyData.sampleData))
 }
 
 #Preview {
     AccountDetailView(
-        account: AccountFull.sampleFull[1],
+        account: AccountData.sampleDataWithCurrency[1],
         databaseURL: URL(string: "path/to/database")!,
         currencies: .constant(CurrencyData.sampleData)
     )

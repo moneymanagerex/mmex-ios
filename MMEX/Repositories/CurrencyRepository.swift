@@ -10,7 +10,6 @@ import SQLite
 
 class CurrencyRepository: RepositoryProtocol {
     typealias RepositoryData = CurrencyData
-    typealias RepositoryFull = CurrencyFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -18,7 +17,7 @@ class CurrencyRepository: RepositoryProtocol {
     }
 
     static let repositoryName = "CURRENCYFORMATS_V1"
-    static let repositoryTable = SQLite.Table(repositoryName)
+    static let table = SQLite.Table(repositoryName)
 
     // column          | type    | other
     // ----------------+---------+------
@@ -51,7 +50,6 @@ class CurrencyRepository: RepositoryProtocol {
 
     // cast NUMERIC to REAL
     static let cast_baseConversionRate = cast(col_baseConversionRate) as SQLite.Expression<Double?>
-
 
     static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
@@ -87,13 +85,6 @@ class CurrencyRepository: RepositoryProtocol {
         )
     }
 
-    func selectFull(_ row: SQLite.Row) -> CurrencyFull {
-        let full = CurrencyFull(
-            data: Self.selectData(row)
-        )
-        return full
-    }
-
     static func itemSetters(_ currency: CurrencyData) -> [SQLite.Setter] {
         return [
             col_name               <- currency.name,
@@ -112,9 +103,9 @@ class CurrencyRepository: RepositoryProtocol {
 }
 
 extension CurrencyRepository {
-    // load data from all currencies
+    // load all currencies
     func load() -> [CurrencyData] {
-        return selectData(from: Self.repositoryTable
+        return select(from: Self.table
             .order(Self.col_name)
         )
     }

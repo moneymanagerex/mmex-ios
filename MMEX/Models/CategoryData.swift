@@ -9,22 +9,10 @@ import Foundation
 import SQLite
 
 struct CategoryData: ExportableEntity {
-    var id       : Int64
-    var name     : String
-    var active   : Bool
-    var parentId : Int64
-    
-    init(
-        id       : Int64  = 0,
-        name     : String = "",
-        active   : Bool   = false,
-        parentId : Int64  = 0
-    ) {
-        self.id       = id
-        self.name     = name
-        self.active   = active
-        self.parentId = parentId
-    }
+    var id       : Int64  = 0
+    var name     : String = ""
+    var active   : Bool   = false
+    var parentId : Int64  = 0
 }
 
 extension CategoryData {
@@ -34,15 +22,11 @@ extension CategoryData {
 }
 
 extension CategoryData: DataProtocol {
-    static let modelName = "Category"
+    static let dataName = "Category"
 
     func shortDesc() -> String {
         "\(self.name), \(self.id)"
     }
-}
-
-struct CategoryFull: FullProtocol {
-    var data:  CategoryData
 }
 
 extension CategoryData {

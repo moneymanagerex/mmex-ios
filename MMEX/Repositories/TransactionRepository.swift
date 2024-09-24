@@ -10,7 +10,6 @@ import SQLite
 
 class TransactionRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionData
-    typealias RepositoryFull = TransactionFull
 
     let db: Connection?
     init(db: Connection?) {
@@ -18,7 +17,7 @@ class TransactionRepository: RepositoryProtocol {
     }
 
     static let repositoryName = "CHECKINGACCOUNT_V1"
-    static let repositoryTable = SQLite.Table(repositoryName)
+    static let table = SQLite.Table(repositoryName)
 
     // column            | type    | other
     // ------------------+---------+------
@@ -104,13 +103,6 @@ class TransactionRepository: RepositoryProtocol {
         )
     }
 
-    func selectFull(_ row: SQLite.Row) -> TransactionFull {
-        let full = TransactionFull(
-            data: Self.selectData(row)
-        )
-        return full
-    }
-
     static func itemSetters(_ txn: TransactionData) -> [SQLite.Setter] {
         return [
             col_accountId         <- txn.accountId,
@@ -133,9 +125,9 @@ class TransactionRepository: RepositoryProtocol {
 }
 
 extension TransactionRepository {
-    // load data from all transactions
+    // load all transactions
     func load() -> [TransactionData] {
-        return selectData(from: Self.repositoryTable)
+        return select(from: Self.table)
     }
 
     // load recent transactions
@@ -144,7 +136,7 @@ extension TransactionRepository {
         startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date()),
         endDate: Date? = Date()
     ) -> [TransactionData] {
-        var table = Self.repositoryTable
+        var table = Self.table
 
         if let accountId {
             table = table.filter(Self.col_accountId == accountId || Self.col_toAccountId == accountId)
@@ -156,6 +148,6 @@ extension TransactionRepository {
         //    table = table.filter(Self.col_transDate <= endDate.ISO8601Format())
         //}
 
-        return selectData(from: table)
+        return select(from: table)
     }
 }

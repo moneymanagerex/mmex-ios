@@ -10,14 +10,13 @@ import SQLite
 
 class StockRepository: RepositoryProtocol {
     typealias RepositoryData = StockData
-    typealias RepositoryFull = StockFull
 
     let db: Connection?
     init(db: Connection?) {
         self.db = db
     }
     static let repositoryName = "STOCK_V1"
-    static let repositoryTable = SQLite.Table(repositoryName)
+    static let table = SQLite.Table(repositoryName)
 
     // column        | type    | other
     // --------------+---------+------
@@ -85,13 +84,6 @@ class StockRepository: RepositoryProtocol {
         )
     }
 
-    func selectFull(_ row: SQLite.Row) -> StockFull {
-        let full = StockFull(
-            data: Self.selectData(row)
-        )
-        return full
-    }
-
     static func itemSetters(_ stock: StockData) -> [SQLite.Setter] {
         return [
             col_accountId     <- stock.accountId,
@@ -109,8 +101,9 @@ class StockRepository: RepositoryProtocol {
 }
 
 extension StockRepository {
+    // load all stocks
     func load() -> [StockData] {
-        return selectData(from: Self.repositoryTable
+        return select(from: Self.table
             .order(Self.col_name)
         )
     }

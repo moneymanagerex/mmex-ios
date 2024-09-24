@@ -17,9 +17,9 @@ struct TransactionDetailView: View {
     
     @Binding var payees: [PayeeData]
     @Binding var categories: [CategoryData]
-    @Binding var accounts: [AccountFull]
+    @Binding var accounts: [AccountWithCurrency]
     
-    @State private var account: AccountFull?
+    @State private var account: AccountWithCurrency?
     @State private var isExporting = false
 
     var body: some View {
@@ -123,7 +123,7 @@ struct TransactionDetailView: View {
     }
     
     func loadAccount() {
-        account = accounts.first { $0.id == txn.accountId}
+        account = accounts.first { $0.data.id == txn.accountId}
     }
     func saveChanges() {
         let repository = DataManager(databaseURL: databaseURL).getTransactionRepository() // pass URL here
@@ -152,6 +152,6 @@ struct TransactionDetailView: View {
         databaseURL: URL(string: "path/to/database")!,
         payees: .constant(PayeeData.sampleData),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountFull.sampleFull)
+        accounts: .constant(AccountData.sampleDataWithCurrency)
     )
 }

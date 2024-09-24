@@ -39,56 +39,25 @@ enum AssetChangeMode: String, EnumCollateNoCase {
 }
 
 struct AssetData: ExportableEntity {
-    var id         : Int64
-    var type       : AssetType
-    var status     : AssetStatus
-    var name       : String
-    var startDate  : String
-    var currencyId : Int64
-    var value      : Double
-    var change     : AssetChange
-    var changeMode : AssetChangeMode
-    var changeRate : Double
-    var notes      : String
-
-    init(
-        id         : Int64            = 0,
-        type       : AssetType        = AssetType.defaultValue,
-        status     : AssetStatus      = AssetStatus.defaultValue,
-        name       : String           = "",
-        startDate  : String           = "",
-        currencyId : Int64            = 0,
-        value      : Double           = 0.0,
-        change     : AssetChange      = AssetChange.defaultValue,
-        changeMode : AssetChangeMode  = AssetChangeMode.defaultValue,
-        changeRate : Double           = 0.0,
-        notes      : String           = ""
-    ) {
-        self.id         = id
-        self.type       = type
-        self.status     = status
-        self.name       = name
-        self.startDate  = startDate
-        self.currencyId = currencyId
-        self.value      = value
-        self.change     = change
-        self.changeMode = changeMode
-        self.changeRate = changeRate
-        self.notes      = notes
-    }
+    var id         : Int64            = 0
+    var type       : AssetType        = AssetType.defaultValue
+    var status     : AssetStatus      = AssetStatus.defaultValue
+    var name       : String           = ""
+    var startDate  : String           = ""
+    var currencyId : Int64            = 0
+    var value      : Double           = 0.0
+    var change     : AssetChange      = AssetChange.defaultValue
+    var changeMode : AssetChangeMode  = AssetChangeMode.defaultValue
+    var changeRate : Double           = 0.0
+    var notes      : String           = ""
 }
 
 extension AssetData: DataProtocol {
-    static let modelName = "Asset"
+    static let dataName = "Asset"
 
     func shortDesc() -> String {
         "\(self.name), \(self.id)"
     }
-}
-
-struct AssetFull: FullProtocol {
-    var data: AssetData
-    var currency: CurrencyData?
 }
 
 extension AssetData {

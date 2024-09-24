@@ -10,16 +10,14 @@ import SQLite
 
 class AccountRepository: RepositoryProtocol {
     typealias RepositoryData = AccountData
-    typealias RepositoryFull = AccountFull
 
     let db: Connection?
-    var currencyDict: [Int64: CurrencyData] = [:]
     init(db: Connection?) {
         self.db = db
     }
 
     static let repositoryName = "ACCOUNTLIST_V1"
-    static let repositoryTable = SQLite.Table(repositoryName)
+    static let table = SQLite.Table(repositoryName)
 
     // column          | type    | other
     // ----------------+---------+------
@@ -127,14 +125,6 @@ class AccountRepository: RepositoryProtocol {
         )
     }
 
-    func selectFull(_ row: SQLite.Row) -> AccountFull {
-        var full = AccountFull(
-            data: Self.selectData(row)
-        )
-        full.currency = currencyDict[full.data.currencyId]
-        return full
-    }
-
     static func itemSetters(_ account: AccountData) -> [SQLite.Setter] {
         return [
             col_name            <- account.name,
@@ -162,22 +152,41 @@ class AccountRepository: RepositoryProtocol {
 }
 
 extension AccountRepository {
+    // load all accounts
     func load() -> [AccountData] {
-        return selectData(from: Self.repositoryTable
+        return select(from: Self.table
             .order(Self.col_name)
         )
     }
+}
 
-    func loadWithCurrency() -> [AccountFull] {
+// TODO: move to ViewModels
+extension AccountRepository {
+    // load all accounts and their currency
+    func loadWithCurrency() -> [AccountWithCurrency] {
         // TODO via join?
         guard let db else {return []}
         
         // Create a lookup dictionary for currencies by currencyId
         let currencies = CurrencyRepository(db: db).load();
-        currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
-        
-        return selectFull(from: Self.repositoryTable
-            .order(Self.col_name)
-        )
+        let currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
+
+        do {
+            var data: [AccountWithCurrency] = []
+            for row in try db.prepare(Self.selectQuery(from: Self.table
+                .order(Self.col_name)
+            )) {
+                let account = Self.selectData(row)
+                data.append(AccountWithCurrency(
+                    data: account,
+                    currency: currencyDict[account.currencyId]
+                ) )
+            }
+            print("Successfull select from \(Self.repositoryName): \(data.count)")
+            return data
+        } catch {
+            print("Failed select from \(Self.repositoryName): \(error)")
+            return []
+        }
     }
 }
