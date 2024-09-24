@@ -75,7 +75,7 @@ struct ContentView: View {
 
                         // Settings Tab
                         NavigationView {
-                            SettingsView(databaseURL: url) // Payees, Accounts, Currency
+                            SettingsView(viewModel: InfotableViewModel(databaseURL: url)) // Payees, Accounts, Currency
                                 .navigationBarTitle("Settings", displayMode: .inline)
                         }
                         .tabItem {
@@ -169,7 +169,7 @@ struct TabContentView: View {
                 ManagementView(databaseURL: databaseURL, isDocumentPickerPresented: $isDocumentPickerPresented)
                     .navigationBarTitle("Management", displayMode: .inline)
             case 4:
-                SettingsView(databaseURL: databaseURL)
+                SettingsView(viewModel: InfotableViewModel(databaseURL: databaseURL))
                     .navigationBarTitle("Settings", displayMode: .inline)
             default:
                 EmptyView()
