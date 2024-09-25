@@ -107,13 +107,10 @@ struct TransactionListView2: View {
                     Picker("Select Account", selection: $viewModel.defaultAccountId) {
                         ForEach(self.accounts) { account in
                             HStack{
-                                // TODO SFSymbol
-                                if let accountSymbol = AccountData.accountTypeToSFSymbol[account.data.type.name] {
-                                    Image(systemName: accountSymbol)
-                                        .frame(width: 5, alignment: .leading) // Adjust width as needed
-                                        .font(.system(size: 16, weight: .bold)) // Customize size and weight
-                                        .foregroundColor(.blue) // Customize icon style
-                                }
+                                Image(systemName: account.data.type.symbolName)
+                                    .frame(width: 5, alignment: .leading) // Adjust width as needed
+                                    .font(.system(size: 16, weight: .bold)) // Customize size and weight
+                                    .foregroundColor(.blue) // Customize icon style
                                 Text(account.data.name)
                             }.tag(account.id)
                         }

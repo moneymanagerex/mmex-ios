@@ -24,6 +24,28 @@ enum AccountType: String, EnumCollateNoCase {
     case asset      = "Asset"
     case shares     = "Shares"
     static let defaultValue = Self.checking
+    
+    // Utility to fetch associated SF Symbol for each account type
+    var symbolName: String {
+        switch self {
+        case .cash:
+            return "dollarsign.circle.fill"
+        case .checking:
+            return "banknote.fill"
+        case .creditCard:
+            return "creditcard.fill"
+        case .loan:
+            return "building.columns.fill"
+        case .term:
+            return "calendar.circle.fill"
+        case .investment:
+            return "chart.bar.fill"
+        case .asset:
+            return "house.fill"
+        case .shares:
+            return "person.3.fill"
+        }
+    }
 }
 
 struct AccountData: ExportableEntity {
@@ -56,16 +78,6 @@ extension AccountData: DataProtocol {
     func shortDesc() -> String {
         "\(self.name)"
     }
-}
-
-extension AccountData {
-    static let accountTypeToSFSymbol: [String: String] = [
-        "Cash"        : "dollarsign.circle.fill",
-        "Checking"    : "banknote.fill",
-        "Credit Card" : "creditcard.fill",
-        "Loan"        : "building.columns.fill",
-        "Term"        : "calendar.circle.fill",
-    ]
 }
 
 extension AccountData {

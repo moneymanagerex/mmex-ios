@@ -97,7 +97,7 @@ struct TransactionEditView: View {
                 // Transaction status picker
                 Picker("Transaction Status", selection: $txn.status) {
                     ForEach(TransactionStatus.allCases) { status in
-                        Text(status.fullName).tag(status)
+                        Text(status.id).tag(status)
                     }
                 }
             }
