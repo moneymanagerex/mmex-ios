@@ -298,6 +298,19 @@ extension Repository {
             }
         }
 
+        var transactionSplitMap: [Int64: Int64] = [:]
+        do {
+            let repo = TransactionSplitRepository(db: db)
+            repo.deleteAll()
+            for var data in TransactionSplitData.sampleData {
+                let id = data.id
+                data.transId = transactionMap[data.transId] ?? data.transId
+                data.categId = categoryMap[data.categId]    ?? data.categId
+                repo.insert(&data)
+                transactionSplitMap[id] = data.id
+            }
+        }
+
         var scheduledMap: [Int64: Int64] = [:]
         do {
             let repo = ScheduledRepository(db: db)
@@ -310,6 +323,19 @@ extension Repository {
                 data.categId     = categoryMap[data.categId]    ?? data.categId
                 repo.insert(&data)
                 scheduledMap[id] = data.id
+            }
+        }
+
+        var scheduledSplitMap: [Int64: Int64] = [:]
+        do {
+            let repo = ScheduledSplitRepository(db: db)
+            repo.deleteAll()
+            for var data in ScheduledSplitData.sampleData {
+                let id = data.id
+                data.schedId = scheduledMap[data.schedId] ?? data.schedId
+                data.categId = categoryMap[data.categId]  ?? data.categId
+                repo.insert(&data)
+                scheduledSplitMap[id] = data.id
             }
         }
 
