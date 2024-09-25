@@ -350,6 +350,27 @@ extension Repository {
             }
         }
 
+        var attachmentMap: [Int64: Int64] = [:]
+        do {
+            let repo = AttachmentRepository(db: db)
+            repo.deleteAll()
+            for var data in AttachmentData.sampleData {
+                let id = data.id
+                data.refId = switch data.refType {
+                case .transaction      : transactionMap[data.refId]      ?? data.refId
+                case .stock            : stockMap[data.refId]            ?? data.refId
+                case .asset            : assetMap[data.refId]            ?? data.refId
+                case .account          : accountMap[data.refId]          ?? data.refId
+                case .scheduled        : scheduledMap[data.refId]        ?? data.refId
+                case .payee            : payeeMap[data.refId]            ?? data.refId
+                case .transactionSplit : transactionSplitMap[data.refId] ?? data.refId
+                case .scheduledSplit   : scheduledSplitMap[data.refId]   ?? data.refId
+                }
+                repo.insert(&data)
+                attachmentMap[id] = data.id
+            }
+        }
+
         var budgetTableMap: [Int64: Int64] = [:]
         do {
             let repo = BudgetTableRepository(db: db)

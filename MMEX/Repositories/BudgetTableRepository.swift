@@ -58,7 +58,7 @@ class BudgetTableRepository: RepositoryProtocol {
             id      : row[col_id],
             yearId  : row[col_yearId] ?? -1,
             categId : row[col_categId] ?? -1,
-            period  : Period(collateNoCase: row[col_period]),
+            period  : BudgetPeriod(collateNoCase: row[col_period]),
             amount  : row[cast_amount],
             notes   : row[col_notes] ?? "",
             active  : row[col_active] ?? 0 != 0
