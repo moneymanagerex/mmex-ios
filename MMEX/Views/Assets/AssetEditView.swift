@@ -70,7 +70,6 @@ struct AssetEditView: View {
                     TextField("Notes", text: $asset.notes)
                 }
             }
-            .navigationTitle("Edit Asset")
         }
     }
 }

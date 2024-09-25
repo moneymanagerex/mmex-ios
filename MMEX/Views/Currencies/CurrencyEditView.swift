@@ -37,7 +37,6 @@ struct CurrencyEditView: View {
                 TextField("Currency Type", text: $currency.type)
             }
         }
-        .navigationTitle("Edit Currency")
     }
 }
 
