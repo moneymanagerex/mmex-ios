@@ -109,4 +109,20 @@ extension CurrencyRepository {
             .order(Self.col_name)
         )
     }
+
+    // load currency of an account
+    func pluck(for account: AccountData) -> CurrencyData? {
+        return pluck(
+            from: Self.table.filter(Self.col_id == account.currencyId),
+            key: "\(account.currencyId)"
+        )
+    }
+
+    // load currency of an asset
+    func pluck(for asset: AssetData) -> CurrencyData? {
+        return pluck(
+            from: Self.table.filter(Self.col_id == asset.currencyId),
+            key: "\(asset.currencyId)"
+        )
+    }
 }
