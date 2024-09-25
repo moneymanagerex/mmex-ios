@@ -15,6 +15,7 @@
 		929EF66B2CA03AF90051A3E6 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66A2CA03AF90051A3E6 /* Data.swift */; };
 		929EF66D2CA0BA5E0051A3E6 /* ScheduledData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */; };
 		929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */; };
+		929EF6712CA3676B0051A3E6 /* MMEXDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */; };
 		A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE22C9323A5004696C7 /* CategoryEditView.swift */; };
 		A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */; };
 		A3363EE72C93249D004696C7 /* CategoryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE62C93249D004696C7 /* CategoryAddView.swift */; };
@@ -83,6 +84,7 @@
 		929EF66A2CA03AF90051A3E6 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledData.swift; sourceTree = "<group>"; };
 		929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledRepository.swift; sourceTree = "<group>"; };
+		929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MMEXDocument.swift; sourceTree = "<group>"; };
 		A3363EE22C9323A5004696C7 /* CategoryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditView.swift; sourceTree = "<group>"; };
 		A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailView.swift; sourceTree = "<group>"; };
 		A3363EE62C93249D004696C7 /* CategoryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAddView.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
 				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
 				A3C1425E2C8DE70300D3CEC0 /* DatabaseManager.swift */,
+				929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */,
 				A3C1422E2C89751600D3CEC0 /* Assets.xcassets */,
 				A3C142302C89751600D3CEC0 /* Preview Content */,
 			);
@@ -474,6 +477,7 @@
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
 				A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */,
 				A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */,
+				929EF6712CA3676B0051A3E6 /* MMEXDocument.swift in Sources */,
 				929EF6692CA034770051A3E6 /* Repository.swift in Sources */,
 				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
 				A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */,

@@ -15,6 +15,7 @@ protocol RepositoryProtocol {
 
     static var repositoryName: String { get }
     static var table: SQLite.Table { get }
+    static var columns: [(String, String, String)] { get }
     static func selectQuery(from table: SQLite.Table) -> SQLite.Table
     static func selectData(_ row: SQLite.Row) -> RepositoryData
     static var col_id: SQLite.Expression<Int64> { get }
@@ -22,6 +23,32 @@ protocol RepositoryProtocol {
 }
 
 extension RepositoryProtocol {
+    func create() {
+        guard let db else { return }
+        var query: String = "CREATE TABLE \(Self.repositoryName)("
+        var comma = false
+        for (name, type, other) in Self.columns {
+            if comma { query.append(", ") }
+            var space = false
+            if !name.isEmpty {
+                query.append("\(name) \(type)")
+                space = true
+            }
+            if !other.isEmpty {
+                if space { query.append(" ") }
+                query.append("\(other)")
+            }
+            comma = true
+        }
+        query.append(")")
+        print("Executing query: \(query)")
+        do {
+            try db.execute(query)
+        } catch {
+            print("Failed to create table \(Self.repositoryName): \(error)")
+        }
+    }
+
     func pluck(from table: SQLite.Table, key: String) -> RepositoryData? {
         guard let db else { return nil }
         do {

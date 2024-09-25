@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var isDocumentPickerPresented = false
+    @State private var isNewDocumentPickerPresented = false
     @State private var selectedTab = 0
     @State private var selectedFileURL: URL?
     @State private var isPresentingTransactionAddView = false
@@ -91,8 +92,13 @@ struct ContentView: View {
                     }
                 }
             } else {
-                Button("Open Database") {
-                    isDocumentPickerPresented = true
+                VStack(spacing: 20) {
+                    Button("Open Database") {
+                        isDocumentPickerPresented = true
+                    }
+                    Button("New Database") {
+                        isNewDocumentPickerPresented = true
+                    }
                 }
             }
         }
@@ -117,6 +123,20 @@ struct ContentView: View {
                 }
             case .failure(let error):
                 print("Failed to pick a document: \(error.localizedDescription)")
+            }
+        }
+        .fileExporter(
+            isPresented: $isNewDocumentPickerPresented,
+            document: MMEXDocument(),
+            contentType: .mmb,
+            defaultFilename: "Untitled.mmb"
+        ) { result in
+            switch result {
+            case .success(let url):
+                print("Successfully created new document: \(url)")
+                MMEXDocument.create(at: url)
+            case .failure(let error):
+                print("Failed to create a new document: \(error.localizedDescription)")
             }
         }
     }

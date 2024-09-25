@@ -18,32 +18,31 @@ class AccountRepository: RepositoryProtocol {
 
     static let repositoryName = "ACCOUNTLIST_V1"
     static let table = SQLite.Table(repositoryName)
+    static let columns = [ // (column, type, other)
+        ("ACCOUNTID",       "INTEGER", "PRIMARY KEY"),
+        ("ACCOUNTNAME",     "TEXT",    "NOT NULL COLLATE NOCASE UNIQUE"),
+        ("ACCOUNTTYPE",     "TEXT",    "NOT NULL"), // Cash, Checking, ...
+        ("ACCOUNTNUM",      "TEXT",    ""),
+        ("STATUS",          "TEXT",    "NOT NULL"), // Open, Closed
+        ("NOTES",           "TEXT",    ""),
+        ("HELDAT",          "TEXT",    ""),
+        ("WEBSITE",         "TEXT",    ""),
+        ("CONTACTINFO",     "TEXT",    ""),
+        ("ACCESSINFO",      "TEXT",    ""),
+        ("INITIALDATE",     "TEXT",    ""),
+        ("INITIALBAL",      "NUMERIC", ""),
+        ("FAVORITEACCT",    "TEXT",    "NOT NULL"),
+        ("CURRENCYID",      "INTEGER", "NOT NULL"),
+        ("STATEMENTLOCKED", "INTEGER", ""),
+        ("STATEMENTDATE",   "TEXT",    ""),
+        ("MINIMUMBALANCE",  "NUMERIC", ""),
+        ("CREDITLIMIT",     "NUMERIC", ""),
+        ("INTERESTRATE",    "NUMERIC", ""),
+        ("PAYMENTDUEDATE",  "TEXT",    ""),
+        ("MINIMUMPAYMENT",  "NUMERIC", ""),
+    ]
 
-    // column          | type    | other
-    // ----------------+---------+------
-    // ACCOUNTID       | INTEGER | PRIMARY KEY
-    // ACCOUNTNAME     | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
-    // ACCOUNTTYPE     | TEXT    | NOT NULL (Cash, Checking, ...)
-    // ACCOUNTNUM      | TEXT    |
-    // STATUS          | TEXT    | NOT NULL (Open, Closed)
-    // NOTES           | TEXT    |
-    // HELDAT          | TEXT    |
-    // WEBSITE         | TEXT    |
-    // CONTACTINFO     | TEXT    |
-    // ACCESSINFO      | TEXT    |
-    // INITIALDATE     | TEXT    |
-    // INITIALBAL      | NUMERIC |
-    // FAVORITEACCT    | TEXT    | NOT NULL
-    // CURRENCYID      | INTEGER | NOT NULL
-    // STATEMENTLOCKED | INTEGER |
-    // STATEMENTDATE   | TEXT    |
-    // MINIMUMBALANCE  | NUMERIC |
-    // CREDITLIMIT     | NUMERIC |
-    // INTERESTRATE    | NUMERIC |
-    // PAYMENTDUEDATE  | TEXT    |
-    // MINIMUMPAYMENT  | NUMERIC |
-
-    // columns
+    // column expressions
     static let col_id              = SQLite.Expression<Int64>("ACCOUNTID")
     static let col_name            = SQLite.Expression<String>("ACCOUNTNAME")
     static let col_type            = SQLite.Expression<String>("ACCOUNTTYPE")
@@ -166,7 +165,7 @@ extension AccountRepository {
     func loadWithCurrency() -> [AccountWithCurrency] {
         // TODO via join?
         guard let db else {return []}
-        
+
         // Create a lookup dictionary for currencies by currencyId
         let currencies = CurrencyRepository(db: db).load();
         let currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
