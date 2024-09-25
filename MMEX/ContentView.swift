@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var isDocumentPickerPresented = false
     @State private var isNewDocumentPickerPresented = false
+    @State private var isSampleDocumnt = false
     @State private var selectedTab = 0
     @State private var selectedFileURL: URL?
     @State private var isPresentingTransactionAddView = false
@@ -98,6 +99,11 @@ struct ContentView: View {
                     }
                     Button("New Database") {
                         isNewDocumentPickerPresented = true
+                        isSampleDocumnt = false
+                    }
+                    Button("Sample Database") {
+                        isNewDocumentPickerPresented = true
+                        isSampleDocumnt = true
                     }
                 }
             }
@@ -129,12 +135,29 @@ struct ContentView: View {
             isPresented: $isNewDocumentPickerPresented,
             document: MMEXDocument(),
             contentType: .mmb,
-            defaultFilename: "Untitled.mmb"
+            defaultFilename: isSampleDocumnt ? "Sample.mmb" : "Untitled.mmb"
         ) { result in
             switch result {
             case .success(let url):
                 print("Successfully created new document: \(url)")
-                MMEXDocument.create(at: url)
+                if url.startAccessingSecurityScopedResource() {
+                    selectedFileURL = url
+                    UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
+                    url.stopAccessingSecurityScopedResource()
+                } else {
+                    print("Unable to access file at URL: \(url)")
+                }
+                let dataManager = DataManager(databaseURL: url)
+                let repository = dataManager.getRepository()
+                guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
+                    print("Cannot find tables.sql in bundle")
+                    return
+                }
+                repository.execute(url: tables)
+                if isSampleDocumnt { repository.insertSampleData() }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    selectedTab = 0
+                }
             case .failure(let error):
                 print("Failed to create a new document: \(error.localizedDescription)")
             }

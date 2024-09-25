@@ -8,6 +8,51 @@
 import Foundation
 import SQLite
 
+class Repository {
+    let db: Connection?
+    init(db: Connection?) {
+        self.db = db
+    }
+}
+
+extension Repository {
+    func execute(sql: String) {
+        guard let db else { return }
+        print("Executing sql: \(sql)")
+        do {
+            try db.execute(sql)
+        } catch {
+            print("Failed to execute sql: \(error)")
+        }
+    }
+    
+    func execute(url: URL) {
+        if db == nil { return }
+        guard let contents = try? String(contentsOf: url) else {
+            print("Failed to read \(url)")
+            return
+        }
+
+        // split contents into paragraphs and execute each paragraph
+        var paragraph = ""
+        for line in contents.components(separatedBy: "\n") {
+            if line.starts(with: "--") { continue }
+            if line.trimmingCharacters(in: .whitespaces).isEmpty {
+                if !paragraph.isEmpty {
+                    execute(sql: paragraph)
+                    paragraph = ""
+                }
+            } else {
+                if !paragraph.isEmpty { paragraph.append("\n") }
+                paragraph.append(line)
+            }
+        }
+        if !paragraph.isEmpty {
+            execute(sql: paragraph)
+        }
+    }
+}
+
 protocol RepositoryProtocol {
     associatedtype RepositoryData: DataProtocol
 
@@ -56,8 +101,7 @@ extension RepositoryProtocol {
                 let data = Self.selectData(row)
                 print("Successfull pluck for \(key) in \(Self.repositoryName): \(data.shortDesc())")
                 return data
-            }
-            else {
+            } else {
                 print("Unsuccefull pluck for \(key) in \(Self.repositoryName)")
                 return nil
             }
@@ -127,5 +171,136 @@ extension RepositoryProtocol {
             print("Failed delete in \(RepositoryData.dataName): \(error)")
             return false
         }
+    }
+
+    func deleteAll() -> Bool {
+        guard let db else { return false }
+        do {
+            let query = Self.table.delete()
+            try db.run(query)
+            print("Successfull delete all in \(RepositoryData.dataName)")
+            return true
+        } catch {
+            print("Failed delete all in \(RepositoryData.dataName): \(error)")
+            return false
+        }
+    }
+}
+
+extension Repository {
+    func insertSampleData() {
+
+        var infotableMap: [Int64: Int64] = [:]
+        do {
+            let repo = InfotableRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in InfotableData.sampleData {
+                let id = data.id
+                _ = repo.insert(&data)
+                infotableMap[id] = data.id
+            }
+        }
+
+        var currencyMap: [Int64: Int64] = [:]
+        do {
+            let repo = CurrencyRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in CurrencyData.sampleData {
+                let id = data.id
+                _ = repo.insert(&data)
+                currencyMap[id] = data.id
+            }
+        }
+
+        var accountMap: [Int64: Int64] = [:]
+        do {
+            let repo = AccountRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in AccountData.sampleData {
+                let id = data.id
+                data.currencyId = currencyMap[data.currencyId] ?? data.currencyId
+                _ = repo.insert(&data)
+                accountMap[id] = data.id
+            }
+        }
+
+        var assetMap: [Int64: Int64] = [:]
+        do {
+            let repo = AssetRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in AssetData.sampleData {
+                let id = data.id
+                data.currencyId = currencyMap[data.currencyId] ?? data.currencyId
+                _ = repo.insert(&data)
+                assetMap[id] = data.id
+            }
+        }
+
+        var stockMap: [Int64: Int64] = [:]
+        do {
+            let repo = StockRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in StockData.sampleData {
+                let id = data.id
+                data.accountId = accountMap[data.accountId] ?? data.accountId
+                _ = repo.insert(&data)
+                stockMap[id] = data.id
+            }
+        }
+
+        var categoryMap: [Int64: Int64] = [:]
+        do {
+            let repo = CategoryRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in CategoryData.sampleData {
+                let id = data.id
+                data.parentId = categoryMap[data.parentId] ?? data.parentId
+                _ = repo.insert(&data)
+                categoryMap[id] = data.id
+            }
+        }
+
+        var payeeMap: [Int64: Int64] = [:]
+        do {
+            let repo = PayeeRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in PayeeData.sampleData {
+                let id = data.id
+                data.categoryId = categoryMap[data.categoryId] ?? data.categoryId
+                _ = repo.insert(&data)
+                payeeMap[id] = data.id
+            }
+        }
+
+        var transactionMap: [Int64: Int64] = [:]
+        do {
+            let repo = TransactionRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in TransactionData.sampleData {
+                let id = data.id
+                data.accountId   = accountMap[data.accountId]   ?? data.accountId
+                data.toAccountId = accountMap[data.toAccountId] ?? data.toAccountId
+                data.payeeId     = payeeMap[data.payeeId]       ?? data.payeeId
+                data.categId     = categoryMap[data.categId]    ?? data.categId
+                _ = repo.insert(&data)
+                transactionMap[id] = data.id
+            }
+        }
+
+        var scheduledMap: [Int64: Int64] = [:]
+        do {
+            let repo = ScheduledRepository(db: db)
+            _ = repo.deleteAll()
+            for var data in ScheduledData.sampleData {
+                let id = data.id
+                data.accountId   = accountMap[data.accountId]   ?? data.accountId
+                data.toAccountId = accountMap[data.toAccountId] ?? data.toAccountId
+                data.payeeId     = payeeMap[data.payeeId]       ?? data.payeeId
+                data.categId     = categoryMap[data.categId]    ?? data.categId
+                _ = repo.insert(&data)
+                scheduledMap[id] = data.id
+            }
+        }
+
     }
 }

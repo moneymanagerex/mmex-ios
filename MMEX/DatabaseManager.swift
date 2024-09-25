@@ -53,6 +53,10 @@ class DataManager {
         }
     }
     
+    func getRepository() -> Repository {
+        return Repository(db: db)
+    }
+
     func getInfotableRepository() -> InfotableRepository {
         return InfotableRepository(db: db)
     }

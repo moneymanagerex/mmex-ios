@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		920823F42CA3D16400388AB2 /* tables.sql in Resources */ = {isa = PBXBuildFile; fileRef = 920823F32CA3D16400388AB2 /* tables.sql */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -80,6 +81,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		920823F32CA3D16400388AB2 /* tables.sql */ = {isa = PBXFileReference; lastKnownFileType = text; path = tables.sql; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -174,6 +176,14 @@
 				A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+        };
+		920823F22CA3D11F00388AB2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				920823F32CA3D16400388AB2 /* tables.sql */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		A3462F672C948C8400F79145 /* Protocols */ = {
@@ -321,6 +331,7 @@
 				A3C1425E2C8DE70300D3CEC0 /* DatabaseManager.swift */,
 				929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */,
 				A3C1422E2C89751600D3CEC0 /* Assets.xcassets */,
+				920823F22CA3D11F00388AB2 /* Resources */,
 				A3C142302C89751600D3CEC0 /* Preview Content */,
 			);
 			path = MMEX;
@@ -437,6 +448,7 @@
 			files = (
 				A3C142322C89751600D3CEC0 /* Preview Assets.xcassets in Resources */,
 				A3C1422F2C89751600D3CEC0 /* Assets.xcassets in Resources */,
+				920823F42CA3D16400388AB2 /* tables.sql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
