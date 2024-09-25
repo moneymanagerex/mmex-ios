@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		920823F42CA3D16400388AB2 /* tables.sql in Resources */ = {isa = PBXBuildFile; fileRef = 920823F32CA3D16400388AB2 /* tables.sql */; };
+		920823F62CA498A200388AB2 /* CurrencyHistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920823F52CA498A200388AB2 /* CurrencyHistoryData.swift */; };
+		920823F82CA498B500388AB2 /* CurrencyHistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920823F72CA498B500388AB2 /* CurrencyHistoryRepository.swift */; };
+		920823FA2CA49A4B00388AB2 /* StockHistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920823F92CA49A4B00388AB2 /* StockHistoryData.swift */; };
+		920823FC2CA4A15C00388AB2 /* StockHistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920823FB2CA4A15C00388AB2 /* StockHistoryRepository.swift */; };
+		920823FE2CA4A3F700388AB2 /* TagData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920823FD2CA4A3F700388AB2 /* TagData.swift */; };
+		920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920823FF2CA4A4AA00388AB2 /* TagRepository.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -82,6 +88,12 @@
 
 /* Begin PBXFileReference section */
 		920823F32CA3D16400388AB2 /* tables.sql */ = {isa = PBXFileReference; lastKnownFileType = text; path = tables.sql; sourceTree = "<group>"; };
+		920823F52CA498A200388AB2 /* CurrencyHistoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyHistoryData.swift; sourceTree = "<group>"; };
+		920823F72CA498B500388AB2 /* CurrencyHistoryRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyHistoryRepository.swift; sourceTree = "<group>"; };
+		920823F92CA49A4B00388AB2 /* StockHistoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockHistoryData.swift; sourceTree = "<group>"; };
+		920823FB2CA4A15C00388AB2 /* StockHistoryRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockHistoryRepository.swift; sourceTree = "<group>"; };
+		920823FD2CA4A3F700388AB2 /* TagData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagData.swift; sourceTree = "<group>"; };
+		920823FF2CA4A4AA00388AB2 /* TagRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -167,6 +179,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		920823F22CA3D11F00388AB2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				920823F32CA3D16400388AB2 /* tables.sql */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		A30061742CA3B57700011B1A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,14 +196,6 @@
 				A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */,
 			);
 			path = Assets;
-			sourceTree = "<group>";
-        };
-		920823F22CA3D11F00388AB2 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				920823F32CA3D16400388AB2 /* tables.sql */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		A3462F672C948C8400F79145 /* Protocols */ = {
@@ -289,11 +301,14 @@
 				929EF6682CA034770051A3E6 /* Repository.swift */,
 				A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */,
 				A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */,
+				920823F72CA498B500388AB2 /* CurrencyHistoryRepository.swift */,
 				A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */,
 				929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */,
 				929EF6642C9FF3FB0051A3E6 /* StockRepository.swift */,
+				920823FB2CA4A15C00388AB2 /* StockHistoryRepository.swift */,
 				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
 				A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */,
+				920823FF2CA4A4AA00388AB2 /* TagRepository.swift */,
 				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
 				929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */,
 			);
@@ -351,11 +366,14 @@
 				929EF66A2CA03AF90051A3E6 /* Data.swift */,
 				A37E7D932C9B217500B4ECFC /* InfotableData.swift */,
 				A3C1424B2C8AB52600D3CEC0 /* CurrencyData.swift */,
+				920823F52CA498A200388AB2 /* CurrencyHistoryData.swift */,
 				A3C142432C89C8FA00D3CEC0 /* AccountData.swift */,
 				929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */,
 				929EF6602C9FF2FD0051A3E6 /* StockData.swift */,
+				920823F92CA49A4B00388AB2 /* StockHistoryData.swift */,
 				A3C1429F2C9025D600D3CEC0 /* CategoryData.swift */,
 				A3C1424D2C8B335900D3CEC0 /* PayeeData.swift */,
+				920823FD2CA4A3F700388AB2 /* TagData.swift */,
 				A3C142662C8F2AF500D3CEC0 /* TransactionData.swift */,
 				929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */,
 			);
@@ -460,6 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3C1424C2C8AB52600D3CEC0 /* CurrencyData.swift in Sources */,
+				920823FA2CA49A4B00388AB2 /* StockHistoryData.swift in Sources */,
 				A37E7D8E2C9AC4C900B4ECFC /* PrivacyPolicyView.swift in Sources */,
 				A3C142612C8E9DBF00D3CEC0 /* PayeeAddView.swift in Sources */,
 				A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */,
@@ -484,11 +503,14 @@
 				A39B1B342C99A0A8003E5562 /* CurrencyDetailView.swift in Sources */,
 				A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */,
 				929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */,
+				920823FE2CA4A3F700388AB2 /* TagData.swift in Sources */,
 				A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */,
+				920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */,
 				A3C142AA2C90721800D3CEC0 /* TransactionListView2.swift in Sources */,
 				A3C142A62C90417700D3CEC0 /* TransactionAddView2.swift in Sources */,
 				A3C142472C89CB4200D3CEC0 /* AccountDetailView.swift in Sources */,
 				A3C1429A2C8FF77D00D3CEC0 /* TransactionDetailView.swift in Sources */,
+				920823FC2CA4A15C00388AB2 /* StockHistoryRepository.swift in Sources */,
 				A3C142942C8FE13E00D3CEC0 /* PayeeRepository.swift in Sources */,
 				A3C1429E2C8FFCF100D3CEC0 /* TransactionAddView.swift in Sources */,
 				929EF66B2CA03AF90051A3E6 /* Data.swift in Sources */,
@@ -504,10 +526,12 @@
 				A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */,
 				A37E7D942C9B217500B4ECFC /* InfotableData.swift in Sources */,
 				A37E7D882C9AC2E600B4ECFC /* VersionInfoView.swift in Sources */,
+				920823F62CA498A200388AB2 /* CurrencyHistoryData.swift in Sources */,
 				A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */,
 				A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */,
 				A3C142982C8FE62200D3CEC0 /* TransactionListView.swift in Sources */,
 				A3C142542C8B381400D3CEC0 /* PayeeEditView.swift in Sources */,
+				920823F82CA498B500388AB2 /* CurrencyHistoryRepository.swift in Sources */,
 				A37E7D8A2C9AC30700B4ECFC /* HelpFAQView.swift in Sources */,
 				929EF66D2CA0BA5E0051A3E6 /* ScheduledData.swift in Sources */,
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
