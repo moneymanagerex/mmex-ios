@@ -17,6 +17,9 @@ struct ManagementView: View {
                 NavigationLink(destination: AccountListView(databaseURL: databaseURL)) {
                     Text("Manage Accounts")
                 }
+                NavigationLink(destination: AssetListView(databaseURL: databaseURL)) {
+                    Text("Manage Assets")
+                }
                 NavigationLink(destination: PayeeListView(databaseURL: databaseURL)) {
                     Text("Manage Payees")
                 }

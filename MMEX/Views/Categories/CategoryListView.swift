@@ -23,41 +23,43 @@ struct CategoryListView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach($categories) { $category in
-                    NavigationLink(destination: CategoryDetailView(category: $category, databaseURL: databaseURL)) {
-                        HStack {
-                            Text(category.name)
-                            Spacer()
-                            Text(category.isRoot ? "Root" : "Non Root")
-                        }
+            List($categories) { $category in
+                 NavigationLink(destination: CategoryDetailView(category: $category, databaseURL: databaseURL)) {
+                     HStack {
+                         Text(category.name)
+                         Spacer()
+                         Text(category.isRoot ? "Root" : "Non Root")
                     }
                 }
             }
-            .onAppear(perform: loadCategories)
-            .navigationTitle("Categories")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        isPresentingAddView = true
-                    }) {
-                        Label("Add Category", systemImage: "plus")
-                    }
-                }
+                Button(action: {
+                    isPresentingAddView = true
+                }, label: {
+                    Image(systemName: "plus")
+                })
+                .accessibilityLabel("New Category")
             }
-            .sheet(isPresented: $isPresentingAddView) {
-                NavigationStack {
-                    CategoryAddView(newCategory: $newCategory, isPresentingCategoryAddView: $isPresentingAddView) { newAccount in
-                        addCategory(category: &newCategory)
-                    }
-                }
+        }
+        .navigationTitle("Categories")
+        .onAppear {
+            loadCategories()
+        }
+        .sheet(isPresented: $isPresentingAddView) {
+            CategoryAddView(newCategory: $newCategory, isPresentingCategoryAddView: $isPresentingAddView) { newCategory in
+                addCategory(category: &newCategory)
             }
         }
     }
     
     func loadCategories() {
-        let repository = DataManager(databaseURL: databaseURL).getCategoryRepository()
-        categories = repository.load()
+        DispatchQueue.global(qos: .background).async {
+            let loadedCategories = repository.load()
+
+            DispatchQueue.main.async {
+                self.categories = loadedCategories
+            }
+        }
     }
 
     func addCategory(category: inout CategoryData) {

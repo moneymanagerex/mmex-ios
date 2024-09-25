@@ -66,7 +66,6 @@ struct PayeeEditView: View {
                 TextField("Pattern", text: $payee.pattern)
             }
         }
-        .navigationTitle("Edit Payee")
     }
 }
 
