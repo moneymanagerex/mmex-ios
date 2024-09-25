@@ -339,6 +339,40 @@ extension Repository {
             }
         }
 
+        var budgetYearMap: [Int64: Int64] = [:]
+        do {
+            let repo = BudgetYearRepository(db: db)
+            repo.deleteAll()
+            for var data in BudgetYearData.sampleData {
+                let id = data.id
+                repo.insert(&data)
+                budgetYearMap[id] = data.id
+            }
+        }
+
+        var budgetTableMap: [Int64: Int64] = [:]
+        do {
+            let repo = BudgetTableRepository(db: db)
+            repo.deleteAll()
+            for var data in BudgetTableData.sampleData {
+                let id = data.id
+                data.yearId  = budgetYearMap[data.yearId] ?? data.yearId
+                data.categId = categoryMap[data.categId]  ?? data.categId
+                repo.insert(&data)
+                budgetTableMap[id] = data.id
+            }
+        }
+
+        var reportMap: [Int64: Int64] = [:]
+        do {
+            let repo = ReportRepository(db: db)
+            repo.deleteAll()
+            for var data in ReportData.sampleData {
+                let id = data.id
+                repo.insert(&data)
+                reportMap[id] = data.id
+            }
+        }
     }
 }
 
