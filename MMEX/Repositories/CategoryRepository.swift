@@ -17,13 +17,14 @@ class CategoryRepository: RepositoryProtocol {
 
     static let repositoryName = "CATEGORY_V1"
     static let table = SQLite.Table(repositoryName)
-    static let columns = [ // (column, type, other)
-        ("CATEGID",   "INTEGER", "PRIMARY KEY"),
-        ("CATEGNAME", "TEXT",    "NOT NULL COLLATE NOCASE"),
-        ("ACTIVE",    "INTEGER", ""),
-        ("PARENTID",  "INTEGER", ""),
-        ("",          "",        "UNIQUE(CATEGNAME, PARENTID)"),
-    ]
+
+    // column    | type    | other
+    // ----------+---------+------
+    // CATEGID   | INTEGER | PRIMARY KEY
+    // CATEGNAME | TEXT    | NOT NULL COLLATE NOCASE
+    // ACTIVE    | INTEGER |
+    // PARENTID  | INTEGER |
+    //           |         | UNIQUE(CATEGNAME, PARENTID)
 
     // column expressions
     static let col_id       = SQLite.Expression<Int64>("CATEGID")

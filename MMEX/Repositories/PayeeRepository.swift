@@ -18,16 +18,17 @@ class PayeeRepository: RepositoryProtocol {
 
     static let repositoryName = "PAYEE_V1"
     static let table = SQLite.Table(repositoryName)
-    static let columns = [ // (column, type, other)
-        ("PAYEEID",   "INTEGER", "PRIMARY KEY"),
-        ("PAYEENAME", "TEXT",    "NOT NULL COLLATE NOCASE UNIQUE"),
-        ("CATEGID",   "INTEGER", ""),
-        ("NUMBER",    "TEXT",    ""),
-        ("WEBSITE",   "TEXT",    ""),
-        ("NOTES",     "TEXT",    ""),
-        ("ACTIVE",    "INTEGER", ""),
-        ("PATTERN",   "TEXT",    "DEFAULT ''"),
-    ]
+
+    // column    | type    | other
+    // ----------+---------+------
+    // PAYEEID   | INTEGER | PRIMARY KEY
+    // PAYEENAME | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
+    // CATEGID   | INTEGER |
+    // NUMBER    | TEXT    |
+    // WEBSITE   | TEXT    |
+    // NOTES     | TEXT    |
+    // ACTIVE    | INTEGER |
+    // PATTERN   | TEXT    | DEFAULT ''
 
     // column expressions
     static let col_id         = SQLite.Expression<Int64>("PAYEEID")

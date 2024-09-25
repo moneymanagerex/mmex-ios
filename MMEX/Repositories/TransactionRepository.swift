@@ -18,24 +18,25 @@ class TransactionRepository: RepositoryProtocol {
 
     static let repositoryName = "CHECKINGACCOUNT_V1"
     static let table = SQLite.Table(repositoryName)
-    static let columns = [ // (column, type, other)
-        ("TRANSID",           "INTEGER", "PRIMARY KEY"),
-        ("ACCOUNTID",         "INTEGER", "NOT NULL"),
-        ("TOACCOUNTID",       "INTEGER", ""),
-        ("PAYEEID",           "INTEGER", "NOT NULL"),
-        ("TRANSCODE",         "TEXT",    "NOT NULL"), // Withdrawal, Deposit, Transfer
-        ("TRANSAMOUNT",       "NUMERIC", "NOT NULL"),
-        ("STATUS",            "TEXT",    ""), // N, R, V, F, D
-        ("TRANSACTIONNUMBER", "TEXT",    ""),
-        ("NOTES",             "TEXT",    ""),
-        ("CATEGID",           "INTEGER", ""),
-        ("TRANSDATE",         "TEXT",    ""),
-        ("LASTUPDATEDTIME",   "TEXT",    ""),
-        ("DELETEDTIME",       "TEXT",    ""),
-        ("FOLLOWUPID",        "INTEGER", ""),
-        ("TOTRANSAMOUNT",     "NUMERIC", ""),
-        ("COLOR",             "INTEGER", "DEFAULT -1"),
-    ]
+
+    // column            | type    | other
+    // ------------------+---------+------
+    // TRANSID           | INTEGER | PRIMARY KEY
+    // ACCOUNTID         | INTEGER | NOT NULL
+    // TOACCOUNTID       | INTEGER |
+    // PAYEEID           | INTEGER | NOT NULL
+    // TRANSCODE         | TEXT    | NOT NULL (Withdrawal, Deposit, Transfer)
+    // TRANSAMOUNT       | NUMERIC | NOT NULL
+    // STATUS            | TEXT    | (N, R, V, F, D)
+    // TRANSACTIONNUMBER | TEXT    |
+    // NOTES             | TEXT    |
+    // CATEGID           | INTEGER |
+    // TRANSDATE         | TEXT    |
+    // LASTUPDATEDTIME   | TEXT    |
+    // DELETEDTIME       | TEXT    |
+    // FOLLOWUPID        | INTEGER |
+    // TOTRANSAMOUNT     | NUMERIC |
+    // COLOR             | INTEGER | DEFAULT -1
 
     // column expressions
     static let col_id                = SQLite.Expression<Int64>("TRANSID")

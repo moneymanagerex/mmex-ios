@@ -17,19 +17,20 @@ class StockRepository: RepositoryProtocol {
     }
     static let repositoryName = "STOCK_V1"
     static let table = SQLite.Table(repositoryName)
-    static let columns = [ // (column, type, other)
-        ("STOCKID",       "INTEGER", "PRIMARY KEY"),
-        ("HELDAT",        "INTEGER", ""),
-        ("STOCKNAME",     "TEXT",    "NOT NULL COLLATE NOCASE"),
-        ("SYMBOL",        "TEXT",    ""),
-        ("NUMSHARES",     "NUMERIC", ""),
-        ("PURCHASEDATE",  "TEXT",    "NOT NULL"),
-        ("PURCHASEPRICE", "NUMERIC", "NOT NULL"),
-        ("CURRENTPRICE",  "NUMERIC", "NOT NULL"),
-        ("VALUE",         "NUMERIC", ""),
-        ("COMMISSION",    "NUMERIC", ""),
-        ("NOTES",         "TEXT",    ""),
-    ]
+
+    // column        | type    | other
+    // --------------+---------+------
+    // STOCKID       | INTEGER | PRIMARY KEY
+    // HELDAT        | INTEGER |
+    // STOCKNAME     | TEXT    | NOT NULL COLLATE NOCASE
+    // SYMBOL        | TEXT    |
+    // NUMSHARES     | NUMERIC |
+    // PURCHASEDATE  | TEXT    | NOT NULL
+    // PURCHASEPRICE | NUMERIC | NOT NULL
+    // CURRENTPRICE  | NUMERIC | NOT NULL
+    // VALUE         | NUMERIC |
+    // COMMISSION    | NUMERIC |
+    // NOTES         | TEXT    |
 
     // column expressions
     static let col_id            = SQLite.Expression<Int64>("STOCKID")

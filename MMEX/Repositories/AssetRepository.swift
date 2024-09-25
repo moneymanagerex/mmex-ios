@@ -18,19 +18,20 @@ class AssetRepository: RepositoryProtocol {
 
     static let repositoryName = "ASSETS_V1"
     static let table = SQLite.Table(repositoryName)
-    static let columns = [ // (column, type, other)
-        ("ASSETID",         "INTEGER", "PRIMARY KEY"),
-        ("ASSETTYPE",       "TEXT",    ""), // Property, Automobile, ...
-        ("ASSETSTATUS",     "TEXT",    ""), // Closed, Open
-        ("ASSETNAME",       "TEXT",    "NOT NULL COLLATE NOCASE"),
-        ("STARTDATE",       "TEXT",    "NOT NULL"),
-        ("CURRENCYID",      "INTEGER", ""),
-        ("VALUE",           "NUMERIC", ""),
-        ("VALUECHANGE",     "TEXT",    ""), // None, Appreciates, Depreciates
-        ("VALUECHANGEMODE", "TEXT",    ""), // Percentage, Linear
-        ("VALUECHANGERATE", "NUMERIC", ""),
-        ("NOTES",           "TEXT",    ""),
-    ]
+
+    // column          | type    | other
+    // ----------------+---------+------
+    // ASSETID         | INTEGER | PRIMARY KEY
+    // ASSETTYPE       | TEXT    | (Property, Automobile, ...)
+    // ASSETSTATUS     | TEXT    | (Closed, Open)
+    // ASSETNAME       | TEXT    | NOT NULL COLLATE NOCASE
+    // STARTDATE       | TEXT    | NOT NULL
+    // CURRENCYID      | INTEGER |
+    // VALUE           | NUMERIC |
+    // VALUECHANGE     | TEXT    | (None, Appreciates, Depreciates)
+    // VALUECHANGEMODE | TEXT    | (Percentage, Linear)
+    // VALUECHANGERATE | NUMERIC |
+    // NOTES           | TEXT    |
 
     // column expressions
     static let col_id         = SQLite.Expression<Int64>("ASSETID")
