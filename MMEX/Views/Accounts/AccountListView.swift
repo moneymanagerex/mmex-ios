@@ -32,12 +32,10 @@ struct AccountListView: View {
                                 expandedSections[accountType]?.toggle()
                             }) {
                                 HStack {
-                                    if let accountSymbol = AccountData.accountTypeToSFSymbol[accountType] {
-                                        Image(systemName: accountSymbol)
-                                            .frame(width: 5, alignment: .leading) // Adjust width as needed
-                                            .font(.system(size: 16, weight: .bold)) // Customize size and weight
-                                            .foregroundColor(.blue) // Customize icon style
-                                    }
+                                    Image(systemName: AccountType(collateNoCase: accountType).symbolName)
+                                        .frame(width: 5, alignment: .leading) // Adjust width as needed
+                                        .font(.system(size: 16, weight: .bold)) // Customize size and weight
+                                        .foregroundColor(.blue) // Customize icon style
                                     Text(accountType)
                                         .font(.subheadline)
                                         .padding(.leading)
