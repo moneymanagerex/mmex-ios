@@ -111,17 +111,17 @@ extension TransactionData {
         TransactionData(
             id: 1, accountId: 1, payeeId: 1, transCode: TransactionType.withdrawal,
             transAmount: 10.01, status: TransactionStatus.none, categId: 1,
-            transDate: Date().ISO8601Format()
+            transDate: String(Date().ISO8601Format().dropLast())
         ),
         TransactionData(
             id: 2, accountId: 2, payeeId: 2, transCode: TransactionType.deposit,
             transAmount: 20.02, status: TransactionStatus.none, categId: 1,
-            transDate: Date().ISO8601Format()
+            transDate: String(Date().ISO8601Format().dropLast())
         ),
         TransactionData(
-            id: 3, accountId: 3, payeeId: 3, transCode: TransactionType.transfer,
+            id: 3, accountId: 3, payeeId: 2, transCode: TransactionType.transfer,
             transAmount: 30.03, status: TransactionStatus.none, categId: 1,
-            transDate: Date().ISO8601Format()
+            transDate: String(Date().ISO8601Format().dropLast())
         ),
     ]
 }

@@ -53,6 +53,13 @@ class DataManager {
         }
     }
     
+    func getSchemaVersion() -> Int32? {
+        if let db {
+            return db.userVersion
+        }
+        return nil
+    }
+    
     func getRepository() -> Repository {
         return Repository(db: db)
     }

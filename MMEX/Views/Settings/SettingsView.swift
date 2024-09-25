@@ -13,7 +13,6 @@ struct SettingsView: View {
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
 
-    @State private var schemaVersion: Int32 = 19
     @State private var dateFormat: String = "%Y-%m-%d"
 
     var body: some View {
@@ -65,7 +64,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Schema Version")
                     Spacer()
-                    Text("\(schemaVersion)")
+                    Text("\(viewModel.getSchemaVersion())")
                 }
                 HStack {
                     Text("Date Format")

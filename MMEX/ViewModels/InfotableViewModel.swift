@@ -65,6 +65,10 @@ class InfotableViewModel: ObservableObject {
             )
         }
     }
+    
+    func getSchemaVersion() -> Int32 {
+        return self.dataManager.getSchemaVersion() ?? 0
+    }
 
     // Set up individual bindings for each @Published property
     private func setupBindings() {
