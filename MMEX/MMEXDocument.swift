@@ -24,20 +24,3 @@ struct MMEXDocument: FileDocument {
         return FileWrapper()
     }
 }
-
-/*
-extension MMEXDocument {
-    static func create(at url: URL) {
-        let dataManager = DataManager(databaseURL: url)
-         dataManager.getInfotableRepository().create()
-         dataManager.getCurrencyRepository().create()
-         dataManager.getAccountRepository().create()
-         dataManager.getAssetRepository().create()
-         dataManager.getStockRepository().create()
-         dataManager.getCategoryRepository().create()
-         dataManager.getPayeeRepository().create()
-         dataManager.getTransactionRepository().create()
-         dataManager.getScheduledRepository().create()
-    }
-}
-*/

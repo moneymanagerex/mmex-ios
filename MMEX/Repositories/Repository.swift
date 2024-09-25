@@ -189,6 +189,18 @@ extension Repository {
             }
         }
 
+        var currencyHistoryMap: [Int64: Int64] = [:]
+        do {
+            let repo = CurrencyHistoryRepository(db: db)
+            repo.deleteAll()
+            for var data in CurrencyHistoryData.sampleData {
+                let id = data.id
+                data.currencyId = currencyMap[data.currencyId] ?? data.currencyId
+                repo.insert(&data)
+                currencyHistoryMap[id] = data.id
+            }
+        }
+
         var accountMap: [Int64: Int64] = [:]
         do {
             let repo = AccountRepository(db: db)
@@ -225,6 +237,17 @@ extension Repository {
             }
         }
 
+        var stockHistoryMap: [Int64: Int64] = [:]
+        do {
+            let repo = StockHistoryRepository(db: db)
+            repo.deleteAll()
+            for var data in StockHistoryData.sampleData {
+                let id = data.id
+                repo.insert(&data)
+                stockHistoryMap[id] = data.id
+            }
+        }
+
         var categoryMap: [Int64: Int64] = [:]
         do {
             let repo = CategoryRepository(db: db)
@@ -246,6 +269,17 @@ extension Repository {
                 data.categoryId = categoryMap[data.categoryId] ?? data.categoryId
                 repo.insert(&data)
                 payeeMap[id] = data.id
+            }
+        }
+
+        var tagMap: [Int64: Int64] = [:]
+        do {
+            let repo = TagRepository(db: db)
+            repo.deleteAll()
+            for var data in TagData.sampleData {
+                let id = data.id
+                repo.insert(&data)
+                tagMap[id] = data.id
             }
         }
 
