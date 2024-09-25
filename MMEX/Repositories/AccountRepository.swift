@@ -158,6 +158,14 @@ extension AccountRepository {
             .order(Self.col_name)
         )
     }
+
+    // load account of a stock
+    func pluck(for stock: StockData) -> AccountData? {
+        return pluck(
+            from: Self.table.filter(Self.col_id == stock.accountId),
+            key: "\(stock.accountId)"
+        )
+    }
 }
 
 // TODO: move to ViewModels
