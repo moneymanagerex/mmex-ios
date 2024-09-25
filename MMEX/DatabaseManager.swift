@@ -53,27 +53,39 @@ class DataManager {
         }
     }
     
-    func getAccountRepository() -> AccountRepository {
-        return AccountRepository(db: db)
-    }
-
-    func getPayeeRepository() -> PayeeRepository {
-        return PayeeRepository(db: db)
-    }
-
-    func getCategoryRepository() -> CategoryRepository {
-        return CategoryRepository(db: db)
+    func getInfotableRepository() -> InfotableRepository {
+        return InfotableRepository(db: db)
     }
 
     func getCurrencyRepository() -> CurrencyRepository {
         return CurrencyRepository(db: db)
     }
 
+    func getAccountRepository() -> AccountRepository {
+        return AccountRepository(db: db)
+    }
+
+    func getAssetRepository() -> AssetRepository {
+        return AssetRepository(db: db)
+    }
+
+    func getStockRepository() -> StockRepository {
+        return StockRepository(db: db)
+    }
+
+    func getCategoryRepository() -> CategoryRepository {
+        return CategoryRepository(db: db)
+    }
+
+    func getPayeeRepository() -> PayeeRepository {
+        return PayeeRepository(db: db)
+    }
+
     func getTransactionRepository() -> TransactionRepository {
         return TransactionRepository(db: db)
     }
 
-    func getInfotableRepository() -> InfotableRepository {
-        return InfotableRepository(db: db)
+    func getScheduledRepository() -> ScheduledRepository {
+        return ScheduledRepository(db: db)
     }
 }

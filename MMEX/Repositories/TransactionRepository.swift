@@ -18,27 +18,26 @@ class TransactionRepository: RepositoryProtocol {
 
     static let repositoryName = "CHECKINGACCOUNT_V1"
     static let table = SQLite.Table(repositoryName)
+    static let columns = [ // (column, type, other)
+        ("TRANSID",           "INTEGER", "PRIMARY KEY"),
+        ("ACCOUNTID",         "INTEGER", "NOT NULL"),
+        ("TOACCOUNTID",       "INTEGER", ""),
+        ("PAYEEID",           "INTEGER", "NOT NULL"),
+        ("TRANSCODE",         "TEXT",    "NOT NULL"), // Withdrawal, Deposit, Transfer
+        ("TRANSAMOUNT",       "NUMERIC", "NOT NULL"),
+        ("STATUS",            "TEXT",    ""), // N, R, V, F, D
+        ("TRANSACTIONNUMBER", "TEXT",    ""),
+        ("NOTES",             "TEXT",    ""),
+        ("CATEGID",           "INTEGER", ""),
+        ("TRANSDATE",         "TEXT",    ""),
+        ("LASTUPDATEDTIME",   "TEXT",    ""),
+        ("DELETEDTIME",       "TEXT",    ""),
+        ("FOLLOWUPID",        "INTEGER", ""),
+        ("TOTRANSAMOUNT",     "NUMERIC", ""),
+        ("COLOR",             "INTEGER", "DEFAULT -1"),
+    ]
 
-    // column            | type    | other
-    // ------------------+---------+------
-    // TRANSID           | INTEGER | PRIMARY KEY
-    // ACCOUNTID         | INTEGER | NOT NULL
-    // TOACCOUNTID       | INTEGER |
-    // PAYEEID           | INTEGER | NOT NULL
-    // TRANSCODE         | TEXT    | NOT NULL (Withdrawal, Deposit, Transfer)
-    // TRANSAMOUNT       | NUMERIC | NOT NULL
-    // STATUS            | TEXT    | (Unrecnciled, Reconciled, Void, Follow up, Duplicate)
-    // TRANSACTIONNUMBER | TEXT    |
-    // NOTES             | TEXT    |
-    // CATEGID           | INTEGER |
-    // TRANSDATE         | TEXT    |
-    // LASTUPDATEDTIME   | TEXT    |
-    // DELETEDTIME       | TEXT    |
-    // FOLLOWUPID        | INTEGER |
-    // TOTRANSAMOUNT     | NUMERIC |
-    // COLOR             | INTEGER | DEFAULT -1
-
-    // columns
+    // column expressions
     static let col_id                = SQLite.Expression<Int64>("TRANSID")
     static let col_accountId         = SQLite.Expression<Int64>("ACCOUNTID")
     static let col_toAccountId       = SQLite.Expression<Int64?>("TOACCOUNTID")

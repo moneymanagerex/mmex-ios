@@ -18,22 +18,21 @@ class AssetRepository: RepositoryProtocol {
 
     static let repositoryName = "ASSETS_V1"
     static let table = SQLite.Table(repositoryName)
+    static let columns = [ // (column, type, other)
+        ("ASSETID",         "INTEGER", "PRIMARY KEY"),
+        ("ASSETTYPE",       "TEXT",    ""), // Property, Automobile, ...
+        ("ASSETSTATUS",     "TEXT",    ""), // Closed, Open
+        ("ASSETNAME",       "TEXT",    "NOT NULL COLLATE NOCASE"),
+        ("STARTDATE",       "TEXT",    "NOT NULL"),
+        ("CURRENCYID",      "INTEGER", ""),
+        ("VALUE",           "NUMERIC", ""),
+        ("VALUECHANGE",     "TEXT",    ""), // None, Appreciates, Depreciates
+        ("VALUECHANGEMODE", "TEXT",    ""), // Percentage, Linear
+        ("VALUECHANGERATE", "NUMERIC", ""),
+        ("NOTES",           "TEXT",    ""),
+    ]
 
-    // column          | type    | other
-    // ----------------+---------+------
-    // ASSETID         | INTEGER | PRIMARY KEY
-    // ASSETTYPE       | TEXT    | (Property, Automobile, ...)
-    // ASSETSTATUS     | TEXT    | (Closed, Open)
-    // ASSETNAME       | TEXT    | NOT NULL COLLATE NOCASE
-    // STARTDATE       | TEXT    | NOT NULL
-    // CURRENCYID      | INTEGER |
-    // VALUE           | NUMERIC |
-    // VALUECHANGE     | TEXT    | (None, Appreciates, Depreciates)
-    // VALUECHANGEMODE | TEXT    | (Percentage, Linear)
-    // VALUECHANGERATE | NUMERIC |
-    // NOTES           | TEXT    |
-    
-    // columns
+    // column expressions
     static let col_id         = SQLite.Expression<Int64>("ASSETID")
     static let col_type       = SQLite.Expression<String?>("ASSETTYPE")
     static let col_status     = SQLite.Expression<String?>("ASSETSTATUS")
@@ -45,7 +44,7 @@ class AssetRepository: RepositoryProtocol {
     static let col_changeMode = SQLite.Expression<String?>("VALUECHANGEMODE")
     static let col_changeRate = SQLite.Expression<Double?>("VALUECHANGERATE")
     static let col_notes      = SQLite.Expression<String?>("NOTES")
-    
+
     // cast NUMERIC to REAL
     static let cast_value      = cast(col_value)      as SQLite.Expression<Double?>
     static let cast_changeRate = cast(col_changeRate) as SQLite.Expression<Double?>
