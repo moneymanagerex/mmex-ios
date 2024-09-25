@@ -91,7 +91,7 @@ extension CategoryData {
 
 extension CategoryData {
     static let sampleData: [CategoryData] = [
-        CategoryData(id: 1, name: "root cateogry",     active: true, parentId: -1),
-        CategoryData(id: 2, name: "non-root category", active: true, parentId: 1),
+        CategoryData(id: 1, name: "Bills",     active: true, parentId: -1),
+        CategoryData(id: 2, name: "Telephone", active: true, parentId: 1),
     ]
 }

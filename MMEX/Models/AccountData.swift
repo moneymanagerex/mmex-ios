@@ -109,19 +109,19 @@ struct AccountWithCurrency: ExportableEntity {
 extension AccountData {
     static let sampleDataWithCurrency : [AccountWithCurrency] = [
         AccountWithCurrency(data: AccountData(
-            id: 1, name: "Account A", type: AccountType.cash,
+            id: 1, name: "Cash Account", type: AccountType.cash,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1
+            initialBal: 100.01, favoriteAcct: "TRUE", currencyId: 1
         ), currency: CurrencyData.sampleData[0]),
         AccountWithCurrency(data: AccountData(
-            id: 2, name: "Account B", type: AccountType.cash,
+            id: 2, name: "Chcking Account", type: AccountType.checking,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
+            initialBal: 200.02, favoriteAcct: "TRUE", currencyId: 2
         ), currency: CurrencyData.sampleData[1]),
         AccountWithCurrency(data: AccountData(
             id: 3, name: "Investment Account", type: AccountType.investment,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
+            initialBal: 300.03, favoriteAcct: "TRUE", currencyId: 2
         ), currency: CurrencyData.sampleData[1]),
     ]
 }

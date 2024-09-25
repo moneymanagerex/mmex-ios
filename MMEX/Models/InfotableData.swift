@@ -54,5 +54,8 @@ extension InfotableData {
 extension InfotableData {
     static let sampleData: [InfotableData] = [
         InfotableData(id: 1, name: "DATAVERSION", value: "3"),
+        InfotableData(id: 2, name: InfoKey.createDate.id, value: Date().ISO8601Format()),
+        InfotableData(id: 3, name: InfoKey.baseCurrencyID.id, value: "1"),
+        InfotableData(id: 4, name: InfoKey.defaultAccountID.id, value: "1")
     ]
 }
