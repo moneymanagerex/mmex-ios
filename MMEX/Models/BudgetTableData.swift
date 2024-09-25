@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum Period: String, EnumCollateNoCase {
+enum BudgetPeriod: String, EnumCollateNoCase {
     case none       = "None"
     case weekly     = "Weekly"
     case biweekly   = "Fortnightly"
@@ -22,13 +22,13 @@ enum Period: String, EnumCollateNoCase {
 }
 
 struct BudgetTableData: ExportableEntity {
-    var id      : Int64  = 0
-    var yearId  : Int64  = 0
-    var categId : Int64  = 0
-    var period  : Period = Period.defaultValue
-    var amount  : Double = 0.0
-    var notes   : String = ""
-    var active  : Bool   = false
+    var id      : Int64        = 0
+    var yearId  : Int64        = 0
+    var categId : Int64        = 0
+    var period  : BudgetPeriod = BudgetPeriod.defaultValue
+    var amount  : Double       = 0.0
+    var notes   : String       = ""
+    var active  : Bool         = false
 }
 
 extension BudgetTableData: DataProtocol {
