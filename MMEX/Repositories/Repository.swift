@@ -99,6 +99,7 @@ extension RepositoryProtocol {
         }
     }
 
+    @discardableResult
     func insert(_ data: inout RepositoryData) -> Bool {
         guard let db else { return false }
         do {
@@ -114,6 +115,7 @@ extension RepositoryProtocol {
         }
     }
 
+    @discardableResult
     func update(_ data: RepositoryData) -> Bool {
         guard let db else { return false }
         guard data.id > 0 else { return false }
@@ -130,6 +132,7 @@ extension RepositoryProtocol {
         }
     }
 
+    @discardableResult
     func delete(_ data: RepositoryData) -> Bool {
         guard let db else { return false }
         guard data.id > 0 else { return false }
@@ -146,6 +149,7 @@ extension RepositoryProtocol {
         }
     }
 
+    @discardableResult
     func deleteAll() -> Bool {
         guard let db else { return false }
         do {
@@ -166,10 +170,10 @@ extension Repository {
         var infotableMap: [Int64: Int64] = [:]
         do {
             let repo = InfotableRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in InfotableData.sampleData {
                 let id = data.id
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 infotableMap[id] = data.id
             }
         }
@@ -177,10 +181,10 @@ extension Repository {
         var currencyMap: [Int64: Int64] = [:]
         do {
             let repo = CurrencyRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in CurrencyData.sampleData {
                 let id = data.id
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 currencyMap[id] = data.id
             }
         }
@@ -188,11 +192,11 @@ extension Repository {
         var accountMap: [Int64: Int64] = [:]
         do {
             let repo = AccountRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in AccountData.sampleData {
                 let id = data.id
                 data.currencyId = currencyMap[data.currencyId] ?? data.currencyId
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 accountMap[id] = data.id
             }
         }
@@ -200,11 +204,11 @@ extension Repository {
         var assetMap: [Int64: Int64] = [:]
         do {
             let repo = AssetRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in AssetData.sampleData {
                 let id = data.id
                 data.currencyId = currencyMap[data.currencyId] ?? data.currencyId
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 assetMap[id] = data.id
             }
         }
@@ -212,11 +216,11 @@ extension Repository {
         var stockMap: [Int64: Int64] = [:]
         do {
             let repo = StockRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in StockData.sampleData {
                 let id = data.id
                 data.accountId = accountMap[data.accountId] ?? data.accountId
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 stockMap[id] = data.id
             }
         }
@@ -224,11 +228,11 @@ extension Repository {
         var categoryMap: [Int64: Int64] = [:]
         do {
             let repo = CategoryRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in CategoryData.sampleData {
                 let id = data.id
                 data.parentId = categoryMap[data.parentId] ?? data.parentId
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 categoryMap[id] = data.id
             }
         }
@@ -236,11 +240,11 @@ extension Repository {
         var payeeMap: [Int64: Int64] = [:]
         do {
             let repo = PayeeRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in PayeeData.sampleData {
                 let id = data.id
                 data.categoryId = categoryMap[data.categoryId] ?? data.categoryId
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 payeeMap[id] = data.id
             }
         }
@@ -248,14 +252,14 @@ extension Repository {
         var transactionMap: [Int64: Int64] = [:]
         do {
             let repo = TransactionRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in TransactionData.sampleData {
                 let id = data.id
                 data.accountId   = accountMap[data.accountId]   ?? data.accountId
                 data.toAccountId = accountMap[data.toAccountId] ?? data.toAccountId
                 data.payeeId     = payeeMap[data.payeeId]       ?? data.payeeId
                 data.categId     = categoryMap[data.categId]    ?? data.categId
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 transactionMap[id] = data.id
             }
         }
@@ -263,14 +267,14 @@ extension Repository {
         var scheduledMap: [Int64: Int64] = [:]
         do {
             let repo = ScheduledRepository(db: db)
-            _ = repo.deleteAll()
+            repo.deleteAll()
             for var data in ScheduledData.sampleData {
                 let id = data.id
                 data.accountId   = accountMap[data.accountId]   ?? data.accountId
                 data.toAccountId = accountMap[data.toAccountId] ?? data.toAccountId
                 data.payeeId     = payeeMap[data.payeeId]       ?? data.payeeId
                 data.categId     = categoryMap[data.categId]    ?? data.categId
-                _ = repo.insert(&data)
+                repo.insert(&data)
                 scheduledMap[id] = data.id
             }
         }
