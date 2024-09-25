@@ -18,11 +18,12 @@ class InfotableRepository: RepositoryProtocol {
 
     static let repositoryName = "INFOTABLE_V1"
     static let table = SQLite.Table(repositoryName)
-    static let columns = [ // (column, type, other)
-        ("INFOID",    "INTEGER", "NOT NULL PRIMARY KEY"),
-        ("INFONAME",  "TEXT",    "NOT NULL UNIQUE COLLATE NOCASE"),
-        ("INFOVALUE", "TEXT",    "NOT NULL"),
-    ]
+
+    // column    | type    | other
+    // ----------+---------+------
+    // INFOID    | INTEGER | NOT NULL PRIMARY KEY
+    // INFONAME  | TEXT    | NOT NULL UNIQUE COLLATE NOCASE
+    // INFOVALUE | TEXT    | NOT NULL
 
     // column expressions
     static let col_id    = SQLite.Expression<Int64>("INFOID")

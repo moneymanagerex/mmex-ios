@@ -18,20 +18,21 @@ class CurrencyRepository: RepositoryProtocol {
 
     static let repositoryName = "CURRENCYFORMATS_V1"
     static let table = SQLite.Table(repositoryName)
-    static let columns = [ // (column, type, other)
-        ("CURRENCYID",      "INTEGER", "PRIMARY KEY"),
-        ("CURRENCYNAME",    "TEXT",    "NOT NULL COLLATE NOCASE UNIQUE"),
-        ("PFX_SYMBOL",      "TEXT",    ""),
-        ("SFX_SYMBOL",      "TEXT",    ""),
-        ("DECIMAL_POINT",   "TEXT",    ""),
-        ("GROUP_SEPARATOR", "TEXT",    ""),
-        ("UNIT_NAME",       "TEXT",    "COLLATE NOCASE"),
-        ("CENT_NAME",       "TEXT",    "COLLATE NOCASE"),
-        ("SCALE",           "INTEGER", ""),
-        ("BASECONVRATE",    "NUMERIC", ""),
-        ("CURRENCY_SYMBOL", "TEXT",    "NOT NULL COLLATE NOCASE UNIQUE"),
-        ("CURRENCY_TYPE",   "TEXT",    "NOT NULL"), // Fiat, Crypto
-    ]
+
+    // column          | type    | other
+    // ----------------+---------+------
+    // CURRENCYID      | INTEGER | PRIMARY KEY
+    // CURRENCYNAME    | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
+    // PFX_SYMBOL      | TEXT    |
+    // SFX_SYMBOL      | TEXT    |
+    // DECIMAL_POINT   | TEXT    |
+    // GROUP_SEPARATOR | TEXT    |
+    // UNIT_NAME       | TEXT    | COLLATE NOCASE
+    // CENT_NAME       | TEXT    | COLLATE NOCASE
+    // SCALE           | INTEGER |
+    // BASECONVRATE    | NUMERIC |
+    // CURRENCY_SYMBOL | TEXT    | NOT NULL COLLATE NOCASE UNIQUE
+    // CURRENCY_TYPE   | TEXT    | NOT NULL (Fiat, Crypto)
 
     // column expressions
     static let col_id                 = SQLite.Expression<Int64>("CURRENCYID")

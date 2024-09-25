@@ -18,25 +18,26 @@ class ScheduledRepository: RepositoryProtocol {
 
     static let repositoryName = "BILLSDEPOSITS_V1"
     static let table = SQLite.Table(repositoryName)
-    static let columns = [ // (column, type, other)
-        ("BDID",               "INTEGER", "PRIMARY KEY"),
-        ("ACCOUNTID",          "INTEGER", "NOT NULL"),
-        ("TOACCOUNTID",        "INTEGER", ""),
-        ("PAYEEID",            "INTEGER", "NOT NULL"),
-        ("TRANSCODE",          "TEXT",    "NOT NULL"), // Withdrawal, Deposit, Transfer
-        ("TRANSAMOUNT",        "NUMERIC", "NOT NULL"),
-        ("STATUS",             "TEXT",    ""), // N, R, V, F, D
-        ("TRANSACTIONNUMBER",  "TEXT",    ""),
-        ("NOTES",              "TEXT",    ""),
-        ("CATEGID",            "INTEGER", ""),
-        ("TRANSDATE",          "TEXT",    ""),
-        ("FOLLOWUPID",         "INTEGER", ""),
-        ("TOTRANSAMOUNT",      "NUMERIC", ""),
-        ("REPEATS",            "INTEGER", ""),
-        ("NEXTOCCURRENCEDATE", "TEXT",    ""),
-        ("NUMOCCURRENCES",     "INTEGER", ""),
-        ("COLOR",              "INTEGER", "DEFAULT -1"),
-    ]
+
+    // column             | type    | other
+    // -------------------+---------+------
+    // BDID               | INTEGER | PRIMARY KEY
+    // ACCOUNTID          | INTEGER | NOT NULL
+    // TOACCOUNTID        | INTEGER |
+    // PAYEEID            | INTEGER | NOT NULL
+    // TRANSCODE          | TEXT    | NOT NULL (Withdrawal, Deposit, Transfer)
+    // TRANSAMOUNT        | NUMERIC | NOT NULL
+    // STATUS             | TEXT    | (N, R, V, F, D)
+    // TRANSACTIONNUMBER  | TEXT    |
+    // NOTES              | TEXT    |
+    // CATEGID            | INTEGER |
+    // TRANSDATE          | TEXT    |
+    // FOLLOWUPID         | INTEGER |
+    // TOTRANSAMOUNT      | NUMERIC |
+    // REPEATS            | INTEGER |
+    // NEXTOCCURRENCEDATE | TEXT    |
+    // NUMOCCURRENCES     | INTEGER |
+    // COLOR              | INTEGER | DEFAULT -1
 
     // columns
     static let col_id                 = SQLite.Expression<Int64>("BDID")
