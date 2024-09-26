@@ -30,6 +30,8 @@
 		9208241E2CA4E1C500388AB2 /* TransactionLinkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208241D2CA4E1C500388AB2 /* TransactionLinkRepository.swift */; };
 		920824202CA4E5C200388AB2 /* TagLinkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208241F2CA4E5C200388AB2 /* TagLinkData.swift */; };
 		920824222CA4E67200388AB2 /* TagLinkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824212CA4E67200388AB2 /* TagLinkRepository.swift */; };
+		920824242CA5078900388AB2 /* TransactionShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824232CA5078900388AB2 /* TransactionShareData.swift */; };
+		920824262CA5082D00388AB2 /* TransactionShareRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824252CA5082D00388AB2 /* TransactionShareRepository.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -126,6 +128,8 @@
 		9208241D2CA4E1C500388AB2 /* TransactionLinkRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionLinkRepository.swift; sourceTree = "<group>"; };
 		9208241F2CA4E5C200388AB2 /* TagLinkData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagLinkData.swift; sourceTree = "<group>"; };
 		920824212CA4E67200388AB2 /* TagLinkRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagLinkRepository.swift; sourceTree = "<group>"; };
+		920824232CA5078900388AB2 /* TransactionShareData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionShareData.swift; sourceTree = "<group>"; };
+		920824252CA5082D00388AB2 /* TransactionShareRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionShareRepository.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
 				920824052CA4AE0A00388AB2 /* TransactionSplitRepository.swift */,
 				9208241D2CA4E1C500388AB2 /* TransactionLinkRepository.swift */,
+				920824252CA5082D00388AB2 /* TransactionShareRepository.swift */,
 				929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */,
 				920824072CA4B05700388AB2 /* ScheduledSplitRepository.swift */,
 				920823FF2CA4A4AA00388AB2 /* TagRepository.swift */,
@@ -416,6 +421,7 @@
 				A3C142662C8F2AF500D3CEC0 /* TransactionData.swift */,
 				920824012CA4AD0C00388AB2 /* TransactionSplitData.swift */,
 				9208241B2CA4DFFC00388AB2 /* TransactionLinkData.swift */,
+				920824232CA5078900388AB2 /* TransactionShareData.swift */,
 				929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */,
 				920824032CA4ADC100388AB2 /* ScheduledSplitData.swift */,
 				920823FD2CA4A3F700388AB2 /* TagData.swift */,
@@ -557,9 +563,11 @@
 				920823FE2CA4A3F700388AB2 /* TagData.swift in Sources */,
 				A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */,
 				920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */,
+				920824242CA5078900388AB2 /* TransactionShareData.swift in Sources */,
 				920824062CA4AE0A00388AB2 /* TransactionSplitRepository.swift in Sources */,
 				A3C142AA2C90721800D3CEC0 /* TransactionListView2.swift in Sources */,
 				A3C142A62C90417700D3CEC0 /* TransactionAddView2.swift in Sources */,
+				920824262CA5082D00388AB2 /* TransactionShareRepository.swift in Sources */,
 				A3C142472C89CB4200D3CEC0 /* AccountDetailView.swift in Sources */,
 				A3C1429A2C8FF77D00D3CEC0 /* TransactionDetailView.swift in Sources */,
 				920823FC2CA4A15C00388AB2 /* StockHistoryRepository.swift in Sources */,
