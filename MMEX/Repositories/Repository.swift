@@ -16,6 +16,24 @@ class Repository {
 }
 
 extension Repository {
+    func select<Result>(
+        from table: SQLite.Table,
+        with result: (SQLite.Row) -> Result
+    ) -> [Result] {
+        guard let db else { return [] }
+        do {
+            var data: [Result] = []
+            for row in try db.prepare(table) {
+                data.append(result(row))
+            }
+            print("Successfull select: \(data.count)")
+            return data
+        } catch {
+            print("Failed select: \(error)")
+            return []
+        }
+    }
+
     func execute(sql: String) {
         guard let db else { return }
         print("Executing sql: \(sql)")
@@ -25,7 +43,7 @@ extension Repository {
             print("Failed to execute sql: \(error)")
         }
     }
-    
+
     func execute(url: URL) {
         if db == nil { return }
         guard let contents = try? String(contentsOf: url) else {
@@ -80,6 +98,25 @@ extension RepositoryProtocol {
             }
         } catch {
             print("Failed pluck for \(key) in \(Self.repositoryName): \(error)")
+            return nil
+        }
+    }
+
+    func pluck(id: Int64) -> RepositoryData? {
+        guard let db else { return nil }
+        do {
+            if let row = try db.pluck(Self.selectQuery(from: Self.table)
+                .filter(Self.col_id == id)
+            ) {
+                let data = Self.selectData(row)
+                print("Successfull pluck for id \(id) in \(Self.repositoryName): \(data.shortDesc())")
+                return data
+            } else {
+                print("Unsuccefull pluck for id \(id) in \(Self.repositoryName)")
+                return nil
+            }
+        } catch {
+            print("Failed pluck for id \(id) in \(Self.repositoryName): \(error)")
             return nil
         }
     }
@@ -272,17 +309,6 @@ extension Repository {
             }
         }
 
-        var tagMap: [Int64: Int64] = [:]
-        do {
-            let repo = TagRepository(db: db)
-            repo.deleteAll()
-            for var data in TagData.sampleData {
-                let id = data.id
-                repo.insert(&data)
-                tagMap[id] = data.id
-            }
-        }
-
         var transactionMap: [Int64: Int64] = [:]
         do {
             let repo = TransactionRepository(db: db)
@@ -308,6 +334,22 @@ extension Repository {
                 data.categId = categoryMap[data.categId]    ?? data.categId
                 repo.insert(&data)
                 transactionSplitMap[id] = data.id
+            }
+        }
+
+        var transactionLinkMap: [Int64: Int64] = [:]
+        do {
+            let repo = TransactionLinkRepository(db: db)
+            repo.deleteAll()
+            for var data in TransactionLinkData.sampleData {
+                let id = data.id
+                data.refId = switch data.refType {
+                case .stock : stockMap[data.refId] ?? data.refId
+                case .asset : assetMap[data.refId] ?? data.refId
+                default: data.refId
+                }
+                repo.insert(&data)
+                transactionLinkMap[id] = data.id
             }
         }
 
@@ -339,14 +381,32 @@ extension Repository {
             }
         }
 
-        var budgetYearMap: [Int64: Int64] = [:]
+        var tagMap: [Int64: Int64] = [:]
         do {
-            let repo = BudgetYearRepository(db: db)
+            let repo = TagRepository(db: db)
             repo.deleteAll()
-            for var data in BudgetYearData.sampleData {
+            for var data in TagData.sampleData {
                 let id = data.id
                 repo.insert(&data)
-                budgetYearMap[id] = data.id
+                tagMap[id] = data.id
+            }
+        }
+
+        var tagLinkMap: [Int64: Int64] = [:]
+        do {
+            let repo = TagLinkRepository(db: db)
+            repo.deleteAll()
+            for var data in TagLinkData.sampleData {
+                let id = data.id
+                data.refId = switch data.refType {
+                case .transaction      : transactionMap[data.refId]      ?? data.refId
+                case .transactionSplit : transactionSplitMap[data.refId] ?? data.refId
+                case .scheduled        : scheduledMap[data.refId]        ?? data.refId
+                case .scheduledSplit   : scheduledSplitMap[data.refId]   ?? data.refId
+                default: data.refId
+                }
+                repo.insert(&data)
+                tagLinkMap[id] = data.id
             }
         }
 
@@ -368,6 +428,17 @@ extension Repository {
                 }
                 repo.insert(&data)
                 attachmentMap[id] = data.id
+            }
+        }
+
+        var budgetYearMap: [Int64: Int64] = [:]
+        do {
+            let repo = BudgetYearRepository(db: db)
+            repo.deleteAll()
+            for var data in BudgetYearData.sampleData {
+                let id = data.id
+                repo.insert(&data)
+                budgetYearMap[id] = data.id
             }
         }
 

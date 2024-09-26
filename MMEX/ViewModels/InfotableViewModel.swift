@@ -130,7 +130,7 @@ class InfotableViewModel: ObservableObject {
             let loadTransactions = self.transactionRepo.loadRecent(accountId: self.defaultAccountId)
 
             DispatchQueue.main.async {
-                self.txns = loadTransactions
+                self.txns = loadTransactions.filter { txn in txn.deletedTime.isEmpty }
                 self.txns_per_day = Dictionary(grouping: self.txns) { txn in
                     // Extract the date portion (ignoring the time) from ISO-8601 string
                     let formatter = DateFormatter()

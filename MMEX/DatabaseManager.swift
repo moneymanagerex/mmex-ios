@@ -59,44 +59,26 @@ class DataManager {
         }
         return nil
     }
-    
-    func getRepository() -> Repository {
-        return Repository(db: db)
-    }
 
-    func getInfotableRepository() -> InfotableRepository {
-        return InfotableRepository(db: db)
-    }
-
-    func getCurrencyRepository() -> CurrencyRepository {
-        return CurrencyRepository(db: db)
-    }
-
-    func getAccountRepository() -> AccountRepository {
-        return AccountRepository(db: db)
-    }
-
-    func getAssetRepository() -> AssetRepository {
-        return AssetRepository(db: db)
-    }
-
-    func getStockRepository() -> StockRepository {
-        return StockRepository(db: db)
-    }
-
-    func getCategoryRepository() -> CategoryRepository {
-        return CategoryRepository(db: db)
-    }
-
-    func getPayeeRepository() -> PayeeRepository {
-        return PayeeRepository(db: db)
-    }
-
-    func getTransactionRepository() -> TransactionRepository {
-        return TransactionRepository(db: db)
-    }
-
-    func getScheduledRepository() -> ScheduledRepository {
-        return ScheduledRepository(db: db)
-    }
+    func getRepository()                 -> Repository { Repository(db: db) }
+    func getInfotableRepository()        -> InfotableRepository { InfotableRepository(db: db) }
+    func getCurrencyRepository()         -> CurrencyRepository { CurrencyRepository(db: db) }
+    func getCurrencyHistoryRepository()  -> CurrencyRepository { CurrencyRepository(db: db) }
+    func getAccountRepository()          -> AccountRepository { AccountRepository(db: db) }
+    func getAssetRepository()            -> AssetRepository { AssetRepository(db: db) }
+    func getStockRepository()            -> StockRepository { StockRepository(db: db) }
+    func getStockHistoryRepository()     -> StockRepository { StockRepository(db: db) }
+    func getCategoryRepository()         -> CategoryRepository { CategoryRepository(db: db) }
+    func getPayeeRepository()            -> PayeeRepository { PayeeRepository(db: db) }
+    func getTransactionRepository()      -> TransactionRepository { TransactionRepository(db: db) }
+    func getTransactionSplitRepository() -> TransactionSplitRepository { TransactionSplitRepository(db: db) }
+    func getTransactionLinkRepository()  -> TransactionLinkRepository { TransactionLinkRepository(db: db) }
+    func getScheduledRepository()        -> ScheduledRepository { ScheduledRepository(db: db) }
+    func getScheduledSplitRepository()   -> ScheduledSplitRepository { ScheduledSplitRepository(db: db) }
+    func getTagRepository()              -> TagRepository { TagRepository(db: db) }
+    func getTagLinkRepository()          -> TagLinkRepository { TagLinkRepository(db: db) }
+    func getAttachmentRepository()       -> AttachmentRepository { AttachmentRepository(db: db) }
+    func getBudgetYearRepository()       -> BudgetYearRepository { BudgetYearRepository(db: db) }
+    func getBudgetTableRepository()      -> BudgetTableRepository { BudgetTableRepository(db: db) }
+    func getReportRepository()           -> ReportRepository { ReportRepository(db: db) }
 }

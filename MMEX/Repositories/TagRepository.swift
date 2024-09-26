@@ -61,4 +61,34 @@ extension TagRepository {
             .order(Self.col_name)
         )
     }
+
+    // load tags of a specific item
+    func load(for trans: TransactionData) -> [String] {
+        typealias G = TagRepository
+        typealias L = TagLinkRepository
+        typealias T = TransactionRepository
+        return Repository(db: db).select(from: G.table
+            .join(L.table, on: L.table[L.col_tagId] == G.table[G.col_id])
+            .join(T.table, on: T.table[T.col_id] == L.table[L.col_refId])
+            .filter(L.table[L.col_refType] == RefType.transaction.rawValue)
+            .filter(T.table[T.col_id] == trans.id)
+            .order(L.table[L.col_id])
+        ) { row in
+            row[G.table[G.col_name]]
+        }
+    }
+    func load(for sched: ScheduledData) -> [String] {
+        typealias G = TagRepository
+        typealias L = TagLinkRepository
+        typealias T = ScheduledRepository
+        return Repository(db: db).select(from: G.table
+            .join(L.table, on: L.table[L.col_tagId] == G.table[G.col_id])
+            .join(T.table, on: T.table[T.col_id] == L.table[L.col_refId])
+            .filter(L.table[L.col_refType] == RefType.scheduled.rawValue)
+            .filter(T.table[T.col_id] == sched.id)
+            .order(L.table[L.col_id])
+        ) { row in
+            row[G.table[G.col_name]]
+        }
+    }
 }

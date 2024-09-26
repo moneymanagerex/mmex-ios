@@ -26,6 +26,10 @@
 		920824162CA4C95F00388AB2 /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824152CA4C95F00388AB2 /* ReportRepository.swift */; };
 		920824182CA4CF4300388AB2 /* AttachmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824172CA4CF4300388AB2 /* AttachmentData.swift */; };
 		9208241A2CA4D35700388AB2 /* AttachmentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824192CA4D35700388AB2 /* AttachmentRepository.swift */; };
+		9208241C2CA4DFFC00388AB2 /* TransactionLinkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208241B2CA4DFFC00388AB2 /* TransactionLinkData.swift */; };
+		9208241E2CA4E1C500388AB2 /* TransactionLinkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208241D2CA4E1C500388AB2 /* TransactionLinkRepository.swift */; };
+		920824202CA4E5C200388AB2 /* TagLinkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208241F2CA4E5C200388AB2 /* TagLinkData.swift */; };
+		920824222CA4E67200388AB2 /* TagLinkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824212CA4E67200388AB2 /* TagLinkRepository.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -118,6 +122,10 @@
 		920824152CA4C95F00388AB2 /* ReportRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		920824172CA4CF4300388AB2 /* AttachmentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentData.swift; sourceTree = "<group>"; };
 		920824192CA4D35700388AB2 /* AttachmentRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentRepository.swift; sourceTree = "<group>"; };
+		9208241B2CA4DFFC00388AB2 /* TransactionLinkData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionLinkData.swift; sourceTree = "<group>"; };
+		9208241D2CA4E1C500388AB2 /* TransactionLinkRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionLinkRepository.swift; sourceTree = "<group>"; };
+		9208241F2CA4E5C200388AB2 /* TagLinkData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagLinkData.swift; sourceTree = "<group>"; };
+		920824212CA4E67200388AB2 /* TagLinkRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagLinkRepository.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -332,11 +340,13 @@
 				920823FB2CA4A15C00388AB2 /* StockHistoryRepository.swift */,
 				A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */,
 				A3C142932C8FE13E00D3CEC0 /* PayeeRepository.swift */,
-				920823FF2CA4A4AA00388AB2 /* TagRepository.swift */,
 				A3C142952C8FE15E00D3CEC0 /* TransactionRepository.swift */,
 				920824052CA4AE0A00388AB2 /* TransactionSplitRepository.swift */,
+				9208241D2CA4E1C500388AB2 /* TransactionLinkRepository.swift */,
 				929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */,
 				920824072CA4B05700388AB2 /* ScheduledSplitRepository.swift */,
+				920823FF2CA4A4AA00388AB2 /* TagRepository.swift */,
+				920824212CA4E67200388AB2 /* TagLinkRepository.swift */,
 				920824192CA4D35700388AB2 /* AttachmentRepository.swift */,
 				9208240F2CA4C5CD00388AB2 /* BudgetYearRepository.swift */,
 				920824112CA4C6A400388AB2 /* BudgetTableRepository.swift */,
@@ -403,11 +413,13 @@
 				920823F92CA49A4B00388AB2 /* StockHistoryData.swift */,
 				A3C1429F2C9025D600D3CEC0 /* CategoryData.swift */,
 				A3C1424D2C8B335900D3CEC0 /* PayeeData.swift */,
-				920823FD2CA4A3F700388AB2 /* TagData.swift */,
 				A3C142662C8F2AF500D3CEC0 /* TransactionData.swift */,
 				920824012CA4AD0C00388AB2 /* TransactionSplitData.swift */,
+				9208241B2CA4DFFC00388AB2 /* TransactionLinkData.swift */,
 				929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */,
 				920824032CA4ADC100388AB2 /* ScheduledSplitData.swift */,
+				920823FD2CA4A3F700388AB2 /* TagData.swift */,
+				9208241F2CA4E5C200388AB2 /* TagLinkData.swift */,
 				920824172CA4CF4300388AB2 /* AttachmentData.swift */,
 				920824092CA4C2AD00388AB2 /* BudgetYearData.swift */,
 				9208240B2CA4C31B00388AB2 /* BudgetTableData.swift */,
@@ -559,6 +571,7 @@
 				A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */,
 				A3363EE72C93249D004696C7 /* CategoryAddView.swift in Sources */,
 				A3C142522C8B37E700D3CEC0 /* PayeeDetailView.swift in Sources */,
+				920824222CA4E67200388AB2 /* TagLinkRepository.swift in Sources */,
 				A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */,
 				A3C142442C89C8FA00D3CEC0 /* AccountData.swift in Sources */,
 				A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */,
@@ -566,6 +579,7 @@
 				9208240A2CA4C2AD00388AB2 /* BudgetYearData.swift in Sources */,
 				A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */,
 				A37E7D942C9B217500B4ECFC /* InfotableData.swift in Sources */,
+				9208241E2CA4E1C500388AB2 /* TransactionLinkRepository.swift in Sources */,
 				9208241A2CA4D35700388AB2 /* AttachmentRepository.swift in Sources */,
 				A37E7D882C9AC2E600B4ECFC /* VersionInfoView.swift in Sources */,
 				920823F62CA498A200388AB2 /* CurrencyHistoryData.swift in Sources */,
@@ -580,10 +594,12 @@
 				920824022CA4AD0C00388AB2 /* TransactionSplitData.swift in Sources */,
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
 				920824102CA4C5CD00388AB2 /* BudgetYearRepository.swift in Sources */,
+				920824202CA4E5C200388AB2 /* TagLinkData.swift in Sources */,
 				A3C142652C8ED8EA00D3CEC0 /* AccountEditView.swift in Sources */,
 				A3C142632C8ED8C000D3CEC0 /* AccountAddView.swift in Sources */,
 				929EF6712CA3676B0051A3E6 /* MMEXDocument.swift in Sources */,
 				929EF6692CA034770051A3E6 /* Repository.swift in Sources */,
+				9208241C2CA4DFFC00388AB2 /* TransactionLinkData.swift in Sources */,
 				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
 				A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */,
 				9208240C2CA4C31B00388AB2 /* BudgetTableData.swift in Sources */,
