@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionListView: View {
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
     @State private var isPresentingTransactionAddView = false
@@ -16,18 +16,11 @@ struct TransactionListView: View {
     @State private var payees: [PayeeData] = []
     @State private var categories: [CategoryData] = []
     @State private var accounts: [AccountWithCurrency] = []
-
-    private var repository: TransactionRepository
-    
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
-        self.repository = DataManager(databaseURL: databaseURL).getTransactionRepository()
-    }
     
     var body: some View {
         NavigationStack {
             List(txns) { txn in
-                NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
+                NavigationLink(destination: TransactionDetailView(txn: txn, payees: $payees, categories: $categories, accounts: $accounts)) {
                     HStack {
                         // Left column: Date (truncated to day)
                         Text(formatDate(from: txn.transDate))
@@ -74,9 +67,9 @@ struct TransactionListView: View {
             loadPayees()
             loadCategories()
             loadAccounts()
-            
+
             // database level setting
-            let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
+            let repository = dataManager.getInfotableRepository()
             if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
                 newTxn.accountId = storedDefaultAccount
             }
@@ -88,10 +81,10 @@ struct TransactionListView: View {
             }
         }
     }
-    
+
     func loadTransactions() {
-        print("Loading txn in TransactionListView...")
-        
+        let repository = dataManager.getTransactionRepository()
+
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
             let loadTransactions = repository.load()
@@ -102,14 +95,14 @@ struct TransactionListView: View {
             }
         }
     }
-    
+
     func loadPayees() {
-        let repository = DataManager(databaseURL: self.databaseURL).getPayeeRepository()
+        let repository = dataManager.getPayeeRepository()
 
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
             let loadedPayees = repository.load()
-            
+
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
@@ -118,7 +111,7 @@ struct TransactionListView: View {
     }
     
     func loadCategories() {
-        let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
+        let repository = dataManager.getCategoryRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository.load()
@@ -130,7 +123,7 @@ struct TransactionListView: View {
     }
     
     func loadAccounts() {
-        let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
+        let repository = dataManager.getAccountRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository.loadWithCurrency()
@@ -152,14 +145,14 @@ struct TransactionListView: View {
     }
     
     func addTransaction(txn: inout TransactionData) {
-        // TODO
-        if self.repository.insert(&txn) {
+        let repository = dataManager.getTransactionRepository()
+        if repository.insert(&txn) {
             self.txns.append(txn) // id is ready after repo call
         } else {
             // TODO
         }
     }
-    
+
     // Helper function to format the date, truncating to day
     func formatDate(from isoDate: String) -> String {
         let formatter = DateFormatter()

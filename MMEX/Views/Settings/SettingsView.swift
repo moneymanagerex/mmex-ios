@@ -59,7 +59,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Database File")
                     Spacer()
-                    Text(viewModel.databaseURL.lastPathComponent)
+                    // Text(viewModel.databaseURL.lastPathComponent)
                 }
                 HStack {
                     Text("Schema Version")

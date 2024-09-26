@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct TransactionListView2: View {
-    let databaseURL: URL
     @ObservedObject var viewModel: InfotableViewModel
+    @EnvironmentObject var dataManager: DataManager
 
     @State private var payees: [PayeeData] = []
     @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
@@ -17,11 +17,6 @@ struct TransactionListView2: View {
     @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
     @State private var accounts: [AccountWithCurrency] = []
     @State private var accountDict: [Int64: AccountWithCurrency] = [: ] // for lookup
-    
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
-        self.viewModel = InfotableViewModel(databaseURL: databaseURL) // TODO shared instance with Settings?
-    }
     
     var body: some View {
         NavigationStack {
@@ -37,7 +32,7 @@ struct TransactionListView2: View {
                         }
                     ) {
                         ForEach(viewModel.txns_per_day[day]!, id: \.id) { txn in
-                            NavigationLink(destination: TransactionDetailView(txn: txn, databaseURL: databaseURL, payees: $payees, categories: $categories, accounts: $accounts)) {
+                            NavigationLink(destination: TransactionDetailView(txn: txn, payees: $payees, categories: $categories, accounts: $accounts)) {
                                 HStack {
                                     // Left column (Category Icon or Category Name)
                                     if let categorySymbol = CategoryData.categoryToSFSymbol[getCategoryName(for: txn.categId)] {
@@ -128,7 +123,7 @@ struct TransactionListView2: View {
     }
 
     func loadPayees() {
-        let repository = DataManager(databaseURL: self.databaseURL).getPayeeRepository()
+        let repository = dataManager.getPayeeRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedPayees = repository.load()
@@ -141,7 +136,7 @@ struct TransactionListView2: View {
     }
     
     func loadCategories() {
-        let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
+        let repository = dataManager.getCategoryRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository.load()
@@ -154,7 +149,7 @@ struct TransactionListView2: View {
     }
     
     func loadAccounts() {
-        let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
+        let repository = dataManager.getAccountRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository.loadWithCurrency()

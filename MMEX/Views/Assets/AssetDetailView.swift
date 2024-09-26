@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AssetDetailView: View {
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @Binding var asset: AssetData
-    let databaseURL: URL
 
     @State private var editingAsset = AssetData()
     @State private var isPresentingEditView = false
@@ -118,7 +118,7 @@ struct AssetDetailView: View {
     }
 
     func saveChanges() {
-        let repository = DataManager(databaseURL: databaseURL).getAssetRepository() // pass URL here
+        let repository = dataManager.getAssetRepository() // pass URL here
         if repository.update(asset) {
             // TODO
         } else {
@@ -127,7 +127,7 @@ struct AssetDetailView: View {
     }
 
     func deleteAsset(){
-        let repository = DataManager(databaseURL: databaseURL).getAssetRepository() // pass URL here
+        let repository = dataManager.getAssetRepository() // pass URL here
         if repository.delete(asset) {
             // Dismiss the AssetDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()
@@ -149,5 +149,5 @@ struct AssetDetailView: View {
 }
 
 #Preview {
-    AssetDetailView(asset: .constant(AssetData.sampleData[0]), databaseURL: URL(string: "path/to/database")!)
+    AssetDetailView(asset: .constant(AssetData.sampleData[0]))
 }

@@ -7,19 +7,12 @@
 import SwiftUI
 
 struct AccountListView: View {
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var currencies: [CurrencyData] = []
     @State private var accounts_by_type: [String:[AccountWithCurrency]] = [:]
     @State private var newAccount = AccountWithCurrency()
     @State private var isPresentingAccountAddView = false
     @State private var expandedSections: [String: Bool] = [:] // Tracks the expanded/collapsed state
-
-    private var repository: AccountRepository
-
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
-        self.repository = DataManager(databaseURL: databaseURL).getAccountRepository()
-    }
 
     var body: some View {
         NavigationStack {
@@ -52,7 +45,7 @@ struct AccountListView: View {
                         // Show account list based on expandedSections state
                         if expandedSections[accountType] == true {
                             ForEach(accounts_by_type[accountType]!) { account in
-                                NavigationLink(destination: AccountDetailView(account: account, databaseURL: databaseURL, currencies: $currencies)) {
+                                NavigationLink(destination: AccountDetailView(account: account, currencies: $currencies)) {
                                     HStack {
                                         Text(account.data.name)
                                             .font(.subheadline)
@@ -103,6 +96,7 @@ struct AccountListView: View {
     func loadAccounts() {
         print("Loading payees in AccountListView...")
 
+        let repository = dataManager.getAccountRepository()
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository.loadWithCurrency()
             DispatchQueue.main.async {
@@ -115,7 +109,7 @@ struct AccountListView: View {
     }
     
     func loadCurrencies() {
-        let repo = DataManager(databaseURL: self.databaseURL).getCurrencyRepository()
+        let repo = dataManager.getCurrencyRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedCurrencies = repo.load()
@@ -127,6 +121,7 @@ struct AccountListView: View {
     }
 
     func addAccount(account: inout AccountWithCurrency) {
+        let repository = dataManager.getAccountRepository()
         if repository.insert(&(account.data)) {
             // self.accounts.append(account)
             self.loadAccounts()
@@ -135,5 +130,5 @@ struct AccountListView: View {
 }
 
 #Preview {
-    AccountListView(databaseURL: URL(string: "path/to/database")!)
+    AccountListView()
 }

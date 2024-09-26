@@ -8,25 +8,17 @@
 import SwiftUI
 
 struct AssetListView: View {
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var assets: [AssetData] = []
     @State private var filteredAssets: [AssetData] = [] // New: Filtered assets for search results
     @State private var newAsset = AssetData()
     @State private var isPresentingAssetAddView = false
     @State private var searchQuery: String = "" // New: Search query
 
-    // Initialize repository with the databaseURL
-    private var repository: AssetRepository
-
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
-        self.repository = DataManager(databaseURL: databaseURL).getAssetRepository() // pass URL here
-    }
-
     var body: some View {
         NavigationStack {
             List($filteredAssets) { $asset in // Use filteredAssets instead of assets
-                NavigationLink(destination: AssetDetailView(asset: $asset, databaseURL: databaseURL)) {
+                NavigationLink(destination: AssetDetailView(asset: $asset)) {
                     HStack {
                         Text(asset.name)
                         Spacer()
@@ -61,6 +53,7 @@ struct AssetListView: View {
 
     func loadAssets() {
         // Fetch assets using repository and update the view
+        let repository = dataManager.getAssetRepository()
         DispatchQueue.global(qos: .background).async {
             let loadedAssets = repository.load()
             // Update UI on the main thread
@@ -73,7 +66,8 @@ struct AssetListView: View {
 
     func addAsset(asset: inout AssetData) {
         // TODO
-        if self.repository.insert(&asset) {
+        let repository = dataManager.getAssetRepository()
+        if repository.insert(&asset) {
             self.assets.append(asset) // id is ready after repo call
             // loadAssets()
         } else {
@@ -92,7 +86,5 @@ struct AssetListView: View {
 }
 
 #Preview {
-    AssetListView(
-        databaseURL: URL(string: "path/to/database")!
-    )
+    AssetListView()
 }

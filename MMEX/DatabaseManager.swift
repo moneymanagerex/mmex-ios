@@ -8,9 +8,15 @@
 import Foundation
 import SQLite
 
-class DataManager {
-    let db: Connection?
-    
+class DataManager: ObservableObject {
+    @Published var isDatabaseConnected = false
+    private(set) var db: Connection?
+    private(set) var databaseURL: URL?
+
+    init() {
+        // TODO
+    }
+
     init(databaseURL: URL) {
         if databaseURL.startAccessingSecurityScopedResource() {
             defer { databaseURL.stopAccessingSecurityScopedResource() }
@@ -29,6 +35,24 @@ class DataManager {
         }
     }
     
+    func openDabase(at databaseURL: URL) {
+        self.databaseURL = databaseURL
+        if databaseURL.startAccessingSecurityScopedResource() {
+            defer { databaseURL.stopAccessingSecurityScopedResource() }
+            do {
+                db = try Connection(databaseURL.path)
+                print("Connected to database: \(databaseURL.path)")
+                setJournalModeDelete(connection: db!)
+            } catch {
+                print("Failed to connect to database: \(error)")
+                db = nil
+            }
+        } else {
+            db = nil
+            print("Failed to access security-scoped resource")
+        }
+    }
+
     func setJournalModeDelete(connection: Connection) {
         do {
             try connection.execute("PRAGMA journal_mode = MEMORY;")
