@@ -73,6 +73,7 @@ class DataManager {
     func getTransactionRepository()      -> TransactionRepository { TransactionRepository(db: db) }
     func getTransactionSplitRepository() -> TransactionSplitRepository { TransactionSplitRepository(db: db) }
     func getTransactionLinkRepository()  -> TransactionLinkRepository { TransactionLinkRepository(db: db) }
+    func getTransactionShareRepository() -> TransactionShareRepository { TransactionShareRepository(db: db) }
     func getScheduledRepository()        -> ScheduledRepository { ScheduledRepository(db: db) }
     func getScheduledSplitRepository()   -> ScheduledSplitRepository { ScheduledSplitRepository(db: db) }
     func getTagRepository()              -> TagRepository { TagRepository(db: db) }

@@ -353,6 +353,18 @@ extension Repository {
             }
         }
 
+        var transactionShareMap: [Int64: Int64] = [:]
+        do {
+            let repo = TransactionShareRepository(db: db)
+            repo.deleteAll()
+            for var data in TransactionShareData.sampleData {
+                let id = data.id
+                data.transId = transactionMap[data.transId] ?? data.transId
+                repo.insert(&data)
+                transactionShareMap[id] = data.id
+            }
+        }
+
         var scheduledMap: [Int64: Int64] = [:]
         do {
             let repo = ScheduledRepository(db: db)
