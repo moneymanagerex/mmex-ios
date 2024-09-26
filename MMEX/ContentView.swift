@@ -227,11 +227,7 @@ struct TabContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        // Initialize the DataManager and inject it into the preview
-        let dataManager = DataManager()
-        ContentView()
-            .environmentObject(dataManager) // Inject DataManager
-    }
+#Preview(){
+    ContentView()
+        .environmentObject(DataManager()) // Inject DataManager
 }
