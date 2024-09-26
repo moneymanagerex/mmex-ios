@@ -31,11 +31,13 @@ struct ContentView: View {
                         TabContentView(selectedTab: $selectedTab, isDocumentPickerPresented: $isDocumentPickerPresented, databaseURL: url)
                     }
                 } else {
+                    // Use @StateObject to manage the lifecycle of InfotableViewModel
+                    let infotableViewModel = InfotableViewModel(dataManager: dataManager)
                     // iPhone layout: Tabs at the bottom
                     TabView(selection: $selectedTab) {
                         // Latest Transactions Tab
                         NavigationView {
-                            TransactionListView2(viewModel: InfotableViewModel(databaseURL: url)) // Summary and Edit feature
+                            TransactionListView2(viewModel: infotableViewModel) // Summary and Edit feature
                                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
                         }
                         .tabItem {
@@ -46,7 +48,7 @@ struct ContentView: View {
 
                         // Insights module
                         NavigationView {
-                            InsightsView(viewModel: InsightsViewModel(databaseURL: url))
+                            InsightsView(viewModel: InsightsViewModel(dataManager: dataManager))
                                 .navigationBarTitle("Reports and Insights", displayMode: .inline)
                         }
                         .tabItem {
@@ -79,7 +81,7 @@ struct ContentView: View {
 
                         // Settings Tab
                         NavigationView {
-                            SettingsView(viewModel: InfotableViewModel(databaseURL: url)) // Payees, Accounts, Currency
+                            SettingsView(viewModel: infotableViewModel) // Payees, Accounts, Currency
                                 .navigationBarTitle("Settings", displayMode: .inline)
                         }
                         .tabItem {
@@ -196,17 +198,21 @@ struct SidebarView: View {
 struct TabContentView: View {
     @Binding var selectedTab: Int
     @Binding var isDocumentPickerPresented: Bool
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+
     var databaseURL: URL
 
     var body: some View {
+        // Use @StateObject to manage the lifecycle of InfotableViewModel
+        let infotableViewModel = InfotableViewModel(dataManager: dataManager)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         Group {
             switch selectedTab {
             case 0:
-                TransactionListView2(viewModel: InfotableViewModel(databaseURL: databaseURL)) // Summary and Edit feature
+                TransactionListView2(viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
-                InsightsView(viewModel: InsightsViewModel(databaseURL: databaseURL))
+                InsightsView(viewModel: InsightsViewModel(dataManager: dataManager))
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
                 TransactionAddView2(selectedTab: $selectedTab)
@@ -215,7 +221,7 @@ struct TabContentView: View {
                 ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented)
                     .navigationBarTitle("Management", displayMode: .inline)
             case 4:
-                SettingsView(viewModel: InfotableViewModel(databaseURL: databaseURL))
+                SettingsView(viewModel: infotableViewModel)
                     .navigationBarTitle("Settings", displayMode: .inline)
             default:
                 EmptyView()

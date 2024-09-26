@@ -10,8 +10,6 @@ import SQLite
 import Combine
 
 class InfotableViewModel: ObservableObject {
-    let databaseURL: URL
-
     // for the view to observe
     @Published var baseCurrencyId: Int64 = 0
     @Published var defaultAccountId: Int64 = 0
@@ -33,9 +31,8 @@ class InfotableViewModel: ObservableObject {
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
 
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
-        self.dataManager = DataManager(databaseURL: databaseURL)
+    init(dataManager: DataManager) {
+        self.dataManager = dataManager
 
         self.infotableRepo = self.dataManager.getInfotableRepository()
         self.transactionRepo = self.dataManager.getTransactionRepository()
@@ -68,6 +65,10 @@ class InfotableViewModel: ObservableObject {
     
     func getSchemaVersion() -> Int32 {
         return self.dataManager.getSchemaVersion() ?? 0
+    }
+    
+    func getDatabaseURL() -> URL {
+        return self.dataManager.databaseURL!
     }
 
     // Set up individual bindings for each @Published property

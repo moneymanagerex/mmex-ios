@@ -59,7 +59,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Database File")
                     Spacer()
-                    // Text(viewModel.databaseURL.lastPathComponent)
+                    Text(viewModel.getDatabaseURL().lastPathComponent)
                 }
                 HStack {
                     Text("Schema Version")
@@ -110,5 +110,5 @@ enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
 }
 
 #Preview {
-    SettingsView(viewModel: InfotableViewModel(databaseURL: URL(string: "path/to/database")!))
+    SettingsView(viewModel: InfotableViewModel(dataManager: DataManager(databaseURL: URL(string: "path/to/database")!)))
 }
