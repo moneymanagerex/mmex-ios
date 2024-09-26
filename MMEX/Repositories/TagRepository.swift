@@ -46,10 +46,10 @@ class TagRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ tag: TagData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: TagData) -> [SQLite.Setter] {
         return [
-            col_name   <- tag.name,
-            col_active <- tag.active ? 1 : 0
+            col_name   <- data.name,
+            col_active <- data.active ? 1 : 0
         ]
     }
 }

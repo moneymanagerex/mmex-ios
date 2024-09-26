@@ -103,23 +103,23 @@ class TransactionRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ txn: TransactionData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: TransactionData) -> [SQLite.Setter] {
         return [
-            col_accountId         <- txn.accountId,
-            col_toAccountId       <- txn.toAccountId,
-            col_payeeId           <- txn.payeeId,
-            col_transCode         <- txn.transCode.id,
-            col_transAmount       <- txn.transAmount,
-            col_status            <- txn.status.id,  // TODO: MMEX Desktop writes '' for .none
-            col_transactionNumber <- txn.transactionNumber,
-            col_notes             <- txn.notes,
-            col_categId           <- txn.categId,
-            col_transDate         <- txn.transDate,
-            col_lastUpdatedTime   <- txn.lastUpdatedTime,
-            col_deletedTime       <- txn.deletedTime,
-            col_followUpId        <- txn.followUpId,
-            col_toTransAmount     <- txn.toTransAmount,
-            col_color             <- txn.color,
+            col_accountId         <- data.accountId,
+            col_toAccountId       <- data.toAccountId,
+            col_payeeId           <- data.payeeId,
+            col_transCode         <- data.transCode.id,
+            col_transAmount       <- data.transAmount,
+            col_status            <- data.status.id,  // TODO: MMEX Desktop writes '' for .none
+            col_transactionNumber <- data.transactionNumber,
+            col_notes             <- data.notes,
+            col_categId           <- data.categId,
+            col_transDate         <- data.transDate,
+            col_lastUpdatedTime   <- data.lastUpdatedTime,
+            col_deletedTime       <- data.deletedTime,
+            col_followUpId        <- data.followUpId,
+            col_toTransAmount     <- data.toTransAmount,
+            col_color             <- data.color,
         ]
     }
 }

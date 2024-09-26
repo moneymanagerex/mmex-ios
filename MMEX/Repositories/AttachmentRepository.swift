@@ -54,12 +54,12 @@ class AttachmentRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ attachment: AttachmentData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: AttachmentData) -> [SQLite.Setter] {
         return [
-            col_refType     <- attachment.refType.rawValue,
-            col_refId       <- attachment.refId,
-            col_description <- attachment.description,
-            col_filename    <- attachment.filename
+            col_refType     <- data.refType.rawValue,
+            col_refId       <- data.refId,
+            col_description <- data.description,
+            col_filename    <- data.filename
         ]
     }
 }

@@ -50,11 +50,11 @@ class CategoryRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ category: CategoryData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: CategoryData) -> [SQLite.Setter] {
         return [
-            col_name     <- category.name,
-            col_active   <- category.active ? 1 : 0,
-            col_parentId <- category.parentId
+            col_name     <- data.name,
+            col_active   <- data.active ? 1 : 0,
+            col_parentId <- data.parentId
         ]
     }
 }

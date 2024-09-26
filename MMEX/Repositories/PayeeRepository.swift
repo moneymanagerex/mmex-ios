@@ -66,15 +66,15 @@ class PayeeRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ payee: PayeeData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: PayeeData) -> [SQLite.Setter] {
         return [
-            col_name       <- payee.name,
-            col_categoryId <- payee.categoryId,
-            col_number     <- payee.number,
-            col_website    <- payee.website,
-            col_notes      <- payee.notes,
-            col_active     <- payee.active ? 1 : 0,
-            col_pattern    <- payee.pattern
+            col_name       <- data.name,
+            col_categoryId <- data.categoryId,
+            col_number     <- data.number,
+            col_website    <- data.website,
+            col_notes      <- data.notes,
+            col_active     <- data.active ? 1 : 0,
+            col_pattern    <- data.pattern
         ]
     }
 }

@@ -50,11 +50,11 @@ class TransactionLinkRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ link: TransactionLinkData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: TransactionLinkData) -> [SQLite.Setter] {
         return [
-            col_transId <- link.transId,
-            col_refType <- link.refType.rawValue,
-            col_refId   <- link.refId
+            col_transId <- data.transId,
+            col_refType <- data.refType.rawValue,
+            col_refId   <- data.refId
         ]
     }
 }

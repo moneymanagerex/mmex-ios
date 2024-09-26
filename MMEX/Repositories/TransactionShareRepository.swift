@@ -63,13 +63,13 @@ class TransactionShareRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ share: TransactionShareData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: TransactionShareData) -> [SQLite.Setter] {
         return [
-            col_transId    <- share.transId,
-            col_number     <- share.number,
-            col_price      <- share.price,
-            col_commission <- share.commission,
-            col_lot        <- share.lot
+            col_transId    <- data.transId,
+            col_number     <- data.number,
+            col_price      <- data.price,
+            col_commission <- data.commission,
+            col_lot        <- data.lot
         ]
     }
 }

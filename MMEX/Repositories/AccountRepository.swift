@@ -125,28 +125,28 @@ class AccountRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ account: AccountData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: AccountData) -> [SQLite.Setter] {
         return [
-            col_name            <- account.name,
-            col_type            <- account.type.id,
-            col_num             <- account.num,
-            col_status          <- account.status.id,
-            col_notes           <- account.notes,
-            col_heldAt          <- account.heldAt,
-            col_website         <- account.website,
-            col_contactInfo     <- account.contactInfo,
-            col_accessInfo      <- account.accessInfo,
-            col_initialDate     <- account.initialDate,
-            col_initialBal      <- account.initialBal,
-            col_favoriteAcct    <- account.favoriteAcct,
-            col_currencyId      <- account.currencyId,
-            col_statementLocked <- account.statementLocked ? 1 : 0,
-            col_statementDate   <- account.statementDate,
-            col_minimumBalance  <- account.minimumBalance,
-            col_creditLimit     <- account.creditLimit,
-            col_interestRate    <- account.interestRate,
-            col_paymentDueDate  <- account.paymentDueDate,
-            col_minimumPayment  <- account.minimumPayment
+            col_name            <- data.name,
+            col_type            <- data.type.id,
+            col_num             <- data.num,
+            col_status          <- data.status.id,
+            col_notes           <- data.notes,
+            col_heldAt          <- data.heldAt,
+            col_website         <- data.website,
+            col_contactInfo     <- data.contactInfo,
+            col_accessInfo      <- data.accessInfo,
+            col_initialDate     <- data.initialDate,
+            col_initialBal      <- data.initialBal,
+            col_favoriteAcct    <- data.favoriteAcct,
+            col_currencyId      <- data.currencyId,
+            col_statementLocked <- data.statementLocked ? 1 : 0,
+            col_statementDate   <- data.statementDate,
+            col_minimumBalance  <- data.minimumBalance,
+            col_creditLimit     <- data.creditLimit,
+            col_interestRate    <- data.interestRate,
+            col_paymentDueDate  <- data.paymentDueDate,
+            col_minimumPayment  <- data.minimumPayment
         ]
     }
 }

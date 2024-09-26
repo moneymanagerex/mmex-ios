@@ -20,7 +20,7 @@ struct TagLinkData: ExportableEntity {
 }
 
 extension TagLinkData: DataProtocol {
-    static let dataName = "TagLinkData"
+    static let dataName = "TagLink"
 
     func shortDesc() -> String {
         "\(self.id)"

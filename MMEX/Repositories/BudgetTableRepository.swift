@@ -65,14 +65,14 @@ class BudgetTableRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ budget: BudgetTableData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: BudgetTableData) -> [SQLite.Setter] {
         return [
-            col_yearId  <- budget.yearId,
-            col_categId <- budget.categId,
-            col_period  <- budget.period.rawValue,
-            col_amount  <- budget.amount,
-            col_notes   <- budget.notes,
-            col_active  <- budget.active ? 1 : 0
+            col_yearId  <- data.yearId,
+            col_categId <- data.categId,
+            col_period  <- data.period.rawValue,
+            col_amount  <- data.amount,
+            col_notes   <- data.notes,
+            col_active  <- data.active ? 1 : 0
         ]
     }
 }

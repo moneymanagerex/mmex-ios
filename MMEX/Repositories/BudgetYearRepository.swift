@@ -42,9 +42,9 @@ class BudgetYearRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ year: BudgetYearData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: BudgetYearData) -> [SQLite.Setter] {
         return [
-            col_name <- year.name
+            col_name <- data.name
         ]
     }
 }

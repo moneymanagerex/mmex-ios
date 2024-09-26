@@ -51,11 +51,11 @@ class TagLinkRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ link: TagLinkData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: TagLinkData) -> [SQLite.Setter] {
         return [
-            col_tagId   <- link.tagId,
-            col_refType <- link.refType.rawValue,
-            col_refId   <- link.refId
+            col_tagId   <- data.tagId,
+            col_refType <- data.refType.rawValue,
+            col_refId   <- data.refId
         ]
     }
 }

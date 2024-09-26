@@ -110,25 +110,25 @@ class ScheduledRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ sched: ScheduledData) -> [SQLite.Setter] {
-        let repeats = sched.repeatAuto.rawValue * repeatBase + sched.repeatType.rawValue
+    static func itemSetters(_ data: ScheduledData) -> [SQLite.Setter] {
+        let repeats = data.repeatAuto.rawValue * repeatBase + data.repeatType.rawValue
         return [
-            col_accountId          <- sched.accountId,
-            col_toAccountId        <- sched.toAccountId,
-            col_payeeId            <- sched.payeeId,
-            col_transCode          <- sched.transCode.id,
-            col_transAmount        <- sched.transAmount,
-            col_status             <- sched.status.id,
-            col_transactionNumber  <- sched.transactionNumber,
-            col_notes              <- sched.notes,
-            col_categId            <- sched.categId,
-            col_transDate          <- sched.transDate,
-            col_followUpId         <- sched.followUpId,
-            col_toTransAmount      <- sched.toTransAmount,
+            col_accountId          <- data.accountId,
+            col_toAccountId        <- data.toAccountId,
+            col_payeeId            <- data.payeeId,
+            col_transCode          <- data.transCode.id,
+            col_transAmount        <- data.transAmount,
+            col_status             <- data.status.id,
+            col_transactionNumber  <- data.transactionNumber,
+            col_notes              <- data.notes,
+            col_categId            <- data.categId,
+            col_transDate          <- data.transDate,
+            col_followUpId         <- data.followUpId,
+            col_toTransAmount      <- data.toTransAmount,
             col_repeats            <- Int64(repeats),
-            col_nextOccurrenceDate <- sched.dueDate,
-            col_numOccurrences     <- Int64(sched.repeatNum),
-            col_color              <- sched.color,
+            col_nextOccurrenceDate <- data.dueDate,
+            col_numOccurrences     <- Int64(data.repeatNum),
+            col_color              <- data.color,
         ]
     }
 }

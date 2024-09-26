@@ -84,18 +84,18 @@ class StockRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ stock: StockData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: StockData) -> [SQLite.Setter] {
         return [
-            col_accountId     <- stock.accountId,
-            col_name          <- stock.name,
-            col_symbol        <- stock.symbol,
-            col_numShares     <- stock.numShares,
-            col_purchaseDate  <- stock.purchaseDate,
-            col_purchasePrice <- stock.purchasePrice,
-            col_currentPrice  <- stock.currentPrice,
-            col_value         <- stock.value,
-            col_commisison    <- stock.commisison,
-            col_notes         <- stock.notes
+            col_accountId     <- data.accountId,
+            col_name          <- data.name,
+            col_symbol        <- data.symbol,
+            col_numShares     <- data.numShares,
+            col_purchaseDate  <- data.purchaseDate,
+            col_purchasePrice <- data.purchasePrice,
+            col_currentPrice  <- data.currentPrice,
+            col_value         <- data.value,
+            col_commisison    <- data.commisison,
+            col_notes         <- data.notes
         ]
     }
 }

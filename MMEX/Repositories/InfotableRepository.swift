@@ -46,10 +46,10 @@ class InfotableRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ info: InfotableData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: InfotableData) -> [SQLite.Setter] {
         return [
-            col_name  <- info.name,
-            col_value <- info.value
+            col_name  <- data.name,
+            col_value <- data.value
         ]
     }
 }

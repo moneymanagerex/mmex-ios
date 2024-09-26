@@ -66,15 +66,15 @@ class ReportRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ report: ReportData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: ReportData) -> [SQLite.Setter] {
         return [
-            col_name            <- report.name,
-            col_groupName       <- report.groupName,
-            col_active          <- report.active ? 1 : 0,
-            col_sqlContent      <- report.sqlContent,
-            col_luaContent      <- report.luaContent,
-            col_templateContent <- report.templateContent,
-            col_description     <- report.description
+            col_name            <- data.name,
+            col_groupName       <- data.groupName,
+            col_active          <- data.active ? 1 : 0,
+            col_sqlContent      <- data.sqlContent,
+            col_luaContent      <- data.luaContent,
+            col_templateContent <- data.templateContent,
+            col_description     <- data.description
         ]
     }
 }
