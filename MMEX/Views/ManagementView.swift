@@ -8,28 +8,27 @@
 import SwiftUI
 
 struct ManagementView: View {
-    let databaseURL: URL
     @Binding var isDocumentPickerPresented: Bool
     
     var body: some View {
         List {
             Section(header: Text("Manage Data")) {
-                NavigationLink(destination: AccountListView(databaseURL: databaseURL)) {
+                NavigationLink(destination: AccountListView()) {
                     Text("Manage Accounts")
                 }
-                NavigationLink(destination: AssetListView(databaseURL: databaseURL)) {
+                NavigationLink(destination: AssetListView()) {
                     Text("Manage Assets")
                 }
-                NavigationLink(destination: PayeeListView(databaseURL: databaseURL)) {
+                NavigationLink(destination: PayeeListView()) {
                     Text("Manage Payees")
                 }
-                NavigationLink(destination: CategoryListView(databaseURL: databaseURL)) {
+                NavigationLink(destination: CategoryListView()) {
                     Text("Manage Categories")
                 }
-                NavigationLink(destination: TransactionListView(databaseURL: databaseURL)) {
+                NavigationLink(destination: TransactionListView()) {
                     Text("Manage Transactions")
                 }
-                NavigationLink(destination: CurrencyListView(databaseURL: databaseURL)) {
+                NavigationLink(destination: CurrencyListView()) {
                     Text("Manage Currencies")
                 }
             }
@@ -49,5 +48,5 @@ struct ManagementView: View {
 
 
 #Preview {
-    ManagementView(databaseURL: URL(string: "path/to/database")!, isDocumentPickerPresented: .constant(false))
+    ManagementView(isDocumentPickerPresented: .constant(false))
 }

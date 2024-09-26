@@ -9,22 +9,15 @@ import SwiftUI
 
 struct CategoryListView: View {
     @State private var categories: [CategoryData] = []
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     
     @State private var isPresentingAddView = false
     @State private var newCategory = CategoryData()
-
-    private var repository: CategoryRepository
-    
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
-        self.repository = DataManager(databaseURL: databaseURL).getCategoryRepository()
-    }
     
     var body: some View {
         NavigationStack {
             List($categories) { $category in
-                 NavigationLink(destination: CategoryDetailView(category: $category, databaseURL: databaseURL)) {
+                 NavigationLink(destination: CategoryDetailView(category: $category)) {
                      HStack {
                          Text(category.name)
                          Spacer()
@@ -53,6 +46,7 @@ struct CategoryListView: View {
     }
     
     func loadCategories() {
+        let repository = dataManager.getCategoryRepository()
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository.load()
 
@@ -63,6 +57,7 @@ struct CategoryListView: View {
     }
 
     func addCategory(category: inout CategoryData) {
+        let repository = dataManager.getCategoryRepository()
         if repository.insert(&category) {
             self.categories.append(category)
         }
@@ -70,7 +65,5 @@ struct CategoryListView: View {
 }
 
 #Preview {
-    CategoryListView(
-        databaseURL: URL(string: "path/to/database")!
-    )
+    CategoryListView()
 }

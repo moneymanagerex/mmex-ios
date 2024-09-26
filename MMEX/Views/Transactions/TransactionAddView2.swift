@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionAddView2: View {    
     @State var newTxn: TransactionData = TransactionData()
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @Binding var selectedTab: Int // Bind to the selected tab
 
     // Dismiss environment action
@@ -50,7 +50,7 @@ struct TransactionAddView2: View {
             // TODO update category, payee associated?
             
             // database level setting
-            let repository = DataManager(databaseURL: databaseURL).getInfotableRepository()
+            let repository = dataManager.getInfotableRepository()
             if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
                 newTxn.accountId = storedDefaultAccount
             }
@@ -58,7 +58,7 @@ struct TransactionAddView2: View {
     }
 
     func addTransaction(txn: inout TransactionData) {
-        let repository = DataManager(databaseURL: self.databaseURL).getTransactionRepository()
+        let repository = dataManager.getTransactionRepository()
         if repository.insert(&txn) {
             // id is ready after repo call
         } else {
@@ -67,7 +67,7 @@ struct TransactionAddView2: View {
     }
     
     func loadPayees() {
-        let repository = DataManager(databaseURL: self.databaseURL).getPayeeRepository()
+        let repository = dataManager.getPayeeRepository()
 
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
@@ -81,7 +81,7 @@ struct TransactionAddView2: View {
     }
     
     func loadCategories() {
-        let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
+        let repository = dataManager.getCategoryRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository.load()
@@ -93,7 +93,7 @@ struct TransactionAddView2: View {
     }
     
     func loadAccounts() {
-        let repository = DataManager(databaseURL: self.databaseURL).getAccountRepository()
+        let repository = dataManager.getAccountRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository.loadWithCurrency()

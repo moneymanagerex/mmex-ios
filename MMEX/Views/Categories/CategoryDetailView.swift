@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CategoryDetailView: View {
     @Binding var category: CategoryData
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     
     @State private var editingCategory = CategoryData()
     @State private var isPresentingEditView = false
@@ -90,7 +90,7 @@ struct CategoryDetailView: View {
     }
     
     func saveChanges() {
-        let repository = DataManager(databaseURL: databaseURL).getCategoryRepository()
+        let repository = dataManager.getCategoryRepository()
         if repository.update(category) {
             // Handle success
         } else {
@@ -99,7 +99,7 @@ struct CategoryDetailView: View {
     }
     
     func deleteCategory() {
-        let repository = DataManager(databaseURL: databaseURL).getCategoryRepository()
+        let repository = dataManager.getCategoryRepository()
         if repository.delete(category) {
             // Dismiss the view and go back
             presentationMode.wrappedValue.dismiss()
@@ -111,14 +111,12 @@ struct CategoryDetailView: View {
 
 #Preview {
     CategoryDetailView(
-        category: .constant(CategoryData.sampleData[0]),
-        databaseURL: URL(string: "path/to/database")!
+        category: .constant(CategoryData.sampleData[0])
     )
 }
 
 #Preview {
     CategoryDetailView(
-        category: .constant(CategoryData.sampleData[1]),
-        databaseURL: URL(string: "path/to/database")!
+        category: .constant(CategoryData.sampleData[1])
     )
 }

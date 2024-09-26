@@ -17,6 +17,8 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+
     var body: some View {
         ZStack {
             if let url = selectedFileURL {
@@ -29,11 +31,13 @@ struct ContentView: View {
                         TabContentView(selectedTab: $selectedTab, isDocumentPickerPresented: $isDocumentPickerPresented, databaseURL: url)
                     }
                 } else {
+                    // Use @StateObject to manage the lifecycle of InfotableViewModel
+                    let infotableViewModel = InfotableViewModel(dataManager: dataManager)
                     // iPhone layout: Tabs at the bottom
                     TabView(selection: $selectedTab) {
                         // Latest Transactions Tab
                         NavigationView {
-                            TransactionListView2(databaseURL: url) // Summary and Edit feature
+                            TransactionListView2(viewModel: infotableViewModel) // Summary and Edit feature
                                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
                         }
                         .tabItem {
@@ -44,7 +48,7 @@ struct ContentView: View {
 
                         // Insights module
                         NavigationView {
-                            InsightsView(viewModel: InsightsViewModel(databaseURL: url))
+                            InsightsView(viewModel: InsightsViewModel(dataManager: dataManager))
                                 .navigationBarTitle("Reports and Insights", displayMode: .inline)
                         }
                         .tabItem {
@@ -55,7 +59,7 @@ struct ContentView: View {
 
                         // Add Transactions Tab
                         NavigationView {
-                            TransactionAddView2(databaseURL: url, selectedTab: $selectedTab) // Reuse or new transaction add
+                            TransactionAddView2(selectedTab: $selectedTab) // Reuse or new transaction add
                                 .navigationBarTitle("Add Transaction", displayMode: .inline)
                         }
                         .tabItem {
@@ -66,7 +70,7 @@ struct ContentView: View {
 
                         // Combined Management Tab
                         NavigationView {
-                            ManagementView(databaseURL: url, isDocumentPickerPresented: $isDocumentPickerPresented)
+                            ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented)
                                 .navigationBarTitle("Management", displayMode: .inline)
                         }
                         .tabItem {
@@ -77,7 +81,7 @@ struct ContentView: View {
 
                         // Settings Tab
                         NavigationView {
-                            SettingsView(viewModel: InfotableViewModel(databaseURL: url)) // Payees, Accounts, Currency
+                            SettingsView(viewModel: infotableViewModel) // Payees, Accounts, Currency
                                 .navigationBarTitle("Settings", displayMode: .inline)
                         }
                         .tabItem {
@@ -118,6 +122,7 @@ struct ContentView: View {
                 if let selectedURL = urls.first {
                     if selectedURL.startAccessingSecurityScopedResource() {
                         selectedFileURL = selectedURL
+                        dataManager.openDabase(at: selectedURL)
                         UserDefaults.standard.set(selectedURL.path, forKey: "SelectedFilePath")
                         selectedURL.stopAccessingSecurityScopedResource()
                     } else {
@@ -147,7 +152,7 @@ struct ContentView: View {
                 } else {
                     print("Unable to access file at URL: \(url)")
                 }
-                let dataManager = DataManager(databaseURL: url)
+                dataManager.openDabase(at: url)
                 let repository = dataManager.getRepository()
                 guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
                     print("Cannot find tables.sql in bundle")
@@ -193,26 +198,30 @@ struct SidebarView: View {
 struct TabContentView: View {
     @Binding var selectedTab: Int
     @Binding var isDocumentPickerPresented: Bool
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+
     var databaseURL: URL
 
     var body: some View {
+        // Use @StateObject to manage the lifecycle of InfotableViewModel
+        let infotableViewModel = InfotableViewModel(dataManager: dataManager)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         Group {
             switch selectedTab {
             case 0:
-                TransactionListView2(databaseURL: databaseURL)
+                TransactionListView2(viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
-                InsightsView(viewModel: InsightsViewModel(databaseURL: databaseURL))
+                InsightsView(viewModel: InsightsViewModel(dataManager: dataManager))
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
-                TransactionAddView2(databaseURL: databaseURL, selectedTab: $selectedTab)
+                TransactionAddView2(selectedTab: $selectedTab)
                     .navigationBarTitle("Add Transaction", displayMode: .inline)
             case 3:
-                ManagementView(databaseURL: databaseURL, isDocumentPickerPresented: $isDocumentPickerPresented)
+                ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented)
                     .navigationBarTitle("Management", displayMode: .inline)
             case 4:
-                SettingsView(viewModel: InfotableViewModel(databaseURL: databaseURL))
+                SettingsView(viewModel: infotableViewModel)
                     .navigationBarTitle("Settings", displayMode: .inline)
             default:
                 EmptyView()

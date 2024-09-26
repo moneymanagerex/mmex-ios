@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountDetailView: View {
     @State var account: AccountWithCurrency
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @Binding var currencies: [CurrencyData] // Bind to the list of available currencies
 
     @State private var editingAccount = AccountWithCurrency()
@@ -107,7 +107,7 @@ struct AccountDetailView: View {
     }
 
     func saveChanges() {
-        let repository = DataManager(databaseURL: databaseURL).getAccountRepository()
+        let repository = dataManager.getAccountRepository()
         if repository.update(account.data) {
             // Successfully updated
         } else {
@@ -116,7 +116,7 @@ struct AccountDetailView: View {
     }
     
     func deleteAccount() {
-        let repository = DataManager(databaseURL: databaseURL).getAccountRepository()
+        let repository = dataManager.getAccountRepository()
         if repository.delete(account.data) {
             presentationMode.wrappedValue.dismiss()
         } else {
@@ -128,14 +128,12 @@ struct AccountDetailView: View {
 #Preview {
     AccountDetailView(
         account: AccountData.sampleDataWithCurrency[0],
-        databaseURL: URL(string: "path/to/database")!,
         currencies: .constant(CurrencyData.sampleData))
 }
 
 #Preview {
     AccountDetailView(
         account: AccountData.sampleDataWithCurrency[1],
-        databaseURL: URL(string: "path/to/database")!,
         currencies: .constant(CurrencyData.sampleData)
     )
 }

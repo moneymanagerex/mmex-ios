@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 class InsightsViewModel: ObservableObject {
-    let databaseURL: URL
+    private var dataManager: DataManager
 
     // Published properties for the view to observe
     @Published var stats: [TransactionData] = []
@@ -19,8 +19,8 @@ class InsightsViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
+    init(dataManager: DataManager) {
+        self.dataManager = dataManager
         self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
         self.endDate = Date()
 
@@ -37,7 +37,7 @@ class InsightsViewModel: ObservableObject {
     }
 
     func loadTransactions() {
-        let repository = DataManager(databaseURL: self.databaseURL).getTransactionRepository()
+        let repository = dataManager.getTransactionRepository()
 
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {

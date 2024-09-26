@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PayeeListView: View {
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var payees: [PayeeData] = []
     @State private var filteredPayees: [PayeeData] = [] // New: Filtered payees for search results
     @State private var categories: [CategoryData] = []
@@ -16,18 +16,10 @@ struct PayeeListView: View {
     @State private var isPresentingPayeeAddView = false
     @State private var searchQuery: String = "" // New: Search query
     
-    // Initialize repository with the databaseURL
-    private var repository: PayeeRepository
-    
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
-        self.repository = DataManager(databaseURL: databaseURL).getPayeeRepository() // pass URL here
-    }
-    
     var body: some View {
         NavigationStack {
             List($filteredPayees) { $payee in // Use filteredPayees instead of payees
-                NavigationLink(destination: PayeeDetailView(payee: $payee, databaseURL: databaseURL, categories: $categories)) {
+                NavigationLink(destination: PayeeDetailView(payee: $payee, categories: $categories)) {
                     HStack {
                         Text(payee.name)
                         Spacer()
@@ -62,8 +54,7 @@ struct PayeeListView: View {
     }
     
     func loadPayees() {
-        print("Loading payees in PayeeListView...")
-        
+        let repository = dataManager.getPayeeRepository()
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
             let loadedPayees = repository.load()
@@ -77,7 +68,7 @@ struct PayeeListView: View {
     }
 
     func loadCategories() {
-        let repository = DataManager(databaseURL: self.databaseURL).getCategoryRepository()
+        let repository = dataManager.getCategoryRepository()
 
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository.load()
@@ -89,8 +80,8 @@ struct PayeeListView: View {
     }
 
     func addPayee(payee: inout PayeeData) {
-        // TODO
-        if self.repository.insert(&payee) {
+        let repository = dataManager.getPayeeRepository()
+        if repository.insert(&payee) {
             self.payees.append(payee) // id is ready after repo call
             // loadPayees()
         } else {
@@ -109,7 +100,5 @@ struct PayeeListView: View {
 }
 
 #Preview {
-    PayeeListView(
-        databaseURL: URL(string: "path/to/database")!
-    )
+    PayeeListView()
 }

@@ -83,5 +83,5 @@ struct InsightsView: View {
 }
 
 #Preview {
-    InsightsView(viewModel: InsightsViewModel(databaseURL: URL(string: "path/to/database")!))
+    InsightsView(viewModel: InsightsViewModel(dataManager: DataManager(databaseURL: URL(string: "path/to/database")!)))
 }

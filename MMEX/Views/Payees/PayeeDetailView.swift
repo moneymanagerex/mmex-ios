@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 
 struct PayeeDetailView: View {
     @Binding var payee: PayeeData
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @Binding var categories: [CategoryData]
     
     @State private var editingPayee = PayeeData()
@@ -121,7 +121,7 @@ struct PayeeDetailView: View {
     }
     
     func saveChanges() {
-        let repository = DataManager(databaseURL: databaseURL).getPayeeRepository() // pass URL here
+        let repository = dataManager.getPayeeRepository() // pass URL here
         if repository.update(payee) {
             // TODO
         } else {
@@ -130,7 +130,7 @@ struct PayeeDetailView: View {
     }
     
     func deletePayee(){
-        let repository = DataManager(databaseURL: databaseURL).getPayeeRepository() // pass URL here
+        let repository = dataManager.getPayeeRepository() // pass URL here
         if repository.delete(payee) {
             // Dismiss the PayeeDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()
@@ -160,7 +160,6 @@ struct PayeeDetailView: View {
 #Preview {
     PayeeDetailView(
         payee: .constant(PayeeData.sampleData[0]),
-        databaseURL: URL(string: "path/to/database")!,
         categories: .constant(CategoryData.sampleData)
     )
 }
@@ -168,7 +167,6 @@ struct PayeeDetailView: View {
 #Preview {
     PayeeDetailView(
         payee: .constant(PayeeData.sampleData[1]),
-        databaseURL: URL(string: "path/to/database")!,
         categories: .constant(CategoryData.sampleData)
     )
 }

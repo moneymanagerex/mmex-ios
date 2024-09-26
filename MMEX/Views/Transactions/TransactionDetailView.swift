@@ -9,8 +9,8 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     @State var txn: TransactionData
-    let databaseURL: URL
-    
+    @EnvironmentObject var dataManager: DataManager
+
     @State private var editingTxn = TransactionData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
@@ -126,7 +126,7 @@ struct TransactionDetailView: View {
         account = accounts.first { $0.data.id == txn.accountId}
     }
     func saveChanges() {
-        let repository = DataManager(databaseURL: databaseURL).getTransactionRepository() // pass URL here
+        let repository = dataManager.getTransactionRepository() // pass URL here
         if repository.update(txn) {
             // TODO
         } else {
@@ -135,7 +135,7 @@ struct TransactionDetailView: View {
     }
     
     func deleteTxn(){
-        let repository = DataManager(databaseURL: databaseURL).getTransactionRepository() // pass URL here
+        let repository = dataManager.getTransactionRepository() // pass URL here
         if repository.delete(txn) {
             // Dismiss the TransactionDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()
@@ -149,7 +149,6 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         txn: TransactionData.sampleData[0],
-        databaseURL: URL(string: "path/to/database")!,
         payees: .constant(PayeeData.sampleData),
         categories: .constant(CategoryData.sampleData),
         accounts: .constant(AccountData.sampleDataWithCurrency)

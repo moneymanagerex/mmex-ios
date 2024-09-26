@@ -8,18 +8,11 @@
 import SwiftUI
 
 struct CurrencyListView: View {
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var currencies: [Bool: [CurrencyData]] = [:]
     @State private var newCurrency = CurrencyData()
     @State private var isPresentingCurrencyAddView = false
     @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
-    
-    private var repository: CurrencyRepository
-    
-    init(databaseURL: URL) {
-        self.databaseURL = databaseURL
-        self.repository = DataManager(databaseURL: databaseURL).getCurrencyRepository()
-    }
     
     var body: some View {
         NavigationStack {
@@ -39,7 +32,7 @@ struct CurrencyListView: View {
                 }) {
                     if let inUseCurrencies = currencies[true] {
                         ForEach(inUseCurrencies) { currency in
-                            NavigationLink(destination: CurrencyDetailView(currency: currency, databaseURL: databaseURL)) {
+                            NavigationLink(destination: CurrencyDetailView(currency: currency)) {
                                 HStack {
                                     Text(currency.name)
                                     Spacer()
@@ -67,7 +60,7 @@ struct CurrencyListView: View {
                     if expandedSections[false] == true {
                         if let notInUseCurrencies = currencies[false] {
                             ForEach(notInUseCurrencies) { currency in
-                                NavigationLink(destination: CurrencyDetailView(currency: currency, databaseURL: databaseURL)) {
+                                NavigationLink(destination: CurrencyDetailView(currency: currency)) {
                                     HStack {
                                         Text(currency.name)
                                         Spacer()
@@ -102,9 +95,11 @@ struct CurrencyListView: View {
     
     func loadCurrencies() {
         // Fetch accounts using repository and update the view
+        let repository = dataManager.getCurrencyRepository()
+
         DispatchQueue.global(qos: .background).async {
             let loadedCurrencies = repository.load()
-            let loadedAccounts = DataManager(databaseURL: databaseURL).getAccountRepository().load()
+            let loadedAccounts = dataManager.getAccountRepository().load()
 
             // Get a set of all currency IDs used by accounts
             let usedCurrencyIds = Set(loadedAccounts.map { $0.currencyId })
@@ -120,6 +115,8 @@ struct CurrencyListView: View {
     }
 
     func addCurrency(_ currency: inout CurrencyData) {
+        let repository = dataManager.getCurrencyRepository()
+
         if repository.insert(&currency) {
             self.loadCurrencies()
         } else {
@@ -129,5 +126,5 @@ struct CurrencyListView: View {
 }
 
 #Preview {
-    CurrencyListView(databaseURL: URL(string: "path/to/database")!)
+    CurrencyListView()
 }

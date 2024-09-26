@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CurrencyDetailView: View {
     @State var currency: CurrencyData
-    let databaseURL: URL
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var editingCurrency = CurrencyData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode
@@ -69,7 +69,7 @@ struct CurrencyDetailView: View {
     }
 
     func saveChanges() {
-        let repository = DataManager(databaseURL: databaseURL).getCurrencyRepository()
+        let repository = dataManager.getCurrencyRepository()
         if repository.update(currency) {
             // Handle success
         } else {
@@ -78,7 +78,7 @@ struct CurrencyDetailView: View {
     }
 
     func deleteCurrency() {
-        let repository = DataManager(databaseURL: databaseURL).getCurrencyRepository()
+        let repository = dataManager.getCurrencyRepository()
         if repository.delete(currency) {
             presentationMode.wrappedValue.dismiss()
         } else {
@@ -89,7 +89,6 @@ struct CurrencyDetailView: View {
 
 #Preview {
     CurrencyDetailView(
-        currency: CurrencyData.sampleData[0],
-        databaseURL: URL(string: "path/to/database")!
+        currency: CurrencyData.sampleData[0]
     )
 }
