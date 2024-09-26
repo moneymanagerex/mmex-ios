@@ -57,12 +57,12 @@ class TransactionSplitRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ split: TransactionSplitData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: TransactionSplitData) -> [SQLite.Setter] {
         return [
-            col_transId <- split.transId,
-            col_categId <- split.categId,
-            col_amount  <- split.amount,
-            col_notes   <- split.notes
+            col_transId <- data.transId,
+            col_categId <- data.categId,
+            col_amount  <- data.amount,
+            col_notes   <- data.notes
         ]
     }
 }

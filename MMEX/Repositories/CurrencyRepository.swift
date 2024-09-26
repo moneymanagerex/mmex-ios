@@ -85,19 +85,19 @@ class CurrencyRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ currency: CurrencyData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: CurrencyData) -> [SQLite.Setter] {
         return [
-            col_name               <- currency.name,
-            col_prefixSymbol       <- currency.prefixSymbol,
-            col_suffixSymbol       <- currency.suffixSymbol,
-            col_decimalPoint       <- currency.decimalPoint,
-            col_groupSeparator     <- currency.groupSeparator,
-            col_unitName           <- currency.unitName,
-            col_centName           <- currency.centName,
-            col_scale              <- currency.scale,
-            col_baseConversionRate <- currency.baseConvRate,
-            col_symbol             <- currency.symbol,
-            col_type               <- currency.type
+            col_name               <- data.name,
+            col_prefixSymbol       <- data.prefixSymbol,
+            col_suffixSymbol       <- data.suffixSymbol,
+            col_decimalPoint       <- data.decimalPoint,
+            col_groupSeparator     <- data.groupSeparator,
+            col_unitName           <- data.unitName,
+            col_centName           <- data.centName,
+            col_scale              <- data.scale,
+            col_baseConversionRate <- data.baseConvRate,
+            col_symbol             <- data.symbol,
+            col_type               <- data.type
         ]
     }
 }

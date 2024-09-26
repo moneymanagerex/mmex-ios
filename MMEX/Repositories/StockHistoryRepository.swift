@@ -58,12 +58,12 @@ class StockHistoryRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ history: StockHistoryData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: StockHistoryData) -> [SQLite.Setter] {
         return [
-            col_symbol  <- history.symbol,
-            col_date    <- history.date,
-            col_value   <- history.price,
-            col_updType <- history.updateType?.rawValue
+            col_symbol  <- data.symbol,
+            col_date    <- data.date,
+            col_value   <- data.price,
+            col_updType <- data.updateType?.rawValue
         ]
     }
 }

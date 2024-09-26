@@ -58,12 +58,12 @@ class CurrencyHistoryRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ history: CurrencyHistoryData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: CurrencyHistoryData) -> [SQLite.Setter] {
         return [
-            col_currencyId  <- history.currencyId,
-            col_currDate    <- history.date,
-            col_currValue   <- history.baseConvRate,
-            col_currUpdType <- history.updateType?.rawValue
+            col_currencyId  <- data.currencyId,
+            col_currDate    <- data.date,
+            col_currValue   <- data.baseConvRate,
+            col_currUpdType <- data.updateType?.rawValue
         ]
     }
 }

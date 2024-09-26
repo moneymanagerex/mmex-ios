@@ -57,12 +57,12 @@ class ScheduledSplitRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ split: ScheduledSplitData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: ScheduledSplitData) -> [SQLite.Setter] {
         return [
-            col_transId <- split.schedId,
-            col_categId <- split.categId,
-            col_amount  <- split.amount,
-            col_notes   <- split.notes
+            col_transId <- data.schedId,
+            col_categId <- data.categId,
+            col_amount  <- data.amount,
+            col_notes   <- data.notes
         ]
     }
 }

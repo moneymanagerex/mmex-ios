@@ -82,18 +82,18 @@ class AssetRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ asset: AssetData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: AssetData) -> [SQLite.Setter] {
         return [
-            col_type       <- asset.type.name,
-            col_status     <- asset.status.name,
-            col_name       <- asset.name,
-            col_startDate  <- asset.startDate,
-            col_currencyId <- asset.currencyId,
-            col_value      <- asset.value,
-            col_change     <- asset.change.name,
-            col_changeMode <- asset.changeMode.name,
-            col_changeRate <- asset.changeRate,
-            col_notes      <- asset.notes
+            col_type       <- data.type.name,
+            col_status     <- data.status.name,
+            col_name       <- data.name,
+            col_startDate  <- data.startDate,
+            col_currencyId <- data.currencyId,
+            col_value      <- data.value,
+            col_change     <- data.change.name,
+            col_changeMode <- data.changeMode.name,
+            col_changeRate <- data.changeRate,
+            col_notes      <- data.notes
         ]
     }
 }
