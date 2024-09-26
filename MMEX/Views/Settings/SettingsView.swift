@@ -110,5 +110,5 @@ enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
 }
 
 #Preview {
-    SettingsView(viewModel: InfotableViewModel(dataManager: DataManager(databaseURL: URL(string: "path/to/database")!)))
+    SettingsView(viewModel: InfotableViewModel(dataManager: DataManager()))
 }
