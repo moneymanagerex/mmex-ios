@@ -21,14 +21,14 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            if let url = selectedFileURL {
+            if dataManager.isDatabaseConnected {
                 if horizontalSizeClass == .regular {
                     // && verticalSizeClass == .compact {
                     // iPad layout: Tabs on the side
                     NavigationSplitView {
                         SidebarView(selectedTab: $selectedTab)
                     } detail: {
-                        TabContentView(selectedTab: $selectedTab, isDocumentPickerPresented: $isDocumentPickerPresented, databaseURL: url)
+                        TabContentView(selectedTab: $selectedTab, isDocumentPickerPresented: $isDocumentPickerPresented)
                     }
                 } else {
                     // Use @StateObject to manage the lifecycle of InfotableViewModel
@@ -121,8 +121,7 @@ struct ContentView: View {
             case .success(let urls):
                 if let selectedURL = urls.first {
                     if selectedURL.startAccessingSecurityScopedResource() {
-                        selectedFileURL = selectedURL
-                        dataManager.openDabase(at: selectedURL)
+                        dataManager.openDatabase(at: selectedURL)
                         UserDefaults.standard.set(selectedURL.path, forKey: "SelectedFilePath")
                         selectedURL.stopAccessingSecurityScopedResource()
                     } else {
@@ -146,13 +145,12 @@ struct ContentView: View {
             case .success(let url):
                 print("Successfully created new document: \(url)")
                 if url.startAccessingSecurityScopedResource() {
-                    selectedFileURL = url
+                    dataManager.openDatabase(at: url)
                     UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
                     url.stopAccessingSecurityScopedResource()
                 } else {
                     print("Unable to access file at URL: \(url)")
                 }
-                dataManager.openDabase(at: url)
                 let repository = dataManager.getRepository()
                 guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
                     print("Cannot find tables.sql in bundle")
@@ -200,8 +198,6 @@ struct TabContentView: View {
     @Binding var isDocumentPickerPresented: Bool
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
 
-    var databaseURL: URL
-
     var body: some View {
         // Use @StateObject to manage the lifecycle of InfotableViewModel
         let infotableViewModel = InfotableViewModel(dataManager: dataManager)
@@ -231,6 +227,11 @@ struct TabContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Initialize the DataManager and inject it into the preview
+        let dataManager = DataManager()
+        ContentView()
+            .environmentObject(dataManager) // Inject DataManager
+    }
 }
