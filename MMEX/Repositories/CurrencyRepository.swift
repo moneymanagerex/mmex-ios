@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class CurrencyRepository: RepositoryProtocol {
+struct CurrencyRepository: RepositoryProtocol {
     typealias RepositoryData = CurrencyData
 
     let db: Connection
-    init(db: Connection) {
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 

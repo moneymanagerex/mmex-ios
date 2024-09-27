@@ -10,28 +10,47 @@ import SQLite
 
 class DataManager: ObservableObject {
     @Published var isDatabaseConnected = false
-    private(set) var repository: Repository?
+    private(set) var db: Connection?
     private(set) var databaseURL: URL?
 
     init() {
         connectToStoredDatabase()
     }
     
-    func openDatabase(at databaseURL: URL) {
-        self.databaseURL = databaseURL
-        repository = Repository(url: databaseURL)
-        isDatabaseConnected = repository != nil
+    func openDatabase(at url: URL) {
+        if url.startAccessingSecurityScopedResource() {
+            defer { url.stopAccessingSecurityScopedResource() }
+            do {
+                db = try Connection(url.path)
+                print("Connected to database: \(url.path)")
+            } catch {
+                db = nil
+                print("Failed to connect to database: \(error)")
+            }
+        } else {
+            db = nil
+            print("Failed to access security-scoped resource: \(url.path)")
+        }
+
+        if let db {
+            isDatabaseConnected = true
+            databaseURL = url
+            setJournalModeDelete(db: db)
+        } else {
+            isDatabaseConnected = false
+            databaseURL = nil
+        }
     }
 
-    func setJournalModeDelete(connection: Connection) {
+    func setJournalModeDelete(db: Connection) {
         do {
-            try connection.execute("PRAGMA journal_mode = MEMORY;")
+            try db.execute("PRAGMA journal_mode = MEMORY;")
             print("Journal mode set to MEMORY")
         } catch {
             print("Failed to set journal mode: \(error)")
         }
     }
-    
+
     /// Method to connect to a previously stored database path if available
     private func connectToStoredDatabase() {
         if let storedPath = UserDefaults.standard.string(forKey: "SelectedFilePath") {
@@ -41,54 +60,55 @@ class DataManager: ObservableObject {
             print("No stored database path found.")
         }
     }
-    
-    func setTempStoreDirectory(connection: Connection) {
+
+    func setTempStoreDirectory(db: Connection) {
         // Get the path to the app's sandbox Caches directory
         let fileManager = FileManager.default
         if let cacheDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first?.path {
             let tempStoreSQL = "PRAGMA temp_store_directory = '\(cacheDir)';"
             
             do {
-                try connection.execute(tempStoreSQL)
+                try db.execute(tempStoreSQL)
                 print("Temporary store directory set to \(cacheDir)")
             } catch {
                 print("Failed to set temp store directory: \(error)")
             }
         }
     }
-    
-    func getSchemaVersion() -> Int32? { repository?.userVersion }
 
     /// Closes the current database connection and resets related states.
     func closeDatabase() {
         // Nullify the connection and reset the state
-        repository = nil
         isDatabaseConnected = false
+        db = nil
         databaseURL = nil
         print("Database connection closed.")
     }
 
-    var infotableRepository        : InfotableRepository?        { repository?.infotableRepository }
-    var currencyRepository         : CurrencyRepository?         { repository?.currencyRepository }
-    var currencyHistoryRepository  : CurrencyRepository?         { repository?.currencyRepository }
-    var accountRepository          : AccountRepository?          { repository?.accountRepository }
-    var assetRepository            : AssetRepository?            { repository?.assetRepository }
-    var stockRepository            : StockRepository?            { repository?.stockRepository }
-    var stockHistoryRepository     : StockRepository?            { repository?.stockRepository }
-    var categoryRepository         : CategoryRepository?         { repository?.categoryRepository }
-    var payeeRepository            : PayeeRepository?            { repository?.payeeRepository }
-    var transactionRepository      : TransactionRepository?      { repository?.transactionRepository }
-    var transactionSplitRepository : TransactionSplitRepository? { repository?.transactionSplitRepository }
-    var transactionLinkRepository  : TransactionLinkRepository?  { repository?.transactionLinkRepository }
-    var transactionShareRepository : TransactionShareRepository? { repository?.transactionShareRepository }
-    var scheduledRepository        : ScheduledRepository?        { repository?.scheduledRepository }
-    var scheduledSplitRepository   : ScheduledSplitRepository?   { repository?.scheduledSplitRepository }
-    var tagRepository              : TagRepository?              { repository?.tagRepository }
-    var tagLinkRepository          : TagLinkRepository?          { repository?.tagLinkRepository }
-    var fieldRepository            : FieldRepository?            { repository?.fieldRepository }
-    var fieldContentRepository     : FieldContentRepository?     { repository?.fieldContentRepository }
-    var attachmentRepository       : AttachmentRepository?       { repository?.attachmentRepository }
-    var budgetYearRepository       : BudgetYearRepository?       { repository?.budgetYearRepository }
-    var budgetTableRepository      : BudgetTableRepository?      { repository?.budgetTableRepository }
-    var reportRepository           : ReportRepository?           { repository?.reportRepository }
+    func getSchemaVersion() -> Int32? { Repository(db)?.userVersion }
+
+    var repository                 : Repository?                 { Repository(db) }
+    var infotableRepository        : InfotableRepository?        { InfotableRepository(db) }
+    var currencyRepository         : CurrencyRepository?         { CurrencyRepository(db) }
+    var currencyHistoryRepository  : CurrencyRepository?         { CurrencyRepository(db) }
+    var accountRepository          : AccountRepository?          { AccountRepository(db) }
+    var assetRepository            : AssetRepository?            { AssetRepository(db) }
+    var stockRepository            : StockRepository?            { StockRepository(db) }
+    var stockHistoryRepository     : StockRepository?            { StockRepository(db) }
+    var categoryRepository         : CategoryRepository?         { CategoryRepository(db) }
+    var payeeRepository            : PayeeRepository?            { PayeeRepository(db) }
+    var transactionRepository      : TransactionRepository?      { TransactionRepository(db) }
+    var transactionSplitRepository : TransactionSplitRepository? { TransactionSplitRepository(db) }
+    var transactionLinkRepository  : TransactionLinkRepository?  { TransactionLinkRepository(db) }
+    var transactionShareRepository : TransactionShareRepository? { TransactionShareRepository(db) }
+    var scheduledRepository        : ScheduledRepository?        { ScheduledRepository(db) }
+    var scheduledSplitRepository   : ScheduledSplitRepository?   { ScheduledSplitRepository(db) }
+    var tagRepository              : TagRepository?              { TagRepository(db) }
+    var tagLinkRepository          : TagLinkRepository?          { TagLinkRepository(db) }
+    var fieldRepository            : FieldRepository?            { FieldRepository(db) }
+    var fieldContentRepository     : FieldContentRepository?     { FieldContentRepository(db) }
+    var attachmentRepository       : AttachmentRepository?       { AttachmentRepository(db) }
+    var budgetYearRepository       : BudgetYearRepository?       { BudgetYearRepository(db) }
+    var budgetTableRepository      : BudgetTableRepository?      { BudgetTableRepository(db) }
+    var reportRepository           : ReportRepository?           { ReportRepository(db) }
 }

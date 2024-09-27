@@ -63,9 +63,7 @@ class InfotableViewModel: ObservableObject {
         }
     }
     
-    func getSchemaVersion() -> Int32 {
-        return self.dataManager.getSchemaVersion() ?? 0
-    }
+    var userVersion: Int32 { self.dataManager.repository?.userVersion ?? 0 }
     
     func getDatabaseURL() -> URL {
         return self.dataManager.databaseURL!

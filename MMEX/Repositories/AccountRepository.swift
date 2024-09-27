@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class AccountRepository: RepositoryProtocol {
+struct AccountRepository: RepositoryProtocol {
     typealias RepositoryData = AccountData
 
     let db: Connection
-    init(db: Connection) {
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -174,7 +178,7 @@ extension AccountRepository {
     func loadWithCurrency() -> [AccountWithCurrency] {
         // TODO via join?
         // Create a lookup dictionary for currencies by currencyId
-        let currencies = CurrencyRepository(db: db).load();
+        let currencies = CurrencyRepository(db).load();
         let currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
 
         do {

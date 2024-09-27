@@ -7,11 +7,15 @@
 
 import SQLite
 
-class CategoryRepository: RepositoryProtocol {
+struct CategoryRepository: RepositoryProtocol {
     typealias RepositoryData = CategoryData
 
     let db: Connection
-    init(db: Connection) {
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 

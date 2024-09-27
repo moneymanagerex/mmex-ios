@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class TransactionLinkRepository: RepositoryProtocol {
+struct TransactionLinkRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionLinkData
 
     let db: Connection
-    init(db: Connection) {
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 

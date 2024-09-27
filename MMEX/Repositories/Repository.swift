@@ -8,34 +8,14 @@
 import Foundation
 import SQLite
 
-class Repository {
+struct Repository {
     let db: Connection
-
-    init(db: Connection) {
+    init(_ db: Connection) {
         self.db = db
     }
-
-    init?(url: URL) {
-        guard url.startAccessingSecurityScopedResource() else {
-            print("Failed to access security-scoped resource: \(url.path)")
-            return nil
-        }
-        defer { url.stopAccessingSecurityScopedResource() }
-
-        do {
-            db = try Connection(url.path)
-            print("Connected to database: \(url.path)")
-        } catch {
-            print("Failed to connect to database: \(error)")
-            return nil
-        }
-
-        do {
-            try db.execute("PRAGMA journal_mode = MEMORY;")
-            print("Journal mode set to MEMORY")
-        } catch {
-            print("Failed to set journal mode: \(error)")
-        }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
+        self.db = db
     }
 }
 
@@ -105,37 +85,11 @@ extension Repository {
 }
 
 extension Repository {
-    var infotableRepository        : InfotableRepository        { InfotableRepository(db: db) }
-    var currencyRepository         : CurrencyRepository         { CurrencyRepository(db: db) }
-    var currencyHistoryRepository  : CurrencyRepository         { CurrencyRepository(db: db) }
-    var accountRepository          : AccountRepository          { AccountRepository(db: db) }
-    var assetRepository            : AssetRepository            { AssetRepository(db: db) }
-    var stockRepository            : StockRepository            { StockRepository(db: db) }
-    var stockHistoryRepository     : StockRepository            { StockRepository(db: db) }
-    var categoryRepository         : CategoryRepository         { CategoryRepository(db: db) }
-    var payeeRepository            : PayeeRepository            { PayeeRepository(db: db) }
-    var transactionRepository      : TransactionRepository      { TransactionRepository(db: db) }
-    var transactionSplitRepository : TransactionSplitRepository { TransactionSplitRepository(db: db) }
-    var transactionLinkRepository  : TransactionLinkRepository  { TransactionLinkRepository(db: db) }
-    var transactionShareRepository : TransactionShareRepository { TransactionShareRepository(db: db) }
-    var scheduledRepository        : ScheduledRepository        { ScheduledRepository(db: db) }
-    var scheduledSplitRepository   : ScheduledSplitRepository   { ScheduledSplitRepository(db: db) }
-    var tagRepository              : TagRepository              { TagRepository(db: db) }
-    var tagLinkRepository          : TagLinkRepository          { TagLinkRepository(db: db) }
-    var fieldRepository            : FieldRepository            { FieldRepository(db: db) }
-    var fieldContentRepository     : FieldContentRepository     { FieldContentRepository(db: db) }
-    var attachmentRepository       : AttachmentRepository       { AttachmentRepository(db: db) }
-    var budgetYearRepository       : BudgetYearRepository       { BudgetYearRepository(db: db) }
-    var budgetTableRepository      : BudgetTableRepository      { BudgetTableRepository(db: db) }
-    var reportRepository           : ReportRepository           { ReportRepository(db: db) }
-}
-
-extension Repository {
     func insertSampleData() {
 
         var infotableMap: [Int64: Int64] = [:]
         do {
-            let repo = InfotableRepository(db: db)
+            let repo = InfotableRepository(db)
             repo.deleteAll()
             for var data in InfotableData.sampleData {
                 let id = data.id
@@ -146,7 +100,7 @@ extension Repository {
 
         var currencyMap: [Int64: Int64] = [:]
         do {
-            let repo = CurrencyRepository(db: db)
+            let repo = CurrencyRepository(db)
             repo.deleteAll()
             for var data in CurrencyData.sampleData {
                 let id = data.id
@@ -157,7 +111,7 @@ extension Repository {
 
         var currencyHistoryMap: [Int64: Int64] = [:]
         do {
-            let repo = CurrencyHistoryRepository(db: db)
+            let repo = CurrencyHistoryRepository(db)
             repo.deleteAll()
             for var data in CurrencyHistoryData.sampleData {
                 let id = data.id
@@ -169,7 +123,7 @@ extension Repository {
 
         var accountMap: [Int64: Int64] = [:]
         do {
-            let repo = AccountRepository(db: db)
+            let repo = AccountRepository(db)
             repo.deleteAll()
             for var data in AccountData.sampleData {
                 let id = data.id
@@ -181,7 +135,7 @@ extension Repository {
 
         var assetMap: [Int64: Int64] = [:]
         do {
-            let repo = AssetRepository(db: db)
+            let repo = AssetRepository(db)
             repo.deleteAll()
             for var data in AssetData.sampleData {
                 let id = data.id
@@ -193,7 +147,7 @@ extension Repository {
 
         var stockMap: [Int64: Int64] = [:]
         do {
-            let repo = StockRepository(db: db)
+            let repo = StockRepository(db)
             repo.deleteAll()
             for var data in StockData.sampleData {
                 let id = data.id
@@ -205,7 +159,7 @@ extension Repository {
 
         var stockHistoryMap: [Int64: Int64] = [:]
         do {
-            let repo = StockHistoryRepository(db: db)
+            let repo = StockHistoryRepository(db)
             repo.deleteAll()
             for var data in StockHistoryData.sampleData {
                 let id = data.id
@@ -216,7 +170,7 @@ extension Repository {
 
         var categoryMap: [Int64: Int64] = [:]
         do {
-            let repo = CategoryRepository(db: db)
+            let repo = CategoryRepository(db)
             repo.deleteAll()
             for var data in CategoryData.sampleData {
                 let id = data.id
@@ -228,7 +182,7 @@ extension Repository {
 
         var payeeMap: [Int64: Int64] = [:]
         do {
-            let repo = PayeeRepository(db: db)
+            let repo = PayeeRepository(db)
             repo.deleteAll()
             for var data in PayeeData.sampleData {
                 let id = data.id
@@ -240,7 +194,7 @@ extension Repository {
 
         var transactionMap: [Int64: Int64] = [:]
         do {
-            let repo = TransactionRepository(db: db)
+            let repo = TransactionRepository(db)
             repo.deleteAll()
             for var data in TransactionData.sampleData {
                 let id = data.id
@@ -255,7 +209,7 @@ extension Repository {
 
         var transactionSplitMap: [Int64: Int64] = [:]
         do {
-            let repo = TransactionSplitRepository(db: db)
+            let repo = TransactionSplitRepository(db)
             repo.deleteAll()
             for var data in TransactionSplitData.sampleData {
                 let id = data.id
@@ -268,7 +222,7 @@ extension Repository {
 
         var transactionLinkMap: [Int64: Int64] = [:]
         do {
-            let repo = TransactionLinkRepository(db: db)
+            let repo = TransactionLinkRepository(db)
             repo.deleteAll()
             for var data in TransactionLinkData.sampleData {
                 let id = data.id
@@ -284,7 +238,7 @@ extension Repository {
 
         var transactionShareMap: [Int64: Int64] = [:]
         do {
-            let repo = TransactionShareRepository(db: db)
+            let repo = TransactionShareRepository(db)
             repo.deleteAll()
             for var data in TransactionShareData.sampleData {
                 let id = data.id
@@ -296,7 +250,7 @@ extension Repository {
 
         var scheduledMap: [Int64: Int64] = [:]
         do {
-            let repo = ScheduledRepository(db: db)
+            let repo = ScheduledRepository(db)
             repo.deleteAll()
             for var data in ScheduledData.sampleData {
                 let id = data.id
@@ -311,7 +265,7 @@ extension Repository {
 
         var scheduledSplitMap: [Int64: Int64] = [:]
         do {
-            let repo = ScheduledSplitRepository(db: db)
+            let repo = ScheduledSplitRepository(db)
             repo.deleteAll()
             for var data in ScheduledSplitData.sampleData {
                 let id = data.id
@@ -324,7 +278,7 @@ extension Repository {
 
         var tagMap: [Int64: Int64] = [:]
         do {
-            let repo = TagRepository(db: db)
+            let repo = TagRepository(db)
             repo.deleteAll()
             for var data in TagData.sampleData {
                 let id = data.id
@@ -335,7 +289,7 @@ extension Repository {
 
         var tagLinkMap: [Int64: Int64] = [:]
         do {
-            let repo = TagLinkRepository(db: db)
+            let repo = TagLinkRepository(db)
             repo.deleteAll()
             for var data in TagLinkData.sampleData {
                 let id = data.id
@@ -353,7 +307,7 @@ extension Repository {
 
         var fieldMap: [Int64: Int64] = [:]
         do {
-            let repo = FieldRepository(db: db)
+            let repo = FieldRepository(db)
             repo.deleteAll()
             for var data in FieldData.sampleData {
                 let id = data.id
@@ -364,7 +318,7 @@ extension Repository {
 
         var fieldContentMap: [Int64: Int64] = [:]
         do {
-            let repo = FieldContentRepository(db: db)
+            let repo = FieldContentRepository(db)
             repo.deleteAll()
             for var data in FieldContentData.sampleData {
                 let id = data.id
@@ -381,7 +335,7 @@ extension Repository {
 
         var attachmentMap: [Int64: Int64] = [:]
         do {
-            let repo = AttachmentRepository(db: db)
+            let repo = AttachmentRepository(db)
             repo.deleteAll()
             for var data in AttachmentData.sampleData {
                 let id = data.id
@@ -402,7 +356,7 @@ extension Repository {
 
         var budgetYearMap: [Int64: Int64] = [:]
         do {
-            let repo = BudgetYearRepository(db: db)
+            let repo = BudgetYearRepository(db)
             repo.deleteAll()
             for var data in BudgetYearData.sampleData {
                 let id = data.id
@@ -413,7 +367,7 @@ extension Repository {
 
         var budgetTableMap: [Int64: Int64] = [:]
         do {
-            let repo = BudgetTableRepository(db: db)
+            let repo = BudgetTableRepository(db)
             repo.deleteAll()
             for var data in BudgetTableData.sampleData {
                 let id = data.id
@@ -426,7 +380,7 @@ extension Repository {
 
         var reportMap: [Int64: Int64] = [:]
         do {
-            let repo = ReportRepository(db: db)
+            let repo = ReportRepository(db)
             repo.deleteAll()
             for var data in ReportData.sampleData {
                 let id = data.id

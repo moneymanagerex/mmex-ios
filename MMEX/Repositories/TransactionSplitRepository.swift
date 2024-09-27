@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class TransactionSplitRepository: RepositoryProtocol {
+struct TransactionSplitRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionSplitData
 
     let db: Connection
-    init(db: Connection) {
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 

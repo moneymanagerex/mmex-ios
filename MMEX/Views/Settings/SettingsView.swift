@@ -64,7 +64,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Schema Version")
                     Spacer()
-                    Text("\(viewModel.getSchemaVersion())")
+                    Text("\(viewModel.userVersion)")
                 }
                 HStack {
                     Text("Date Format")

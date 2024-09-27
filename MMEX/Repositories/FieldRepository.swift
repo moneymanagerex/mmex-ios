@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class FieldRepository: RepositoryProtocol {
+struct FieldRepository: RepositoryProtocol {
     typealias RepositoryData = FieldData
 
     let db: Connection
-    init(db: Connection) {
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
