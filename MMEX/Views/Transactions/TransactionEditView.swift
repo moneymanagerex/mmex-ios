@@ -33,7 +33,6 @@ struct TransactionEditView: View {
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
-                .padding(.horizontal)
                 
                 Spacer()
                 
@@ -45,11 +44,12 @@ struct TransactionEditView: View {
                         Text(account.data.name).tag(account.data.id)
                     }
                 }
+                .frame(maxWidth: .infinity) // Allow picker to use available space
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 0)
             
             // 2. Unified Numeric Input for the Amount with automatic keyboard focus
-            TextField("¥0", text: $amountString)
+            TextField("0", text: $amountString)
                 .keyboardType(.decimalPad) // Show numeric keyboard with decimal support
                 .font(.system(size: 48, weight: .bold)) // Large, bold text for amount input
                 .multilineTextAlignment(.center) // Center the text for better UX
@@ -101,7 +101,7 @@ struct TransactionEditView: View {
                     }
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 0)
             
             // 5. Horizontal stack for Payee and Category pickers
             HStack {
@@ -132,7 +132,7 @@ struct TransactionEditView: View {
                 }
                 .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 0)
             
             Spacer() // Push the contents to the top
         }
