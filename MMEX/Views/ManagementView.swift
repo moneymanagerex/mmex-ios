@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct ManagementView: View {
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @Binding var isDocumentPickerPresented: Bool
+    @Binding var isNewDocumentPickerPresented: Bool
+    @Binding var isSampleDocument: Bool
     
     var body: some View {
         List {
@@ -34,19 +37,60 @@ struct ManagementView: View {
             }
             
             Section(header: Text("Database")) {
-                Button("Re-open Database") {
+                Button(action: {
                     isDocumentPickerPresented = true
+                }) {
+                    Text("Re-open Database")
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(10)
+
+                Button(action: {
+                    isNewDocumentPickerPresented = true
+                    isSampleDocument = false
+                }) {
+                    Text("New Database")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                .padding()
+                .background(Color.green)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+
+                Button(action: {
+                    isNewDocumentPickerPresented = true
+                    isSampleDocument = true
+                }) {
+                    Text("Sample Database")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                .padding()
+                .background(Color.orange)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+
+                // Close Database Button
+                Button(action: {
+                    dataManager.closeDatabase() // Calls method to handle closing the database
+                }) {
+                    Text("Close Database")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                .padding()
+                .background(Color.red)
+                .foregroundColor(.white)
+                .cornerRadius(10)
             }
         }
+        .listStyle(InsetGroupedListStyle()) // Better styling for iOS
     }
 }
 
 
 #Preview {
-    ManagementView(isDocumentPickerPresented: .constant(false))
+    ManagementView(isDocumentPickerPresented: .constant(false), isNewDocumentPickerPresented: .constant(false), isSampleDocument: .constant(false))
+        .environmentObject(DataManager())
 }

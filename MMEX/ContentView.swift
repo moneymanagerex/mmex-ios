@@ -45,7 +45,7 @@ struct ContentView: View {
                 NavigationSplitView {
                     SidebarView(selectedTab: $selectedTab)
                 } detail: {
-                    TabContentView(selectedTab: $selectedTab, isDocumentPickerPresented: $isDocumentPickerPresented)
+                    TabContentView(selectedTab: $selectedTab, isDocumentPickerPresented: $isDocumentPickerPresented, isNewDocumentPickerPresented: $isNewDocumentPickerPresented, isSampleDocument: $isSampleDocument)
                 }
             } else {
                 let infotableViewModel = InfotableViewModel(dataManager: dataManager)
@@ -140,7 +140,7 @@ struct ContentView: View {
     // Management tab
     private var managementTab: some View {
         NavigationView {
-            ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented)
+            ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented, isNewDocumentPickerPresented: $isNewDocumentPickerPresented, isSampleDocument: $isSampleDocument)
                 .navigationBarTitle("Management", displayMode: .inline)
         }
         .tabItem {
@@ -238,6 +238,8 @@ struct SidebarView: View {
 struct TabContentView: View {
     @Binding var selectedTab: Int
     @Binding var isDocumentPickerPresented: Bool
+    @Binding var isNewDocumentPickerPresented: Bool
+    @Binding var isSampleDocument: Bool
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
 
     var body: some View {
@@ -256,7 +258,7 @@ struct TabContentView: View {
                 TransactionAddView2(selectedTab: $selectedTab)
                     .navigationBarTitle("Add Transaction", displayMode: .inline)
             case 3:
-                ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented)
+                ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented, isNewDocumentPickerPresented: $isNewDocumentPickerPresented, isSampleDocument: $isSampleDocument)
                     .navigationBarTitle("Management", displayMode: .inline)
             case 4:
                 SettingsView(viewModel: infotableViewModel)
