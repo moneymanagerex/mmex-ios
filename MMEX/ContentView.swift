@@ -197,10 +197,7 @@ struct ContentView: View {
                 print("Unable to access file at URL: \(url)")
             }
             let repository = dataManager.repository
-            if let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") {
-                repository.execute(url: tables)
-                if isSampleDocument { repository.insertSampleData() }
-            }
+            repository.create(sampleData: isSampleDocument)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 selectedTab = 0
             }

@@ -69,6 +69,17 @@ extension Repository {
             execute(sql: paragraph)
         }
     }
+
+    func create(sampleData: Bool = false) {
+        guard let db else { return }
+        db.userVersion = 19
+        guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
+            print("Cannot find tables.sql")
+            return
+        }
+        execute(url: tables)
+        if sampleData { insertSampleData() }
+    }
 }
 
 protocol RepositoryProtocol {
