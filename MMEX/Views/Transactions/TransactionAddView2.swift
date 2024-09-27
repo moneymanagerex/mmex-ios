@@ -37,6 +37,7 @@ struct TransactionAddView2: View {
                             selectedTab = 0
                             newTxn = TransactionData()
                         }
+                        .disabled(!isTransactionValid())
                     }
                 }
         }
@@ -55,6 +56,10 @@ struct TransactionAddView2: View {
                 newTxn.accountId = storedDefaultAccount
             }
         }
+    }
+
+    func isTransactionValid() -> Bool {
+        return newTxn.payeeId > 0 && newTxn.categId > 0
     }
 
     func addTransaction(txn: inout TransactionData) {
