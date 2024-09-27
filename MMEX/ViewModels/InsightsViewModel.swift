@@ -37,7 +37,7 @@ class InsightsViewModel: ObservableObject {
     }
 
     func loadTransactions() {
-        let repository = dataManager.getTransactionRepository()
+        let repository = dataManager.transactionRepository
 
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {

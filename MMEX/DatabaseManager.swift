@@ -88,26 +88,28 @@ class DataManager: ObservableObject {
         print("Database connection closed.")
     }
 
-    func getRepository()                 -> Repository { Repository(db: db) }
-    func getInfotableRepository()        -> InfotableRepository { InfotableRepository(db: db) }
-    func getCurrencyRepository()         -> CurrencyRepository { CurrencyRepository(db: db) }
-    func getCurrencyHistoryRepository()  -> CurrencyRepository { CurrencyRepository(db: db) }
-    func getAccountRepository()          -> AccountRepository { AccountRepository(db: db) }
-    func getAssetRepository()            -> AssetRepository { AssetRepository(db: db) }
-    func getStockRepository()            -> StockRepository { StockRepository(db: db) }
-    func getStockHistoryRepository()     -> StockRepository { StockRepository(db: db) }
-    func getCategoryRepository()         -> CategoryRepository { CategoryRepository(db: db) }
-    func getPayeeRepository()            -> PayeeRepository { PayeeRepository(db: db) }
-    func getTransactionRepository()      -> TransactionRepository { TransactionRepository(db: db) }
-    func getTransactionSplitRepository() -> TransactionSplitRepository { TransactionSplitRepository(db: db) }
-    func getTransactionLinkRepository()  -> TransactionLinkRepository { TransactionLinkRepository(db: db) }
-    func getTransactionShareRepository() -> TransactionShareRepository { TransactionShareRepository(db: db) }
-    func getScheduledRepository()        -> ScheduledRepository { ScheduledRepository(db: db) }
-    func getScheduledSplitRepository()   -> ScheduledSplitRepository { ScheduledSplitRepository(db: db) }
-    func getTagRepository()              -> TagRepository { TagRepository(db: db) }
-    func getTagLinkRepository()          -> TagLinkRepository { TagLinkRepository(db: db) }
-    func getAttachmentRepository()       -> AttachmentRepository { AttachmentRepository(db: db) }
-    func getBudgetYearRepository()       -> BudgetYearRepository { BudgetYearRepository(db: db) }
-    func getBudgetTableRepository()      -> BudgetTableRepository { BudgetTableRepository(db: db) }
-    func getReportRepository()           -> ReportRepository { ReportRepository(db: db) }
+    var repository                 : Repository                 { Repository(db: db) }
+    var infotableRepository        : InfotableRepository        { InfotableRepository(db: db) }
+    var currencyRepository         : CurrencyRepository         { CurrencyRepository(db: db) }
+    var currencyHistoryRepository  : CurrencyRepository         { CurrencyRepository(db: db) }
+    var accountRepository          : AccountRepository          { AccountRepository(db: db) }
+    var assetRepository            : AssetRepository            { AssetRepository(db: db) }
+    var stockRepository            : StockRepository            { StockRepository(db: db) }
+    var stockHistoryRepository     : StockRepository            { StockRepository(db: db) }
+    var categoryRepository         : CategoryRepository         { CategoryRepository(db: db) }
+    var payeeRepository            : PayeeRepository            { PayeeRepository(db: db) }
+    var transactionRepository      : TransactionRepository      { TransactionRepository(db: db) }
+    var transactionSplitRepository : TransactionSplitRepository { TransactionSplitRepository(db: db) }
+    var transactionLinkRepository  : TransactionLinkRepository  { TransactionLinkRepository(db: db) }
+    var transactionShareRepository : TransactionShareRepository { TransactionShareRepository(db: db) }
+    var scheduledRepository        : ScheduledRepository        { ScheduledRepository(db: db) }
+    var scheduledSplitRepository   : ScheduledSplitRepository   { ScheduledSplitRepository(db: db) }
+    var tagRepository              : TagRepository              { TagRepository(db: db) }
+    var tagLinkRepository          : TagLinkRepository          { TagLinkRepository(db: db) }
+    var fieldRepository            : FieldRepository            { FieldRepository(db: db) }
+    var fieldContentRepository     : FieldContentRepository     { FieldContentRepository(db: db) }
+    var attachmentRepository       : AttachmentRepository       { AttachmentRepository(db: db) }
+    var budgetYearRepository       : BudgetYearRepository       { BudgetYearRepository(db: db) }
+    var budgetTableRepository      : BudgetTableRepository      { BudgetTableRepository(db: db) }
+    var reportRepository           : ReportRepository           { ReportRepository(db: db) }
 }

@@ -422,6 +422,34 @@ extension Repository {
             }
         }
 
+        var fieldMap: [Int64: Int64] = [:]
+        do {
+            let repo = FieldRepository(db: db)
+            repo.deleteAll()
+            for var data in FieldData.sampleData {
+                let id = data.id
+                repo.insert(&data)
+                fieldMap[id] = data.id
+            }
+        }
+
+        var fieldContentMap: [Int64: Int64] = [:]
+        do {
+            let repo = FieldContentRepository(db: db)
+            repo.deleteAll()
+            for var data in FieldContentData.sampleData {
+                let id = data.id
+                data.refId = switch data.refType {
+                case .transaction : transactionMap[data.refId] ?? data.refId
+                case .scheduled   : scheduledMap[data.refId]   ?? data.refId
+                default: data.refId
+                }
+                data.fieldId = fieldMap[data.fieldId] ?? data.fieldId
+                repo.insert(&data)
+                fieldContentMap[id] = data.id
+            }
+        }
+
         var attachmentMap: [Int64: Int64] = [:]
         do {
             let repo = AttachmentRepository(db: db)
