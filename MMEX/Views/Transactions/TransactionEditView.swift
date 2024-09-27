@@ -44,7 +44,6 @@ struct TransactionEditView: View {
                         Text(account.data.name).tag(account.data.id)
                     }
                 }
-                .frame(maxWidth: .infinity) // Allow picker to use available space
             }
             .padding(.horizontal, 0)
             
