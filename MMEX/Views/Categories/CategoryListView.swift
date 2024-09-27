@@ -9,14 +9,16 @@ import SwiftUI
 
 struct CategoryListView: View {
     @State private var categories: [CategoryData] = []
+    @State private var filteredCategories: [CategoryData] = []
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     
     @State private var isPresentingAddView = false
     @State private var newCategory = CategoryData()
+    @State private var searchQuery: String = "" // New: Search query
     
     var body: some View {
         NavigationStack {
-            List($categories) { $category in
+            List($filteredCategories) { $category in
                  NavigationLink(destination: CategoryDetailView(category: $category)) {
                      HStack {
                          Text(category.name)
@@ -33,6 +35,10 @@ struct CategoryListView: View {
                 })
                 .accessibilityLabel("New Category")
             }
+            .searchable(text: $searchQuery) // New: Search bar
+            .onChange(of: searchQuery, perform: { query in
+                filterCategories(by: query)
+            })
         }
         .navigationTitle("Categories")
         .onAppear {
@@ -52,6 +58,7 @@ struct CategoryListView: View {
 
             DispatchQueue.main.async {
                 self.categories = loadedCategories
+                self.filteredCategories = loadedCategories
             }
         }
     }
@@ -62,8 +69,17 @@ struct CategoryListView: View {
             self.categories.append(category)
         }
     }
+    // New: Filter based on the search query
+    func filterCategories(by query: String) {
+        if query.isEmpty {
+            filteredCategories = categories
+        } else {
+            filteredCategories = categories.filter { $0.name.localizedCaseInsensitiveContains(query) }
+        }
+    }
 }
 
 #Preview {
     CategoryListView()
+        .environmentObject(DataManager())
 }

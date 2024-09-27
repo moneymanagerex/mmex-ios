@@ -127,4 +127,5 @@ struct CurrencyListView: View {
 
 #Preview {
     CurrencyListView()
+        .environmentObject(DataManager())
 }
