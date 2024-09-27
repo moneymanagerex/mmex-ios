@@ -79,6 +79,15 @@ class DataManager: ObservableObject {
         return nil
     }
 
+    /// Closes the current database connection and resets related states.
+    func closeDatabase() {
+        // Nullify the connection and reset the state
+        db = nil
+        isDatabaseConnected = false
+        databaseURL = nil
+        print("Database connection closed.")
+    }
+
     func getRepository()                 -> Repository { Repository(db: db) }
     func getInfotableRepository()        -> InfotableRepository { InfotableRepository(db: db) }
     func getCurrencyRepository()         -> CurrencyRepository { CurrencyRepository(db: db) }

@@ -101,4 +101,5 @@ struct PayeeListView: View {
 
 #Preview {
     PayeeListView()
+        .environmentObject(DataManager())
 }

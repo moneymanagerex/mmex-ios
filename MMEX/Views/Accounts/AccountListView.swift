@@ -131,4 +131,5 @@ struct AccountListView: View {
 
 #Preview {
     AccountListView()
+        .environmentObject(DataManager())
 }

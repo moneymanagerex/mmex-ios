@@ -164,3 +164,8 @@ struct TransactionListView: View {
         return isoDate
     }
 }
+
+#Preview {
+    TransactionListView()
+        .environmentObject(DataManager())
+}

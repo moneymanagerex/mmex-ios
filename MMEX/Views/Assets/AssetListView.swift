@@ -87,4 +87,5 @@ struct AssetListView: View {
 
 #Preview {
     AssetListView()
+        .environmentObject(DataManager())
 }

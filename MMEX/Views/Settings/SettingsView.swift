@@ -111,4 +111,5 @@ enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
 
 #Preview {
     SettingsView(viewModel: InfotableViewModel(dataManager: DataManager()))
+        .environmentObject(DataManager())
 }
