@@ -42,7 +42,7 @@ struct StockHistoryRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_value = cast(col_value) as SQLite.Expression<Double>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_symbol,
@@ -52,7 +52,7 @@ struct StockHistoryRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> StockHistoryData {
+    static func fetchData(_ row: SQLite.Row) -> StockHistoryData {
         return StockHistoryData(
             id         : row[col_id],
             symbol     : row[col_symbol],

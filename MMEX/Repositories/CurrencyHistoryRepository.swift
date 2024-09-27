@@ -42,7 +42,7 @@ struct CurrencyHistoryRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_currValue = cast(col_currValue) as SQLite.Expression<Double>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_currencyId,
@@ -52,7 +52,7 @@ struct CurrencyHistoryRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> CurrencyHistoryData {
+    static func fetchData(_ row: SQLite.Row) -> CurrencyHistoryData {
         return CurrencyHistoryData(
             id           : row[col_id],
             currencyId   : row[col_currencyId],

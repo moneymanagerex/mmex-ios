@@ -41,7 +41,7 @@ struct TransactionSplitRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_amount = cast(col_amount) as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_transId,
@@ -51,7 +51,7 @@ struct TransactionSplitRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> TransactionSplitData {
+    static func fetchData(_ row: SQLite.Row) -> TransactionSplitData {
         return TransactionSplitData(
             id      : row[col_id],
             transId : row[col_transId],

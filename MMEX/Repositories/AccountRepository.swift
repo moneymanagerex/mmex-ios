@@ -77,7 +77,7 @@ struct AccountRepository: RepositoryProtocol {
     static let cast_interestRate   = cast(col_interestRate)   as SQLite.Expression<Double?>
     static let cast_minimumPayment = cast(col_minimumPayment) as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -103,7 +103,7 @@ struct AccountRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> AccountData {
+    static func fetchData(_ row: SQLite.Row) -> AccountData {
         return AccountData(
             id              : row[col_id],
             name            : row[col_name],
@@ -183,10 +183,10 @@ extension AccountRepository {
 
         do {
             var data: [AccountWithCurrency] = []
-            for row in try db.prepare(Self.selectQuery(from: Self.table
+            for row in try db.prepare(Self.selectData(from: Self.table
                 .order(Self.col_name)
             )) {
-                let account = Self.selectData(row)
+                let account = Self.fetchData(row)
                 data.append(AccountWithCurrency(
                     data: account,
                     currency: currencyDict[account.currencyId]

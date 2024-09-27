@@ -36,7 +36,7 @@ struct TransactionLinkRepository: RepositoryProtocol {
     static let col_refType = SQLite.Expression<String>("LINKTYPE")
     static let col_refId   = SQLite.Expression<Int64>("LINKRECORDID")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_transId,
@@ -45,7 +45,7 @@ struct TransactionLinkRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> TransactionLinkData {
+    static func fetchData(_ row: SQLite.Row) -> TransactionLinkData {
         return TransactionLinkData(
             id      : row[col_id],
             transId : row[col_transId],

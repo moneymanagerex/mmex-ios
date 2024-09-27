@@ -38,7 +38,7 @@ struct FieldRepository: RepositoryProtocol {
     static let col_type        = SQLite.Expression<String>("TYPE")
     static let col_properties  = SQLite.Expression<String>("PROPERTIES")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_refType,
@@ -48,7 +48,7 @@ struct FieldRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> FieldData {
+    static func fetchData(_ row: SQLite.Row) -> FieldData {
         return FieldData(
             id          : row[col_id],
             refType     : RefType(collateNoCase: row[col_refType]),

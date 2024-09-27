@@ -57,7 +57,7 @@ struct StockRepository: RepositoryProtocol {
     static let cast_value         = cast(col_value)         as SQLite.Expression<Double?>
     static let cast_commisison    = cast(col_commisison)    as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_accountId,
@@ -73,7 +73,7 @@ struct StockRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> StockData {
+    static func fetchData(_ row: SQLite.Row) -> StockData {
         return StockData(
             id            : row[col_id],
             accountId     : row[col_accountId] ?? 0,

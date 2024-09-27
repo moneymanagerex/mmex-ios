@@ -36,7 +36,7 @@ struct CategoryRepository: RepositoryProtocol {
     static let col_active   = SQLite.Expression<Int?>("ACTIVE")
     static let col_parentId = SQLite.Expression<Int64?>("PARENTID")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -45,7 +45,7 @@ struct CategoryRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> CategoryData {
+    static func fetchData(_ row: SQLite.Row) -> CategoryData {
         return CategoryData(
             id       : row[col_id],
             name     : row[col_name],

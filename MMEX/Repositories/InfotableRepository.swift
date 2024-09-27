@@ -34,7 +34,7 @@ struct InfotableRepository: RepositoryProtocol {
     static let col_name  = SQLite.Expression<String>("INFONAME")
     static let col_value = SQLite.Expression<String>("INFOVALUE")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -42,7 +42,7 @@ struct InfotableRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> InfotableData {
+    static func fetchData(_ row: SQLite.Row) -> InfotableData {
         return InfotableData(
             id    : row[col_id],
             name  : row[col_name],

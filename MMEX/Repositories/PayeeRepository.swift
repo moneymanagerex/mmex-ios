@@ -44,7 +44,7 @@ struct PayeeRepository: RepositoryProtocol {
     static let col_active     = SQLite.Expression<Int?>("ACTIVE")
     static let col_pattern    = SQLite.Expression<String?>("PATTERN")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -57,7 +57,7 @@ struct PayeeRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> PayeeData {
+    static func fetchData(_ row: SQLite.Row) -> PayeeData {
         return PayeeData(
             id         : row[col_id],
             name       : row[col_name],

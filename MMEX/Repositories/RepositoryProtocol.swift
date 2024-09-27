@@ -15,8 +15,8 @@ protocol RepositoryProtocol {
 
     static var repositoryName: String { get }
     static var table: SQLite.Table { get }
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table
-    static func selectData(_ row: SQLite.Row) -> RepositoryData
+    static func selectData(from table: SQLite.Table) -> SQLite.Table
+    static func fetchData(_ row: SQLite.Row) -> RepositoryData
     static var col_id: SQLite.Expression<Int64> { get }
     static func itemSetters(_ item: RepositoryData) -> [SQLite.Setter]
 }
@@ -24,8 +24,8 @@ protocol RepositoryProtocol {
 extension RepositoryProtocol {
     func pluck(from table: SQLite.Table, key: String) -> RepositoryData? {
         do {
-            if let row = try db.pluck(Self.selectQuery(from: table)) {
-                let data = Self.selectData(row)
+            if let row = try db.pluck(Self.selectData(from: table)) {
+                let data = Self.fetchData(row)
                 print("Successfull pluck for \(key) in \(Self.repositoryName): \(data.shortDesc())")
                 return data
             } else {
@@ -40,10 +40,10 @@ extension RepositoryProtocol {
 
     func pluck(id: Int64) -> RepositoryData? {
         do {
-            if let row = try db.pluck(Self.selectQuery(from: Self.table)
+            if let row = try db.pluck(Self.selectData(from: Self.table)
                 .filter(Self.col_id == id)
             ) {
-                let data = Self.selectData(row)
+                let data = Self.fetchData(row)
                 print("Successfull pluck for id \(id) in \(Self.repositoryName): \(data.shortDesc())")
                 return data
             } else {
@@ -59,8 +59,8 @@ extension RepositoryProtocol {
     func select(from table: SQLite.Table) -> [RepositoryData] {
         do {
             var data: [RepositoryData] = []
-            for row in try db.prepare(Self.selectQuery(from: table)) {
-                data.append(Self.selectData(row))
+            for row in try db.prepare(Self.selectData(from: table)) {
+                data.append(Self.fetchData(row))
             }
             print("Successfull select from \(Self.repositoryName): \(data.count)")
             return data

@@ -45,7 +45,7 @@ struct BudgetTableRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_amount = cast(col_amount) as SQLite.Expression<Double>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_yearId,
@@ -57,7 +57,7 @@ struct BudgetTableRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> BudgetTableData {
+    static func fetchData(_ row: SQLite.Row) -> BudgetTableData {
         return BudgetTableData(
             id      : row[col_id],
             yearId  : row[col_yearId] ?? -1,

@@ -37,7 +37,7 @@ struct TagLinkRepository: RepositoryProtocol {
     static let col_refType = SQLite.Expression<String>("REFTYPE")
     static let col_refId   = SQLite.Expression<Int64>("REFID")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_tagId,
@@ -46,7 +46,7 @@ struct TagLinkRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> TagLinkData {
+    static func fetchData(_ row: SQLite.Row) -> TagLinkData {
         return TagLinkData(
             id      : row[col_id],
             tagId   : row[col_tagId],

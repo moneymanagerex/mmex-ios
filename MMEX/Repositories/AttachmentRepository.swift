@@ -38,7 +38,7 @@ struct AttachmentRepository: RepositoryProtocol {
     static let col_description = SQLite.Expression<String?>("DESCRIPTION")
     static let col_filename    = SQLite.Expression<String>("FILENAME")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_refType,
@@ -48,7 +48,7 @@ struct AttachmentRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> AttachmentData {
+    static func fetchData(_ row: SQLite.Row) -> AttachmentData {
         return AttachmentData(
             id          : row[col_id],
             refType     : RefType(collateNoCase: row[col_refType]),
