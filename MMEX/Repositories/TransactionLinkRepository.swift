@@ -11,8 +11,8 @@ import SQLite
 class TransactionLinkRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionLinkData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

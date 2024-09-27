@@ -54,7 +54,7 @@ struct CategoryListView: View {
     func loadCategories() {
         let repository = dataManager.categoryRepository
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository.load()
+            let loadedCategories = repository?.load() ?? []
 
             DispatchQueue.main.async {
                 self.categories = loadedCategories
@@ -65,7 +65,7 @@ struct CategoryListView: View {
 
     func addCategory(category: inout CategoryData) {
         let repository = dataManager.categoryRepository
-        if repository.insert(&category) {
+        if repository?.insert(&category) == true {
             self.categories.append(category)
         }
     }

@@ -11,8 +11,8 @@ import SQLite
 class TransactionSplitRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionSplitData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

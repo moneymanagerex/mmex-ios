@@ -11,8 +11,8 @@ import SQLite
 class AttachmentRepository: RepositoryProtocol {
     typealias RepositoryData = AttachmentData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

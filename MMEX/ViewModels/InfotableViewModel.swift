@@ -20,10 +20,10 @@ class InfotableViewModel: ObservableObject {
 
     //
     private var dataManager: DataManager
-    private var infotableRepo: InfotableRepository
-    private var transactionRepo: TransactionRepository
-    private var accountRepo: AccountRepository
-    private var currencyRepo: CurrencyRepository
+    private var infotableRepo: InfotableRepository?
+    private var transactionRepo: TransactionRepository?
+    private var accountRepo: AccountRepository?
+    private var currencyRepo: CurrencyRepository?
 
     @Published var currencies: [CurrencyData] = []
     @Published var accounts: [AccountWithCurrency] = []
@@ -46,17 +46,17 @@ class InfotableViewModel: ObservableObject {
 
     // Load default values from Infotable and populate Published variables
     func loadInfo() {
-        if let baseCurrencyId = infotableRepo.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
+        if let baseCurrencyId = infotableRepo?.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
             self.baseCurrencyId = baseCurrencyId
-            baseCurrency = currencyRepo.pluck(
+            baseCurrency = currencyRepo?.pluck(
                 from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId),
                 key: InfoKey.baseCurrencyID.id
             )
         }
 
-        if let defaultAccountId = infotableRepo.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
+        if let defaultAccountId = infotableRepo?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
             self.defaultAccountId = defaultAccountId
-            defaultAccount = accountRepo.pluck(
+            defaultAccount = accountRepo?.pluck(
                 from: AccountRepository.table.filter(AccountRepository.col_id == defaultAccountId),
                 key: InfoKey.defaultAccountID.id
             )
@@ -93,16 +93,16 @@ class InfotableViewModel: ObservableObject {
 
     // Save data back to Infotable
     private func saveBaseCurrency(_ currencyId: Int64) {
-        infotableRepo.setValue(currencyId, for: InfoKey.baseCurrencyID.id)
+        infotableRepo?.setValue(currencyId, for: InfoKey.baseCurrencyID.id)
     }
 
     private func saveDefaultAccount(_ accountId: Int64) {
-        infotableRepo.setValue(accountId, for: InfoKey.defaultAccountID.id)
+        infotableRepo?.setValue(accountId, for: InfoKey.defaultAccountID.id)
     }
 
     func loadAccounts() {
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = self.accountRepo.loadWithCurrency()
+            let loadedAccounts = self.accountRepo?.loadWithCurrency() ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
 
@@ -115,7 +115,7 @@ class InfotableViewModel: ObservableObject {
 
     func loadCurrencies() {
         DispatchQueue.global(qos: .background).async {
-            let loadedCurrencies = self.currencyRepo.load()
+            let loadedCurrencies = self.currencyRepo?.load() ?? []
             DispatchQueue.main.async {
                 self.currencies = loadedCurrencies
 
@@ -128,7 +128,7 @@ class InfotableViewModel: ObservableObject {
 
     func loadTransactions() {
         DispatchQueue.global(qos: .background).async {
-            let loadTransactions = self.transactionRepo.loadRecent(accountId: self.defaultAccountId)
+            let loadTransactions = self.transactionRepo?.loadRecent(accountId: self.defaultAccountId) ?? []
 
             DispatchQueue.main.async {
                 self.txns = loadTransactions.filter { txn in txn.deletedTime.isEmpty }

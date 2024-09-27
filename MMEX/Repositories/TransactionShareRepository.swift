@@ -11,8 +11,8 @@ import SQLite
 class TransactionShareRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionShareData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

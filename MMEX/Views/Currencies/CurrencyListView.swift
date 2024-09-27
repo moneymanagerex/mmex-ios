@@ -98,8 +98,8 @@ struct CurrencyListView: View {
         let repository = dataManager.currencyRepository
 
         DispatchQueue.global(qos: .background).async {
-            let loadedCurrencies = repository.load()
-            let loadedAccounts = dataManager.accountRepository.load()
+            let loadedCurrencies = repository?.load() ?? []
+            let loadedAccounts = dataManager.accountRepository?.load() ?? []
 
             // Get a set of all currency IDs used by accounts
             let usedCurrencyIds = Set(loadedAccounts.map { $0.currencyId })
@@ -117,7 +117,7 @@ struct CurrencyListView: View {
     func addCurrency(_ currency: inout CurrencyData) {
         let repository = dataManager.currencyRepository
 
-        if repository.insert(&currency) {
+        if repository?.insert(&currency) == true {
             self.loadCurrencies()
         } else {
             // TODO

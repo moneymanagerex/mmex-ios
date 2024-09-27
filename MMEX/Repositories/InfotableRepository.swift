@@ -11,8 +11,8 @@ import SQLite
 class InfotableRepository: RepositoryProtocol {
     typealias RepositoryData = InfotableData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 
@@ -62,7 +62,6 @@ extension InfotableRepository {
 
     // load specific keys into a dictionary
     func load(for keys: [InfoKey]) -> [InfoKey: InfotableData] {
-        if db == nil { return [:] }
         var results: [InfoKey: InfotableData] = [:]
         for key in keys {
             if let info = pluck(
@@ -78,7 +77,6 @@ extension InfotableRepository {
     // New Methods for Key-Value Pairs
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
-        if db == nil { return nil }
         if let info = pluck(
             from: Self.table.filter(Self.col_name == key),
             key: key
@@ -94,8 +92,6 @@ extension InfotableRepository {
 
     // Update or insert a setting with support for String or Int64 values
     func setValue<T>(_ value: T, for key: String) {
-        if db == nil { return }
-
         var stringValue: String
         if let stringVal = value as? String {
             stringValue = stringVal

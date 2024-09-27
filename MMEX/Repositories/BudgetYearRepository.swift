@@ -11,8 +11,8 @@ import SQLite
 class BudgetYearRepository: RepositoryProtocol {
     typealias RepositoryData = BudgetYearData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

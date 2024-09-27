@@ -11,8 +11,8 @@ import SQLite
 class StockHistoryRepository: RepositoryProtocol {
     typealias RepositoryData = StockHistoryData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

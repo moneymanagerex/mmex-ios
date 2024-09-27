@@ -11,8 +11,8 @@ import SQLite
 class TagRepository: RepositoryProtocol {
     typealias RepositoryData = TagData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

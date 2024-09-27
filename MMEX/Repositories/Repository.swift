@@ -1,5 +1,5 @@
 //
-//  RepositoryProtocaol.swift
+//  Repository.swift
 //  MMEX
 //
 //  Created 2024-09-22 by George Ef (george.a.ef@gmail.com)
@@ -9,18 +9,43 @@ import Foundation
 import SQLite
 
 class Repository {
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+
+    init(db: Connection) {
         self.db = db
+    }
+
+    init?(url: URL) {
+        guard url.startAccessingSecurityScopedResource() else {
+            print("Failed to access security-scoped resource: \(url.path)")
+            return nil
+        }
+        defer { url.stopAccessingSecurityScopedResource() }
+
+        do {
+            db = try Connection(url.path)
+            print("Connected to database: \(url.path)")
+        } catch {
+            print("Failed to connect to database: \(error)")
+            return nil
+        }
+
+        do {
+            try db.execute("PRAGMA journal_mode = MEMORY;")
+            print("Journal mode set to MEMORY")
+        } catch {
+            print("Failed to set journal mode: \(error)")
+        }
     }
 }
 
 extension Repository {
+    var userVersion: Int32? { db.userVersion }
+
     func select<Result>(
         from table: SQLite.Table,
         with result: (SQLite.Row) -> Result
     ) -> [Result] {
-        guard let db else { return [] }
         do {
             var data: [Result] = []
             for row in try db.prepare(table) {
@@ -35,7 +60,6 @@ extension Repository {
     }
 
     func execute(sql: String) {
-        guard let db else { return }
         print("Executing sql: \(sql)")
         do {
             try db.execute(sql)
@@ -45,7 +69,6 @@ extension Repository {
     }
 
     func execute(url: URL) {
-        if db == nil { return }
         guard let contents = try? String(contentsOf: url) else {
             print("Failed to read \(url)")
             return
@@ -71,7 +94,6 @@ extension Repository {
     }
 
     func create(sampleData: Bool = false) {
-        guard let db else { return }
         db.userVersion = 19
         guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
             print("Cannot find tables.sql")
@@ -82,134 +104,30 @@ extension Repository {
     }
 }
 
-protocol RepositoryProtocol {
-    associatedtype RepositoryData: DataProtocol
-
-    var db: Connection? { get }
-
-    static var repositoryName: String { get }
-    static var table: SQLite.Table { get }
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table
-    static func selectData(_ row: SQLite.Row) -> RepositoryData
-    static var col_id: SQLite.Expression<Int64> { get }
-    static func itemSetters(_ item: RepositoryData) -> [SQLite.Setter]
-}
-
-extension RepositoryProtocol {
-    func pluck(from table: SQLite.Table, key: String) -> RepositoryData? {
-        guard let db else { return nil }
-        do {
-            if let row = try db.pluck(Self.selectQuery(from: table)) {
-                let data = Self.selectData(row)
-                print("Successfull pluck for \(key) in \(Self.repositoryName): \(data.shortDesc())")
-                return data
-            } else {
-                print("Unsuccefull pluck for \(key) in \(Self.repositoryName)")
-                return nil
-            }
-        } catch {
-            print("Failed pluck for \(key) in \(Self.repositoryName): \(error)")
-            return nil
-        }
-    }
-
-    func pluck(id: Int64) -> RepositoryData? {
-        guard let db else { return nil }
-        do {
-            if let row = try db.pluck(Self.selectQuery(from: Self.table)
-                .filter(Self.col_id == id)
-            ) {
-                let data = Self.selectData(row)
-                print("Successfull pluck for id \(id) in \(Self.repositoryName): \(data.shortDesc())")
-                return data
-            } else {
-                print("Unsuccefull pluck for id \(id) in \(Self.repositoryName)")
-                return nil
-            }
-        } catch {
-            print("Failed pluck for id \(id) in \(Self.repositoryName): \(error)")
-            return nil
-        }
-    }
-
-    func select(from table: SQLite.Table) -> [RepositoryData] {
-        guard let db else { return [] }
-        do {
-            var data: [RepositoryData] = []
-            for row in try db.prepare(Self.selectQuery(from: table)) {
-                data.append(Self.selectData(row))
-            }
-            print("Successfull select from \(Self.repositoryName): \(data.count)")
-            return data
-        } catch {
-            print("Failed select from \(Self.repositoryName): \(error)")
-            return []
-        }
-    }
-
-    @discardableResult
-    func insert(_ data: inout RepositoryData) -> Bool {
-        guard let db else { return false }
-        do {
-            let query = Self.table
-                .insert(Self.itemSetters(data))
-            let rowid = try db.run(query)
-            data.id = rowid
-            print("Successfull insert in \(RepositoryData.dataName): \(data.shortDesc())")
-            return true
-        } catch {
-            print("Failed insert in \(RepositoryData.dataName): \(error)")
-            return false
-        }
-    }
-
-    @discardableResult
-    func update(_ data: RepositoryData) -> Bool {
-        guard let db else { return false }
-        guard data.id > 0 else { return false }
-        do {
-            let query = Self.table
-                .filter(Self.col_id == data.id)
-                .update(Self.itemSetters(data))
-            try db.run(query)
-            print("Successfull update in \(RepositoryData.dataName): \(data.shortDesc())")
-            return true
-        } catch {
-            print("Failed update in \(RepositoryData.dataName): \(error)")
-            return false
-        }
-    }
-
-    @discardableResult
-    func delete(_ data: RepositoryData) -> Bool {
-        guard let db else { return false }
-        guard data.id > 0 else { return false }
-        do {
-            let query = Self.table
-                .filter(Self.col_id == data.id)
-                .delete()
-            try db.run(query)
-            print("Successfull delete in \(RepositoryData.dataName): \(data.shortDesc())")
-            return true
-        } catch {
-            print("Failed delete in \(RepositoryData.dataName): \(error)")
-            return false
-        }
-    }
-
-    @discardableResult
-    func deleteAll() -> Bool {
-        guard let db else { return false }
-        do {
-            let query = Self.table.delete()
-            try db.run(query)
-            print("Successfull delete all in \(RepositoryData.dataName)")
-            return true
-        } catch {
-            print("Failed delete all in \(RepositoryData.dataName): \(error)")
-            return false
-        }
-    }
+extension Repository {
+    var infotableRepository        : InfotableRepository        { InfotableRepository(db: db) }
+    var currencyRepository         : CurrencyRepository         { CurrencyRepository(db: db) }
+    var currencyHistoryRepository  : CurrencyRepository         { CurrencyRepository(db: db) }
+    var accountRepository          : AccountRepository          { AccountRepository(db: db) }
+    var assetRepository            : AssetRepository            { AssetRepository(db: db) }
+    var stockRepository            : StockRepository            { StockRepository(db: db) }
+    var stockHistoryRepository     : StockRepository            { StockRepository(db: db) }
+    var categoryRepository         : CategoryRepository         { CategoryRepository(db: db) }
+    var payeeRepository            : PayeeRepository            { PayeeRepository(db: db) }
+    var transactionRepository      : TransactionRepository      { TransactionRepository(db: db) }
+    var transactionSplitRepository : TransactionSplitRepository { TransactionSplitRepository(db: db) }
+    var transactionLinkRepository  : TransactionLinkRepository  { TransactionLinkRepository(db: db) }
+    var transactionShareRepository : TransactionShareRepository { TransactionShareRepository(db: db) }
+    var scheduledRepository        : ScheduledRepository        { ScheduledRepository(db: db) }
+    var scheduledSplitRepository   : ScheduledSplitRepository   { ScheduledSplitRepository(db: db) }
+    var tagRepository              : TagRepository              { TagRepository(db: db) }
+    var tagLinkRepository          : TagLinkRepository          { TagLinkRepository(db: db) }
+    var fieldRepository            : FieldRepository            { FieldRepository(db: db) }
+    var fieldContentRepository     : FieldContentRepository     { FieldContentRepository(db: db) }
+    var attachmentRepository       : AttachmentRepository       { AttachmentRepository(db: db) }
+    var budgetYearRepository       : BudgetYearRepository       { BudgetYearRepository(db: db) }
+    var budgetTableRepository      : BudgetTableRepository      { BudgetTableRepository(db: db) }
+    var reportRepository           : ReportRepository           { ReportRepository(db: db) }
 }
 
 extension Repository {
@@ -518,32 +436,3 @@ extension Repository {
         }
     }
 }
-
-/*
-extension RepositoryProtocol {
-    func create() {
-        guard let db else { return }
-        var query: String = "CREATE TABLE \(Self.repositoryName)("
-        var comma = false
-        for (name, type, other) in Self.columns {
-            if comma { query.append(", ") }
-            var space = false
-            if !name.isEmpty {
-                query.append("\(name) \(type)")
-                space = true
-            }
-            if !other.isEmpty {
-                if space { query.append(" ") }
-                query.append("\(other)")
-            }
-            comma = true
-        }
-        query.append(")")
-        print("Executing query: \(query)")
-        do {
-            try db.execute(query)
-        } catch {
-            print("Failed to create table \(Self.repositoryName): \(error)")
-        }
-    }
-*/

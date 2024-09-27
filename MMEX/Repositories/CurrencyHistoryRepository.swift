@@ -11,8 +11,8 @@ import SQLite
 class CurrencyHistoryRepository: RepositoryProtocol {
     typealias RepositoryData = CurrencyHistoryData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

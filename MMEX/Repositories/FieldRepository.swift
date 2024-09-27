@@ -11,8 +11,8 @@ import SQLite
 class FieldRepository: RepositoryProtocol {
     typealias RepositoryData = FieldData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 

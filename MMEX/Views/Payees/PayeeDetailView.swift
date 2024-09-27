@@ -122,7 +122,7 @@ struct PayeeDetailView: View {
     
     func saveChanges() {
         let repository = dataManager.payeeRepository // pass URL here
-        if repository.update(payee) {
+        if repository?.update(payee) == true {
             // TODO
         } else {
             // TODO update failure
@@ -131,7 +131,7 @@ struct PayeeDetailView: View {
     
     func deletePayee(){
         let repository = dataManager.payeeRepository // pass URL here
-        if repository.delete(payee) {
+        if repository?.delete(payee) == true {
             // Dismiss the PayeeDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()
         } else {

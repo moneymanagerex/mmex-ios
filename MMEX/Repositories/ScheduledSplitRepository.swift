@@ -11,8 +11,8 @@ import SQLite
 class ScheduledSplitRepository: RepositoryProtocol {
     typealias RepositoryData = ScheduledSplitData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(db: Connection) {
         self.db = db
     }
 
