@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class AccountRepository: RepositoryProtocol {
+struct AccountRepository: RepositoryProtocol {
     typealias RepositoryData = AccountData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -73,7 +77,7 @@ class AccountRepository: RepositoryProtocol {
     static let cast_interestRate   = cast(col_interestRate)   as SQLite.Expression<Double?>
     static let cast_minimumPayment = cast(col_minimumPayment) as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -99,7 +103,7 @@ class AccountRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> AccountData {
+    static func fetchData(_ row: SQLite.Row) -> AccountData {
         return AccountData(
             id              : row[col_id],
             name            : row[col_name],
@@ -173,18 +177,16 @@ extension AccountRepository {
     // load all accounts and their currency
     func loadWithCurrency() -> [AccountWithCurrency] {
         // TODO via join?
-        guard let db else {return []}
-
         // Create a lookup dictionary for currencies by currencyId
-        let currencies = CurrencyRepository(db: db).load();
+        let currencies = CurrencyRepository(db).load();
         let currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
 
         do {
             var data: [AccountWithCurrency] = []
-            for row in try db.prepare(Self.selectQuery(from: Self.table
+            for row in try db.prepare(Self.selectData(from: Self.table
                 .order(Self.col_name)
             )) {
-                let account = Self.selectData(row)
+                let account = Self.fetchData(row)
                 data.append(AccountWithCurrency(
                     data: account,
                     currency: currencyDict[account.currencyId]

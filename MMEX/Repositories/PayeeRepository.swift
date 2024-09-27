@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class PayeeRepository: RepositoryProtocol {
+struct PayeeRepository: RepositoryProtocol {
     typealias RepositoryData = PayeeData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -40,7 +44,7 @@ class PayeeRepository: RepositoryProtocol {
     static let col_active     = SQLite.Expression<Int?>("ACTIVE")
     static let col_pattern    = SQLite.Expression<String?>("PATTERN")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -53,7 +57,7 @@ class PayeeRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> PayeeData {
+    static func fetchData(_ row: SQLite.Row) -> PayeeData {
         return PayeeData(
             id         : row[col_id],
             name       : row[col_name],

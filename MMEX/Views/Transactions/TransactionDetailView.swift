@@ -127,7 +127,7 @@ struct TransactionDetailView: View {
     }
     func saveChanges() {
         let repository = dataManager.transactionRepository // pass URL here
-        if repository.update(txn) {
+        if repository?.update(txn) == true {
             // TODO
         } else {
             // TODO update failure
@@ -136,7 +136,7 @@ struct TransactionDetailView: View {
     
     func deleteTxn(){
         let repository = dataManager.transactionRepository // pass URL here
-        if repository.delete(txn) {
+        if repository?.delete(txn) == true {
             // Dismiss the TransactionDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()
         } else {

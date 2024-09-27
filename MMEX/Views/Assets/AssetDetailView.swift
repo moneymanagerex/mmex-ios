@@ -119,7 +119,7 @@ struct AssetDetailView: View {
 
     func saveChanges() {
         let repository = dataManager.assetRepository // pass URL here
-        if repository.update(asset) {
+        if repository?.update(asset) == true {
             // TODO
         } else {
             // TODO update failure
@@ -128,7 +128,7 @@ struct AssetDetailView: View {
 
     func deleteAsset(){
         let repository = dataManager.assetRepository // pass URL here
-        if repository.delete(asset) {
+        if repository?.delete(asset) == true {
             // Dismiss the AssetDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()
         } else {

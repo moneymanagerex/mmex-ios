@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class BudgetTableRepository: RepositoryProtocol {
+struct BudgetTableRepository: RepositoryProtocol {
     typealias RepositoryData = BudgetTableData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -41,7 +45,7 @@ class BudgetTableRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_amount = cast(col_amount) as SQLite.Expression<Double>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_yearId,
@@ -53,7 +57,7 @@ class BudgetTableRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> BudgetTableData {
+    static func fetchData(_ row: SQLite.Row) -> BudgetTableData {
         return BudgetTableData(
             id      : row[col_id],
             yearId  : row[col_yearId] ?? -1,

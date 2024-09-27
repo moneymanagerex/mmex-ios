@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class BudgetYearRepository: RepositoryProtocol {
+struct BudgetYearRepository: RepositoryProtocol {
     typealias RepositoryData = BudgetYearData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -28,14 +32,14 @@ class BudgetYearRepository: RepositoryProtocol {
     static let col_id     = SQLite.Expression<Int64>("BUDGETYEARID")
     static let col_name   = SQLite.Expression<String>("BUDGETYEARNAME")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> BudgetYearData {
+    static func fetchData(_ row: SQLite.Row) -> BudgetYearData {
         return BudgetYearData(
             id   : row[col_id],
             name : row[col_name]

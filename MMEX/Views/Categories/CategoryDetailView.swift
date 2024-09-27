@@ -91,7 +91,7 @@ struct CategoryDetailView: View {
     
     func saveChanges() {
         let repository = dataManager.categoryRepository
-        if repository.update(category) {
+        if repository?.update(category) == true {
             // Handle success
         } else {
             // Handle failure
@@ -100,7 +100,7 @@ struct CategoryDetailView: View {
     
     func deleteCategory() {
         let repository = dataManager.categoryRepository
-        if repository.delete(category) {
+        if repository?.delete(category) == true {
             // Dismiss the view and go back
             presentationMode.wrappedValue.dismiss()
         } else {

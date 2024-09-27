@@ -41,7 +41,7 @@ class InsightsViewModel: ObservableObject {
 
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {
-            let transactions = repository.loadRecent(startDate: self.startDate, endDate: self.endDate)
+            let transactions = repository?.loadRecent(startDate: self.startDate, endDate: self.endDate) ?? []
 
             // Update the published stats on the main thread
             DispatchQueue.main.async {

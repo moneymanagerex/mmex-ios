@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class FieldContentRepository: RepositoryProtocol {
+struct FieldContentRepository: RepositoryProtocol {
     typealias RepositoryData = FieldContentData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -33,7 +37,7 @@ class FieldContentRepository: RepositoryProtocol {
     static let col_fieldId = SQLite.Expression<Int64>("FIELDID")
     static let col_content = SQLite.Expression<String?>("CONTENT")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_refId,
@@ -42,7 +46,7 @@ class FieldContentRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> FieldContentData {
+    static func fetchData(_ row: SQLite.Row) -> FieldContentData {
         return FieldContentData(
             id      : row[col_id],
             fieldId : row[col_fieldId],

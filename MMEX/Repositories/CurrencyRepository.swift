@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class CurrencyRepository: RepositoryProtocol {
+struct CurrencyRepository: RepositoryProtocol {
     typealias RepositoryData = CurrencyData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -51,7 +55,7 @@ class CurrencyRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_baseConversionRate = cast(col_baseConversionRate) as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -68,7 +72,7 @@ class CurrencyRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> CurrencyData {
+    static func fetchData(_ row: SQLite.Row) -> CurrencyData {
         return CurrencyData(
             id             : row[col_id],
             name           : row[col_name],

@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class AssetRepository: RepositoryProtocol {
+struct AssetRepository: RepositoryProtocol {
     typealias RepositoryData = AssetData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -50,7 +54,7 @@ class AssetRepository: RepositoryProtocol {
     static let cast_value      = cast(col_value)      as SQLite.Expression<Double?>
     static let cast_changeRate = cast(col_changeRate) as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_type,
@@ -66,7 +70,7 @@ class AssetRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> AssetData {
+    static func fetchData(_ row: SQLite.Row) -> AssetData {
         return AssetData(
             id         : row[col_id],
             type       : AssetType(collateNoCase: row[col_type]),

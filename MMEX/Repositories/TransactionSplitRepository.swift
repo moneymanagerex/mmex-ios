@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class TransactionSplitRepository: RepositoryProtocol {
+struct TransactionSplitRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionSplitData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -37,7 +41,7 @@ class TransactionSplitRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_amount = cast(col_amount) as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_transId,
@@ -47,7 +51,7 @@ class TransactionSplitRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> TransactionSplitData {
+    static func fetchData(_ row: SQLite.Row) -> TransactionSplitData {
         return TransactionSplitData(
             id      : row[col_id],
             transId : row[col_transId],

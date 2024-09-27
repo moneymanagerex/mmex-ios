@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class TransactionShareRepository: RepositoryProtocol {
+struct TransactionShareRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionShareData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -41,7 +45,7 @@ class TransactionShareRepository: RepositoryProtocol {
     static let cast_price      = cast(col_price)      as SQLite.Expression<Double?>
     static let cast_commission = cast(col_commission) as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_transId,
@@ -52,7 +56,7 @@ class TransactionShareRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> TransactionShareData {
+    static func fetchData(_ row: SQLite.Row) -> TransactionShareData {
         return TransactionShareData(
             id         : row[col_id],
             transId    : row[col_transId],

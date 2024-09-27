@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class InfotableRepository: RepositoryProtocol {
+struct InfotableRepository: RepositoryProtocol {
     typealias RepositoryData = InfotableData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -30,7 +34,7 @@ class InfotableRepository: RepositoryProtocol {
     static let col_name  = SQLite.Expression<String>("INFONAME")
     static let col_value = SQLite.Expression<String>("INFOVALUE")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -38,7 +42,7 @@ class InfotableRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> InfotableData {
+    static func fetchData(_ row: SQLite.Row) -> InfotableData {
         return InfotableData(
             id    : row[col_id],
             name  : row[col_name],
@@ -62,7 +66,6 @@ extension InfotableRepository {
 
     // load specific keys into a dictionary
     func load(for keys: [InfoKey]) -> [InfoKey: InfotableData] {
-        if db == nil { return [:] }
         var results: [InfoKey: InfotableData] = [:]
         for key in keys {
             if let info = pluck(
@@ -78,7 +81,6 @@ extension InfotableRepository {
     // New Methods for Key-Value Pairs
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
-        if db == nil { return nil }
         if let info = pluck(
             from: Self.table.filter(Self.col_name == key),
             key: key
@@ -94,8 +96,6 @@ extension InfotableRepository {
 
     // Update or insert a setting with support for String or Int64 values
     func setValue<T>(_ value: T, for key: String) {
-        if db == nil { return }
-
         var stringValue: String
         if let stringVal = value as? String {
             stringValue = stringVal
@@ -112,11 +112,11 @@ extension InfotableRepository {
         ) {
             // Update existing setting
             info.value = stringValue
-            update(info)
+            _ = update(info)
         } else {
             // Insert new setting
             var info = InfotableData(id: 0, name: key, value: stringValue)
-            insert(&info)
+            _ = insert(&info)
         }
     }
 }

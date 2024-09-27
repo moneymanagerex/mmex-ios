@@ -70,7 +70,7 @@ struct TransactionListView: View {
 
             // database level setting
             let repository = dataManager.infotableRepository
-            if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
+            if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
                 newTxn.accountId = storedDefaultAccount
             }
         }
@@ -87,7 +87,7 @@ struct TransactionListView: View {
 
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadTransactions = repository.load()
+            let loadTransactions = repository?.load() ?? []
             
             // Update UI on the main thread
             DispatchQueue.main.async {
@@ -101,7 +101,7 @@ struct TransactionListView: View {
 
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository.load()
+            let loadedPayees = repository?.load() ?? []
 
             // Update UI on the main thread
             DispatchQueue.main.async {
@@ -114,7 +114,7 @@ struct TransactionListView: View {
         let repository = dataManager.categoryRepository
 
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository.load()
+            let loadedCategories = repository?.load() ?? []
             
             DispatchQueue.main.async {
                 self.categories = loadedCategories
@@ -126,7 +126,7 @@ struct TransactionListView: View {
         let repository = dataManager.accountRepository
 
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository.loadWithCurrency()
+            let loadedAccounts = repository?.loadWithCurrency() ?? []
             
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
@@ -146,7 +146,7 @@ struct TransactionListView: View {
     
     func addTransaction(txn: inout TransactionData) {
         let repository = dataManager.transactionRepository
-        if repository.insert(&txn) {
+        if repository?.insert(&txn) == true {
             self.txns.append(txn) // id is ready after repo call
         } else {
             // TODO

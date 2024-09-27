@@ -8,13 +8,18 @@
 import Foundation
 import SQLite
 
-class StockRepository: RepositoryProtocol {
+struct StockRepository: RepositoryProtocol {
     typealias RepositoryData = StockData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
         self.db = db
     }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
+        self.db = db
+    }
+
     static let repositoryName = "STOCK_V1"
     static let table = SQLite.Table(repositoryName)
 
@@ -52,7 +57,7 @@ class StockRepository: RepositoryProtocol {
     static let cast_value         = cast(col_value)         as SQLite.Expression<Double?>
     static let cast_commisison    = cast(col_commisison)    as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_accountId,
@@ -68,7 +73,7 @@ class StockRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> StockData {
+    static func fetchData(_ row: SQLite.Row) -> StockData {
         return StockData(
             id            : row[col_id],
             accountId     : row[col_accountId] ?? 0,

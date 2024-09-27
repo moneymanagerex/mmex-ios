@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class ReportRepository: RepositoryProtocol {
+struct ReportRepository: RepositoryProtocol {
     typealias RepositoryData = ReportData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -40,7 +44,7 @@ class ReportRepository: RepositoryProtocol {
     static let col_templateContent = SQLite.Expression<String?>("TEMPLATECONTENT")
     static let col_description     = SQLite.Expression<String?>("DESCRIPTION")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_name,
@@ -53,7 +57,7 @@ class ReportRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> ReportData {
+    static func fetchData(_ row: SQLite.Row) -> ReportData {
         return ReportData(
             id              : row[col_id],
             name            : row[col_name],

@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class StockHistoryRepository: RepositoryProtocol {
+struct StockHistoryRepository: RepositoryProtocol {
     typealias RepositoryData = StockHistoryData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -38,7 +42,7 @@ class StockHistoryRepository: RepositoryProtocol {
     // cast NUMERIC to REAL
     static let cast_value = cast(col_value) as SQLite.Expression<Double>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_symbol,
@@ -48,7 +52,7 @@ class StockHistoryRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> StockHistoryData {
+    static func fetchData(_ row: SQLite.Row) -> StockHistoryData {
         return StockHistoryData(
             id         : row[col_id],
             symbol     : row[col_symbol],

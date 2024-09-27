@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class AttachmentRepository: RepositoryProtocol {
+struct AttachmentRepository: RepositoryProtocol {
     typealias RepositoryData = AttachmentData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -34,7 +38,7 @@ class AttachmentRepository: RepositoryProtocol {
     static let col_description = SQLite.Expression<String?>("DESCRIPTION")
     static let col_filename    = SQLite.Expression<String>("FILENAME")
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_refType,
@@ -44,7 +48,7 @@ class AttachmentRepository: RepositoryProtocol {
         )
     }
 
-    static func selectData(_ row: SQLite.Row) -> AttachmentData {
+    static func fetchData(_ row: SQLite.Row) -> AttachmentData {
         return AttachmentData(
             id          : row[col_id],
             refType     : RefType(collateNoCase: row[col_refType]),

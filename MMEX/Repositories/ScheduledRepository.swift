@@ -8,11 +8,15 @@
 import Foundation
 import SQLite
 
-class ScheduledRepository: RepositoryProtocol {
+struct ScheduledRepository: RepositoryProtocol {
     typealias RepositoryData = ScheduledData
 
-    let db: Connection?
-    init(db: Connection?) {
+    let db: Connection
+    init(_ db: Connection) {
+        self.db = db
+    }
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
         self.db = db
     }
 
@@ -62,7 +66,7 @@ class ScheduledRepository: RepositoryProtocol {
     static let cast_transAmount   = cast(col_transAmount)   as SQLite.Expression<Double>
     static let cast_toTransAmount = cast(col_toTransAmount) as SQLite.Expression<Double?>
 
-    static func selectQuery(from table: SQLite.Table) -> SQLite.Table {
+    static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
             col_accountId,
@@ -86,7 +90,7 @@ class ScheduledRepository: RepositoryProtocol {
 
     static let repeatBase = 100
 
-    static func selectData(_ row: SQLite.Row) -> ScheduledData {
+    static func fetchData(_ row: SQLite.Row) -> ScheduledData {
         return ScheduledData(
           id                : row[col_id],
           accountId         : row[col_accountId],

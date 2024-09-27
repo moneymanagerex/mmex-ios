@@ -55,7 +55,7 @@ struct AssetListView: View {
         // Fetch assets using repository and update the view
         let repository = dataManager.assetRepository
         DispatchQueue.global(qos: .background).async {
-            let loadedAssets = repository.load()
+            let loadedAssets = repository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.assets = loadedAssets
@@ -67,7 +67,7 @@ struct AssetListView: View {
     func addAsset(asset: inout AssetData) {
         // TODO
         let repository = dataManager.assetRepository
-        if repository.insert(&asset) {
+        if repository?.insert(&asset) == true {
             self.assets.append(asset) // id is ready after repo call
             // loadAssets()
         } else {
