@@ -90,7 +90,7 @@ struct CategoryDetailView: View {
     }
     
     func saveChanges() {
-        let repository = dataManager.getCategoryRepository()
+        let repository = dataManager.categoryRepository
         if repository.update(category) {
             // Handle success
         } else {
@@ -99,7 +99,7 @@ struct CategoryDetailView: View {
     }
     
     func deleteCategory() {
-        let repository = dataManager.getCategoryRepository()
+        let repository = dataManager.categoryRepository
         if repository.delete(category) {
             // Dismiss the view and go back
             presentationMode.wrappedValue.dismiss()

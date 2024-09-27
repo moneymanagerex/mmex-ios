@@ -196,7 +196,7 @@ struct ContentView: View {
             } else {
                 print("Unable to access file at URL: \(url)")
             }
-            let repository = dataManager.getRepository()
+            let repository = dataManager.repository
             if let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") {
                 repository.execute(url: tables)
                 if isSampleDocument { repository.insertSampleData() }

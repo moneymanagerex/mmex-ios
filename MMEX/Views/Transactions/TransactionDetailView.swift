@@ -126,7 +126,7 @@ struct TransactionDetailView: View {
         account = accounts.first { $0.data.id == txn.accountId}
     }
     func saveChanges() {
-        let repository = dataManager.getTransactionRepository() // pass URL here
+        let repository = dataManager.transactionRepository // pass URL here
         if repository.update(txn) {
             // TODO
         } else {
@@ -135,7 +135,7 @@ struct TransactionDetailView: View {
     }
     
     func deleteTxn(){
-        let repository = dataManager.getTransactionRepository() // pass URL here
+        let repository = dataManager.transactionRepository // pass URL here
         if repository.delete(txn) {
             // Dismiss the TransactionDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()

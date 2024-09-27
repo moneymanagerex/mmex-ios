@@ -34,10 +34,10 @@ class InfotableViewModel: ObservableObject {
     init(dataManager: DataManager) {
         self.dataManager = dataManager
 
-        self.infotableRepo = self.dataManager.getInfotableRepository()
-        self.transactionRepo = self.dataManager.getTransactionRepository()
-        self.accountRepo = self.dataManager.getAccountRepository()
-        self.currencyRepo = self.dataManager.getCurrencyRepository()
+        self.infotableRepo = self.dataManager.infotableRepository
+        self.transactionRepo = self.dataManager.transactionRepository
+        self.accountRepo = self.dataManager.accountRepository
+        self.currencyRepo = self.dataManager.currencyRepository
         loadInfo()
         setupBindings()
         loadAccounts()

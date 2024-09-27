@@ -69,7 +69,7 @@ struct TransactionListView: View {
             loadAccounts()
 
             // database level setting
-            let repository = dataManager.getInfotableRepository()
+            let repository = dataManager.infotableRepository
             if let storedDefaultAccount = repository.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
                 newTxn.accountId = storedDefaultAccount
             }
@@ -83,7 +83,7 @@ struct TransactionListView: View {
     }
 
     func loadTransactions() {
-        let repository = dataManager.getTransactionRepository()
+        let repository = dataManager.transactionRepository
 
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
@@ -97,7 +97,7 @@ struct TransactionListView: View {
     }
 
     func loadPayees() {
-        let repository = dataManager.getPayeeRepository()
+        let repository = dataManager.payeeRepository
 
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
@@ -111,7 +111,7 @@ struct TransactionListView: View {
     }
     
     func loadCategories() {
-        let repository = dataManager.getCategoryRepository()
+        let repository = dataManager.categoryRepository
 
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository.load()
@@ -123,7 +123,7 @@ struct TransactionListView: View {
     }
     
     func loadAccounts() {
-        let repository = dataManager.getAccountRepository()
+        let repository = dataManager.accountRepository
 
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository.loadWithCurrency()
@@ -145,7 +145,7 @@ struct TransactionListView: View {
     }
     
     func addTransaction(txn: inout TransactionData) {
-        let repository = dataManager.getTransactionRepository()
+        let repository = dataManager.transactionRepository
         if repository.insert(&txn) {
             self.txns.append(txn) // id is ready after repo call
         } else {
