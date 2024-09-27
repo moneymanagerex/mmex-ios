@@ -12,17 +12,19 @@ class DataManager: ObservableObject {
     @Published var isDatabaseConnected = false
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
-
+    
     init() {
         connectToStoredDatabase()
     }
-    
+}
+
+extension DataManager {
     func openDatabase(at url: URL) {
         if url.startAccessingSecurityScopedResource() {
             defer { url.stopAccessingSecurityScopedResource() }
             do {
                 db = try Connection(url.path)
-                print("Connected to database: \(url.path)")
+                print("Successfully connected to database: \(url.path)")
             } catch {
                 db = nil
                 print("Failed to connect to database: \(error)")
@@ -31,47 +33,57 @@ class DataManager: ObservableObject {
             db = nil
             print("Failed to access security-scoped resource: \(url.path)")
         }
-
+        
         if let db {
             isDatabaseConnected = true
             databaseURL = url
-            setJournalModeDelete(db: db)
+            _ = Repository(db).setPragma(name: "journal_mode", value: "MEMORY")
         } else {
             isDatabaseConnected = false
             databaseURL = nil
         }
     }
 
-    func setJournalModeDelete(db: Connection) {
-        do {
-            try db.execute("PRAGMA journal_mode = MEMORY;")
-            print("Journal mode set to MEMORY")
-        } catch {
-            print("Failed to set journal mode: \(error)")
-        }
-    }
-
     /// Method to connect to a previously stored database path if available
     private func connectToStoredDatabase() {
-        if let storedPath = UserDefaults.standard.string(forKey: "SelectedFilePath") {
-            let storedURL = URL(fileURLWithPath: storedPath)
-            openDatabase(at: storedURL)
-        } else {
+        guard let storedPath = UserDefaults.standard.string(forKey: "SelectedFilePath") else {
             print("No stored database path found.")
+            return
         }
+        let storedURL = URL(fileURLWithPath: storedPath)
+        openDatabase(at: storedURL)
     }
 
-    func setTempStoreDirectory(db: Connection) {
-        // Get the path to the app's sandbox Caches directory
-        let fileManager = FileManager.default
-        if let cacheDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first?.path {
-            let tempStoreSQL = "PRAGMA temp_store_directory = '\(cacheDir)';"
-            
-            do {
-                try db.execute(tempStoreSQL)
-                print("Temporary store directory set to \(cacheDir)")
-            } catch {
-                print("Failed to set temp store directory: \(error)")
+    func createDatabase(at url: URL, sampleData: Bool) {
+        openDatabase(at: url)
+        guard let db else { return }
+
+        guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
+            print("Cannot find tables.sql")
+            closeDatabase()
+            return
+        }
+
+        if tables.startAccessingSecurityScopedResource() {
+            defer { tables.stopAccessingSecurityScopedResource() }
+            let repository = Repository(db)
+            repository.setUserVersion (19)
+            guard repository.execute(url: tables) else {
+                closeDatabase()
+                return
+            }
+        } else {
+            print("Failed to access security-scoped resource: \(tables.path)")
+            closeDatabase()
+            return
+        }
+
+        if sampleData {
+            let repository = Repository(db)
+            guard repository.insertSampleData() else {
+                print("Failed to create sample database")
+                closeDatabase()
+                return
             }
         }
     }
@@ -84,9 +96,19 @@ class DataManager: ObservableObject {
         databaseURL = nil
         print("Database connection closed.")
     }
+}
 
-    func getSchemaVersion() -> Int32? { Repository(db)?.userVersion }
+extension DataManager {
+    func setTempStoreDirectory(db: Connection) {
+        // Get the path to the app's sandbox Caches directory
+        let fileManager = FileManager.default
+        if let cacheDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first?.path {
+            _ = Repository(db).setPragma(name: "temp_store_directory", value: "'\(cacheDir)'")
+        }
+    }
+}
 
+extension DataManager {
     var repository                 : Repository?                 { Repository(db) }
     var infotableRepository        : InfotableRepository?        { InfotableRepository(db) }
     var currencyRepository         : CurrencyRepository?         { CurrencyRepository(db) }

@@ -70,7 +70,6 @@ extension RepositoryProtocol {
         }
     }
 
-    @discardableResult
     func insert(_ data: inout RepositoryData) -> Bool {
         do {
             let query = Self.table
@@ -85,7 +84,6 @@ extension RepositoryProtocol {
         }
     }
 
-    @discardableResult
     func update(_ data: RepositoryData) -> Bool {
         guard data.id > 0 else { return false }
         do {
@@ -101,7 +99,6 @@ extension RepositoryProtocol {
         }
     }
 
-    @discardableResult
     func delete(_ data: RepositoryData) -> Bool {
         guard data.id > 0 else { return false }
         do {
@@ -117,7 +114,6 @@ extension RepositoryProtocol {
         }
     }
 
-    @discardableResult
     func deleteAll() -> Bool {
         do {
             let query = Self.table.delete()

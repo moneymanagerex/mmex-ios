@@ -21,6 +21,20 @@ struct Repository {
 
 extension Repository {
     var userVersion: Int32? { db.userVersion }
+    func setUserVersion(_ userVersion: Int32) {
+        db.userVersion = userVersion
+    }
+
+    func setPragma(name: String, value: String) -> Bool {
+        do {
+            try db.execute("PRAGMA \(name) = \(value)")
+            print("Successful set \(name) to \(value)")
+            return true
+        } catch {
+            print("Failed to set \(name): \(error)")
+            return false
+        }
+    }
 
     func select<Result>(
         from table: SQLite.Table,
@@ -39,19 +53,21 @@ extension Repository {
         }
     }
 
-    func execute(sql: String) {
+    func execute(sql: String) -> Bool {
         print("Executing sql: \(sql)")
         do {
             try db.execute(sql)
+            return true
         } catch {
             print("Failed to execute sql: \(error)")
+            return false
         }
     }
 
-    func execute(url: URL) {
+    func execute(url: URL) -> Bool {
         guard let contents = try? String(contentsOf: url) else {
             print("Failed to read \(url)")
-            return
+            return false
         }
 
         // split contents into paragraphs and execute each paragraph
@@ -60,7 +76,7 @@ extension Repository {
             if line.starts(with: "--") { continue }
             if line.trimmingCharacters(in: .whitespaces).isEmpty {
                 if !paragraph.isEmpty {
-                    execute(sql: paragraph)
+                    guard execute(sql: paragraph) else { return false }
                     paragraph = ""
                 }
             } else {
@@ -69,31 +85,22 @@ extension Repository {
             }
         }
         if !paragraph.isEmpty {
-            execute(sql: paragraph)
+            guard execute(sql: paragraph) else { return false }
         }
-    }
-
-    func create(sampleData: Bool = false) {
-        db.userVersion = 19
-        guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
-            print("Cannot find tables.sql")
-            return
-        }
-        execute(url: tables)
-        if sampleData { insertSampleData() }
+        return true
     }
 }
 
 extension Repository {
-    func insertSampleData() {
+    func insertSampleData() -> Bool {
 
         var infotableMap: [Int64: Int64] = [:]
         do {
             let repo = InfotableRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in InfotableData.sampleData {
                 let id = data.id
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 infotableMap[id] = data.id
             }
         }
@@ -101,10 +108,10 @@ extension Repository {
         var currencyMap: [Int64: Int64] = [:]
         do {
             let repo = CurrencyRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in CurrencyData.sampleData {
                 let id = data.id
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 currencyMap[id] = data.id
             }
         }
@@ -112,11 +119,11 @@ extension Repository {
         var currencyHistoryMap: [Int64: Int64] = [:]
         do {
             let repo = CurrencyHistoryRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in CurrencyHistoryData.sampleData {
                 let id = data.id
                 data.currencyId = currencyMap[data.currencyId] ?? data.currencyId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 currencyHistoryMap[id] = data.id
             }
         }
@@ -124,11 +131,11 @@ extension Repository {
         var accountMap: [Int64: Int64] = [:]
         do {
             let repo = AccountRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in AccountData.sampleData {
                 let id = data.id
                 data.currencyId = currencyMap[data.currencyId] ?? data.currencyId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 accountMap[id] = data.id
             }
         }
@@ -136,11 +143,11 @@ extension Repository {
         var assetMap: [Int64: Int64] = [:]
         do {
             let repo = AssetRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in AssetData.sampleData {
                 let id = data.id
                 data.currencyId = currencyMap[data.currencyId] ?? data.currencyId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 assetMap[id] = data.id
             }
         }
@@ -148,11 +155,11 @@ extension Repository {
         var stockMap: [Int64: Int64] = [:]
         do {
             let repo = StockRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in StockData.sampleData {
                 let id = data.id
                 data.accountId = accountMap[data.accountId] ?? data.accountId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 stockMap[id] = data.id
             }
         }
@@ -160,10 +167,10 @@ extension Repository {
         var stockHistoryMap: [Int64: Int64] = [:]
         do {
             let repo = StockHistoryRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in StockHistoryData.sampleData {
                 let id = data.id
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 stockHistoryMap[id] = data.id
             }
         }
@@ -171,11 +178,11 @@ extension Repository {
         var categoryMap: [Int64: Int64] = [:]
         do {
             let repo = CategoryRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in CategoryData.sampleData {
                 let id = data.id
                 data.parentId = categoryMap[data.parentId] ?? data.parentId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 categoryMap[id] = data.id
             }
         }
@@ -183,11 +190,11 @@ extension Repository {
         var payeeMap: [Int64: Int64] = [:]
         do {
             let repo = PayeeRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in PayeeData.sampleData {
                 let id = data.id
                 data.categoryId = categoryMap[data.categoryId] ?? data.categoryId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 payeeMap[id] = data.id
             }
         }
@@ -195,14 +202,14 @@ extension Repository {
         var transactionMap: [Int64: Int64] = [:]
         do {
             let repo = TransactionRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in TransactionData.sampleData {
                 let id = data.id
                 data.accountId   = accountMap[data.accountId]   ?? data.accountId
                 data.toAccountId = accountMap[data.toAccountId] ?? data.toAccountId
                 data.payeeId     = payeeMap[data.payeeId]       ?? data.payeeId
                 data.categId     = categoryMap[data.categId]    ?? data.categId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 transactionMap[id] = data.id
             }
         }
@@ -210,12 +217,12 @@ extension Repository {
         var transactionSplitMap: [Int64: Int64] = [:]
         do {
             let repo = TransactionSplitRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in TransactionSplitData.sampleData {
                 let id = data.id
                 data.transId = transactionMap[data.transId] ?? data.transId
                 data.categId = categoryMap[data.categId]    ?? data.categId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 transactionSplitMap[id] = data.id
             }
         }
@@ -223,7 +230,7 @@ extension Repository {
         var transactionLinkMap: [Int64: Int64] = [:]
         do {
             let repo = TransactionLinkRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in TransactionLinkData.sampleData {
                 let id = data.id
                 data.refId = switch data.refType {
@@ -231,7 +238,7 @@ extension Repository {
                 case .asset : assetMap[data.refId] ?? data.refId
                 default: data.refId
                 }
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 transactionLinkMap[id] = data.id
             }
         }
@@ -239,11 +246,11 @@ extension Repository {
         var transactionShareMap: [Int64: Int64] = [:]
         do {
             let repo = TransactionShareRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in TransactionShareData.sampleData {
                 let id = data.id
                 data.transId = transactionMap[data.transId] ?? data.transId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 transactionShareMap[id] = data.id
             }
         }
@@ -251,14 +258,14 @@ extension Repository {
         var scheduledMap: [Int64: Int64] = [:]
         do {
             let repo = ScheduledRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in ScheduledData.sampleData {
                 let id = data.id
                 data.accountId   = accountMap[data.accountId]   ?? data.accountId
                 data.toAccountId = accountMap[data.toAccountId] ?? data.toAccountId
                 data.payeeId     = payeeMap[data.payeeId]       ?? data.payeeId
                 data.categId     = categoryMap[data.categId]    ?? data.categId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 scheduledMap[id] = data.id
             }
         }
@@ -266,12 +273,12 @@ extension Repository {
         var scheduledSplitMap: [Int64: Int64] = [:]
         do {
             let repo = ScheduledSplitRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in ScheduledSplitData.sampleData {
                 let id = data.id
                 data.schedId = scheduledMap[data.schedId] ?? data.schedId
                 data.categId = categoryMap[data.categId]  ?? data.categId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 scheduledSplitMap[id] = data.id
             }
         }
@@ -279,10 +286,10 @@ extension Repository {
         var tagMap: [Int64: Int64] = [:]
         do {
             let repo = TagRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in TagData.sampleData {
                 let id = data.id
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 tagMap[id] = data.id
             }
         }
@@ -290,7 +297,7 @@ extension Repository {
         var tagLinkMap: [Int64: Int64] = [:]
         do {
             let repo = TagLinkRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in TagLinkData.sampleData {
                 let id = data.id
                 data.refId = switch data.refType {
@@ -300,7 +307,7 @@ extension Repository {
                 case .scheduledSplit   : scheduledSplitMap[data.refId]   ?? data.refId
                 default: data.refId
                 }
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 tagLinkMap[id] = data.id
             }
         }
@@ -308,10 +315,10 @@ extension Repository {
         var fieldMap: [Int64: Int64] = [:]
         do {
             let repo = FieldRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in FieldData.sampleData {
                 let id = data.id
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 fieldMap[id] = data.id
             }
         }
@@ -319,7 +326,7 @@ extension Repository {
         var fieldContentMap: [Int64: Int64] = [:]
         do {
             let repo = FieldContentRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in FieldContentData.sampleData {
                 let id = data.id
                 data.refId = switch data.refType {
@@ -328,7 +335,7 @@ extension Repository {
                 default: data.refId
                 }
                 data.fieldId = fieldMap[data.fieldId] ?? data.fieldId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 fieldContentMap[id] = data.id
             }
         }
@@ -336,7 +343,7 @@ extension Repository {
         var attachmentMap: [Int64: Int64] = [:]
         do {
             let repo = AttachmentRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in AttachmentData.sampleData {
                 let id = data.id
                 data.refId = switch data.refType {
@@ -349,7 +356,7 @@ extension Repository {
                 case .transactionSplit : transactionSplitMap[data.refId] ?? data.refId
                 case .scheduledSplit   : scheduledSplitMap[data.refId]   ?? data.refId
                 }
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 attachmentMap[id] = data.id
             }
         }
@@ -357,10 +364,10 @@ extension Repository {
         var budgetYearMap: [Int64: Int64] = [:]
         do {
             let repo = BudgetYearRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in BudgetYearData.sampleData {
                 let id = data.id
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 budgetYearMap[id] = data.id
             }
         }
@@ -368,12 +375,12 @@ extension Repository {
         var budgetTableMap: [Int64: Int64] = [:]
         do {
             let repo = BudgetTableRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in BudgetTableData.sampleData {
                 let id = data.id
                 data.yearId  = budgetYearMap[data.yearId] ?? data.yearId
                 data.categId = categoryMap[data.categId]  ?? data.categId
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 budgetTableMap[id] = data.id
             }
         }
@@ -381,12 +388,14 @@ extension Repository {
         var reportMap: [Int64: Int64] = [:]
         do {
             let repo = ReportRepository(db)
-            repo.deleteAll()
+            guard repo.deleteAll() else { return false }
             for var data in ReportData.sampleData {
                 let id = data.id
-                repo.insert(&data)
+                guard repo.insert(&data) else { return false }
                 reportMap[id] = data.id
             }
         }
+
+        return true
     }
 }

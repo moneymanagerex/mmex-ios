@@ -167,14 +167,11 @@ struct ContentView: View {
     private func handleFileImport(_ result: Result<[URL], Error>) {
         switch result {
         case .success(let urls):
-            if let selectedURL = urls.first {
-                if selectedURL.startAccessingSecurityScopedResource() {
-                    dataManager.openDatabase(at: selectedURL)
-                    UserDefaults.standard.set(selectedURL.path, forKey: "SelectedFilePath")
-                    selectedURL.stopAccessingSecurityScopedResource()
-                } else {
-                    print("Unable to access file at URL: \(selectedURL)")
-                }
+            if let url = urls.first {
+                dataManager.openDatabase(at: url)
+                guard dataManager.isDatabaseConnected else { return }
+                print("Successfully opened database: \(url)")
+                UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     selectedTab = 0
                 }
@@ -188,21 +185,15 @@ struct ContentView: View {
     private func handleFileExport(_ result: Result<URL, Error>) {
         switch result {
         case .success(let url):
-            print("Successfully created new document: \(url)")
-            if url.startAccessingSecurityScopedResource() {
-                dataManager.openDatabase(at: url)
-                UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
-                url.stopAccessingSecurityScopedResource()
-            } else {
-                print("Unable to access file at URL: \(url)")
-            }
-            let repository = dataManager.repository
-            repository?.create(sampleData: isSampleDocument)
+            dataManager.createDatabase(at: url, sampleData: isSampleDocument)
+            guard dataManager.isDatabaseConnected else { return }
+            print("Successfully created database: \(url)")
+            UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 selectedTab = 0
             }
         case .failure(let error):
-            print("Failed to create a new document: \(error.localizedDescription)")
+            print("Failed to pick a document: \(error.localizedDescription)")
         }
     }
 }

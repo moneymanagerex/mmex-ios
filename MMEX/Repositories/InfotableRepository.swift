@@ -112,11 +112,11 @@ extension InfotableRepository {
         ) {
             // Update existing setting
             info.value = stringValue
-            update(info)
+            _ = update(info)
         } else {
             // Insert new setting
             var info = InfotableData(id: 0, name: key, value: stringValue)
-            insert(&info)
+            _ = insert(&info)
         }
     }
 }
