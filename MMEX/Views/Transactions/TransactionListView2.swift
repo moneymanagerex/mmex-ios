@@ -32,59 +32,7 @@ struct TransactionListView2: View {
                         }
                     ) {
                         ForEach(viewModel.txns_per_day[day]!, id: \.id) { txn in
-                            NavigationLink(destination: TransactionDetailView(txn: txn, payees: $payees, categories: $categories, accounts: $accounts)) {
-                                HStack {
-                                    // Left column (Category Icon or Category Name)
-                                    if let categorySymbol = CategoryData.categoryToSFSymbol[getCategoryName(for: txn.categId)] {
-                                        Image(systemName: categorySymbol)
-                                            .frame(width: 50, alignment: .leading) // Adjust width as needed
-                                            .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
-                                            .foregroundColor(.blue) // Customize icon style
-                                    } else {
-                                        Text(getCategoryName(for: txn.categId)) // Fallback to category name if symbol is not found
-                                            .frame(width: 50, alignment: .leading)
-                                            .font(.system(size: 16, weight: .bold))
-                                            .foregroundColor(.blue)
-                                    }
-
-                                    // Middle column (Payee Name & Time)
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(getPayeeName(for: txn.payeeId)) // Payee name
-                                            .font(.system(size: 16))
-                                            .lineLimit(1) // Prevent wrapping
-                                        Text(formatTime(txn.transDate)) // Show time in hh:mm a
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.gray)
-                                    }
-                                    .frame(width: 100, alignment: .leading) // Widen middle column, ensuring enough space
-
-                                    Spacer() // To push the amount to the right side
-
-                                    if let currency = self.accountDict[txn.accountId]?.currency {
-                                        // Right column (Transaction Amount)
-                                        VStack {
-                                            // amount in account currency
-                                            Text(currency.format(amount: txn.transAmount))
-                                                .frame(alignment: .trailing) // Ensure it's aligned to the right
-                                                .font(.system(size: 16, weight: .bold))
-                                                .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
-                                            // amount in base currency
-                                            if let baseCurrency = viewModel.baseCurrency {
-                                                Text(baseCurrency.format(amount: txn.transAmount * currency.baseConvRate))
-                                                    .frame(alignment: .trailing) // Ensure it's aligned to the right
-                                                    .font(.system(size: 14, weight: .medium))
-                                                    .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
-                                            }
-                                        }
-                                    } else {
-                                        // Right column (Transaction Amount)
-                                        Text(String(format: "%.2f", txn.transAmount))
-                                            .frame(alignment: .trailing) // Ensure it's aligned to the right
-                                            .font(.system(size: 16, weight: .bold))
-                                            .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
-                                    }
-                                }
-                            }
+                            transactionView(txn)
                         }
                     }
                 }
@@ -119,6 +67,73 @@ struct TransactionListView2: View {
             loadPayees()
             loadCategories()
             loadAccounts()
+        }
+    }
+
+    func transactionView(_ txn: TransactionData) -> some View {
+        NavigationLink(destination: TransactionDetailView(
+            txn: txn, payees: $payees, categories: $categories, accounts: $accounts
+        ) ) {
+            HStack {
+                // Left column (Category Icon or Category Name)
+                if let categorySymbol = CategoryData.categoryToSFSymbol[getCategoryName(for: txn.categId)] {
+                    Image(systemName: categorySymbol)
+                        .frame(width: 50, alignment: .leading) // Adjust width as needed
+                        .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
+                        .foregroundColor(.blue) // Customize icon style
+                } else {
+                    Text(getCategoryName(for: txn.categId)) // Fallback to category name if symbol is not found
+                        .frame(width: 50, alignment: .leading)
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(.blue)
+                }
+
+                // Middle column (Payee Name & Time)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(getPayeeName(for: txn.payeeId)) // Payee name
+                        .font(.system(size: 16))
+                        .lineLimit(1) // Prevent wrapping
+                    Text(formatTime(txn.transDate)) // Show time in hh:mm a
+                        .font(.system(size: 14))
+                        .foregroundColor(.gray)
+                }
+                .frame(width: 100, alignment: .leading) // Widen middle column, ensuring enough space
+
+                Spacer() // To push the amount to the right side
+
+                if let currencyId = self.accountDict[txn.accountId]?.data.currencyId,
+                   let currencyFormat = dataManager.currencyFormat[currencyId]
+                {
+                    // Right column (Transaction Amount)
+                    VStack {
+                        // amount in account currency
+                        Text(currencyFormat.format(
+                            amount: txn.transAmount
+                        ) )
+                        .frame(alignment: .trailing) // Ensure it's aligned to the right
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                        // amount in base currency
+                        if let baseCurrencyId = viewModel.baseCurrency?.id,
+                           let baseCurrencyFormat = dataManager.currencyFormat[baseCurrencyId],
+                           baseCurrencyId != currencyId
+                        {
+                            Text(baseCurrencyFormat.format(
+                                amount: txn.transAmount * currencyFormat.baseConvRate
+                            ) )
+                            .frame(alignment: .trailing) // Ensure it's aligned to the right
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                        }
+                    }
+                } else {
+                    // Right column (Transaction Amount)
+                    Text(String(format: "%.2f", txn.transAmount))
+                        .frame(alignment: .trailing) // Ensure it's aligned to the right
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                }
+            }
         }
     }
 
