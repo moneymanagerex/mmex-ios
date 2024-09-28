@@ -138,7 +138,7 @@ extension TransactionRepository {
     func loadRecent(
         accountId: Int64? = nil,
         startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date()),
-        endDate: Date? = Date()
+        endDate: Date? = Calendar.current.date(byAdding: .day, value: 1, to: Date())
     ) -> [TransactionData] {
         var table = Self.table
 
@@ -146,11 +146,11 @@ extension TransactionRepository {
             table = table.filter(Self.col_accountId == accountId || Self.col_toAccountId == accountId)
         }
         if let startDate {
-            table = table.filter(Self.col_transDate >= startDate.ISO8601Format())
+            table = table.filter(Self.col_transDate >= String(startDate.ISO8601Format().dropLast()))
         }
-        //if let endDate {
-        //    table = table.filter(Self.col_transDate <= endDate.ISO8601Format())
-        //}
+        if let endDate {
+            table = table.filter(Self.col_transDate <= String(endDate.ISO8601Format().dropLast()))
+        }
 
         return select(from: table)
     }
