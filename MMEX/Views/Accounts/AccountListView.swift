@@ -48,6 +48,7 @@ struct AccountListView: View {
                         // Show account list based on expandedSections state
                         if expandedSections[accountType] == true {
                             ForEach(accounts_by_type[accountType]!) { account in
+                                // TODO: update View after change in account
                                 NavigationLink(destination: AccountDetailView(
                                     account: account, currencies: $currencies
                                 ) ) {
@@ -131,6 +132,9 @@ struct AccountListView: View {
         guard let repository = dataManager.accountRepository else { return }
         if repository.insert(&account) {
             // self.accounts.append(account)
+            if dataManager.currencyFormat[account.currencyId] == nil {
+                dataManager.loadCurrencyFormat()
+            }
             self.loadAccounts()
         }
     }

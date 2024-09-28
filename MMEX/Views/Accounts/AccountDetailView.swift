@@ -117,6 +117,9 @@ struct AccountDetailView: View {
         guard let repository = dataManager.accountRepository else { return }
         if repository.update(account) {
             // Successfully updated
+            if dataManager.currencyFormat[account.currencyId] == nil {
+                dataManager.loadCurrencyFormat()
+            }
         } else {
             // Handle failure
         }
