@@ -17,7 +17,7 @@ struct TransactionAddView2: View {
     
     @State private var payees: [PayeeData] = []
     @State private var categories: [CategoryData] = []
-    @State private var accounts: [AccountWithCurrency] = []
+    @State private var accounts: [AccountData] = []
     
     var body: some View {
         NavigationStack {
@@ -93,7 +93,7 @@ struct TransactionAddView2: View {
     
     func loadAccounts() {
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = dataManager.accountRepository?.loadWithCurrency() ?? []
+            let loadedAccounts = dataManager.accountRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
             }

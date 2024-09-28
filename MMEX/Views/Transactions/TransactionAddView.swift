@@ -13,7 +13,7 @@ struct TransactionAddView: View {
     
     @Binding var payees: [PayeeData]
     @Binding var categories: [CategoryData]
-    @Binding var accounts: [AccountWithCurrency]
+    @Binding var accounts: [AccountData]
     
     var onSave: (inout TransactionData) -> Void
     
@@ -47,7 +47,7 @@ struct TransactionAddView: View {
         isPresentingTransactionAddView: .constant(true),
         payees: .constant(PayeeData.sampleData),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountData.sampleDataWithCurrency)
+        accounts: .constant(AccountData.sampleData)
     ) { newTxn in
         // Handle saving in preview
         print("New payee: \(newTxn.id)")

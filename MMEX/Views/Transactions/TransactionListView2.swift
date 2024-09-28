@@ -15,8 +15,8 @@ struct TransactionListView2: View {
     @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
     @State private var categories: [CategoryData] = []
     @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
-    @State private var accounts: [AccountWithCurrency] = []
-    @State private var accountDict: [Int64: AccountWithCurrency] = [: ] // for lookup
+    @State private var accounts: [AccountData] = []
+    @State private var accountDict: [Int64: AccountData] = [: ] // for lookup
     
     var body: some View {
         NavigationStack {
@@ -50,11 +50,11 @@ struct TransactionListView2: View {
                     Picker("Select Account", selection: $viewModel.defaultAccountId) {
                         ForEach(self.accounts) { account in
                             HStack{
-                                Image(systemName: account.data.type.symbolName)
+                                Image(systemName: account.type.symbolName)
                                     .frame(width: 5, alignment: .leading) // Adjust width as needed
                                     .font(.system(size: 16, weight: .bold)) // Customize size and weight
                                     .foregroundColor(.blue) // Customize icon style
-                                Text(account.data.name)
+                                Text(account.name)
                             }.tag(account.id)
                         }
                     }
@@ -101,7 +101,7 @@ struct TransactionListView2: View {
 
                 Spacer() // To push the amount to the right side
 
-                if let currencyId = self.accountDict[txn.accountId]?.data.currencyId,
+                if let currencyId = self.accountDict[txn.accountId]?.currencyId,
                    let currencyFormat = dataManager.currencyFormat[currencyId]
                 {
                     // Right column (Transaction Amount)
@@ -152,10 +152,8 @@ struct TransactionListView2: View {
     
     func loadCategories() {
         let repository = dataManager.categoryRepository
-
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository?.load() ?? []
-            
             DispatchQueue.main.async {
                 self.categories = loadedCategories
                 self.categoryDict = Dictionary(uniqueKeysWithValues: categories.map { ($0.id, $0) })
@@ -165,10 +163,8 @@ struct TransactionListView2: View {
     
     func loadAccounts() {
         let repository = dataManager.accountRepository
-
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository?.loadWithCurrency() ?? []
-            
+            let loadedAccounts = repository?.load() ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
                 self.accountDict = Dictionary(uniqueKeysWithValues: accounts.map { ($0.id, $0) })

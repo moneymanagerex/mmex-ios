@@ -15,12 +15,17 @@ struct TransactionListView: View {
     
     @State private var payees: [PayeeData] = []
     @State private var categories: [CategoryData] = []
-    @State private var accounts: [AccountWithCurrency] = []
+    @State private var accounts: [AccountData] = []
     
     var body: some View {
         NavigationStack {
             List(txns) { txn in
-                NavigationLink(destination: TransactionDetailView(txn: txn, payees: $payees, categories: $categories, accounts: $accounts)) {
+                NavigationLink(destination: TransactionDetailView(
+                    txn: txn,
+                    payees: $payees,
+                    categories: $categories,
+                    accounts: $accounts
+                ) ) {
                     HStack {
                         // Left column: Date (truncated to day)
                         Text(formatDate(from: txn.transDate))
@@ -75,7 +80,13 @@ struct TransactionListView: View {
             }
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
-            TransactionAddView(newTxn: $newTxn, isPresentingTransactionAddView: $isPresentingTransactionAddView, payees: $payees, categories: $categories, accounts: $accounts) { newTxn in
+            TransactionAddView(
+                newTxn: $newTxn,
+                isPresentingTransactionAddView: $isPresentingTransactionAddView,
+                payees: $payees,
+                categories: $categories,
+                accounts: $accounts
+            ) { newTxn in
                 addTransaction(txn: &newTxn)
                 newTxn = TransactionData()
             }
@@ -112,10 +123,8 @@ struct TransactionListView: View {
     
     func loadCategories() {
         let repository = dataManager.categoryRepository
-
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository?.load() ?? []
-            
             DispatchQueue.main.async {
                 self.categories = loadedCategories
             }
@@ -124,10 +133,8 @@ struct TransactionListView: View {
     
     func loadAccounts() {
         let repository = dataManager.accountRepository
-
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository?.loadWithCurrency() ?? []
-            
+            let loadedAccounts = repository?.load() ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
             }
@@ -145,8 +152,8 @@ struct TransactionListView: View {
     }
     
     func addTransaction(txn: inout TransactionData) {
-        let repository = dataManager.transactionRepository
-        if repository?.insert(&txn) == true {
+        guard let repository = dataManager.transactionRepository else { return }
+        if repository.insert(&txn) {
             self.txns.append(txn) // id is ready after repo call
         } else {
             // TODO

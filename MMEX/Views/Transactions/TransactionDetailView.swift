@@ -17,9 +17,9 @@ struct TransactionDetailView: View {
     
     @Binding var payees: [PayeeData]
     @Binding var categories: [CategoryData]
-    @Binding var accounts: [AccountWithCurrency]
+    @Binding var accounts: [AccountData]
     
-    @State private var account: AccountWithCurrency?
+    @State private var account: AccountData?
     @State private var isExporting = false
 
     var body: some View {
@@ -33,8 +33,8 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Transaction Amount")) {
-                if let currency = account?.currency,
-                   let currencyFormat = dataManager.currencyFormat[currency.id]
+                if let currencyId = account?.currencyId,
+                   let currencyFormat = dataManager.currencyFormat[currencyId]
                 {
                     Text(currencyFormat.format(amount: txn.transAmount))
                 } else {
@@ -48,7 +48,7 @@ struct TransactionDetailView: View {
 
             Section(header: Text("Account Name")) {
                 if let account = account {
-                    Text("\(account.data.name)")
+                    Text("\(account.name)")
                 } else {
                     Text("n/a")
                 }
@@ -125,8 +125,9 @@ struct TransactionDetailView: View {
     }
     
     func loadAccount() {
-        account = accounts.first { $0.data.id == txn.accountId}
+        account = accounts.first { $0.id == txn.accountId}
     }
+
     func saveChanges() {
         let repository = dataManager.transactionRepository // pass URL here
         if repository?.update(txn) == true {
@@ -153,6 +154,6 @@ struct TransactionDetailView: View {
         txn: TransactionData.sampleData[0],
         payees: .constant(PayeeData.sampleData),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountData.sampleDataWithCurrency)
+        accounts: .constant(AccountData.sampleData)
     )
 }
