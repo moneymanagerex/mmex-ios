@@ -35,42 +35,10 @@ struct InsightsView: View {
                         .shadow(radius: 2)
                     }
 
-                    // Transactions Income Over Time Chart Section
                     Section {
-                        Chart(viewModel.stats) {
-                            BarMark(
-                                x: .value("Day", $0.day),
-                                y: .value("Amount", $0.income)
-                            )
-                            .foregroundStyle(by: .value("Status", $0.status.fullName))
-                        }
-                        .frame(height: 200)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(radius: 2)
+                            incomeVSexpense
                     } header: {
-                        Text("Income Over Time")
-                            .font(.headline)
-                            .padding(.horizontal)
-                    }
-
-                    // Transactions expenses Over Time Chart Section
-                    Section {
-                        Chart(viewModel.stats) {
-                            BarMark(
-                                x: .value("Day", $0.day),
-                                y: .value("Amount", $0.expenses)
-                            )
-                            .foregroundStyle(by: .value("Status", $0.status.fullName))
-                        }
-                        .frame(height: 200)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(radius: 2)
-                    } header: {
-                        Text("Expenses Over Time")
+                        Text("Income vs Expense Over Time")
                             .font(.headline)
                             .padding(.horizontal)
                     }
@@ -99,6 +67,43 @@ struct InsightsView: View {
             }
             .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
         }
+    }
+
+    private var incomeVSexpense: some View {
+        Chart() {
+            ForEach(viewModel.stats) { stat in
+                Plot {
+                    BarMark(
+                        x: .value("Day", stat.day),
+                        y: .value("Amount", stat.income)
+                    )
+                    // .foregroundStyle(by: .value("Status", $0.status.fullName))
+                    .foregroundStyle(.green)
+                }
+                .accessibilityLabel("income")
+                .accessibilityValue("\(stat.income)")
+            }
+            
+            ForEach(viewModel.stats) { stat in
+                Plot {
+                    BarMark(
+                        x: .value("Day", stat.day),
+                        y: .value("Amount", 0 - stat.expenses)
+                    )
+                    // .foregroundStyle(by: .value("Status", $0.status.fullName))
+                    .foregroundStyle(.purple)
+                }
+                .accessibilityLabel("expenses")
+                .accessibilityValue("\(stat.expenses)")
+            }
+        }
+        .chartYAxis {
+            AxisMarks(preset: .automatic, position: .leading)
+        }
+        .frame(height: 300)
+        .chartYAxis(.automatic)
+        .chartXAxis(.automatic)
+        .padding(.horizontal)
     }
 }
 
