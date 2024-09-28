@@ -109,4 +109,13 @@ extension AssetRepository {
             .order(Self.col_type, Self.col_status.desc, Self.col_name)
         )
     }
+
+    // load currencyId for all accounts
+    func loadCurrencyId() -> [Int64] {
+        return Repository(db).select(from: Self.table
+            .select(distinct: Self.col_currencyId)
+        ) { row in
+            row[Self.col_currencyId] ?? 0
+        }
+    }
 }

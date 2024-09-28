@@ -69,11 +69,11 @@ extension CategoryRepository {
         return select(from: Self.table)
     }
 
-    // load category of a payeer
+    // load category of a payee
     func pluck(for payee: PayeeData) -> CategoryData? {
         return pluck(
-            from: Self.table.filter(Self.col_id == payee.categoryId),
-            key: "\(payee.categoryId)"
+            key: "\(payee.categoryId)",
+            from: Self.table.filter(Self.col_id == payee.categoryId)
         )
     }
 }

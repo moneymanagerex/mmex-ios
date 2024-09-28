@@ -22,45 +22,45 @@ protocol RepositoryProtocol {
 }
 
 extension RepositoryProtocol {
-    func pluck(from table: SQLite.Table, key: String) -> RepositoryData? {
+    func pluck<Result>(
+        key: String,
+        from table: SQLite.Table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> Result? {
         do {
             if let row = try db.pluck(Self.selectData(from: table)) {
-                let data = Self.fetchData(row)
-                print("Successfull pluck for \(key) in \(Self.repositoryName): \(data.shortDesc())")
+                let data = result(row)
+                print("Successfull pluck of \(key) from \(Self.repositoryName)")
                 return data
             } else {
-                print("Unsuccefull pluck for \(key) in \(Self.repositoryName)")
+                print("Unsuccefull pluck of \(key) from \(Self.repositoryName)")
                 return nil
             }
         } catch {
-            print("Failed pluck for \(key) in \(Self.repositoryName): \(error)")
+            print("Failed pluck of \(key) from \(Self.repositoryName): \(error)")
             return nil
         }
     }
 
-    func pluck(id: Int64) -> RepositoryData? {
-        do {
-            if let row = try db.pluck(Self.selectData(from: Self.table)
-                .filter(Self.col_id == id)
-            ) {
-                let data = Self.fetchData(row)
-                print("Successfull pluck for id \(id) in \(Self.repositoryName): \(data.shortDesc())")
-                return data
-            } else {
-                print("Unsuccefull pluck for id \(id) in \(Self.repositoryName)")
-                return nil
-            }
-        } catch {
-            print("Failed pluck for id \(id) in \(Self.repositoryName): \(error)")
-            return nil
-        }
+    func pluck<Result>(
+        id: Int64,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> Result? {
+        pluck(
+            key: "id \(id)",
+            from: Self.table.filter(Self.col_id == id),
+            with: result
+        )
     }
 
-    func select(from table: SQLite.Table) -> [RepositoryData] {
+    func select<Result>(
+        from table: SQLite.Table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [Result] {
         do {
-            var data: [RepositoryData] = []
+            var data: [Result] = []
             for row in try db.prepare(Self.selectData(from: table)) {
-                data.append(Self.fetchData(row))
+                data.append(result(row))
             }
             print("Successfull select from \(Self.repositoryName): \(data.count)")
             return data
@@ -70,16 +70,19 @@ extension RepositoryProtocol {
         }
     }
 
-    func dict(from table: SQLite.Table) -> [Int64: RepositoryData] {
+    func dictionary<Result>(
+        from table: SQLite.Table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [Int64: Result] {
         do {
-            var dict: [Int64: RepositoryData] = [:]
+            var dict: [Int64: Result] = [:]
             for row in try db.prepare(Self.selectData(from: table)) {
-                dict[row[Self.col_id]] = Self.fetchData(row)
+                dict[row[Self.col_id]] = result(row)
             }
-            print("Successfull dict from \(Self.repositoryName): \(dict.count)")
+            print("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
             return dict
         } catch {
-            print("Failed dict from \(Self.repositoryName): \(error)")
+            print("Failed dictionary from \(Self.repositoryName): \(error)")
             return [:]
         }
     }

@@ -12,14 +12,16 @@ class DataManager: ObservableObject {
     @Published var isDatabaseConnected = false
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
-    
+
+    var currencyFormat: [Int64: CurrencyFormat] = [:]
+
     init() {
         connectToStoredDatabase()
     }
 }
 
 extension DataManager {
-    func openDatabase(at url: URL) {
+    func openDatabase(at url: URL, isNew: Bool = false) {
         if url.startAccessingSecurityScopedResource() {
             defer { url.stopAccessingSecurityScopedResource() }
             do {
@@ -42,6 +44,10 @@ extension DataManager {
             isDatabaseConnected = false
             databaseURL = nil
         }
+
+        if !isNew {
+            loadCurrencyFormat()
+        }
     }
 
     /// Method to connect to a previously stored database path if available
@@ -55,7 +61,7 @@ extension DataManager {
     }
 
     func createDatabase(at url: URL, sampleData: Bool) {
-        openDatabase(at: url)
+        openDatabase(at: url, isNew: true)
         guard let db else { return }
 
         guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
@@ -86,6 +92,7 @@ extension DataManager {
                 return
             }
         }
+        loadCurrencyFormat()
     }
 
     /// Closes the current database connection and resets related states.
@@ -94,6 +101,7 @@ extension DataManager {
         isDatabaseConnected = false
         db = nil
         databaseURL = nil
+        currencyFormat = [:]
         print("Database connection closed.")
     }
 }
@@ -105,6 +113,16 @@ extension DataManager {
         if let cacheDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first?.path {
             _ = Repository(db).setPragma(name: "temp_store_directory", value: "'\(cacheDir)'")
         }
+    }
+}
+
+extension DataManager {
+    func loadCurrencyFormat() {
+        currencyFormat = CurrencyRepository(db)?.dictionaryRefFormat() ?? [:]
+    }
+
+    func updateCurrencyFormat(id: Int64, value: CurrencyFormat) {
+        currencyFormat[id] = value
     }
 }
 

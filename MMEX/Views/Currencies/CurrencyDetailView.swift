@@ -32,7 +32,7 @@ struct CurrencyDetailView: View {
                 Text("\(currency.baseConvRate)")
             }
             Section(header: Text("Currency Type")) {
-                Text(currency.type)
+                Text(currency.type.rawValue)
             }
             Button("Delete Currency") {
                 deleteCurrency()

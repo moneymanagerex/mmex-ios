@@ -17,8 +17,7 @@ struct CurrencyListView: View {
         decimalPoint   : ".",
         groupSeparator : ",",
         scale          : 100,
-        baseConvRate   : 1.0,
-        type           : "Fiat"
+        baseConvRate   : 1.0
     )
 
     var body: some View {

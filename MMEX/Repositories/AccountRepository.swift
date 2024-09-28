@@ -175,37 +175,8 @@ extension AccountRepository {
     // load account of a stock
     func pluck(for stock: StockData) -> AccountData? {
         return pluck(
-            from: Self.table.filter(Self.col_id == stock.accountId),
-            key: "\(stock.accountId)"
+            key: "\(stock.accountId)",
+            from: Self.table.filter(Self.col_id == stock.accountId)
         )
-    }
-}
-
-// TODO: move to ViewModels
-extension AccountRepository {
-    // load all accounts and their currency
-    func loadWithCurrency() -> [AccountWithCurrency] {
-        // TODO via join?
-        // Create a lookup dictionary for currencies by currencyId
-        let currencies = CurrencyRepository(db).load();
-        let currencyDict = Dictionary(uniqueKeysWithValues: currencies.map { ($0.id, $0) })
-
-        do {
-            var data: [AccountWithCurrency] = []
-            for row in try db.prepare(Self.selectData(from: Self.table
-                .order(Self.col_name)
-            )) {
-                let account = Self.fetchData(row)
-                data.append(AccountWithCurrency(
-                    data: account,
-                    currency: currencyDict[account.currencyId]
-                ) )
-            }
-            print("Successfull select from \(Self.repositoryName): \(data.count)")
-            return data
-        } catch {
-            print("Failed select from \(Self.repositoryName): \(error)")
-            return []
-        }
     }
 }

@@ -14,7 +14,7 @@ struct TransactionEditView: View {
 
     @Binding var payees: [PayeeData]
     @Binding var categories: [CategoryData]
-    @Binding var accounts: [AccountWithCurrency]
+    @Binding var accounts: [AccountData]
     
     // app level setting
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
@@ -41,7 +41,7 @@ struct TransactionEditView: View {
                         Text("Account").tag(0 as Int64) // not set
                     }
                     ForEach(accounts) { account in
-                        Text(account.data.name).tag(account.data.id)
+                        Text(account.name).tag(account.id)
                     }
                 }
             }
@@ -151,7 +151,7 @@ struct TransactionEditView: View {
             }
 
             if self.accounts.count == 1 {
-                txn.accountId = self.accounts.first!.data.id
+                txn.accountId = self.accounts.first!.id
             }
 
             if self.categories.count == 1 {
@@ -174,6 +174,6 @@ struct TransactionEditView: View {
         txn: .constant(TransactionData.sampleData[0]),
         payees: .constant(PayeeData.sampleData),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountData.sampleDataWithCurrency)
+        accounts: .constant(AccountData.sampleData)
     )
 }

@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct AccountAddView: View {
-    @Binding var newAccount: AccountWithCurrency
+    @Binding var newAccount: AccountData
     @Binding var isPresentingAccountAddView: Bool
-    @Binding var currencies: [CurrencyData] // Bind to the list of available currencies
+    @Binding var currencies: [(Int64, String)] // Bind to the list of available currencies
 
-    var onSave: (inout AccountWithCurrency) -> Void
+    var onSave: (inout AccountData) -> Void
     
     var body: some View {
         NavigationStack {
@@ -36,11 +36,13 @@ struct AccountAddView: View {
 
 #Preview {
     AccountAddView(
-        newAccount: .constant(AccountWithCurrency()),
+        newAccount: .constant(AccountData()),
         isPresentingAccountAddView: .constant(true),
-        currencies: .constant(CurrencyData.sampleData)
+        currencies: .constant(CurrencyData.sampleData.map {
+            ($0.id, $0.name)
+        } )
     ) { newAccount in
         // Handle saving in preview
-        print("New account: \(newAccount.data.name)")
+        print("New account: \(newAccount.name)")
     }
 }

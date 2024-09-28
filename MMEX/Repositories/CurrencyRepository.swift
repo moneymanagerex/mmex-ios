@@ -39,21 +39,21 @@ struct CurrencyRepository: RepositoryProtocol {
     // CURRENCY_TYPE   | TEXT    | NOT NULL (Fiat, Crypto)
 
     // column expressions
-    static let col_id                 = SQLite.Expression<Int64>("CURRENCYID")
-    static let col_name               = SQLite.Expression<String>("CURRENCYNAME")
-    static let col_prefixSymbol       = SQLite.Expression<String?>("PFX_SYMBOL")
-    static let col_suffixSymbol       = SQLite.Expression<String?>("SFX_SYMBOL")
-    static let col_decimalPoint       = SQLite.Expression<String?>("DECIMAL_POINT")
-    static let col_groupSeparator     = SQLite.Expression<String?>("GROUP_SEPARATOR")
-    static let col_unitName           = SQLite.Expression<String?>("UNIT_NAME")
-    static let col_centName           = SQLite.Expression<String?>("CENT_NAME")
-    static let col_scale              = SQLite.Expression<Int?>("SCALE")
-    static let col_baseConversionRate = SQLite.Expression<Double?>("BASECONVRATE")
-    static let col_symbol             = SQLite.Expression<String>("CURRENCY_SYMBOL")
-    static let col_type               = SQLite.Expression<String>("CURRENCY_TYPE")
+    static let col_id             = SQLite.Expression<Int64>("CURRENCYID")
+    static let col_name           = SQLite.Expression<String>("CURRENCYNAME")
+    static let col_prefixSymbol   = SQLite.Expression<String?>("PFX_SYMBOL")
+    static let col_suffixSymbol   = SQLite.Expression<String?>("SFX_SYMBOL")
+    static let col_decimalPoint   = SQLite.Expression<String?>("DECIMAL_POINT")
+    static let col_groupSeparator = SQLite.Expression<String?>("GROUP_SEPARATOR")
+    static let col_unitName       = SQLite.Expression<String?>("UNIT_NAME")
+    static let col_centName       = SQLite.Expression<String?>("CENT_NAME")
+    static let col_scale          = SQLite.Expression<Int?>("SCALE")
+    static let col_baseConvRate   = SQLite.Expression<Double?>("BASECONVRATE")
+    static let col_symbol         = SQLite.Expression<String>("CURRENCY_SYMBOL")
+    static let col_type           = SQLite.Expression<String>("CURRENCY_TYPE")
 
     // cast NUMERIC to REAL
-    static let cast_baseConversionRate = cast(col_baseConversionRate) as SQLite.Expression<Double?>
+    static let cast_baseConvRate = cast(col_baseConvRate) as SQLite.Expression<Double?>
 
     static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
@@ -66,7 +66,7 @@ struct CurrencyRepository: RepositoryProtocol {
             col_unitName,
             col_centName,
             col_scale,
-            cast_baseConversionRate,
+            cast_baseConvRate,
             col_symbol,
             col_type
         )
@@ -83,59 +83,131 @@ struct CurrencyRepository: RepositoryProtocol {
             unitName       : row[col_unitName] ?? "",
             centName       : row[col_centName] ?? "",
             scale          : row[col_scale] ?? 0,
-            baseConvRate   : row[cast_baseConversionRate] ?? 0.0,
+            baseConvRate   : row[cast_baseConvRate] ?? 0.0,
             symbol         : row[col_symbol],
-            type           : row[col_type]
+            type           : CurrencyType(collateNoCase: row[col_type])
         )
     }
 
     static func itemSetters(_ data: CurrencyData) -> [SQLite.Setter] {
         return [
-            col_name               <- data.name,
-            col_prefixSymbol       <- data.prefixSymbol,
-            col_suffixSymbol       <- data.suffixSymbol,
-            col_decimalPoint       <- data.decimalPoint,
-            col_groupSeparator     <- data.groupSeparator,
-            col_unitName           <- data.unitName,
-            col_centName           <- data.centName,
-            col_scale              <- data.scale,
-            col_baseConversionRate <- data.baseConvRate,
-            col_symbol             <- data.symbol,
-            col_type               <- data.type
+            col_name           <- data.name,
+            col_prefixSymbol   <- data.prefixSymbol,
+            col_suffixSymbol   <- data.suffixSymbol,
+            col_decimalPoint   <- data.decimalPoint,
+            col_groupSeparator <- data.groupSeparator,
+            col_unitName       <- data.unitName,
+            col_centName       <- data.centName,
+            col_scale          <- data.scale,
+            col_baseConvRate   <- data.baseConvRate,
+            col_symbol         <- data.symbol,
+            col_type           <- data.type.rawValue
         ]
+    }
+    
+    static func selectFormat(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(
+            col_id,
+            col_name,
+            col_prefixSymbol,
+            col_suffixSymbol,
+            col_decimalPoint,
+            col_groupSeparator,
+            col_scale,
+            cast_baseConvRate
+        )
+    }
+
+    static func fetchFormat(_ row: SQLite.Row) -> CurrencyFormat {
+        return CurrencyFormat(
+            name           : row[col_name],
+            prefixSymbol   : row[col_prefixSymbol] ?? "",
+            suffixSymbol   : row[col_suffixSymbol] ?? "",
+            decimalPoint   : row[col_decimalPoint] ?? "",
+            groupSeparator : row[col_groupSeparator] ?? "",
+            scale          : row[col_scale] ?? 0,
+            baseConvRate   : row[cast_baseConvRate] ?? 0.0
+        )
     }
 }
 
 extension CurrencyRepository {
-    // load all currencies
+    // load all currencies, sorted by name
     func load() -> [CurrencyData] {
+        print("DEBUG: CurrencyRepository.load()")
         return select(from: Self.table
             .order(Self.col_name)
         )
     }
 
-    // load currencies for all accounts
-    func dictForAccount() -> [Int64: CurrencyData] {
+    // load all currency names
+    func loadName() -> [(id: Int64, name: String)] {
+        print("DEBUG: CurrencyRepository.loadName()")
+        return select(from: Self.table
+            .order(Self.col_name)
+        ) { row in
+            (id: row[Self.col_id], name: row[Self.col_name])
+        }
+    }
+
+    // load all currency symbols
+    func loadSymbol() -> [(Int64, String)] {
+        print("DEBUG: CurrencyRepository.loadName()")
+        return select(from: Self.table
+            .order(Self.col_symbol)
+        ) { row in
+            (id: row[Self.col_id], name: row[Self.col_symbol])
+        }
+    }
+
+    // TODO: re-write in a more readable way (get the ids first, then pluck each currency)
+    // load all referred currency formats, indexed by currencyId
+    func dictionaryRefFormat() -> [Int64: CurrencyFormat] {
+        print("DEBUG: CurrencyRepository.dictionaryRefFormat()")
+        typealias C = CurrencyRepository
         typealias A = AccountRepository
-        let a_currencyId = A.table.select(distinct: A.col_currencyId)
-        return dict(from: Self.table
-            .join(a_currencyId, on: a_currencyId[A.col_currencyId] == Self.col_id)
-        )
+        typealias E = AssetRepository
+        let query = "select" +
+        " \(C.col_id)," +
+        " \(C.col_name)," +
+        " \(C.col_prefixSymbol)," +
+        " \(C.col_suffixSymbol)," +
+        " \(C.col_decimalPoint)," +
+        " \(C.col_groupSeparator)," +
+        " \(C.col_scale)," +
+        " \(C.cast_baseConvRate)" +
+        " from \(C.repositoryName)" +
+        " where exists (" +
+        "select 1 from \(A.repositoryName) where \(A.table[A.col_currencyId]) == \(C.table[C.col_id])" +
+        " union " +
+        "select 1 from \(E.repositoryName) where \(E.table[E.col_currencyId]) == \(C.table[C.col_id])" +
+        ")"
+        return Repository(db).dictionary(
+            query: query
+        ) { row in CurrencyFormat(
+            name           : row[1] as? String ?? "",
+            prefixSymbol   : row[2] as? String ?? "",
+            suffixSymbol   : row[3] as? String ?? "",
+            decimalPoint   : row[4] as? String ?? "",
+            groupSeparator : row[5] as? String ?? "",
+            scale          : row[6] as? Int    ?? 0,
+            baseConvRate   : row[7] as? Double ?? 0.0
+        ) }
     }
 
     // load currency of an account
     func pluck(for account: AccountData) -> CurrencyData? {
         return pluck(
-            from: Self.table.filter(Self.col_id == account.currencyId),
-            key: "\(account.currencyId)"
+            key: "\(account.currencyId)",
+            from: Self.table.filter(Self.col_id == account.currencyId)
         )
     }
 
     // load currency of an asset
     func pluck(for asset: AssetData) -> CurrencyData? {
         return pluck(
-            from: Self.table.filter(Self.col_id == asset.currencyId),
-            key: "\(asset.currencyId)"
+            key: "\(asset.currencyId)",
+            from: Self.table.filter(Self.col_id == asset.currencyId)
         )
     }
 }

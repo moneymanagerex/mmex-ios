@@ -26,7 +26,7 @@ class InfotableViewModel: ObservableObject {
     private var currencyRepo: CurrencyRepository?
 
     @Published var currencies: [CurrencyData] = []
-    @Published var accounts: [AccountWithCurrency] = []
+    @Published var accounts: [AccountData] = []
 
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
@@ -49,16 +49,16 @@ class InfotableViewModel: ObservableObject {
         if let baseCurrencyId = infotableRepo?.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
             self.baseCurrencyId = baseCurrencyId
             baseCurrency = currencyRepo?.pluck(
-                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId),
-                key: InfoKey.baseCurrencyID.id
+                key: InfoKey.baseCurrencyID.id,
+                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId)
             )
         }
 
         if let defaultAccountId = infotableRepo?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
             self.defaultAccountId = defaultAccountId
             defaultAccount = accountRepo?.pluck(
-                from: AccountRepository.table.filter(AccountRepository.col_id == defaultAccountId),
-                key: InfoKey.defaultAccountID.id
+                key: InfoKey.defaultAccountID.id,
+                from: AccountRepository.table.filter(AccountRepository.col_id == defaultAccountId)
             )
         }
     }
@@ -73,7 +73,7 @@ class InfotableViewModel: ObservableObject {
     private func setupBindings() {
         // Bind for defaultAccountId, using dropFirst to ignore initial assignment
         $defaultAccountId
-            .dropFirst() // Ignore the first emitted value
+            //.dropFirst() // Ignore the first emitted value
             .sink { [weak self] accountId in
                 self?.saveDefaultAccount(accountId)
                 self?.loadTransactions()
@@ -100,12 +100,12 @@ class InfotableViewModel: ObservableObject {
 
     func loadAccounts() {
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = self.accountRepo?.loadWithCurrency() ?? []
+            let loadedAccounts = self.accountRepo?.load() ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
 
                 if (loadedAccounts.count == 1) {
-                    self.defaultAccountId = loadedAccounts.first!.data.id
+                    self.defaultAccountId = loadedAccounts.first!.id
                 }
             }
         }
