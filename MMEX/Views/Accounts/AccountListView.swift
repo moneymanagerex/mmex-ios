@@ -10,9 +10,15 @@ struct AccountListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var currencies: [CurrencyData] = []
     @State private var accounts_by_type: [String:[AccountWithCurrency]] = [:]
-    @State private var newAccount = AccountWithCurrency()
+    @State private var newAccount = emptyAccount
     @State private var isPresentingAccountAddView = false
     @State private var expandedSections: [String: Bool] = [:] // Tracks the expanded/collapsed state
+    static let emptyAccount = AccountWithCurrency(
+        data : AccountData(
+            status: AccountStatus.open
+        ),
+        currency: nil
+    )
 
     var body: some View {
         NavigationStack {
@@ -81,7 +87,7 @@ struct AccountListView: View {
         .sheet(isPresented: $isPresentingAccountAddView) {
             AccountAddView(newAccount: $newAccount, isPresentingAccountAddView: $isPresentingAccountAddView, currencies: $currencies) { newAccount in
                 addAccount(account: &newAccount)
-                newAccount = AccountWithCurrency()
+                newAccount = Self.emptyAccount
             }
         }
     }

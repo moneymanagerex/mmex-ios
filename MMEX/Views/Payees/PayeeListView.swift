@@ -15,7 +15,11 @@ struct PayeeListView: View {
     @State private var newPayee = PayeeData()
     @State private var isPresentingPayeeAddView = false
     @State private var searchQuery: String = "" // New: Search query
-    
+    static let emptyPayee = PayeeData(
+        categoryId : -1,
+        active     : true
+    )
+
     var body: some View {
         NavigationStack {
             List($filteredPayees) { $payee in // Use filteredPayees instead of payees
@@ -46,19 +50,18 @@ struct PayeeListView: View {
             loadCategories()
         }
         .sheet(isPresented: $isPresentingPayeeAddView) {
-            PayeeAddView(newPayee: $newPayee, isPresentingPayeeAddView: $isPresentingPayeeAddView, categories: $categories) { newPayee in
+            PayeeAddView(newPayee: $newPayee, isPresentingPayeeAddView: $isPresentingPayeeAddView, categories: $categories
+            ) { newPayee in
                 addPayee(payee: &newPayee)
-                newPayee = PayeeData()
+                newPayee = Self.emptyPayee
             }
         }
     }
     
     func loadPayees() {
-        let repository = dataManager.payeeRepository
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository?.load() ?? []
-            
+            let loadedPayees = dataManager.payeeRepository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
@@ -68,11 +71,8 @@ struct PayeeListView: View {
     }
 
     func loadCategories() {
-        let repository = dataManager.categoryRepository
-
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository?.load() ?? []
-
+            let loadedCategories = dataManager.categoryRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.categories = loadedCategories
             }
@@ -80,8 +80,8 @@ struct PayeeListView: View {
     }
 
     func addPayee(payee: inout PayeeData) {
-        let repository = dataManager.payeeRepository
-        if repository?.insert(&payee) == true {
+        guard let repository = dataManager.payeeRepository else { return }
+        if repository.insert(&payee) {
             self.payees.append(payee) // id is ready after repo call
             // loadPayees()
         } else {

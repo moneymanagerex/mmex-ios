@@ -236,10 +236,10 @@
 		A30061742CA3B57700011B1A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				A30061752CA3B58700011B1A /* AssetDetailView.swift */,
-				A30061772CA3B68300011B1A /* AssetEditView.swift */,
-				A379C1A62CA3B79E00CC8E2C /* AssetAddView.swift */,
 				A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */,
+				A30061752CA3B58700011B1A /* AssetDetailView.swift */,
+				A379C1A62CA3B79E00CC8E2C /* AssetAddView.swift */,
+				A30061772CA3B68300011B1A /* AssetEditView.swift */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -284,8 +284,8 @@
 			isa = PBXGroup;
 			children = (
 				A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */,
-				A3C142602C8E9DBF00D3CEC0 /* PayeeAddView.swift */,
 				A3C142512C8B37E700D3CEC0 /* PayeeDetailView.swift */,
+				A3C142602C8E9DBF00D3CEC0 /* PayeeAddView.swift */,
 				A3C142532C8B381400D3CEC0 /* PayeeEditView.swift */,
 			);
 			path = Payees;
@@ -308,9 +308,9 @@
 			isa = PBXGroup;
 			children = (
 				A3363EE82C9326A1004696C7 /* CategoryListView.swift */,
-				A3363EE22C9323A5004696C7 /* CategoryEditView.swift */,
 				A3363EE42C9323D2004696C7 /* CategoryDetailView.swift */,
 				A3363EE62C93249D004696C7 /* CategoryAddView.swift */,
+				A3363EE22C9323A5004696C7 /* CategoryEditView.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -318,10 +318,10 @@
 		A39B1B3D2C9A66F7003E5562 /* Currencies */ = {
 			isa = PBXGroup;
 			children = (
-				A39B1B312C99A084003E5562 /* CurrencyAddView.swift */,
-				A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */,
-				A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */,
 				A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */,
+				A39B1B332C99A0A8003E5562 /* CurrencyDetailView.swift */,
+				A39B1B312C99A084003E5562 /* CurrencyAddView.swift */,
+				A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */,
 			);
 			path = Currencies;
 			sourceTree = "<group>";
@@ -452,10 +452,10 @@
 		A3C142452C89CB1600D3CEC0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A30061742CA3B57700011B1A /* Assets */,
 				A39B1B3E2C9A6714003E5562 /* Settings */,
 				A39B1B3D2C9A66F7003E5562 /* Currencies */,
 				A39B1B392C9A668F003E5562 /* Accounts */,
+				A30061742CA3B57700011B1A /* Assets */,
 				A39B1B3C2C9A66E6003E5562 /* Categories */,
 				A39B1B3A2C9A66B8003E5562 /* Payees */,
 				A39B1B3B2C9A66CB003E5562 /* Transactions */,

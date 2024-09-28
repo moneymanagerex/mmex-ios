@@ -114,6 +114,15 @@ extension CurrencyRepository {
         )
     }
 
+    // load currencies for all accounts
+    func dictForAccount() -> [Int64: CurrencyData] {
+        typealias A = AccountRepository
+        let a_currencyId = A.table.select(distinct: A.col_currencyId)
+        return dict(from: Self.table
+            .join(a_currencyId, on: a_currencyId[A.col_currencyId] == Self.col_id)
+        )
+    }
+
     // load currency of an account
     func pluck(for account: AccountData) -> CurrencyData? {
         return pluck(

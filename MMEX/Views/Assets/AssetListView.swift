@@ -11,9 +11,12 @@ struct AssetListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var assets: [AssetData] = []
     @State private var filteredAssets: [AssetData] = [] // New: Filtered assets for search results
-    @State private var newAsset = AssetData()
+    @State private var newAsset = emptyAsset
     @State private var isPresentingAssetAddView = false
     @State private var searchQuery: String = "" // New: Search query
+    static let emptyAsset = AssetData(
+        status: AssetStatus.open
+    )
 
     var body: some View {
         NavigationStack {
@@ -46,16 +49,15 @@ struct AssetListView: View {
         .sheet(isPresented: $isPresentingAssetAddView) {
             AssetAddView(newAsset: $newAsset, isPresentingAssetAddView: $isPresentingAssetAddView) { newAsset in
                 addAsset(asset: &newAsset)
-                newAsset = AssetData()
+                newAsset = Self.emptyAsset
             }
         }
     }
 
     func loadAssets() {
         // Fetch assets using repository and update the view
-        let repository = dataManager.assetRepository
         DispatchQueue.global(qos: .background).async {
-            let loadedAssets = repository?.load() ?? []
+            let loadedAssets = dataManager.assetRepository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.assets = loadedAssets
@@ -65,9 +67,8 @@ struct AssetListView: View {
     }
 
     func addAsset(asset: inout AssetData) {
-        // TODO
-        let repository = dataManager.assetRepository
-        if repository?.insert(&asset) == true {
+        guard let repository = dataManager.assetRepository else { return }
+        if repository.insert(&asset) {
             self.assets.append(asset) // id is ready after repo call
             // loadAssets()
         } else {

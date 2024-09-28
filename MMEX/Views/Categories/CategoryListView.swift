@@ -52,10 +52,8 @@ struct CategoryListView: View {
     }
     
     func loadCategories() {
-        let repository = dataManager.categoryRepository
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository?.load() ?? []
-
+            let loadedCategories = dataManager.categoryRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.categories = loadedCategories
                 self.filteredCategories = loadedCategories
@@ -64,11 +62,12 @@ struct CategoryListView: View {
     }
 
     func addCategory(category: inout CategoryData) {
-        let repository = dataManager.categoryRepository
-        if repository?.insert(&category) == true {
+        guard let repository = dataManager.categoryRepository else { return }
+        if repository.insert(&category) {
             self.categories.append(category)
         }
     }
+
     // New: Filter based on the search query
     func filterCategories(by query: String) {
         if query.isEmpty {

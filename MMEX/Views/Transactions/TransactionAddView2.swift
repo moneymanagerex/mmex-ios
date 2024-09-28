@@ -63,8 +63,8 @@ struct TransactionAddView2: View {
     }
 
     func addTransaction(txn: inout TransactionData) {
-        let repository = dataManager.transactionRepository
-        if repository?.insert(&txn) == true {
+        guard let repository = dataManager.transactionRepository else { return }
+        if repository.insert(&txn) {
             // id is ready after repo call
         } else {
             // TODO
@@ -72,12 +72,9 @@ struct TransactionAddView2: View {
     }
     
     func loadPayees() {
-        let repository = dataManager.payeeRepository
-
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository?.load() ?? []
-            
+            let loadedPayees = dataManager.payeeRepository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
@@ -86,11 +83,8 @@ struct TransactionAddView2: View {
     }
     
     func loadCategories() {
-        let repository = dataManager.categoryRepository
-
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository?.load() ?? []
-            
+            let loadedCategories = dataManager.categoryRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.categories = loadedCategories
             }
@@ -98,11 +92,8 @@ struct TransactionAddView2: View {
     }
     
     func loadAccounts() {
-        let repository = dataManager.accountRepository
-
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository?.loadWithCurrency() ?? []
-            
+            let loadedAccounts = dataManager.accountRepository?.loadWithCurrency() ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
             }
