@@ -53,6 +53,24 @@ extension Repository {
         }
     }
 
+    func dictionary<Result>(
+        query: String,
+        with result: (SQLite.Statement.Element) -> Result
+    ) -> [Int64: Result] {
+        print("DEBUG: Repository.dictionary: \(query)")
+        do {
+            var dict: [Int64: Result] = [:]
+            for row in try db.prepare(query) {
+                dict[row[0] as! Int64] = result(row)
+            }
+            print("Successfull dictionary: \(dict.count)")
+            return dict
+        } catch {
+            print("Failed dictionary: \(error)")
+            return [:]
+        }
+    }
+
     func execute(sql: String) -> Bool {
         print("Executing sql: \(sql)")
         do {

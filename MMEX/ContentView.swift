@@ -19,7 +19,8 @@ struct ContentView: View {
     @EnvironmentObject var dataManager: DataManager
 
     var body: some View {
-        ZStack {
+        print("DEBUG: ContentView.body")
+        return ZStack {
             if dataManager.isDatabaseConnected {
                 connectedView
             } else {
@@ -45,7 +46,12 @@ struct ContentView: View {
                 NavigationSplitView {
                     SidebarView(selectedTab: $selectedTab)
                 } detail: {
-                    TabContentView(selectedTab: $selectedTab, isDocumentPickerPresented: $isDocumentPickerPresented, isNewDocumentPickerPresented: $isNewDocumentPickerPresented, isSampleDocument: $isSampleDocument)
+                    TabContentView(
+                        selectedTab: $selectedTab,
+                        isDocumentPickerPresented: $isDocumentPickerPresented,
+                        isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                        isSampleDocument: $isSampleDocument
+                    )
                 }
             } else {
                 let infotableViewModel = InfotableViewModel(dataManager: dataManager)
@@ -140,8 +146,12 @@ struct ContentView: View {
     // Management tab
     private var managementTab: some View {
         NavigationView {
-            ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented, isNewDocumentPickerPresented: $isNewDocumentPickerPresented, isSampleDocument: $isSampleDocument)
-                .navigationBarTitle("Management", displayMode: .inline)
+            ManagementView(
+                isDocumentPickerPresented: $isDocumentPickerPresented,
+                isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                isSampleDocument: $isSampleDocument
+            )
+            .navigationBarTitle("Management", displayMode: .inline)
         }
         .tabItem {
             Image(systemName: "folder")
@@ -231,10 +241,11 @@ struct TabContentView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
 
     var body: some View {
+        print("DEBUG: TabContentView.body")
         // Use @StateObject to manage the lifecycle of InfotableViewModel
         let infotableViewModel = InfotableViewModel(dataManager: dataManager)
         // Here we ensure that there's no additional NavigationStack or NavigationView
-        Group {
+        return Group {
             switch selectedTab {
             case 0:
                 TransactionListView2(viewModel: infotableViewModel) // Summary and Edit feature
@@ -246,8 +257,12 @@ struct TabContentView: View {
                 TransactionAddView2(selectedTab: $selectedTab)
                     .navigationBarTitle("Add Transaction", displayMode: .inline)
             case 3:
-                ManagementView(isDocumentPickerPresented: $isDocumentPickerPresented, isNewDocumentPickerPresented: $isNewDocumentPickerPresented, isSampleDocument: $isSampleDocument)
-                    .navigationBarTitle("Management", displayMode: .inline)
+                ManagementView(
+                    isDocumentPickerPresented: $isDocumentPickerPresented,
+                    isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                    isSampleDocument: $isSampleDocument
+                )
+                .navigationBarTitle("Management", displayMode: .inline)
             case 4:
                 SettingsView(viewModel: infotableViewModel)
                     .navigationBarTitle("Settings", displayMode: .inline)

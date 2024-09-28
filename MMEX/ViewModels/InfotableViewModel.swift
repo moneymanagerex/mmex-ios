@@ -49,16 +49,16 @@ class InfotableViewModel: ObservableObject {
         if let baseCurrencyId = infotableRepo?.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
             self.baseCurrencyId = baseCurrencyId
             baseCurrency = currencyRepo?.pluck(
-                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId),
-                key: InfoKey.baseCurrencyID.id
+                key: InfoKey.baseCurrencyID.id,
+                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId)
             )
         }
 
         if let defaultAccountId = infotableRepo?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
             self.defaultAccountId = defaultAccountId
             defaultAccount = accountRepo?.pluck(
-                from: AccountRepository.table.filter(AccountRepository.col_id == defaultAccountId),
-                key: InfoKey.defaultAccountID.id
+                key: InfoKey.defaultAccountID.id,
+                from: AccountRepository.table.filter(AccountRepository.col_id == defaultAccountId)
             )
         }
     }

@@ -68,10 +68,10 @@ extension InfotableRepository {
     func load(for keys: [InfoKey]) -> [InfoKey: InfotableData] {
         var results: [InfoKey: InfotableData] = [:]
         for key in keys {
-            if let info = pluck(
-                from: Self.table.filter(Self.col_name == key.rawValue),
-                key: key.rawValue
-            ) {
+            if let info: InfotableData = (pluck(
+                key: key.rawValue,
+                from: Self.table.filter(Self.col_name == key.rawValue)
+            )) {
                 results[key] = info
             }
         }
@@ -81,10 +81,10 @@ extension InfotableRepository {
     // New Methods for Key-Value Pairs
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
-        if let info = pluck(
-            from: Self.table.filter(Self.col_name == key),
-            key: key
-        ) {
+        if let info: InfotableData = (pluck(
+            key: key,
+            from: Self.table.filter(Self.col_name == key)
+        )) {
             if type == String.self {
                 return info.value as? T
             } else if type == Int64.self {
@@ -106,10 +106,10 @@ extension InfotableRepository {
             return
         }
 
-        if var info = pluck(
-            from: Self.table.filter(Self.col_name == key),
-            key: key
-        ) {
+        if var info: InfotableData = (pluck(
+            key: key,
+            from: Self.table.filter(Self.col_name == key)
+        )) {
             // Update existing setting
             info.value = stringValue
             _ = update(info)

@@ -16,23 +16,23 @@ struct ManagementView: View {
     var body: some View {
         List {
             Section(header: Text("Manage Data")) {
+                NavigationLink(destination: CurrencyListView()) {
+                    Text("Manage Currencies")
+                }
                 NavigationLink(destination: AccountListView()) {
                     Text("Manage Accounts")
                 }
                 NavigationLink(destination: AssetListView()) {
                     Text("Manage Assets")
                 }
-                NavigationLink(destination: PayeeListView()) {
-                    Text("Manage Payees")
-                }
                 NavigationLink(destination: CategoryListView()) {
                     Text("Manage Categories")
                 }
+                NavigationLink(destination: PayeeListView()) {
+                    Text("Manage Payees")
+                }
                 NavigationLink(destination: TransactionListView()) {
                     Text("Manage Transactions")
-                }
-                NavigationLink(destination: CurrencyListView()) {
-                    Text("Manage Currencies")
                 }
             }
             

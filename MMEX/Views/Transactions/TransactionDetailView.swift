@@ -33,8 +33,10 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Transaction Amount")) {
-                if let currency = account?.currency {
-                    Text(currency.format(amount: txn.transAmount))
+                if let currency = account?.currency,
+                   let currencyFormat = dataManager.currencyFormat[currency.id]
+                {
+                    Text(currencyFormat.format(amount: txn.transAmount))
                 } else {
                     Text("\(txn.transAmount)")
                 }

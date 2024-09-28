@@ -175,8 +175,8 @@ extension AccountRepository {
     // load account of a stock
     func pluck(for stock: StockData) -> AccountData? {
         return pluck(
-            from: Self.table.filter(Self.col_id == stock.accountId),
-            key: "\(stock.accountId)"
+            key: "\(stock.accountId)",
+            from: Self.table.filter(Self.col_id == stock.accountId)
         )
     }
 }

@@ -294,11 +294,11 @@
 		A39B1B3B2C9A66CB003E5562 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
-				A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */,
-				A3C1429D2C8FFCF100D3CEC0 /* TransactionAddView.swift */,
 				A3C142972C8FE62200D3CEC0 /* TransactionListView.swift */,
 				A3C142A92C90721800D3CEC0 /* TransactionListView2.swift */,
 				A3C142992C8FF77D00D3CEC0 /* TransactionDetailView.swift */,
+				A3C1429D2C8FFCF100D3CEC0 /* TransactionAddView.swift */,
+				A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */,
 				A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */,
 			);
 			path = Transactions;

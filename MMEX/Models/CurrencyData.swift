@@ -31,7 +31,28 @@ extension CurrencyData: DataProtocol {
     }
 }
 
-extension CurrencyData {
+protocol CurrencyFormatProtocol {
+    var prefixSymbol   : String { get }
+    var suffixSymbol   : String { get }
+    var decimalPoint   : String { get }
+    var groupSeparator : String { get }
+    var scale          : Int    { get }
+    var baseConvRate   : Double { get }
+}
+
+struct CurrencyFormat: CurrencyFormatProtocol {
+    let prefixSymbol   : String
+    let suffixSymbol   : String
+    let decimalPoint   : String
+    let groupSeparator : String
+    let scale          : Int
+    let baseConvRate   : Double
+}
+
+extension CurrencyData: CurrencyFormatProtocol {
+}
+
+extension CurrencyFormatProtocol {
     /// A `NumberFormatter` configured specifically for the currency.
     var formatter: NumberFormatter {
         let nf = NumberFormatter()
@@ -54,6 +75,7 @@ extension CurrencyData {
         }
     }
 
+    // TODO: move to higher level where base currency is maintained
     /// Helper method to convert and format the amount into base currency using the exchange rate.
     func formatAsBaseCurrency(amount: Double, baseCurrencyRate: Double?) -> String {
         let baseAmount = amount * (baseCurrencyRate ?? self.baseConvRate)
