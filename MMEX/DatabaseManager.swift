@@ -121,15 +121,8 @@ extension DataManager {
         currencyFormat = CurrencyRepository(db)?.dictionaryRefFormat() ?? [:]
     }
 
-    func updateCurrencyFormat(id: Int64, format: CurrencyFormatProtocol) {
-        currencyFormat[id] = CurrencyFormat(
-            prefixSymbol   : format.prefixSymbol,
-            suffixSymbol   : format.suffixSymbol,
-            decimalPoint   : format.decimalPoint,
-            groupSeparator : format.groupSeparator,
-            scale          : format.scale,
-            baseConvRate   : format.baseConvRate
-        )
+    func updateCurrencyFormat(id: Int64, value: CurrencyFormat) {
+        currencyFormat[id] = value
     }
 }
 

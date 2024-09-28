@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct CurrencyData: ExportableEntity {
+struct CurrencyData: ExportableEntity, CurrencyFormatProtocol {
     var id             : Int64  = 0
     var name           : String = ""
     var prefixSymbol   : String = ""
@@ -49,7 +49,15 @@ struct CurrencyFormat: CurrencyFormatProtocol {
     let baseConvRate   : Double
 }
 
-extension CurrencyData: CurrencyFormatProtocol {
+extension CurrencyFormatProtocol {
+    var toCurrencyFormat: CurrencyFormat { CurrencyFormat(
+        prefixSymbol   : self.prefixSymbol,
+        suffixSymbol   : self.suffixSymbol,
+        decimalPoint   : self.decimalPoint,
+        groupSeparator : self.groupSeparator,
+        scale          : self.scale,
+        baseConvRate   : self.baseConvRate
+    ) }
 }
 
 extension CurrencyFormatProtocol {
