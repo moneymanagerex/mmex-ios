@@ -8,19 +8,25 @@
 import Foundation
 import SQLite
 
+enum CurrencyType: String, EnumCollateNoCase {
+    case fiat   = "Fiat"
+    case crypto = "Crypto"
+    static let defaultValue = Self.fiat
+}
+
 struct CurrencyData: ExportableEntity, CurrencyFormatProtocol {
-    var id             : Int64  = 0
-    var name           : String = ""
-    var prefixSymbol   : String = ""
-    var suffixSymbol   : String = ""
-    var decimalPoint   : String = ""
-    var groupSeparator : String = ""
-    var unitName       : String = ""
-    var centName       : String = ""
-    var scale          : Int    = 0
-    var baseConvRate   : Double = 0.0
-    var symbol         : String = ""
-    var type           : String = ""
+    var id             : Int64        = 0
+    var name           : String       = ""
+    var prefixSymbol   : String       = ""
+    var suffixSymbol   : String       = ""
+    var decimalPoint   : String       = ""
+    var groupSeparator : String       = ""
+    var unitName       : String       = ""
+    var centName       : String       = ""
+    var scale          : Int          = 0
+    var baseConvRate   : Double       = 0.0
+    var symbol         : String       = ""
+    var type           : CurrencyType = CurrencyType.defaultValue
 }
 
 extension CurrencyData: DataProtocol {
@@ -97,17 +103,17 @@ extension CurrencyData {
         CurrencyData(
             id: 1, name: "US dollar", prefixSymbol: "$", suffixSymbol: "",
             decimalPoint: ".", groupSeparator: ",", unitName: "Dollar", centName: "Cent",
-            scale: 100, baseConvRate: 1.0, symbol: "USD", type: "Fiat"
+            scale: 100, baseConvRate: 1.0, symbol: "USD", type: .fiat
         ),
         CurrencyData(
             id: 2, name: "Euro", prefixSymbol: "€", suffixSymbol: "",
             decimalPoint: ".", groupSeparator: " ", unitName: "", centName: "",
-            scale: 100, baseConvRate: 1.0, symbol: "EUR", type: "Fiat"
+            scale: 100, baseConvRate: 1.0, symbol: "EUR", type: .fiat
         ),
         CurrencyData(
             id: 3, name: "British pound", prefixSymbol: "£", suffixSymbol: "",
             decimalPoint: ".", groupSeparator: " ", unitName: "Pound", centName: "Pence",
-            scale: 100, baseConvRate: 1.0, symbol: "GBP", type: "Fiat"
+            scale: 100, baseConvRate: 1.0, symbol: "GBP", type: .fiat
         ),
     ]
 }

@@ -34,7 +34,13 @@ struct CurrencyEditView: View {
                 TextField("Conversion Rate", value: $currency.baseConvRate, format: .number)
             }
             Section(header: Text("Currency Type")) {
-                TextField("Currency Type", text: $currency.type)
+                Picker("Currency Type", selection: $currency.type) {
+                    ForEach(CurrencyType.allCases) { type in
+                        Text(type.rawValue).tag(type)
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
             }
         }
     }

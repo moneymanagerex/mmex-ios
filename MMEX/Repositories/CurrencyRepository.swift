@@ -85,7 +85,7 @@ struct CurrencyRepository: RepositoryProtocol {
             scale          : row[col_scale] ?? 0,
             baseConvRate   : row[cast_baseConvRate] ?? 0.0,
             symbol         : row[col_symbol],
-            type           : row[col_type]
+            type           : CurrencyType(collateNoCase: row[col_type])
         )
     }
 
@@ -101,7 +101,7 @@ struct CurrencyRepository: RepositoryProtocol {
             col_scale          <- data.scale,
             col_baseConvRate   <- data.baseConvRate,
             col_symbol         <- data.symbol,
-            col_type           <- data.type
+            col_type           <- data.type.rawValue
         ]
     }
     

@@ -45,11 +45,10 @@ struct AccountEditView: View {
                 .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
             }
             Section(header: Text("Favorite Account")) {
-                Toggle(isOn: Binding(get: {
-                    account.data.favoriteAcct == "TRUE"
-                }, set: { newValue in
-                    account.data.favoriteAcct = newValue ? "TRUE" : "FALSE"
-                })) {
+                Toggle(isOn: Binding(
+                    get: { account.data.favoriteAcct == "TRUE" },
+                    set: { account.data.favoriteAcct = $0 ? "TRUE" : "FALSE" }
+                )) {
                     Text("Favorite Account")
                 }
             }
