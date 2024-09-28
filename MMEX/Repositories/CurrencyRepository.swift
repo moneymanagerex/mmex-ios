@@ -160,6 +160,7 @@ extension CurrencyRepository {
         }
     }
 
+    // TODO: re-write in a more readable way (get the ids first, then pluck each currency)
     // load all referred currency formats, indexed by currencyId
     func dictionaryRefFormat() -> [Int64: CurrencyFormat] {
         print("DEBUG: CurrencyRepository.dictionaryRefFormat()")

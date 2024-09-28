@@ -37,6 +37,7 @@ extension CurrencyData: DataProtocol {
     }
 }
 
+// TODO: remove CurrencyFormat; use CurrencyData instead
 protocol CurrencyFormatProtocol {
     var name           : String { get }
     var prefixSymbol   : String { get }
