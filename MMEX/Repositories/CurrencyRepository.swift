@@ -108,6 +108,7 @@ struct CurrencyRepository: RepositoryProtocol {
     static func selectFormat(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
+            col_name,
             col_prefixSymbol,
             col_suffixSymbol,
             col_decimalPoint,
@@ -119,6 +120,7 @@ struct CurrencyRepository: RepositoryProtocol {
 
     static func fetchFormat(_ row: SQLite.Row) -> CurrencyFormat {
         return CurrencyFormat(
+            name           : row[col_name],
             prefixSymbol   : row[col_prefixSymbol] ?? "",
             suffixSymbol   : row[col_suffixSymbol] ?? "",
             decimalPoint   : row[col_decimalPoint] ?? "",
@@ -166,6 +168,7 @@ extension CurrencyRepository {
         typealias E = AssetRepository
         let query = "select" +
         " \(C.col_id)," +
+        " \(C.col_name)," +
         " \(C.col_prefixSymbol)," +
         " \(C.col_suffixSymbol)," +
         " \(C.col_decimalPoint)," +
@@ -181,12 +184,13 @@ extension CurrencyRepository {
         return Repository(db).dictionary(
             query: query
         ) { row in CurrencyFormat(
-            prefixSymbol   : row[1] as? String ?? "",
-            suffixSymbol   : row[2] as? String ?? "",
-            decimalPoint   : row[3] as? String ?? "",
-            groupSeparator : row[4] as? String ?? "",
-            scale          : row[5] as? Int    ?? 0,
-            baseConvRate   : row[6] as? Double ?? 0.0
+            name           : row[1] as? String ?? "",
+            prefixSymbol   : row[2] as? String ?? "",
+            suffixSymbol   : row[3] as? String ?? "",
+            decimalPoint   : row[4] as? String ?? "",
+            groupSeparator : row[5] as? String ?? "",
+            scale          : row[6] as? Int    ?? 0,
+            baseConvRate   : row[7] as? Double ?? 0.0
         ) }
     }
 

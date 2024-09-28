@@ -38,6 +38,7 @@ extension CurrencyData: DataProtocol {
 }
 
 protocol CurrencyFormatProtocol {
+    var name           : String { get }
     var prefixSymbol   : String { get }
     var suffixSymbol   : String { get }
     var decimalPoint   : String { get }
@@ -47,6 +48,7 @@ protocol CurrencyFormatProtocol {
 }
 
 struct CurrencyFormat: CurrencyFormatProtocol {
+    let name           : String
     let prefixSymbol   : String
     let suffixSymbol   : String
     let decimalPoint   : String
@@ -57,6 +59,7 @@ struct CurrencyFormat: CurrencyFormatProtocol {
 
 extension CurrencyFormatProtocol {
     var toCurrencyFormat: CurrencyFormat { CurrencyFormat(
+        name           : self.name,
         prefixSymbol   : self.prefixSymbol,
         suffixSymbol   : self.suffixSymbol,
         decimalPoint   : self.decimalPoint,
