@@ -8,7 +8,7 @@ import SwiftUI
 
 struct AccountListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @State private var currencies: [CurrencyData] = []
+    @State private var currencies: [IdName] = []
     @State private var accounts_by_type: [String:[AccountWithCurrency]] = [:]
     @State private var newAccount = emptyAccount
     @State private var isPresentingAccountAddView = false
@@ -51,7 +51,9 @@ struct AccountListView: View {
                         // Show account list based on expandedSections state
                         if expandedSections[accountType] == true {
                             ForEach(accounts_by_type[accountType]!) { account in
-                                NavigationLink(destination: AccountDetailView(account: account, currencies: $currencies)) {
+                                NavigationLink(destination: AccountDetailView(
+                                    account: account, currencies: $currencies
+                                ) ) {
                                     HStack {
                                         Text(account.data.name)
                                             .font(.subheadline)
@@ -85,7 +87,11 @@ struct AccountListView: View {
             loadCurrencies()
         }
         .sheet(isPresented: $isPresentingAccountAddView) {
-            AccountAddView(newAccount: $newAccount, isPresentingAccountAddView: $isPresentingAccountAddView, currencies: $currencies) { newAccount in
+            AccountAddView(
+                newAccount: $newAccount,
+                isPresentingAccountAddView: $isPresentingAccountAddView,
+                currencies: $currencies
+            ) { newAccount in
                 addAccount(account: &newAccount)
                 newAccount = Self.emptyAccount
             }
@@ -101,7 +107,6 @@ struct AccountListView: View {
     
     func loadAccounts() {
         print("Loading payees in AccountListView...")
-
         let repository = dataManager.accountRepository
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository?.loadWithCurrency() ?? []
@@ -116,9 +121,8 @@ struct AccountListView: View {
     
     func loadCurrencies() {
         let repo = dataManager.currencyRepository
-
         DispatchQueue.global(qos: .background).async {
-            let loadedCurrencies = repo?.load() ?? []
+            let loadedCurrencies = repo?.loadName() ?? []
             DispatchQueue.main.async {
                 self.currencies = loadedCurrencies
                 // other post op

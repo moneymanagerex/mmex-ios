@@ -138,6 +138,16 @@ extension CurrencyRepository {
         )
     }
 
+    // load all currency names
+    func loadName() -> [IdName] {
+        print("DEBUG: CurrencyRepository.loadName()")
+        return select(from: Self.table
+            .order(Self.col_name)
+        ) { row in
+            IdName(id: row[Self.col_id], name: row[Self.col_name])
+        }
+    }
+
     // load all referred currency formats, indexed by currencyId
     func dictionaryRefFormat() -> [Int64: CurrencyFormat] {
         print("DEBUG: CurrencyRepository.dictionaryRefFormat()")

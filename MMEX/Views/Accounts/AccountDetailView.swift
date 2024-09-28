@@ -10,7 +10,7 @@ import SwiftUI
 struct AccountDetailView: View {
     @State var account: AccountWithCurrency
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @Binding var currencies: [CurrencyData] // Bind to the list of available currencies
+    @Binding var currencies: [IdName] // Bind to the list of available currencies
 
     @State private var editingAccount = AccountWithCurrency()
     @State private var isPresentingEditView = false
@@ -35,8 +35,12 @@ struct AccountDetailView: View {
                     Text(currency.name)
                 } else {
                     Text("Loading currency...")
-                }            }
-            Section(header: Text("Balance")) {
+                }
+            }
+            Section(header: Text("Initial Date")) {
+                Text(account.data.initialDate)
+            }
+            Section(header: Text("Initial Balance")) {
                 if let currency = account.currency {
                     Text(currency.format(amount: account.data.initialBal))
                 } else {
@@ -49,6 +53,7 @@ struct AccountDetailView: View {
             Button("Delete Account") {
                 deleteAccount()
             }
+            .foregroundColor(.red)
         }
         .textSelection(.enabled)
         .onAppear() {
@@ -73,22 +78,24 @@ struct AccountDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                AccountEditView(account: $editingAccount, currencies: $currencies)
-                    .navigationTitle(account.data.name)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") {
-                                isPresentingEditView = false
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") {
-                                isPresentingEditView = false
-                                account = editingAccount
-                                saveChanges()
-                            }
+                AccountEditView(
+                    account: $editingAccount, currencies: $currencies
+                )
+                .navigationTitle(account.data.name)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            isPresentingEditView = false
                         }
                     }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            isPresentingEditView = false
+                            account = editingAccount
+                            saveChanges()
+                        }
+                    }
+                }
             }
         }
         .fileExporter(
@@ -128,12 +135,17 @@ struct AccountDetailView: View {
 #Preview {
     AccountDetailView(
         account: AccountData.sampleDataWithCurrency[0],
-        currencies: .constant(CurrencyData.sampleData))
+        currencies: .constant(CurrencyData.sampleData.map {
+            IdName(id: $0.id, name: $0.name)
+        } )
+    )
 }
 
 #Preview {
     AccountDetailView(
         account: AccountData.sampleDataWithCurrency[1],
-        currencies: .constant(CurrencyData.sampleData)
+        currencies: .constant(CurrencyData.sampleData.map {
+            IdName(id: $0.id, name: $0.name)
+        } )
     )
 }

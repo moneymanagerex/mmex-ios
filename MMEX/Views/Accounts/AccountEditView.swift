@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountEditView: View {
     @Binding var account: AccountWithCurrency
-    @Binding var currencies: [CurrencyData] // Bind to the list of available currencies
+    @Binding var currencies: [IdName] // Bind to the list of available currencies
 
     var body: some View {
         Form {
@@ -52,7 +52,7 @@ struct AccountEditView: View {
                     Text("Favorite Account")
                 }
             }
-            Section(header: Text("Balance")) {
+            Section(header: Text("Initial Balance")) {
                 TextField("Balance", value: $account.data.initialBal, format: .number)
             }
             Section(header: Text("Notes")) {
@@ -68,13 +68,18 @@ struct AccountEditView: View {
 #Preview {
     AccountEditView(
         account: .constant(AccountData.sampleDataWithCurrency[0]),
-        currencies: .constant(CurrencyData.sampleData)
+        currencies: .constant(CurrencyData.sampleData.map {
+            IdName(id: $0.id, name: $0.name)
+        } )
     )
 }
 
 #Preview {
     AccountEditView(
         account: .constant(AccountData.sampleDataWithCurrency[1]),
-        currencies: .constant(CurrencyData.sampleData)
+        currencies: .constant(CurrencyData.sampleData.map {
+            IdName(id: $0.id, name: $0.name)
+
+        } )
     )
 }
