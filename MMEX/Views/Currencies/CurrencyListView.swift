@@ -10,10 +10,17 @@ import SwiftUI
 struct CurrencyListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var currencies: [Bool: [CurrencyData]] = [:]
-    @State private var newCurrency = CurrencyData()
+    @State private var newCurrency = emptyCurrency
     @State private var isPresentingCurrencyAddView = false
     @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
-    
+    static let emptyCurrency = CurrencyData(
+        decimalPoint   : ".",
+        groupSeparator : ",",
+        scale          : 100,
+        baseConvRate   : 1.0,
+        type           : "Fiat"
+    )
+
     var body: some View {
         NavigationStack {
             List {
@@ -88,36 +95,33 @@ struct CurrencyListView: View {
         .sheet(isPresented: $isPresentingCurrencyAddView) {
             CurrencyAddView(newCurrency: $newCurrency, isPresentingCurrencyAddView: $isPresentingCurrencyAddView) { currency in
                 addCurrency(&currency)
-                newCurrency = CurrencyData()
+                newCurrency = Self.emptyCurrency
             }
         }
     }
     
     func loadCurrencies() {
-        // Fetch accounts using repository and update the view
-        let repository = dataManager.currencyRepository
-
         DispatchQueue.global(qos: .background).async {
-            let loadedCurrencies = repository?.load() ?? []
-            let loadedAccounts = dataManager.accountRepository?.load() ?? []
-
             // Get a set of all currency IDs used by accounts
-            let usedCurrencyIds = Set(loadedAccounts.map { $0.currencyId })
-            
+            let accountCurrencyId = Set(dataManager.accountRepository?.loadCurrencyId() ?? [])
+ 
             // Categorize currencies into in-use (true) and not-in-use (false)
-            let categorized = Dictionary(grouping: loadedCurrencies, by: { usedCurrencyIds.contains($0.id) })
-            
+            let loadedCurrencies = dataManager.currencyRepository?.load() ?? []
+            let currenciesByUsed = Dictionary(
+                grouping: loadedCurrencies,
+                by: { accountCurrencyId.contains($0.id) }
+            )
+
             // Update UI on the main thread
             DispatchQueue.main.async {
-                self.currencies = categorized
+                self.currencies = currenciesByUsed
             }
         }
     }
 
     func addCurrency(_ currency: inout CurrencyData) {
-        let repository = dataManager.currencyRepository
-
-        if repository?.insert(&currency) == true {
+        guard let repository = dataManager.currencyRepository else { return }
+        if repository.insert(&currency) {
             self.loadCurrencies()
         } else {
             // TODO

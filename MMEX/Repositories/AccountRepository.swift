@@ -163,6 +163,15 @@ extension AccountRepository {
         )
     }
 
+    // load currencyId for all accounts
+    func loadCurrencyId() -> [Int64] {
+        return Repository(db).select(from: Self.table
+            .select(distinct: Self.col_currencyId)
+        ) { row in
+            row[Self.col_currencyId]
+        }
+    }
+
     // load account of a stock
     func pluck(for stock: StockData) -> AccountData? {
         return pluck(

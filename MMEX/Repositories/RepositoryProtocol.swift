@@ -70,6 +70,20 @@ extension RepositoryProtocol {
         }
     }
 
+    func dict(from table: SQLite.Table) -> [Int64: RepositoryData] {
+        do {
+            var dict: [Int64: RepositoryData] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                dict[row[Self.col_id]] = Self.fetchData(row)
+            }
+            print("Successfull dict from \(Self.repositoryName): \(dict.count)")
+            return dict
+        } catch {
+            print("Failed dict from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
     func insert(_ data: inout RepositoryData) -> Bool {
         do {
             let query = Self.table

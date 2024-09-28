@@ -107,8 +107,8 @@ struct AccountDetailView: View {
     }
 
     func saveChanges() {
-        let repository = dataManager.accountRepository
-        if repository?.update(account.data) == true {
+        guard let repository = dataManager.accountRepository else { return }
+        if repository.update(account.data) {
             // Successfully updated
         } else {
             // Handle failure
@@ -116,8 +116,8 @@ struct AccountDetailView: View {
     }
     
     func deleteAccount() {
-        let repository = dataManager.accountRepository
-        if repository?.delete(account.data) == true {
+        guard let repository = dataManager.accountRepository else { return }
+        if repository.delete(account.data) {
             presentationMode.wrappedValue.dismiss()
         } else {
             // Handle deletion failure

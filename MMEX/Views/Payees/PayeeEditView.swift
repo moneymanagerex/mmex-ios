@@ -53,11 +53,10 @@ struct PayeeEditView: View {
             }
 
             Section(header: Text("Active")) {
-                Toggle(isOn: Binding(get: {
-                    payee.active
-                }, set: { newValue in
-                    payee.active = newValue
-                })) {
+                Toggle(isOn: Binding(
+                    get: { payee.active },
+                    set: { newValue in payee.active = newValue }
+                )) {
                     Text("Is Active")
                 }
             }
