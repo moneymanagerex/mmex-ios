@@ -99,29 +99,3 @@ extension AccountData {
         ),
     ]
 }
-
-// TODO: move to ViewModels
-struct AccountWithCurrency: ExportableEntity {
-    var data: AccountData = AccountData()
-    var currency: CurrencyData?
-    var id: Int64 { data.id }
-}
-extension AccountData {
-    static let sampleDataWithCurrency : [AccountWithCurrency] = [
-        AccountWithCurrency(data: AccountData(
-            id: 1, name: "Cash Account", type: AccountType.cash,
-            status: AccountStatus.open, notes:"",
-            initialBal: 100.01, favoriteAcct: "TRUE", currencyId: 1
-        ), currency: CurrencyData.sampleData[0]),
-        AccountWithCurrency(data: AccountData(
-            id: 2, name: "Chcking Account", type: AccountType.checking,
-            status: AccountStatus.open, notes:"",
-            initialBal: 200.02, favoriteAcct: "TRUE", currencyId: 2
-        ), currency: CurrencyData.sampleData[1]),
-        AccountWithCurrency(data: AccountData(
-            id: 3, name: "Investment Account", type: AccountType.investment,
-            status: AccountStatus.open, notes:"",
-            initialBal: 300.03, favoriteAcct: "TRUE", currencyId: 2
-        ), currency: CurrencyData.sampleData[1]),
-    ]
-}

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @ObservedObject var viewModel: InfotableViewModel
     
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
@@ -74,9 +75,9 @@ struct SettingsView: View {
                 Picker("Base Currency", selection: $viewModel.baseCurrencyId) {
                     ForEach(viewModel.currencies) { currency in
                         HStack {
-                            Text(currency.symbol)
-                            Spacer()
                             Text(currency.name)
+                            Spacer()
+                            Text(currency.symbol)
                         }
                         .tag(currency.id) // Use currency.name to display and tag by id
                     }
@@ -85,10 +86,11 @@ struct SettingsView: View {
  
                 Picker("Default Account", selection: $viewModel.defaultAccountId) {
                     ForEach(viewModel.accounts) { account in
+                        let currency = dataManager.currencyFormat[account.currencyId]
                         HStack {
-                            Text(account.data.name)
+                            Text(account.name)
                             Spacer()
-                            Text(account.currency?.symbol ?? "")
+                            Text(currency?.name ?? "")
                         }
                         .tag(account.id)
                     }

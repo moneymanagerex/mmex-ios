@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct AccountEditView: View {
-    @Binding var account: AccountWithCurrency
+    @Binding var account: AccountData
     @Binding var currencies: [(Int64, String)] // Bind to the list of available currencies
 
     var body: some View {
         Form {
             Section(header: Text("Account Name")) {
-                TextField("Account Name", text: $account.data.name)
+                TextField("Account Name", text: $account.name)
             }
             Section(header: Text("Account Type")) {
-                Picker("Account Type", selection: $account.data.type) {
+                Picker("Account Type", selection: $account.type) {
                     ForEach(AccountType.allCases) { type in
                         Text(type.name).tag(type)
                     }
@@ -26,7 +26,7 @@ struct AccountEditView: View {
                 .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
             }
             Section(header: Text("Status")) {
-                Picker("Status", selection: $account.data.status) {
+                Picker("Status", selection: $account.status) {
                     ForEach(AccountStatus.allCases) { status in
                         Text(status.name).tag(status)
                     }
@@ -34,8 +34,8 @@ struct AccountEditView: View {
                 .pickerStyle(SegmentedPickerStyle())
             }
             Section(header: Text("Currency")) {
-                Picker("Currency", selection: $account.data.currencyId) {
-                    if (account.data.currencyId == 0) {
+                Picker("Currency", selection: $account.currencyId) {
+                    if (account.currencyId == 0) {
                         Text("Currency").tag(0 as Int64) // not set
                     }
                     ForEach(currencies.indices, id: \.self) { i in
@@ -46,19 +46,19 @@ struct AccountEditView: View {
             }
             Section(header: Text("Favorite Account")) {
                 Toggle(isOn: Binding(
-                    get: { account.data.favoriteAcct == "TRUE" },
-                    set: { account.data.favoriteAcct = $0 ? "TRUE" : "FALSE" }
+                    get: { account.favoriteAcct == "TRUE" },
+                    set: { account.favoriteAcct = $0 ? "TRUE" : "FALSE" }
                 )) {
                     Text("Favorite Account")
                 }
             }
             Section(header: Text("Initial Balance")) {
-                TextField("Balance", value: $account.data.initialBal, format: .number)
+                TextField("Balance", value: $account.initialBal, format: .number)
             }
             Section(header: Text("Notes")) {
                 TextField("Notes", text: Binding(
-                    get: { account.data.notes },  // Provide a default value if nil
-                    set: { account.data.notes = $0 }  // Set nil if empty
+                    get: { account.notes },  // Provide a default value if nil
+                    set: { account.notes = $0 }  // Set nil if empty
                 ))
             }
         }
@@ -67,7 +67,7 @@ struct AccountEditView: View {
 
 #Preview {
     AccountEditView(
-        account: .constant(AccountData.sampleDataWithCurrency[0]),
+        account: .constant(AccountData.sampleData[0]),
         currencies: .constant(CurrencyData.sampleData.map {
             ($0.id, $0.name)
         } )
@@ -76,7 +76,7 @@ struct AccountEditView: View {
 
 #Preview {
     AccountEditView(
-        account: .constant(AccountData.sampleDataWithCurrency[1]),
+        account: .constant(AccountData.sampleData[1]),
         currencies: .constant(CurrencyData.sampleData.map {
             ($0.id, $0.name)
         } )

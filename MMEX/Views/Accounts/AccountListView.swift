@@ -9,15 +9,12 @@ import SwiftUI
 struct AccountListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var currencies: [(Int64, String)] = [] // only the name is needed
-    @State private var accounts_by_type: [String:[AccountWithCurrency]] = [:]
+    @State private var accounts_by_type: [String:[AccountData]] = [:]
     @State private var newAccount = emptyAccount
     @State private var isPresentingAccountAddView = false
     @State private var expandedSections: [String: Bool] = [:] // Tracks the expanded/collapsed state
-    static let emptyAccount = AccountWithCurrency(
-        data : AccountData(
-            status: AccountStatus.open
-        ),
-        currency: nil
+    static let emptyAccount = AccountData(
+        status: AccountStatus.open
     )
 
     var body: some View {
@@ -55,12 +52,12 @@ struct AccountListView: View {
                                     account: account, currencies: $currencies
                                 ) ) {
                                     HStack {
-                                        Text(account.data.name)
+                                        Text(account.name)
                                             .font(.subheadline)
 
                                         Spacer()
 
-                                        if let currency = account.currency {
+                                        if let currency = dataManager.currencyFormat[account.currencyId] {
                                             Text(currency.name)
                                                 .font(.subheadline)
                                         }
@@ -109,10 +106,10 @@ struct AccountListView: View {
         print("Loading payees in AccountListView...")
         let repository = dataManager.accountRepository
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository?.loadWithCurrency() ?? []
+            let loadedAccounts = repository?.load() ?? []
             DispatchQueue.main.async {
                 self.accounts_by_type = Dictionary(grouping: loadedAccounts) { account in
-                    account.data.type.name
+                    account.type.name
                 }
                 self.initializeExpandedSections() // Initialize expanded states
             }
@@ -130,9 +127,9 @@ struct AccountListView: View {
         }
     }
 
-    func addAccount(account: inout AccountWithCurrency) {
-        let repository = dataManager.accountRepository
-        if repository?.insert(&(account.data)) == true {
+    func addAccount(account: inout AccountData) {
+        guard let repository = dataManager.accountRepository else { return }
+        if repository.insert(&account) {
             // self.accounts.append(account)
             self.loadAccounts()
         }

@@ -26,7 +26,7 @@ class InfotableViewModel: ObservableObject {
     private var currencyRepo: CurrencyRepository?
 
     @Published var currencies: [CurrencyData] = []
-    @Published var accounts: [AccountWithCurrency] = []
+    @Published var accounts: [AccountData] = []
 
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
@@ -100,12 +100,12 @@ class InfotableViewModel: ObservableObject {
 
     func loadAccounts() {
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = self.accountRepo?.loadWithCurrency() ?? []
+            let loadedAccounts = self.accountRepo?.load() ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
 
                 if (loadedAccounts.count == 1) {
-                    self.defaultAccountId = loadedAccounts.first!.data.id
+                    self.defaultAccountId = loadedAccounts.first!.id
                 }
             }
         }
