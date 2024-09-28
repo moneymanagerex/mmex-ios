@@ -35,12 +35,12 @@ struct InsightsView: View {
                         .shadow(radius: 2)
                     }
 
-                    // Transactions Over Time Chart Section
+                    // Transactions Income Over Time Chart Section
                     Section {
                         Chart(viewModel.stats) {
                             BarMark(
                                 x: .value("Day", $0.day),
-                                y: .value("Amount", $0.transAmount)
+                                y: .value("Amount", $0.income)
                             )
                             .foregroundStyle(by: .value("Status", $0.status.fullName))
                         }
@@ -50,11 +50,31 @@ struct InsightsView: View {
                         .cornerRadius(10)
                         .shadow(radius: 2)
                     } header: {
-                        Text("Transactions Over Time")
+                        Text("Income Over Time")
                             .font(.headline)
                             .padding(.horizontal)
                     }
 
+                    // Transactions expenses Over Time Chart Section
+                    Section {
+                        Chart(viewModel.stats) {
+                            BarMark(
+                                x: .value("Day", $0.day),
+                                y: .value("Amount", $0.expenses)
+                            )
+                            .foregroundStyle(by: .value("Status", $0.status.fullName))
+                        }
+                        .frame(height: 200)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
+                    } header: {
+                        Text("Expenses Over Time")
+                            .font(.headline)
+                            .padding(.horizontal)
+                    }
+                    
                     // Placeholder for Future Sections
                     Section {
                         VStack {

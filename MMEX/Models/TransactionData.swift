@@ -104,6 +104,27 @@ extension TransactionData {
         }
         return transDate // If parsing fails, return original string
     }
+    var income: Double {
+        // TODO: in base currency
+        if transCode == .deposit {
+            return transAmount
+        }
+        return 0.0
+    }
+    var expenses: Double {
+        // TODO: in base currency
+        if transCode == .withdrawal {
+            return transAmount
+        }
+        return 0.0
+    }
+    var transfer: Double {
+        // TODO: in base currency
+        if transCode == .transfer {
+            return transAmount// or toTransAmount
+        }
+        return 0.0
+    }
 }
 
 extension TransactionData {
