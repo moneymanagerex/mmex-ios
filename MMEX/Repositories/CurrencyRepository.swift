@@ -139,12 +139,22 @@ extension CurrencyRepository {
     }
 
     // load all currency names
-    func loadName() -> [IdName] {
+    func loadName() -> [(id: Int64, name: String)] {
         print("DEBUG: CurrencyRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_name)
         ) { row in
-            IdName(id: row[Self.col_id], name: row[Self.col_name])
+            (id: row[Self.col_id], name: row[Self.col_name])
+        }
+    }
+
+    // load all currency symbols
+    func loadSymbol() -> [(Int64, String)] {
+        print("DEBUG: CurrencyRepository.loadName()")
+        return select(from: Self.table
+            .order(Self.col_symbol)
+        ) { row in
+            (id: row[Self.col_id], name: row[Self.col_symbol])
         }
     }
 

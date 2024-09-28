@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountEditView: View {
     @Binding var account: AccountWithCurrency
-    @Binding var currencies: [IdName] // Bind to the list of available currencies
+    @Binding var currencies: [(Int64, String)] // Bind to the list of available currencies
 
     var body: some View {
         Form {
@@ -38,8 +38,8 @@ struct AccountEditView: View {
                     if (account.data.currencyId == 0) {
                         Text("Currency").tag(0 as Int64) // not set
                     }
-                    ForEach(currencies) { currency in
-                        Text(currency.name).tag(currency.id) // Use currency.name to display and tag by id
+                    ForEach(currencies.indices, id: \.self) { i in
+                        Text(currencies[i].1).tag(currencies[i].0) // Use currency.name to display and tag by id
                     }
                 }
                 .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
@@ -69,7 +69,7 @@ struct AccountEditView: View {
     AccountEditView(
         account: .constant(AccountData.sampleDataWithCurrency[0]),
         currencies: .constant(CurrencyData.sampleData.map {
-            IdName(id: $0.id, name: $0.name)
+            ($0.id, $0.name)
         } )
     )
 }
@@ -78,8 +78,7 @@ struct AccountEditView: View {
     AccountEditView(
         account: .constant(AccountData.sampleDataWithCurrency[1]),
         currencies: .constant(CurrencyData.sampleData.map {
-            IdName(id: $0.id, name: $0.name)
-
+            ($0.id, $0.name)
         } )
     )
 }

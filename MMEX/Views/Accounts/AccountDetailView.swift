@@ -10,7 +10,7 @@ import SwiftUI
 struct AccountDetailView: View {
     @State var account: AccountWithCurrency
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @Binding var currencies: [IdName] // Bind to the list of available currencies
+    @Binding var currencies: [(Int64, String)] // Bind to the list of available currencies
 
     @State private var editingAccount = AccountWithCurrency()
     @State private var isPresentingEditView = false
@@ -136,7 +136,7 @@ struct AccountDetailView: View {
     AccountDetailView(
         account: AccountData.sampleDataWithCurrency[0],
         currencies: .constant(CurrencyData.sampleData.map {
-            IdName(id: $0.id, name: $0.name)
+            ($0.id, $0.name)
         } )
     )
 }
@@ -145,7 +145,7 @@ struct AccountDetailView: View {
     AccountDetailView(
         account: AccountData.sampleDataWithCurrency[1],
         currencies: .constant(CurrencyData.sampleData.map {
-            IdName(id: $0.id, name: $0.name)
+            ($0.id, $0.name)
         } )
     )
 }

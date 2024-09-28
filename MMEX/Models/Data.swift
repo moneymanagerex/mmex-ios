@@ -34,8 +34,3 @@ extension EnumCollateNoCase {
     var id: String { self.rawValue }
     var name: String { rawValue.capitalized }
 }
-
-struct IdName: Identifiable {
-    let id: Int64
-    let name: String
-}

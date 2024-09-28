@@ -10,7 +10,7 @@ import SwiftUI
 struct AccountAddView: View {
     @Binding var newAccount: AccountWithCurrency
     @Binding var isPresentingAccountAddView: Bool
-    @Binding var currencies: [IdName] // Bind to the list of available currencies
+    @Binding var currencies: [(Int64, String)] // Bind to the list of available currencies
 
     var onSave: (inout AccountWithCurrency) -> Void
     
@@ -39,7 +39,7 @@ struct AccountAddView: View {
         newAccount: .constant(AccountWithCurrency()),
         isPresentingAccountAddView: .constant(true),
         currencies: .constant(CurrencyData.sampleData.map {
-            IdName(id: $0.id, name: $0.name)
+            ($0.id, $0.name)
         } )
     ) { newAccount in
         // Handle saving in preview

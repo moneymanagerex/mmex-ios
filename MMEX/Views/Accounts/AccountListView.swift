@@ -8,7 +8,7 @@ import SwiftUI
 
 struct AccountListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @State private var currencies: [IdName] = []
+    @State private var currencies: [(Int64, String)] = []
     @State private var accounts_by_type: [String:[AccountWithCurrency]] = [:]
     @State private var newAccount = emptyAccount
     @State private var isPresentingAccountAddView = false
