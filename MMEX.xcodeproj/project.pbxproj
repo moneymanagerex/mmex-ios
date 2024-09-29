@@ -373,6 +373,14 @@
 			path = Repositories;
 			sourceTree = "<group>";
 		};
+		A3B51C072CA8E03100BB0681 /* Insights */ = {
+			isa = PBXGroup;
+			children = (
+				A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */,
+			);
+			path = Insights;
+			sourceTree = "<group>";
+		};
 		A3C1421E2C89751500D3CEC0 = {
 			isa = PBXGroup;
 			children = (
@@ -452,6 +460,7 @@
 		A3C142452C89CB1600D3CEC0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A3B51C072CA8E03100BB0681 /* Insights */,
 				A39B1B3E2C9A6714003E5562 /* Settings */,
 				A39B1B3D2C9A66F7003E5562 /* Currencies */,
 				A39B1B392C9A668F003E5562 /* Accounts */,
@@ -460,7 +469,6 @@
 				A39B1B3A2C9A66B8003E5562 /* Payees */,
 				A39B1B3B2C9A66CB003E5562 /* Transactions */,
 				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
-				A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */,
 				A37E7D832C9AC14800B4ECFC /* ManagementView.swift */,
 			);
 			path = Views;

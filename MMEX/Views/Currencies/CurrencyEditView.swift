@@ -40,7 +40,7 @@ struct CurrencyEditView: View {
                     }
                 }
                 .labelsHidden()
-                .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
+                .pickerStyle(SegmentedPickerStyle()) // Adjust the style of the picker as needed
             }
         }
     }
