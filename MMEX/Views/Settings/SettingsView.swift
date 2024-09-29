@@ -60,12 +60,12 @@ struct SettingsView: View {
                 HStack {
                     Text("Database File")
                     Spacer()
-                    Text(viewModel.getDatabaseURL().lastPathComponent)
+                    Text(dataManager.getDatabaseFileName() ?? "")
                 }
                 HStack {
                     Text("Schema Version")
                     Spacer()
-                    Text("\(viewModel.userVersion)")
+                    Text(String(dataManager.getDatabaseUserVersion() ?? 0))
                 }
                 HStack {
                     Text("Date Format")

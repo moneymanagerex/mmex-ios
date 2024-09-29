@@ -62,12 +62,6 @@ class InfotableViewModel: ObservableObject {
             )
         }
     }
-    
-    var userVersion: Int32 { self.dataManager.repository?.userVersion ?? 0 }
-    
-    func getDatabaseURL() -> URL {
-        return self.dataManager.databaseURL!
-    }
 
     // Set up individual bindings for each @Published property
     private func setupBindings() {

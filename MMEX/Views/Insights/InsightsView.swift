@@ -15,6 +15,13 @@ struct InsightsView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
+                    Section {
+                        Summary(stats: $viewModel.stats)
+                    } header: {
+                        Text("Account Income Summary")
+                            .font(.headline)
+                            .padding(.horizontal)
+                    }
                     
                     // Date Range Filters Section
                     Section {
@@ -36,7 +43,7 @@ struct InsightsView: View {
                     }
 
                     Section {
-                            incomeVSexpense
+                        IncomeAndExpense(stats: $viewModel.recentStats)
                     } header: {
                         Text("Income vs Expense Over Time")
                             .font(.headline)
@@ -67,43 +74,6 @@ struct InsightsView: View {
             }
             .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
         }
-    }
-
-    private var incomeVSexpense: some View {
-        Chart() {
-            ForEach(viewModel.stats) { stat in
-                Plot {
-                    BarMark(
-                        x: .value("Day", stat.day),
-                        y: .value("Amount", stat.income)
-                    )
-                    // .foregroundStyle(by: .value("Status", $0.status.fullName))
-                    .foregroundStyle(.green)
-                }
-                .accessibilityLabel("income")
-                .accessibilityValue("\(stat.income)")
-            }
-            
-            ForEach(viewModel.stats) { stat in
-                Plot {
-                    BarMark(
-                        x: .value("Day", stat.day),
-                        y: .value("Amount", 0 - stat.expenses)
-                    )
-                    // .foregroundStyle(by: .value("Status", $0.status.fullName))
-                    .foregroundStyle(.purple)
-                }
-                .accessibilityLabel("expenses")
-                .accessibilityValue("\(stat.expenses)")
-            }
-        }
-        .chartYAxis {
-            AxisMarks(preset: .automatic, position: .leading)
-        }
-        .frame(height: 300)
-        .chartYAxis(.automatic)
-        .chartXAxis(.automatic)
-        .padding(.horizontal)
     }
 }
 

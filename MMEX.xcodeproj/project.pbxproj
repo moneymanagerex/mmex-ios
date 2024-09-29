@@ -53,6 +53,8 @@
 		A3363EE72C93249D004696C7 /* CategoryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE62C93249D004696C7 /* CategoryAddView.swift */; };
 		A3363EE92C9326A1004696C7 /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE82C9326A1004696C7 /* CategoryListView.swift */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
+		A33742882CA8E55400698466 /* IncomeAndExpense.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742872CA8E55400698466 /* IncomeAndExpense.swift */; };
+		A337428A2CA8E72C00698466 /* Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742892CA8E72C00698466 /* Summary.swift */; };
 		A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F632C9426F500F79145 /* InsightsViewModel.swift */; };
 		A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F652C94854800F79145 /* ExportableEntity.swift */; };
 		A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */; };
@@ -156,6 +158,8 @@
 		A3363EE62C93249D004696C7 /* CategoryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAddView.swift; sourceTree = "<group>"; };
 		A3363EE82C9326A1004696C7 /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
+		A33742872CA8E55400698466 /* IncomeAndExpense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeAndExpense.swift; sourceTree = "<group>"; };
+		A33742892CA8E72C00698466 /* Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Summary.swift; sourceTree = "<group>"; };
 		A3462F632C9426F500F79145 /* InsightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewModel.swift; sourceTree = "<group>"; };
 		A3462F652C94854800F79145 /* ExportableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntity.swift; sourceTree = "<group>"; };
 		A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntityDocument.swift; sourceTree = "<group>"; };
@@ -377,6 +381,8 @@
 			isa = PBXGroup;
 			children = (
 				A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */,
+				A33742872CA8E55400698466 /* IncomeAndExpense.swift */,
+				A33742892CA8E72C00698466 /* Summary.swift */,
 			);
 			path = Insights;
 			sourceTree = "<group>";
@@ -576,6 +582,7 @@
 				929EF6652C9FF3FB0051A3E6 /* StockRepository.swift in Sources */,
 				A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */,
 				A379C1A72CA3B79E00CC8E2C /* AssetAddView.swift in Sources */,
+				A337428A2CA8E72C00698466 /* Summary.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */,
 				920824042CA4ADC100388AB2 /* ScheduledSplitData.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
@@ -622,6 +629,7 @@
 				A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */,
 				920824122CA4C6A400388AB2 /* BudgetTableRepository.swift in Sources */,
 				A3C142982C8FE62200D3CEC0 /* TransactionListView.swift in Sources */,
+				A33742882CA8E55400698466 /* IncomeAndExpense.swift in Sources */,
 				A3C142542C8B381400D3CEC0 /* PayeeEditView.swift in Sources */,
 				920823F82CA498B500388AB2 /* CurrencyHistoryRepository.swift in Sources */,
 				A37E7D8A2C9AC30700B4ECFC /* HelpFAQView.swift in Sources */,

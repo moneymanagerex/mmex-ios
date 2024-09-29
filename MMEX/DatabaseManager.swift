@@ -104,6 +104,14 @@ extension DataManager {
         currencyFormat = [:]
         print("Database connection closed.")
     }
+
+    /// basic stats
+    func getDatabaseFileName() -> String? {
+        return self.databaseURL?.lastPathComponent
+    }
+    func getDatabaseUserVersion() -> Int32? {
+        return self.db?.userVersion
+    }
 }
 
 extension DataManager {

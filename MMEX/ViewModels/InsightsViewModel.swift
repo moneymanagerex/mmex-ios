@@ -12,8 +12,10 @@ import Combine
 class InsightsViewModel: ObservableObject {
     private var dataManager: DataManager
 
+
+    @Published var stats: [TransactionData] = [] // all transactions
     // Published properties for the view to observe
-    @Published var stats: [TransactionData] = []
+    @Published var recentStats: [TransactionData] = []
     @Published var startDate: Date
     @Published var endDate: Date
 
@@ -25,18 +27,19 @@ class InsightsViewModel: ObservableObject {
         self.endDate = Date()
 
         // Load transactions on initialization
+        loadRecentTransactions()
         loadTransactions()
 
         // Automatically reload transactions when date range changes
         $startDate
             .combineLatest($endDate)
             .sink { [weak self] startDate, endDate in
-                self?.loadTransactions()
+                self?.loadRecentTransactions()
             }
             .store(in: &cancellables)
     }
 
-    func loadTransactions() {
+    func loadRecentTransactions() {
         let repository = dataManager.transactionRepository
 
         // Fetch transactions asynchronously
@@ -45,7 +48,21 @@ class InsightsViewModel: ObservableObject {
 
             // Update the published stats on the main thread
             DispatchQueue.main.async {
-                self.stats = transactions
+                self.recentStats = transactions
+            }
+        }
+    }
+
+    func loadTransactions() {
+        if let repository = dataManager.transactionRepository {
+            // Fetch transactions asynchronously
+            DispatchQueue.global(qos: .background).async {
+                let transactions = repository.load()
+
+                // Update the published stats on the main thread
+                DispatchQueue.main.async {
+                    self.stats = transactions
+                }
             }
         }
     }
