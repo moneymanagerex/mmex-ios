@@ -118,6 +118,13 @@ extension TransactionData {
         }
         return 0.0
     }
+    var actual: Double {
+        return switch transCode {
+        case .withdrawal: 0 - transAmount;
+        case .deposit: transAmount;
+        default: 0.0
+        }
+    }
     var transfer: Double {
         // TODO: in base currency
         if transCode == .transfer {
