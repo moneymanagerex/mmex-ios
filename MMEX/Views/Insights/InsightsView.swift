@@ -10,15 +10,16 @@ import Charts
 
 struct InsightsView: View {
     @ObservedObject var viewModel: InsightsViewModel
+    @State var statusChoice: Int = 0
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
                     Section {
-                        InsightsAccountView(accountInfo: $viewModel.accountInfo)
+                        InsightsAccountView(accountInfo: $viewModel.accountInfo, statusChoice: $statusChoice)
                     } header: {
-                        Text("Account Balance")
+                        Text(InsightsAccountView.statusChoices[statusChoice].0)
                             .font(.headline)
                             .padding(.horizontal)
                     }
