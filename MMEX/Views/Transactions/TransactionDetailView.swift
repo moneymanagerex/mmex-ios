@@ -156,4 +156,5 @@ struct TransactionDetailView: View {
         categories: .constant(CategoryData.sampleData),
         accounts: .constant(AccountData.sampleData)
     )
+    .environmentObject(DataManager())
 }
