@@ -45,6 +45,7 @@ struct InsightsAccountView: View {
 
             ForEach(Self.typeOrder) { accountType in
                 if let accounts = accountInfo.dataByType[accountType] {
+                    Spacer(minLength: 8)
                     Section(
                         header: HStack {
                             Button(action: {
@@ -71,34 +72,37 @@ struct InsightsAccountView: View {
                     ) {
                         // Show account list based on expandedSections state
                         if expandedSections[accountType] == true {
-                            ForEach(accounts) { account in
-                                HStack {
-                                    Text(account.name)
-                                        .font(.subheadline)
-                                    
-                                    Spacer(minLength: 10)
-                                    
-                                    let flowByStatus = accountInfo.flowUntilToday[account.id]
-                                    let value: Double? = switch Self.statusChoices[statusChoice].1 {
-                                    case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
-                                    case "Total Balance"      : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
-                                    case "None"       : flowByStatus?[.none]?.diff
-                                    case "Duplicate"  : flowByStatus?[.duplicate]?.diff
-                                    case "Follow up"  : flowByStatus?[.followUp]?.diff
-                                    case "Void"       : flowByStatus?[.void]?.diff
-                                    default           : nil
-                                    }
-                                    if let value {
-                                        if let currency = dataManager.currencyFormat[account.currencyId] {
-                                            Text(currency.format(amount: value))
-                                                .font(.subheadline)
-                                        } else {
-                                            Text(String(format: "%.2f", value))
-                                                .font(.subheadline)
+                            VStack(spacing: 8) {
+                                Spacer(minLength: 2)
+                                ForEach(accounts) { account in
+                                    HStack {
+                                        Text(account.name)
+                                            .font(.subheadline)
+                                        
+                                        Spacer(minLength: 10)
+                                        
+                                        let flowByStatus = accountInfo.flowUntilToday[account.id]
+                                        let value: Double? = switch Self.statusChoices[statusChoice].1 {
+                                        case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
+                                        case "Total Balance"      : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
+                                        case "None"       : flowByStatus?[.none]?.diff
+                                        case "Duplicate"  : flowByStatus?[.duplicate]?.diff
+                                        case "Follow up"  : flowByStatus?[.followUp]?.diff
+                                        case "Void"       : flowByStatus?[.void]?.diff
+                                        default           : nil
+                                        }
+                                        if let value {
+                                            if let currency = dataManager.currencyFormat[account.currencyId] {
+                                                Text(currency.format(amount: value))
+                                                    .font(.subheadline)
+                                            } else {
+                                                Text(String(format: "%.2f", value))
+                                                    .font(.subheadline)
+                                            }
                                         }
                                     }
+                                    //.padding(.horizontal)
                                 }
-                                .padding(.horizontal)
                             }
                         }
                     }
