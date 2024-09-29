@@ -79,21 +79,23 @@ struct InsightsAccountView: View {
                                     Spacer(minLength: 10)
                                     
                                     let flowByStatus = accountInfo.flowUntilToday[account.id]
-                                    let value: Double = switch Self.statusChoices[statusChoice].1 {
+                                    let value: Double? = switch Self.statusChoices[statusChoice].1 {
                                     case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
                                     case "Total Balance"      : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
-                                    case "None"               : (flowByStatus?[.none]?.diff      ?? 0.0)
-                                    case "Duplicate"          : (flowByStatus?[.duplicate]?.diff ?? 0.0)
-                                    case "Follow up"          : (flowByStatus?[.followUp]?.diff  ?? 0.0)
-                                    case "Void"               : (flowByStatus?[.void]?.diff      ?? 0.0)
-                                    default                   : 0.0
+                                    case "None"       : flowByStatus?[.none]?.diff
+                                    case "Duplicate"  : flowByStatus?[.duplicate]?.diff
+                                    case "Follow up"  : flowByStatus?[.followUp]?.diff
+                                    case "Void"       : flowByStatus?[.void]?.diff
+                                    default           : nil
                                     }
-                                    if let currency = dataManager.currencyFormat[account.currencyId] {
-                                        Text(currency.format(amount: value))
-                                            .font(.subheadline)
-                                    } else {
-                                        Text(String(format: "%.2f", value))
-                                            .font(.subheadline)
+                                    if let value {
+                                        if let currency = dataManager.currencyFormat[account.currencyId] {
+                                            Text(currency.format(amount: value))
+                                                .font(.subheadline)
+                                        } else {
+                                            Text(String(format: "%.2f", value))
+                                                .font(.subheadline)
+                                        }
                                     }
                                 }
                                 .padding(.horizontal)
