@@ -148,10 +148,7 @@ struct TransactionEditView: View {
             if self.payees.count == 1 {
                 txn.payeeId = self.payees.first!.id
             } else if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed) {
-                if let latestTxn = dataManager.transactionRepository?.latest(accountID: txn.accountId) ?? dataManager.transactionRepository?.latest() {
-                    txn.payeeId = latestTxn.payeeId
-                    txn.categId = latestTxn.categId 
-                }
+                loadLatestTxn()
             }
 
             if self.accounts.count == 1 {
@@ -169,6 +166,18 @@ struct TransactionEditView: View {
         .onDisappear {
             // Resign the focus when the view disappears, hiding the keyboard
             isAmountFocused = false
+        }
+    }
+
+    func loadLatestTxn() {
+        if let latestTxn = dataManager.transactionRepository?.latest(accountID: txn.accountId) ?? dataManager.transactionRepository?.latest() {
+            // Update UI on the main thread
+            DispatchQueue.main.async {
+                if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId == 0) {
+                    txn.payeeId = latestTxn.payeeId
+                    txn.categId = latestTxn.categId
+                }
+            }
         }
     }
 }

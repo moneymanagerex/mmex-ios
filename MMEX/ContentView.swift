@@ -19,8 +19,7 @@ struct ContentView: View {
     @EnvironmentObject var dataManager: DataManager
 
     var body: some View {
-        print("DEBUG: ContentView.body")
-        return ZStack {
+        ZStack {
             if dataManager.isDatabaseConnected {
                 connectedView
             } else {
