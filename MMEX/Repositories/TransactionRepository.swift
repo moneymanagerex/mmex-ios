@@ -154,4 +154,19 @@ extension TransactionRepository {
 
         return select(from: table)
     }
+
+    // TODO: update payee's category mapping after insert & update ?
+
+    // Fetch the latest record, filtered by account (optional)
+    func latest(accountID: Int64? = nil) -> TransactionData? {
+        var query = Self.table.order(Self.col_id.desc) // Order by descending ID
+
+        // If accountID is provided, add it to the filter
+        if let accountID = accountID {
+            query = query.filter(Self.col_accountId == accountID)
+        }
+
+        // Pluck the latest row
+        return pluck(key: "latests", from: query)
+    }
 }

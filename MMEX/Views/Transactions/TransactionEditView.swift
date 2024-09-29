@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionEditView: View {
     @Binding var txn: TransactionData
+    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
 
@@ -147,7 +148,10 @@ struct TransactionEditView: View {
             if self.payees.count == 1 {
                 txn.payeeId = self.payees.first!.id
             } else if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed) {
-                // TODO
+                if let latestTxn = dataManager.transactionRepository?.latest(accountID: txn.accountId) ?? dataManager.transactionRepository?.latest() {
+                    txn.payeeId = latestTxn.payeeId
+                    txn.categId = latestTxn.categId 
+                }
             }
 
             if self.accounts.count == 1 {
@@ -176,4 +180,5 @@ struct TransactionEditView: View {
         categories: .constant(CategoryData.sampleData),
         accounts: .constant(AccountData.sampleData)
     )
+    .environmentObject(DataManager())
 }
