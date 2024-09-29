@@ -16,7 +16,15 @@ struct InsightsView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     Section {
-                        Summary(stats: $viewModel.stats)
+                        InsightsAccountView(accountInfo: $viewModel.accountInfo)
+                    } header: {
+                        Text("Account Balance")
+                            .font(.headline)
+                            .padding(.horizontal)
+                    }
+
+                    Section {
+                        InsightsSummaryView(stats: $viewModel.stats)
                     } header: {
                         Text("Account Income Summary")
                             .font(.headline)
@@ -43,7 +51,7 @@ struct InsightsView: View {
                     }
 
                     Section {
-                        IncomeAndExpense(stats: $viewModel.recentStats)
+                        IncomeExpenseView(stats: $viewModel.recentStats)
                     } header: {
                         Text("Income vs Expense Over Time")
                             .font(.headline)

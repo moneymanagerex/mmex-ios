@@ -53,11 +53,11 @@ extension Repository {
         }
     }
 
-    func dictionary<Result>(
+    func dict<Result>(
         query: String,
         with result: (SQLite.Statement.Element) -> Result
     ) -> [Int64: Result] {
-        print("DEBUG: Repository.dictionary: \(query)")
+        print("DEBUG: Repository.dict: \(query)")
         do {
             var dict: [Int64: Result] = [:]
             for row in try db.prepare(query) {

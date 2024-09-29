@@ -8,7 +8,7 @@
 import SwiftUI
 import Charts
 
-struct Summary: View {
+struct InsightsSummaryView: View {
     @Binding var stats: [TransactionData]
 
     var body: some View {
@@ -27,5 +27,5 @@ struct Summary: View {
 }
 
 #Preview {
-    Summary(stats: .constant(TransactionData.sampleData))
+    InsightsSummaryView(stats: .constant(TransactionData.sampleData))
 }

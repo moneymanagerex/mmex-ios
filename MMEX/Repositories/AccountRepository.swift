@@ -156,16 +156,131 @@ struct AccountRepository: RepositoryProtocol {
 }
 
 extension AccountRepository {
-    // load all accounts
+    // load all accounts, sorted by name
     func load() -> [AccountData] {
         return select(from: Self.table
             .order(Self.col_name)
         )
     }
 
+    // select accounts by type
+    func selectByType(
+        from table: SQLite.Table = Self.table
+    ) -> [AccountType: [AccountData]] {
+        do {
+            var dataByType: [AccountType: [AccountData]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let type = AccountType(collateNoCase: row[Self.col_type])
+                if dataByType[type] == nil { dataByType[type] = [] }
+                dataByType[type]!.append(Self.fetchData(row))
+            }
+            print("Successfull select from \(Self.repositoryName): \(dataByType.count)")
+            return dataByType
+        } catch {
+            print("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
+    // load account flow, indexed by id and transaction status
+    func dictFlowByStatus(
+        from table: SQLite.Table = Self.table,
+        minDate: String? = nil,
+        maxDate: String? = nil
+    ) -> [Int64: AccountFlowByStatus] {
+        let minDate = minDate ?? ""
+        let supDate = (maxDate ?? "") + "z"
+
+        typealias T = TransactionRepository
+        let B_query = T.table.select(
+            T.col_accountId,
+            T.col_status,
+            T.col_transAmount, 0
+        )
+            .where(
+                T.col_transCode == "Deposit" &&
+                T.col_transDate ?? "" >= minDate &&
+                T.col_transDate ?? "" <  supDate &&
+                T.col_deletedTime ?? "" == ""
+            )
+        .union(all: true, T.table.select(
+            T.col_accountId,
+            T.col_status,
+            0, T.col_transAmount
+        )
+            .where(
+                T.col_transCode == "Withdrawal" &&
+                T.col_transDate ?? "" >= minDate &&
+                T.col_transDate ?? "" <  supDate &&
+                T.col_deletedTime ?? "" == ""
+            )
+        ).union(all: true, T.table.select(
+            T.col_accountId,
+            T.col_status,
+            0, T.col_transAmount
+        )
+            .where(
+                T.col_transCode == "Transfer" &&
+                T.col_transDate ?? "" >= minDate &&
+                T.col_transDate ?? "" <  supDate &&
+                T.col_deletedTime ?? "" == ""
+            )
+        ).union(all: true, T.table.select(
+            T.col_toAccountId,
+            T.col_status,
+            T.col_toTransAmount, 0
+        )
+            .where(
+                T.col_transCode == "Transfer" &&
+                T.col_transDate ?? "" >= minDate &&
+                T.col_transDate ?? "" <  supDate &&
+                T.col_deletedTime ?? "" == ""
+            )
+        )
+
+        typealias A = Self
+        let B_table = SQLite.Table("b")
+        let B_col_inflow  = SQLite.Expression<Double>("INFLOW")
+        let B_col_outflow = SQLite.Expression<Double>("OUTFLOW")
+        let query = table.with(
+            B_table,
+            columns: [A.col_id, T.col_status, B_col_inflow, B_col_outflow],
+            recursive: false,
+            as: B_query
+        )
+            .join(B_table, on: B_table[A.col_id] == A.table[A.col_id])
+            .where(A.table[A.col_type] != "Investment")
+            .select(
+                A.table[A.col_id],
+                B_table[T.col_status],
+                B_table[B_col_inflow].total,
+                B_table[B_col_outflow].total
+            )
+            .group(A.table[A.col_id], B_table[T.col_status])
+
+        print("DEBUG: AccountRepository.dictFlowByStatus: \(query.expression.description)")
+        do {
+            var dict: [Int64: AccountFlowByStatus] = [:]
+            for row in try db.prepare(query) {
+                let id = row[A.table[A.col_id]]
+                let status = TransactionStatus(collateNoCase: row[B_table[T.col_status]])
+                if dict[id] == nil { dict[id] = [:] }
+                dict[id]![status] = AccountFlow(
+                    inflow  : row[B_table[B_col_inflow].total],
+                    outflow : row[B_table[B_col_outflow].total]
+                )
+            }
+            print("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
+            return dict
+        } catch {
+            print("Failed dictionary from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
     // load currencyId for all accounts
     func loadCurrencyId() -> [Int64] {
-        return Repository(db).select(from: Self.table
+        return select(from: Self.table
             .select(distinct: Self.col_currencyId)
         ) { row in
             row[Self.col_currencyId]

@@ -8,8 +8,9 @@
 import SwiftUI
 import Charts
 
-struct IncomeAndExpense: View {
+struct IncomeExpenseView: View {
     @Binding var stats: [TransactionData]
+
     var body: some View {
         Chart() {
             ForEach(stats) { stat in
@@ -49,5 +50,5 @@ struct IncomeAndExpense: View {
 }
 
 #Preview {
-    IncomeAndExpense(stats: .constant(TransactionData.sampleData))
+    IncomeExpenseView(stats: .constant(TransactionData.sampleData))
 }

@@ -80,6 +80,28 @@ extension AccountData: DataProtocol {
     }
 }
 
+struct AccountFlow {
+    let inflow  : Double
+    let outflow : Double
+}
+
+extension AccountFlow {
+    var diff: Double { inflow - outflow }
+}
+
+typealias AccountFlowByStatus = [TransactionStatus: AccountFlow]
+
+extension AccountFlowByStatus {
+    var diffVoid       : Double { self[.void]?        .diff ?? 0.0 }
+    var diffReconciled : Double { self[.reconciled]?  .diff ?? 0.0 }
+    var diffTotal      : Double {
+        (self[.none]?       .diff ?? 0.0) +
+        (self[.reconciled]? .diff ?? 0.0) +
+        (self[.followUp]?   .diff ?? 0.0) +
+        (self[.duplicate]?  .diff ?? 0.0)
+    }
+}
+
 extension AccountData {
     static let sampleData : [AccountData] = [
         AccountData(
