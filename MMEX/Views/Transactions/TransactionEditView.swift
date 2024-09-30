@@ -148,6 +148,43 @@ struct TransactionEditView: View {
             }
             .padding(.horizontal, 0)
             
+            // 6. Splits Section
+            if !txn.splits.isEmpty {
+                Form {
+                    Section(header: Text("Splits")) {
+                        HStack {
+                            Text("Category")
+                            Spacer()
+                            Text("Amount")
+                            Spacer()
+                            Text("Notes")
+                        }
+                        ForEach($txn.splits) { $split in
+                            HStack {
+                                // Category picker
+                                Picker("Select Category", selection: $split.categId) {
+                                    ForEach(categories) { category in
+                                        Text(category.name).tag(category.id)
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
+                                .labelsHidden()
+                                Spacer()
+                                Text("\(split.amount, specifier: "%.2f")") // TODO
+                                Spacer()
+                                TextField("add note", text: $split.notes)
+                                Spacer()
+                            }
+                        }
+                        .onDelete { indices in
+                            txn.splits.remove(atOffsets: indices)
+                        }
+                    }
+                    .labelsHidden()
+                }
+                .padding(.vertical, 0)
+            }
+
             Spacer() // Push the contents to the top
         }
         .padding(.horizontal)
@@ -199,6 +236,16 @@ struct TransactionEditView: View {
 #Preview {
     TransactionEditView(
         txn: .constant(TransactionData.sampleData[0]),
+        payees: .constant(PayeeData.sampleData),
+        categories: .constant(CategoryData.sampleData),
+        accounts: .constant(AccountData.sampleData)
+    )
+    .environmentObject(DataManager())
+}
+
+#Preview {
+    TransactionEditView(
+        txn: .constant(TransactionData.sampleData[3]),
         payees: .constant(PayeeData.sampleData),
         categories: .constant(CategoryData.sampleData),
         accounts: .constant(AccountData.sampleData)

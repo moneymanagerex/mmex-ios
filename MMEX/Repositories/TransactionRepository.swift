@@ -170,4 +170,15 @@ extension TransactionRepository {
         // Pluck the latest row
         return pluck(key: "latests", from: query)
     }
+    
+    // update with its splits
+    func updateWithSplits(_ data: TransactionData) -> Bool {
+        var success = update(data)
+        if success {
+            for split in data.splits {
+                success = success && TransactionSplitRepository(db).update(split)
+            }
+        }
+        return success
+    }
 }
