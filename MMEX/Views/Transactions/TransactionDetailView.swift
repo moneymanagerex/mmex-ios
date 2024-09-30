@@ -114,6 +114,7 @@ struct TransactionDetailView: View {
                                 txn = editingTxn
                                 saveChanges()
                             }
+                            .disabled(!editingTxn.isValid)
                         }
                     }
             }
