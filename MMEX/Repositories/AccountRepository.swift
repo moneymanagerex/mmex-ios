@@ -163,6 +163,13 @@ extension AccountRepository {
         )
     }
 
+    // load account ids
+    func loadId(from table: SQLite.Table = Self.table) -> [Int64] {
+        return select(from: table) { row in
+            row[Self.col_id]
+        }
+    }
+
     // select accounts by type
     func selectByType(
         from table: SQLite.Table = Self.table
