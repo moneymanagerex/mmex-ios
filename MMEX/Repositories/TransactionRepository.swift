@@ -160,6 +160,7 @@ extension TransactionRepository {
     // Fetch the latest record, filtered by account (optional)
     func latest(accountID: Int64? = nil) -> TransactionData? {
         var query = Self.table.order(Self.col_id.desc) // Order by descending ID
+            .filter(([TransactionType.withdrawal.id, TransactionType.deposit.id].contains(Self.col_transCode)))
 
         // If accountID is provided, add it to the filter
         if let accountID = accountID {
