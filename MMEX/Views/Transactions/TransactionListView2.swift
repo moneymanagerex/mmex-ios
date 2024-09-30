@@ -102,25 +102,23 @@ struct TransactionListView2: View {
                 Spacer() // To push the amount to the right side
 
                 if let currencyId = self.accountDict[txn.accountId]?.currencyId,
-                   let currencyFormat = dataManager.currencyFormat[currencyId]
+                   let currencyFormatter = dataManager.currencyFormatter[currencyId]
                 {
                     // Right column (Transaction Amount)
                     VStack {
                         // amount in account currency
-                        Text(currencyFormat.format(
-                            amount: txn.transAmount
-                        ) )
+                        Text(txn.transAmount.formatted(by: currencyFormatter))
                         .frame(alignment: .trailing) // Ensure it's aligned to the right
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
                         // amount in base currency
                         if let baseCurrencyId = viewModel.baseCurrency?.id,
-                           let baseCurrencyFormat = dataManager.currencyFormat[baseCurrencyId],
-                           baseCurrencyId != currencyId
+                           baseCurrencyId != currencyId,
+                           let baseConvRate = dataManager.currencyData[currencyId]?.baseConvRate
                         {
-                            Text(baseCurrencyFormat.format(
-                                amount: txn.transAmount * currencyFormat.baseConvRate
-                            ) )
+                            Text((txn.transAmount * baseConvRate)
+                                .formatted(by: dataManager.currencyFormatter[baseCurrencyId])
+                            )
                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color

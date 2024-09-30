@@ -28,7 +28,9 @@ extension RepositoryProtocol {
         with result: (SQLite.Row) -> Result = Self.fetchData
     ) -> Result? {
         do {
-            if let row = try db.pluck(Self.selectData(from: table)) {
+            let query = Self.selectData(from: table)
+            print("DEBUG: RepositoryProtocol.pluck(): \(query.expression.description)")
+            if let row = try db.pluck(query) {
                 let data = result(row)
                 print("Successfull pluck of \(key) from \(Self.repositoryName)")
                 return data
@@ -59,7 +61,9 @@ extension RepositoryProtocol {
     ) -> [Result] {
         do {
             var data: [Result] = []
-            for row in try db.prepare(Self.selectData(from: table)) {
+            let query = Self.selectData(from: table)
+            print("DEBUG: RepositoryProtocol.select(): \(query.expression.description)")
+            for row in try db.prepare(query) {
                 data.append(result(row))
             }
             print("Successfull select from \(Self.repositoryName): \(data.count)")
@@ -76,7 +80,9 @@ extension RepositoryProtocol {
     ) -> [Int64: Result] {
         do {
             var dict: [Int64: Result] = [:]
-            for row in try db.prepare(Self.selectData(from: table)) {
+            let query = Self.selectData(from: table)
+            print("DEBUG: RepositoryProtocol.dict(): \(query.expression.description)")
+            for row in try db.prepare(query) {
                 dict[row[Self.col_id]] = result(row)
             }
             print("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
@@ -91,6 +97,7 @@ extension RepositoryProtocol {
         do {
             let query = Self.table
                 .insert(Self.itemSetters(data))
+            print("DEBUG: RepositoryProtocol.insert(): \(query.expression.description)")
             let rowid = try db.run(query)
             data.id = rowid
             print("Successfull insert in \(RepositoryData.dataName): \(data.shortDesc())")
@@ -107,6 +114,7 @@ extension RepositoryProtocol {
             let query = Self.table
                 .filter(Self.col_id == data.id)
                 .update(Self.itemSetters(data))
+            print("DEBUG: RepositoryProtocol.update(): \(query.expression.description)")
             try db.run(query)
             print("Successfull update in \(RepositoryData.dataName): \(data.shortDesc())")
             return true
@@ -122,6 +130,7 @@ extension RepositoryProtocol {
             let query = Self.table
                 .filter(Self.col_id == data.id)
                 .delete()
+            print("DEBUG: RepositoryProtocol.delete(): \(query.expression.description)")
             try db.run(query)
             print("Successfull delete in \(RepositoryData.dataName): \(data.shortDesc())")
             return true
@@ -134,6 +143,7 @@ extension RepositoryProtocol {
     func deleteAll() -> Bool {
         do {
             let query = Self.table.delete()
+            print("DEBUG: RepositoryProtocol.deleteAll(): \(query.expression.description)")
             try db.run(query)
             print("Successfull delete all in \(RepositoryData.dataName)")
             return true
