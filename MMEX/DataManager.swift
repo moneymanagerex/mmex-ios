@@ -127,10 +127,17 @@ extension DataManager {
 
 extension DataManager {
     func loadCurrency() {
-        currencyData = CurrencyRepository(db)?.dictUsed() ?? [:]
-        currencyFormatter = currencyData.mapValues { currency in
-            currency.formatter
+        let repository = CurrencyRepository(db)
+        DispatchQueue.global(qos: .background).async {
+            let data = repository?.dictUsed() ?? [:]
+            DispatchQueue.main.async {
+                self.currencyData = data
+                self.currencyFormatter = data.mapValues { currency in
+                    currency.formatter
+                }
+            }
         }
+
     }
 
     func updateCurrency(id: Int64, data: CurrencyData) {
