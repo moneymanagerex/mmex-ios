@@ -8,6 +8,13 @@
 import Foundation
 import SQLite
 
+
+/// copy from MMEX4Desktop
+enum CHECKING_TYPE: Int64 {
+    case AS_INCOME_EXPENSE = 32701
+    case AS_TRANSFER
+}
+
 struct TransactionLinkData: ExportableEntity {
     var id      : Int64   = 0
     var transId : Int64   = 0

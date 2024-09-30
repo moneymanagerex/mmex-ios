@@ -47,7 +47,7 @@ struct TransactionEditView: View {
                 }
             }
             .padding(.horizontal, 0)
-            
+
             // 2. Unified Numeric Input for the Amount with automatic keyboard focus
             TextField("0", text: $amountString)
                 .keyboardType(.decimalPad) // Show numeric keyboard with decimal support
@@ -102,20 +102,34 @@ struct TransactionEditView: View {
                 }
             }
             .padding(.horizontal, 0)
-            
+
             // 5. Horizontal stack for Payee and Category pickers
             HStack {
-                // Payee picker
-                Picker("Select Payee", selection: $txn.payeeId) {
-                    if (txn.payeeId == 0) {
-                        Text("Payee").tag(0 as Int64) // not set
-                    }
-                    ForEach(payees) { payee in
-                        Text(payee.name).tag(payee.id)
+                if txn.transCode == .transfer {
+                    // to Account picker
+                    Picker("Select To Account", selection: $txn.toAccountId) {
+                        if (txn.toAccountId == 0) {
+                            Text("Account").tag(0 as Int64) // not set
+                        }
+                        ForEach(accounts) { account in
+                            if (account.id != txn.accountId) {
+                                Text(account.name).tag(account.id)
+                            }
+                        }
                     }
                 }
-                .pickerStyle(MenuPickerStyle()) // Show a menu for the payee picker
-                
+                else {
+                    // Payee picker
+                    Picker("Select Payee", selection: $txn.payeeId) {
+                        if (txn.payeeId == 0) {
+                            Text("Payee").tag(0 as Int64) // not set
+                        }
+                        ForEach(payees) { payee in
+                            Text(payee.name).tag(payee.id)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle()) // Show a menu for the payee picker
+                }
                 Spacer()
 
                 // Category picker

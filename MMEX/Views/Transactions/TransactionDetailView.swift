@@ -54,6 +54,18 @@ struct TransactionDetailView: View {
                 }
             }
 
+            if txn.transCode == .transfer {
+                Section(header: Text("To Account")) {
+                    // Text(getPayeeName(txn.payeeID)) // Retrieve payee name
+                    Text("\(txn.toAccountId)")
+                }
+            } else {
+                Section(header: Text("Payee")) {
+                    // Text(getPayeeName(txn.payeeID)) // Retrieve payee name
+                    Text("\(txn.payeeId)")
+                }
+            }
+
 //            Section(header: Text("Payee")) {
 //                Text(getPayeeName(txn.payeeID)) // Retrieve payee name
 //           }
@@ -152,6 +164,16 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         txn: TransactionData.sampleData[0],
+        payees: .constant(PayeeData.sampleData),
+        categories: .constant(CategoryData.sampleData),
+        accounts: .constant(AccountData.sampleData)
+    )
+    .environmentObject(DataManager())
+}
+
+#Preview {
+    TransactionDetailView(
+        txn: TransactionData.sampleData[2],
         payees: .constant(PayeeData.sampleData),
         categories: .constant(CategoryData.sampleData),
         accounts: .constant(AccountData.sampleData)

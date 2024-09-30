@@ -59,10 +59,16 @@ struct TransactionAddView2: View {
     }
 
     func isTransactionValid() -> Bool {
-        return newTxn.payeeId > 0 && newTxn.categId > 0
+        return (newTxn.payeeId > 0 || newTxn.toAccountId > 0) && newTxn.categId > 0
     }
 
     func addTransaction(txn: inout TransactionData) {
+        // TODO move to a centeriazed place?
+        if txn.transCode == .transfer {
+            txn.payeeId = 0
+        } else {
+            txn.toAccountId = 0
+        }
         guard let repository = dataManager.transactionRepository else { return }
         if repository.insert(&txn) {
             // id is ready after repo call
