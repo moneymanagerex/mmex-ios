@@ -136,6 +136,13 @@ extension TransactionData {
         }
         return 0.0
     }
+
+    var isForeign: Bool {
+        return toAccountId > 0 && transCode == .transfer
+    }
+    var isForeignTransfer: Bool {
+        return isForeign && toAccountId == CHECKING_TYPE.AS_TRANSFER.rawValue
+    }
 }
 
 extension TransactionData {
@@ -151,7 +158,7 @@ extension TransactionData {
             transDate: String(Date().ISO8601Format().dropLast())
         ),
         TransactionData(
-            id: 3, accountId: 3, payeeId: 2, transCode: TransactionType.transfer,
+            id: 3, accountId: 3, toAccountId: 2, transCode: TransactionType.transfer,
             transAmount: 30.03, status: TransactionStatus.none, categId: 1,
             transDate: String(Date().ISO8601Format().dropLast())
         ),

@@ -14,8 +14,12 @@ struct TransactionListView: View {
     @State private var isPresentingTransactionAddView = false
     
     @State private var payees: [PayeeData] = []
+    @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
     @State private var categories: [CategoryData] = []
+    @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
     @State private var accounts: [AccountData] = []
+    @State private var accountDict: [Int64: AccountData] = [: ] // for lookup
+
     
     var body: some View {
         NavigationStack {
@@ -38,7 +42,7 @@ struct TransactionListView: View {
 
                         // Middle column: Payee name and Category icon (or ID)
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(getPayeeName(for: txn.payeeId))
+                            Text(getPayeeName(for: txn))
                                 .font(.system(size: 16))
                                 .lineLimit(1) // Prevent wrapping
                             Text("\(txn.transCode.id)") // Replace with transcode name if available
@@ -110,13 +114,13 @@ struct TransactionListView: View {
     func loadPayees() {
         let repository = dataManager.payeeRepository
 
-        // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
             let loadedPayees = repository?.load() ?? []
+            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
 
-            // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
+                self.payeeDict = loadedPayeeDict
             }
         }
     }
@@ -125,8 +129,10 @@ struct TransactionListView: View {
         let repository = dataManager.categoryRepository
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository?.load() ?? []
+            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
             DispatchQueue.main.async {
                 self.categories = loadedCategories
+                self.categoryDict = loadedCategoryDict
             }
         }
     }
@@ -135,15 +141,28 @@ struct TransactionListView: View {
         let repository = dataManager.accountRepository
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository?.load() ?? []
+            let loadedAccountDict = Dictionary(uniqueKeysWithValues: loadedAccounts.map { ($0.id, $0) })
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
+                self.accountDict = loadedAccountDict
             }
         }
     }
-    
-    func getPayeeName(for payeeID: Int64) -> String {
+
+    // TODO pre-join via SQL?
+    func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
-        return payees.first { $0.id == payeeID }?.name ?? "Unknown"
+        if txn.transCode == .transfer {
+            if let toAccount = self.accountDict[txn.toAccountId] {
+                return String(format: "> \(toAccount.name)")
+            }
+        }
+
+        if let payee = self.payeeDict[txn.payeeId] {
+            return payee.name
+        }
+
+        return "Unknown"
     }
     
     func getCategoryName(for categoryID: Int64) -> String {
@@ -152,6 +171,12 @@ struct TransactionListView: View {
     }
     
     func addTransaction(txn: inout TransactionData) {
+        // TODO move to a centeriazed place?
+        if txn.transCode == .transfer {
+            txn.payeeId = 0
+        } else {
+            txn.toAccountId = 0
+        }
         guard let repository = dataManager.transactionRepository else { return }
         if repository.insert(&txn) {
             self.txns.append(txn) // id is ready after repo call

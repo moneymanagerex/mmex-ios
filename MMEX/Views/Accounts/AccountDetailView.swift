@@ -142,6 +142,7 @@ struct AccountDetailView: View {
             ($0.id, $0.name)
         } )
     )
+    .environmentObject(DataManager())
 }
 
 #Preview {
@@ -151,4 +152,5 @@ struct AccountDetailView: View {
             ($0.id, $0.name)
         } )
     )
+    .environmentObject(DataManager())
 }

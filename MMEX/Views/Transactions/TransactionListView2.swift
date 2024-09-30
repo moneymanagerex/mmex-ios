@@ -90,7 +90,7 @@ struct TransactionListView2: View {
 
                 // Middle column (Payee Name & Time)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(getPayeeName(for: txn.payeeId)) // Payee name
+                    Text(getPayeeName(for: txn)) // Payee name
                         .font(.system(size: 16))
                         .lineLimit(1) // Prevent wrapping
                     Text(formatTime(txn.transDate)) // Show time in hh:mm a
@@ -142,10 +142,11 @@ struct TransactionListView2: View {
 
         DispatchQueue.global(qos: .background).async {
             let loadedPayees = repository?.load() ?? []
-            
+            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
+
             DispatchQueue.main.async {
                 self.payees = loadedPayees
-                self.payeeDict = Dictionary(uniqueKeysWithValues: payees.map { ($0.id, $0) })
+                self.payeeDict = loadedPayeeDict
             }
         }
     }
@@ -154,9 +155,10 @@ struct TransactionListView2: View {
         let repository = dataManager.categoryRepository
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository?.load() ?? []
+            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
             DispatchQueue.main.async {
                 self.categories = loadedCategories
-                self.categoryDict = Dictionary(uniqueKeysWithValues: categories.map { ($0.id, $0) })
+                self.categoryDict = loadedCategoryDict
             }
         }
     }
@@ -165,19 +167,33 @@ struct TransactionListView2: View {
         let repository = dataManager.accountRepository
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = repository?.load() ?? []
+            let loadedAccountDict = Dictionary(uniqueKeysWithValues: loadedAccounts.map { ($0.id, $0) })
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
-                self.accountDict = Dictionary(uniqueKeysWithValues: accounts.map { ($0.id, $0) })
+                self.accountDict = loadedAccountDict
             }
         }
     }
 
     // TODO pre-join via SQL?
-    func getPayeeName(for payeeID: Int64) -> String {
+    func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
-        if let payee = self.payeeDict[payeeID] {
+        if txn.transCode == .transfer {
+            if viewModel.defaultAccountId == txn.accountId {
+                if let toAccount = self.accountDict[txn.toAccountId] {
+                    return String(format: "> \(toAccount.name)")
+                }
+            } else {
+                if let fromAccount = self.accountDict[txn.accountId] {
+                    return String(format: "< \(fromAccount.name)")
+                }
+            }
+        }
+
+        if let payee = self.payeeDict[txn.payeeId] {
             return payee.name
         }
+
         return "Unknown"
     }
     
