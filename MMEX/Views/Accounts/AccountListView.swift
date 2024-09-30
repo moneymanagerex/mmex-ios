@@ -9,7 +9,7 @@ import SwiftUI
 struct AccountListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var currencyName: [(Int64, String)] = [] // only the name is needed
-    @State private var accounts_by_type: [AccountType: [Int64]] = [:]
+    @State private var accountIdByType: [AccountType: [Int64]] = [:]
     @State private var newAccount = emptyAccount
     @State private var isPresentingAccountAddView = false
     @State private var expandedSections: [AccountType: Bool] = [:] // Tracks the expanded/collapsed state
@@ -49,7 +49,7 @@ struct AccountListView: View {
                     ) {
                         // Show account list based on expandedSections state
                         if expandedSections[accountType] == true,
-                           let ids: [Int64] = accounts_by_type[accountType],
+                           let ids: [Int64] = accountIdByType[accountType],
                            !ids.isEmpty
                         {
                             ForEach(ids, id: \.self) { id in
@@ -105,7 +105,7 @@ struct AccountListView: View {
 
     // Initialize the expanded state for each account type
     private func initializeExpandedSections() {
-        for accountType in accounts_by_type.keys {
+        for accountType in accountIdByType.keys {
             expandedSections[accountType] = true // Default to expanded
         }
     }
@@ -120,7 +120,7 @@ struct AccountListView: View {
                 with: { row in row[A.col_id] }
             ) ?? [:]
             DispatchQueue.main.async {
-                self.accounts_by_type = idByType
+                self.accountIdByType = idByType
                 self.initializeExpandedSections() // Initialize expanded states
             }
         }
