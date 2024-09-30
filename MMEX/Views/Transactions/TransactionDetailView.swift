@@ -34,13 +34,9 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Transaction Amount")) {
-                if let currencyId = account?.currencyId,
-                   let currencyFormat = dataManager.currencyFormat[currencyId]
-                {
-                    Text(currencyFormat.format(amount: txn.transAmount))
-                } else {
-                    Text("\(txn.transAmount)")
-                }
+                Text(txn.transAmount.formatted(
+                    by: dataManager.currencyFormatter[account?.currencyId ?? 0]
+                ))
             }
 
             Section(header: Text("Transaction Date")) {

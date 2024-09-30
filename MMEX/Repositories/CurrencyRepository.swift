@@ -104,31 +104,6 @@ struct CurrencyRepository: RepositoryProtocol {
             col_type           <- data.type.rawValue
         ]
     }
-    
-    static func selectFormat(from table: SQLite.Table) -> SQLite.Table {
-        return table.select(
-            col_id,
-            col_name,
-            col_prefixSymbol,
-            col_suffixSymbol,
-            col_decimalPoint,
-            col_groupSeparator,
-            col_scale,
-            cast_baseConvRate
-        )
-    }
-
-    static func fetchFormat(_ row: SQLite.Row) -> CurrencyFormat {
-        return CurrencyFormat(
-            name           : row[col_name],
-            prefixSymbol   : row[col_prefixSymbol] ?? "",
-            suffixSymbol   : row[col_suffixSymbol] ?? "",
-            decimalPoint   : row[col_decimalPoint] ?? "",
-            groupSeparator : row[col_groupSeparator] ?? "",
-            scale          : row[col_scale] ?? 0,
-            baseConvRate   : row[cast_baseConvRate] ?? 0.0
-        )
-    }
 }
 
 extension CurrencyRepository {
@@ -160,39 +135,18 @@ extension CurrencyRepository {
         }
     }
 
-    // TODO: re-write in a more readable way (get the ids first, then pluck each currency)
-    // load all referred currency formats, indexed by currencyId
-    func dictRefFormat() -> [Int64: CurrencyFormat] {
-        print("DEBUG: CurrencyRepository.dictRefFormat()")
-        typealias C = CurrencyRepository
+    // load used currencies, indexed by id
+    func dictUsed() -> [Int64: CurrencyData] {
         typealias A = AccountRepository
         typealias E = AssetRepository
-        let query = "select" +
-        " \(C.col_id)," +
-        " \(C.col_name)," +
-        " \(C.col_prefixSymbol)," +
-        " \(C.col_suffixSymbol)," +
-        " \(C.col_decimalPoint)," +
-        " \(C.col_groupSeparator)," +
-        " \(C.col_scale)," +
-        " \(C.cast_baseConvRate)" +
-        " from \(C.repositoryName)" +
-        " where exists (" +
-        "select 1 from \(A.repositoryName) where \(A.table[A.col_currencyId]) == \(C.table[C.col_id])" +
-        " union " +
-        "select 1 from \(E.repositoryName) where \(E.table[E.col_currencyId]) == \(C.table[C.col_id])" +
-        ")"
-        return Repository(db).dict(
-            query: query
-        ) { row in CurrencyFormat(
-            name           : row[1] as? String ?? "",
-            prefixSymbol   : row[2] as? String ?? "",
-            suffixSymbol   : row[3] as? String ?? "",
-            decimalPoint   : row[4] as? String ?? "",
-            groupSeparator : row[5] as? String ?? "",
-            scale          : Int(row[6] as? Int64  ?? 0),
-            baseConvRate   : row[7] as? Double ?? 0.0
-        ) }
+        let cond = "EXISTS (" + A.table.select(1)
+            .where(A.table[A.col_currencyId] == Self.table[Self.col_id])
+            .union(E.table.select(1)
+                .where(E.table[E.col_currencyId] == Self.table[Self.col_id])
+            ).expression.description + ")"
+        return dict(from: Self.table
+            .filter(SQLite.Expression<Bool>(literal: cond))
+        )
     }
 
     // load currency of an account

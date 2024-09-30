@@ -1,8 +1,8 @@
 //
-//  Summary.swift
+//  InsightsAccountView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/29.
+//  Created 2024-09-29 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
@@ -62,20 +62,17 @@ struct InsightsAccountView: View {
                                 case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
                                 default: 0.0
                                 }
-                                let baseConvRate = dataManager.currencyFormat[account.currencyId]?.baseConvRate ?? 1.0
+                                let baseConvRate = dataManager.currencyData[account.currencyId]?.baseConvRate ?? 1.0
                                 total = total + value * baseConvRate
                             }
                         }
                         return total
                     } ()
 
-                    if let currency = baseCurrency {
-                        Text(currency.format(amount: totalBalance))
-                            .font(.subheadline)
-                    } else {
-                        Text(String(format: "%.2f", totalBalance))
-                            .font(.subheadline)
-                    }
+                    Text(totalBalance.formatted(
+                        by: dataManager.currencyFormatter[baseCurrency?.id ?? 0]
+                    ))
+                    .font(.subheadline)
                 }
                 .padding(.horizontal, 8)
             }
@@ -129,13 +126,10 @@ struct InsightsAccountView: View {
                                         default          : nil
                                         }
                                         if let value {
-                                            if let currency = dataManager.currencyFormat[account.currencyId] {
-                                                Text(currency.format(amount: value))
-                                                    .font(.subheadline)
-                                            } else {
-                                                Text(String(format: "%.2f", value))
-                                                    .font(.subheadline)
-                                            }
+                                            Text(value.formatted(
+                                                by: dataManager.currencyFormatter[account.currencyId]
+                                            ))
+                                            .font(.subheadline)
                                         }
                                     }
                                     //.padding(.horizontal)
