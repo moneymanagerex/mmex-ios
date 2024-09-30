@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct TransactionDetailView: View {
-    @State var txn: TransactionData
     @EnvironmentObject var dataManager: DataManager
+    @State var txn: TransactionData
 
     @State private var editingTxn = TransactionData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
-    
-    @Binding var payees: [PayeeData]
+
+    @Binding var accountId: [Int64]
     @Binding var categories: [CategoryData]
-    @Binding var accounts: [AccountData]
+    @Binding var payees: [PayeeData]
     
     @State private var account: AccountData?
     @State private var toAccount: AccountData?
@@ -34,13 +34,9 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Transaction Amount")) {
-                if let currencyId = account?.currencyId,
-                   let currencyFormat = dataManager.currencyFormat[currencyId]
-                {
-                    Text(currencyFormat.format(amount: txn.transAmount))
-                } else {
-                    Text("\(txn.transAmount)")
-                }
+                Text(txn.transAmount.formatted(
+                    by: dataManager.currencyFormatter[account?.currencyId ?? 0]
+                ))
             }
 
             Section(header: Text("Transaction Date")) {
@@ -136,7 +132,12 @@ struct TransactionDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                TransactionEditView(txn: $editingTxn, payees: $payees, categories: $categories, accounts: $accounts)
+                TransactionEditView(
+                    txn: $editingTxn,
+                    accountId: $accountId,
+                    categories: $categories,
+                    payees: $payees
+                )
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {
@@ -174,10 +175,10 @@ struct TransactionDetailView: View {
     }
     
     func loadAccount() {
-        account = accounts.first { $0.id == txn.accountId}
+        account = dataManager.accountData[txn.accountId]
     }
     func loadToAccount() {
-        toAccount = accounts.first { $0.id == txn.toAccountId}
+        toAccount = dataManager.accountData[txn.toAccountId]
     }
     func getCategoryName(for categoryID: Int64) -> String {
         return categories.first {$0.id == categoryID}?.name ?? "Unknown"
@@ -210,9 +211,11 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         txn: TransactionData.sampleData[0],
-        payees: .constant(PayeeData.sampleData),
+        accountId: .constant(AccountData.sampleData.map { account in
+            account.id
+        } ),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountData.sampleData)
+        payees: .constant(PayeeData.sampleData)
     )
     .environmentObject(DataManager())
 }
@@ -220,9 +223,11 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         txn: TransactionData.sampleData[2],
-        payees: .constant(PayeeData.sampleData),
+        accountId: .constant(AccountData.sampleData.map { account in
+            account.id
+        } ),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountData.sampleData)
+        payees: .constant(PayeeData.sampleData)
     )
     .environmentObject(DataManager())
 }

@@ -15,13 +15,18 @@ struct TransactionAddView2: View {
     // Dismiss environment action
     @Environment(\.dismiss) var dismiss
     
-    @State private var payees: [PayeeData] = []
+    @State private var accountId: [Int64] = []
     @State private var categories: [CategoryData] = []
-    @State private var accounts: [AccountData] = []
+    @State private var payees: [PayeeData] = []
     
     var body: some View {
         NavigationStack {
-            TransactionEditView(txn: $newTxn, payees: $payees, categories: $categories, accounts: $accounts)
+            TransactionEditView(
+                txn: $newTxn,
+                accountId: $accountId,
+                categories: $categories,
+                payees: $payees
+            )
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
@@ -44,9 +49,9 @@ struct TransactionAddView2: View {
         .padding()
         // .navigationBarTitle("Add Transaction", displayMode: .inline)
         .onAppear() {
-            loadPayees()
-            loadCategories()
             loadAccounts()
+            loadCategories()
+            loadPayees()
             // TODO update initial payee (e.g. last used)
             // TODO update category, payee associated?
             
@@ -73,6 +78,17 @@ struct TransactionAddView2: View {
         }
     }
     
+    func loadAccounts() {
+        let repository = dataManager.accountRepository
+        DispatchQueue.global(qos: .background).async {
+            typealias A = AccountRepository
+            let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
+            DispatchQueue.main.async {
+                self.accountId = id
+            }
+        }
+    }
+
     func loadPayees() {
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
@@ -89,15 +105,6 @@ struct TransactionAddView2: View {
             let loadedCategories = dataManager.categoryRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.categories = loadedCategories
-            }
-        }
-    }
-    
-    func loadAccounts() {
-        DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = dataManager.accountRepository?.load() ?? []
-            DispatchQueue.main.async {
-                self.accounts = loadedAccounts
             }
         }
     }

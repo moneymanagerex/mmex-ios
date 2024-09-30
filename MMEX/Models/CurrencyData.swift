@@ -14,7 +14,7 @@ enum CurrencyType: String, EnumCollateNoCase {
     static let defaultValue = Self.fiat
 }
 
-struct CurrencyData: ExportableEntity, CurrencyFormatProtocol {
+struct CurrencyData: ExportableEntity {
     var id             : Int64        = 0
     var name           : String       = ""
     var prefixSymbol   : String       = ""
@@ -37,42 +37,35 @@ extension CurrencyData: DataProtocol {
     }
 }
 
-// TODO: remove CurrencyFormat; use CurrencyData instead
-protocol CurrencyFormatProtocol {
-    var name           : String { get }
-    var prefixSymbol   : String { get }
-    var suffixSymbol   : String { get }
-    var decimalPoint   : String { get }
-    var groupSeparator : String { get }
-    var scale          : Int    { get }
-    var baseConvRate   : Double { get }
+typealias CurrencyFormatter = NumberFormatter
+
+extension CurrencyData {
+    var formatter: CurrencyFormatter {
+        let nf = NumberFormatter()
+        nf.numberStyle = .decimal
+        nf.positivePrefix    = self.prefixSymbol
+        nf.negativePrefix    = self.prefixSymbol
+        nf.positiveSuffix    = self.suffixSymbol
+        nf.negativeSuffix    = self.suffixSymbol
+        nf.decimalSeparator  = self.decimalPoint
+        nf.groupingSeparator = self.groupSeparator
+        let frac = self.scale > 0 ? Int(log10(Double(self.scale))) : 0
+        nf.minimumFractionDigits = frac
+        nf.maximumFractionDigits = frac
+        return nf
+    }
 }
 
-struct CurrencyFormat: CurrencyFormatProtocol {
-    let name           : String
-    let prefixSymbol   : String
-    let suffixSymbol   : String
-    let decimalPoint   : String
-    let groupSeparator : String
-    let scale          : Int
-    let baseConvRate   : Double
+extension Double {
+    func formatted(by formatter: CurrencyFormatter? = nil) -> String {
+        formatter?.string(from: NSNumber(value: self)) ??
+        String(format: "%.2f", self)
+    }
 }
 
-extension CurrencyFormatProtocol {
-    var toCurrencyFormat: CurrencyFormat { CurrencyFormat(
-        name           : self.name,
-        prefixSymbol   : self.prefixSymbol,
-        suffixSymbol   : self.suffixSymbol,
-        decimalPoint   : self.decimalPoint,
-        groupSeparator : self.groupSeparator,
-        scale          : self.scale,
-        baseConvRate   : self.baseConvRate
-    ) }
-}
-
-extension CurrencyFormatProtocol {
+extension CurrencyData {
     /// A `NumberFormatter` configured specifically for the currency.
-    var formatter: NumberFormatter {
+    var formatterOld: NumberFormatter {
         let nf = NumberFormatter()
         nf.numberStyle = .currency
 
@@ -87,9 +80,9 @@ extension CurrencyFormatProtocol {
     }
 
     /// Format a given amount using the currency's `NumberFormatter`.
-    func format(amount: Double) -> String {
+    func formatOld(amount: Double) -> String {
         print("DEBUG: CurrencyFormatProtocol.format: name=\(name), scale=\(scale)")
-        return switch formatter.string(from: NSNumber(value: amount)) {
+        return switch formatterOld.string(from: NSNumber(value: amount)) {
         case .some(let s): s + self.suffixSymbol
         case .none: "\(amount)"
         }
@@ -100,7 +93,7 @@ extension CurrencyFormatProtocol {
     func formatAsBaseCurrency(amount: Double, baseCurrencyRate: Double?) -> String {
         let baseAmount = amount * (baseCurrencyRate ?? self.baseConvRate)
         // TODO: use the formatter of the base currency
-        return formatter.string(from: NSNumber(value: baseAmount)) ?? "\(baseAmount)"
+        return formatterOld.string(from: NSNumber(value: baseAmount)) ?? "\(baseAmount)"
     }
 }
 

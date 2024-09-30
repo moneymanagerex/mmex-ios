@@ -31,21 +31,19 @@ struct AccountDetailView: View {
             }
             // TODO link to currency details
             Section(header: Text("Currency")) {
-                if let currency = dataManager.currencyFormat[account.currencyId] {
+                if let currency = dataManager.currencyData[account.currencyId] {
                     Text(currency.name)
                 } else {
-                    Text("Loading currency...")
+                    Text("Unknown currency!")
                 }
             }
             Section(header: Text("Initial Date")) {
                 Text(account.initialDate)
             }
             Section(header: Text("Initial Balance")) {
-                if let currency = dataManager.currencyFormat[account.currencyId] {
-                    Text(currency.format(amount: account.initialBal))
-                } else {
-                    Text("\(account.initialBal)")
-                }
+                Text(account.initialBal.formatted(
+                    by: dataManager.currencyFormatter[account.currencyId]
+                ))
             }
             Section(header: Text("Notes")) {
                 Text(account.notes)  // Display notes if they are not nil
@@ -117,8 +115,8 @@ struct AccountDetailView: View {
         guard let repository = dataManager.accountRepository else { return }
         if repository.update(account) {
             // Successfully updated
-            if dataManager.currencyFormat[account.currencyId] == nil {
-                dataManager.loadCurrencyFormat()
+            if dataManager.currencyData[account.currencyId] == nil {
+                dataManager.loadCurrency()
             }
         } else {
             // Handle failure

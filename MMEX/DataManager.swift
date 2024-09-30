@@ -1,5 +1,5 @@
 //
-//  DatabaseManager.swift
+//  DataManager.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/8.
@@ -13,7 +13,10 @@ class DataManager: ObservableObject {
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
 
-    var currencyFormat: [Int64: CurrencyFormat] = [:]
+    // cache
+    var currencyData      : [Int64: CurrencyData]      = [:]
+    var currencyFormatter : [Int64: CurrencyFormatter] = [:]
+    var accountData       : [Int64: AccountData]       = [:]
 
     init() {
         connectToStoredDatabase()
@@ -46,7 +49,7 @@ extension DataManager {
         }
 
         if !isNew {
-            loadCurrencyFormat()
+            loadCache()
         }
     }
 
@@ -92,7 +95,7 @@ extension DataManager {
                 return
             }
         }
-        loadCurrencyFormat()
+        loadCache()
     }
 
     /// Closes the current database connection and resets related states.
@@ -101,7 +104,7 @@ extension DataManager {
         isDatabaseConnected = false
         db = nil
         databaseURL = nil
-        currencyFormat = [:]
+        closeCache()
         print("Database connection closed.")
     }
 
@@ -125,12 +128,41 @@ extension DataManager {
 }
 
 extension DataManager {
-    func loadCurrencyFormat() {
-        currencyFormat = CurrencyRepository(db)?.dictRefFormat() ?? [:]
+    func loadCache() {
+        loadCurrency()
     }
 
-    func updateCurrencyFormat(id: Int64, value: CurrencyFormat) {
-        currencyFormat[id] = value
+    func closeCache() {
+        currencyData = [:]
+        currencyFormatter = [:]
+    }
+
+    func loadCurrency() {
+        let repository = CurrencyRepository(db)
+        DispatchQueue.global(qos: .background).async {
+            let data: [Int64: CurrencyData] = repository?.dictUsed() ?? [:]
+            DispatchQueue.main.async {
+                self.currencyData = data
+                self.currencyFormatter = data.mapValues { currency in
+                    currency.formatter
+                }
+            }
+        }
+    }
+
+    func updateCurrency(id: Int64, data: CurrencyData) {
+        currencyData[id] = data
+        currencyFormatter[id] = data.formatter
+    }
+
+    func loadAccount() {
+        let repository = AccountRepository(db)
+        DispatchQueue.global(qos: .background).async {
+            let data: [Int64: AccountData] = repository?.dict() ?? [:]
+            DispatchQueue.main.async {
+                self.accountData = data
+            }
+        }
     }
 }
 

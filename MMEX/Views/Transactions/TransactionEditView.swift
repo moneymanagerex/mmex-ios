@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct TransactionEditView: View {
-    @Binding var txn: TransactionData
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
     @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
 
-    @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
 
-    @Binding var payees: [PayeeData]
+    @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
+    @Binding var txn: TransactionData
+    @Binding var accountId: [Int64]
+
     @Binding var categories: [CategoryData]
-    @Binding var accounts: [AccountData]
-    
+    @Binding var payees: [PayeeData]
+
     // app level setting
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
@@ -43,8 +44,10 @@ struct TransactionEditView: View {
                     if (txn.accountId == 0) {
                         Text("Account").tag(0 as Int64) // not set
                     }
-                    ForEach(accounts) { account in
-                        Text(account.name).tag(account.id)
+                    ForEach(accountId, id: \.self) { id in
+                        if let account = dataManager.accountData[id] {
+                            Text(account.name).tag(account.id)
+                        }
                     }
                 }
             }
@@ -113,8 +116,10 @@ struct TransactionEditView: View {
                         if (txn.toAccountId == 0) {
                             Text("Account").tag(0 as Int64) // not set
                         }
-                        ForEach(accounts) { account in
-                            if (account.id != txn.accountId) {
+                        ForEach(accountId, id: \.self) { id in
+                            if let account = dataManager.accountData[id],
+                               account.id != txn.accountId
+                            {
                                 Text(account.name).tag(account.id)
                             }
                         }
@@ -236,8 +241,8 @@ struct TransactionEditView: View {
                 loadLatestTxn()
             }
 
-            if self.accounts.count == 1 {
-                txn.accountId = self.accounts.first!.id
+            if accountId.count == 1 {
+                txn.accountId = accountId.first!
             }
 
             if self.categories.count == 1 {
@@ -270,9 +275,11 @@ struct TransactionEditView: View {
 #Preview {
     TransactionEditView(
         txn: .constant(TransactionData.sampleData[0]),
-        payees: .constant(PayeeData.sampleData),
+        accountId: .constant(AccountData.sampleData.map { account in
+            account.id
+        } ),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountData.sampleData)
+        payees: .constant(PayeeData.sampleData)
     )
     .environmentObject(DataManager())
 }

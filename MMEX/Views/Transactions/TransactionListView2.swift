@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct TransactionListView2: View {
-    @ObservedObject var viewModel: InfotableViewModel
     @EnvironmentObject var dataManager: DataManager
+    @ObservedObject var viewModel: InfotableViewModel
 
-    @State private var payees: [PayeeData] = []
-    @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
-    @State private var categories: [CategoryData] = []
-    @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
+    @State private var accountId: [Int64] = []  // sorted by name
     @State private var accounts: [AccountData] = []
     @State private var accountDict: [Int64: AccountData] = [: ] // for lookup
+    @State private var categories: [CategoryData] = []
+    @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
+    @State private var payees: [PayeeData] = []
+    @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
     
     var body: some View {
         NavigationStack {
@@ -64,15 +65,18 @@ struct TransactionListView2: View {
         }
         .onAppear {
             viewModel.loadTransactions()
-            loadPayees()
-            loadCategories()
             loadAccounts()
+            loadCategories()
+            loadPayees()
         }
     }
 
     func transactionView(_ txn: TransactionData) -> some View {
         NavigationLink(destination: TransactionDetailView(
-            txn: txn, payees: $payees, categories: $categories, accounts: $accounts
+            txn: txn,
+            accountId: $accountId,
+            categories: $categories,
+            payees: $payees
         ) ) {
             HStack {
                 // Left column (Category Icon or Category Name)
@@ -102,25 +106,23 @@ struct TransactionListView2: View {
                 Spacer() // To push the amount to the right side
 
                 if let currencyId = self.accountDict[txn.accountId]?.currencyId,
-                   let currencyFormat = dataManager.currencyFormat[currencyId]
+                   let currencyFormatter = dataManager.currencyFormatter[currencyId]
                 {
                     // Right column (Transaction Amount)
                     VStack {
                         // amount in account currency
-                        Text(currencyFormat.format(
-                            amount: txn.transAmount
-                        ) )
+                        Text(txn.transAmount.formatted(by: currencyFormatter))
                         .frame(alignment: .trailing) // Ensure it's aligned to the right
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
                         // amount in base currency
                         if let baseCurrencyId = viewModel.baseCurrency?.id,
-                           let baseCurrencyFormat = dataManager.currencyFormat[baseCurrencyId],
-                           baseCurrencyId != currencyId
+                           baseCurrencyId != currencyId,
+                           let baseConvRate = dataManager.currencyData[currencyId]?.baseConvRate
                         {
-                            Text(baseCurrencyFormat.format(
-                                amount: txn.transAmount * currencyFormat.baseConvRate
-                            ) )
+                            Text((txn.transAmount * baseConvRate)
+                                .formatted(by: dataManager.currencyFormatter[baseCurrencyId])
+                            )
                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
@@ -136,17 +138,18 @@ struct TransactionListView2: View {
             }
         }
     }
-
-    func loadPayees() {
-        let repository = dataManager.payeeRepository
-
+    
+    func loadAccounts() {
+        let repository = dataManager.accountRepository
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository?.load() ?? []
-            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
-
+            typealias A = AccountRepository
+            let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
+            let loadedAccounts = repository?.load() ?? []
+            let loadedAccountDict = Dictionary(uniqueKeysWithValues: loadedAccounts.map { ($0.id, $0) })
             DispatchQueue.main.async {
-                self.payees = loadedPayees
-                self.payeeDict = loadedPayeeDict
+                self.accountId = id
+                self.accounts = loadedAccounts
+                self.accountDict = loadedAccountDict
             }
         }
     }
@@ -162,15 +165,17 @@ struct TransactionListView2: View {
             }
         }
     }
-    
-    func loadAccounts() {
-        let repository = dataManager.accountRepository
+
+    func loadPayees() {
+        let repository = dataManager.payeeRepository
+
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = repository?.load() ?? []
-            let loadedAccountDict = Dictionary(uniqueKeysWithValues: loadedAccounts.map { ($0.id, $0) })
+            let loadedPayees = repository?.load() ?? []
+            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
+
             DispatchQueue.main.async {
-                self.accounts = loadedAccounts
-                self.accountDict = loadedAccountDict
+                self.payees = loadedPayees
+                self.payeeDict = loadedPayeeDict
             }
         }
     }
