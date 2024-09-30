@@ -17,7 +17,11 @@ struct InsightsView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     Section {
-                        InsightsAccountView(accountInfo: $viewModel.accountInfo, statusChoice: $statusChoice)
+                        InsightsAccountView(
+                            baseCurrency: $viewModel.baseCurrency,
+                            accountInfo: $viewModel.accountInfo,
+                            statusChoice: $statusChoice
+                        )
                     } header: {
                         Text(InsightsAccountView.statusChoices[statusChoice].0)
                             .font(.headline)

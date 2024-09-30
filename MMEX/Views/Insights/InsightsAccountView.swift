@@ -16,14 +16,15 @@ struct InsightsAccountInfo {
 
 struct InsightsAccountView: View {
     @EnvironmentObject var dataManager: DataManager
+    @Binding var baseCurrency: CurrencyData?
     @Binding var accountInfo: InsightsAccountInfo
     @Binding var statusChoice: Int
     @State private var expandedSections: [AccountType: Bool] = [:]
 
     static let typeOrder: [AccountType] = [ .checking, .creditCard, .cash, .loan, .term, .asset, .shares ]
     static let statusChoices = [
+        ("Account Balance", "Balance"),
         ("Account Balance", "Reconciled Balance"),
-        ("Account Balance", "Total Balance"),
         ("Account Flow", "None"),
         ("Account Flow", "Duplicate"),
         ("Account Flow", "Follow up"),
@@ -41,6 +42,42 @@ struct InsightsAccountView: View {
                     }
                 }
                 .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
+            }
+
+            if Self.statusChoices[self.statusChoice].0 == "Account Balance" {
+                HStack {
+                    Text("Total")
+                        .font(.subheadline)
+                    
+                    Spacer(minLength: 10)
+
+                    let totalBalance: Double = {
+                        var total: Double = 0.0
+                        for type in Self.typeOrder {
+                            guard let accounts = accountInfo.dataByType[type] else { continue }
+                            for account in accounts {
+                                let flowByStatus = accountInfo.flowUntilToday[account.id]
+                                let value: Double = switch Self.statusChoices[statusChoice].1 {
+                                case "Balance"            : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
+                                case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
+                                default: 0.0
+                                }
+                                let baseConvRate = dataManager.currencyFormat[account.currencyId]?.baseConvRate ?? 1.0
+                                total = total + value * baseConvRate
+                            }
+                        }
+                        return total
+                    } ()
+
+                    if let currency = baseCurrency {
+                        Text(currency.format(amount: totalBalance))
+                            .font(.subheadline)
+                    } else {
+                        Text(String(format: "%.2f", totalBalance))
+                            .font(.subheadline)
+                    }
+                }
+                .padding(.horizontal, 8)
             }
 
             ForEach(Self.typeOrder) { accountType in
@@ -83,13 +120,13 @@ struct InsightsAccountView: View {
                                         
                                         let flowByStatus = accountInfo.flowUntilToday[account.id]
                                         let value: Double? = switch Self.statusChoices[statusChoice].1 {
+                                        case "Balance"            : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
                                         case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
-                                        case "Total Balance"      : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
-                                        case "None"       : flowByStatus?[.none]?.diff
-                                        case "Duplicate"  : flowByStatus?[.duplicate]?.diff
-                                        case "Follow up"  : flowByStatus?[.followUp]?.diff
-                                        case "Void"       : flowByStatus?[.void]?.diff
-                                        default           : nil
+                                        case "None"      : flowByStatus?[.none]?.diff
+                                        case "Duplicate" : flowByStatus?[.duplicate]?.diff
+                                        case "Follow up" : flowByStatus?[.followUp]?.diff
+                                        case "Void"      : flowByStatus?[.void]?.diff
+                                        default          : nil
                                         }
                                         if let value {
                                             if let currency = dataManager.currencyFormat[account.currencyId] {
@@ -123,6 +160,7 @@ struct InsightsAccountView: View {
 
 #Preview {
     InsightsAccountView(
+        baseCurrency: .constant(CurrencyData.sampleData[0]),
         accountInfo: .constant(InsightsAccountInfo()),
         statusChoice: .constant(1)
     )
