@@ -170,16 +170,17 @@ extension AccountRepository {
         }
     }
 
-    // select accounts by type
-    func selectByType(
-        from table: SQLite.Table = Self.table
-    ) -> [AccountType: [AccountData]] {
+    // load accounts by type
+    func loadByType<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [AccountType: [Result]] {
         do {
-            var dataByType: [AccountType: [AccountData]] = [:]
+            var dataByType: [AccountType: [Result]] = [:]
             for row in try db.prepare(Self.selectData(from: table)) {
                 let type = AccountType(collateNoCase: row[Self.col_type])
                 if dataByType[type] == nil { dataByType[type] = [] }
-                dataByType[type]!.append(Self.fetchData(row))
+                dataByType[type]!.append(result(row))
             }
             print("Successfull select from \(Self.repositoryName): \(dataByType.count)")
             return dataByType

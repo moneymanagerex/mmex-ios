@@ -164,6 +164,10 @@ extension DataManager {
             }
         }
     }
+
+    func updateAccount(id: Int64, data: AccountData) {
+        accountData[id] = data
+    }
 }
 
 extension DataManager {
