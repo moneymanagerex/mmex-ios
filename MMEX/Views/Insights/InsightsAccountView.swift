@@ -108,7 +108,11 @@ struct InsightsAccountView: View {
                     }
                 }
             }
+            .padding(.horizontal, 8)
         }
+        .padding(.bottom, 8)
+        .background(Color(.systemGray5))
+        .cornerRadius(8)
         .onAppear {
             for accountType in Self.typeOrder {
                 expandedSections[accountType] = true
@@ -118,5 +122,8 @@ struct InsightsAccountView: View {
 }
 
 #Preview {
-    //InsightsAccountView(stats: .constant(TransactionData.sampleData))
+    InsightsAccountView(
+        accountInfo: .constant(InsightsAccountInfo()),
+        statusChoice: .constant(1)
+    )
 }
