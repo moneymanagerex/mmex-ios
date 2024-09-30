@@ -188,7 +188,7 @@ struct TransactionDetailView: View {
 
     func saveChanges() {
         let repository = dataManager.transactionRepository // pass URL here
-        if repository?.updateWithSplits(txn) == true {
+        if repository?.updateWithSplits(&txn) == true {
             // TODO
         } else {
             // TODO update failure

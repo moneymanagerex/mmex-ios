@@ -123,7 +123,7 @@ class InfotableViewModel: ObservableObject {
             var loadTransactions = self.transactionRepo?.loadRecent(accountId: self.defaultAccountId) ?? []
             for i in loadTransactions.indices {
                 // TODO other better indicator
-                if loadTransactions[i].categId < 0 {
+                if loadTransactions[i].categId <= 0 {
                     loadTransactions[i].splits = self.dataManager.transactionSplitRepository?.load(for: loadTransactions[i]) ?? []
                 }
             }

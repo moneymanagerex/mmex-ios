@@ -13,6 +13,8 @@ struct TransactionEditView: View {
     @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
 
+    @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
+
     @Binding var payees: [PayeeData]
     @Binding var categories: [CategoryData]
     @Binding var accounts: [AccountData]
@@ -145,11 +147,12 @@ struct TransactionEditView: View {
                     }
                 }
                 .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
+                .disabled(!txn.splits.isEmpty)
             }
             .padding(.horizontal, 0)
             
             // 6. Splits Section
-            if !txn.splits.isEmpty {
+            if txn.transCode != TransactionType.transfer {
                 Form {
                     Section(header: Text("Splits")) {
                         HStack {
@@ -169,15 +172,46 @@ struct TransactionEditView: View {
                                 }
                                 .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
                                 .labelsHidden()
+                                .disabled(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
                                 Spacer()
                                 Text("\(split.amount, specifier: "%.2f")") // TODO
                                 Spacer()
-                                TextField("add note", text: $split.notes)
+                                Text(split.notes)
                                 Spacer()
                             }
                         }
                         .onDelete { indices in
                             txn.splits.remove(atOffsets: indices)
+                        }
+
+                        HStack {
+                            // Split Category picker
+                            Picker("Select Category", selection: $newSplit.categId) {
+                                if (newSplit.categId == 0 ) {
+                                    Text("Category").tag(0 as Int64) // not set
+                                }
+                                ForEach(categories) { category in
+                                    Text(category.name).tag(category.id)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
+                            .labelsHidden()
+                            .disabled(txn.categId > 0)
+                            Spacer()
+                            TextField("split note", text: $newSplit.notes)
+                            Spacer()
+                            Button(action: {
+                                withAnimation {
+                                    // set/update split.transId later
+                                    txn.splits.append(newSplit)
+                                    newSplit = TransactionSplitData()
+                                }
+                            }) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.title2)
+                                    .accessibilityLabel("Add split")
+                            }
+                            .disabled(newSplit.categId <= 0 || txn.categId > 0)
                         }
                     }
                     .labelsHidden()
@@ -226,7 +260,7 @@ struct TransactionEditView: View {
             DispatchQueue.main.async {
                 if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId == 0) {
                     txn.payeeId = latestTxn.payeeId
-                    txn.categId = latestTxn.categId
+                    // txn.categId = latestTxn.categId
                 }
             }
         }

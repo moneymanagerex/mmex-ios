@@ -171,14 +171,13 @@ extension TransactionRepository {
         return pluck(key: "latests", from: query)
     }
     
+    // insert with its splits
+    func insertWithSplits(_ data: inout RepositoryData) -> Bool {
+        return insert(&data) && TransactionSplitRepository(db).update(&data)
+    }
+
     // update with its splits
-    func updateWithSplits(_ data: TransactionData) -> Bool {
-        var success = update(data)
-        if success {
-            for split in data.splits {
-                success = success && TransactionSplitRepository(db).update(split)
-            }
-        }
-        return success
+    func updateWithSplits(_ data: inout TransactionData) -> Bool {
+        return update(data) && TransactionSplitRepository(db).update(&data)
     }
 }
