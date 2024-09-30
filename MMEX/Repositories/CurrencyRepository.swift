@@ -190,7 +190,7 @@ extension CurrencyRepository {
             suffixSymbol   : row[3] as? String ?? "",
             decimalPoint   : row[4] as? String ?? "",
             groupSeparator : row[5] as? String ?? "",
-            scale          : row[6] as? Int    ?? 0,
+            scale          : Int(row[6] as? Int64  ?? 0),
             baseConvRate   : row[7] as? Double ?? 0.0
         ) }
     }

@@ -80,13 +80,15 @@ extension CurrencyFormatProtocol {
         nf.currencySymbol = self.prefixSymbol
         nf.currencyGroupingSeparator = self.groupSeparator
         nf.currencyDecimalSeparator = self.decimalPoint
-        nf.maximumFractionDigits = self.scale
+        nf.minimumFractionDigits = Int(log10(Double(self.scale > 0 ? self.scale : 1)))
+        nf.maximumFractionDigits = Int(log10(Double(self.scale > 0 ? self.scale : 1)))
 
         return nf
     }
 
     /// Format a given amount using the currency's `NumberFormatter`.
     func format(amount: Double) -> String {
+        print("DEBUG: CurrencyFormatProtocol.format: name=\(name), scale=\(scale)")
         return switch formatter.string(from: NSNumber(value: amount)) {
         case .some(let s): s + self.suffixSymbol
         case .none: "\(amount)"
