@@ -163,8 +163,17 @@ extension TransactionData {
         ),
         TransactionData(
             id: 3, accountId: 3, toAccountId: 2, transCode: TransactionType.transfer,
-            transAmount: 30.03, status: TransactionStatus.none, categId: 1,
+            transAmount: 30.03, status: TransactionStatus.none,
+            notes: "transfer transacion data",
+            categId: 1,
             transDate: String(Date().ISO8601Format().dropLast())
+        ),
+        TransactionData(
+            id: 4, accountId: 3, payeeId: 2, transCode: TransactionType.withdrawal,
+            transAmount: 40.04, status: TransactionStatus.none,
+            notes: "split transacion data",
+            transDate: String(Date().ISO8601Format().dropLast()),
+            splits: TransactionSplitData.sampleData
         ),
     ]
 }

@@ -226,3 +226,13 @@ struct TransactionDetailView: View {
     )
     .environmentObject(DataManager())
 }
+
+#Preview {
+    TransactionDetailView(
+        txn: TransactionData.sampleData[3],
+        payees: .constant(PayeeData.sampleData),
+        categories: .constant(CategoryData.sampleData),
+        accounts: .constant(AccountData.sampleData)
+    )
+    .environmentObject(DataManager())
+}
