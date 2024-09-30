@@ -40,7 +40,7 @@ extension CurrencyData: DataProtocol {
 typealias CurrencyFormatter = NumberFormatter
 
 extension CurrencyData {
-    var formatter2: CurrencyFormatter {
+    var formatter: CurrencyFormatter {
         let nf = NumberFormatter()
         nf.numberStyle = .decimal
         nf.positivePrefix    = self.prefixSymbol

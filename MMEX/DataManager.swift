@@ -129,13 +129,13 @@ extension DataManager {
     func loadCurrency() {
         currencyData = CurrencyRepository(db)?.dictUsed() ?? [:]
         currencyFormatter = currencyData.mapValues { currency in
-            currency.formatter2
+            currency.formatter
         }
     }
 
     func updateCurrency(id: Int64, data: CurrencyData) {
         currencyData[id] = data
-        currencyFormatter[id] = data.formatter2
+        currencyFormatter[id] = data.formatter
     }
 
     func closeCurrency() {
