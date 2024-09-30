@@ -34,8 +34,11 @@ struct CurrencyDetailView: View {
             Section(header: Text("Currency Type")) {
                 Text(currency.type.rawValue)
             }
-            Button("Delete Currency") {
-                deleteCurrency()
+            // cannot delete currency in use
+            if dataManager.currencyData[currency.id] == nil {
+                Button("Delete Currency") {
+                    deleteCurrency()
+                }
             }
         }
         .textSelection(.enabled)
@@ -71,6 +74,9 @@ struct CurrencyDetailView: View {
     func saveChanges() {
         guard let repository = dataManager.currencyRepository else { return }
         if repository.update(currency) {
+            if dataManager.currencyData[currency.id] != nil {
+                dataManager.updateCurrency(id: currency.id, data: currency)
+            }
             // Handle success
         } else {
             // Handle failure
@@ -78,6 +84,7 @@ struct CurrencyDetailView: View {
     }
 
     func deleteCurrency() {
+        guard dataManager.currencyData[currency.id] == nil else { return }
         guard let repository = dataManager.currencyRepository else { return }
         if repository.delete(currency) {
             presentationMode.wrappedValue.dismiss()
