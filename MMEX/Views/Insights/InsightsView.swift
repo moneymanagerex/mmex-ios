@@ -10,13 +10,22 @@ import Charts
 
 struct InsightsView: View {
     @ObservedObject var viewModel: InsightsViewModel
+    @State var statusChoice: Int = 0
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
                     Section {
-                        Summary(stats: $viewModel.stats)
+                        InsightsAccountView(accountInfo: $viewModel.accountInfo, statusChoice: $statusChoice)
+                    } header: {
+                        Text(InsightsAccountView.statusChoices[statusChoice].0)
+                            .font(.headline)
+                            .padding(.horizontal)
+                    }
+
+                    Section {
+                        InsightsSummaryView(stats: $viewModel.stats)
                     } header: {
                         Text("Account Income Summary")
                             .font(.headline)
@@ -43,7 +52,7 @@ struct InsightsView: View {
                     }
 
                     Section {
-                        IncomeAndExpense(stats: $viewModel.recentStats)
+                        IncomeExpenseView(stats: $viewModel.recentStats)
                     } header: {
                         Text("Income vs Expense Over Time")
                             .font(.headline)

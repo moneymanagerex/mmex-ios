@@ -162,8 +162,8 @@ extension CurrencyRepository {
 
     // TODO: re-write in a more readable way (get the ids first, then pluck each currency)
     // load all referred currency formats, indexed by currencyId
-    func dictionaryRefFormat() -> [Int64: CurrencyFormat] {
-        print("DEBUG: CurrencyRepository.dictionaryRefFormat()")
+    func dictRefFormat() -> [Int64: CurrencyFormat] {
+        print("DEBUG: CurrencyRepository.dictRefFormat()")
         typealias C = CurrencyRepository
         typealias A = AccountRepository
         typealias E = AssetRepository
@@ -182,7 +182,7 @@ extension CurrencyRepository {
         " union " +
         "select 1 from \(E.repositoryName) where \(E.table[E.col_currencyId]) == \(C.table[C.col_id])" +
         ")"
-        return Repository(db).dictionary(
+        return Repository(db).dict(
             query: query
         ) { row in CurrencyFormat(
             name           : row[1] as? String ?? "",

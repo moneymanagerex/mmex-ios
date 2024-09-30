@@ -126,7 +126,7 @@ extension DataManager {
 
 extension DataManager {
     func loadCurrencyFormat() {
-        currencyFormat = CurrencyRepository(db)?.dictionaryRefFormat() ?? [:]
+        currencyFormat = CurrencyRepository(db)?.dictRefFormat() ?? [:]
     }
 
     func updateCurrencyFormat(id: Int64, value: CurrencyFormat) {

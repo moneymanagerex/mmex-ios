@@ -70,7 +70,7 @@ extension RepositoryProtocol {
         }
     }
 
-    func dictionary<Result>(
+    func dict<Result>(
         from table: SQLite.Table,
         with result: (SQLite.Row) -> Result = Self.fetchData
     ) -> [Int64: Result] {
