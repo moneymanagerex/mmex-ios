@@ -20,6 +20,7 @@ struct TransactionDetailView: View {
     @Binding var accounts: [AccountData]
     
     @State private var account: AccountData?
+    @State private var toAccount: AccountData?
     @State private var isExporting = false
 
     var body: some View {
@@ -56,8 +57,11 @@ struct TransactionDetailView: View {
 
             if txn.transCode == .transfer {
                 Section(header: Text("To Account")) {
-                    // Text(getPayeeName(txn.payeeID)) // Retrieve payee name
-                    Text("\(txn.toAccountId)")
+                    if let toAccount = toAccount {
+                        Text("\(toAccount.name)")
+                    } else {
+                        Text("n/a")
+                    }
                 }
             } else {
                 Section(header: Text("Payee")) {
@@ -65,10 +69,6 @@ struct TransactionDetailView: View {
                     Text("\(txn.payeeId)")
                 }
             }
-
-//            Section(header: Text("Payee")) {
-//                Text(getPayeeName(txn.payeeID)) // Retrieve payee name
-//           }
 
             Section(header: Text("Notes")) {
                 Text(txn.notes)
@@ -134,11 +134,15 @@ struct TransactionDetailView: View {
         }
         .onAppear(){
             loadAccount()
+            if txn.transCode == .transfer { loadToAccount() }
         }
     }
     
     func loadAccount() {
         account = accounts.first { $0.id == txn.accountId}
+    }
+    func loadToAccount() {
+        toAccount = accounts.first { $0.id == txn.toAccountId}
     }
 
     func saveChanges() {
