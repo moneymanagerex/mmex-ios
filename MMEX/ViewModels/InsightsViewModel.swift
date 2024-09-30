@@ -13,7 +13,7 @@ import Combine
 class InsightsViewModel: ObservableObject {
     private var dataManager: DataManager
     
-    
+    @Published var baseCurrency: CurrencyData?
     @Published var stats: [TransactionData] = [] // all transactions
     // Published properties for the view to observe
     @Published var recentStats: [TransactionData] = []
@@ -27,12 +27,20 @@ class InsightsViewModel: ObservableObject {
         self.dataManager = dataManager
         self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
         self.endDate = Date()
-        
+
+        // get base currency
+        if let baseCurrencyId = dataManager.infotableRepository?.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
+            baseCurrency = dataManager.currencyRepository?.pluck(
+                key: InfoKey.baseCurrencyID.id,
+                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId)
+            )
+        }
+
         // Load transactions on initialization
         loadAccountInfo()
         loadRecentTransactions()
         loadTransactions()
-        
+
         // Automatically reload transactions when date range changes
         $startDate
             .combineLatest($endDate)
