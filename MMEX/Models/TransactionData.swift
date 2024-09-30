@@ -143,6 +143,9 @@ extension TransactionData {
     var isForeignTransfer: Bool {
         return isForeign && toAccountId == CHECKING_TYPE.AS_TRANSFER.rawValue
     }
+    var isValid: Bool {
+        return (payeeId > 0 && [.withdrawal, .deposit].contains(transCode)) || (toAccountId > 0 && transCode == .transfer) && categId > 0
+    }
 }
 
 extension TransactionData {

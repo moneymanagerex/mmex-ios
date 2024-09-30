@@ -31,13 +31,10 @@ struct TransactionAddView: View {
                             isPresentingTransactionAddView = false
                             onSave(&newTxn)
                         }
-                        .disabled(!isTransactionValid())
+                        .disabled(!newTxn.isValid)
                     }
                 }
         }
-    }
-    func isTransactionValid() -> Bool {
-        return newTxn.payeeId > 0 && newTxn.categId > 0
     }
 }
 
