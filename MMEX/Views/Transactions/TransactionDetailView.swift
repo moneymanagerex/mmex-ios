@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     @EnvironmentObject var dataManager: DataManager
+    @ObservedObject var viewModel: InfotableViewModel
+
     @State var txn: TransactionData
 
     @State private var editingTxn = TransactionData()
@@ -104,7 +106,9 @@ struct TransactionDetailView: View {
             // Section for actions like delete
             Section {
                 Button("Delete Transaction") {
-                    deleteTxn()
+                    if viewModel.deleteTransaction(txn) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
                 .foregroundColor(.red)
             }
@@ -145,7 +149,9 @@ struct TransactionDetailView: View {
                             Button("Done") {
                                 isPresentingEditView = false
                                 txn = editingTxn
-                                saveChanges()
+                                if (viewModel.updateTransaction(&txn) == false) {
+                                    // TODO
+                                }
                             }
                             .disabled(!editingTxn.isValid)
                         }
@@ -183,30 +189,11 @@ struct TransactionDetailView: View {
     func getPayeeName(for payeeID: Int64) -> String {
         return payees.first {$0.id == payeeID}?.name ?? "Unknown"
     }
-
-    func saveChanges() {
-        let repository = dataManager.transactionRepository // pass URL here
-        if repository?.updateWithSplits(&txn) == true {
-            // TODO
-        } else {
-            // TODO update failure
-        }
-    }
-    
-    func deleteTxn(){
-        let repository = dataManager.transactionRepository // pass URL here
-        if repository?.delete(txn) == true {
-            // Dismiss the TransactionDetailView and go back to the previous view
-            presentationMode.wrappedValue.dismiss()
-        } else {
-            // TODO
-            // handle deletion failure
-        }
-    }
 }
 
 #Preview {
     TransactionDetailView(
+        viewModel: InfotableViewModel(dataManager: DataManager()),
         txn: TransactionData.sampleData[0],
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
@@ -217,6 +204,7 @@ struct TransactionDetailView: View {
 
 #Preview {
     TransactionDetailView(
+        viewModel: InfotableViewModel(dataManager: DataManager()),
         txn: TransactionData.sampleData[2],
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
@@ -227,6 +215,7 @@ struct TransactionDetailView: View {
 
 #Preview {
     TransactionDetailView(
+        viewModel: InfotableViewModel(dataManager: DataManager()),
         txn: TransactionData.sampleData[3],
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
