@@ -24,58 +24,31 @@ struct CurrencyListView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section(header: HStack {
-                    Button(action: {
-                        expandedSections[true]?.toggle()
-                    }) {
-                        Text("In-Use")
-                            .font(.subheadline)
-                            .padding(.leading)
-                        Spacer()
-                        // Expand or collapse indicator
-                        Image(systemName: expandedSections[true] == true ? "chevron.down" : "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                }) {
-                    if expandedSections[true] == true {
-                        ForEach(allCurrencyData) { currency in
-                            if dataManager.currencyCache[currency.id] != nil {
-                                NavigationLink(destination: CurrencyDetailView(
-                                    currency: currency
-                                )) {
-                                    HStack {
-                                        Text(currency.name)
-                                        Spacer()
-                                        Text(currency.symbol)
-                                    }
-                                }
-                            }
+                ForEach([true, false], id: \.self) { inUse in
+                    Section(header: HStack {
+                        Button(action: {
+                            expandedSections[inUse]?.toggle()
+                        }) {
+                            Text(inUse ? "In-Use" : "Not-In-Use")
+                                .font(.subheadline)
+                                .padding(.leading)
+                            Spacer()
+                            // Expand or collapse indicator
+                            Image(systemName: expandedSections[inUse] == true ? "chevron.down" : "chevron.right")
+                                .foregroundColor(.gray)
                         }
-                    }
-                }
-                
-                Section(header: HStack {
-                    Button(action: {
-                        expandedSections[false]?.toggle()
                     }) {
-                        Text("Not-In-Use")
-                            .font(.subheadline)
-                            .padding(.leading)
-                        Spacer()
-                        // Expand or collapse indicator
-                        Image(systemName: expandedSections[false] == true ? "chevron.down" : "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                }) {
-                    // Show account list based on expandedSections state
-                    if expandedSections[false] == true {
-                        ForEach(allCurrencyData) { currency in
-                            if dataManager.currencyCache[currency.id] == nil {
-                                NavigationLink(destination: CurrencyDetailView(currency: currency)) {
-                                    HStack {
-                                        Text(currency.name)
-                                        Spacer()
-                                        Text(currency.symbol)
+                        if expandedSections[inUse] == true {
+                            ForEach(allCurrencyData) { currency in
+                                if (dataManager.currencyCache[currency.id] != nil) == inUse {
+                                    NavigationLink(destination: CurrencyDetailView(
+                                        currency: currency
+                                    )) {
+                                        HStack {
+                                            Text(currency.name)
+                                            Spacer()
+                                            Text(currency.symbol)
+                                        }
                                     }
                                 }
                             }
@@ -96,7 +69,10 @@ struct CurrencyListView: View {
             loadCurrencyData()
         }
         .sheet(isPresented: $isPresentingCurrencyAddView) {
-            CurrencyAddView(newCurrency: $newCurrency, isPresentingCurrencyAddView: $isPresentingCurrencyAddView) { currency in
+            CurrencyAddView(
+                newCurrency: $newCurrency,
+                isPresentingCurrencyAddView: $isPresentingCurrencyAddView
+            ) { currency in
                 addCurrency(&currency)
                 newCurrency = Self.emptyCurrency
             }

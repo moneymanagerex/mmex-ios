@@ -17,9 +17,30 @@ struct CurrencyDetailView: View {
 
     var body: some View {
         List {
-            Section(header: Text("Currency Name")) {
+            Section(header: Text("Name")) {
                 Text(currency.name)
             }
+            Section(header: Text("Symbol")) {
+                Text(currency.symbol)
+            }
+
+            if !currency.unitName.isEmpty {
+                Section(header: Text("Unit Name")) {
+                    Text(currency.unitName)
+                }
+                if !currency.centName.isEmpty {
+                    Section(header: Text("Cent Name")) {
+                        Text(currency.centName)
+                    }
+                }
+            }
+
+            Section(header: Text("Format")) {
+                let amount: Double = 12345.67
+                Text(amount.formatted(by: currency.formatter))
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+/*
             Section(header: Text("Prefix Symbol")) {
                 Text(currency.prefixSymbol)
             }
@@ -29,10 +50,12 @@ struct CurrencyDetailView: View {
             Section(header: Text("Scale")) {
                 Text("\(currency.scale)")
             }
+*/
+
             Section(header: Text("Conversion Rate")) {
                 Text("\(currency.baseConvRate)")
             }
-            Section(header: Text("Currency Type")) {
+            Section(header: Text("Type")) {
                 Text(currency.type.rawValue)
             }
             // cannot delete currency in use
@@ -53,21 +76,23 @@ struct CurrencyDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                CurrencyEditView(currency: $editingCurrency)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") {
-                                isPresentingEditView = false
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") {
-                                isPresentingEditView = false
-                                currency = editingCurrency
-                                updateCurrency()
-                            }
+                CurrencyEditView(
+                    currency: $editingCurrency
+                )
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            isPresentingEditView = false
                         }
                     }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            isPresentingEditView = false
+                            currency = editingCurrency
+                            updateCurrency()
+                        }
+                    }
+                }
             }
         }
     }
