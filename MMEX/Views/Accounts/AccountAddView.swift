@@ -8,42 +8,40 @@
 import SwiftUI
 
 struct AccountAddView: View {
+    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
     @Binding var newAccount: AccountData
     @Binding var isPresentingAccountAddView: Bool
-    @Binding var currencyName: [(Int64, String)] // Bind to the list of available currencies
 
     var onSave: (inout AccountData) -> Void
     
     var body: some View {
         NavigationStack {
             AccountEditView(
-                account: $newAccount,
-                currencyName: $currencyName
+                allCurrencyName: $allCurrencyName,
+                account: $newAccount
             )
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Dismiss") {
-                            isPresentingAccountAddView = false
-                        }
-                    }
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Add") {
-                            isPresentingAccountAddView = false
-                            onSave(&newAccount)
-                        }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Dismiss") {
+                        isPresentingAccountAddView = false
                     }
                 }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add") {
+                        isPresentingAccountAddView = false
+                        onSave(&newAccount)
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
     AccountAddView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
         newAccount: .constant(AccountData()),
-        isPresentingAccountAddView: .constant(true),
-        currencyName: .constant(CurrencyData.sampleData.map {
-            ($0.id, $0.name)
-        } )
+        isPresentingAccountAddView: .constant(true)
     ) { newAccount in
         // Handle saving in preview
         print("New account: \(newAccount.name)")

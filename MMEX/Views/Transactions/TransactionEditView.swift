@@ -9,16 +9,15 @@ import SwiftUI
 
 struct TransactionEditView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @Binding var accountId: [Int64] // sorted by name
+    @Binding var categories: [CategoryData]
+    @Binding var payees: [PayeeData]
+    @Binding var txn: TransactionData
+
     @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
 
-
     @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
-    @Binding var txn: TransactionData
-    @Binding var accountId: [Int64]
-
-    @Binding var categories: [CategoryData]
-    @Binding var payees: [PayeeData]
 
     // app level setting
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
@@ -45,8 +44,8 @@ struct TransactionEditView: View {
                         Text("Account").tag(0 as Int64) // not set
                     }
                     ForEach(accountId, id: \.self) { id in
-                        if let account = dataManager.accountData[id] {
-                            Text(account.name).tag(account.id)
+                        if let account = dataManager.accountCache[id] {
+                            Text(account.name).tag(id)
                         }
                     }
                 }
@@ -117,10 +116,10 @@ struct TransactionEditView: View {
                             Text("Account").tag(0 as Int64) // not set
                         }
                         ForEach(accountId, id: \.self) { id in
-                            if let account = dataManager.accountData[id],
-                               account.id != txn.accountId
+                            if let account = dataManager.accountCache[id],
+                               id != txn.accountId
                             {
-                                Text(account.name).tag(account.id)
+                                Text(account.name).tag(id)
                             }
                         }
                     }
@@ -274,20 +273,20 @@ struct TransactionEditView: View {
 
 #Preview {
     TransactionEditView(
-        txn: .constant(TransactionData.sampleData[0]),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        txn: .constant(TransactionData.sampleData[0])
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }
 
 #Preview {
     TransactionEditView(
-        txn: .constant(TransactionData.sampleData[3]),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        txn: .constant(TransactionData.sampleData[3])
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }

@@ -73,10 +73,10 @@ struct TransactionListView2: View {
 
     func transactionView(_ txn: TransactionData) -> some View {
         NavigationLink(destination: TransactionDetailView(
-            txn: txn,
             accountId: $accountId,
             categories: $categories,
-            payees: $payees
+            payees: $payees,
+            txn: txn
         ) ) {
             HStack {
                 // Left column (Category Icon or Category Name)

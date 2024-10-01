@@ -115,4 +115,12 @@ extension CurrencyData {
             scale: 100, baseConvRate: 1.0, symbol: "GBP", type: .fiat
         ),
     ]
+
+    static let sampleDataById: [Int64: CurrencyData] = Dictionary(
+        uniqueKeysWithValues: sampleData.map { ($0.id, $0 ) }
+    )
+
+    static let sampleDataName: [(Int64, String)] = CurrencyData.sampleData.map {
+        ($0.id, $0.name)
+    }
 }

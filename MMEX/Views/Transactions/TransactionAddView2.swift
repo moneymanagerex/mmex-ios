@@ -22,10 +22,10 @@ struct TransactionAddView2: View {
     var body: some View {
         NavigationStack {
             TransactionEditView(
-                txn: $newTxn,
                 accountId: $accountId,
                 categories: $categories,
-                payees: $payees
+                payees: $payees,
+                txn: $newTxn
             )
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {

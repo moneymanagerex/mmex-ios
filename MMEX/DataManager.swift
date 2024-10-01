@@ -14,11 +14,14 @@ class DataManager: ObservableObject {
     private(set) var databaseURL: URL?
 
     // cache
-    var currencyCache : CurrencyCache = [:]
-    var accountData   : [Int64: AccountData] = [:]
+    var currencyCache = CurrencyCache()
+    var accountCache  = AccountCache()
 
     init() {
         connectToStoredDatabase()
+    }
+    
+    init(withoutConnection: Void) {
     }
 }
 
@@ -100,10 +103,10 @@ extension DataManager {
     /// Closes the current database connection and resets related states.
     func closeDatabase() {
         // Nullify the connection and reset the state
+        unloadCache()
         isDatabaseConnected = false
         db = nil
         databaseURL = nil
-        unloadCache()
         print("Database connection closed.")
     }
 
@@ -134,7 +137,7 @@ extension DataManager {
 
     func unloadCache() {
         currencyCache.unload()
-        accountData = [:]
+        accountCache.unload()
     }
 
     func loadCurrency() {
@@ -152,13 +155,9 @@ extension DataManager {
         DispatchQueue.global(qos: .background).async {
             let data: [Int64: AccountData] = repository?.dict() ?? [:]
             DispatchQueue.main.async {
-                self.accountData = data
+                self.accountCache.load(data)
             }
         }
-    }
-
-    func updateAccount(id: Int64, data: AccountData) {
-        accountData[id] = data
     }
 }
 
@@ -187,4 +186,22 @@ extension DataManager {
     var budgetYearRepository       : BudgetYearRepository?       { BudgetYearRepository(db) }
     var budgetTableRepository      : BudgetTableRepository?      { BudgetTableRepository(db) }
     var reportRepository           : ReportRepository?           { ReportRepository(db) }
+}
+
+extension DataManager {
+    static let sampleDataManager: DataManager = {
+        var dataManager = DataManager(withoutConnection: ())
+        let usedCurrencyId = Array(Set(
+            AccountData.sampleData.map { $0.currencyId }
+        ) )
+        dataManager.currencyCache.load(Dictionary(
+            uniqueKeysWithValues: usedCurrencyId.map {
+                ($0, CurrencyData.sampleDataById[$0]!)
+            }
+        ) )
+        dataManager.accountCache.load(Dictionary(
+            uniqueKeysWithValues: AccountData.sampleData.map { ($0.id, $0) }
+        ) )
+        return dataManager
+    } ()
 }

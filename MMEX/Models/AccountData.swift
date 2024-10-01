@@ -119,9 +119,12 @@ extension AccountData {
             initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
         ),
     ]
+
     static var sampleDataIds : [Int64] {
-        return  AccountData.sampleData.map { account in
-            account.id
-        }
+        sampleData.map { $0.id }
     }
+
+    static let sampleDataById: [Int64: AccountData] = Dictionary(
+        uniqueKeysWithValues: sampleData.map { ($0.id, $0 ) }
+    )
 }

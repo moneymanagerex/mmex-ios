@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CurrencyListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @State private var currencyData: [CurrencyData] = []
+
+    @State private var allCurrencyData: [CurrencyData] = [] // sorted by name
     @State private var newCurrency = emptyCurrency
     @State private var isPresentingCurrencyAddView = false
     @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
@@ -36,13 +37,17 @@ struct CurrencyListView: View {
                             .foregroundColor(.gray)
                     }
                 }) {
-                    ForEach(currencyData) { currency in
-                        if dataManager.currencyCache[currency.id] != nil {
-                            NavigationLink(destination: CurrencyDetailView(currency: currency)) {
-                                HStack {
-                                    Text(currency.name)
-                                    Spacer()
-                                    Text(currency.symbol)
+                    if expandedSections[true] == true {
+                        ForEach(allCurrencyData) { currency in
+                            if dataManager.currencyCache[currency.id] != nil {
+                                NavigationLink(destination: CurrencyDetailView(
+                                    currency: currency
+                                )) {
+                                    HStack {
+                                        Text(currency.name)
+                                        Spacer()
+                                        Text(currency.symbol)
+                                    }
                                 }
                             }
                         }
@@ -64,7 +69,7 @@ struct CurrencyListView: View {
                 }) {
                     // Show account list based on expandedSections state
                     if expandedSections[false] == true {
-                        ForEach(currencyData) { currency in
+                        ForEach(allCurrencyData) { currency in
                             if dataManager.currencyCache[currency.id] == nil {
                                 NavigationLink(destination: CurrencyDetailView(currency: currency)) {
                                     HStack {
@@ -88,7 +93,7 @@ struct CurrencyListView: View {
         }
         .navigationTitle("Currencies")
         .onAppear {
-            loadCurrencies()
+            loadCurrencyData()
         }
         .sheet(isPresented: $isPresentingCurrencyAddView) {
             CurrencyAddView(newCurrency: $newCurrency, isPresentingCurrencyAddView: $isPresentingCurrencyAddView) { currency in
@@ -98,13 +103,13 @@ struct CurrencyListView: View {
         }
     }
     
-    func loadCurrencies() {
+    func loadCurrencyData() {
         let repository = dataManager.currencyRepository
         DispatchQueue.global(qos: .background).async {
             let data = repository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
-                self.currencyData = data
+                self.allCurrencyData = data
             }
         }
     }
@@ -112,7 +117,7 @@ struct CurrencyListView: View {
     func addCurrency(_ currency: inout CurrencyData) {
         guard let repository = dataManager.currencyRepository else { return }
         if repository.insert(&currency) {
-            self.loadCurrencies()
+            self.loadCurrencyData()
         } else {
             // TODO
         }
@@ -120,6 +125,7 @@ struct CurrencyListView: View {
 }
 
 #Preview {
-    CurrencyListView()
-        .environmentObject(DataManager())
+    CurrencyListView(
+    )
+    .environmentObject(DataManager.sampleDataManager)
 }
