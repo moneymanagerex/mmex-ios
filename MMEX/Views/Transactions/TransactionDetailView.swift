@@ -73,24 +73,25 @@ struct TransactionDetailView: View {
                     // header
                     HStack {
                         Text("Category")
-                        Spacer()
+                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         Text("Amount")
-                        Spacer()
+                            .frame(width: 80, alignment: .center) // Centered with fixed width
                         Text("Notes")
+                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                     }
                     // rows
                     ForEach(txn.splits) { split in
                         HStack {
                             Text(getCategoryName(for: split.categId))
-                            Spacer()
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
 
                             Text(split.amount.formatted(
                                 by: dataManager.currencyCache[account?.currencyId ?? 0]?.formatter
                             ))
-
-                            Spacer()
+                            .frame(width: 80, alignment: .center) // Centered with fixed width
 
                             Text(split.notes)
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         }
                     }
                 }

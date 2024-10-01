@@ -163,35 +163,29 @@ struct TransactionEditView: View {
                     Section(header: Text("Splits")) {
                         HStack {
                             Text("Category")
-                            Spacer()
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Text("Amount")
-                            Spacer()
+                                .frame(width: 80, alignment: .center) // Centered with fixed width
                             Text("Notes")
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         }
-                        ForEach($txn.splits) { $split in
+                        .padding(.horizontal, 0)
+                        ForEach(txn.splits) { split in
                             HStack {
-                                // Category picker
-                                Picker("Select Category", selection: $split.categId) {
-                                    ForEach(categories) { category in
-                                        Text(category.name).tag(category.id)
-                                    }
-                                }
-                                .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
-                                .labelsHidden()
-                                .disabled(true)
-                                Spacer()
+                                Text(getCategoryName(for: split.categId))
+                                    .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                                 Text(split.amount.formatted(
                                     by: dataManager.currencyCache[dataManager.accountData[txn.accountId]?.currencyId ?? 0]?.formatter
                                 ))
-                                Spacer()
+                                .frame(width: 80, alignment: .center) // Centered with fixed width
                                 Text(split.notes)
-                                Spacer()
+                                    .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             }
                         }
                         .onDelete { indices in
                             txn.splits.remove(atOffsets: indices)
                         }
-
+                        
                         HStack {
                             // Split Category picker
                             Picker("Select Category", selection: $newSplit.categId) {
@@ -205,13 +199,13 @@ struct TransactionEditView: View {
                             .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
                             .labelsHidden()
                             .disabled(txn.categId > 0)
-                            Spacer()
+                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             // Split amount
                             NumericField(value: $newSplit.amount)
-                            Spacer()
+                                .frame(width: 80, alignment: .center) // Centered with fixed width
                             // split notes
                             TextField("split notes", text: $newSplit.notes)
-                            Spacer()
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Button(action: {
                                 withAnimation {
                                     txn.splits.append(newSplit)
@@ -224,8 +218,8 @@ struct TransactionEditView: View {
                             }
                             .disabled(newSplit.categId <= 0 || txn.categId > 0)
                         }
+                        .labelsHidden()
                     }
-                    .labelsHidden()
                 }
                 .padding(.vertical, 0)
             }
@@ -275,6 +269,9 @@ struct TransactionEditView: View {
                 }
             }
         }
+    }
+    func getCategoryName(for categoryID: Int64) -> String {
+        return categories.first {$0.id == categoryID}?.name ?? "Unknown"
     }
 }
 
