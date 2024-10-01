@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     @EnvironmentObject var dataManager: DataManager
+    @ObservedObject var viewModel: InfotableViewModel
     @Binding var accountId: [Int64]  // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
@@ -70,24 +71,25 @@ struct TransactionDetailView: View {
                     // header
                     HStack {
                         Text("Category")
-                        Spacer()
+                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         Text("Amount")
-                        Spacer()
+                            .frame(width: 80, alignment: .center) // Centered with fixed width
                         Text("Notes")
+                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                     }
                     // rows
                     ForEach(txn.splits) { split in
                         HStack {
                             Text(getCategoryName(for: split.categId))
-                            Spacer()
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
 
                             Text(split.amount.formatted(
                                 by: dataManager.currencyCache[account?.currencyId ?? 0]?.formatter
                             ))
-
-                            Spacer()
+                            .frame(width: 80, alignment: .center) // Centered with fixed width
 
                             Text(split.notes)
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         }
                     }
                 }
@@ -103,7 +105,9 @@ struct TransactionDetailView: View {
             // Section for actions like delete
             Section {
                 Button("Delete Transaction") {
-                    deleteTxn()
+                    if viewModel.deleteTransaction(txn) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
                 .foregroundColor(.red)
             }
@@ -144,7 +148,9 @@ struct TransactionDetailView: View {
                             Button("Done") {
                                 isPresentingEditView = false
                                 txn = editingTxn
-                                saveChanges()
+                                if (viewModel.updateTransaction(&txn) == false) {
+                                    // TODO
+                                }
                             }
                             .disabled(!editingTxn.isValid)
                         }
@@ -173,30 +179,11 @@ struct TransactionDetailView: View {
     func getPayeeName(for payeeID: Int64) -> String {
         return payees.first {$0.id == payeeID}?.name ?? "Unknown"
     }
-
-    func saveChanges() {
-        let repository = dataManager.transactionRepository // pass URL here
-        if repository?.updateWithSplits(&txn) == true {
-            // TODO
-        } else {
-            // TODO update failure
-        }
-    }
-    
-    func deleteTxn(){
-        let repository = dataManager.transactionRepository // pass URL here
-        if repository?.delete(txn) == true {
-            // Dismiss the TransactionDetailView and go back to the previous view
-            presentationMode.wrappedValue.dismiss()
-        } else {
-            // TODO
-            // handle deletion failure
-        }
-    }
 }
 
 #Preview {
     TransactionDetailView(
+        viewModel: InfotableViewModel(dataManager: DataManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
@@ -207,6 +194,7 @@ struct TransactionDetailView: View {
 
 #Preview {
     TransactionDetailView(
+        viewModel: InfotableViewModel(dataManager: DataManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
@@ -217,6 +205,7 @@ struct TransactionDetailView: View {
 
 #Preview {
     TransactionDetailView(
+        viewModel: InfotableViewModel(dataManager: DataManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),

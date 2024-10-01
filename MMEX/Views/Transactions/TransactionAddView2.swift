@@ -10,6 +10,7 @@ import SwiftUI
 struct TransactionAddView2: View {    
     @State var newTxn: TransactionData = TransactionData()
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @ObservedObject var viewModel: InfotableViewModel
     @Binding var selectedTab: Int // Bind to the selected tab
 
     // Dismiss environment action
@@ -37,7 +38,7 @@ struct TransactionAddView2: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Add") {
-                            addTransaction(txn: &newTxn)
+                            viewModel.addTransaction(txn: &newTxn)
                             dismiss()
                             selectedTab = 0
                             newTxn = TransactionData()
@@ -63,21 +64,6 @@ struct TransactionAddView2: View {
         }
     }
 
-    func addTransaction(txn: inout TransactionData) {
-        // TODO move to a centeriazed place?
-        if txn.transCode == .transfer {
-            txn.payeeId = 0
-        } else {
-            txn.toAccountId = 0
-        }
-        guard let repository = dataManager.transactionRepository else { return }
-        if repository.insertWithSplits(&txn) {
-            // id is ready after repo call
-        } else {
-            // TODO
-        }
-    }
-    
     func loadAccounts() {
         let repository = dataManager.accountRepository
         DispatchQueue.global(qos: .background).async {

@@ -24,6 +24,7 @@ struct TransactionListView: View {
         NavigationStack {
             List(viewModel.txns) { txn in
                 NavigationLink(destination: TransactionDetailView(
+                    viewModel: viewModel,
                     accountId: $accountId,
                     categories: $categories,
                     payees: $payees,

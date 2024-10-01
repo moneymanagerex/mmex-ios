@@ -160,4 +160,13 @@ class InfotableViewModel: ObservableObject {
             // TODO
         }
     }
+    func updateTransaction(_ data: inout TransactionData) -> Bool {
+        guard let repository = dataManager.transactionRepository else { return false } 
+        return repository.updateWithSplits(&data)
+    }
+    func deleteTransaction(_ data: TransactionData) -> Bool {
+        guard let repository = dataManager.transactionRepository else { return false }
+        guard let repositorySplit = dataManager.transactionSplitRepository else { return false }
+        return repository.delete(data) && repositorySplit.delete(data)
+    }
 }

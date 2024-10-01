@@ -68,10 +68,11 @@ struct TransactionEditView: View {
                         isAmountFocused = true
                     }
                 }
-                .onChange(of: amountString) { newValue in
+                .onChange(of: amountString) { _, newValue in
                     // Update the transaction amount in the txn object, converting from String
                     txn.transAmount = Double(newValue) ?? 0.0
                 }
+                .disabled(!txn.splits.isEmpty)
             
             // 3. Input field for notes
             TextField("Add Note", text: Binding(
@@ -89,7 +90,7 @@ struct TransactionEditView: View {
                 // Date Picker to select transaction date and time
                 DatePicker("Date", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
                     .labelsHidden() // Hide the default label to save space
-                    .onChange(of: selectedDate) { newDate in
+                    .onChange(of: selectedDate) { _, newDate in
                         // Format the date as 'YYYY-MM-DDTHH:MM:SS'
                         let formatter = DateFormatter()
                         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
@@ -161,27 +162,24 @@ struct TransactionEditView: View {
                     Section(header: Text("Splits")) {
                         HStack {
                             Text("Category")
-                            Spacer()
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Text("Amount")
-                            Spacer()
+                                .frame(width: 80, alignment: .center) // Centered with fixed width
                             Text("Notes")
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         }
-                        ForEach($txn.splits) { $split in
+                        .padding(.horizontal, 0)
+
+                        ForEach(txn.splits) { split in
                             HStack {
-                                // Category picker
-                                Picker("Select Category", selection: $split.categId) {
-                                    ForEach(categories) { category in
-                                        Text(category.name).tag(category.id)
-                                    }
-                                }
-                                .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
-                                .labelsHidden()
-                                .disabled(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
-                                Spacer()
-                                Text("\(split.amount, specifier: "%.2f")") // TODO
-                                Spacer()
+                                Text(getCategoryName(for: split.categId))
+                                    .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
+                                Text(split.amount.formatted(
+                                    by: dataManager.currencyCache[dataManager.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
+                                ))
+                                .frame(width: 80, alignment: .center) // Centered with fixed width
                                 Text(split.notes)
-                                Spacer()
+                                    .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             }
                         }
                         .onDelete { indices in
@@ -201,12 +199,15 @@ struct TransactionEditView: View {
                             .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
                             .labelsHidden()
                             .disabled(txn.categId > 0)
-                            Spacer()
-                            TextField("split note", text: $newSplit.notes)
-                            Spacer()
+                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
+                            // Split amount
+                            NumericField(value: $newSplit.amount)
+                                .frame(width: 80, alignment: .center) // Centered with fixed width
+                            // split notes
+                            TextField("split notes", text: $newSplit.notes)
+                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Button(action: {
                                 withAnimation {
-                                    // set/update split.transId later
                                     txn.splits.append(newSplit)
                                     newSplit = TransactionSplitData()
                                 }
@@ -217,8 +218,8 @@ struct TransactionEditView: View {
                             }
                             .disabled(newSplit.categId <= 0 || txn.categId > 0)
                         }
+                        .labelsHidden()
                     }
-                    .labelsHidden()
                 }
                 .padding(.vertical, 0)
             }
@@ -268,6 +269,20 @@ struct TransactionEditView: View {
                 }
             }
         }
+    }
+    func getCategoryName(for categoryID: Int64) -> String {
+        return categories.first {$0.id == categoryID}?.name ?? "Unknown"
+    }
+}
+
+struct NumericField: View {
+    @Binding var value: Double // Bind a Double value directly
+
+    var body: some View {
+        TextField("0", value: $value, format: .number)
+            .keyboardType(.decimalPad) // Show numeric keyboard
+            .multilineTextAlignment(.center) // Center text alignment for better UX
+            .padding(.bottom, 0) // Add bottom padding
     }
 }
 

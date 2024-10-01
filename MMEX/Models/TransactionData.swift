@@ -66,6 +66,7 @@ struct TransactionData: ExportableEntity {
     var followUpId        : Int64             = 0
     var toTransAmount     : Double            = 0.0
     var color             : Int64             = 0
+
     var splits            : [TransactionSplitData] = []
 }
 
@@ -145,7 +146,7 @@ extension TransactionData {
         return isForeign && toAccountId == CHECKING_TYPE.AS_TRANSFER.rawValue
     }
     var isValid: Bool {
-        return (payeeId > 0 && [.withdrawal, .deposit].contains(transCode)) || (toAccountId > 0 && transCode == .transfer) && (categId > 0 || !splits.isEmpty)
+        return ((payeeId > 0 && [.withdrawal, .deposit].contains(transCode)) || (toAccountId > 0 && transCode == .transfer)) && (categId > 0 || !splits.isEmpty)
     }
 }
 

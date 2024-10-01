@@ -31,7 +31,7 @@ extension CategoryData: DataProtocol {
 
 extension CategoryData {
     static let categoryToSFSymbol: [String: String] = [
-        "Unknown": "camera.metering.unknown",
+        "Unknown": "list.bullet.rectangle.fill",
         "Auto": "car.fill",
         "Automobile": "car",
         "Bills": "doc.text.fill",
