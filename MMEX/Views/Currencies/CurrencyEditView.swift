@@ -12,28 +12,39 @@ struct CurrencyEditView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Currency Name")) {
+            Section(header: Text("Name")) {
                 TextField("Currency Name", text: $currency.name)
             }
+            Section(header: Text("Symbol")) {
+                TextField("Currency Symbol", text: $currency.symbol)
+            }
+            Section(header: Text("Unit Name")) {
+                TextField("Unit Name", text: $currency.unitName)
+            }
+            Section(header: Text("Cent Name")) {
+                TextField("Cent Name", text: $currency.centName)
+            }
+
             Section(header: Text("Prefix Symbol")) {
-                TextField("Prefix Symbol", text: Binding(
-                    get: { currency.prefixSymbol },
-                    set: { currency.prefixSymbol = $0 }
-                ))
+                TextField("Prefix Symbol", text: $currency.prefixSymbol)
             }
             Section(header: Text("Suffix Symbol")) {
-                TextField("Suffix Symbol", text: Binding(
-                    get: { currency.suffixSymbol },
-                    set: { currency.suffixSymbol = $0 }
-                ))
+                TextField("Suffix Symbol", text: $currency.suffixSymbol)
+            }
+            Section(header: Text("Decimal Point")) {
+                TextField("Decimal Point", text: $currency.decimalPoint)
+            }
+            Section(header: Text("Thousands separator")) {
+                TextField("Thousand separator", text: $currency.groupSeparator)
             }
             Section(header: Text("Scale")) {
                 TextField("Scale", value: $currency.scale, format: .number)
             }
+
             Section(header: Text("Conversion Rate")) {
                 TextField("Conversion Rate", value: $currency.baseConvRate, format: .number)
             }
-            Section(header: Text("Currency Type")) {
+            Section(header: Text("Type")) {
                 Picker("Currency Type", selection: $currency.type) {
                     ForEach(CurrencyType.allCases) { type in
                         Text(type.rawValue).tag(type)
