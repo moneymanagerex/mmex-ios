@@ -57,7 +57,7 @@ struct ContentView: View {
                 TabView(selection: $selectedTab) {
                     transactionTab(viewModel: infotableViewModel)
                     insightsTab(viewModel: InsightsViewModel(dataManager: dataManager))
-                    addTransactionTab
+                    addTransactionTab(viewModel: infotableViewModel)
                     managementTab(viewModel: infotableViewModel)
                     settingsTab(viewModel: infotableViewModel)
                 }
@@ -130,9 +130,9 @@ struct ContentView: View {
     }
 
     // Add transaction tab
-    private var addTransactionTab: some View {
+    private func addTransactionTab(viewModel: InfotableViewModel) -> some View {
         NavigationView {
-            TransactionAddView2(selectedTab: $selectedTab)
+            TransactionAddView2(viewModel: viewModel, selectedTab: $selectedTab)
                 .navigationBarTitle("Add Transaction", displayMode: .inline)
         }
         .tabItem {
@@ -254,7 +254,7 @@ struct TabContentView: View {
                 InsightsView(viewModel: InsightsViewModel(dataManager: dataManager))
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
-                TransactionAddView2(selectedTab: $selectedTab)
+                TransactionAddView2(viewModel: infotableViewModel, selectedTab: $selectedTab)
                     .navigationBarTitle("Add Transaction", displayMode: .inline)
             case 3:
                 ManagementView(

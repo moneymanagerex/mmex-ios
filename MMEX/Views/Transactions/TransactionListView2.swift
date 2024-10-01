@@ -73,6 +73,7 @@ struct TransactionListView2: View {
 
     func transactionView(_ txn: TransactionData) -> some View {
         NavigationLink(destination: TransactionDetailView(
+            viewModel: viewModel,
             txn: txn,
             accountId: $accountId,
             categories: $categories,

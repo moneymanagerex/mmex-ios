@@ -145,7 +145,7 @@ extension TransactionData {
         return isForeign && toAccountId == CHECKING_TYPE.AS_TRANSFER.rawValue
     }
     var isValid: Bool {
-        return (payeeId > 0 && [.withdrawal, .deposit].contains(transCode)) || (toAccountId > 0 && transCode == .transfer) && (categId > 0 || !splits.isEmpty)
+        return ((payeeId > 0 && [.withdrawal, .deposit].contains(transCode)) || (toAccountId > 0 && transCode == .transfer)) && (categId > 0 || !splits.isEmpty)
     }
 }
 
