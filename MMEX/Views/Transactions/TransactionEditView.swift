@@ -287,9 +287,11 @@ struct TransactionEditView: View {
 #Preview {
     TransactionEditView(
         txn: .constant(TransactionData.sampleData[3]),
-        payees: .constant(PayeeData.sampleData),
+        accountId: .constant(AccountData.sampleData.map { account in
+                    account.id
+                } ),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountData.sampleData)
+        payees: .constant(PayeeData.sampleData)
     )
     .environmentObject(DataManager())
 }

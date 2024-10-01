@@ -82,13 +82,10 @@ struct TransactionDetailView: View {
                             Text(getCategoryName(for: split.categId))
                             Spacer()
 
-                            if let currencyId = account?.currencyId,
-                               let currencyFormat = dataManager.currencyFormat[currencyId]
-                            {
-                                Text(currencyFormat.format(amount: split.amount))
-                            } else {
-                                Text("\(split.amount, specifier: "%.2f")")
-                            }
+                            Text(split.amount.formatted(
+                                by: dataManager.currencyFormatter[account?.currencyId ?? 0]
+                            ))
+
                             Spacer()
 
                             Text(split.notes)
@@ -235,9 +232,11 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         txn: TransactionData.sampleData[3],
-        payees: .constant(PayeeData.sampleData),
+        accountId: .constant(AccountData.sampleData.map { account in
+            account.id
+        }),
         categories: .constant(CategoryData.sampleData),
-        accounts: .constant(AccountData.sampleData)
+        payees: .constant(PayeeData.sampleData)
     )
     .environmentObject(DataManager())
 }
