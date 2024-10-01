@@ -37,7 +37,7 @@ struct CurrencyListView: View {
                     }
                 }) {
                     ForEach(currencyData) { currency in
-                        if dataManager.currencyData[currency.id] != nil {
+                        if dataManager.currencyCache[currency.id] != nil {
                             NavigationLink(destination: CurrencyDetailView(currency: currency)) {
                                 HStack {
                                     Text(currency.name)
@@ -65,7 +65,7 @@ struct CurrencyListView: View {
                     // Show account list based on expandedSections state
                     if expandedSections[false] == true {
                         ForEach(currencyData) { currency in
-                            if dataManager.currencyData[currency.id] == nil {
+                            if dataManager.currencyCache[currency.id] == nil {
                                 NavigationLink(destination: CurrencyDetailView(currency: currency)) {
                                     HStack {
                                         Text(currency.name)

@@ -106,7 +106,7 @@ struct TransactionListView2: View {
                 Spacer() // To push the amount to the right side
 
                 if let currencyId = self.accountDict[txn.accountId]?.currencyId,
-                   let currencyFormatter = dataManager.currencyFormatter[currencyId]
+                   let currencyFormatter = dataManager.currencyCache[currencyId]?.formatter
                 {
                     // Right column (Transaction Amount)
                     VStack {
@@ -118,10 +118,10 @@ struct TransactionListView2: View {
                         // amount in base currency
                         if let baseCurrencyId = viewModel.baseCurrency?.id,
                            baseCurrencyId != currencyId,
-                           let baseConvRate = dataManager.currencyData[currencyId]?.baseConvRate
+                           let baseConvRate = dataManager.currencyCache[currencyId]?.baseConvRate
                         {
                             Text((txn.transAmount * baseConvRate)
-                                .formatted(by: dataManager.currencyFormatter[baseCurrencyId])
+                                .formatted(by: dataManager.currencyCache[baseCurrencyId]?.formatter)
                             )
                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                             .font(.system(size: 14, weight: .medium))

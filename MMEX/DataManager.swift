@@ -14,9 +14,8 @@ class DataManager: ObservableObject {
     private(set) var databaseURL: URL?
 
     // cache
-    var currencyData      : [Int64: CurrencyData]      = [:]
-    var currencyFormatter : [Int64: CurrencyFormatter] = [:]
-    var accountData       : [Int64: AccountData]       = [:]
+    var currencyCache : CurrencyCache = [:]
+    var accountData   : [Int64: AccountData] = [:]
 
     init() {
         connectToStoredDatabase()
@@ -104,7 +103,7 @@ extension DataManager {
         isDatabaseConnected = false
         db = nil
         databaseURL = nil
-        closeCache()
+        unloadCache()
         print("Database connection closed.")
     }
 
@@ -133,9 +132,8 @@ extension DataManager {
         loadAccount()
     }
 
-    func closeCache() {
-        currencyData = [:]
-        currencyFormatter = [:]
+    func unloadCache() {
+        currencyCache.unload()
         accountData = [:]
     }
 
@@ -144,17 +142,9 @@ extension DataManager {
         DispatchQueue.global(qos: .background).async {
             let data: [Int64: CurrencyData] = repository?.dictUsed() ?? [:]
             DispatchQueue.main.async {
-                self.currencyData = data
-                self.currencyFormatter = data.mapValues { currency in
-                    currency.formatter
-                }
+                self.currencyCache.load(data)
             }
         }
-    }
-
-    func updateCurrency(id: Int64, data: CurrencyData) {
-        currencyData[id] = data
-        currencyFormatter[id] = data.formatter
     }
 
     func loadAccount() {

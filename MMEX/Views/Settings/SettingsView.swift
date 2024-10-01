@@ -86,7 +86,7 @@ struct SettingsView: View {
  
                 Picker("Default Account", selection: $viewModel.defaultAccountId) {
                     ForEach(viewModel.accounts) { account in
-                        let currency = dataManager.currencyData[account.currencyId]
+                        let currency = dataManager.currencyCache[account.currencyId]
                         HStack {
                             Text(account.name)
                             Spacer()
