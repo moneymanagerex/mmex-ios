@@ -19,35 +19,85 @@ struct AccountDetailView: View {
     @State private var isExporting = false
 
     var body: some View {
+        let currency = dataManager.currencyCache[account.currencyId]
+        let formatter = currency?.formatter
         List {
-            Section(header: Text("Account Name")) {
+            Section(header: Text("Name")) {
                 Text(account.name)
             }
-            Section(header: Text("Account Type")) {
+            Section(header: Text("Type")) {
                 Text(account.type.name)
-            }
-            Section(header: Text("Status")) {
-                Text(account.status.id)
             }
             // TODO link to currency details
             Section(header: Text("Currency")) {
-                if let currency = dataManager.currencyCache[account.currencyId] {
-                    Text(currency.name)
-                } else {
-                    Text("Unknown currency!")
-                }
+                Text(currency?.name ?? "Unknown currency!")
+            }
+
+            // TODO: convert to Bool, show as button
+            Section(header: Text("Favorite")) {
+                Text(account.favoriteAcct)
+            }
+            Section(header: Text("Status")) {
+                Text(account.status.id)
             }
             Section(header: Text("Initial Date")) {
                 Text(account.initialDate)
             }
             Section(header: Text("Initial Balance")) {
-                Text(account.initialBal.formatted(
-                    by: dataManager.currencyCache[account.currencyId]?.formatter
-                ))
+                Text(account.initialBal.formatted(by: formatter))
+            }
+
+            Section(header: Text("Statement Locked")) {
+                Text(account.statementLocked ? "YES" : "NO")
+            }
+            Section(header: Text("Statement Date")) {
+                Text(account.statementDate)
+            }
+            Section(header: Text("Minimum Balance")) {
+                Text(account.minimumBalance.formatted(by: formatter))
+            }
+            Section(header: Text("Credit Limit")) {
+                Text(account.creditLimit.formatted(by: formatter))
+            }
+            Section(header: Text("Interest Rate")) {
+                Text("\(account.interestRate)")
+            }
+            Section(header: Text("Payment Due Date")) {
+                Text(account.paymentDueDate)
+            }
+            Section(header: Text("Minimum Payment")) {
+                Text(account.minimumPayment.formatted(by: formatter))
+            }
+
+            if !account.num.isEmpty {
+                Section(header: Text("Number")) {
+                    Text(account.num)
+                }
+            }
+            if !account.heldAt.isEmpty {
+                Section(header: Text("Held at")) {
+                    Text(account.heldAt)
+                }
+            }
+            if !account.website.isEmpty {
+                Section(header: Text("Website")) {
+                    Text(account.website)
+                }
+            }
+            if !account.contactInfo.isEmpty {
+                Section(header: Text("Contact Info")) {
+                    Text(account.contactInfo)
+                }
+            }
+            if !account.accessInfo.isEmpty {
+                Section(header: Text("Access Info")) {
+                    Text(account.accessInfo)
+                }
             }
             Section(header: Text("Notes")) {
                 Text(account.notes)  // Display notes if they are not nil
             }
+
             // TODO: cannot delete account in use
             Button("Delete Account") {
                 deleteAccount()
@@ -142,7 +192,7 @@ struct AccountDetailView: View {
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         account: AccountData.sampleData[0]
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }
 
 #Preview {

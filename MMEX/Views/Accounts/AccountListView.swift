@@ -14,6 +14,7 @@ struct AccountListView: View {
     @State private var newAccount = emptyAccount
     @State private var isPresentingAccountAddView = false
     @State private var expandedSections: [AccountType: Bool] = [:] // Tracks the expanded/collapsed state
+
     static let emptyAccount = AccountData(
         status: AccountStatus.open
     )
@@ -54,23 +55,7 @@ struct AccountListView: View {
                         {
                             ForEach(accounts) { account in
                                 // TODO: update View after change in account
-                                NavigationLink(destination: AccountDetailView(
-                                    allCurrencyName: $allCurrencyName,
-                                    account: account
-                                ) ) {
-                                    HStack {
-                                        Text(account.name)
-                                            .font(.subheadline)
-                                        
-                                        Spacer()
-                                        
-                                        if let currency = dataManager.currencyCache[account.currencyId] {
-                                            Text(currency.name)
-                                                .font(.subheadline)
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
+                                itemView(account)
                             }
                         }
                     }
@@ -98,6 +83,26 @@ struct AccountListView: View {
                 addAccount(account: &newAccount)
                 newAccount = Self.emptyAccount
             }
+        }
+    }
+
+    func itemView(_ account: AccountData) -> some View {
+        NavigationLink(destination: AccountDetailView(
+            allCurrencyName: $allCurrencyName,
+            account: account
+        ) ) {
+            HStack {
+                Text(account.name)
+                    .font(.subheadline)
+                
+                Spacer()
+                
+                if let currency = dataManager.currencyCache[account.currencyId] {
+                    Text(currency.name)
+                        .font(.subheadline)
+                }
+            }
+            .padding(.horizontal)
         }
     }
 
@@ -149,7 +154,6 @@ struct AccountListView: View {
 
 #Preview {
     AccountListView(
-        
     )
     .environmentObject(DataManager.sampleDataManager)
 }

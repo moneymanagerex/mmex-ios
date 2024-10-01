@@ -14,6 +14,7 @@ struct CurrencyListView: View {
     @State private var newCurrency = emptyCurrency
     @State private var isPresentingCurrencyAddView = false
     @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
+
     static let emptyCurrency = CurrencyData(
         decimalPoint   : ".",
         groupSeparator : ",",
