@@ -144,4 +144,20 @@ class InfotableViewModel: ObservableObject {
             }
         }
     }
+
+    func addTransaction(txn: inout TransactionData) {
+        if txn.transCode == .transfer {
+            txn.payeeId = 0
+        } else {
+            txn.toAccountId = 0
+        }
+
+        guard let repository = dataManager.transactionRepository else { return }
+
+        if repository.insertWithSplits(&txn) {
+            self.txns.append(txn) // id is ready after repo call
+        } else {
+            // TODO
+        }
+    }
 }
