@@ -41,15 +41,7 @@ struct CurrencyListView: View {
                         if expandedSections[inUse] == true {
                             ForEach(allCurrencyData) { currency in
                                 if (dataManager.currencyCache[currency.id] != nil) == inUse {
-                                    NavigationLink(destination: CurrencyDetailView(
-                                        currency: currency
-                                    )) {
-                                        HStack {
-                                            Text(currency.name)
-                                            Spacer()
-                                            Text(currency.symbol)
-                                        }
-                                    }
+                                    itemView(currency)
                                 }
                             }
                         }
@@ -78,7 +70,17 @@ struct CurrencyListView: View {
             }
         }
     }
-    
+
+    func itemView(_ currency: CurrencyData) -> some View {
+        NavigationLink(destination: CurrencyDetailView(
+            currency: currency
+        ) ) { HStack {
+            Text(currency.name)
+            Spacer()
+            Text(currency.symbol)
+        } }
+    }
+
     func loadCurrencyData() {
         let repository = dataManager.currencyRepository
         DispatchQueue.global(qos: .background).async {
@@ -104,4 +106,10 @@ struct CurrencyListView: View {
     CurrencyListView(
     )
     .environmentObject(DataManager.sampleDataManager)
+}
+
+#Preview {
+    NavigationStack { List { Section("Currency") {
+        CurrencyListView().itemView(CurrencyData.sampleData[0])
+    } } }
 }
