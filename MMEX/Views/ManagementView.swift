@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ManagementView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @ObservedObject var viewModel: InfotableViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
@@ -31,7 +32,7 @@ struct ManagementView: View {
                 NavigationLink(destination: PayeeListView()) {
                     Text("Manage Payees")
                 }
-                NavigationLink(destination: TransactionListView()) {
+                NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
                     Text("Manage Transactions")
                 }
             }
@@ -91,6 +92,7 @@ struct ManagementView: View {
 
 
 #Preview {
-    ManagementView(isDocumentPickerPresented: .constant(false), isNewDocumentPickerPresented: .constant(false), isSampleDocument: .constant(false))
+    ManagementView(viewModel: InfotableViewModel(dataManager: DataManager()),
+        isDocumentPickerPresented: .constant(false), isNewDocumentPickerPresented: .constant(false), isSampleDocument: .constant(false))
         .environmentObject(DataManager())
 }
