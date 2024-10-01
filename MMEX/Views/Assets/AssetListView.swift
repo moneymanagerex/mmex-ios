@@ -38,9 +38,9 @@ struct AssetListView: View {
                 .accessibilityLabel("New Asset")
             }
             .searchable(text: $searchQuery) // New: Search bar
-            .onChange(of: searchQuery, perform: { query in
+            .onChange(of: searchQuery) { _, query in
                 filterAssets(by: query)
-            })
+            }
         }
         .navigationTitle("Assets")
         .onAppear {

@@ -15,20 +15,22 @@ struct CurrencyAddView: View {
 
     var body: some View {
         NavigationStack {
-            CurrencyEditView(currency: $newCurrency)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Dismiss") {
-                            isPresentingCurrencyAddView = false
-                        }
-                    }
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Add") {
-                            isPresentingCurrencyAddView = false
-                            onSave(&newCurrency)
-                        }
+            CurrencyEditView(
+                currency: $newCurrency
+            )
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Dismiss") {
+                        isPresentingCurrencyAddView = false
                     }
                 }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add") {
+                        isPresentingCurrencyAddView = false
+                        onSave(&newCurrency)
+                    }
+                }
+            }
         }
     }
 }

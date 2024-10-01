@@ -8,22 +8,21 @@
 import SwiftUI
 
 struct TransactionAddView: View {
-    @Binding var newTxn: TransactionData
-    @Binding var isPresentingTransactionAddView: Bool
-
     @Binding var accountId: [Int64]
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
+    @Binding var newTxn: TransactionData
+    @Binding var isPresentingTransactionAddView: Bool
 
     var onSave: (inout TransactionData) -> Void
     
     var body: some View {
         NavigationStack {
             TransactionEditView(
-                txn: $newTxn,
                 accountId: $accountId,
                 categories: $categories,
-                payees: $payees
+                payees: $payees,
+                txn: $newTxn
             )
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -45,11 +44,11 @@ struct TransactionAddView: View {
 
 #Preview {
     TransactionAddView(
-        newTxn: .constant(TransactionData()),
-        isPresentingTransactionAddView: .constant(true),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        newTxn: .constant(TransactionData()),
+        isPresentingTransactionAddView: .constant(true)
     )
     { newTxn in
         // Handle saving in preview

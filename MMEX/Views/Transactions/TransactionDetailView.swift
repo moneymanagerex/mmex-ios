@@ -10,16 +10,14 @@ import SwiftUI
 struct TransactionDetailView: View {
     @EnvironmentObject var dataManager: DataManager
     @ObservedObject var viewModel: InfotableViewModel
-
+    @Binding var accountId: [Int64]  // sorted by name
+    @Binding var categories: [CategoryData]
+    @Binding var payees: [PayeeData]
     @State var txn: TransactionData
 
     @State private var editingTxn = TransactionData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
-
-    @Binding var accountId: [Int64]
-    @Binding var categories: [CategoryData]
-    @Binding var payees: [PayeeData]
     
     @State private var account: AccountData?
     @State private var toAccount: AccountData?
@@ -46,7 +44,7 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Account Name")) {
-                if let account = account {
+                if let account = dataManager.accountCache[txn.accountId] {
                     Text("\(account.name)")
                 } else {
                     Text("n/a")
@@ -55,7 +53,7 @@ struct TransactionDetailView: View {
 
             if txn.transCode == .transfer {
                 Section(header: Text("To Account")) {
-                    if let toAccount = toAccount {
+                    if let toAccount = dataManager.accountCache[txn.toAccountId] {
                         Text("\(toAccount.name)")
                     } else {
                         Text("n/a")
@@ -135,10 +133,10 @@ struct TransactionDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 TransactionEditView(
-                    txn: $editingTxn,
                     accountId: $accountId,
                     categories: $categories,
-                    payees: $payees
+                    payees: $payees,
+                    txn: $editingTxn
                 )
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -172,21 +170,12 @@ struct TransactionDetailView: View {
                 print("Error exporting file: \(error)")
             }
         }
-        .onAppear(){
-            loadAccount()
-            if txn.transCode == .transfer { loadToAccount() }
-        }
     }
     
-    func loadAccount() {
-        account = dataManager.accountData[txn.accountId]
-    }
-    func loadToAccount() {
-        toAccount = dataManager.accountData[txn.toAccountId]
-    }
     func getCategoryName(for categoryID: Int64) -> String {
         return categories.first {$0.id == categoryID}?.name ?? "Unknown"
     }
+
     func getPayeeName(for payeeID: Int64) -> String {
         return payees.first {$0.id == payeeID}?.name ?? "Unknown"
     }
@@ -195,32 +184,32 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         viewModel: InfotableViewModel(dataManager: DataManager()),
-        txn: TransactionData.sampleData[0],
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        txn: TransactionData.sampleData[0]
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }
 
 #Preview {
     TransactionDetailView(
         viewModel: InfotableViewModel(dataManager: DataManager()),
-        txn: TransactionData.sampleData[2],
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        txn: TransactionData.sampleData[2]
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }
 
 #Preview {
     TransactionDetailView(
         viewModel: InfotableViewModel(dataManager: DataManager()),
-        txn: TransactionData.sampleData[3],
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        txn: TransactionData.sampleData[3]
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }

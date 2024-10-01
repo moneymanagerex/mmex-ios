@@ -36,9 +36,9 @@ struct CategoryListView: View {
                 .accessibilityLabel("New Category")
             }
             .searchable(text: $searchQuery) // New: Search bar
-            .onChange(of: searchQuery, perform: { query in
+            .onChange(of: searchQuery) { _, query in
                 filterCategories(by: query)
-            })
+            }
         }
         .navigationTitle("Categories")
         .onAppear {

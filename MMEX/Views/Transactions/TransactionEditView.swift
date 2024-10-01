@@ -9,16 +9,15 @@ import SwiftUI
 
 struct TransactionEditView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @Binding var accountId: [Int64] // sorted by name
+    @Binding var categories: [CategoryData]
+    @Binding var payees: [PayeeData]
+    @Binding var txn: TransactionData
+
     @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
 
-
     @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
-    @Binding var txn: TransactionData
-    @Binding var accountId: [Int64]
-
-    @Binding var categories: [CategoryData]
-    @Binding var payees: [PayeeData]
 
     // app level setting
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
@@ -45,8 +44,8 @@ struct TransactionEditView: View {
                         Text("Account").tag(0 as Int64) // not set
                     }
                     ForEach(accountId, id: \.self) { id in
-                        if let account = dataManager.accountData[id] {
-                            Text(account.name).tag(account.id)
+                        if let account = dataManager.accountCache[id] {
+                            Text(account.name).tag(id)
                         }
                     }
                 }
@@ -69,7 +68,7 @@ struct TransactionEditView: View {
                         isAmountFocused = true
                     }
                 }
-                .onChange(of: amountString) { newValue in
+                .onChange(of: amountString) { _, newValue in
                     // Update the transaction amount in the txn object, converting from String
                     txn.transAmount = Double(newValue) ?? 0.0
                 }
@@ -91,7 +90,7 @@ struct TransactionEditView: View {
                 // Date Picker to select transaction date and time
                 DatePicker("Date", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
                     .labelsHidden() // Hide the default label to save space
-                    .onChange(of: selectedDate) { newDate in
+                    .onChange(of: selectedDate) { _, newDate in
                         // Format the date as 'YYYY-MM-DDTHH:MM:SS'
                         let formatter = DateFormatter()
                         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
@@ -118,10 +117,10 @@ struct TransactionEditView: View {
                             Text("Account").tag(0 as Int64) // not set
                         }
                         ForEach(accountId, id: \.self) { id in
-                            if let account = dataManager.accountData[id],
-                               account.id != txn.accountId
+                            if let account = dataManager.accountCache[id],
+                               id != txn.accountId
                             {
-                                Text(account.name).tag(account.id)
+                                Text(account.name).tag(id)
                             }
                         }
                     }
@@ -170,12 +169,13 @@ struct TransactionEditView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         }
                         .padding(.horizontal, 0)
+
                         ForEach(txn.splits) { split in
                             HStack {
                                 Text(getCategoryName(for: split.categId))
                                     .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                                 Text(split.amount.formatted(
-                                    by: dataManager.currencyCache[dataManager.accountData[txn.accountId]?.currencyId ?? 0]?.formatter
+                                    by: dataManager.currencyCache[dataManager.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
                                 ))
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
                                 Text(split.notes)
@@ -185,7 +185,7 @@ struct TransactionEditView: View {
                         .onDelete { indices in
                             txn.splits.remove(atOffsets: indices)
                         }
-                        
+
                         HStack {
                             // Split Category picker
                             Picker("Select Category", selection: $newSplit.categId) {
@@ -288,20 +288,20 @@ struct NumericField: View {
 
 #Preview {
     TransactionEditView(
-        txn: .constant(TransactionData.sampleData[0]),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        txn: .constant(TransactionData.sampleData[0])
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }
 
 #Preview {
     TransactionEditView(
-        txn: .constant(TransactionData.sampleData[3]),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData)
+        payees: .constant(PayeeData.sampleData),
+        txn: .constant(TransactionData.sampleData[3])
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }

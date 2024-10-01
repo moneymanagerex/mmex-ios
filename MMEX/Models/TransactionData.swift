@@ -66,6 +66,7 @@ struct TransactionData: ExportableEntity {
     var followUpId        : Int64             = 0
     var toTransAmount     : Double            = 0.0
     var color             : Int64             = 0
+
     var splits            : [TransactionSplitData] = []
 }
 

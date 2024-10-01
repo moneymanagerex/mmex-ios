@@ -40,9 +40,9 @@ struct PayeeListView: View {
                 .accessibilityLabel("New Payee")
             }
             .searchable(text: $searchQuery) // New: Search bar
-            .onChange(of: searchQuery, perform: { query in
+            .onChange(of: searchQuery) { _, query in
                 filterPayees(by: query)
-            })
+            }
         }
         .navigationTitle("Payees")
         .onAppear {
@@ -101,5 +101,5 @@ struct PayeeListView: View {
 
 #Preview {
     PayeeListView()
-        .environmentObject(DataManager())
+        .environmentObject(DataManager.sampleDataManager)
 }

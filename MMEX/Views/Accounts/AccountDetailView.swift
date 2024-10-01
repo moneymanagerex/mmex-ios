@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct AccountDetailView: View {
-    @State var account: AccountData
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @Binding var currencyName: [(Int64, String)] // Bind to the list of available currencies
+    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
+    @State var account: AccountData
 
     @State private var editingAccount = AccountData()
     @State private var isPresentingEditView = false
@@ -78,8 +78,8 @@ struct AccountDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 AccountEditView(
-                    account: $editingAccount,
-                    currencyName: $currencyName
+                    allCurrencyName: $allCurrencyName,
+                    account: $editingAccount
                 )
                 .navigationTitle(account.name)
                 .toolbar {
@@ -92,7 +92,7 @@ struct AccountDetailView: View {
                         Button("Done") {
                             isPresentingEditView = false
                             account = editingAccount
-                            saveChanges()
+                            updateAccount()
                         }
                     }
                 }
@@ -113,14 +113,14 @@ struct AccountDetailView: View {
         }
     }
 
-    func saveChanges() {
+    func updateAccount() {
         guard let repository = dataManager.accountRepository else { return }
         if repository.update(account) {
             // Successfully updated
             if dataManager.currencyCache[account.currencyId] == nil {
                 dataManager.loadCurrency()
             }
-            dataManager.updateAccount(id: account.id, data: account)
+            dataManager.accountCache.update(id: account.id, data: account)
         } else {
             // Handle failure
         }
@@ -139,20 +139,16 @@ struct AccountDetailView: View {
 
 #Preview {
     AccountDetailView(
-        account: AccountData.sampleData[0],
-        currencyName: .constant(CurrencyData.sampleData.map {
-            ($0.id, $0.name)
-        } )
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        account: AccountData.sampleData[0]
     )
     .environmentObject(DataManager())
 }
 
 #Preview {
     AccountDetailView(
-        account: AccountData.sampleData[1],
-        currencyName: .constant(CurrencyData.sampleData.map {
-            ($0.id, $0.name)
-        } )
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        account: AccountData.sampleData[1]
     )
-    .environmentObject(DataManager())
+    .environmentObject(DataManager.sampleDataManager)
 }

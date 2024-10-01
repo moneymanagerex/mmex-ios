@@ -61,7 +61,7 @@ struct ContentView: View {
                     managementTab(viewModel: infotableViewModel)
                     settingsTab(viewModel: infotableViewModel)
                 }
-                .onChange(of: selectedTab) { tab in
+                .onChange(of: selectedTab) { _, tab in
                     if tab == 2 { isPresentingTransactionAddView = true }
                 }
             }

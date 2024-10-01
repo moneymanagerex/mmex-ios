@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct CurrencyDetailView: View {
-    @State var currency: CurrencyData
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @State var currency: CurrencyData
+
     @State private var editingCurrency = CurrencyData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode
@@ -63,7 +64,7 @@ struct CurrencyDetailView: View {
                             Button("Done") {
                                 isPresentingEditView = false
                                 currency = editingCurrency
-                                saveChanges()
+                                updateCurrency()
                             }
                         }
                     }
@@ -71,7 +72,7 @@ struct CurrencyDetailView: View {
         }
     }
 
-    func saveChanges() {
+    func updateCurrency() {
         guard let repository = dataManager.currencyRepository else { return }
         if repository.update(currency) {
             if dataManager.currencyCache[currency.id] != nil {
@@ -98,4 +99,5 @@ struct CurrencyDetailView: View {
     CurrencyDetailView(
         currency: CurrencyData.sampleData[0]
     )
+    .environmentObject(DataManager.sampleDataManager)
 }

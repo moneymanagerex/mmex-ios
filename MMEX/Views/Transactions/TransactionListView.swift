@@ -25,10 +25,10 @@ struct TransactionListView: View {
             List(viewModel.txns) { txn in
                 NavigationLink(destination: TransactionDetailView(
                     viewModel: viewModel,
-                    txn: txn,
                     accountId: $accountId,
                     categories: $categories,
-                    payees: $payees
+                    payees: $payees,
+                    txn: txn
                 ) ) {
                     HStack {
                         // Left column: Date (truncated to day)
@@ -85,11 +85,11 @@ struct TransactionListView: View {
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(
-                newTxn: $newTxn,
-                isPresentingTransactionAddView: $isPresentingTransactionAddView,
                 accountId: $accountId,
                 categories: $categories,
-                payees: $payees
+                payees: $payees,
+                newTxn: $newTxn,
+                isPresentingTransactionAddView: $isPresentingTransactionAddView
             ) { newTxn in
                 viewModel.addTransaction(txn: &newTxn)
                 newTxn = TransactionData()
@@ -138,7 +138,7 @@ struct TransactionListView: View {
     func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
-            if let toAccount = dataManager.accountData[txn.toAccountId] {
+            if let toAccount = dataManager.accountCache[txn.toAccountId] {
                 return String(format: "> \(toAccount.name)")
             }
         }
@@ -168,6 +168,8 @@ struct TransactionListView: View {
 }
 
 #Preview {
-    TransactionListView(viewModel: InfotableViewModel(dataManager: DataManager()))
-        .environmentObject(DataManager())
+    TransactionListView(
+        viewModel: InfotableViewModel(dataManager: DataManager())
+    )
+    .environmentObject(DataManager.sampleDataManager)
 }
