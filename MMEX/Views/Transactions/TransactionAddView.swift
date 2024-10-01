@@ -47,12 +47,13 @@ struct TransactionAddView: View {
     TransactionAddView(
         newTxn: .constant(TransactionData()),
         isPresentingTransactionAddView: .constant(true),
-        accountId: .constant(AccountData.sampleData.map { account in
-            account.id
-        } ),
+        accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData)
-    ) { newTxn in
+    )
+    { newTxn in
         // Handle saving in preview
         print("New payee: \(newTxn.id)")
-    }}
+    }
+    .environmentObject(DataManager())
+}

@@ -275,9 +275,7 @@ struct TransactionEditView: View {
 #Preview {
     TransactionEditView(
         txn: .constant(TransactionData.sampleData[0]),
-        accountId: .constant(AccountData.sampleData.map { account in
-            account.id
-        } ),
+        accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData)
     )
@@ -287,9 +285,7 @@ struct TransactionEditView: View {
 #Preview {
     TransactionEditView(
         txn: .constant(TransactionData.sampleData[3]),
-        accountId: .constant(AccountData.sampleData.map { account in
-                    account.id
-                } ),
+        accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData)
     )
