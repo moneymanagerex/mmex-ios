@@ -35,7 +35,7 @@ struct TransactionDetailView: View {
 
             Section(header: Text("Transaction Amount")) {
                 Text(txn.transAmount.formatted(
-                    by: dataManager.currencyFormatter[account?.currencyId ?? 0]
+                    by: dataManager.currencyCache[account?.currencyId ?? 0]?.formatter
                 ))
             }
 
@@ -83,7 +83,7 @@ struct TransactionDetailView: View {
                             Spacer()
 
                             Text(split.amount.formatted(
-                                by: dataManager.currencyFormatter[account?.currencyId ?? 0]
+                                by: dataManager.currencyCache[account?.currencyId ?? 0]?.formatter
                             ))
 
                             Spacer()

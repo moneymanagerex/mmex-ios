@@ -64,7 +64,7 @@ struct AccountListView: View {
                                             
                                             Spacer()
                                             
-                                            if let currency = dataManager.currencyData[account.currencyId] {
+                                            if let currency = dataManager.currencyCache[account.currencyId] {
                                                 Text(currency.name)
                                                     .font(.subheadline)
                                             }
@@ -141,7 +141,7 @@ struct AccountListView: View {
         guard let repository = dataManager.accountRepository else { return }
         if repository.insert(&account) {
             // self.accounts.append(account)
-            if dataManager.currencyData[account.currencyId] == nil {
+            if dataManager.currencyCache[account.currencyId] == nil {
                 dataManager.loadCurrency()
             }
             dataManager.updateAccount(id: account.id, data: account)
