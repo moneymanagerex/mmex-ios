@@ -58,7 +58,7 @@ struct ContentView: View {
                     transactionTab(viewModel: infotableViewModel)
                     insightsTab(viewModel: InsightsViewModel(dataManager: dataManager))
                     addTransactionTab
-                    managementTab
+                    managementTab(viewModel: infotableViewModel)
                     settingsTab(viewModel: infotableViewModel)
                 }
                 .onChange(of: selectedTab) { tab in
@@ -143,9 +143,10 @@ struct ContentView: View {
     }
 
     // Management tab
-    private var managementTab: some View {
+    private func managementTab(viewModel: InfotableViewModel) -> some View {
         NavigationView {
             ManagementView(
+                viewModel:viewModel,
                 isDocumentPickerPresented: $isDocumentPickerPresented,
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
@@ -257,6 +258,7 @@ struct TabContentView: View {
                     .navigationBarTitle("Add Transaction", displayMode: .inline)
             case 3:
                 ManagementView(
+                    viewModel:infotableViewModel,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument

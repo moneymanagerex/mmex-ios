@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @ObservedObject var viewModel: InfotableViewModel
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
     @State private var isPresentingTransactionAddView = false
@@ -195,6 +196,6 @@ struct TransactionListView: View {
 }
 
 #Preview {
-    TransactionListView()
+    TransactionListView(viewModel: InfotableViewModel(dataManager: DataManager()))
         .environmentObject(DataManager())
 }
