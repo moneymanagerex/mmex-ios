@@ -73,6 +73,7 @@ struct TransactionEditView: View {
                     // Update the transaction amount in the txn object, converting from String
                     txn.transAmount = Double(newValue) ?? 0.0
                 }
+                .disabled(!txn.splits.isEmpty)
             
             // 3. Input field for notes
             TextField("Add Note", text: Binding(
@@ -177,9 +178,11 @@ struct TransactionEditView: View {
                                 }
                                 .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
                                 .labelsHidden()
-                                .disabled(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                                .disabled(true)
                                 Spacer()
-                                Text("\(split.amount, specifier: "%.2f")") // TODO
+                                Text(split.amount.formatted(
+                                    by: dataManager.currencyCache[dataManager.accountData[txn.accountId]?.currencyId ?? 0]?.formatter
+                                ))
                                 Spacer()
                                 Text(split.notes)
                                 Spacer()
@@ -203,11 +206,14 @@ struct TransactionEditView: View {
                             .labelsHidden()
                             .disabled(txn.categId > 0)
                             Spacer()
-                            TextField("split note", text: $newSplit.notes)
+                            // Split amount
+                            NumericField(value: $newSplit.amount)
+                            Spacer()
+                            // split notes
+                            TextField("split notes", text: $newSplit.notes)
                             Spacer()
                             Button(action: {
                                 withAnimation {
-                                    // set/update split.transId later
                                     txn.splits.append(newSplit)
                                     newSplit = TransactionSplitData()
                                 }
@@ -269,6 +275,17 @@ struct TransactionEditView: View {
                 }
             }
         }
+    }
+}
+
+struct NumericField: View {
+    @Binding var value: Double // Bind a Double value directly
+
+    var body: some View {
+        TextField("0", value: $value, format: .number)
+            .keyboardType(.decimalPad) // Show numeric keyboard
+            .multilineTextAlignment(.center) // Center text alignment for better UX
+            .padding(.bottom, 0) // Add bottom padding
     }
 }
 
