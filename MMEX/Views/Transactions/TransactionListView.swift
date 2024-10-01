@@ -22,7 +22,7 @@ struct TransactionListView: View {
     
     var body: some View {
         NavigationStack {
-            List(txns) { txn in
+            List(viewModel.txns) { txn in
                 NavigationLink(destination: TransactionDetailView(
                     txn: txn,
                     accountId: $accountId,
@@ -74,7 +74,7 @@ struct TransactionListView: View {
             loadAccount()
             loadCategory()
             loadPayee()
-            loadTransaction()
+            viewModel.loadTransactions()
 
             // database level setting
             let repository = dataManager.infotableRepository
@@ -90,7 +90,7 @@ struct TransactionListView: View {
                 categories: $categories,
                 payees: $payees
             ) { newTxn in
-                addTransaction(txn: &newTxn)
+                viewModel.addTransaction(txn: &newTxn)
                 newTxn = TransactionData()
             }
         }
@@ -133,20 +133,6 @@ struct TransactionListView: View {
         }
     }
 
-    func loadTransaction() {
-        let repository = dataManager.transactionRepository
-
-        // Fetch accounts using repository and update the view
-        DispatchQueue.global(qos: .background).async {
-            let loadTransactions = repository?.load() ?? []
-            
-            // Update UI on the main thread
-            DispatchQueue.main.async {
-                self.txns = loadTransactions
-            }
-        }
-    }
-
     // TODO pre-join via SQL?
     func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
@@ -166,21 +152,6 @@ struct TransactionListView: View {
     func getCategoryName(for categoryID: Int64) -> String {
         // Find the category with the given ID
         return categories.first { $0.id == categoryID }?.name ?? "Unknown"
-    }
-    
-    func addTransaction(txn: inout TransactionData) {
-        // TODO move to a centeriazed place?
-        if txn.transCode == .transfer {
-            txn.payeeId = 0
-        } else {
-            txn.toAccountId = 0
-        }
-        guard let repository = dataManager.transactionRepository else { return }
-        if repository.insertWithSplits(&txn) {
-            self.txns.append(txn) // id is ready after repo call
-        } else {
-            // TODO
-        }
     }
 
     // Helper function to format the date, truncating to day
