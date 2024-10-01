@@ -71,7 +71,7 @@ struct TransactionAddView2: View {
             txn.toAccountId = 0
         }
         guard let repository = dataManager.transactionRepository else { return }
-        if repository.insert(&txn) {
+        if repository.insertWithSplits(&txn) {
             // id is ready after repo call
         } else {
             // TODO

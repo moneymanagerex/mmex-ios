@@ -89,4 +89,27 @@ extension TransactionSplitRepository {
     func load(for trans: TransactionData) -> [TransactionSplitData] {
         return load(forTransactionId: trans.id)
     }
+
+    func delete(_ data: TransactionData) -> Bool {
+        var success = true
+        load(for: data).forEach { oldSplit in
+            success = success && delete(oldSplit)
+        }
+        return success
+    }
+    // FIXME: delete all old splits for the given transaction and then re-create all splits
+    func update(_ data: inout TransactionData) -> Bool {
+        var success = true
+
+        // TODO: distintish to add/update/delete
+        load(for: data).forEach { oldSplit in
+            success = success && delete(oldSplit)
+        }
+
+        for i in data.splits.indices {
+            data.splits[i].transId = data.id
+            success = success && insert(&data.splits[i])
+        }
+        return success
+    }
 }

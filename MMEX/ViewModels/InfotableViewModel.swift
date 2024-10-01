@@ -120,7 +120,13 @@ class InfotableViewModel: ObservableObject {
 
     func loadTransactions() {
         DispatchQueue.global(qos: .background).async {
-            let loadTransactions = self.transactionRepo?.loadRecent(accountId: self.defaultAccountId) ?? []
+            var loadTransactions = self.transactionRepo?.loadRecent(accountId: self.defaultAccountId) ?? []
+            for i in loadTransactions.indices {
+                // TODO other better indicator
+                if loadTransactions[i].categId <= 0 {
+                    loadTransactions[i].splits = self.dataManager.transactionSplitRepository?.load(for: loadTransactions[i]) ?? []
+                }
+            }
 
             DispatchQueue.main.async {
                 self.txns = loadTransactions.filter { txn in txn.deletedTime.isEmpty }

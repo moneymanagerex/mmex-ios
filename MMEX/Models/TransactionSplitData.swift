@@ -26,5 +26,8 @@ extension TransactionSplitData: DataProtocol {
 
 extension TransactionSplitData {
     static let sampleData: [TransactionSplitData] = [
+        // for transId = 4
+        TransactionSplitData(id:1, transId: 4, categId: 1, amount: 10.01, notes: "note for 4.1st split"),
+        TransactionSplitData(id:2, transId: 4, categId: 2, amount: 30.03, notes: "note for 4.2nd split")
     ]
 }

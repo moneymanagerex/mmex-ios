@@ -62,7 +62,39 @@ struct TransactionDetailView: View {
             } else {
                 Section(header: Text("Payee")) {
                     // Text(getPayeeName(txn.payeeID)) // Retrieve payee name
-                    Text("\(txn.payeeId)")
+                    Text(getPayeeName(for:txn.payeeId))
+                }
+            }
+
+            if !txn.splits.isEmpty {
+                Section(header: Text("Splits")) {
+                    // header
+                    HStack {
+                        Text("Category")
+                        Spacer()
+                        Text("Amount")
+                        Spacer()
+                        Text("Notes")
+                    }
+                    // rows
+                    ForEach(txn.splits) { split in
+                        HStack {
+                            Text(getCategoryName(for: split.categId))
+                            Spacer()
+
+                            Text(split.amount.formatted(
+                                by: dataManager.currencyFormatter[account?.currencyId ?? 0]
+                            ))
+
+                            Spacer()
+
+                            Text(split.notes)
+                        }
+                    }
+                }
+            } else {
+                Section(header: Text("Category")) {
+                    Text(getCategoryName(for:txn.categId))
                 }
             }
 
@@ -145,10 +177,16 @@ struct TransactionDetailView: View {
     func loadToAccount() {
         toAccount = dataManager.accountData[txn.toAccountId]
     }
+    func getCategoryName(for categoryID: Int64) -> String {
+        return categories.first {$0.id == categoryID}?.name ?? "Unknown"
+    }
+    func getPayeeName(for payeeID: Int64) -> String {
+        return payees.first {$0.id == payeeID}?.name ?? "Unknown"
+    }
 
     func saveChanges() {
         let repository = dataManager.transactionRepository // pass URL here
-        if repository?.update(txn) == true {
+        if repository?.updateWithSplits(&txn) == true {
             // TODO
         } else {
             // TODO update failure
@@ -185,6 +223,18 @@ struct TransactionDetailView: View {
         accountId: .constant(AccountData.sampleData.map { account in
             account.id
         } ),
+        categories: .constant(CategoryData.sampleData),
+        payees: .constant(PayeeData.sampleData)
+    )
+    .environmentObject(DataManager())
+}
+
+#Preview {
+    TransactionDetailView(
+        txn: TransactionData.sampleData[3],
+        accountId: .constant(AccountData.sampleData.map { account in
+            account.id
+        }),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData)
     )

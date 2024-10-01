@@ -66,6 +66,7 @@ struct TransactionData: ExportableEntity {
     var followUpId        : Int64             = 0
     var toTransAmount     : Double            = 0.0
     var color             : Int64             = 0
+    var splits            : [TransactionSplitData] = []
 }
 
 extension TransactionData: DataProtocol {
@@ -144,7 +145,7 @@ extension TransactionData {
         return isForeign && toAccountId == CHECKING_TYPE.AS_TRANSFER.rawValue
     }
     var isValid: Bool {
-        return (payeeId > 0 && [.withdrawal, .deposit].contains(transCode)) || (toAccountId > 0 && transCode == .transfer) && categId > 0
+        return (payeeId > 0 && [.withdrawal, .deposit].contains(transCode)) || (toAccountId > 0 && transCode == .transfer) && (categId > 0 || !splits.isEmpty)
     }
 }
 
@@ -162,8 +163,17 @@ extension TransactionData {
         ),
         TransactionData(
             id: 3, accountId: 3, toAccountId: 2, transCode: TransactionType.transfer,
-            transAmount: 30.03, status: TransactionStatus.none, categId: 1,
+            transAmount: 30.03, status: TransactionStatus.none,
+            notes: "transfer transacion data",
+            categId: 1,
             transDate: String(Date().ISO8601Format().dropLast())
+        ),
+        TransactionData(
+            id: 4, accountId: 3, payeeId: 2, transCode: TransactionType.withdrawal,
+            transAmount: 40.04, status: TransactionStatus.none,
+            notes: "split transacion data",
+            transDate: String(Date().ISO8601Format().dropLast()),
+            splits: TransactionSplitData.sampleData
         ),
     ]
 }
