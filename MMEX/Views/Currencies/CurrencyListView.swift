@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CurrencyListView: View {
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @State private var currencies: [Bool: [CurrencyData]] = [:]
+    @State private var currencyData: [CurrencyData] = []
     @State private var newCurrency = emptyCurrency
     @State private var isPresentingCurrencyAddView = false
     @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
@@ -36,8 +36,8 @@ struct CurrencyListView: View {
                             .foregroundColor(.gray)
                     }
                 }) {
-                    if let inUseCurrencies = currencies[true] {
-                        ForEach(inUseCurrencies) { currency in
+                    ForEach(currencyData) { currency in
+                        if dataManager.currencyData[currency.id] != nil {
                             NavigationLink(destination: CurrencyDetailView(currency: currency)) {
                                 HStack {
                                     Text(currency.name)
@@ -64,8 +64,8 @@ struct CurrencyListView: View {
                 }) {
                     // Show account list based on expandedSections state
                     if expandedSections[false] == true {
-                        if let notInUseCurrencies = currencies[false] {
-                            ForEach(notInUseCurrencies) { currency in
+                        ForEach(currencyData) { currency in
+                            if dataManager.currencyData[currency.id] == nil {
                                 NavigationLink(destination: CurrencyDetailView(currency: currency)) {
                                     HStack {
                                         Text(currency.name)
@@ -76,7 +76,6 @@ struct CurrencyListView: View {
                             }
                         }
                     }
-                    
                 }
             }
             .toolbar {
@@ -100,20 +99,12 @@ struct CurrencyListView: View {
     }
     
     func loadCurrencies() {
+        let repository = dataManager.currencyRepository
         DispatchQueue.global(qos: .background).async {
-            // Get a set of all currency IDs used by accounts
-            let accountCurrencyId = Set(dataManager.accountRepository?.loadCurrencyId() ?? [])
- 
-            // Categorize currencies into in-use (true) and not-in-use (false)
-            let loadedCurrencies = dataManager.currencyRepository?.load() ?? []
-            let currenciesByUsed = Dictionary(
-                grouping: loadedCurrencies,
-                by: { accountCurrencyId.contains($0.id) }
-            )
-
+            let data = repository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
-                self.currencies = currenciesByUsed
+                self.currencyData = data
             }
         }
     }

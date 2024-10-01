@@ -83,7 +83,7 @@ class InsightsViewModel: ObservableObject {
 
         // fetch open accounts
         DispatchQueue.global(qos: .background).async {
-            let dataByType = repository?.selectByType(
+            let dataByType = repository?.loadByType(
                 from: table.order(AccountRepository.col_name)
             ) ?? [:]
             // Update the published stats on the main thread

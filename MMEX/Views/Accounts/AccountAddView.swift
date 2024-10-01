@@ -10,13 +10,16 @@ import SwiftUI
 struct AccountAddView: View {
     @Binding var newAccount: AccountData
     @Binding var isPresentingAccountAddView: Bool
-    @Binding var currencies: [(Int64, String)] // Bind to the list of available currencies
+    @Binding var currencyName: [(Int64, String)] // Bind to the list of available currencies
 
     var onSave: (inout AccountData) -> Void
     
     var body: some View {
         NavigationStack {
-            AccountEditView(account: $newAccount, currencies: $currencies)
+            AccountEditView(
+                account: $newAccount,
+                currencyName: $currencyName
+            )
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
@@ -38,7 +41,7 @@ struct AccountAddView: View {
     AccountAddView(
         newAccount: .constant(AccountData()),
         isPresentingAccountAddView: .constant(true),
-        currencies: .constant(CurrencyData.sampleData.map {
+        currencyName: .constant(CurrencyData.sampleData.map {
             ($0.id, $0.name)
         } )
     ) { newAccount in

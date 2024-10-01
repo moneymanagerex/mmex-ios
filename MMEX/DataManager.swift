@@ -130,11 +130,13 @@ extension DataManager {
 extension DataManager {
     func loadCache() {
         loadCurrency()
+        loadAccount()
     }
 
     func closeCache() {
         currencyData = [:]
         currencyFormatter = [:]
+        accountData = [:]
     }
 
     func loadCurrency() {
@@ -163,6 +165,10 @@ extension DataManager {
                 self.accountData = data
             }
         }
+    }
+
+    func updateAccount(id: Int64, data: AccountData) {
+        accountData[id] = data
     }
 }
 

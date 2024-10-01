@@ -10,7 +10,7 @@ import SwiftUI
 struct AccountDetailView: View {
     @State var account: AccountData
     @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @Binding var currencies: [(Int64, String)] // Bind to the list of available currencies
+    @Binding var currencyName: [(Int64, String)] // Bind to the list of available currencies
 
     @State private var editingAccount = AccountData()
     @State private var isPresentingEditView = false
@@ -48,6 +48,7 @@ struct AccountDetailView: View {
             Section(header: Text("Notes")) {
                 Text(account.notes)  // Display notes if they are not nil
             }
+            // TODO: cannot delete account in use
             Button("Delete Account") {
                 deleteAccount()
             }
@@ -77,7 +78,8 @@ struct AccountDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 AccountEditView(
-                    account: $editingAccount, currencies: $currencies
+                    account: $editingAccount,
+                    currencyName: $currencyName
                 )
                 .navigationTitle(account.name)
                 .toolbar {
@@ -118,6 +120,7 @@ struct AccountDetailView: View {
             if dataManager.currencyData[account.currencyId] == nil {
                 dataManager.loadCurrency()
             }
+            dataManager.updateAccount(id: account.id, data: account)
         } else {
             // Handle failure
         }
@@ -126,6 +129,7 @@ struct AccountDetailView: View {
     func deleteAccount() {
         guard let repository = dataManager.accountRepository else { return }
         if repository.delete(account) {
+            dataManager.loadAccount()
             presentationMode.wrappedValue.dismiss()
         } else {
             // Handle deletion failure
@@ -136,7 +140,7 @@ struct AccountDetailView: View {
 #Preview {
     AccountDetailView(
         account: AccountData.sampleData[0],
-        currencies: .constant(CurrencyData.sampleData.map {
+        currencyName: .constant(CurrencyData.sampleData.map {
             ($0.id, $0.name)
         } )
     )
@@ -146,7 +150,7 @@ struct AccountDetailView: View {
 #Preview {
     AccountDetailView(
         account: AccountData.sampleData[1],
-        currencies: .constant(CurrencyData.sampleData.map {
+        currencyName: .constant(CurrencyData.sampleData.map {
             ($0.id, $0.name)
         } )
     )
