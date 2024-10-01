@@ -208,9 +208,7 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         txn: TransactionData.sampleData[0],
-        accountId: .constant(AccountData.sampleData.map { account in
-            account.id
-        } ),
+        accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData)
     )
@@ -220,9 +218,7 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         txn: TransactionData.sampleData[2],
-        accountId: .constant(AccountData.sampleData.map { account in
-            account.id
-        } ),
+        accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData)
     )
@@ -232,9 +228,7 @@ struct TransactionDetailView: View {
 #Preview {
     TransactionDetailView(
         txn: TransactionData.sampleData[3],
-        accountId: .constant(AccountData.sampleData.map { account in
-            account.id
-        }),
+        accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData)
     )
