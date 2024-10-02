@@ -148,8 +148,13 @@ class InfotableViewModel: ObservableObject {
     }
     
     func filterTransactions(by query: String) {
-        let filteredTxns = query.isEmpty ? txns : txns.filter { $0.notes.localizedCaseInsensitiveContains(query) }
-        // TODO: refine and consolidate 
+        let filteredTxns = query.isEmpty ? txns : txns.filter { txn in
+            txn.notes.localizedCaseInsensitiveContains(query) ||
+            txn.splits.contains { split in
+                split.notes.localizedCaseInsensitiveContains(query)
+            }
+        }
+        // TODO: refine and consolidate
         self.txns_per_day = Dictionary(grouping: filteredTxns) { txn in
             // Extract the date portion (ignoring the time) from ISO-8601 string
             let formatter = DateFormatter()
