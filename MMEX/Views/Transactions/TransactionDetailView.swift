@@ -13,7 +13,7 @@ struct TransactionDetailView: View {
     @Binding var accountId: [Int64]  // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
-    @State var txn: TransactionData
+    @Binding var txn: TransactionData
 
     @State private var editingTxn = TransactionData()
     @State private var isPresentingEditView = false
@@ -187,7 +187,7 @@ struct TransactionDetailView: View {
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
-        txn: TransactionData.sampleData[0]
+        txn: .constant(TransactionData.sampleData[0])
     )
     .environmentObject(DataManager.sampleDataManager)
 }
@@ -198,7 +198,7 @@ struct TransactionDetailView: View {
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
-        txn: TransactionData.sampleData[2]
+        txn: .constant(TransactionData.sampleData[2])
     )
     .environmentObject(DataManager.sampleDataManager)
 }
@@ -209,7 +209,7 @@ struct TransactionDetailView: View {
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
-        txn: TransactionData.sampleData[3]
+        txn: .constant(TransactionData.sampleData[3])
     )
     .environmentObject(DataManager.sampleDataManager)
 }

@@ -33,7 +33,7 @@ struct TransactionListView2: View {
                         }
                     ) {
                         ForEach(viewModel.txns_per_day[day]!, id: \.id) { txn in
-                            transactionView(txn)
+                            transactionView(txn, for: day)
                         }
                     }
                 }
@@ -71,13 +71,22 @@ struct TransactionListView2: View {
         }
     }
 
-    func transactionView(_ txn: TransactionData) -> some View {
+    func transactionView(_ txn: TransactionData, for day: String) -> some View {
         NavigationLink(destination: TransactionDetailView(
             viewModel: viewModel,
             accountId: $accountId,
             categories: $categories,
             payees: $payees,
-            txn: txn
+            txn: Binding(
+                get: {
+                    self.viewModel.txns_per_day[day]?.first(where: { $0.id == txn.id }) ?? txn
+                },
+                set: { newTxn in
+                    if let index = self.viewModel.txns_per_day[day]?.firstIndex(where: { $0.id == txn.id }) {
+                        self.viewModel.txns_per_day[day]?[index] = newTxn
+                    }
+                }
+            )
         ) ) {
             HStack {
                 // Left column (Category Icon or Category Name)

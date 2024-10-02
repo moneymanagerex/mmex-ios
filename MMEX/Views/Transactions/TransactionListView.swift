@@ -23,7 +23,7 @@ struct TransactionListView: View {
     var body: some View {
         NavigationStack {
             if viewModel.resetCurrentHeader() {} // TODO: better reset?
-            List(viewModel.txns) { txn in
+            List($viewModel.txns) { $txn in
                 if (viewModel.newDateHeader(transDate: txn.transDate)) {
                     Text(viewModel.currentHeader)
                 }
@@ -32,7 +32,7 @@ struct TransactionListView: View {
                     accountId: $accountId,
                     categories: $categories,
                     payees: $payees,
-                    txn: txn
+                    txn: $txn
                 ) ) {
                     HStack {
                         // Left column: Date (truncated to day)
