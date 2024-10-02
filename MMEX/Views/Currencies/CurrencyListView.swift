@@ -108,9 +108,3 @@ struct CurrencyListView: View {
     )
     .environmentObject(DataManager.sampleDataManager)
 }
-
-#Preview {
-    NavigationStack { List { Section("Currency") {
-        CurrencyListView().itemView(CurrencyData.sampleData[0])
-    } } }
-}

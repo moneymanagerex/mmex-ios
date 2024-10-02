@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct MMEXApp: App {
-    @StateObject private var dataManager = DataManager()
+    @StateObject private var dataManager = DataManager(withStoredDatabase: ())
 
     var body: some Scene {
         WindowGroup {

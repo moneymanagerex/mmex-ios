@@ -9,49 +9,62 @@ import Foundation
 import SQLite
 
 class DataManager: ObservableObject {
+    // for file database: db != nil && databaseURL != nil
+    // for in-memmory database: db != nil && databaseURL == nil
     @Published var isDatabaseConnected = false
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
-
+    
     // cache
     var currencyCache = CurrencyCache()
     var accountCache  = AccountCache()
 
-    init() {
+    init(withStoredDatabase: Void) {
         connectToStoredDatabase()
     }
-    
-    init(withoutConnection: Void) {
+
+    init(withSampleDatabaseInMemory: Void) {
+        createDatabase(at: nil, sampleData: true)
+    }
+
+    init() {
     }
 }
 
 extension DataManager {
-    func openDatabase(at url: URL, isNew: Bool = false) {
-        if url.startAccessingSecurityScopedResource() {
-            defer { url.stopAccessingSecurityScopedResource() }
-            do {
-                db = try Connection(url.path)
-                print("Successfully connected to database: \(url.path)")
-            } catch {
-                db = nil
-                print("Failed to connect to database: \(error)")
+    func openDatabase(at url: URL?, isNew: Bool = false) {
+        db = nil
+        if let url {
+            if url.startAccessingSecurityScopedResource() {
+                defer { url.stopAccessingSecurityScopedResource() }
+                do {
+                    db = try Connection(url.path)
+                    print("Successfully connected to database: \(url.path)")
+                } catch {
+                    print("Failed to connect to database: \(error)")
+                }
+            } else {
+                print("Failed to access security-scoped resource: \(url.path)")
             }
-        } else {
-            db = nil
-            print("Failed to access security-scoped resource: \(url.path)")
+        } else if isNew {
+            do {
+                db = try Connection()
+                print("Successfully created database in memory")
+            } catch {
+                print("Failed to create database in memory: \(error)")
+            }
         }
-        
+
         if let db {
             isDatabaseConnected = true
             databaseURL = url
             _ = Repository(db).setPragma(name: "journal_mode", value: "MEMORY")
+            if !isNew {
+                loadCache()
+            }
         } else {
             isDatabaseConnected = false
             databaseURL = nil
-        }
-
-        if !isNew {
-            loadCache()
         }
     }
 
@@ -65,7 +78,7 @@ extension DataManager {
         openDatabase(at: storedURL)
     }
 
-    func createDatabase(at url: URL, sampleData: Bool) {
+    func createDatabase(at url: URL?, sampleData: Bool) {
         openDatabase(at: url, isNew: true)
         guard let db else { return }
 
@@ -190,7 +203,8 @@ extension DataManager {
 
 extension DataManager {
     static let sampleDataManager: DataManager = {
-        var dataManager = DataManager(withoutConnection: ())
+        var dataManager = DataManager(withSampleDatabaseInMemory: ())
+/*
         let usedCurrencyId = Array(Set(
             AccountData.sampleData.map { $0.currencyId }
         ) )
@@ -202,6 +216,7 @@ extension DataManager {
         dataManager.accountCache.load(Dictionary(
             uniqueKeysWithValues: AccountData.sampleData.map { ($0.id, $0) }
         ) )
+*/
         return dataManager
     } ()
 }
