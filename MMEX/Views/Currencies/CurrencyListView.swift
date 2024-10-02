@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CurrencyListView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
 
     @State private var allCurrencyData: [CurrencyData] = [] // sorted by name
     @State private var newCurrency = emptyCurrency
@@ -41,7 +41,7 @@ struct CurrencyListView: View {
                     }) {
                         if expandedSections[inUse] == true {
                             ForEach(allCurrencyData) { currency in
-                                if (dataManager.currencyCache[currency.id] != nil) == inUse {
+                                if (env.currencyCache[currency.id] != nil) == inUse {
                                     itemView(currency)
                                 }
                             }
@@ -83,7 +83,7 @@ struct CurrencyListView: View {
     }
 
     func loadCurrencyData() {
-        let repository = dataManager.currencyRepository
+        let repository = env.currencyRepository
         DispatchQueue.global(qos: .background).async {
             let data = repository?.load() ?? []
             // Update UI on the main thread
@@ -94,7 +94,7 @@ struct CurrencyListView: View {
     }
 
     func addCurrency(_ currency: inout CurrencyData) {
-        guard let repository = dataManager.currencyRepository else { return }
+        guard let repository = env.currencyRepository else { return }
         if repository.insert(&currency) {
             self.loadCurrencyData()
         } else {
@@ -106,5 +106,5 @@ struct CurrencyListView: View {
 #Preview {
     CurrencyListView(
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

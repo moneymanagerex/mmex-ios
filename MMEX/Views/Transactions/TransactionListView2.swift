@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionListView2: View {
-    @EnvironmentObject var dataManager: DataManager
+    @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: InfotableViewModel
 
     @State private var accountId: [Int64] = []  // sorted by name
@@ -113,7 +113,7 @@ struct TransactionListView2: View {
                 Spacer() // To push the amount to the right side
 
                 if let currencyId = self.accountDict[txn.accountId]?.currencyId,
-                   let currencyFormatter = dataManager.currencyCache[currencyId]?.formatter
+                   let currencyFormatter = env.currencyCache[currencyId]?.formatter
                 {
                     // Right column (Transaction Amount)
                     VStack {
@@ -125,10 +125,10 @@ struct TransactionListView2: View {
                         // amount in base currency
                         if let baseCurrencyId = viewModel.baseCurrency?.id,
                            baseCurrencyId != currencyId,
-                           let baseConvRate = dataManager.currencyCache[currencyId]?.baseConvRate
+                           let baseConvRate = env.currencyCache[currencyId]?.baseConvRate
                         {
                             Text((txn.transAmount * baseConvRate)
-                                .formatted(by: dataManager.currencyCache[baseCurrencyId]?.formatter)
+                                .formatted(by: env.currencyCache[baseCurrencyId]?.formatter)
                             )
                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                             .font(.system(size: 14, weight: .medium))
@@ -147,7 +147,7 @@ struct TransactionListView2: View {
     }
     
     func loadAccounts() {
-        let repository = dataManager.accountRepository
+        let repository = env.accountRepository
         DispatchQueue.global(qos: .background).async {
             typealias A = AccountRepository
             let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
@@ -162,7 +162,7 @@ struct TransactionListView2: View {
     }
     
     func loadCategories() {
-        let repository = dataManager.categoryRepository
+        let repository = env.categoryRepository
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository?.load() ?? []
             let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
@@ -174,7 +174,7 @@ struct TransactionListView2: View {
     }
 
     func loadPayees() {
-        let repository = dataManager.payeeRepository
+        let repository = env.payeeRepository
 
         DispatchQueue.global(qos: .background).async {
             let loadedPayees = repository?.load() ?? []
@@ -250,4 +250,11 @@ struct TransactionListView2: View {
         }
         return dateTimeString // Fallback if parsing fails
     }
+}
+
+#Preview {
+    TransactionListView2(
+        viewModel: InfotableViewModel(env: EnvironmentManager.sampleData)
+    )
+    .environmentObject(EnvironmentManager.sampleData)
 }

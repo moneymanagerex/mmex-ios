@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionEditView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @Binding var accountId: [Int64] // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
@@ -43,7 +43,7 @@ struct TransactionEditView: View {
                         Text("Account").tag(0 as Int64) // not set
                     }
                     ForEach(accountId, id: \.self) { id in
-                        if let account = dataManager.accountCache[id] {
+                        if let account = env.accountCache[id] {
                             Text(account.name).tag(id)
                         }
                     }
@@ -112,7 +112,7 @@ struct TransactionEditView: View {
                             Text("Account").tag(0 as Int64) // not set
                         }
                         ForEach(accountId, id: \.self) { id in
-                            if let account = dataManager.accountCache[id],
+                            if let account = env.accountCache[id],
                                id != txn.accountId
                             {
                                 Text(account.name).tag(id)
@@ -170,7 +170,7 @@ struct TransactionEditView: View {
                                 Text(getCategoryName(for: split.categId))
                                     .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                                 Text(split.amount.formatted(
-                                    by: dataManager.currencyCache[dataManager.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
+                                    by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
                                 ))
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
                                 Text(split.notes)
@@ -260,7 +260,7 @@ struct TransactionEditView: View {
     }
 
     func loadLatestTxn() {
-        if let latestTxn = dataManager.transactionRepository?.latest(accountID: txn.accountId) ?? dataManager.transactionRepository?.latest() {
+        if let latestTxn = env.transactionRepository?.latest(accountID: txn.accountId) ?? env.transactionRepository?.latest() {
             // Update UI on the main thread
             DispatchQueue.main.async {
                 if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId == 0) {
@@ -282,7 +282,7 @@ struct TransactionEditView: View {
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[0])
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview {
@@ -292,5 +292,5 @@ struct TransactionEditView: View {
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[3])
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

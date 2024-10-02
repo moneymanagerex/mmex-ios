@@ -194,10 +194,10 @@ extension AccountRepository {
     func dictFlowByStatus(
         from table: SQLite.Table = Self.table,
         minDate: String? = nil,
-        maxDate: String? = nil
+        supDate: String? = nil
     ) -> [Int64: AccountFlowByStatus] {
         let minDate = minDate ?? ""
-        let supDate = (maxDate ?? "") + "z"
+        let supDate = supDate ?? "z"
 
         typealias T = TransactionRepository
         let B_query = T.table.select(

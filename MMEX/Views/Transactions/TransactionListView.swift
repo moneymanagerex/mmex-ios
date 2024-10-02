@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionListView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: InfotableViewModel
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
@@ -82,7 +82,7 @@ struct TransactionListView: View {
             viewModel.loadTransactions()
 
             // database level setting
-            let repository = dataManager.infotableRepository
+            let repository = env.infotableRepository
             if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
                 newTxn.accountId = storedDefaultAccount
             }
@@ -102,7 +102,7 @@ struct TransactionListView: View {
     }
 
     func loadAccount() {
-        let repository = dataManager.accountRepository
+        let repository = env.accountRepository
         DispatchQueue.global(qos: .background).async {
             typealias A = AccountRepository
             let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
@@ -113,7 +113,7 @@ struct TransactionListView: View {
     }
     
     func loadCategory() {
-        let repository = dataManager.categoryRepository
+        let repository = env.categoryRepository
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository?.load() ?? []
             let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
@@ -125,7 +125,7 @@ struct TransactionListView: View {
     }
 
     func loadPayee() {
-        let repository = dataManager.payeeRepository
+        let repository = env.payeeRepository
 
         DispatchQueue.global(qos: .background).async {
             let loadedPayees = repository?.load() ?? []
@@ -142,7 +142,7 @@ struct TransactionListView: View {
     func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
-            if let toAccount = dataManager.accountCache[txn.toAccountId] {
+            if let toAccount = env.accountCache[txn.toAccountId] {
                 return String(format: "> \(toAccount.name)")
             }
         }
@@ -173,7 +173,7 @@ struct TransactionListView: View {
 
 #Preview {
     TransactionListView(
-        viewModel: InfotableViewModel(dataManager: DataManager())
+        viewModel: InfotableViewModel(env: EnvironmentManager.sampleData)
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

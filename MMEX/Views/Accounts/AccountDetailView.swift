@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountDetailView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
     @State var account: AccountData
 
@@ -19,7 +19,7 @@ struct AccountDetailView: View {
     @State private var isExporting = false
 
     var body: some View {
-        let currency = dataManager.currencyCache[account.currencyId]
+        let currency = env.currencyCache[account.currencyId]
         let formatter = currency?.formatter
         List {
             Section(header: Text("Name")) {
@@ -164,22 +164,22 @@ struct AccountDetailView: View {
     }
 
     func updateAccount() {
-        guard let repository = dataManager.accountRepository else { return }
+        guard let repository = env.accountRepository else { return }
         if repository.update(account) {
             // Successfully updated
-            if dataManager.currencyCache[account.currencyId] == nil {
-                dataManager.loadCurrency()
+            if env.currencyCache[account.currencyId] == nil {
+                env.loadCurrency()
             }
-            dataManager.accountCache.update(id: account.id, data: account)
+            env.accountCache.update(id: account.id, data: account)
         } else {
             // Handle failure
         }
     }
     
     func deleteAccount() {
-        guard let repository = dataManager.accountRepository else { return }
+        guard let repository = env.accountRepository else { return }
         if repository.delete(account) {
-            dataManager.loadAccount()
+            env.loadAccount()
             presentationMode.wrappedValue.dismiss()
         } else {
             // Handle deletion failure
@@ -192,7 +192,7 @@ struct AccountDetailView: View {
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         account: AccountData.sampleData[0]
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview {
@@ -200,5 +200,5 @@ struct AccountDetailView: View {
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         account: AccountData.sampleData[1]
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

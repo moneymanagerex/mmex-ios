@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionAddView2: View {    
     @State var newTxn: TransactionData = TransactionData()
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: InfotableViewModel
     @Binding var selectedTab: Int // Bind to the selected tab
 
@@ -57,7 +57,7 @@ struct TransactionAddView2: View {
             // TODO update category, payee associated?
             
             // database level setting
-            let repository = dataManager.infotableRepository
+            let repository = env.infotableRepository
             if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
                 newTxn.accountId = storedDefaultAccount
             }
@@ -65,7 +65,7 @@ struct TransactionAddView2: View {
     }
 
     func loadAccounts() {
-        let repository = dataManager.accountRepository
+        let repository = env.accountRepository
         DispatchQueue.global(qos: .background).async {
             typealias A = AccountRepository
             let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
@@ -78,7 +78,7 @@ struct TransactionAddView2: View {
     func loadPayees() {
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = dataManager.payeeRepository?.load() ?? []
+            let loadedPayees = env.payeeRepository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
@@ -88,7 +88,7 @@ struct TransactionAddView2: View {
     
     func loadCategories() {
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = dataManager.categoryRepository?.load() ?? []
+            let loadedCategories = env.categoryRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.categories = loadedCategories
             }

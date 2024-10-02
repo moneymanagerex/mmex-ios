@@ -10,7 +10,7 @@ import SwiftUI
 struct CategoryListView: View {
     @State private var categories: [CategoryData] = []
     @State private var filteredCategories: [CategoryData] = []
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     
     @State private var isPresentingAddView = false
     @State private var newCategory = CategoryData()
@@ -53,7 +53,7 @@ struct CategoryListView: View {
     
     func loadCategories() {
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = dataManager.categoryRepository?.load() ?? []
+            let loadedCategories = env.categoryRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.categories = loadedCategories
                 self.filteredCategories = loadedCategories
@@ -62,7 +62,7 @@ struct CategoryListView: View {
     }
 
     func addCategory(category: inout CategoryData) {
-        guard let repository = dataManager.categoryRepository else { return }
+        guard let repository = env.categoryRepository else { return }
         if repository.insert(&category) {
             self.categories.append(category)
         }
@@ -80,5 +80,5 @@ struct CategoryListView: View {
 
 #Preview {
     CategoryListView()
-        .environmentObject(DataManager())
+        .environmentObject(EnvironmentManager.sampleData)
 }

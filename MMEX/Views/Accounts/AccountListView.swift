@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct AccountListView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
 
     @State private var allCurrencyName: [(Int64, String)] = [] // sorted by name
     @State private var allAccountDataByType: [AccountType: [AccountData]] = [:] // sorted by name
@@ -97,7 +97,7 @@ struct AccountListView: View {
                 
                 Spacer()
                 
-                if let currency = dataManager.currencyCache[account.currencyId] {
+                if let currency = env.currencyCache[account.currencyId] {
                     Text(currency.name)
                         .font(.subheadline)
                 }
@@ -114,7 +114,7 @@ struct AccountListView: View {
     }
     
     func loadCurrencyName() {
-        let repo = dataManager.currencyRepository
+        let repo = env.currencyRepository
         DispatchQueue.global(qos: .background).async {
             let id_name = repo?.loadName() ?? []
             DispatchQueue.main.async {
@@ -126,7 +126,7 @@ struct AccountListView: View {
 
     func loadAccountData() {
         print("Loading payees in AccountListView...")
-        let repository = dataManager.accountRepository
+        let repository = env.accountRepository
         DispatchQueue.global(qos: .background).async {
             typealias A = AccountRepository
             let dataByType = repository?.loadByType(
@@ -140,13 +140,13 @@ struct AccountListView: View {
     }
 
     func addAccount(account: inout AccountData) {
-        guard let repository = dataManager.accountRepository else { return }
+        guard let repository = env.accountRepository else { return }
         if repository.insert(&account) {
             // self.accounts.append(account)
-            if dataManager.currencyCache[account.currencyId] == nil {
-                dataManager.loadCurrency()
+            if env.currencyCache[account.currencyId] == nil {
+                env.loadCurrency()
             }
-            dataManager.accountCache.update(id: account.id, data: account)
+            env.accountCache.update(id: account.id, data: account)
             self.loadAccountData()
         }
     }
@@ -155,5 +155,5 @@ struct AccountListView: View {
 #Preview {
     AccountListView(
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

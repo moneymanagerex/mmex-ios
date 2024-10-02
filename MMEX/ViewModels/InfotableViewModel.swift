@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import SQLite
 import Combine
 
@@ -19,7 +20,7 @@ class InfotableViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     //
-    private var dataManager: DataManager
+    private var env: EnvironmentManager
     private var infotableRepo: InfotableRepository?
     private var transactionRepo: TransactionRepository?
     private var accountRepo: AccountRepository?
@@ -33,13 +34,13 @@ class InfotableViewModel: ObservableObject {
 
     var currentHeader = ""
 
-    init(dataManager: DataManager) {
-        self.dataManager = dataManager
+    init(env: EnvironmentManager) {
+        self.env = env
 
-        self.infotableRepo = self.dataManager.infotableRepository
-        self.transactionRepo = self.dataManager.transactionRepository
-        self.accountRepo = self.dataManager.accountRepository
-        self.currencyRepo = self.dataManager.currencyRepository
+        self.infotableRepo = self.env.infotableRepository
+        self.transactionRepo = self.env.transactionRepository
+        self.accountRepo = self.env.accountRepository
+        self.currencyRepo = self.env.currencyRepository
         loadInfo()
         setupBindings()
         loadAccounts()
@@ -126,7 +127,7 @@ class InfotableViewModel: ObservableObject {
             for i in loadTransactions.indices {
                 // TODO other better indicator
                 if loadTransactions[i].categId <= 0 {
-                    loadTransactions[i].splits = self.dataManager.transactionSplitRepository?.load(for: loadTransactions[i]) ?? []
+                    loadTransactions[i].splits = self.env.transactionSplitRepository?.load(for: loadTransactions[i]) ?? []
                 }
             }
 
@@ -175,7 +176,7 @@ class InfotableViewModel: ObservableObject {
             txn.toAccountId = 0
         }
 
-        guard let repository = dataManager.transactionRepository else { return }
+        guard let repository = env.transactionRepository else { return }
 
         if repository.insertWithSplits(&txn) {
             self.txns.append(txn) // id is ready after repo call
@@ -184,12 +185,12 @@ class InfotableViewModel: ObservableObject {
         }
     }
     func updateTransaction(_ data: inout TransactionData) -> Bool {
-        guard let repository = dataManager.transactionRepository else { return false } 
+        guard let repository = env.transactionRepository else { return false } 
         return repository.updateWithSplits(&data)
     }
     func deleteTransaction(_ data: TransactionData) -> Bool {
-        guard let repository = dataManager.transactionRepository else { return false }
-        guard let repositorySplit = dataManager.transactionSplitRepository else { return false }
+        guard let repository = env.transactionRepository else { return false }
+        guard let repositorySplit = env.transactionSplitRepository else { return false }
         return repository.delete(data) && repositorySplit.delete(data)
     }
 

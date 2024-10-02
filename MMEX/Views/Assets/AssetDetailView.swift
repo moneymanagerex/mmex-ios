@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AssetDetailView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @Binding var asset: AssetData
 
     @State private var editingAsset = AssetData()
@@ -118,7 +118,7 @@ struct AssetDetailView: View {
     }
 
     func saveChanges() {
-        let repository = dataManager.assetRepository // pass URL here
+        let repository = env.assetRepository // pass URL here
         if repository?.update(asset) == true {
             // TODO
         } else {
@@ -127,7 +127,7 @@ struct AssetDetailView: View {
     }
 
     func deleteAsset(){
-        let repository = dataManager.assetRepository // pass URL here
+        let repository = env.assetRepository // pass URL here
         if repository?.delete(asset) == true {
             // Dismiss the AssetDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()
