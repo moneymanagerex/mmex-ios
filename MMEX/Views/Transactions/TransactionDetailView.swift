@@ -19,8 +19,6 @@ struct TransactionDetailView: View {
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
-    @State private var account: AccountData?
-    @State private var toAccount: AccountData?
     @State private var isExporting = false
 
     var body: some View {
@@ -35,7 +33,7 @@ struct TransactionDetailView: View {
 
             Section(header: Text("Transaction Amount")) {
                 Text(txn.transAmount.formatted(
-                    by: env.currencyCache[account?.currencyId ?? 0]?.formatter
+                    by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
                 ))
             }
 
@@ -84,7 +82,7 @@ struct TransactionDetailView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
 
                             Text(split.amount.formatted(
-                                by: env.currencyCache[account?.currencyId ?? 0]?.formatter
+                                by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
                             ))
                             .frame(width: 80, alignment: .center) // Centered with fixed width
 
