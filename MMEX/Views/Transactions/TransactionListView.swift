@@ -173,7 +173,7 @@ struct TransactionListView: View {
 
 #Preview {
     TransactionListView(
-        viewModel: InfotableViewModel(dataManager: DataManager())
+        viewModel: MockInfotableViewModel(dataManager: DataManager())
     )
     .environmentObject(DataManager.sampleDataManager)
 }

@@ -185,3 +185,14 @@ class InfotableViewModel: ObservableObject {
         }
     }
 }
+
+class MockInfotableViewModel: InfotableViewModel {
+    override init(dataManager: DataManager) {
+        super.init(dataManager: dataManager)
+        // various sampleData from Models
+        self.txns = TransactionData.sampleData
+    }
+    override func loadTransactions() {
+        //
+    }
+}
