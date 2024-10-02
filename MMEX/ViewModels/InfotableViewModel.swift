@@ -146,6 +146,27 @@ class InfotableViewModel: ObservableObject {
             }
         }
     }
+    
+    func filterTransactions(by query: String) {
+        let filteredTxns = query.isEmpty ? txns : txns.filter { txn in
+            txn.notes.localizedCaseInsensitiveContains(query) ||
+            txn.splits.contains { split in
+                split.notes.localizedCaseInsensitiveContains(query)
+            }
+        }
+        // TODO: refine and consolidate
+        self.txns_per_day = Dictionary(grouping: filteredTxns) { txn in
+            // Extract the date portion (ignoring the time) from ISO-8601 string
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
+
+            if let date = formatter.date(from: txn.transDate) {
+                formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
+                return formatter.string(from: date)
+            }
+            return txn.transDate // If parsing fails, return original string
+        }
+    }
 
     func addTransaction(txn: inout TransactionData) {
         if txn.transCode == .transfer {

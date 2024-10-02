@@ -37,7 +37,7 @@ struct AssetListView: View {
                 })
                 .accessibilityLabel("New Asset")
             }
-            .searchable(text: $searchQuery) // New: Search bar
+            .searchable(text: $searchQuery, prompt: "Search by name") // New: Search bar
             .onChange(of: searchQuery) { _, query in
                 filterAssets(by: query)
             }

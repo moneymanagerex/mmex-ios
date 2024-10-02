@@ -18,6 +18,7 @@ struct TransactionListView2: View {
     @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
     @State private var payees: [PayeeData] = []
     @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
+    @State private var searchQuery: String = "" // New: Search query
     
     var body: some View {
         NavigationStack {
@@ -39,14 +40,6 @@ struct TransactionListView2: View {
                 }
             }
             .toolbar {
-                // Search box on the top-left corner
-                ToolbarItem(placement: .navigationBarLeading) {
-                    HStack {
-                        Image(systemName: "magnifyingglass") // Search icon
-                        // TODO search by notes
-                    }
-                }
-
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Picker("Select Account", selection: $viewModel.defaultAccountId) {
                         ForEach(self.accounts) { account in
@@ -61,6 +54,10 @@ struct TransactionListView2: View {
                     }
                     .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
                 }
+            }
+            .searchable(text: $searchQuery, prompt: "Search by notes") // New: Search bar
+            .onChange(of: searchQuery) { _, query in
+                viewModel.filterTransactions(by: query)
             }
         }
         .onAppear {
