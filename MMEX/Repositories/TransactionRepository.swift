@@ -131,7 +131,7 @@ struct TransactionRepository: RepositoryProtocol {
 extension TransactionRepository {
     // load all transactions
     func load() -> [TransactionData] {
-        return select(from: Self.table)
+        return select(from: Self.table.order(Self.col_transDate.desc))
     }
 
     // load recent transactions
@@ -152,7 +152,7 @@ extension TransactionRepository {
             table = table.filter(Self.col_transDate <= String(endDate.ISO8601Format().dropLast()))
         }
 
-        return select(from: table)
+        return select(from: table.order(Self.col_transDate.desc))
     }
 
     // TODO: update payee's category mapping after insert & update ?

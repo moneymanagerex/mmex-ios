@@ -31,6 +31,8 @@ class InfotableViewModel: ObservableObject {
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
 
+    var currentHeader = ""
+
     init(dataManager: DataManager) {
         self.dataManager = dataManager
 
@@ -168,5 +170,18 @@ class InfotableViewModel: ObservableObject {
         guard let repository = dataManager.transactionRepository else { return false }
         guard let repositorySplit = dataManager.transactionSplitRepository else { return false }
         return repository.delete(data) && repositorySplit.delete(data)
+    }
+
+    func resetCurrentHeader() -> Bool {
+        currentHeader = " "
+        return true;
+    }
+    func newDateHeader(transDate: String) -> Bool {
+        if (transDate.hasPrefix(currentHeader)) {
+            return false
+        } else {
+            currentHeader = String(transDate.prefix(10))
+            return true
+        }
     }
 }

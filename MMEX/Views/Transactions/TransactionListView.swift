@@ -19,10 +19,14 @@ struct TransactionListView: View {
     @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
     @State private var payees: [PayeeData] = []
     @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
-    
+
     var body: some View {
         NavigationStack {
+            if viewModel.resetCurrentHeader() {} // TODO: better reset?
             List(viewModel.txns) { txn in
+                if (viewModel.newDateHeader(transDate: txn.transDate)) {
+                    Text(viewModel.currentHeader)
+                }
                 NavigationLink(destination: TransactionDetailView(
                     viewModel: viewModel,
                     accountId: $accountId,
