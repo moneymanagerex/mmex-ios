@@ -53,10 +53,11 @@ struct ContentView: View {
                     )
                 }
             } else {
+                let insightsViewModel = InsightsViewModel(env: env)
                 let infotableViewModel = InfotableViewModel(env: env)
                 TabView(selection: $selectedTab) {
                     transactionTab(viewModel: infotableViewModel)
-                    insightsTab(viewModel: InsightsViewModel(env: env))
+                    insightsTab(viewModel: insightsViewModel)
                     addTransactionTab(viewModel: infotableViewModel)
                     managementTab(viewModel: infotableViewModel)
                     settingsTab(viewModel: infotableViewModel)
@@ -277,5 +278,5 @@ struct TabContentView: View {
 
 #Preview(){
     ContentView()
-        .environmentObject(EnvironmentManager()) // Inject EnvironmentManager
+        .environmentObject(EnvironmentManager.sampleData) // Inject EnvironmentManager
 }

@@ -12,7 +12,7 @@ import Combine
 
 class InsightsViewModel: ObservableObject {
     private var env: EnvironmentManager
-    
+
     @Published var baseCurrency: CurrencyData?
     @Published var stats: [TransactionData] = [] // all transactions
     // Published properties for the view to observe
@@ -22,7 +22,7 @@ class InsightsViewModel: ObservableObject {
     @Published var accountInfo = InsightsAccountInfo()
     
     private var cancellables = Set<AnyCancellable>()
-    
+
     init(env: EnvironmentManager) {
         self.env = env
         self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
@@ -73,9 +73,9 @@ class InsightsViewModel: ObservableObject {
             }
         }
     }
-    
+
     func loadAccountInfo() {
-        self.accountInfo.today = String(self.endDate.ISO8601Format().dropLast())
+        self.accountInfo.today = String(self.endDate.ISO8601Format().prefix(10))
         let repository = env.accountRepository
         typealias A = AccountRepository
         let table = A.table
@@ -96,7 +96,7 @@ class InsightsViewModel: ObservableObject {
         DispatchQueue.global(qos: .background).async {
             let flowByStatus = repository?.dictFlowByStatus(
                 from: table,
-                maxDate: self.accountInfo.today
+                supDate: self.accountInfo.today + "z"
             ) ?? [:]
             DispatchQueue.main.async {
                 self.accountInfo.flowUntilToday = flowByStatus
@@ -110,7 +110,7 @@ class InsightsViewModel: ObservableObject {
                 minDate: self.accountInfo.today + "z"
             ) ?? [:]
             DispatchQueue.main.async {
-                self.accountInfo.flowUntilToday = flowByStatus
+                self.accountInfo.flowAfterToday = flowByStatus
             }
         }
     }
