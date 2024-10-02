@@ -251,3 +251,10 @@ struct TransactionListView2: View {
         return dateTimeString // Fallback if parsing fails
     }
 }
+
+#Preview {
+    TransactionListView2(
+        viewModel: InfotableViewModel(env: EnvironmentManager.sampleData)
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}

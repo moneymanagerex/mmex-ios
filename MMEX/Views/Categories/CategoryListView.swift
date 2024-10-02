@@ -80,5 +80,5 @@ struct CategoryListView: View {
 
 #Preview {
     CategoryListView()
-        .environmentObject(EnvironmentManager())
+        .environmentObject(EnvironmentManager.sampleData)
 }
