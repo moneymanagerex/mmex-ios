@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ManagementView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: InfotableViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
@@ -75,7 +75,7 @@ struct ManagementView: View {
 
                 // Close Database Button
                 Button(action: {
-                    dataManager.closeDatabase() // Calls method to handle closing the database
+                    env.closeDatabase() // Calls method to handle closing the database
                 }) {
                     Text("Close Database")
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -92,7 +92,7 @@ struct ManagementView: View {
 
 
 #Preview {
-    ManagementView(viewModel: InfotableViewModel(dataManager: DataManager()),
+    ManagementView(viewModel: InfotableViewModel(env: EnvironmentManager()),
         isDocumentPickerPresented: .constant(false), isNewDocumentPickerPresented: .constant(false), isSampleDocument: .constant(false))
-        .environmentObject(DataManager())
+        .environmentObject(EnvironmentManager())
 }

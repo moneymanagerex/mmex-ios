@@ -16,11 +16,11 @@ struct ContentView: View {
     @State private var isPresentingTransactionAddView = false
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    @EnvironmentObject var dataManager: DataManager
+    @EnvironmentObject var env: EnvironmentManager
 
     var body: some View {
         ZStack {
-            if dataManager.isDatabaseConnected {
+            if env.isDatabaseConnected {
                 connectedView
             } else {
                 disconnectedView
@@ -53,10 +53,10 @@ struct ContentView: View {
                     )
                 }
             } else {
-                let infotableViewModel = InfotableViewModel(dataManager: dataManager)
+                let infotableViewModel = InfotableViewModel(env: env)
                 TabView(selection: $selectedTab) {
                     transactionTab(viewModel: infotableViewModel)
-                    insightsTab(viewModel: InsightsViewModel(dataManager: dataManager))
+                    insightsTab(viewModel: InsightsViewModel(env: env))
                     addTransactionTab(viewModel: infotableViewModel)
                     managementTab(viewModel: infotableViewModel)
                     settingsTab(viewModel: infotableViewModel)
@@ -178,8 +178,8 @@ struct ContentView: View {
         switch result {
         case .success(let urls):
             if let url = urls.first {
-                dataManager.openDatabase(at: url)
-                guard dataManager.isDatabaseConnected else { return }
+                env.openDatabase(at: url)
+                guard env.isDatabaseConnected else { return }
                 print("Successfully opened database: \(url)")
                 UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -195,8 +195,8 @@ struct ContentView: View {
     private func handleFileExport(_ result: Result<URL, Error>) {
         switch result {
         case .success(let url):
-            dataManager.createDatabase(at: url, sampleData: isSampleDocument)
-            guard dataManager.isDatabaseConnected else { return }
+            env.createDatabase(at: url, sampleData: isSampleDocument)
+            guard env.isDatabaseConnected else { return }
             print("Successfully created database: \(url)")
             UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -238,12 +238,12 @@ struct TabContentView: View {
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
 
     var body: some View {
         print("DEBUG: TabContentView.body")
         // Use @StateObject to manage the lifecycle of InfotableViewModel
-        let infotableViewModel = InfotableViewModel(dataManager: dataManager)
+        let infotableViewModel = InfotableViewModel(env: env)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {
@@ -251,7 +251,7 @@ struct TabContentView: View {
                 TransactionListView2(viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
-                InsightsView(viewModel: InsightsViewModel(dataManager: dataManager))
+                InsightsView(viewModel: InsightsViewModel(env: env))
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
                 TransactionAddView2(viewModel: infotableViewModel, selectedTab: $selectedTab)
@@ -277,5 +277,5 @@ struct TabContentView: View {
 
 #Preview(){
     ContentView()
-        .environmentObject(DataManager()) // Inject DataManager
+        .environmentObject(EnvironmentManager()) // Inject EnvironmentManager
 }

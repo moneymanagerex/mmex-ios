@@ -54,5 +54,5 @@ struct TransactionAddView: View {
         // Handle saving in preview
         print("New payee: \(newTxn.id)")
     }
-    .environmentObject(DataManager())
+    .environmentObject(EnvironmentManager())
 }

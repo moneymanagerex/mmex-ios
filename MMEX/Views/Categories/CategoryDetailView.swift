@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CategoryDetailView: View {
     @Binding var category: CategoryData
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     
     @State private var editingCategory = CategoryData()
     @State private var isPresentingEditView = false
@@ -90,7 +90,7 @@ struct CategoryDetailView: View {
     }
     
     func saveChanges() {
-        let repository = dataManager.categoryRepository
+        let repository = env.categoryRepository
         if repository?.update(category) == true {
             // Handle success
         } else {
@@ -99,7 +99,7 @@ struct CategoryDetailView: View {
     }
     
     func deleteCategory() {
-        let repository = dataManager.categoryRepository
+        let repository = env.categoryRepository
         if repository?.delete(category) == true {
             // Dismiss the view and go back
             presentationMode.wrappedValue.dismiss()

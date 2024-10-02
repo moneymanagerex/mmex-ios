@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct MMEXApp: App {
-    @StateObject private var dataManager = DataManager(withStoredDatabase: ())
+    @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(dataManager)
+                .environmentObject(env)
         }
     }
 }

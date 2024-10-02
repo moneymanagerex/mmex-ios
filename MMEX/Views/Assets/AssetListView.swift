@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AssetListView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @State private var assets: [AssetData] = []
     @State private var filteredAssets: [AssetData] = [] // New: Filtered assets for search results
     @State private var newAsset = emptyAsset
@@ -57,7 +57,7 @@ struct AssetListView: View {
     func loadAssets() {
         // Fetch assets using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadedAssets = dataManager.assetRepository?.load() ?? []
+            let loadedAssets = env.assetRepository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.assets = loadedAssets
@@ -67,7 +67,7 @@ struct AssetListView: View {
     }
 
     func addAsset(asset: inout AssetData) {
-        guard let repository = dataManager.assetRepository else { return }
+        guard let repository = env.assetRepository else { return }
         if repository.insert(&asset) {
             self.assets.append(asset) // id is ready after repo call
             // loadAssets()
@@ -88,5 +88,5 @@ struct AssetListView: View {
 
 #Preview {
     AssetListView()
-        .environmentObject(DataManager())
+        .environmentObject(EnvironmentManager())
 }

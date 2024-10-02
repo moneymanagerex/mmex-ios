@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PayeeListView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @State private var payees: [PayeeData] = []
     @State private var filteredPayees: [PayeeData] = [] // New: Filtered payees for search results
     @State private var categories: [CategoryData] = []
@@ -61,7 +61,7 @@ struct PayeeListView: View {
     func loadPayees() {
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = dataManager.payeeRepository?.load() ?? []
+            let loadedPayees = env.payeeRepository?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
@@ -72,7 +72,7 @@ struct PayeeListView: View {
 
     func loadCategories() {
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = dataManager.categoryRepository?.load() ?? []
+            let loadedCategories = env.categoryRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.categories = loadedCategories
             }
@@ -80,7 +80,7 @@ struct PayeeListView: View {
     }
 
     func addPayee(payee: inout PayeeData) {
-        guard let repository = dataManager.payeeRepository else { return }
+        guard let repository = env.payeeRepository else { return }
         if repository.insert(&payee) {
             self.payees.append(payee) // id is ready after repo call
             // loadPayees()
@@ -101,5 +101,5 @@ struct PayeeListView: View {
 
 #Preview {
     PayeeListView()
-        .environmentObject(DataManager.sampleDataManager)
+        .environmentObject(EnvironmentManager.sampleData)
 }

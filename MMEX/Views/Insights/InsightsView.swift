@@ -91,5 +91,5 @@ struct InsightsView: View {
 }
 
 #Preview {
-    InsightsView(viewModel: InsightsViewModel(dataManager: DataManager()))
+    InsightsView(viewModel: InsightsViewModel(env: EnvironmentManager()))
 }

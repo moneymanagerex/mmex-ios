@@ -1,5 +1,5 @@
 //
-//  DataManager.swift
+//  EnvironmentManager.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/8.
@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-class DataManager: ObservableObject {
+class EnvironmentManager: ObservableObject {
     // for file database: db != nil && databaseURL != nil
     // for in-memmory database: db != nil && databaseURL == nil
     @Published var isDatabaseConnected = false
@@ -31,7 +31,7 @@ class DataManager: ObservableObject {
     }
 }
 
-extension DataManager {
+extension EnvironmentManager {
     func openDatabase(at url: URL?, isNew: Bool = false) {
         db = nil
         if let url {
@@ -132,7 +132,7 @@ extension DataManager {
     }
 }
 
-extension DataManager {
+extension EnvironmentManager {
     func setTempStoreDirectory(db: Connection) {
         // Get the path to the app's sandbox Caches directory
         let fileManager = FileManager.default
@@ -142,7 +142,7 @@ extension DataManager {
     }
 }
 
-extension DataManager {
+extension EnvironmentManager {
     func loadCache() {
         loadCurrency()
         loadAccount()
@@ -174,7 +174,7 @@ extension DataManager {
     }
 }
 
-extension DataManager {
+extension EnvironmentManager {
     var repository                 : Repository?                 { Repository(db) }
     var infotableRepository        : InfotableRepository?        { InfotableRepository(db) }
     var currencyRepository         : CurrencyRepository?         { CurrencyRepository(db) }
@@ -201,22 +201,6 @@ extension DataManager {
     var reportRepository           : ReportRepository?           { ReportRepository(db) }
 }
 
-extension DataManager {
-    static let sampleDataManager: DataManager = {
-        var dataManager = DataManager(withSampleDatabaseInMemory: ())
-/*
-        let usedCurrencyId = Array(Set(
-            AccountData.sampleData.map { $0.currencyId }
-        ) )
-        dataManager.currencyCache.load(Dictionary(
-            uniqueKeysWithValues: usedCurrencyId.map {
-                ($0, CurrencyData.sampleDataById[$0]!)
-            }
-        ) )
-        dataManager.accountCache.load(Dictionary(
-            uniqueKeysWithValues: AccountData.sampleData.map { ($0.id, $0) }
-        ) )
-*/
-        return dataManager
-    } ()
+extension EnvironmentManager {
+    static var sampleData: EnvironmentManager { EnvironmentManager(withSampleDatabaseInMemory: ()) }
 }

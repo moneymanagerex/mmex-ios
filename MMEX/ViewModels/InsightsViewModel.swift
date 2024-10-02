@@ -11,7 +11,7 @@ import SQLite
 import Combine
 
 class InsightsViewModel: ObservableObject {
-    private var dataManager: DataManager
+    private var env: EnvironmentManager
     
     @Published var baseCurrency: CurrencyData?
     @Published var stats: [TransactionData] = [] // all transactions
@@ -23,14 +23,14 @@ class InsightsViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(dataManager: DataManager) {
-        self.dataManager = dataManager
+    init(env: EnvironmentManager) {
+        self.env = env
         self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
         self.endDate = Date()
 
         // get base currency
-        if let baseCurrencyId = dataManager.infotableRepository?.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
-            baseCurrency = dataManager.currencyRepository?.pluck(
+        if let baseCurrencyId = env.infotableRepository?.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
+            baseCurrency = env.currencyRepository?.pluck(
                 key: InfoKey.baseCurrencyID.id,
                 from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId)
             )
@@ -51,7 +51,7 @@ class InsightsViewModel: ObservableObject {
     }
     
     func loadRecentTransactions() {
-        let repository = dataManager.transactionRepository
+        let repository = env.transactionRepository
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {
             let transactions = repository?.loadRecent(startDate: self.startDate, endDate: self.endDate) ?? []
@@ -63,7 +63,7 @@ class InsightsViewModel: ObservableObject {
     }
     
     func loadTransactions() {
-        let repository = dataManager.transactionRepository
+        let repository = env.transactionRepository
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {
             let transactions = repository?.load() ?? []
@@ -76,7 +76,7 @@ class InsightsViewModel: ObservableObject {
     
     func loadAccountInfo() {
         self.accountInfo.today = String(self.endDate.ISO8601Format().dropLast())
-        let repository = dataManager.accountRepository
+        let repository = env.accountRepository
         typealias A = AccountRepository
         let table = A.table
             .filter(A.table[A.col_status] == AccountStatus.open.rawValue)
