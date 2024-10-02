@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AssetEditView: View {
+    @Binding var allCurrencyName: [(Int64, String)] // sorted by name
     @Binding var asset: AssetData
-//    @Binding var currencies: [CurrencyData]
 
     var body: some View {
         NavigationStack {
@@ -34,13 +34,18 @@ struct AssetEditView: View {
                     }
                 }
 
- //               Section(header: Text("Currency")) {
- //                   Picker("Currency", selection: $asset.currencyId) {
- //                       ForEach(currencyOptions) { currency in
- //                           Text(currency.name).tag(currency.id)
- //                       }
- //                   }
- //               }
+                Section(header: Text("Currency")) {
+                    Picker("Currency", selection: $asset.currencyId) {
+                        if (asset.currencyId == 0) {
+                            Text("Currency").tag(0 as Int64) // not set
+                        }
+                        ForEach(allCurrencyName.indices, id: \.self) { i in
+                            let (id, name) = allCurrencyName[i]
+                            Text(name).tag(id) // Use currency.name to display and tag by id
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
+                }
 
                 Section(header: Text("Value")) {
                     TextField("Enter asset value", value: $asset.value, format: .number)
@@ -75,5 +80,8 @@ struct AssetEditView: View {
 }
 
 #Preview {
-    AssetEditView(asset: .constant(AssetData.sampleData[0]))
+    AssetEditView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        asset: .constant(AssetData.sampleData[0])
+    )
 }

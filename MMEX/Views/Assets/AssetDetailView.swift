@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AssetDetailView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @Binding var asset: AssetData
+    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
+    @State var asset: AssetData
 
     @State private var editingAsset = AssetData()
     @State private var isPresentingEditView = false
@@ -23,6 +24,8 @@ struct AssetDetailView: View {
 
     var body: some View {
         List {
+            let currency = env.currencyCache[asset.currencyId]
+            let formatter = currency?.formatter
             Section(header: Text("Asset Name")) {
                 Text("\(asset.name)")
             }
@@ -35,8 +38,12 @@ struct AssetDetailView: View {
                 Text(asset.status.rawValue)
             }
 
+            Section(header: Text("Start Date")) {
+                Text(asset.startDate)
+            }
+
             Section(header: Text("Value")) {
-                Text("\(asset.value)")
+                Text("\(asset.value.formatted(by: formatter))")
             }
 
             Section(header: Text("Change")) {
@@ -77,26 +84,29 @@ struct AssetDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                AssetEditView(asset: $editingAsset)
-                    .navigationTitle(asset.name)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") {
-                                isPresentingEditView = false
-                            }
+                AssetEditView(
+                    allCurrencyName: $allCurrencyName,
+                    asset: $editingAsset
+                )
+                .navigationTitle(asset.name)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            isPresentingEditView = false
                         }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") {
-                                if validateAsset() {
-                                    isPresentingEditView = false
-                                    asset = editingAsset
-                                    saveChanges()
-                                } else {
-                                    isShowingAlert = true
-                                }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            if validateAsset() {
+                                isPresentingEditView = false
+                                asset = editingAsset
+                                saveChanges()
+                            } else {
+                                isShowingAlert = true
                             }
                         }
                     }
+                }
             }
         }
         .fileExporter(
@@ -149,5 +159,9 @@ struct AssetDetailView: View {
 }
 
 #Preview {
-    AssetDetailView(asset: .constant(AssetData.sampleData[0]))
+    AssetDetailView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        asset: AssetData.sampleData[0]
+    )
+    .environmentObject(EnvironmentManager.sampleData)
 }

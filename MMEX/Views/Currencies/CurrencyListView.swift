@@ -11,9 +11,9 @@ struct CurrencyListView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
 
     @State private var allCurrencyData: [CurrencyData] = [] // sorted by name
-    @State private var newCurrency = emptyCurrency
+    @State private var isExpanded: [Bool : Bool] = [true: true, false: false]
     @State private var isPresentingCurrencyAddView = false
-    @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
+    @State private var newCurrency = emptyCurrency
 
     static let emptyCurrency = CurrencyData(
         decimalPoint   : ".",
@@ -28,18 +28,18 @@ struct CurrencyListView: View {
                 ForEach([true, false], id: \.self) { inUse in
                     Section(header: HStack {
                         Button(action: {
-                            expandedSections[inUse]?.toggle()
+                            isExpanded[inUse]?.toggle()
                         }) {
                             Text(inUse ? "In-Use" : "Not-In-Use")
                                 .font(.subheadline)
                                 .padding(.leading)
                             Spacer()
                             // Expand or collapse indicator
-                            Image(systemName: expandedSections[inUse] == true ? "chevron.down" : "chevron.right")
+                            Image(systemName: isExpanded[inUse] == true ? "chevron.down" : "chevron.right")
                                 .foregroundColor(.gray)
                         }
                     }) {
-                        if expandedSections[inUse] == true {
+                        if isExpanded[inUse] == true {
                             ForEach(allCurrencyData) { currency in
                                 if (env.currencyCache[currency.id] != nil) == inUse {
                                     itemView(currency)
