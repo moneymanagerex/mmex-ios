@@ -14,7 +14,6 @@ struct TransactionEditView: View {
     @Binding var payees: [PayeeData]
     @Binding var txn: TransactionData
 
-    @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
 
     @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
@@ -53,7 +52,7 @@ struct TransactionEditView: View {
             .padding(.horizontal, 0)
 
             // 2. Unified Numeric Input for the Amount with automatic keyboard focus
-            TextField("0", text: $amountString)
+            TextField("", value: $txn.transAmount, format: .number)
                 .keyboardType(.decimalPad) // Show numeric keyboard with decimal support
                 .font(.system(size: 48, weight: .bold)) // Large, bold text for amount input
                 .multilineTextAlignment(.center) // Center the text for better UX
@@ -67,10 +66,6 @@ struct TransactionEditView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         isAmountFocused = true
                     }
-                }
-                .onChange(of: amountString) { _, newValue in
-                    // Update the transaction amount in the txn object, converting from String
-                    txn.transAmount = Double(newValue) ?? 0.0
                 }
                 .disabled(!txn.splits.isEmpty)
             
@@ -184,6 +179,7 @@ struct TransactionEditView: View {
                         }
                         .onDelete { indices in
                             txn.splits.remove(atOffsets: indices)
+                            txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
                         }
 
                         HStack {
@@ -200,15 +196,20 @@ struct TransactionEditView: View {
                             .labelsHidden()
                             .disabled(txn.categId > 0)
                             .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
+                            Spacer()
                             // Split amount
-                            NumericField(value: $newSplit.amount)
+                            TextField("split amount", value: $newSplit.amount, format: .number)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.center) // Center the text for better UX
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
+                            Spacer()
                             // split notes
                             TextField("split notes", text: $newSplit.notes)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Button(action: {
                                 withAnimation {
                                     txn.splits.append(newSplit)
+                                    txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
                                     newSplit = TransactionSplitData()
                                 }
                             }) {
@@ -229,7 +230,6 @@ struct TransactionEditView: View {
         .padding(.horizontal)
         .onAppear {
             // Initialize state variables from the txn object when the view appears
-            amountString = String(format: "%.2f", txn.transAmount)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
@@ -272,17 +272,6 @@ struct TransactionEditView: View {
     }
     func getCategoryName(for categoryID: Int64) -> String {
         return categories.first {$0.id == categoryID}?.name ?? "Unknown"
-    }
-}
-
-struct NumericField: View {
-    @Binding var value: Double // Bind a Double value directly
-
-    var body: some View {
-        TextField("0", value: $value, format: .number)
-            .keyboardType(.decimalPad) // Show numeric keyboard
-            .multilineTextAlignment(.center) // Center text alignment for better UX
-            .padding(.bottom, 0) // Add bottom padding
     }
 }
 
