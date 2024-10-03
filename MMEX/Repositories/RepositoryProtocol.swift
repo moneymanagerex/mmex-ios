@@ -29,17 +29,17 @@ extension RepositoryProtocol {
     ) -> Result? {
         do {
             let query = Self.selectData(from: table)
-            //print("DEBUG: RepositoryProtocol.pluck(): \(query.expression.description)")
+            log.trace("RepositoryProtocol.pluck(): \(query.expression.description)")
             if let row = try db.pluck(query) {
                 let data = result(row)
-                print("Successfull pluck of \(key) from \(Self.repositoryName)")
+                log.info("Successfull pluck of \(key) from \(Self.repositoryName)")
                 return data
             } else {
-                print("Unsuccefull pluck of \(key) from \(Self.repositoryName)")
+                log.info("Unsuccefull pluck of \(key) from \(Self.repositoryName)")
                 return nil
             }
         } catch {
-            print("Failed pluck of \(key) from \(Self.repositoryName): \(error)")
+            log.error("Failed pluck of \(key) from \(Self.repositoryName): \(error)")
             return nil
         }
     }
@@ -62,14 +62,14 @@ extension RepositoryProtocol {
         do {
             var data: [Result] = []
             let query = Self.selectData(from: table)
-            //print("DEBUG: RepositoryProtocol.select(): \(query.expression.description)")
+            log.trace("RepositoryProtocol.select(): \(query.expression.description)")
             for row in try db.prepare(query) {
                 data.append(result(row))
             }
-            print("Successfull select from \(Self.repositoryName): \(data.count)")
+            log.info("Successfull select from \(Self.repositoryName): \(data.count)")
             return data
         } catch {
-            print("Failed select from \(Self.repositoryName): \(error)")
+            log.error("Failed select from \(Self.repositoryName): \(error)")
             return []
         }
     }
@@ -81,14 +81,14 @@ extension RepositoryProtocol {
         do {
             var dict: [Int64: Result] = [:]
             let query = Self.selectData(from: table)
-            //print("DEBUG: RepositoryProtocol.dict(): \(query.expression.description)")
+            log.trace("RepositoryProtocol.dict(): \(query.expression.description)")
             for row in try db.prepare(query) {
                 dict[row[Self.col_id]] = result(row)
             }
-            print("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
+            log.info("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
             return dict
         } catch {
-            print("Failed dictionary from \(Self.repositoryName): \(error)")
+            log.error("Failed dictionary from \(Self.repositoryName): \(error)")
             return [:]
         }
     }
@@ -97,13 +97,13 @@ extension RepositoryProtocol {
         do {
             let query = Self.table
                 .insert(Self.itemSetters(data))
-            //print("DEBUG: RepositoryProtocol.insert(): \(query.expression.description)")
+            log.trace("RepositoryProtocol.insert(): \(query.expression.description)")
             let rowid = try db.run(query)
             data.id = rowid
-            print("Successfull insert in \(RepositoryData.dataName): \(data.shortDesc())")
+            log.info("Successfull insert in \(RepositoryData.dataName)")
             return true
         } catch {
-            print("Failed insert in \(RepositoryData.dataName): \(error)")
+            log.error("Failed insert in \(RepositoryData.dataName): \(error)")
             return false
         }
     }
@@ -114,12 +114,12 @@ extension RepositoryProtocol {
             let query = Self.table
                 .filter(Self.col_id == data.id)
                 .update(Self.itemSetters(data))
-            //print("DEBUG: RepositoryProtocol.update(): \(query.expression.description)")
+            log.trace("RepositoryProtocol.update(): \(query.expression.description)")
             try db.run(query)
-            print("Successfull update in \(RepositoryData.dataName): \(data.shortDesc())")
+            log.info("Successfull update in \(RepositoryData.dataName): \(data.shortDesc())")
             return true
         } catch {
-            print("Failed update in \(RepositoryData.dataName): \(error)")
+            log.error("Failed update in \(RepositoryData.dataName): \(error)")
             return false
         }
     }
@@ -130,12 +130,12 @@ extension RepositoryProtocol {
             let query = Self.table
                 .filter(Self.col_id == data.id)
                 .delete()
-            //print("DEBUG: RepositoryProtocol.delete(): \(query.expression.description)")
+            log.trace("RepositoryProtocol.delete(): \(query.expression.description)")
             try db.run(query)
-            print("Successfull delete in \(RepositoryData.dataName): \(data.shortDesc())")
+            log.info("Successfull delete in \(RepositoryData.dataName): \(data.shortDesc())")
             return true
         } catch {
-            print("Failed delete in \(RepositoryData.dataName): \(error)")
+            log.error("Failed delete in \(RepositoryData.dataName): \(error)")
             return false
         }
     }
@@ -143,12 +143,12 @@ extension RepositoryProtocol {
     func deleteAll() -> Bool {
         do {
             let query = Self.table.delete()
-            //print("DEBUG: RepositoryProtocol.deleteAll(): \(query.expression.description)")
+            log.trace("RepositoryProtocol.deleteAll(): \(query.expression.description)")
             try db.run(query)
-            print("Successfull delete all in \(RepositoryData.dataName)")
+            log.info("Successfull delete all in \(RepositoryData.dataName)")
             return true
         } catch {
-            print("Failed delete all in \(RepositoryData.dataName): \(error)")
+            log.error("Failed delete all in \(RepositoryData.dataName): \(error)")
             return false
         }
     }
@@ -173,11 +173,11 @@ extension RepositoryProtocol {
             comma = true
         }
         query.append(")")
-        print("Executing query: \(query)")
+        log.trace("Executing query: \(query)")
         do {
             try db.execute(query)
         } catch {
-            print("Failed to create table \(Self.repositoryName): \(error)")
+            log.error("Failed to create table \(Self.repositoryName): \(error)")
         }
     }
 */

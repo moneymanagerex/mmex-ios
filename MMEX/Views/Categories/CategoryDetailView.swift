@@ -82,9 +82,9 @@ struct CategoryDetailView: View {
         ) { result in
             switch result {
             case .success(let url):
-                print("File saved to: \(url)")
+                log.info("File saved to: \(url)")
             case .failure(let error):
-                print("Error exporting file: \(error)")
+                log.error("Error exporting file: \(error)")
             }
         }
     }

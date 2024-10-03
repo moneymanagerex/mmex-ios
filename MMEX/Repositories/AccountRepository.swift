@@ -172,7 +172,7 @@ extension AccountRepository {
 
     // load all account names
     func loadName() -> [(id: Int64, name: String)] {
-        print("DEBUG: AccountRepository.loadName()")
+        log.trace("AccountRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_name)
         ) { row in
@@ -192,10 +192,10 @@ extension AccountRepository {
                 if dataByType[type] == nil { dataByType[type] = [] }
                 dataByType[type]!.append(result(row))
             }
-            print("Successfull select from \(Self.repositoryName): \(dataByType.count)")
+            log.info("Successfull select from \(Self.repositoryName): \(dataByType.count)")
             return dataByType
         } catch {
-            print("Failed select from \(Self.repositoryName): \(error)")
+            log.error("Failed select from \(Self.repositoryName): \(error)")
             return [:]
         }
     }
@@ -276,7 +276,7 @@ extension AccountRepository {
             )
             .group(A.table[A.col_id], B_table[T.col_status])
 
-        print("DEBUG: AccountRepository.dictFlowByStatus: \(query.expression.description)")
+        log.trace("AccountRepository.dictFlowByStatus: \(query.expression.description)")
         do {
             var dict: [Int64: AccountFlowByStatus] = [:]
             for row in try db.prepare(query) {
@@ -288,10 +288,10 @@ extension AccountRepository {
                     outflow : row[B_table[B_col_outflow].total]
                 )
             }
-            print("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
+            log.info("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
             return dict
         } catch {
-            print("Failed dictionary from \(Self.repositoryName): \(error)")
+            log.error("Failed dictionary from \(Self.repositoryName): \(error)")
             return [:]
         }
     }

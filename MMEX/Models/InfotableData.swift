@@ -46,7 +46,7 @@ extension InfotableData {
         } else if let stringValue = newValue as? String {
             self.value = stringValue
         } else {
-            print("Unsupported type")
+            log.warning("Unsupported type")
         }
     }
 }

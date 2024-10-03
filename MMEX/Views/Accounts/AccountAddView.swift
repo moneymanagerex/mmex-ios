@@ -36,7 +36,7 @@ struct AccountAddView: View {
         }
     }
 }
-
+/*
 #Preview {
     AccountAddView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
@@ -44,6 +44,7 @@ struct AccountAddView: View {
         isPresentingAccountAddView: .constant(true)
     ) { newAccount in
         // Handle saving in preview
-        print("New account: \(newAccount.name)")
+        log.info("New account: \(newAccount.name)")
     }
 }
+*/

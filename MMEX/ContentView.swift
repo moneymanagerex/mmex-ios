@@ -181,14 +181,14 @@ struct ContentView: View {
             if let url = urls.first {
                 env.openDatabase(at: url)
                 guard env.isDatabaseConnected else { return }
-                print("Successfully opened database: \(url)")
+                log.info("Successfully opened database: \(url)")
                 UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     selectedTab = 0
                 }
             }
         case .failure(let error):
-            print("Failed to pick a document: \(error.localizedDescription)")
+            log.error("Failed to pick a document: \(error.localizedDescription)")
         }
     }
 
@@ -198,13 +198,13 @@ struct ContentView: View {
         case .success(let url):
             env.createDatabase(at: url, sampleData: isSampleDocument)
             guard env.isDatabaseConnected else { return }
-            print("Successfully created database: \(url)")
+            log.info("Successfully created database: \(url)")
             UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 selectedTab = 0
             }
         case .failure(let error):
-            print("Failed to pick a document: \(error.localizedDescription)")
+            log.error("Failed to pick a document: \(error.localizedDescription)")
         }
     }
 }
@@ -242,7 +242,7 @@ struct TabContentView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
 
     var body: some View {
-        print("DEBUG: TabContentView.body")
+        log.trace("TabContentView.body")
         // Use @StateObject to manage the lifecycle of InfotableViewModel
         let infotableViewModel = InfotableViewModel(env: env)
         // Here we ensure that there's no additional NavigationStack or NavigationView

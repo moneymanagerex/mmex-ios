@@ -102,7 +102,7 @@ extension InfotableRepository {
         } else if let intVal = value as? Int64 {
             stringValue = String(intVal)
         } else {
-            print("Unsupported type for value: \(value)")
+            log.warning("Unsupported type for value")
             return
         }
 

@@ -34,13 +34,14 @@ struct CurrencyAddView: View {
         }
     }
 }
-
+/*
 #Preview {
     CurrencyAddView(
         newCurrency: .constant(CurrencyData()),
         isPresentingCurrencyAddView: .constant(true)
     ) { newCurrency in
         // Handle saving in preview
-        print("New currency: \(newCurrency.name)")
+        log.info("New currency: \(newCurrency.name)")
     }
 }
+*/

@@ -53,7 +53,7 @@ struct PayeeAddView: View {
         return true
     }
 }
-
+/*
 #Preview {
     PayeeAddView(
         newPayee: .constant(PayeeData()),
@@ -61,6 +61,7 @@ struct PayeeAddView: View {
         categories: .constant(CategoryData.sampleData)
     ) { newPayee in
         // Handle saving in preview
-        print("New payee: \(newPayee.name)")
+        log.info("New payee: \(newPayee.name)")
     }
 }
+*/
