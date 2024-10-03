@@ -39,7 +39,7 @@ struct CurrencyListView: View {
                                 .foregroundColor(.gray)
                         }
                     }) {
-                        if expandedSections[inUse] == true {
+                        if isExpanded[inUse] == true {
                             ForEach($allCurrencyData) { $currency in
                                 if (env.currencyCache[currency.id] != nil) == inUse {
                                     NavigationLink(destination: CurrencyDetailView(
