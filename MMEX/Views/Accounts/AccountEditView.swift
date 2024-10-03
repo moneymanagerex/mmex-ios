@@ -38,8 +38,7 @@ struct AccountEditView: View {
                     if (account.currencyId == 0) {
                         Text("Currency").tag(0 as Int64) // not set
                     }
-                    ForEach(allCurrencyName.indices, id: \.self) { i in
-                        let (id, name) = allCurrencyName[i]
+                    ForEach(allCurrencyName, id: \.0) { id, name in
                         Text(name).tag(id) // Use currency.name to display and tag by id
                     }
                 }
