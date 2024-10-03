@@ -32,13 +32,14 @@ struct CategoryAddView: View {
         }
     }
 }
-
+/*
 #Preview {
     CategoryAddView(
         newCategory: .constant(CategoryData()),
         isPresentingCategoryAddView: .constant(true)
     ) { newCategory in
         // Handle saving in preview
-        print("New account: \(newCategory.name)")
+        log.info("New account: \(newCategory.name)")
     }
 }
+*/

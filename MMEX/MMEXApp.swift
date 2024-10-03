@@ -6,6 +6,12 @@
 //
 
 import SwiftUI
+import OSLog
+
+let log = Logger(
+    subsystem: Bundle.main.bundleIdentifier!,
+    category: "mmex.log"
+)
 
 @main
 struct MMEXApp: App {

@@ -39,19 +39,19 @@ extension EnvironmentManager {
                 defer { url.stopAccessingSecurityScopedResource() }
                 do {
                     db = try Connection(url.path)
-                    print("Successfully connected to database: \(url.path)")
+                    log.info("Successfully connected to database: \(url.path)")
                 } catch {
-                    print("Failed to connect to database: \(error)")
+                    log.error("Failed to connect to database: \(error)")
                 }
             } else {
-                print("Failed to access security-scoped resource: \(url.path)")
+                log.error("Failed to access security-scoped resource: \(url.path)")
             }
         } else if isNew {
             do {
                 db = try Connection()
-                print("Successfully created database in memory")
+                log.info("Successfully created database in memory")
             } catch {
-                print("Failed to create database in memory: \(error)")
+                log.error("Failed to create database in memory: \(error)")
             }
         }
 
@@ -71,7 +71,7 @@ extension EnvironmentManager {
     /// Method to connect to a previously stored database path if available
     private func connectToStoredDatabase() {
         guard let storedPath = UserDefaults.standard.string(forKey: "SelectedFilePath") else {
-            print("No stored database path found.")
+            log.warning("No stored database path found.")
             return
         }
         let storedURL = URL(fileURLWithPath: storedPath)
@@ -83,7 +83,7 @@ extension EnvironmentManager {
         guard let db else { return }
 
         guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
-            print("Cannot find tables.sql")
+            log.error("Cannot find tables.sql")
             closeDatabase()
             return
         }
@@ -97,7 +97,7 @@ extension EnvironmentManager {
                 return
             }
         } else {
-            print("Failed to access security-scoped resource: \(tables.path)")
+            log.error("Failed to access security-scoped resource: \(tables.path)")
             closeDatabase()
             return
         }
@@ -105,7 +105,7 @@ extension EnvironmentManager {
         if sampleData {
             let repository = Repository(db)
             guard repository.insertSampleData() else {
-                print("Failed to create sample database")
+                log.error("Failed to create sample database")
                 closeDatabase()
                 return
             }
@@ -120,7 +120,7 @@ extension EnvironmentManager {
         isDatabaseConnected = false
         db = nil
         databaseURL = nil
-        print("Database connection closed.")
+        log.info("Database connection closed.")
     }
 
     /// basic stats

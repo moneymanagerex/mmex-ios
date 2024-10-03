@@ -41,7 +41,7 @@ struct TransactionAddView: View {
         }
     }
 }
-
+/*
 #Preview {
     TransactionAddView(
         accountId: .constant(AccountData.sampleDataIds),
@@ -52,7 +52,8 @@ struct TransactionAddView: View {
     )
     { newTxn in
         // Handle saving in preview
-        print("New payee: \(newTxn.id)")
+        log.info("New transaction: \(newTxn.id)")
     }
     .environmentObject(EnvironmentManager())
 }
+*/

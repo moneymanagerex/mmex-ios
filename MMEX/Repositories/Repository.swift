@@ -28,10 +28,10 @@ extension Repository {
     func setPragma(name: String, value: String) -> Bool {
         do {
             try db.execute("PRAGMA \(name) = \(value)")
-            print("Successful set \(name) to \(value)")
+            log.info("Successful set \(name) to \(value)")
             return true
         } catch {
-            print("Failed to set \(name): \(error)")
+            log.error("Failed to set \(name): \(error)")
             return false
         }
     }
@@ -45,10 +45,10 @@ extension Repository {
             for row in try db.prepare(table) {
                 data.append(result(row))
             }
-            print("Successfull select: \(data.count)")
+            log.info("Successfull select: \(data.count)")
             return data
         } catch {
-            print("Failed select: \(error)")
+            log.error("Failed select: \(error)")
             return []
         }
     }
@@ -57,34 +57,34 @@ extension Repository {
         query: String,
         with result: (SQLite.Statement.Element) -> Result
     ) -> [Int64: Result] {
-        print("DEBUG: Repository.dict: \(query)")
+        log.trace("Repository.dict: \(query)")
         do {
             var dict: [Int64: Result] = [:]
             for row in try db.prepare(query) {
                 dict[row[0] as! Int64] = result(row)
             }
-            print("Successfull dictionary: \(dict.count)")
+            log.info("Successfull dictionary: \(dict.count)")
             return dict
         } catch {
-            print("Failed dictionary: \(error)")
+            log.error("Failed dictionary: \(error)")
             return [:]
         }
     }
 
     func execute(sql: String) -> Bool {
-        print("Executing sql: \(sql)")
+        log.trace("Executing sql: \(sql)")
         do {
             try db.execute(sql)
             return true
         } catch {
-            print("Failed to execute sql: \(error)")
+            log.error("Failed to execute sql: \(error)")
             return false
         }
     }
 
     func execute(url: URL) -> Bool {
         guard let contents = try? String(contentsOf: url) else {
-            print("Failed to read \(url)")
+            log.error("Failed to read \(url)")
             return false
         }
 

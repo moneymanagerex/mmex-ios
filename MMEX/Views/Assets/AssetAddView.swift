@@ -56,7 +56,7 @@ struct AssetAddView: View {
         return true
     }
 }
-
+/*
 #Preview {
     AssetAddView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
@@ -64,6 +64,7 @@ struct AssetAddView: View {
         isPresentingAssetAddView: .constant(true)
     ) { newAsset in
         // Handle saving in preview
-        print("New asset: \(newAsset.name)")
+        log.info("New asset: \(newAsset.name)")
     }
 }
+*/

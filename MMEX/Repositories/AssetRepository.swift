@@ -122,10 +122,10 @@ extension AssetRepository {
                 if dataByType[type] == nil { dataByType[type] = [] }
                 dataByType[type]!.append(result(row))
             }
-            print("Successfull select from \(Self.repositoryName): \(dataByType.count)")
+            log.info("Successfull select from \(Self.repositoryName): \(dataByType.count)")
             return dataByType
         } catch {
-            print("Failed select from \(Self.repositoryName): \(error)")
+            log.error("Failed select from \(Self.repositoryName): \(error)")
             return [:]
         }
     }

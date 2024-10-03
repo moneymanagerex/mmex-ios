@@ -125,10 +125,10 @@ extension StockRepository {
                 if dataByAccount[accountId] == nil { dataByAccount[accountId] = [] }
                 dataByAccount[accountId]!.append(result(row))
             }
-            print("Successfull select from \(Self.repositoryName): \(dataByAccount.count)")
+            log.info("Successfull select from \(Self.repositoryName): \(dataByAccount.count)")
             return dataByAccount
         } catch {
-            print("Failed select from \(Self.repositoryName): \(error)")
+            log.error("Failed select from \(Self.repositoryName): \(error)")
             return [:]
         }
     }

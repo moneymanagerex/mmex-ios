@@ -60,7 +60,7 @@ struct StockAddView: View {
         return true
     }
 }
-
+/*
 #Preview {
     StockAddView(
         allAccountName: .constant(CurrencyData.sampleDataName),
@@ -71,3 +71,4 @@ struct StockAddView: View {
         print("New stock: \(newStock.name)")
     }
 }
+*/
