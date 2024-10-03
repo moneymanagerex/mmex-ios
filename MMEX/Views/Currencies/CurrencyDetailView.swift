@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CurrencyDetailView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @State var currency: CurrencyData
+    @Binding var currency: CurrencyData
 
     @State private var editingCurrency = CurrencyData()
     @State private var isPresentingEditView = false
@@ -122,7 +122,7 @@ struct CurrencyDetailView: View {
 
 #Preview {
     CurrencyDetailView(
-        currency: CurrencyData.sampleData[0]
+        currency: .constant(CurrencyData.sampleData[0])
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
