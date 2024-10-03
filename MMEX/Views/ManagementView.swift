@@ -26,6 +26,9 @@ struct ManagementView: View {
                 NavigationLink(destination: AssetListView()) {
                     Text("Manage Assets")
                 }
+                NavigationLink(destination: StockListView()) {
+                    Text("Manage Stocks")
+                }
                 NavigationLink(destination: CategoryListView()) {
                     Text("Manage Categories")
                 }

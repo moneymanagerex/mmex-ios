@@ -116,7 +116,7 @@ extension AccountData {
         AccountData(
             id: 3, name: "Investment Account", type: AccountType.investment,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1
         ),
     ]
 
