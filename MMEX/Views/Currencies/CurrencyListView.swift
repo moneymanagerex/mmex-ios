@@ -39,11 +39,16 @@ struct CurrencyListView: View {
                                 .foregroundColor(.gray)
                         }
                     }) {
-                        if isExpanded[inUse] == true {
-                            ForEach(allCurrencyData) { currency in
+                        if expandedSections[inUse] == true {
+                            ForEach($allCurrencyData) { $currency in
                                 if (env.currencyCache[currency.id] != nil) == inUse {
-                                    itemView(currency)
-                                }
+                                    NavigationLink(destination: CurrencyDetailView(
+                                        currency: $currency
+                                    ) ) { HStack {
+                                        Text(currency.name)
+                                        Spacer()
+                                        Text(currency.symbol)
+                                    } }                                }
                             }
                         }
                     }
@@ -70,16 +75,6 @@ struct CurrencyListView: View {
                 newCurrency = Self.emptyCurrency
             }
         }
-    }
-
-    func itemView(_ currency: CurrencyData) -> some View {
-        NavigationLink(destination: CurrencyDetailView(
-            currency: currency
-        ) ) { HStack {
-            Text(currency.name)
-            Spacer()
-            Text(currency.symbol)
-        } }
     }
 
     func loadCurrencyData() {
