@@ -23,8 +23,7 @@ struct StockEditView: View {
                         if (stock.accountId == 0) {
                             Text("Account").tag(0 as Int64) // not set
                         }
-                        ForEach(allAccountName.indices, id: \.self) { i in
-                            let (id, name) = allAccountName[i]
+                        ForEach(allAccountName, id: \.0) { id, name in
                             Text(name).tag(id) // Use acccount name to display and tag by id
                         }
                     }
