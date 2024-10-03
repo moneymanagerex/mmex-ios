@@ -170,6 +170,16 @@ extension AccountRepository {
         }
     }
 
+    // load all account names
+    func loadName() -> [(id: Int64, name: String)] {
+        print("DEBUG: AccountRepository.loadName()")
+        return select(from: Self.table
+            .order(Self.col_name)
+        ) { row in
+            (id: row[Self.col_id], name: row[Self.col_name])
+        }
+    }
+
     // load accounts by type
     func loadByType<Result>(
         from table: SQLite.Table = Self.table,

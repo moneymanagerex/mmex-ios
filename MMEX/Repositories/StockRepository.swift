@@ -112,4 +112,25 @@ extension StockRepository {
             .order(Self.col_name)
         )
     }
+    
+    // load stock by account
+    func loadByAccount<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [Int64: [Result]] {
+        do {
+            var dataByAccount: [Int64: [Result]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let accountId = row[Self.col_accountId] ?? 0
+                if dataByAccount[accountId] == nil { dataByAccount[accountId] = [] }
+                dataByAccount[accountId]!.append(result(row))
+            }
+            print("Successfull select from \(Self.repositoryName): \(dataByAccount.count)")
+            return dataByAccount
+        } catch {
+            print("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
 }
