@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct CurrencyListView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
 
     @State private var allCurrencyData: [CurrencyData] = [] // sorted by name
-    @State private var newCurrency = emptyCurrency
+    @State private var isExpanded: [Bool : Bool] = [true: true, false: false]
     @State private var isPresentingCurrencyAddView = false
-    @State private var expandedSections: [Bool : Bool] = [true: true, false: false]
+    @State private var newCurrency = emptyCurrency
 
     static let emptyCurrency = CurrencyData(
         decimalPoint   : ".",
@@ -28,22 +28,27 @@ struct CurrencyListView: View {
                 ForEach([true, false], id: \.self) { inUse in
                     Section(header: HStack {
                         Button(action: {
-                            expandedSections[inUse]?.toggle()
+                            isExpanded[inUse]?.toggle()
                         }) {
                             Text(inUse ? "In-Use" : "Not-In-Use")
                                 .font(.subheadline)
                                 .padding(.leading)
                             Spacer()
                             // Expand or collapse indicator
-                            Image(systemName: expandedSections[inUse] == true ? "chevron.down" : "chevron.right")
+                            Image(systemName: isExpanded[inUse] == true ? "chevron.down" : "chevron.right")
                                 .foregroundColor(.gray)
                         }
                     }) {
-                        if expandedSections[inUse] == true {
-                            ForEach(allCurrencyData) { currency in
-                                if (dataManager.currencyCache[currency.id] != nil) == inUse {
-                                    itemView(currency)
-                                }
+                        if isExpanded[inUse] == true {
+                            ForEach($allCurrencyData) { $currency in
+                                if (env.currencyCache[currency.id] != nil) == inUse {
+                                    NavigationLink(destination: CurrencyDetailView(
+                                        currency: $currency
+                                    ) ) { HStack {
+                                        Text(currency.name)
+                                        Spacer()
+                                        Text(currency.symbol)
+                                    } }                                }
                             }
                         }
                     }
@@ -72,18 +77,8 @@ struct CurrencyListView: View {
         }
     }
 
-    func itemView(_ currency: CurrencyData) -> some View {
-        NavigationLink(destination: CurrencyDetailView(
-            currency: currency
-        ) ) { HStack {
-            Text(currency.name)
-            Spacer()
-            Text(currency.symbol)
-        } }
-    }
-
     func loadCurrencyData() {
-        let repository = dataManager.currencyRepository
+        let repository = env.currencyRepository
         DispatchQueue.global(qos: .background).async {
             let data = repository?.load() ?? []
             // Update UI on the main thread
@@ -94,7 +89,7 @@ struct CurrencyListView: View {
     }
 
     func addCurrency(_ currency: inout CurrencyData) {
-        guard let repository = dataManager.currencyRepository else { return }
+        guard let repository = env.currencyRepository else { return }
         if repository.insert(&currency) {
             self.loadCurrencyData()
         } else {
@@ -106,11 +101,5 @@ struct CurrencyListView: View {
 #Preview {
     CurrencyListView(
     )
-    .environmentObject(DataManager.sampleDataManager)
-}
-
-#Preview {
-    NavigationStack { List { Section("Currency") {
-        CurrencyListView().itemView(CurrencyData.sampleData[0])
-    } } }
+    .environmentObject(EnvironmentManager.sampleData)
 }

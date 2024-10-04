@@ -2,7 +2,7 @@
 Manage your finances on the go, encrypted for security, and sync via your cloud
 
 #### Basic information
-Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance applications currently available for Android and Desktop [Windows, Mac OSX, LINUX). 
+Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance applications currently available for Android and Desktop (Windows, Mac OSX, LINUX). 
 
 
 #### Tech Stacks
@@ -27,7 +27,8 @@ Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance ap
 - Data sharable with [MMEX4Desktop](https://github.com/moneymanagerex/moneymanagerex) and [MMEX4Android](https://github.com/moneymanagerex/android-money-manager-ex/) via Files (e.g. iCloud, Synology Drive)
 - Transactions
   - [X] regular transactions
-  - [ ] split transactions
+  - [X] split transactions
+  - [X] transfer transactions
   - [ ] scheduled transactions
 - Accounts & Currencies
 - Payee & Categories

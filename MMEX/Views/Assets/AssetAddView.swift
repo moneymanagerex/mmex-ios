@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AssetAddView: View {
+    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
     @Binding var newAsset: AssetData
     @Binding var isPresentingAssetAddView: Bool
 
@@ -18,24 +19,27 @@ struct AssetAddView: View {
 
     var body: some View {
         NavigationStack {
-            AssetEditView(asset: $newAsset)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Dismiss") {
-                            isPresentingAssetAddView = false
-                        }
+            AssetEditView(
+                allCurrencyName: $allCurrencyName,
+                asset: $newAsset
+            )
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Dismiss") {
+                        isPresentingAssetAddView = false
                     }
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Add") {
-                            if validateAsset() {
-                                isPresentingAssetAddView = false
-                                onSave(&newAsset)
-                            } else {
-                                isShowingAlert = true
-                            }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add") {
+                        if validateAsset() {
+                            isPresentingAssetAddView = false
+                            onSave(&newAsset)
+                        } else {
+                            isShowingAlert = true
                         }
                     }
                 }
+            }
         }
         .alert(isPresented: $isShowingAlert) {
             Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -52,13 +56,15 @@ struct AssetAddView: View {
         return true
     }
 }
-
+/*
 #Preview {
     AssetAddView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
         newAsset: .constant(AssetData()),
         isPresentingAssetAddView: .constant(true)
     ) { newAsset in
         // Handle saving in preview
-        print("New asset: \(newAsset.name)")
+        log.info("New asset: \(newAsset.name)")
     }
 }
+*/

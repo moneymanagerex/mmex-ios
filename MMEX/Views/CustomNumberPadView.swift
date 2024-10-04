@@ -44,7 +44,7 @@ struct CustomNumberPadView: View {
     private func handleInput(_ number: String) {
         if number == "✔️" {
             // Perform action when done
-            print("Submit: \(input)")
+            log.trace("Submit: \(input)")
         } else {
             input += number
         }

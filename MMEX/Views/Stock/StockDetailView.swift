@@ -1,18 +1,18 @@
 //
-//  AssetDetailView.swift
+//  StockDetailView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/25.
+//  Created 2024-10-03 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
-struct AssetDetailView: View {
+struct StockDetailView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
-    @State var asset: AssetData
+    @Binding var allAccountName: [(Int64, String)] // sorted by name
+    @State var stock: StockData
 
-    @State private var editingAsset = AssetData()
+    @State private var editingStock = StockData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
 
@@ -24,41 +24,50 @@ struct AssetDetailView: View {
 
     var body: some View {
         List {
-            let currency = env.currencyCache[asset.currencyId]
+            let account = env.accountCache[stock.accountId]
+            let currency = account != nil ? env.currencyCache[account!.currencyId] : nil
             let formatter = currency?.formatter
-            Section(header: Text("Asset Name")) {
-                Text("\(asset.name)")
+            Section(header: Text("Stock Name")) {
+                Text("\(stock.name)")
             }
 
-            Section(header: Text("Type")) {
-                Text(asset.type.rawValue)
+            Section(header: Text("Symbol")) {
+                Text(stock.symbol)
             }
 
-            Section(header: Text("Status")) {
-                Text(asset.status.rawValue)
+            Section(header: Text("Account")) {
+                Text(account?.name ?? "")
             }
 
-            Section(header: Text("Start Date")) {
-                Text(asset.startDate)
+            Section(header: Text("Number of Shares")) {
+                Text("\(stock.numShares)")
+            }
+
+            Section(header: Text("Purchase Date")) {
+                Text(stock.purchaseDate)
+            }
+
+            Section(header: Text("Purchase Price")) {
+                Text("\(stock.purchasePrice.formatted(by: formatter))")
+            }
+
+            Section(header: Text("Current Price")) {
+                Text("\(stock.currentPrice.formatted(by: formatter))")
             }
 
             Section(header: Text("Value")) {
-                Text("\(asset.value.formatted(by: formatter))")
+                Text("\(stock.value.formatted(by: formatter))")
             }
 
-            Section(header: Text("Change")) {
-                Text(asset.change.rawValue)
-            }
-
-            Section(header: Text("Change Mode")) {
-                Text(asset.changeMode.rawValue)
+            Section(header: Text("Commisison")) {
+                Text("\(stock.commisison.formatted(by: formatter))")
             }
 
             Section(header: Text("Notes")) {
-                Text(asset.notes)
+                Text(stock.notes)
             }
 
-            Button("Delete Asset") {
+            Button("Delete Stock") {
                 // Implement delete functionality
             }
         }
@@ -67,12 +76,12 @@ struct AssetDetailView: View {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button("Edit") {
                     isPresentingEditView = true
-                    editingAsset = asset
+                    editingStock = stock
                 }
                 // Export button for pasteboard and external storage
                 Menu {
                     Button("Copy to Clipboard") {
-                        asset.copyToPasteboard()
+                        stock.copyToPasteboard()
                     }
                     Button("Export as JSON File") {
                         isExporting = true
@@ -84,11 +93,11 @@ struct AssetDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                AssetEditView(
-                    allCurrencyName: $allCurrencyName,
-                    asset: $editingAsset
+                StockEditView(
+                    allAccountName: $allAccountName,
+                    stock: $editingStock
                 )
-                .navigationTitle(asset.name)
+                .navigationTitle(stock.name)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") {
@@ -97,9 +106,9 @@ struct AssetDetailView: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
-                            if validateAsset() {
+                            if validateStock() {
                                 isPresentingEditView = false
-                                asset = editingAsset
+                                stock = editingStock
                                 saveChanges()
                             } else {
                                 isShowingAlert = true
@@ -111,9 +120,9 @@ struct AssetDetailView: View {
         }
         .fileExporter(
             isPresented: $isExporting,
-            document: ExportableEntityDocument(entity: asset),
+            document: ExportableEntityDocument(entity: stock),
             contentType: .json,
-            defaultFilename: "\(asset.name)_Asset"
+            defaultFilename: "\(stock.name)_Stock"
         ) { result in
             switch result {
             case .success(let url):
@@ -123,23 +132,27 @@ struct AssetDetailView: View {
             }
         }
         .alert(isPresented: $isShowingAlert) {
-            Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(
+                title: Text("Validation Error"),
+                message: Text(alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 
     func saveChanges() {
-        let repository = env.assetRepository // pass URL here
-        if repository?.update(asset) == true {
+        let repository = env.stockRepository // pass URL here
+        if repository?.update(stock) == true {
             // TODO
         } else {
             // TODO update failure
         }
     }
 
-    func deleteAsset(){
-        let repository = env.assetRepository // pass URL here
-        if repository?.delete(asset) == true {
-            // Dismiss the AssetDetailView and go back to the previous view
+    func deleteStock(){
+        let repository = env.stockRepository // pass URL here
+        if repository?.delete(stock) == true {
+            // Dismiss the StockDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()
         } else {
             // TODO
@@ -147,9 +160,9 @@ struct AssetDetailView: View {
         }
     }
 
-    func validateAsset() -> Bool {
-        if editingAsset.name.isEmpty {
-            alertMessage = "Asset name cannot be empty."
+    func validateStock() -> Bool {
+        if editingStock.name.isEmpty {
+            alertMessage = "Stock name cannot be empty."
             return false
         }
 
@@ -159,9 +172,9 @@ struct AssetDetailView: View {
 }
 
 #Preview {
-    AssetDetailView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        asset: AssetData.sampleData[0]
+    StockDetailView(
+        allAccountName: .constant(CurrencyData.sampleDataName),
+        stock: StockData.sampleData[0]
     )
     .environmentObject(EnvironmentManager.sampleData)
 }

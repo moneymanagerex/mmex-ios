@@ -37,8 +37,8 @@ struct DetailFieldView<Content: View>: View {
 }
 
 struct CurrencyDetailView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @State var currency: CurrencyData
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @Binding var currency: CurrencyData
 
     @State private var editingCurrency = CurrencyData()
     @State private var isPresentingEditView = false
@@ -158,7 +158,7 @@ struct CurrencyDetailView: View {
                 Text(currency.type.rawValue)
             }
             // cannot delete currency in use
-            if dataManager.currencyCache[currency.id] == nil {
+            if env.currencyCache[currency.id] == nil {
                 Button("Delete Currency") {
                     deleteCurrency()
                 }
@@ -197,10 +197,10 @@ struct CurrencyDetailView: View {
     }
 
     func updateCurrency() {
-        guard let repository = dataManager.currencyRepository else { return }
+        guard let repository = env.currencyRepository else { return }
         if repository.update(currency) {
-            if dataManager.currencyCache[currency.id] != nil {
-                dataManager.currencyCache.update(id: currency.id, data: currency)
+            if env.currencyCache[currency.id] != nil {
+                env.currencyCache.update(id: currency.id, data: currency)
             }
             // Handle success
         } else {
@@ -209,8 +209,8 @@ struct CurrencyDetailView: View {
     }
 
     func deleteCurrency() {
-        guard dataManager.currencyCache[currency.id] == nil else { return }
-        guard let repository = dataManager.currencyRepository else { return }
+        guard env.currencyCache[currency.id] == nil else { return }
+        guard let repository = env.currencyRepository else { return }
         if repository.delete(currency) {
             presentationMode.wrappedValue.dismiss()
         } else {
@@ -221,7 +221,7 @@ struct CurrencyDetailView: View {
 
 #Preview {
     CurrencyDetailView(
-        currency: CurrencyData.sampleData[0]
+        currency: .constant(CurrencyData.sampleData[0])
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

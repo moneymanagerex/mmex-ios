@@ -170,6 +170,16 @@ extension AccountRepository {
         }
     }
 
+    // load all account names
+    func loadName() -> [(id: Int64, name: String)] {
+        log.trace("AccountRepository.loadName()")
+        return select(from: Self.table
+            .order(Self.col_name)
+        ) { row in
+            (id: row[Self.col_id], name: row[Self.col_name])
+        }
+    }
+
     // load accounts by type
     func loadByType<Result>(
         from table: SQLite.Table = Self.table,
@@ -182,10 +192,10 @@ extension AccountRepository {
                 if dataByType[type] == nil { dataByType[type] = [] }
                 dataByType[type]!.append(result(row))
             }
-            print("Successfull select from \(Self.repositoryName): \(dataByType.count)")
+            log.info("Successfull select from \(Self.repositoryName): \(dataByType.count)")
             return dataByType
         } catch {
-            print("Failed select from \(Self.repositoryName): \(error)")
+            log.error("Failed select from \(Self.repositoryName): \(error)")
             return [:]
         }
     }
@@ -194,10 +204,10 @@ extension AccountRepository {
     func dictFlowByStatus(
         from table: SQLite.Table = Self.table,
         minDate: String? = nil,
-        maxDate: String? = nil
+        supDate: String? = nil
     ) -> [Int64: AccountFlowByStatus] {
         let minDate = minDate ?? ""
-        let supDate = (maxDate ?? "") + "z"
+        let supDate = supDate ?? "z"
 
         typealias T = TransactionRepository
         let B_query = T.table.select(
@@ -266,7 +276,7 @@ extension AccountRepository {
             )
             .group(A.table[A.col_id], B_table[T.col_status])
 
-        print("DEBUG: AccountRepository.dictFlowByStatus: \(query.expression.description)")
+        log.trace("AccountRepository.dictFlowByStatus: \(query.expression.description)")
         do {
             var dict: [Int64: AccountFlowByStatus] = [:]
             for row in try db.prepare(query) {
@@ -278,10 +288,10 @@ extension AccountRepository {
                     outflow : row[B_table[B_col_outflow].total]
                 )
             }
-            print("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
+            log.info("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
             return dict
         } catch {
-            print("Failed dictionary from \(Self.repositoryName): \(error)")
+            log.error("Failed dictionary from \(Self.repositoryName): \(error)")
             return [:]
         }
     }

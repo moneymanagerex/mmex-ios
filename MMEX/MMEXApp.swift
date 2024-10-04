@@ -6,15 +6,21 @@
 //
 
 import SwiftUI
+import OSLog
+
+let log = Logger(
+    subsystem: Bundle.main.bundleIdentifier!,
+    category: "mmex.log"
+)
 
 @main
 struct MMEXApp: App {
-    @StateObject private var dataManager = DataManager()
+    @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(dataManager)
+                .environmentObject(env)
         }
     }
 }

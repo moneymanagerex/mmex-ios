@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 
 struct PayeeDetailView: View {
     @Binding var payee: PayeeData
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @Binding var categories: [CategoryData]
     
     @State private var editingPayee = PayeeData()
@@ -110,9 +110,9 @@ struct PayeeDetailView: View {
         ) { result in
             switch result {
             case .success(let url):
-                print("File saved to: \(url)")
+                log.info("File saved to: \(url)")
             case .failure(let error):
-                print("Error exporting file: \(error)")
+                log.error("Error exporting file: \(error)")
             }
         }
         .alert(isPresented: $isShowingAlert) {
@@ -121,7 +121,7 @@ struct PayeeDetailView: View {
     }
     
     func saveChanges() {
-        let repository = dataManager.payeeRepository // pass URL here
+        let repository = env.payeeRepository // pass URL here
         if repository?.update(payee) == true {
             // TODO
         } else {
@@ -130,7 +130,7 @@ struct PayeeDetailView: View {
     }
     
     func deletePayee(){
-        let repository = dataManager.payeeRepository // pass URL here
+        let repository = env.payeeRepository // pass URL here
         if repository?.delete(payee) == true {
             // Dismiss the PayeeDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()

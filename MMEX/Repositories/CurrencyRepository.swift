@@ -109,7 +109,7 @@ struct CurrencyRepository: RepositoryProtocol {
 extension CurrencyRepository {
     // load all currencies, sorted by name
     func load() -> [CurrencyData] {
-        print("DEBUG: CurrencyRepository.load()")
+        log.trace("CurrencyRepository.load()")
         return select(from: Self.table
             .order(Self.col_name)
         )
@@ -117,7 +117,7 @@ extension CurrencyRepository {
 
     // load all currency names
     func loadName() -> [(id: Int64, name: String)] {
-        print("DEBUG: CurrencyRepository.loadName()")
+        log.trace("CurrencyRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_name)
         ) { row in
@@ -127,7 +127,7 @@ extension CurrencyRepository {
 
     // load all currency symbols
     func loadSymbol() -> [(Int64, String)] {
-        print("DEBUG: CurrencyRepository.loadName()")
+        log.trace("CurrencyRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_symbol)
         ) { row in

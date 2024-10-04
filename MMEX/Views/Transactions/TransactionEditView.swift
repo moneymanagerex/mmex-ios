@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct TransactionEditView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @Binding var accountId: [Int64] // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
     @Binding var txn: TransactionData
 
-    @State private var amountString: String = "0" // Temporary storage for numeric input as a string
     @State private var selectedDate = Date()
 
     @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
@@ -44,7 +43,7 @@ struct TransactionEditView: View {
                         Text("Account").tag(0 as Int64) // not set
                     }
                     ForEach(accountId, id: \.self) { id in
-                        if let account = dataManager.accountCache[id] {
+                        if let account = env.accountCache[id] {
                             Text(account.name).tag(id)
                         }
                     }
@@ -53,7 +52,7 @@ struct TransactionEditView: View {
             .padding(.horizontal, 0)
 
             // 2. Unified Numeric Input for the Amount with automatic keyboard focus
-            TextField("0", text: $amountString)
+            TextField("", value: $txn.transAmount, format: .number)
                 .keyboardType(.decimalPad) // Show numeric keyboard with decimal support
                 .font(.system(size: 48, weight: .bold)) // Large, bold text for amount input
                 .multilineTextAlignment(.center) // Center the text for better UX
@@ -67,10 +66,6 @@ struct TransactionEditView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         isAmountFocused = true
                     }
-                }
-                .onChange(of: amountString) { _, newValue in
-                    // Update the transaction amount in the txn object, converting from String
-                    txn.transAmount = Double(newValue) ?? 0.0
                 }
                 .disabled(!txn.splits.isEmpty)
             
@@ -117,7 +112,7 @@ struct TransactionEditView: View {
                             Text("Account").tag(0 as Int64) // not set
                         }
                         ForEach(accountId, id: \.self) { id in
-                            if let account = dataManager.accountCache[id],
+                            if let account = env.accountCache[id],
                                id != txn.accountId
                             {
                                 Text(account.name).tag(id)
@@ -175,7 +170,7 @@ struct TransactionEditView: View {
                                 Text(getCategoryName(for: split.categId))
                                     .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                                 Text(split.amount.formatted(
-                                    by: dataManager.currencyCache[dataManager.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
+                                    by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
                                 ))
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
                                 Text(split.notes)
@@ -184,6 +179,7 @@ struct TransactionEditView: View {
                         }
                         .onDelete { indices in
                             txn.splits.remove(atOffsets: indices)
+                            txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
                         }
 
                         HStack {
@@ -200,15 +196,20 @@ struct TransactionEditView: View {
                             .labelsHidden()
                             .disabled(txn.categId > 0)
                             .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
+                            Spacer()
                             // Split amount
-                            NumericField(value: $newSplit.amount)
+                            TextField("split amount", value: $newSplit.amount, format: .number)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.center) // Center the text for better UX
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
+                            Spacer()
                             // split notes
                             TextField("split notes", text: $newSplit.notes)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Button(action: {
                                 withAnimation {
                                     txn.splits.append(newSplit)
+                                    txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
                                     newSplit = TransactionSplitData()
                                 }
                             }) {
@@ -229,7 +230,6 @@ struct TransactionEditView: View {
         .padding(.horizontal)
         .onAppear {
             // Initialize state variables from the txn object when the view appears
-            amountString = String(format: "%.2f", txn.transAmount)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
@@ -260,7 +260,7 @@ struct TransactionEditView: View {
     }
 
     func loadLatestTxn() {
-        if let latestTxn = dataManager.transactionRepository?.latest(accountID: txn.accountId) ?? dataManager.transactionRepository?.latest() {
+        if let latestTxn = env.transactionRepository?.latest(accountID: txn.accountId) ?? env.transactionRepository?.latest() {
             // Update UI on the main thread
             DispatchQueue.main.async {
                 if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId == 0) {
@@ -275,17 +275,6 @@ struct TransactionEditView: View {
     }
 }
 
-struct NumericField: View {
-    @Binding var value: Double // Bind a Double value directly
-
-    var body: some View {
-        TextField("0", value: $value, format: .number)
-            .keyboardType(.decimalPad) // Show numeric keyboard
-            .multilineTextAlignment(.center) // Center text alignment for better UX
-            .padding(.bottom, 0) // Add bottom padding
-    }
-}
-
 #Preview {
     TransactionEditView(
         accountId: .constant(AccountData.sampleDataIds),
@@ -293,7 +282,7 @@ struct NumericField: View {
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[0])
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview {
@@ -303,5 +292,5 @@ struct NumericField: View {
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[3])
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

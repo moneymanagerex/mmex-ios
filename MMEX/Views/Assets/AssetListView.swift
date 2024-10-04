@@ -8,85 +8,167 @@
 import SwiftUI
 
 struct AssetListView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
-    @State private var assets: [AssetData] = []
-    @State private var filteredAssets: [AssetData] = [] // New: Filtered assets for search results
-    @State private var newAsset = emptyAsset
+    @EnvironmentObject var env: EnvironmentManager
+
+    @State private var allCurrencyName: [(Int64, String)] = [] // sorted by name
+    @State private var allAssetDataByType: [AssetType: [AssetData]] = [:] // sorted by name
+    @State private var isTypeVisible:  [AssetType: Bool] = [:]
+    @State private var isTypeExpanded: [AssetType: Bool] = [:]
+    @State private var search: String = ""
     @State private var isPresentingAssetAddView = false
-    @State private var searchQuery: String = "" // New: Search query
+    @State private var newAsset = emptyAsset
+
     static let emptyAsset = AssetData(
         status: AssetStatus.open
     )
 
     var body: some View {
         NavigationStack {
-            List($filteredAssets) { $asset in // Use filteredAssets instead of assets
-                NavigationLink(destination: AssetDetailView(asset: $asset)) {
-                    HStack {
-                        Text(asset.name)
-                        Spacer()
-                        Text(asset.type.id)
+            List {
+                ForEach(AssetType.allCases, id: \.self) { assetType in
+                    if isTypeVisible[assetType] == true {
+                        Section(
+                            header: HStack {
+                                Button(action: {
+                                    isTypeExpanded[assetType]?.toggle()
+                                }) {
+                                    HStack {
+                                        Text(assetType.rawValue)
+                                            .font(.subheadline)
+                                            .padding(.leading)
+                                        
+                                        Spacer()
+                                        
+                                        // Expand or collapse indicator
+                                        Image(systemName: isTypeExpanded[assetType] == true ? "chevron.down" : "chevron.right")
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                            }
+                        ) {
+                            // Show asset list based on expanded state
+                            if isTypeExpanded[assetType] == true,
+                               let assets = allAssetDataByType[assetType]
+                            {
+                                ForEach(assets) { asset in
+                                    // TODO: update View after change in asset
+                                    if search.isEmpty || match(asset, search) {
+                                        itemView(asset)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
             .toolbar {
-                Button(action: {
-                    isPresentingAssetAddView = true
-                }, label: {
-                    Image(systemName: "plus")
-                })
+                Button(
+                    action: { isPresentingAssetAddView = true },
+                    label: { Image(systemName: "plus") }
+                )
                 .accessibilityLabel("New Asset")
             }
-            .searchable(text: $searchQuery) // New: Search bar
-            .onChange(of: searchQuery) { _, query in
-                filterAssets(by: query)
+            .searchable(text: $search, prompt: "Search by name")
+            .textInputAutocapitalization(.never)
+            .onChange(of: search) { _, value in
+                filterType(by: value)
             }
         }
         .navigationTitle("Assets")
         .onAppear {
-            loadAssets()
+            loadCurrencyName()
+            loadAssetData()
         }
         .sheet(isPresented: $isPresentingAssetAddView) {
-            AssetAddView(newAsset: $newAsset, isPresentingAssetAddView: $isPresentingAssetAddView) { newAsset in
+            AssetAddView(
+                allCurrencyName: $allCurrencyName,
+                newAsset: $newAsset,
+                isPresentingAssetAddView: $isPresentingAssetAddView
+            ) { newAsset in
                 addAsset(asset: &newAsset)
                 newAsset = Self.emptyAsset
             }
         }
     }
 
-    func loadAssets() {
-        // Fetch assets using repository and update the view
+    func itemView(_ asset: AssetData) -> some View {
+        NavigationLink(destination: AssetDetailView(
+            allCurrencyName: $allCurrencyName,
+            asset: asset
+        ) ) {
+            HStack {
+                Text(asset.name)
+                    .font(.subheadline)
+                
+                Spacer()
+                
+                if let formatter = env.currencyCache[asset.currencyId]?.formatter
+                {
+                    Text(asset.value.formatted(by: formatter))
+                        .font(.subheadline)
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+
+    // Initialize the expanded state for each account type
+    private func initializeType() {
+        for assetType in allAssetDataByType.keys {
+            isTypeVisible[assetType] = true
+            isTypeExpanded[assetType] = true // Default to expanded
+        }
+    }
+
+    func filterType(by search: String) {
+        for assetType in allAssetDataByType.keys {
+            let matched = search.isEmpty || allAssetDataByType[assetType]?.first(where: { match($0, search) }) != nil
+            isTypeVisible[assetType] = matched
+            if matched { isTypeExpanded[assetType] = true }
+        }
+    }
+
+    func match(_ asset: AssetData, _ search: String) -> Bool {
+        asset.name.localizedCaseInsensitiveContains(search)
+    }
+
+    func loadCurrencyName() {
+        let repo = env.currencyRepository
         DispatchQueue.global(qos: .background).async {
-            let loadedAssets = dataManager.assetRepository?.load() ?? []
-            // Update UI on the main thread
+            let id_name = repo?.loadName() ?? []
             DispatchQueue.main.async {
-                self.assets = loadedAssets
-                self.filteredAssets = loadedAssets // Ensure filteredAssets is initialized with all assets
+                self.allCurrencyName = id_name
+            }
+        }
+    }
+
+    func loadAssetData() {
+        let repository = env.assetRepository
+        DispatchQueue.global(qos: .background).async {
+            typealias E = AssetRepository
+            let dataByType = repository?.loadByType(
+                from: E.table.order(E.col_name)
+            ) ?? [:]
+            DispatchQueue.main.async {
+                self.allAssetDataByType = dataByType
+                self.initializeType()
             }
         }
     }
 
     func addAsset(asset: inout AssetData) {
-        guard let repository = dataManager.assetRepository else { return }
+        guard let repository = env.assetRepository else { return }
         if repository.insert(&asset) {
-            self.assets.append(asset) // id is ready after repo call
-            // loadAssets()
-        } else {
-            // TODO
-        }
-    }
-
-    // New: Filter assets based on the search query
-    func filterAssets(by query: String) {
-        if query.isEmpty {
-            filteredAssets = assets
-        } else {
-            filteredAssets = assets.filter { $0.name.localizedCaseInsensitiveContains(query) }
+            if env.currencyCache[asset.currencyId] == nil {
+                env.loadCurrency()
+            }
+            self.loadAssetData()
         }
     }
 }
 
 #Preview {
-    AssetListView()
-        .environmentObject(DataManager())
+    AssetListView(
+    )
+    .environmentObject(EnvironmentManager.sampleData)
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import SQLite
 import Combine
 
@@ -19,25 +20,36 @@ class InfotableViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     //
-    private var dataManager: DataManager
+    private var env: EnvironmentManager
     private var infotableRepo: InfotableRepository?
     private var transactionRepo: TransactionRepository?
     private var accountRepo: AccountRepository?
     private var currencyRepo: CurrencyRepository?
 
     @Published var currencies: [CurrencyData] = []
+
     @Published var accounts: [AccountData] = []
+    @Published var accountDict: [Int64: AccountData] = [: ] // for lookup
+    @Published var accountId: [Int64] = []  // sorted by name
+
+    @Published var categories: [CategoryData] = []
+    @Published var categoryDict: [Int64: CategoryData] = [:] // for lookup
+
+    @Published var payees: [PayeeData] = []
+    @Published var payeeDict: [Int64: PayeeData] = [:] // for lookup
 
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
 
-    init(dataManager: DataManager) {
-        self.dataManager = dataManager
+    var currentHeader = ""
 
-        self.infotableRepo = self.dataManager.infotableRepository
-        self.transactionRepo = self.dataManager.transactionRepository
-        self.accountRepo = self.dataManager.accountRepository
-        self.currencyRepo = self.dataManager.currencyRepository
+    init(env: EnvironmentManager) {
+        self.env = env
+
+        self.infotableRepo = self.env.infotableRepository
+        self.transactionRepo = self.env.transactionRepository
+        self.accountRepo = self.env.accountRepository
+        self.currencyRepo = self.env.currencyRepository
         loadInfo()
         setupBindings()
         loadAccounts()
@@ -95,14 +107,63 @@ class InfotableViewModel: ObservableObject {
     func loadAccounts() {
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = self.accountRepo?.load() ?? []
+            let loadedAccountDict = Dictionary(uniqueKeysWithValues: loadedAccounts.map { ($0.id, $0) })
+            typealias A = AccountRepository
+            let id = self.accountRepo?.loadId(from: A.table.order(A.col_name)) ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
+                self.accountDict = loadedAccountDict
+                self.accountId = id
 
                 if (loadedAccounts.count == 1) {
                     self.defaultAccountId = loadedAccounts.first!.id
                 }
             }
         }
+    }
+
+    func loadCategories() {
+        let repository = env.categoryRepository
+        DispatchQueue.global(qos: .background).async {
+            let loadedCategories = repository?.load() ?? []
+            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
+            DispatchQueue.main.async {
+                self.categories = loadedCategories
+                self.categoryDict = loadedCategoryDict
+            }
+        }
+    }
+
+    func getCategoryName(for categoryID: Int64) -> String {
+        // Find the category with the given ID
+        if let category = self.categoryDict[categoryID] {
+            return category.name
+        }
+        return "Unknown"
+    }
+
+    func loadPayees() {
+        let repository = env.payeeRepository
+
+        DispatchQueue.global(qos: .background).async {
+            let loadedPayees = repository?.load() ?? []
+            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
+
+            DispatchQueue.main.async {
+                self.payees = loadedPayees
+                self.payeeDict = loadedPayeeDict
+            }
+        }
+    }
+
+    // TODO pre-join via SQL?
+    func getPayeeName(for payeeID: Int64) -> String {
+        // Find the payee with the given ID
+        if let payee = self.payeeDict[payeeID] {
+            return payee.name
+        }
+
+        return "Unknown"
     }
 
     func loadCurrencies() {
@@ -124,7 +185,7 @@ class InfotableViewModel: ObservableObject {
             for i in loadTransactions.indices {
                 // TODO other better indicator
                 if loadTransactions[i].categId <= 0 {
-                    loadTransactions[i].splits = self.dataManager.transactionSplitRepository?.load(for: loadTransactions[i]) ?? []
+                    loadTransactions[i].splits = self.env.transactionSplitRepository?.load(for: loadTransactions[i]) ?? []
                 }
             }
 
@@ -144,6 +205,27 @@ class InfotableViewModel: ObservableObject {
             }
         }
     }
+    
+    func filterTransactions(by query: String) {
+        let filteredTxns = query.isEmpty ? txns : txns.filter { txn in
+            txn.notes.localizedCaseInsensitiveContains(query) ||
+            txn.splits.contains { split in
+                split.notes.localizedCaseInsensitiveContains(query)
+            }
+        }
+        // TODO: refine and consolidate
+        self.txns_per_day = Dictionary(grouping: filteredTxns) { txn in
+            // Extract the date portion (ignoring the time) from ISO-8601 string
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
+
+            if let date = formatter.date(from: txn.transDate) {
+                formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
+                return formatter.string(from: date)
+            }
+            return txn.transDate // If parsing fails, return original string
+        }
+    }
 
     func addTransaction(txn: inout TransactionData) {
         if txn.transCode == .transfer {
@@ -152,7 +234,7 @@ class InfotableViewModel: ObservableObject {
             txn.toAccountId = 0
         }
 
-        guard let repository = dataManager.transactionRepository else { return }
+        guard let repository = env.transactionRepository else { return }
 
         if repository.insertWithSplits(&txn) {
             self.txns.append(txn) // id is ready after repo call
@@ -161,12 +243,25 @@ class InfotableViewModel: ObservableObject {
         }
     }
     func updateTransaction(_ data: inout TransactionData) -> Bool {
-        guard let repository = dataManager.transactionRepository else { return false } 
+        guard let repository = env.transactionRepository else { return false } 
         return repository.updateWithSplits(&data)
     }
     func deleteTransaction(_ data: TransactionData) -> Bool {
-        guard let repository = dataManager.transactionRepository else { return false }
-        guard let repositorySplit = dataManager.transactionSplitRepository else { return false }
+        guard let repository = env.transactionRepository else { return false }
+        guard let repositorySplit = env.transactionSplitRepository else { return false }
         return repository.delete(data) && repositorySplit.delete(data)
+    }
+
+    func resetCurrentHeader() -> Bool {
+        currentHeader = " "
+        return true;
+    }
+    func newDateHeader(transDate: String) -> Bool {
+        if (transDate.hasPrefix(currentHeader)) {
+            return false
+        } else {
+            currentHeader = String(transDate.prefix(10))
+            return true
+        }
     }
 }

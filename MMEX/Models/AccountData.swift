@@ -106,17 +106,17 @@ extension AccountData {
         AccountData(
             id: 1, name: "Account A", type: AccountType.cash,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1
+            initialBal: 100.0, favoriteAcct: "TRUE", currencyId: 1
         ),
         AccountData(
             id: 2, name: "Account B", type: AccountType.cash,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
+            initialBal: 200.0, favoriteAcct: "TRUE", currencyId: 2
         ),
         AccountData(
             id: 3, name: "Investment Account", type: AccountType.investment,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 2
+            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1
         ),
     ]
 

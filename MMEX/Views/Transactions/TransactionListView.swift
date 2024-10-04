@@ -8,27 +8,25 @@
 import SwiftUI
 
 struct TransactionListView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: InfotableViewModel
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
     @State private var isPresentingTransactionAddView = false
 
-    @State private var accountId: [Int64] = []  // sorted by name
-    @State private var categories: [CategoryData] = []
-    @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
-    @State private var payees: [PayeeData] = []
-    @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
-    
     var body: some View {
         NavigationStack {
-            List(viewModel.txns) { txn in
+            if viewModel.resetCurrentHeader() {} // TODO: better reset?
+            List($viewModel.txns) { $txn in
+                if (viewModel.newDateHeader(transDate: txn.transDate)) {
+                    Text(viewModel.currentHeader)
+                }
                 NavigationLink(destination: TransactionDetailView(
                     viewModel: viewModel,
-                    accountId: $accountId,
-                    categories: $categories,
-                    payees: $payees,
-                    txn: txn
+                    accountId: $viewModel.accountId,
+                    categories: $viewModel.categories,
+                    payees: $viewModel.payees,
+                    txn: $txn
                 ) ) {
                     HStack {
                         // Left column: Date (truncated to day)
@@ -72,22 +70,22 @@ struct TransactionListView: View {
             }
         }
         .onAppear {
-            loadAccount()
-            loadCategory()
-            loadPayee()
+            viewModel.loadAccounts()
+            viewModel.loadCategories()
+            viewModel.loadPayees()
             viewModel.loadTransactions()
 
             // database level setting
-            let repository = dataManager.infotableRepository
+            let repository = env.infotableRepository
             if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
                 newTxn.accountId = storedDefaultAccount
             }
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(
-                accountId: $accountId,
-                categories: $categories,
-                payees: $payees,
+                accountId: $viewModel.accountId,
+                categories: $viewModel.categories,
+                payees: $viewModel.payees,
                 newTxn: $newTxn,
                 isPresentingTransactionAddView: $isPresentingTransactionAddView
             ) { newTxn in
@@ -97,62 +95,16 @@ struct TransactionListView: View {
         }
     }
 
-    func loadAccount() {
-        let repository = dataManager.accountRepository
-        DispatchQueue.global(qos: .background).async {
-            typealias A = AccountRepository
-            let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
-            DispatchQueue.main.async {
-                self.accountId = id
-            }
-        }
-    }
-    
-    func loadCategory() {
-        let repository = dataManager.categoryRepository
-        DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository?.load() ?? []
-            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
-            DispatchQueue.main.async {
-                self.categories = loadedCategories
-                self.categoryDict = loadedCategoryDict
-            }
-        }
-    }
-
-    func loadPayee() {
-        let repository = dataManager.payeeRepository
-
-        DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository?.load() ?? []
-            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
-
-            DispatchQueue.main.async {
-                self.payees = loadedPayees
-                self.payeeDict = loadedPayeeDict
-            }
-        }
-    }
-
     // TODO pre-join via SQL?
     func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
-            if let toAccount = dataManager.accountCache[txn.toAccountId] {
+            if let toAccount = env.accountCache[txn.toAccountId] {
                 return String(format: "> \(toAccount.name)")
             }
         }
 
-        if let payee = self.payeeDict[txn.payeeId] {
-            return payee.name
-        }
-
-        return "Unknown"
-    }
-    
-    func getCategoryName(for categoryID: Int64) -> String {
-        // Find the category with the given ID
-        return categories.first { $0.id == categoryID }?.name ?? "Unknown"
+        return viewModel.getPayeeName(for: txn.payeeId)
     }
 
     // Helper function to format the date, truncating to day
@@ -169,7 +121,7 @@ struct TransactionListView: View {
 
 #Preview {
     TransactionListView(
-        viewModel: InfotableViewModel(dataManager: DataManager())
+        viewModel: InfotableViewModel(env: EnvironmentManager.sampleData)
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

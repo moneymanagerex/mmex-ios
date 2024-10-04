@@ -8,19 +8,17 @@
 import SwiftUI
 
 struct TransactionDetailView: View {
-    @EnvironmentObject var dataManager: DataManager
+    @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: InfotableViewModel
     @Binding var accountId: [Int64]  // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
-    @State var txn: TransactionData
+    @Binding var txn: TransactionData
 
     @State private var editingTxn = TransactionData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     
-    @State private var account: AccountData?
-    @State private var toAccount: AccountData?
     @State private var isExporting = false
 
     var body: some View {
@@ -35,7 +33,7 @@ struct TransactionDetailView: View {
 
             Section(header: Text("Transaction Amount")) {
                 Text(txn.transAmount.formatted(
-                    by: dataManager.currencyCache[account?.currencyId ?? 0]?.formatter
+                    by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
                 ))
             }
 
@@ -44,7 +42,7 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Account Name")) {
-                if let account = dataManager.accountCache[txn.accountId] {
+                if let account = env.accountCache[txn.accountId] {
                     Text("\(account.name)")
                 } else {
                     Text("n/a")
@@ -53,7 +51,7 @@ struct TransactionDetailView: View {
 
             if txn.transCode == .transfer {
                 Section(header: Text("To Account")) {
-                    if let toAccount = dataManager.accountCache[txn.toAccountId] {
+                    if let toAccount = env.accountCache[txn.toAccountId] {
                         Text("\(toAccount.name)")
                     } else {
                         Text("n/a")
@@ -84,7 +82,7 @@ struct TransactionDetailView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
 
                             Text(split.amount.formatted(
-                                by: dataManager.currencyCache[account?.currencyId ?? 0]?.formatter
+                                by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
                             ))
                             .frame(width: 80, alignment: .center) // Centered with fixed width
 
@@ -165,9 +163,9 @@ struct TransactionDetailView: View {
         ) { result in
             switch result {
             case .success(let url):
-                print("File saved to: \(url)")
+                log.info("File saved to: \(url)")
             case .failure(let error):
-                print("Error exporting file: \(error)")
+                log.error("Error exporting file: \(error)")
             }
         }
     }
@@ -183,33 +181,33 @@ struct TransactionDetailView: View {
 
 #Preview {
     TransactionDetailView(
-        viewModel: InfotableViewModel(dataManager: DataManager()),
+        viewModel: InfotableViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
-        txn: TransactionData.sampleData[0]
+        txn: .constant(TransactionData.sampleData[0])
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview {
     TransactionDetailView(
-        viewModel: InfotableViewModel(dataManager: DataManager()),
+        viewModel: InfotableViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
-        txn: TransactionData.sampleData[2]
+        txn: .constant(TransactionData.sampleData[2])
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview {
     TransactionDetailView(
-        viewModel: InfotableViewModel(dataManager: DataManager()),
+        viewModel: InfotableViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
-        txn: TransactionData.sampleData[3]
+        txn: .constant(TransactionData.sampleData[3])
     )
-    .environmentObject(DataManager.sampleDataManager)
+    .environmentObject(EnvironmentManager.sampleData)
 }

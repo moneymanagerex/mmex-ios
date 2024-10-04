@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var dataManager: DataManager // Access DataManager from environment
+    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: InfotableViewModel
     
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
@@ -60,12 +60,12 @@ struct SettingsView: View {
                 HStack {
                     Text("Database File")
                     Spacer()
-                    Text(dataManager.getDatabaseFileName() ?? "")
+                    Text(env.getDatabaseFileName() ?? "")
                 }
                 HStack {
                     Text("Schema Version")
                     Spacer()
-                    Text(String(dataManager.getDatabaseUserVersion() ?? 0))
+                    Text(String(env.getDatabaseUserVersion() ?? 0))
                 }
                 HStack {
                     Text("Date Format")
@@ -86,7 +86,7 @@ struct SettingsView: View {
  
                 Picker("Default Account", selection: $viewModel.defaultAccountId) {
                     ForEach(viewModel.accounts) { account in
-                        let currency = dataManager.currencyCache[account.currencyId]
+                        let currency = env.currencyCache[account.currencyId]
                         HStack {
                             Text(account.name)
                             Spacer()
@@ -112,6 +112,8 @@ enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
 }
 
 #Preview {
-    SettingsView(viewModel: InfotableViewModel(dataManager: DataManager()))
-        .environmentObject(DataManager())
+    SettingsView(
+        viewModel: InfotableViewModel(env: EnvironmentManager.sampleData)
+    )
+    .environmentObject(EnvironmentManager.sampleData)
 }

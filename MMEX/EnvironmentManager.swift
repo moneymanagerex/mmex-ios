@@ -1,5 +1,5 @@
 //
-//  DataManager.swift
+//  EnvironmentManager.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/8.
@@ -8,69 +8,82 @@
 import Foundation
 import SQLite
 
-class DataManager: ObservableObject {
+class EnvironmentManager: ObservableObject {
+    // for file database: db != nil && databaseURL != nil
+    // for in-memmory database: db != nil && databaseURL == nil
     @Published var isDatabaseConnected = false
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
-
+    
     // cache
     var currencyCache = CurrencyCache()
     var accountCache  = AccountCache()
 
-    init() {
+    init(withStoredDatabase: Void) {
         connectToStoredDatabase()
     }
-    
-    init(withoutConnection: Void) {
+
+    init(withSampleDatabaseInMemory: Void) {
+        createDatabase(at: nil, sampleData: true)
+    }
+
+    init() {
     }
 }
 
-extension DataManager {
-    func openDatabase(at url: URL, isNew: Bool = false) {
-        if url.startAccessingSecurityScopedResource() {
-            defer { url.stopAccessingSecurityScopedResource() }
-            do {
-                db = try Connection(url.path)
-                print("Successfully connected to database: \(url.path)")
-            } catch {
-                db = nil
-                print("Failed to connect to database: \(error)")
+extension EnvironmentManager {
+    func openDatabase(at url: URL?, isNew: Bool = false) {
+        db = nil
+        if let url {
+            if url.startAccessingSecurityScopedResource() {
+                defer { url.stopAccessingSecurityScopedResource() }
+                do {
+                    db = try Connection(url.path)
+                    log.info("Successfully connected to database: \(url.path)")
+                } catch {
+                    log.error("Failed to connect to database: \(error)")
+                }
+            } else {
+                log.error("Failed to access security-scoped resource: \(url.path)")
             }
-        } else {
-            db = nil
-            print("Failed to access security-scoped resource: \(url.path)")
+        } else if isNew {
+            do {
+                db = try Connection()
+                log.info("Successfully created database in memory")
+            } catch {
+                log.error("Failed to create database in memory: \(error)")
+            }
         }
-        
+
         if let db {
             isDatabaseConnected = true
             databaseURL = url
             _ = Repository(db).setPragma(name: "journal_mode", value: "MEMORY")
+            if !isNew {
+                loadCache()
+            }
         } else {
             isDatabaseConnected = false
             databaseURL = nil
-        }
-
-        if !isNew {
-            loadCache()
         }
     }
 
     /// Method to connect to a previously stored database path if available
     private func connectToStoredDatabase() {
         guard let storedPath = UserDefaults.standard.string(forKey: "SelectedFilePath") else {
-            print("No stored database path found.")
+            log.warning("No stored database path found.")
             return
         }
         let storedURL = URL(fileURLWithPath: storedPath)
         openDatabase(at: storedURL)
     }
 
-    func createDatabase(at url: URL, sampleData: Bool) {
+    func createDatabase(at url: URL?, sampleData: Bool) {
         openDatabase(at: url, isNew: true)
         guard let db else { return }
 
         guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
-            print("Cannot find tables.sql")
+            log.error("Cannot find tables.sql")
             closeDatabase()
             return
         }
@@ -84,7 +97,7 @@ extension DataManager {
                 return
             }
         } else {
-            print("Failed to access security-scoped resource: \(tables.path)")
+            log.error("Failed to access security-scoped resource: \(tables.path)")
             closeDatabase()
             return
         }
@@ -92,7 +105,7 @@ extension DataManager {
         if sampleData {
             let repository = Repository(db)
             guard repository.insertSampleData() else {
-                print("Failed to create sample database")
+                log.error("Failed to create sample database")
                 closeDatabase()
                 return
             }
@@ -107,7 +120,7 @@ extension DataManager {
         isDatabaseConnected = false
         db = nil
         databaseURL = nil
-        print("Database connection closed.")
+        log.info("Database connection closed.")
     }
 
     /// basic stats
@@ -119,7 +132,7 @@ extension DataManager {
     }
 }
 
-extension DataManager {
+extension EnvironmentManager {
     func setTempStoreDirectory(db: Connection) {
         // Get the path to the app's sandbox Caches directory
         let fileManager = FileManager.default
@@ -129,7 +142,7 @@ extension DataManager {
     }
 }
 
-extension DataManager {
+extension EnvironmentManager {
     func loadCache() {
         loadCurrency()
         loadAccount()
@@ -161,7 +174,7 @@ extension DataManager {
     }
 }
 
-extension DataManager {
+extension EnvironmentManager {
     var repository                 : Repository?                 { Repository(db) }
     var infotableRepository        : InfotableRepository?        { InfotableRepository(db) }
     var currencyRepository         : CurrencyRepository?         { CurrencyRepository(db) }
@@ -188,20 +201,6 @@ extension DataManager {
     var reportRepository           : ReportRepository?           { ReportRepository(db) }
 }
 
-extension DataManager {
-    static let sampleDataManager: DataManager = {
-        var dataManager = DataManager(withoutConnection: ())
-        let usedCurrencyId = Array(Set(
-            AccountData.sampleData.map { $0.currencyId }
-        ) )
-        dataManager.currencyCache.load(Dictionary(
-            uniqueKeysWithValues: usedCurrencyId.map {
-                ($0, CurrencyData.sampleDataById[$0]!)
-            }
-        ) )
-        dataManager.accountCache.load(Dictionary(
-            uniqueKeysWithValues: AccountData.sampleData.map { ($0.id, $0) }
-        ) )
-        return dataManager
-    } ()
+extension EnvironmentManager {
+    static var sampleData: EnvironmentManager { EnvironmentManager(withSampleDatabaseInMemory: ()) }
 }

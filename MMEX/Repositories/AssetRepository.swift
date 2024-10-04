@@ -110,6 +110,26 @@ extension AssetRepository {
         )
     }
 
+    // load assets by type
+    func loadByType<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [AssetType: [Result]] {
+        do {
+            var dataByType: [AssetType: [Result]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let type = AssetType(collateNoCase: row[Self.col_type])
+                if dataByType[type] == nil { dataByType[type] = [] }
+                dataByType[type]!.append(result(row))
+            }
+            log.info("Successfull select from \(Self.repositoryName): \(dataByType.count)")
+            return dataByType
+        } catch {
+            log.error("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
     // load currencyId for all accounts
     func loadCurrencyId() -> [Int64] {
         return Repository(db).select(from: Self.table

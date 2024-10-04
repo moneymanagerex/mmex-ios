@@ -9,6 +9,7 @@ import SwiftUI
 import Charts
 
 struct InsightsView: View {
+    @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: InsightsViewModel
     @State var statusChoice: Int = 0
 
@@ -18,8 +19,7 @@ struct InsightsView: View {
                 VStack(spacing: 20) {
                     Section {
                         InsightsAccountView(
-                            baseCurrency: $viewModel.baseCurrency,
-                            accountInfo: $viewModel.accountInfo,
+                            viewModel: viewModel,
                             statusChoice: $statusChoice
                         )
                     } header: {
@@ -91,5 +91,8 @@ struct InsightsView: View {
 }
 
 #Preview {
-    InsightsView(viewModel: InsightsViewModel(dataManager: DataManager()))
+    InsightsView(
+        viewModel: InsightsViewModel(env: EnvironmentManager.sampleData)
+    )
+    .environmentObject(EnvironmentManager.sampleData)
 }
