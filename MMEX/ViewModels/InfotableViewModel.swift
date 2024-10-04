@@ -27,7 +27,16 @@ class InfotableViewModel: ObservableObject {
     private var currencyRepo: CurrencyRepository?
 
     @Published var currencies: [CurrencyData] = []
+
     @Published var accounts: [AccountData] = []
+    @Published var accountDict: [Int64: AccountData] = [: ] // for lookup
+    @Published var accountId: [Int64] = []  // sorted by name
+
+    @Published var categories: [CategoryData] = []
+    @Published var categoryDict: [Int64: CategoryData] = [:] // for lookup
+
+    @Published var payees: [PayeeData] = []
+    @Published var payeeDict: [Int64: PayeeData] = [:] // for lookup
 
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
@@ -98,14 +107,63 @@ class InfotableViewModel: ObservableObject {
     func loadAccounts() {
         DispatchQueue.global(qos: .background).async {
             let loadedAccounts = self.accountRepo?.load() ?? []
+            let loadedAccountDict = Dictionary(uniqueKeysWithValues: loadedAccounts.map { ($0.id, $0) })
+            typealias A = AccountRepository
+            let id = self.accountRepo?.loadId(from: A.table.order(A.col_name)) ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
+                self.accountDict = loadedAccountDict
+                self.accountId = id
 
                 if (loadedAccounts.count == 1) {
                     self.defaultAccountId = loadedAccounts.first!.id
                 }
             }
         }
+    }
+
+    func loadCategories() {
+        let repository = env.categoryRepository
+        DispatchQueue.global(qos: .background).async {
+            let loadedCategories = repository?.load() ?? []
+            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
+            DispatchQueue.main.async {
+                self.categories = loadedCategories
+                self.categoryDict = loadedCategoryDict
+            }
+        }
+    }
+
+    func getCategoryName(for categoryID: Int64) -> String {
+        // Find the category with the given ID
+        if let category = self.categoryDict[categoryID] {
+            return category.name
+        }
+        return "Unknown"
+    }
+
+    func loadPayees() {
+        let repository = env.payeeRepository
+
+        DispatchQueue.global(qos: .background).async {
+            let loadedPayees = repository?.load() ?? []
+            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
+
+            DispatchQueue.main.async {
+                self.payees = loadedPayees
+                self.payeeDict = loadedPayeeDict
+            }
+        }
+    }
+
+    // TODO pre-join via SQL?
+    func getPayeeName(for payeeID: Int64) -> String {
+        // Find the payee with the given ID
+        if let payee = self.payeeDict[payeeID] {
+            return payee.name
+        }
+
+        return "Unknown"
     }
 
     func loadCurrencies() {

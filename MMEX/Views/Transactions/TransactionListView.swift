@@ -14,12 +14,6 @@ struct TransactionListView: View {
     @State private var newTxn = TransactionData()
     @State private var isPresentingTransactionAddView = false
 
-    @State private var accountId: [Int64] = []  // sorted by name
-    @State private var categories: [CategoryData] = []
-    @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
-    @State private var payees: [PayeeData] = []
-    @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
-
     var body: some View {
         NavigationStack {
             if viewModel.resetCurrentHeader() {} // TODO: better reset?
@@ -29,9 +23,9 @@ struct TransactionListView: View {
                 }
                 NavigationLink(destination: TransactionDetailView(
                     viewModel: viewModel,
-                    accountId: $accountId,
-                    categories: $categories,
-                    payees: $payees,
+                    accountId: $viewModel.accountId,
+                    categories: $viewModel.categories,
+                    payees: $viewModel.payees,
                     txn: $txn
                 ) ) {
                     HStack {
@@ -76,9 +70,9 @@ struct TransactionListView: View {
             }
         }
         .onAppear {
-            loadAccount()
-            loadCategory()
-            loadPayee()
+            viewModel.loadAccounts()
+            viewModel.loadCategories()
+            viewModel.loadPayees()
             viewModel.loadTransactions()
 
             // database level setting
@@ -89,51 +83,14 @@ struct TransactionListView: View {
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(
-                accountId: $accountId,
-                categories: $categories,
-                payees: $payees,
+                accountId: $viewModel.accountId,
+                categories: $viewModel.categories,
+                payees: $viewModel.payees,
                 newTxn: $newTxn,
                 isPresentingTransactionAddView: $isPresentingTransactionAddView
             ) { newTxn in
                 viewModel.addTransaction(txn: &newTxn)
                 newTxn = TransactionData()
-            }
-        }
-    }
-
-    func loadAccount() {
-        let repository = env.accountRepository
-        DispatchQueue.global(qos: .background).async {
-            typealias A = AccountRepository
-            let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
-            DispatchQueue.main.async {
-                self.accountId = id
-            }
-        }
-    }
-    
-    func loadCategory() {
-        let repository = env.categoryRepository
-        DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository?.load() ?? []
-            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
-            DispatchQueue.main.async {
-                self.categories = loadedCategories
-                self.categoryDict = loadedCategoryDict
-            }
-        }
-    }
-
-    func loadPayee() {
-        let repository = env.payeeRepository
-
-        DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository?.load() ?? []
-            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
-
-            DispatchQueue.main.async {
-                self.payees = loadedPayees
-                self.payeeDict = loadedPayeeDict
             }
         }
     }
@@ -147,16 +104,7 @@ struct TransactionListView: View {
             }
         }
 
-        if let payee = self.payeeDict[txn.payeeId] {
-            return payee.name
-        }
-
-        return "Unknown"
-    }
-    
-    func getCategoryName(for categoryID: Int64) -> String {
-        // Find the category with the given ID
-        return categories.first { $0.id == categoryID }?.name ?? "Unknown"
+        return viewModel.getPayeeName(for: txn.payeeId)
     }
 
     // Helper function to format the date, truncating to day
