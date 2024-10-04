@@ -41,8 +41,6 @@ class InfotableViewModel: ObservableObject {
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
 
-    var currentHeader = ""
-
     init(env: EnvironmentManager) {
         self.env = env
 
@@ -82,7 +80,7 @@ class InfotableViewModel: ObservableObject {
             //.dropFirst() // Ignore the first emitted value
             .sink { [weak self] accountId in
                 self?.saveDefaultAccount(accountId)
-                self?.loadTransactions()
+                self?.loadTransactions(for: accountId)
             }
             .store(in: &cancellables)
 
@@ -179,18 +177,18 @@ class InfotableViewModel: ObservableObject {
         }
     }
 
-    func loadTransactions() {
+    func loadTransactions(for accountId: Int64? = nil) {
         DispatchQueue.global(qos: .background).async {
-            var loadTransactions = self.transactionRepo?.loadRecent(accountId: self.defaultAccountId) ?? []
-            for i in loadTransactions.indices {
+            var loadedTransactions = self.transactionRepo?.loadRecent(accountId: accountId) ?? []
+            for i in loadedTransactions.indices {
                 // TODO other better indicator
-                if loadTransactions[i].categId <= 0 {
-                    loadTransactions[i].splits = self.env.transactionSplitRepository?.load(for: loadTransactions[i]) ?? []
+                if loadedTransactions[i].categId <= 0 {
+                    loadedTransactions[i].splits = self.env.transactionSplitRepository?.load(for: loadedTransactions[i]) ?? []
                 }
             }
 
             DispatchQueue.main.async {
-                self.txns = loadTransactions.filter { txn in txn.deletedTime.isEmpty }
+                self.txns = loadedTransactions.filter { txn in txn.deletedTime.isEmpty }
                 self.txns_per_day = Dictionary(grouping: self.txns) { txn in
                     // Extract the date portion (ignoring the time) from ISO-8601 string
                     let formatter = DateFormatter()
@@ -250,18 +248,5 @@ class InfotableViewModel: ObservableObject {
         guard let repository = env.transactionRepository else { return false }
         guard let repositorySplit = env.transactionSplitRepository else { return false }
         return repository.delete(data) && repositorySplit.delete(data)
-    }
-
-    func resetCurrentHeader() -> Bool {
-        currentHeader = " "
-        return true;
-    }
-    func newDateHeader(transDate: String) -> Bool {
-        if (transDate.hasPrefix(currentHeader)) {
-            return false
-        } else {
-            currentHeader = String(transDate.prefix(10))
-            return true
-        }
     }
 }

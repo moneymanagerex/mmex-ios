@@ -16,11 +16,7 @@ struct TransactionListView: View {
 
     var body: some View {
         NavigationStack {
-            if viewModel.resetCurrentHeader() {} // TODO: better reset?
             List($viewModel.txns) { $txn in
-                if (viewModel.newDateHeader(transDate: txn.transDate)) {
-                    Text(viewModel.currentHeader)
-                }
                 NavigationLink(destination: TransactionDetailView(
                     viewModel: viewModel,
                     accountId: $viewModel.accountId,
