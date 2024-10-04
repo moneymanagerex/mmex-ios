@@ -11,13 +11,6 @@ struct TransactionListView2: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: InfotableViewModel
 
-    @State private var accountId: [Int64] = []  // sorted by name
-    @State private var accounts: [AccountData] = []
-    @State private var accountDict: [Int64: AccountData] = [: ] // for lookup
-    @State private var categories: [CategoryData] = []
-    @State private var categoryDict: [Int64: CategoryData] = [:] // for lookup
-    @State private var payees: [PayeeData] = []
-    @State private var payeeDict: [Int64: PayeeData] = [:] // for lookup
     @State private var searchQuery: String = "" // New: Search query
     
     var body: some View {
@@ -42,7 +35,7 @@ struct TransactionListView2: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Picker("Select Account", selection: $viewModel.defaultAccountId) {
-                        ForEach(self.accounts) { account in
+                        ForEach(viewModel.accounts) { account in
                             HStack{
                                 Image(systemName: account.type.symbolName)
                                     .frame(width: 5, alignment: .leading) // Adjust width as needed
@@ -62,18 +55,18 @@ struct TransactionListView2: View {
         }
         .onAppear {
             viewModel.loadTransactions()
-            loadAccounts()
-            loadCategories()
-            loadPayees()
+            viewModel.loadAccounts()
+            viewModel.loadCategories()
+            viewModel.loadPayees()
         }
     }
 
     func transactionView(_ txn: TransactionData, for day: String) -> some View {
         NavigationLink(destination: TransactionDetailView(
             viewModel: viewModel,
-            accountId: $accountId,
-            categories: $categories,
-            payees: $payees,
+            accountId: $viewModel.accountId,
+            categories: $viewModel.categories,
+            payees: $viewModel.payees,
             txn: Binding(
                 get: {
                     self.viewModel.txns_per_day[day]?.first(where: { $0.id == txn.id }) ?? txn
@@ -87,13 +80,13 @@ struct TransactionListView2: View {
         ) ) {
             HStack {
                 // Left column (Category Icon or Category Name)
-                if let categorySymbol = CategoryData.categoryToSFSymbol[getCategoryName(for: txn.categId)] {
+                if let categorySymbol = CategoryData.categoryToSFSymbol[viewModel.getCategoryName(for: txn.categId)] {
                     Image(systemName: categorySymbol)
                         .frame(width: 50, alignment: .leading) // Adjust width as needed
                         .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
                         .foregroundColor(.blue) // Customize icon style
                 } else {
-                    Text(getCategoryName(for: txn.categId)) // Fallback to category name if symbol is not found
+                    Text(viewModel.getCategoryName(for: txn.categId)) // Fallback to category name if symbol is not found
                         .frame(width: 50, alignment: .leading)
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(.blue)
@@ -112,7 +105,7 @@ struct TransactionListView2: View {
 
                 Spacer() // To push the amount to the right side
 
-                if let currencyId = self.accountDict[txn.accountId]?.currencyId,
+                if let currencyId = viewModel.accountDict[txn.accountId]?.currencyId,
                    let currencyFormatter = env.currencyCache[currencyId]?.formatter
                 {
                     // Right column (Transaction Amount)
@@ -145,77 +138,22 @@ struct TransactionListView2: View {
             }
         }
     }
-    
-    func loadAccounts() {
-        let repository = env.accountRepository
-        DispatchQueue.global(qos: .background).async {
-            typealias A = AccountRepository
-            let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
-            let loadedAccounts = repository?.load() ?? []
-            let loadedAccountDict = Dictionary(uniqueKeysWithValues: loadedAccounts.map { ($0.id, $0) })
-            DispatchQueue.main.async {
-                self.accountId = id
-                self.accounts = loadedAccounts
-                self.accountDict = loadedAccountDict
-            }
-        }
-    }
-    
-    func loadCategories() {
-        let repository = env.categoryRepository
-        DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository?.load() ?? []
-            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
-            DispatchQueue.main.async {
-                self.categories = loadedCategories
-                self.categoryDict = loadedCategoryDict
-            }
-        }
-    }
 
-    func loadPayees() {
-        let repository = env.payeeRepository
-
-        DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository?.load() ?? []
-            let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
-
-            DispatchQueue.main.async {
-                self.payees = loadedPayees
-                self.payeeDict = loadedPayeeDict
-            }
-        }
-    }
-
-    // TODO pre-join via SQL?
     func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
             if viewModel.defaultAccountId == txn.accountId {
-                if let toAccount = self.accountDict[txn.toAccountId] {
+                if let toAccount = viewModel.accountDict[txn.toAccountId] {
                     return String(format: "> \(toAccount.name)")
                 }
             } else {
-                if let fromAccount = self.accountDict[txn.accountId] {
+                if let fromAccount = viewModel.accountDict[txn.accountId] {
                     return String(format: "< \(fromAccount.name)")
                 }
             }
         }
 
-        if let payee = self.payeeDict[txn.payeeId] {
-            return payee.name
-        }
-
-        return "Unknown"
-    }
-    
-    // TODO pre-join via SQL?
-    func getCategoryName(for categoryID: Int64) -> String {
-        // Find the category with the given ID
-        if let category = self.categoryDict[categoryID] {
-            return category.name
-        } 
-        return "Unknown"
+        return viewModel.getPayeeName(for: txn.payeeId)
     }
 
     func calculateTotal(for day: String) -> String {
