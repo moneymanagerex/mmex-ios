@@ -3,78 +3,191 @@
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/9.
+//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct AccountEditView: View {
+    @EnvironmentObject var env: EnvironmentManager
     @Binding var allCurrencyName: [(Int64, String)] // sorted by name
     @Binding var account: AccountData
+    @State var edit: Bool
+    var onDelete: () -> Void = { }
+
+    var currency: CurrencyInfo? { env.currencyCache[account.currencyId] }
+    var formatter: CurrencyFormatter? { currency?.formatter }
 
     var body: some View {
         Form {
-            Section(header: Text("Account Name")) {
-                TextField("Account Name", text: $account.name)
-            }
-            Section(header: Text("Account Type")) {
-                Picker("Account Type", selection: $account.type) {
-                    ForEach(AccountType.allCases) { type in
-                        Text(type.name).tag(type)
+            Section {
+                env.theme.field.text(edit, "Name") {
+                    TextField("Account Name", text: $account.name)
+                        .textInputAutocapitalization(.words)
+                }
+                env.theme.field.picker(edit, "Type") {
+                    Picker("", selection: $account.type) {
+                        ForEach(AccountType.allCases) { type in
+                            Text(type.name).tag(type)
+                        }
                     }
                 }
-                .labelsHidden()
-                .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
-            }
-            Section(header: Text("Status")) {
-                Picker("Status", selection: $account.status) {
-                    ForEach(AccountStatus.allCases) { status in
-                        Text(status.name).tag(status)
+                env.theme.field.picker(edit, "Currency") {
+                    Picker("", selection: $account.currencyId) {
+                        if (account.currencyId == 0) {
+                            Text("Select Currency").tag(0 as Int64) // not set
+                        }
+                        ForEach(allCurrencyName, id: \.0) { id, name in
+                            Text(name).tag(id) // Use currency.name to display and tag by id
+                        }
                     }
                 }
-                .pickerStyle(SegmentedPickerStyle())
-            }
-            Section(header: Text("Currency")) {
-                Picker("Currency", selection: $account.currencyId) {
-                    if (account.currencyId == 0) {
-                        Text("Currency").tag(0 as Int64) // not set
-                    }
-                    ForEach(allCurrencyName, id: \.0) { id, name in
-                        Text(name).tag(id) // Use currency.name to display and tag by id
+                
+                env.theme.field.toggle(edit, "Status") {
+                    Toggle(isOn: Binding(
+                        get: { account.status == .open },
+                        set: { account.status = $0 ? .open : .closed }
+                    )) {
+                        Text(account.status.rawValue)
                     }
                 }
-                .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
+                env.theme.field.toggle(edit, "Favorite") {
+                    Toggle(isOn: Binding(
+                        get: { account.favoriteAcct == .boolTrue },
+                        set: { account.favoriteAcct = $0 ? .boolTrue : .boolFalse }
+                    )) {
+                        Text(account.favoriteAcct.rawValue)
+                    }
+                }
+                
+                // TODO: use date picker
+                env.theme.field.text(edit, "Initial Date") {
+                    TextField("Initial Date", text: $account.initialDate)
+                }
+                if edit {
+                    env.theme.field.text(edit, "Initial Balance") {
+                        TextField("Initial Balance", value: $account.initialBal, format: .number)
+                    }
+                } else {
+                    env.theme.field.text(edit, "Initial Balance") {
+                        Text(account.initialBal.formatted(by: formatter))
+                    }
+                }
+                
             }
-            Section(header: Text("Favorite Account")) {
-                Toggle(isOn: Binding(
-                    get: { account.favoriteAcct == "TRUE" },
-                    set: { account.favoriteAcct = $0 ? "TRUE" : "FALSE" }
-                )) {
-                    Text("Favorite Account")
+            
+            Section() {
+                env.theme.field.toggle(edit, "Statement Locked") {
+                    Toggle(isOn: $account.statementLocked) {
+                        Text(account.statementLocked ? "YES" : "NO")
+                    }
+                }
+                // TODO: use date picker
+                env.theme.field.text(edit, "Statement Date") {
+                    TextField("Statement Date", text: $account.statementDate)
+                }
+                if edit {
+                    env.theme.field.text(edit, "Minimum Balance") {
+                        TextField("Minimum Balance", value: $account.minimumBalance, format: .number)
+                    }
+                } else {
+                    env.theme.field.text(edit, "Minimum Balance") {
+                        Text(account.minimumBalance.formatted(by: formatter))
+                    }
+                }
+                if edit {
+                    env.theme.field.text(edit, "Credit Limit") {
+                        TextField("Credit Limit", value: $account.creditLimit, format: .number)
+                    }
+                } else {
+                    env.theme.field.text(edit, "Credit Limit") {
+                        Text(account.creditLimit.formatted(by: formatter))
+                    }
+                }
+                env.theme.field.text(edit, "Interest Rate") {
+                    TextField("Interest Rate", value: $account.interestRate, format: .number)
+                }
+                // TODO: use date picker
+                env.theme.field.text(edit, "Payment Due Date") {
+                    TextField("Payment Due Date", text: $account.paymentDueDate)
+                }
+                if edit {
+                    env.theme.field.text(edit, "Minimum Payment") {
+                        TextField("Minimum Payment", value: $account.minimumPayment, format: .number)
+                    }
+                } else {
+                    env.theme.field.text(edit, "Minimum Payment") {
+                        Text(account.minimumPayment.formatted(by: formatter))
+                    }
                 }
             }
-            Section(header: Text("Initial Balance")) {
-                TextField("Balance", value: $account.initialBal, format: .number)
+
+            Section() {
+                if edit || !account.num.isEmpty {
+                    env.theme.field.text(edit, "Number") {
+                        TextField("Number", text: $account.num)
+                            .textInputAutocapitalization(.never)
+                    }
+                }
+                if edit || !account.heldAt.isEmpty {
+                    env.theme.field.text(edit, "Held at") {
+                        TextField("Held at", text: $account.heldAt)
+                            .textInputAutocapitalization(.sentences)
+                    }
+                }
+                if edit || !account.website.isEmpty {
+                    env.theme.field.text(edit, "Website") {
+                        TextField("Website", text: $account.website)
+                            .textInputAutocapitalization(.never)
+                    }
+                }
+                if edit || !account.contactInfo.isEmpty {
+                    env.theme.field.text(edit, "Contact Info") {
+                        TextField("Contact Info", text: $account.contactInfo)
+                            .textInputAutocapitalization(.sentences)
+                    }
+                }
+                if edit || !account.accessInfo.isEmpty {
+                    env.theme.field.text(edit, "Access Info") {
+                        TextField("Access Info", text: $account.accessInfo)
+                            .textInputAutocapitalization(.sentences)
+                    }
+                }
             }
-            Section(header: Text("Notes")) {
-                TextField("Notes", text: Binding(
-                    get: { account.notes },  // Provide a default value if nil
-                    set: { account.notes = $0 }  // Set nil if empty
-                ))
+        
+            Section() {
+                env.theme.field.text(edit, "Notes") {
+                    TextField("Notes", text: $account.notes)
+                        .textInputAutocapitalization(.never)
+                }
+            }
+            
+            // TODO: delete account if not in use
+            if true {
+                Button("Delete Account") {
+                    onDelete()
+                }
+                .foregroundColor(.red)
             }
         }
+        .textSelection(.enabled)
     }
 }
 
 #Preview {
     AccountEditView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
-        account: .constant(AccountData.sampleData[0])
+        account: .constant(AccountData.sampleData[0]),
+        edit: false
     )
+    .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview {
     AccountEditView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
-        account: .constant(AccountData.sampleData[1])
+        account: .constant(AccountData.sampleData[1]),
+        edit: true
     )
+    .environmentObject(EnvironmentManager.sampleData)
 }

@@ -49,7 +49,7 @@ extension CurrencyData {
         nf.negativeSuffix    = self.suffixSymbol
         nf.decimalSeparator  = self.decimalPoint
         nf.groupingSeparator = self.groupSeparator
-        let frac = self.scale > 0 ? Int(log10(Double(self.scale))) : 0
+        let frac = self.scale > 0 ? Int(ceil(log10(Double(self.scale)))) : 0
         nf.minimumFractionDigits = frac
         nf.maximumFractionDigits = frac
         return nf

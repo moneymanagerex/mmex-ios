@@ -14,6 +14,12 @@ enum AccountStatus: String, EnumCollateNoCase {
     static let defaultValue = Self.closed
 }
 
+enum AccountFavorite: String, EnumCollateNoCase {
+    case boolFalse = "FALSE"
+    case boolTrue  = "TRUE"
+    static let defaultValue = Self.boolFalse
+}
+
 enum AccountType: String, EnumCollateNoCase {
     case cash       = "Cash"
     case checking   = "Checking"
@@ -49,27 +55,27 @@ enum AccountType: String, EnumCollateNoCase {
 }
 
 struct AccountData: ExportableEntity {
-    var id              : Int64         = 0
-    var name            : String        = ""
-    var type            : AccountType   = AccountType.defaultValue
-    var num             : String        = ""
-    var status          : AccountStatus = AccountStatus.defaultValue
-    var notes           : String        = ""
-    var heldAt          : String        = ""
-    var website         : String        = ""
-    var contactInfo     : String        = ""
-    var accessInfo      : String        = ""
-    var initialDate     : String        = ""
-    var initialBal      : Double        = 0.0
-    var favoriteAcct    : String        = ""
-    var currencyId      : Int64         = 0
-    var statementLocked : Bool          = false
-    var statementDate   : String        = ""
-    var minimumBalance  : Double        = 0.0
-    var creditLimit     : Double        = 0.0
-    var interestRate    : Double        = 0.0
-    var paymentDueDate  : String        = ""
-    var minimumPayment  : Double        = 0.0
+    var id              : Int64           = 0
+    var name            : String          = ""
+    var type            : AccountType     = AccountType.defaultValue
+    var num             : String          = ""
+    var status          : AccountStatus   = AccountStatus.defaultValue
+    var notes           : String          = ""
+    var heldAt          : String          = ""
+    var website         : String          = ""
+    var contactInfo     : String          = ""
+    var accessInfo      : String          = ""
+    var initialDate     : String          = ""
+    var initialBal      : Double          = 0.0
+    var favoriteAcct    : AccountFavorite = AccountFavorite.defaultValue
+    var currencyId      : Int64           = 0
+    var statementLocked : Bool            = false
+    var statementDate   : String          = ""
+    var minimumBalance  : Double          = 0.0
+    var creditLimit     : Double          = 0.0
+    var interestRate    : Double          = 0.0
+    var paymentDueDate  : String          = ""
+    var minimumPayment  : Double          = 0.0
 }
 
 extension AccountData: DataProtocol {
@@ -106,17 +112,17 @@ extension AccountData {
         AccountData(
             id: 1, name: "Account A", type: AccountType.cash,
             status: AccountStatus.open, notes:"",
-            initialBal: 100.0, favoriteAcct: "TRUE", currencyId: 1
+            initialBal: 100.0, favoriteAcct: .boolTrue, currencyId: 1
         ),
         AccountData(
             id: 2, name: "Account B", type: AccountType.cash,
             status: AccountStatus.open, notes:"",
-            initialBal: 200.0, favoriteAcct: "TRUE", currencyId: 2
+            initialBal: 200.0, favoriteAcct: .boolTrue, currencyId: 2
         ),
         AccountData(
             id: 3, name: "Investment Account", type: AccountType.investment,
             status: AccountStatus.open, notes:"",
-            initialBal: 0.0, favoriteAcct: "TRUE", currencyId: 1
+            initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
         ),
     ]
 

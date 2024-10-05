@@ -10,7 +10,6 @@ import SwiftUI
 struct CurrencyAddView: View {
     @Binding var newCurrency: CurrencyData
     @Binding var isPresentingAddView: Bool
-
     var onSave: (inout CurrencyData) -> Void
 
     var body: some View {
@@ -27,8 +26,8 @@ struct CurrencyAddView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        isPresentingAddView = false
                         onSave(&newCurrency)
+                        isPresentingAddView = false
                     }
                 }
             }

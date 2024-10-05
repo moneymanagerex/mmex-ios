@@ -13,7 +13,7 @@ struct CurrencyDetailView: View {
     @EnvironmentObject var env: EnvironmentManager
     @Binding var currency: CurrencyData
 
-    @State private var editingCurrency = CurrencyData()
+    @State private var editCurrency = CurrencyData()
     @State private var isPresentingEditView = false
 
     var format: String {
@@ -31,88 +31,15 @@ struct CurrencyDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Edit") {
+                    editCurrency = currency
                     isPresentingEditView = true
-                    editingCurrency = currency
                 }
             }
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 CurrencyEditView(
-                    currency: $editingCurrency,
-                    edit: true,
-                    onDelete: { }
-                )
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
-                            isPresentingEditView = false
-                        }
-                    }
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
-                            isPresentingEditView = false
-                            currency = editingCurrency
-                            updateCurrency()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    var body2: some View {
-        List {
-            Section(header: Text("Name")) {
-                Text(currency.name)
-            }
-            Section(header: Text("Symbol")) {
-                Text(currency.symbol)
-            }
-
-            if !currency.unitName.isEmpty {
-                Section(header: Text("Unit Name")) {
-                    Text(currency.unitName)
-                }
-                if !currency.centName.isEmpty {
-                    Section(header: Text("Cent Name")) {
-                        Text(currency.centName)
-                    }
-                }
-            }
-
-            Section(header: Text("Format")) {
-                let amount: Double = 12345.67
-                Text(amount.formatted(by: currency.formatter))
-                    .frame(maxWidth: .infinity, alignment: .center)
-            }
-
-            Section(header: Text("Conversion Rate")) {
-                Text("\(currency.baseConvRate)")
-            }
-            Section(header: Text("Type")) {
-                Text(currency.type.rawValue)
-            }
-            // cannot delete currency in use
-            if env.currencyCache[currency.id] == nil {
-                Button("Delete Currency") {
-                    deleteCurrency()
-                }
-            }
-        }
-        .textSelection(.enabled)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Edit") {
-                    isPresentingEditView = true
-                    editingCurrency = currency
-                }
-            }
-        }
-        .sheet(isPresented: $isPresentingEditView) {
-            NavigationStack {
-                CurrencyEditView(
-                    currency: $editingCurrency,
+                    currency: $editCurrency,
                     edit: true
                 )
                 .toolbar {
@@ -123,9 +50,9 @@ struct CurrencyDetailView: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
-                            isPresentingEditView = false
-                            currency = editingCurrency
+                            currency = editCurrency
                             updateCurrency()
+                            isPresentingEditView = false
                         }
                     }
                 }

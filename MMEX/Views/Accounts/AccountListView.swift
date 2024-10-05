@@ -18,7 +18,8 @@ struct AccountListView: View {
     @State private var newAccount = emptyAccount
 
     static let emptyAccount = AccountData(
-        status: AccountStatus.open
+        status       : .open,
+        favoriteAcct : .boolTrue
     )
     
     static let typeOrder: [AccountType] = [ .checking, .creditCard, .cash, .loan, .term, .asset, .shares, .investment ]

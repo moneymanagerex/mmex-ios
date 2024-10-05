@@ -22,60 +22,61 @@ struct CurrencyEditView: View {
     var body: some View {
         return Form {
             Section {
-                env.theme.detailField.text(edit, "Name") {
+                env.theme.field.text(edit, "Name") {
                     TextField("Currency Name", text: $currency.name)
+                        .textInputAutocapitalization(.sentences)
                 }
-                env.theme.detailField.text(edit, "Symbol") {
+                env.theme.field.text(edit, "Symbol") {
                     TextField("Currency Symbol", text: $currency.symbol)
+                        .textInputAutocapitalization(.characters)
                 }
-                env.theme.detailField.text(edit, "Type") {
+                env.theme.field.picker(edit, "Type") {
                     Picker("", selection: $currency.type) {
                         ForEach(CurrencyType.allCases) { type in
                             Text(type.rawValue).tag(type)
                         }
                     }
-                    .disabled(!edit)
-                    .padding(.top, -8)
-                    //.border(.black)
-                    //.labelsHidden()
-                    //.pickerStyle(SegmentedPickerStyle()) // Adjust the style of the picker as needed
                 }
                 
                 if edit || !currency.unitName.isEmpty {
-                    env.theme.detailField.text(edit, "Unit Name") {
+                    env.theme.field.text(edit, "Unit Name") {
                         TextField("Unit Name", text: $currency.unitName)
+                            .textInputAutocapitalization(.sentences)
                     }
                     if edit || !currency.centName.isEmpty {
-                        env.theme.detailField.text(edit, "Cent Name") {
+                        env.theme.field.text(edit, "Cent Name") {
                             TextField("Cent Name", text: $currency.centName)
+                                .textInputAutocapitalization(.sentences)
                         }
                     }
                 }
-                
-                env.theme.detailField.text(edit, "Conversion Rate") {
+
+                env.theme.field.text(edit, "Conversion Rate") {
                     TextField("Conversion Rate", value: $currency.baseConvRate, format: .number)
                 }
             }
 
             Section {
-                env.theme.detailField.text(edit, "Format") {
+                env.theme.field.text(edit, "Format") {
                     Text(format)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 if edit {
-                    env.theme.detailField.text(edit, "Prefix Symbol") {
+                    env.theme.field.text(edit, "Prefix Symbol") {
                         TextField("Prefix Symbol", text: $currency.prefixSymbol)
+                            .textInputAutocapitalization(.characters)
                     }
-                    env.theme.detailField.text(edit, "Suffix Symbol") {
+                    env.theme.field.text(edit, "Suffix Symbol") {
                         TextField("Suffix Symbol", text: $currency.suffixSymbol)
+                            .textInputAutocapitalization(.characters)
                     }
-                    env.theme.detailField.text(edit, "Decimal Point") {
+                    env.theme.field.text(edit, "Decimal Point") {
                         TextField("Decimal Point", text: $currency.decimalPoint)
                     }
-                    env.theme.detailField.text(edit, "Thousands Separator") {
+                    env.theme.field.text(edit, "Thousands Separator") {
                         TextField("Thousands Separator", text: $currency.groupSeparator)
                     }
-                    env.theme.detailField.text(edit, "Scale") {
+                    env.theme.field.text(edit, "Scale") {
                         TextField("Scale", value: $currency.scale, format: .number)
                     }
                 }

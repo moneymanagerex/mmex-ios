@@ -37,7 +37,7 @@ struct AccountRepository: RepositoryProtocol {
     // ACCESSINFO      | TEXT    |
     // INITIALDATE     | TEXT    |
     // INITIALBAL      | NUMERIC |
-    // FAVORITEACCT    | TEXT    | NOT NULL
+    // FAVORITEACCT    | TEXT    | NOT NULL (FALSE, TRUE)
     // CURRENCYID      | INTEGER | NOT NULL
     // STATEMENTLOCKED | INTEGER |
     // STATEMENTDATE   | TEXT    |
@@ -117,7 +117,7 @@ struct AccountRepository: RepositoryProtocol {
             accessInfo      : row[col_accessInfo] ?? "",
             initialDate     : row[col_initialDate] ?? "",
             initialBal      : row[cast_initialBal] ?? 0.0,
-            favoriteAcct    : row[col_favoriteAcct],
+            favoriteAcct    : AccountFavorite(collateNoCase: row[col_favoriteAcct]),
             currencyId      : row[col_currencyId],
             statementLocked : row[col_statementLocked] ?? 0 > 0,
             statementDate   : row[col_statementDate] ?? "",
@@ -142,7 +142,7 @@ struct AccountRepository: RepositoryProtocol {
             col_accessInfo      <- data.accessInfo,
             col_initialDate     <- data.initialDate,
             col_initialBal      <- data.initialBal,
-            col_favoriteAcct    <- data.favoriteAcct,
+            col_favoriteAcct    <- data.favoriteAcct.rawValue,
             col_currencyId      <- data.currencyId,
             col_statementLocked <- data.statementLocked ? 1 : 0,
             col_statementDate   <- data.statementDate,
