@@ -35,9 +35,9 @@ struct TransactionRepository: RepositoryProtocol {
     // TRANSACTIONNUMBER | TEXT    |
     // NOTES             | TEXT    |
     // CATEGID           | INTEGER |
-    // TRANSDATE         | TEXT    |
-    // LASTUPDATEDTIME   | TEXT    |
-    // DELETEDTIME       | TEXT    |
+    // TRANSDATE         | TEXT    | (yyyy-MM-dd'T'HH:mm:ss)
+    // LASTUPDATEDTIME   | TEXT    | (yyyy-MM-dd'T'HH:mm:ss)
+    // DELETEDTIME       | TEXT    | (yyyy-MM-dd'T'HH:mm:ss)
     // FOLLOWUPID        | INTEGER |
     // TOTRANSAMOUNT     | NUMERIC |
     // COLOR             | INTEGER | DEFAULT -1
@@ -98,9 +98,9 @@ struct TransactionRepository: RepositoryProtocol {
           transactionNumber : row[col_transactionNumber] ?? "",
           notes             : row[col_notes] ?? "",
           categId           : row[col_categId] ?? 0,
-          transDate         : row[col_transDate] ?? "",
-          lastUpdatedTime   : row[col_lastUpdatedTime] ?? "",
-          deletedTime       : row[col_deletedTime] ?? "",
+          transDate         : DateTimeString(row[col_transDate] ?? ""),
+          lastUpdatedTime   : DateTimeString(row[col_lastUpdatedTime] ?? ""),
+          deletedTime       : DateTimeString(row[col_deletedTime] ?? ""),
           followUpId        : row[col_followUpId] ?? 0,
           toTransAmount     : row[cast_toTransAmount] ?? 0.0,
           color             : row[col_color] ?? 0
@@ -118,9 +118,9 @@ struct TransactionRepository: RepositoryProtocol {
             col_transactionNumber <- data.transactionNumber,
             col_notes             <- data.notes,
             col_categId           <- data.categId,
-            col_transDate         <- data.transDate,
-            col_lastUpdatedTime   <- data.lastUpdatedTime,
-            col_deletedTime       <- data.deletedTime,
+            col_transDate         <- data.transDate.string,
+            col_lastUpdatedTime   <- data.lastUpdatedTime.string,
+            col_deletedTime       <- data.deletedTime.string,
             col_followUpId        <- data.followUpId,
             col_toTransAmount     <- data.toTransAmount,
             col_color             <- data.color,

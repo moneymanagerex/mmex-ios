@@ -29,7 +29,7 @@ struct AssetRepository: RepositoryProtocol {
     // ASSETTYPE       | TEXT    | (Property, Automobile, ...)
     // ASSETSTATUS     | TEXT    | (Closed, Open)
     // ASSETNAME       | TEXT    | NOT NULL COLLATE NOCASE
-    // STARTDATE       | TEXT    | NOT NULL
+    // STARTDATE       | TEXT    | NOT NULL (yyyy-MM-dd)
     // CURRENCYID      | INTEGER |
     // VALUE           | NUMERIC |
     // VALUECHANGE     | TEXT    | (None, Appreciates, Depreciates)

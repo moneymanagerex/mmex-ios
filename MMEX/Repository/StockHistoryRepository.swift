@@ -27,7 +27,7 @@ struct StockHistoryRepository: RepositoryProtocol {
     // --------+---------+------
     // HISTID  | INTEGER | PRIMARY KEY
     // SYMBOL  | TEXT    | NOT NULL
-    // DATE    | TEXT    | NOT NULL
+    // DATE    | TEXT    | NOT NULL (yyyy-MM-dd)
     // VALUE   | NUMERIC | NOT NULL
     // UPDTYPE | INTEGER |
     //         |         | UNIQUE(SYMBOL, DATE)
@@ -56,7 +56,7 @@ struct StockHistoryRepository: RepositoryProtocol {
         return StockHistoryData(
             id         : row[col_id],
             symbol     : row[col_symbol],
-            date       : row[col_date],
+            date       : DateString(row[col_date]),
             price      : row[cast_value],
             updateType : UpdateType(rawValue: row[col_updType] ?? -1)
         )
@@ -65,7 +65,7 @@ struct StockHistoryRepository: RepositoryProtocol {
     static func itemSetters(_ data: StockHistoryData) -> [SQLite.Setter] {
         return [
             col_symbol  <- data.symbol,
-            col_date    <- data.date,
+            col_date    <- data.date.string,
             col_value   <- data.price,
             col_updType <- data.updateType?.rawValue
         ]

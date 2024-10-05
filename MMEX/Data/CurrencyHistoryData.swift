@@ -11,7 +11,7 @@ import SQLite
 struct CurrencyHistoryData: ExportableEntity {
     var id           : Int64       = 0
     var currencyId   : Int64       = 0
-    var date         : String      = ""
+    var date         : DateString  = DateString("")
     var baseConvRate : Double      = 0.0
     var updateType   : UpdateType? = nil
 }

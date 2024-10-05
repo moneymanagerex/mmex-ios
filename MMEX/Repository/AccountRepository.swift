@@ -35,16 +35,16 @@ struct AccountRepository: RepositoryProtocol {
     // WEBSITE         | TEXT    |
     // CONTACTINFO     | TEXT    |
     // ACCESSINFO      | TEXT    |
-    // INITIALDATE     | TEXT    |
+    // INITIALDATE     | TEXT    | (yyyy-MM-dd)
     // INITIALBAL      | NUMERIC |
     // FAVORITEACCT    | TEXT    | NOT NULL (FALSE, TRUE)
     // CURRENCYID      | INTEGER | NOT NULL
     // STATEMENTLOCKED | INTEGER |
-    // STATEMENTDATE   | TEXT    |
+    // STATEMENTDATE   | TEXT    | (yyyy-MM-dd)
     // MINIMUMBALANCE  | NUMERIC |
     // CREDITLIMIT     | NUMERIC |
     // INTERESTRATE    | NUMERIC |
-    // PAYMENTDUEDATE  | TEXT    |
+    // PAYMENTDUEDATE  | TEXT    | (yyyy-MM-dd)
     // MINIMUMPAYMENT  | NUMERIC |
 
     // column expressions

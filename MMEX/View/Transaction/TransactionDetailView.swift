@@ -38,7 +38,7 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Transaction Date")) {
-                Text(txn.transDate) // Display the transaction date
+                Text(txn.transDate.string) // Display the transaction date
             }
 
             Section(header: Text("Account Name")) {

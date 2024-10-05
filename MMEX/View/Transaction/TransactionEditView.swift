@@ -89,7 +89,7 @@ struct TransactionEditView: View {
                         // Format the date as 'YYYY-MM-DDTHH:MM:SS'
                         let formatter = DateFormatter()
                         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-                        txn.transDate = formatter.string(from: newDate) // Save as ISO-8601 formatted string without TZ
+                        txn.transDate.string = formatter.string(from: newDate) // Save as ISO-8601 formatted string without TZ
                     }
                 
                 Spacer()
@@ -232,7 +232,7 @@ struct TransactionEditView: View {
             // Initialize state variables from the txn object when the view appears
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            selectedDate = dateFormatter.date(from: txn.transDate) ?? Date()
+            selectedDate = dateFormatter.date(from: txn.transDate.string) ?? Date()
 
             // Automatically set if there's only one item in the list
             if self.payees.count == 1 {

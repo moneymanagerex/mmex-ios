@@ -60,9 +60,9 @@ struct TransactionData: ExportableEntity {
     var transactionNumber : String            = ""
     var notes             : String            = ""
     var categId           : Int64             = 0
-    var transDate         : String            = ""
-    var lastUpdatedTime   : String            = ""
-    var deletedTime       : String            = ""
+    var transDate         : DateTimeString    = DateTimeString("")
+    var lastUpdatedTime   : DateTimeString    = DateTimeString("")
+    var deletedTime       : DateTimeString    = DateTimeString("")
     var followUpId        : Int64             = 0
     var toTransAmount     : Double            = 0.0
     var color             : Int64             = 0
@@ -100,11 +100,11 @@ extension TransactionData {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
  
-        if let date = formatter.date(from: transDate) {
+        if let date = formatter.date(from: transDate.string) {
             formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
             return formatter.string(from: date)
         }
-        return transDate // If parsing fails, return original string
+        return transDate.string // If parsing fails, return original string
     }
 
     var income: Double {
@@ -155,25 +155,25 @@ extension TransactionData {
         TransactionData(
             id: 1, accountId: 1, payeeId: 1, transCode: TransactionType.withdrawal,
             transAmount: 10.01, status: TransactionStatus.none, categId: 1,
-            transDate: String(Date().ISO8601Format().dropLast())
+            transDate: DateTimeString(Date())
         ),
         TransactionData(
             id: 2, accountId: 2, payeeId: 2, transCode: TransactionType.deposit,
             transAmount: 20.02, status: TransactionStatus.none, categId: 1,
-            transDate: String(Date().ISO8601Format().dropLast())
+            transDate: DateTimeString(Date())
         ),
         TransactionData(
             id: 3, accountId: 3, toAccountId: 2, transCode: TransactionType.transfer,
             transAmount: 30.03, status: TransactionStatus.none,
             notes: "transfer transacion data",
             categId: 1,
-            transDate: String(Date().ISO8601Format().dropLast())
+            transDate: DateTimeString(Date())
         ),
         TransactionData(
             id: 4, accountId: 3, payeeId: 2, transCode: TransactionType.withdrawal,
             transAmount: 40.04, status: TransactionStatus.none,
             notes: "split transacion data",
-            transDate: String(Date().ISO8601Format().dropLast()),
+            transDate: DateTimeString(Date()),
             splits: TransactionSplitData.sampleData
         ),
     ]

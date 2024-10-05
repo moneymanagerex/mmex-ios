@@ -30,7 +30,7 @@ struct StockRepository: RepositoryProtocol {
     // STOCKNAME     | TEXT    | NOT NULL COLLATE NOCASE
     // SYMBOL        | TEXT    |
     // NUMSHARES     | NUMERIC |
-    // PURCHASEDATE  | TEXT    | NOT NULL
+    // PURCHASEDATE  | TEXT    | NOT NULL (yyyy-MM-dd)
     // PURCHASEPRICE | NUMERIC | NOT NULL
     // CURRENTPRICE  | NUMERIC | NOT NULL
     // VALUE         | NUMERIC |
