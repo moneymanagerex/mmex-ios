@@ -13,7 +13,6 @@ struct CurrencyDetailView: View {
     @EnvironmentObject var env: EnvironmentManager
     @Binding var currency: CurrencyData
 
-    //@State var edit: Bool = false
     @State private var editingCurrency = CurrencyData()
     @State private var isPresentingEditView = false
 
@@ -23,23 +22,12 @@ struct CurrencyDetailView: View {
     }
 
     var body: some View {
-//        {
-            CurrencyEditView(
-                currency: $currency,
-                edit: false
-            ) { () in deleteCurrency() }
-/*
-            List {
-                // delete currency if not in use
-                if env.currencyCache[currency.id] == nil {
-                    Button("Delete Currency") {
-                        deleteCurrency()
-                    }
-                    .foregroundColor(.red)
-                }
-            }
-*/
-//        }
+        CurrencyEditView(
+            currency: $currency,
+            edit: false
+        ) { () in
+            deleteCurrency()
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Edit") {
