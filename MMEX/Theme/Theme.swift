@@ -9,6 +9,6 @@ import Foundation
 import SwiftUI
 
 struct Theme {
-    var tab         = TabTheme()
-    var detailField = DetailFieldTheme()
+    var tab   = TabTheme()
+    var field = FieldTheme()
 }

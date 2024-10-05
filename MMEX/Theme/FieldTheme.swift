@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct DetailFieldTheme {
+struct FieldTheme {
     enum Choice: String, EnumCollateNoCase {
         case vstack = "VStack"
         static let defaultValue = Self.vstack
@@ -17,7 +17,7 @@ struct DetailFieldTheme {
     var choice = Self.Choice.defaultValue
 }
 
-extension DetailFieldTheme {
+extension FieldTheme {
     func text<ValueView: View>(
         _ edit: Bool,
         _ name: String?,
