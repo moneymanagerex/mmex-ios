@@ -54,7 +54,7 @@ struct TransactionListView2: View {
             }
         }
         .onAppear {
-            viewModel.loadTransactions()
+            viewModel.loadTransactions(for: viewModel.defaultAccountId)
             viewModel.loadAccounts()
             viewModel.loadCategories()
             viewModel.loadPayees()

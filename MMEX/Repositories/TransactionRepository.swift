@@ -137,8 +137,8 @@ extension TransactionRepository {
     // load recent transactions
     func loadRecent(
         accountId: Int64? = nil,
-        startDate: Date? = Calendar.current.date(byAdding: .month, value: -3, to: Date()),
-        endDate: Date? = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+        startDate: Date? = nil,
+        endDate: Date? = nil
     ) -> [TransactionData] {
         var table = Self.table
 
