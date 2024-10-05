@@ -12,7 +12,7 @@ struct CurrencyListView: View {
 
     @State private var allCurrencyData: [CurrencyData] = [] // sorted by name
     @State private var isExpanded: [Bool : Bool] = [true: true, false: false]
-    @State private var isPresentingCurrencyAddView = false
+    @State private var isPresentingAddView = false
     @State private var newCurrency = emptyCurrency
 
     static let emptyCurrency = CurrencyData(
@@ -24,39 +24,38 @@ struct CurrencyListView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach([true, false], id: \.self) { inUse in
-                    Section(header: HStack {
-                        Button(action: {
-                            isExpanded[inUse]?.toggle()
-                        }) {
-                            Text(inUse ? "In-Use" : "Not-In-Use")
-                                .font(.subheadline)
-                                .padding(.leading)
-                            Spacer()
-                            // Expand or collapse indicator
-                            Image(systemName: isExpanded[inUse] == true ? "chevron.down" : "chevron.right")
-                                .foregroundColor(.gray)
-                        }
+            List { ForEach([true, false], id: \.self) { inUse in
+                Section(header: HStack {
+                    Button(action: {
+                        isExpanded[inUse]?.toggle()
                     }) {
-                        if isExpanded[inUse] == true {
-                            ForEach($allCurrencyData) { $currency in
-                                if (env.currencyCache[currency.id] != nil) == inUse {
-                                    NavigationLink(destination: CurrencyDetailView(
-                                        currency: $currency
-                                    ) ) { HStack {
-                                        Text(currency.name)
-                                        Spacer()
-                                        Text(currency.symbol)
-                                    } }                                }
+                        Text(inUse ? "In-Use" : "Not-In-Use")
+                            .font(.subheadline)
+                            .padding(.leading)
+                        Spacer()
+                        // Expand or collapse indicator
+                        Image(systemName: isExpanded[inUse] == true ? "chevron.down" : "chevron.right")
+                            .foregroundColor(.gray)
+                    }
+                }) {
+                    if isExpanded[inUse] == true {
+                        ForEach($allCurrencyData) { $currency in
+                            if (env.currencyCache[currency.id] != nil) == inUse {
+                                NavigationLink(destination: CurrencyDetailView(
+                                    currency: $currency
+                                ) ) { HStack {
+                                    Text(currency.name)
+                                    Spacer()
+                                    Text(currency.symbol)
+                                } }
                             }
                         }
                     }
                 }
-            }
+            } }
             .toolbar {
                 Button(action: {
-                    isPresentingCurrencyAddView = true
+                    isPresentingAddView = true
                 }, label: {
                     Image(systemName: "plus")
                 })
@@ -66,10 +65,10 @@ struct CurrencyListView: View {
         .onAppear {
             loadCurrencyData()
         }
-        .sheet(isPresented: $isPresentingCurrencyAddView) {
+        .sheet(isPresented: $isPresentingAddView) {
             CurrencyAddView(
                 newCurrency: $newCurrency,
-                isPresentingCurrencyAddView: $isPresentingCurrencyAddView
+                isPresentingAddView: $isPresentingAddView
             ) { currency in
                 addCurrency(&currency)
                 newCurrency = Self.emptyCurrency

@@ -67,6 +67,7 @@ struct ContentView: View {
                 }
             }
         }
+        
     }
 
     private var disconnectedView: some View {
@@ -111,8 +112,7 @@ struct ContentView: View {
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
         }
         .tabItem {
-            Image(systemName: "list.bullet")
-            Text("Checking")
+            env.theme.tab.iconText(icon: "list.bullet", text: "Checking")
         }
         .tag(0)
     }
@@ -124,8 +124,7 @@ struct ContentView: View {
                 .navigationBarTitle("Reports and Insights", displayMode: .inline)
         }
         .tabItem {
-            Image(systemName: "arrow.up.right")
-            Text("Insights")
+            env.theme.tab.iconText(icon: "arrow.up.right", text: "Insights")
         }
         .tag(1)
     }
@@ -137,8 +136,7 @@ struct ContentView: View {
                 .navigationBarTitle("Add Transaction", displayMode: .inline)
         }
         .tabItem {
-            Image(systemName: "plus.circle")
-            Text("Add Transaction")
+            env.theme.tab.iconText(icon: "plus.circle", text: "Add Transaction")
         }
         .tag(2)
     }
@@ -155,8 +153,7 @@ struct ContentView: View {
             .navigationBarTitle("Management", displayMode: .inline)
         }
         .tabItem {
-            Image(systemName: "folder")
-            Text("Management")
+            env.theme.tab.iconText(icon: "folder", text: "Management")
         }
         .tag(3)
     }
@@ -168,8 +165,7 @@ struct ContentView: View {
                 .navigationBarTitle("Settings", displayMode: .inline)
         }
         .tabItem {
-            Image(systemName: "gearshape")
-            Text("Settings")
+            env.theme.tab.iconText(icon: "gearshape", text: "Settings")
         }
         .tag(4)
     }

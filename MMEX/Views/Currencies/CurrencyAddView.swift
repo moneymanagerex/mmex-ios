@@ -9,24 +9,25 @@ import SwiftUI
 
 struct CurrencyAddView: View {
     @Binding var newCurrency: CurrencyData
-    @Binding var isPresentingCurrencyAddView: Bool
+    @Binding var isPresentingAddView: Bool
 
     var onSave: (inout CurrencyData) -> Void
 
     var body: some View {
         NavigationStack {
             CurrencyEditView(
-                currency: $newCurrency
+                currency: $newCurrency,
+                edit: true
             )
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Dismiss") {
-                        isPresentingCurrencyAddView = false
+                        isPresentingAddView = false
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        isPresentingCurrencyAddView = false
+                        isPresentingAddView = false
                         onSave(&newCurrency)
                     }
                 }
@@ -38,7 +39,7 @@ struct CurrencyAddView: View {
 #Preview {
     CurrencyAddView(
         newCurrency: .constant(CurrencyData()),
-        isPresentingCurrencyAddView: .constant(true)
+        isPresentingAddView: .constant(true)
     ) { newCurrency in
         // Handle saving in preview
         log.info("New currency: \(newCurrency.name)")

@@ -3,114 +3,73 @@
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/17.
+//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
-struct DetailFieldView<Content: View>: View {
-    let edit  : Bool
-    let label : String
-    var textField: () -> Content
-    //@Binding var value: Value
-
-    init(edit: Bool = false, label: String, @ViewBuilder textField: @escaping () -> Content) {
-        self.edit   = edit
-        self.label  = label
-        self.textField = textField
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4.0) {
-            Text(label)
-                .font(.body.smallCaps())
-                .fontWeight(.thin)
-                .dynamicTypeSize(.small)
-                .padding(0)
-//            TextField(empty, value: $value, format: .)
-            textField()
-                .padding(.top, 0.0)
-                .padding(.bottom, 0.0)
-                .disabled(!edit)
-        }
-        .padding(0)
-    }
-}
-
 struct CurrencyDetailView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var env: EnvironmentManager
     @Binding var currency: CurrencyData
 
+    //@State var edit: Bool = false
     @State private var editingCurrency = CurrencyData()
     @State private var isPresentingEditView = false
-    @Environment(\.presentationMode) var presentationMode
 
-    @State var edit: Bool = false
-    @State var format: String = ""
+    var format: String {
+        let amount: Double = 12345.67
+        return amount.formatted(by: currency.formatter)
+    }
 
     var body: some View {
-        return Form {
-            Section(header: Text("Currency").font(.body)) {
-                DetailFieldView(edit: edit, label: "Name") {
-                    TextField("Currency Name", text: $currency.name)
+//        {
+            CurrencyEditView(
+                currency: $currency,
+                edit: false
+            ) { () in deleteCurrency() }
+/*
+            List {
+                // delete currency if not in use
+                if env.currencyCache[currency.id] == nil {
+                    Button("Delete Currency") {
+                        deleteCurrency()
+                    }
+                    .foregroundColor(.red)
                 }
-                DetailFieldView(edit: edit, label: "Symbol") {
-                    TextField("Currency Symbol", text: $currency.symbol)
+            }
+*/
+//        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Edit") {
+                    isPresentingEditView = true
+                    editingCurrency = currency
                 }
-                if edit || !currency.unitName.isEmpty {
-                    DetailFieldView(edit: edit, label: "Unit Name") {
-                        TextField("Unit Name", text: $currency.unitName)
-                    }
-                    if edit || !currency.centName.isEmpty {
-                        DetailFieldView(edit: edit, label: "Cent Name") {
-                            TextField("Cent Name", text: $currency.centName)
-                        }
-                    }
-                }
-                if edit {
-                    DetailFieldView(edit: edit, label: "Prefix Symbol") {
-                        TextField("Prefix Symbol", text: $currency.prefixSymbol)
-                    }
-                    DetailFieldView(edit: edit, label: "Suffix Symbol") {
-                        TextField("Suffix Symbol", text: $currency.suffixSymbol)
-                    }
-                    DetailFieldView(edit: edit, label: "Decimal Point") {
-                        TextField("Decimal Point", text: $currency.decimalPoint)
-                    }
-                    DetailFieldView(edit: edit, label: "Thousands Separator") {
-                        TextField("Thousands Separator", text: $currency.groupSeparator)
-                    }
-                    DetailFieldView(edit: edit, label: "Scale") {
-                        TextField("Scale", value: $currency.scale, format: .number)
-                    }
-                } else {
-                    DetailFieldView(edit: edit, label: "Format") {
-                        TextField("", text: $format)
-                    }
-                }
-                
-                /*
-                Section(header: Text("Conversion Rate")) {
-                    TextField("Conversion Rate", value: $currency.baseConvRate, format: .number)
-                }
-                Section(header: Text("Type")) {
-                    Picker("Currency Type", selection: $currency.type) {
-                        ForEach(CurrencyType.allCases) { type in
-                            Text(type.rawValue).tag(type)
-                        }
-                    }
-                    .labelsHidden()
-                    .pickerStyle(SegmentedPickerStyle()) // Adjust the style of the picker as needed
-                }
-
-                */
-
-                //DetailTextFieldView(edit: edit, label: "Conversion Rate", value: $currency.baseConvRate)
-                //DetailTextFieldView(edit: edit, label: "Type", value: $currency.type.rawValue)
             }
         }
-        .onAppear {
-            let amount: Double = 12345.67
-            format = amount.formatted(by: currency.formatter)
+        .sheet(isPresented: $isPresentingEditView) {
+            NavigationStack {
+                CurrencyEditView(
+                    currency: $editingCurrency,
+                    edit: true,
+                    onDelete: { }
+                )
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            isPresentingEditView = false
+                        }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            isPresentingEditView = false
+                            currency = editingCurrency
+                            updateCurrency()
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -139,17 +98,6 @@ struct CurrencyDetailView: View {
                 Text(amount.formatted(by: currency.formatter))
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-/*
-            Section(header: Text("Prefix Symbol")) {
-                Text(currency.prefixSymbol)
-            }
-            Section(header: Text("Suffix Symbol")) {
-                Text(currency.suffixSymbol)
-            }
-            Section(header: Text("Scale")) {
-                Text("\(currency.scale)")
-            }
-*/
 
             Section(header: Text("Conversion Rate")) {
                 Text("\(currency.baseConvRate)")
@@ -176,7 +124,8 @@ struct CurrencyDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 CurrencyEditView(
-                    currency: $editingCurrency
+                    currency: $editingCurrency,
+                    edit: true
                 )
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
