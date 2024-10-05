@@ -188,17 +188,17 @@ class TransactionViewModel: ObservableObject {
             }
 
             DispatchQueue.main.async {
-                self.txns = loadedTransactions.filter { txn in txn.deletedTime.isEmpty }
+                self.txns = loadedTransactions.filter { txn in txn.deletedTime.string.isEmpty }
                 self.txns_per_day = Dictionary(grouping: self.txns) { txn in
                     // Extract the date portion (ignoring the time) from ISO-8601 string
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
 
-                    if let date = formatter.date(from: txn.transDate) {
+                    if let date = formatter.date(from: txn.transDate.string) {
                         formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
                         return formatter.string(from: date)
                     }
-                    return txn.transDate // If parsing fails, return original string
+                    return txn.transDate.string // If parsing fails, return original string
                 }
             }
         }
@@ -217,11 +217,11 @@ class TransactionViewModel: ObservableObject {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
 
-            if let date = formatter.date(from: txn.transDate) {
+            if let date = formatter.date(from: txn.transDate.string) {
                 formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
                 return formatter.string(from: date)
             }
-            return txn.transDate // If parsing fails, return original string
+            return txn.transDate.string // If parsing fails, return original string
         }
     }
 

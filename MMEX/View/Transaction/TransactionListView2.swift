@@ -102,7 +102,7 @@ struct TransactionListView2: View {
                     Text(getPayeeName(for: txn)) // Payee name
                         .font(.system(size: 16))
                         .lineLimit(1) // Prevent wrapping
-                    Text(formatTime(txn.transDate)) // Show time in hh:mm a
+                    Text(formatTime(txn.transDate.string)) // Show time in hh:mm a
                         .font(.system(size: 14))
                         .foregroundColor(.gray)
                 }

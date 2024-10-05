@@ -35,11 +35,11 @@ struct ScheduledRepository: RepositoryProtocol {
     // TRANSACTIONNUMBER  | TEXT    |
     // NOTES              | TEXT    |
     // CATEGID            | INTEGER |
-    // TRANSDATE          | TEXT    |
+    // TRANSDATE          | TEXT    | (yyyy-MM-dd'T'HH:mm:ss)
     // FOLLOWUPID         | INTEGER |
     // TOTRANSAMOUNT      | NUMERIC |
     // REPEATS            | INTEGER |
-    // NEXTOCCURRENCEDATE | TEXT    |
+    // NEXTOCCURRENCEDATE | TEXT    | (yyyy-MM-dd)
     // NUMOCCURRENCES     | INTEGER |
     // COLOR              | INTEGER | DEFAULT -1
 
@@ -103,10 +103,10 @@ struct ScheduledRepository: RepositoryProtocol {
           transactionNumber : row[col_transactionNumber] ?? "",
           notes             : row[col_notes] ?? "",
           categId           : row[col_categId] ?? 0,
-          transDate         : row[col_transDate] ?? "",
+          transDate         : DateTimeString(row[col_transDate] ?? ""),
           followUpId        : row[col_followUpId] ?? 0,
           toTransAmount     : row[cast_toTransAmount] ?? 0.0,
-          dueDate           : row[col_nextOccurrenceDate] ?? "",
+          dueDate           : DateString(row[col_nextOccurrenceDate] ?? ""),
           repeatAuto        : RepeatAuto(rawValue: Int(row[col_repeats] ?? 0) / repeatBase) ?? RepeatAuto.defaultValue,
           repeatType        : RepeatType(rawValue: Int(row[col_repeats] ?? 0) % repeatBase) ?? RepeatType.defaultValue,
           repeatNum         : Int(row[col_numOccurrences] ?? 0),
@@ -126,11 +126,11 @@ struct ScheduledRepository: RepositoryProtocol {
             col_transactionNumber  <- data.transactionNumber,
             col_notes              <- data.notes,
             col_categId            <- data.categId,
-            col_transDate          <- data.transDate,
+            col_transDate          <- data.transDate.string,
             col_followUpId         <- data.followUpId,
             col_toTransAmount      <- data.toTransAmount,
             col_repeats            <- Int64(repeats),
-            col_nextOccurrenceDate <- data.dueDate,
+            col_nextOccurrenceDate <- data.dueDate.string,
             col_numOccurrences     <- Int64(data.repeatNum),
             col_color              <- data.color,
         ]

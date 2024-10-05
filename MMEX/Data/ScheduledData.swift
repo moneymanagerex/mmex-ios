@@ -77,10 +77,10 @@ struct ScheduledData: ExportableEntity {
     var transactionNumber : String            = ""
     var notes             : String            = ""
     var categId           : Int64             = 0
-    var transDate         : String            = ""
+    var transDate         : DateTimeString    = DateTimeString("")
     var followUpId        : Int64             = 0
     var toTransAmount     : Double            = 0.0
-    var dueDate           : String            = ""
+    var dueDate           : DateString        = DateString("")
     var repeatAuto        : RepeatAuto        = RepeatAuto.defaultValue
     var repeatType        : RepeatType        = RepeatType.defaultValue
     var repeatNum         : Int               = 0
@@ -114,17 +114,17 @@ extension ScheduledData {
         ScheduledData(
             id: 1, accountId: 1, payeeId: 1, transCode: TransactionType.withdrawal,
             transAmount: 10.01, status: TransactionStatus.none, categId: 1,
-            transDate: Date().ISO8601Format()
+            transDate: DateTimeString(Date())
         ),
         ScheduledData(
             id: 2, accountId: 2, payeeId: 2, transCode: TransactionType.deposit,
             transAmount: 20.02, status: TransactionStatus.none, categId: 1,
-            transDate: Date().ISO8601Format()
+            transDate: DateTimeString(Date())
         ),
         ScheduledData(
             id: 3, accountId: 3, payeeId: 3, transCode: TransactionType.transfer,
             transAmount: 30.03, status: TransactionStatus.none, categId: 1,
-            transDate: Date().ISO8601Format()
+            transDate: DateTimeString(Date())
         ),
     ]
 }

@@ -26,7 +26,7 @@ struct TransactionListView: View {
                 ) ) {
                     HStack {
                         // Left column: Date (truncated to day)
-                        Text(formatDate(from: txn.transDate))
+                        Text(formatDate(from: txn.transDate.string))
                             .frame(width: 90, alignment: .leading)
                             .font(.system(size: 16))
                             .foregroundColor(.gray)
@@ -105,6 +105,8 @@ struct TransactionListView: View {
 
     // Helper function to format the date, truncating to day
     func formatDate(from isoDate: String) -> String {
+        return String(isoDate.prefix(10))
+/*
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // Assuming ISO-8601 format
         if let date = formatter.date(from: isoDate) {
@@ -112,6 +114,7 @@ struct TransactionListView: View {
             return formatter.string(from: date)
         }
         return isoDate
+*/
     }
 }
 
