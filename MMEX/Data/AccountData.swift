@@ -75,16 +75,16 @@ struct AccountData: ExportableEntity {
     var website         : String          = ""
     var contactInfo     : String          = ""
     var accessInfo      : String          = ""
-    var initialDate     : String          = ""
+    var initialDate     : DateString      = DateString("")
     var initialBal      : Double          = 0.0
     var favoriteAcct    : AccountFavorite = AccountFavorite.defaultValue
     var currencyId      : Int64           = 0
     var statementLocked : Bool            = false
-    var statementDate   : String          = ""
+    var statementDate   : DateString      = DateString("")
     var minimumBalance  : Double          = 0.0
     var creditLimit     : Double          = 0.0
     var interestRate    : Double          = 0.0
-    var paymentDueDate  : String          = ""
+    var paymentDueDate  : DateString      = DateString("")
     var minimumPayment  : Double          = 0.0
 }
 
@@ -121,17 +121,17 @@ extension AccountData {
     static let sampleData : [AccountData] = [
         AccountData(
             id: 1, name: "Account A", type: AccountType.cash,
-            status: AccountStatus.open, notes:"",
+            status: AccountStatus.open, notes: "line 1\nline 2",
             initialBal: 100.0, favoriteAcct: .boolTrue, currencyId: 1
         ),
         AccountData(
             id: 2, name: "Account B", type: AccountType.cash,
-            status: AccountStatus.open, notes:"",
+            status: AccountStatus.open, notes: "note",
             initialBal: 200.0, favoriteAcct: .boolTrue, currencyId: 2
         ),
         AccountData(
             id: 3, name: "Investment Account", type: AccountType.investment,
-            status: AccountStatus.open, notes:"",
+            status: AccountStatus.open, notes: "",
             initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
         ),
     ]

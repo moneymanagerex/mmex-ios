@@ -115,16 +115,16 @@ struct AccountRepository: RepositoryProtocol {
             website         : row[col_website] ?? "",
             contactInfo     : row[col_contactInfo] ?? "",
             accessInfo      : row[col_accessInfo] ?? "",
-            initialDate     : row[col_initialDate] ?? "",
+            initialDate     : DateString(row[col_initialDate] ?? ""),
             initialBal      : row[cast_initialBal] ?? 0.0,
             favoriteAcct    : AccountFavorite(collateNoCase: row[col_favoriteAcct]),
             currencyId      : row[col_currencyId],
             statementLocked : row[col_statementLocked] ?? 0 > 0,
-            statementDate   : row[col_statementDate] ?? "",
+            statementDate   : DateString(row[col_statementDate] ?? ""),
             minimumBalance  : row[cast_minimumBalance] ?? 0.0,
             creditLimit     : row[cast_creditLimit] ?? 0.0,
             interestRate    : row[cast_interestRate] ?? 0.0,
-            paymentDueDate  : row[col_paymentDueDate] ?? "",
+            paymentDueDate  : DateString(row[col_paymentDueDate] ?? ""),
             minimumPayment  : row[cast_minimumPayment] ?? 0.0
         )
     }
@@ -140,16 +140,16 @@ struct AccountRepository: RepositoryProtocol {
             col_website         <- data.website,
             col_contactInfo     <- data.contactInfo,
             col_accessInfo      <- data.accessInfo,
-            col_initialDate     <- data.initialDate,
+            col_initialDate     <- data.initialDate.string,
             col_initialBal      <- data.initialBal,
             col_favoriteAcct    <- data.favoriteAcct.rawValue,
             col_currencyId      <- data.currencyId,
             col_statementLocked <- data.statementLocked ? 1 : 0,
-            col_statementDate   <- data.statementDate,
+            col_statementDate   <- data.statementDate.string,
             col_minimumBalance  <- data.minimumBalance,
             col_creditLimit     <- data.creditLimit,
             col_interestRate    <- data.interestRate,
-            col_paymentDueDate  <- data.paymentDueDate,
+            col_paymentDueDate  <- data.paymentDueDate.string,
             col_minimumPayment  <- data.minimumPayment
         ]
     }

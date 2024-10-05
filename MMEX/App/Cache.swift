@@ -44,14 +44,14 @@ struct AccountInfo {
     var name            : String
     var type            : AccountType
     var status          : AccountStatus
-    var initialDate     : String
+    var initialDate     : DateString
     var initialBal      : Double
     var currencyId      : Int64
     var statementLocked : Bool
-    var statementDate   : String
+    var statementDate   : DateString
     var minimumBalance  : Double
     var creditLimit     : Double
-    
+
     init(_ data: AccountData) {
         self.name            = data.name
         self.type            = data.type
