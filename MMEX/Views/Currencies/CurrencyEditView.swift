@@ -30,17 +30,12 @@ struct CurrencyEditView: View {
                     TextField("Currency Symbol", text: $currency.symbol)
                         .textInputAutocapitalization(.characters)
                 }
-                env.theme.field.text(edit, "Type") {
+                env.theme.field.picker(edit, "Type") {
                     Picker("", selection: $currency.type) {
                         ForEach(CurrencyType.allCases) { type in
                             Text(type.rawValue).tag(type)
                         }
                     }
-                    .disabled(!edit)
-                    .padding(.top, -8)
-                    //.border(.black)
-                    //.labelsHidden()
-                    //.pickerStyle(SegmentedPickerStyle()) // Adjust the style of the picker as needed
                 }
                 
                 if edit || !currency.unitName.isEmpty {

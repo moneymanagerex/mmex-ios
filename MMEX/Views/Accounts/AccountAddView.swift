@@ -18,7 +18,8 @@ struct AccountAddView: View {
         NavigationStack {
             AccountEditView(
                 allCurrencyName: $allCurrencyName,
-                account: $newAccount
+                account: $newAccount,
+                edit: true
             )
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

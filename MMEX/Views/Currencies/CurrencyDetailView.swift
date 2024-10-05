@@ -50,9 +50,9 @@ struct CurrencyDetailView: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
-                            isPresentingEditView = false
                             currency = editCurrency
                             updateCurrency()
+                            isPresentingEditView = false
                         }
                     }
                 }
