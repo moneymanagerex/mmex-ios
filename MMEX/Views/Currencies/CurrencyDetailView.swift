@@ -3,19 +3,65 @@
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/17.
+//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct CurrencyDetailView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var env: EnvironmentManager
     @Binding var currency: CurrencyData
 
     @State private var editingCurrency = CurrencyData()
     @State private var isPresentingEditView = false
-    @Environment(\.presentationMode) var presentationMode
+
+    var format: String {
+        let amount: Double = 12345.67
+        return amount.formatted(by: currency.formatter)
+    }
 
     var body: some View {
+        CurrencyEditView(
+            currency: $currency,
+            edit: false
+        ) { () in
+            deleteCurrency()
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Edit") {
+                    isPresentingEditView = true
+                    editingCurrency = currency
+                }
+            }
+        }
+        .sheet(isPresented: $isPresentingEditView) {
+            NavigationStack {
+                CurrencyEditView(
+                    currency: $editingCurrency,
+                    edit: true,
+                    onDelete: { }
+                )
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            isPresentingEditView = false
+                        }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            isPresentingEditView = false
+                            currency = editingCurrency
+                            updateCurrency()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var body2: some View {
         List {
             Section(header: Text("Name")) {
                 Text(currency.name)
@@ -40,17 +86,6 @@ struct CurrencyDetailView: View {
                 Text(amount.formatted(by: currency.formatter))
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-/*
-            Section(header: Text("Prefix Symbol")) {
-                Text(currency.prefixSymbol)
-            }
-            Section(header: Text("Suffix Symbol")) {
-                Text(currency.suffixSymbol)
-            }
-            Section(header: Text("Scale")) {
-                Text("\(currency.scale)")
-            }
-*/
 
             Section(header: Text("Conversion Rate")) {
                 Text("\(currency.baseConvRate)")
@@ -77,7 +112,8 @@ struct CurrencyDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 CurrencyEditView(
-                    currency: $editingCurrency
+                    currency: $editingCurrency,
+                    edit: true
                 )
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {

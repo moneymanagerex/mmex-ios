@@ -14,10 +14,12 @@ class EnvironmentManager: ObservableObject {
     @Published var isDatabaseConnected = false
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
-    
+
     // cache
     var currencyCache = CurrencyCache()
     var accountCache  = AccountCache()
+
+    var theme = Theme()
 
     init(withStoredDatabase: Void) {
         connectToStoredDatabase()
