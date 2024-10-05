@@ -95,7 +95,7 @@ extension FieldTheme {
                     }
                     if edit {
                         valueView()
-                            .padding(.top, -8)
+                            .padding(.top, 0.0)
                             .padding(.bottom, 0.0)
                             .disabled(!edit)
                         //.border(.black)
@@ -131,7 +131,7 @@ extension FieldTheme {
                     }
                     if edit {
                         valueView()
-                            .padding(.top, -8)
+                            .padding(.top, 0.0)
                             .padding(.bottom, 0.0)
                             //.disabled(!edit)
                     } else {
