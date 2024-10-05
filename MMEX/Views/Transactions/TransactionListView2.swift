@@ -12,6 +12,7 @@ struct TransactionListView2: View {
     @ObservedObject var viewModel: InfotableViewModel
 
     @State private var searchQuery: String = "" // New: Search query
+    @State private var accountId: Int64 = 0 //
     
     var body: some View {
         NavigationStack {
@@ -34,7 +35,7 @@ struct TransactionListView2: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Picker("Select Account", selection: $viewModel.defaultAccountId) {
+                    Picker("Select Account", selection: $accountId) {
                         ForEach(viewModel.accounts) { account in
                             HStack{
                                 Image(systemName: account.type.symbolName)
@@ -46,6 +47,9 @@ struct TransactionListView2: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
+                    .onChange(of: accountId) {
+                        viewModel.loadTransactions(for: accountId)
+                    }
                 }
             }
             .searchable(text: $searchQuery, prompt: "Search by notes") // New: Search bar
@@ -54,7 +58,8 @@ struct TransactionListView2: View {
             }
         }
         .onAppear {
-            viewModel.loadTransactions(for: viewModel.defaultAccountId)
+            accountId = viewModel.defaultAccountId //
+            viewModel.loadTransactions(for: accountId)
             viewModel.loadAccounts()
             viewModel.loadCategories()
             viewModel.loadPayees()
@@ -142,7 +147,7 @@ struct TransactionListView2: View {
     func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
-            if viewModel.defaultAccountId == txn.accountId {
+            if self.accountId == txn.accountId {
                 if let toAccount = viewModel.accountDict[txn.toAccountId] {
                     return String(format: "> \(toAccount.name)")
                 }
@@ -158,9 +163,9 @@ struct TransactionListView2: View {
 
     func calculateTotal(for day: String) -> String {
         let transactions = viewModel.txns_per_day[day] ?? []
-        // TODO convert and format via viewModel.baseCurrency
-        let totalAmount = transactions.reduce(0.0) { $0 + $1.transAmount }
-        return String(format: "%.2f", totalAmount)
+        let totalAmount = transactions.reduce(0.0) { $0 + $1.actual }
+        let account = viewModel.accountDict[accountId]
+        return totalAmount.formatted(by: env.currencyCache[account?.currencyId ?? 0]?.formatter)
     }
 
     func humanReadableDate(_ dateString: String) -> String {
