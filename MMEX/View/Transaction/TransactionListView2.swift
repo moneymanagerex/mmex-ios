@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionListView2: View {
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var viewModel: InfotableViewModel
+    @ObservedObject var viewModel: TransactionViewModel
 
     @State private var searchQuery: String = "" // New: Search query
     @State private var accountId: Int64 = 0 //
@@ -197,7 +197,7 @@ struct TransactionListView2: View {
 
 #Preview {
     TransactionListView2(
-        viewModel: InfotableViewModel(env: EnvironmentManager.sampleData)
+        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }

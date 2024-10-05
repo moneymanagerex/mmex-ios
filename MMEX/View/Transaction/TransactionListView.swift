@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionListView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @ObservedObject var viewModel: InfotableViewModel
+    @ObservedObject var viewModel: TransactionViewModel
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
     @State private var isPresentingTransactionAddView = false
@@ -117,7 +117,7 @@ struct TransactionListView: View {
 
 #Preview {
     TransactionListView(
-        viewModel: InfotableViewModel(env: EnvironmentManager.sampleData)
+        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
