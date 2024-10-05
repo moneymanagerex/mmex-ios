@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var viewModel: InfotableViewModel
+    @ObservedObject var viewModel: TransactionViewModel
     @Binding var accountId: [Int64]  // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
@@ -181,7 +181,7 @@ struct TransactionDetailView: View {
 
 #Preview {
     TransactionDetailView(
-        viewModel: InfotableViewModel(env: EnvironmentManager()),
+        viewModel: TransactionViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
@@ -192,7 +192,7 @@ struct TransactionDetailView: View {
 
 #Preview {
     TransactionDetailView(
-        viewModel: InfotableViewModel(env: EnvironmentManager()),
+        viewModel: TransactionViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
@@ -203,7 +203,7 @@ struct TransactionDetailView: View {
 
 #Preview {
     TransactionDetailView(
-        viewModel: InfotableViewModel(env: EnvironmentManager()),
+        viewModel: TransactionViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),

@@ -54,7 +54,7 @@ struct ContentView: View {
                 }
             } else {
                 let insightsViewModel = InsightsViewModel(env: env)
-                let infotableViewModel = InfotableViewModel(env: env)
+                let infotableViewModel = TransactionViewModel(env: env)
                 TabView(selection: $selectedTab) {
                     transactionTab(viewModel: infotableViewModel)
                     insightsTab(viewModel: insightsViewModel)
@@ -106,7 +106,7 @@ struct ContentView: View {
     }
 
     // Transaction tab
-    private func transactionTab(viewModel: InfotableViewModel) -> some View {
+    private func transactionTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
             TransactionListView2(viewModel: viewModel)
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
@@ -130,7 +130,7 @@ struct ContentView: View {
     }
 
     // Add transaction tab
-    private func addTransactionTab(viewModel: InfotableViewModel) -> some View {
+    private func addTransactionTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
             TransactionAddView2(viewModel: viewModel, selectedTab: $selectedTab)
                 .navigationBarTitle("Add Transaction", displayMode: .inline)
@@ -142,7 +142,7 @@ struct ContentView: View {
     }
 
     // Management tab
-    private func managementTab(viewModel: InfotableViewModel) -> some View {
+    private func managementTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
             ManagementView(
                 viewModel:viewModel,
@@ -159,7 +159,7 @@ struct ContentView: View {
     }
 
     // Settings tab
-    private func settingsTab(viewModel: InfotableViewModel) -> some View {
+    private func settingsTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
             SettingsView(viewModel: viewModel)
                 .navigationBarTitle("Settings", displayMode: .inline)
@@ -239,8 +239,8 @@ struct TabContentView: View {
 
     var body: some View {
         log.trace("TabContentView.body")
-        // Use @StateObject to manage the lifecycle of InfotableViewModel
-        let infotableViewModel = InfotableViewModel(env: env)
+        // Use @StateObject to manage the lifecycle of TransactionViewModel
+        let infotableViewModel = TransactionViewModel(env: env)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {

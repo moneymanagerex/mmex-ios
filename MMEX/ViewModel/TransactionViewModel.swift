@@ -1,5 +1,5 @@
 //
-//  InfotableViewModel.swift
+//  TransactionViewModel.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/24.
@@ -10,7 +10,7 @@ import SwiftUI
 import SQLite
 import Combine
 
-class InfotableViewModel: ObservableObject {
+class TransactionViewModel: ObservableObject {
     // for the view to observe
     @Published var baseCurrencyId: Int64 = 0
     @Published var defaultAccountId: Int64 = 0

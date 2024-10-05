@@ -10,7 +10,7 @@ import SwiftUI
 struct TransactionAddView2: View {    
     @State var newTxn: TransactionData = TransactionData()
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @ObservedObject var viewModel: InfotableViewModel
+    @ObservedObject var viewModel: TransactionViewModel
     @Binding var selectedTab: Int // Bind to the selected tab
 
     // Dismiss environment action

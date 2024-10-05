@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ManagementView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @ObservedObject var viewModel: InfotableViewModel
+    @ObservedObject var viewModel: TransactionViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
@@ -96,7 +96,7 @@ struct ManagementView: View {
 
 #Preview {
     ManagementView(
-        viewModel: InfotableViewModel(env: EnvironmentManager()),
+        viewModel: TransactionViewModel(env: EnvironmentManager()),
         isDocumentPickerPresented: .constant(false),
         isNewDocumentPickerPresented: .constant(false),
         isSampleDocument: .constant(false)

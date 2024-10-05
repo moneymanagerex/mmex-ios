@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @ObservedObject var viewModel: InfotableViewModel
+    @ObservedObject var viewModel: TransactionViewModel
     
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
@@ -113,7 +113,7 @@ enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
 
 #Preview {
     SettingsView(
-        viewModel: InfotableViewModel(env: EnvironmentManager.sampleData)
+        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
