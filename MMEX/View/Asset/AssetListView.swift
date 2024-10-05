@@ -32,16 +32,10 @@ struct AssetListView: View {
                                 Button(action: {
                                     isTypeExpanded[assetType]?.toggle()
                                 }) {
-                                    HStack {
+                                    env.theme.group.hstack(
+                                        isTypeExpanded[assetType] == true
+                                    ) {
                                         Text(assetType.rawValue)
-                                            .font(.subheadline)
-                                            .padding(.leading)
-                                        
-                                        Spacer()
-                                        
-                                        // Expand or collapse indicator
-                                        Image(systemName: isTypeExpanded[assetType] == true ? "chevron.down" : "chevron.right")
-                                            .foregroundColor(.gray)
                                     }
                                 }
                             }

@@ -32,16 +32,10 @@ struct StockListView: View {
                                 Button(action: {
                                     isTypeExpanded[accountId]?.toggle()
                                 }) {
-                                    HStack {
+                                    env.theme.group.hstack(
+                                        isTypeExpanded[accountId] == true
+                                    ) {
                                         Text(env.accountCache[accountId]?.name ?? "(No Account)")
-                                            .font(.subheadline)
-                                            .padding(.leading)
-                                        
-                                        Spacer()
-                                        
-                                        // Expand or collapse indicator
-                                        Image(systemName: isTypeExpanded[accountId] == true ? "chevron.down" : "chevron.right")
-                                            .foregroundColor(.gray)
                                     }
                                 }
                             }

@@ -29,13 +29,11 @@ struct CurrencyListView: View {
                     Button(action: {
                         isExpanded[inUse]?.toggle()
                     }) {
-                        Text(inUse ? "In-Use" : "Not-In-Use")
-                            .font(.subheadline)
-                            .padding(.leading)
-                        Spacer()
-                        // Expand or collapse indicator
-                        Image(systemName: isExpanded[inUse] == true ? "chevron.down" : "chevron.right")
-                            .foregroundColor(.gray)
+                        env.theme.group.hstack(
+                            isExpanded[inUse] == true
+                        ) {
+                            Text(inUse ? "In-Use" : "Not-In-Use")
+                        }
                     }
                 }) {
                     if isExpanded[inUse] == true {
