@@ -13,7 +13,7 @@ struct CurrencyDetailView: View {
     @EnvironmentObject var env: EnvironmentManager
     @Binding var currency: CurrencyData
 
-    @State private var editingCurrency = CurrencyData()
+    @State private var editCurrency = CurrencyData()
     @State private var isPresentingEditView = false
 
     var format: String {
@@ -31,15 +31,15 @@ struct CurrencyDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Edit") {
+                    editCurrency = currency
                     isPresentingEditView = true
-                    editingCurrency = currency
                 }
             }
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 CurrencyEditView(
-                    currency: $editingCurrency,
+                    currency: $editCurrency,
                     edit: true
                 )
                 .toolbar {
@@ -51,7 +51,7 @@ struct CurrencyDetailView: View {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
                             isPresentingEditView = false
-                            currency = editingCurrency
+                            currency = editCurrency
                             updateCurrency()
                         }
                     }

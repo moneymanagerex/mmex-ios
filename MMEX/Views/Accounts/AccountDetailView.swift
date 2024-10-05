@@ -3,18 +3,19 @@
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/5.
+//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct AccountDetailView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var env: EnvironmentManager
+    @Binding var allCurrencyName: [(Int64, String)] // sorted by name
     @State var account: AccountData
 
     @State private var editingAccount = AccountData()
     @State private var isPresentingEditView = false
-    @Environment(\.presentationMode) var presentationMode
     
     @State private var isExporting = false
 
