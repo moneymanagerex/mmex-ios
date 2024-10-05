@@ -22,7 +22,7 @@ struct StockListView: View {
     )
 
     var body: some View {
-        NavigationStack {
+        Group {
             List {
                 let accountIds = Array(allStockDataByAccount.keys)
                 ForEach(accountIds, id: \.self) { accountId in

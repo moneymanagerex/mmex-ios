@@ -23,7 +23,7 @@ struct CurrencyListView: View {
     )
 
     var body: some View {
-        NavigationStack {
+        Group {
             List { ForEach([true, false], id: \.self) { inUse in
                 Section(header: HStack {
                     Button(action: {

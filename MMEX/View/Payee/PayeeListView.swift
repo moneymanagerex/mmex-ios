@@ -21,7 +21,7 @@ struct PayeeListView: View {
     )
 
     var body: some View {
-        NavigationStack {
+        Group {
             List($filteredPayees) { $payee in // Use filteredPayees instead of payees
                 NavigationLink(destination: PayeeDetailView(
                     categories: $categories,
