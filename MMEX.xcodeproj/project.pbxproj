@@ -204,7 +204,7 @@
 		A3C1422E2C89751600D3CEC0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A3C142312C89751600D3CEC0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A3C1423D2C89760600D3CEC0 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
-		A3C142412C897BE600D3CEC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A3C142412C897BE600D3CEC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3C142432C89C8FA00D3CEC0 /* AccountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountData.swift; sourceTree = "<group>"; };
 		A3C142462C89CB4200D3CEC0 /* AccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailView.swift; sourceTree = "<group>"; };
 		A3C1424B2C8AB52600D3CEC0 /* CurrencyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyData.swift; sourceTree = "<group>"; };
@@ -276,7 +276,19 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
-		A30061742CA3B57700011B1A /* Assets */ = {
+		924352F32CB14DA70052E4BC /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
+				929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */,
+				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
+				A3C1425E2C8DE70300D3CEC0 /* EnvironmentManager.swift */,
+				924352E12CABD00C0052E4BC /* Cache.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A30061742CA3B57700011B1A /* Asset */ = {
 			isa = PBXGroup;
 			children = (
 				A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */,
@@ -284,35 +296,28 @@
 				A379C1A62CA3B79E00CC8E2C /* AssetAddView.swift */,
 				A30061772CA3B68300011B1A /* AssetEditView.swift */,
 			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
-		A3462F672C948C8400F79145 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				A3462F652C94854800F79145 /* ExportableEntity.swift */,
-			);
-			path = Protocols;
+			path = Asset;
 			sourceTree = "<group>";
 		};
 		A3462F682C948CAD00F79145 /* Export */ = {
 			isa = PBXGroup;
 			children = (
+				A3462F652C94854800F79145 /* ExportableEntity.swift */,
 				A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */,
 			);
 			path = Export;
 			sourceTree = "<group>";
 		};
-		A350BDBF2CA26195006669D5 /* ViewModels */ = {
+		A350BDBF2CA26195006669D5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
 				A350BDC02CA26415006669D5 /* InfotableViewModel.swift */,
 			);
-			path = ViewModels;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		A39B1B392C9A668F003E5562 /* Accounts */ = {
+		A39B1B392C9A668F003E5562 /* Account */ = {
 			isa = PBXGroup;
 			children = (
 				A3C1423D2C89760600D3CEC0 /* AccountListView.swift */,
@@ -320,10 +325,10 @@
 				A3C142622C8ED8C000D3CEC0 /* AccountAddView.swift */,
 				A3C142642C8ED8EA00D3CEC0 /* AccountEditView.swift */,
 			);
-			path = Accounts;
+			path = Account;
 			sourceTree = "<group>";
 		};
-		A39B1B3A2C9A66B8003E5562 /* Payees */ = {
+		A39B1B3A2C9A66B8003E5562 /* Payee */ = {
 			isa = PBXGroup;
 			children = (
 				A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */,
@@ -331,7 +336,7 @@
 				A3C142602C8E9DBF00D3CEC0 /* PayeeAddView.swift */,
 				A3C142532C8B381400D3CEC0 /* PayeeEditView.swift */,
 			);
-			path = Payees;
+			path = Payee;
 			sourceTree = "<group>";
 		};
 		A39B1B3B2C9A66CB003E5562 /* Transactions */ = {
@@ -347,7 +352,7 @@
 			path = Transactions;
 			sourceTree = "<group>";
 		};
-		A39B1B3C2C9A66E6003E5562 /* Categories */ = {
+		A39B1B3C2C9A66E6003E5562 /* Category */ = {
 			isa = PBXGroup;
 			children = (
 				A3363EE82C9326A1004696C7 /* CategoryListView.swift */,
@@ -355,10 +360,10 @@
 				A3363EE62C93249D004696C7 /* CategoryAddView.swift */,
 				A3363EE22C9323A5004696C7 /* CategoryEditView.swift */,
 			);
-			path = Categories;
+			path = Category;
 			sourceTree = "<group>";
 		};
-		A39B1B3D2C9A66F7003E5562 /* Currencies */ = {
+		A39B1B3D2C9A66F7003E5562 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
 				A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */,
@@ -366,7 +371,7 @@
 				A39B1B312C99A084003E5562 /* CurrencyAddView.swift */,
 				A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */,
 			);
-			path = Currencies;
+			path = Currency;
 			sourceTree = "<group>";
 		};
 		A39B1B3E2C9A6714003E5562 /* Settings */ = {
@@ -384,7 +389,7 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		A39B1B3F2C9A6741003E5562 /* Repositories */ = {
+		A39B1B3F2C9A6741003E5562 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
 				929EF6682CA034770051A3E6 /* Repository.swift */,
@@ -413,7 +418,7 @@
 				920824112CA4C6A400388AB2 /* BudgetTableRepository.swift */,
 				920824152CA4C95F00388AB2 /* ReportRepository.swift */,
 			);
-			path = Repositories;
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		A3B51C072CA8E03100BB0681 /* Insights */ = {
@@ -446,22 +451,17 @@
 		A3C142292C89751500D3CEC0 /* MMEX */ = {
 			isa = PBXGroup;
 			children = (
-				A3C142422C89B83A00D3CEC0 /* Models */,
-				A39B1B3F2C9A6741003E5562 /* Repositories */,
-				A350BDBF2CA26195006669D5 /* ViewModels */,
-				A3C142452C89CB1600D3CEC0 /* Views */,
+				A3C142422C89B83A00D3CEC0 /* Data */,
+				A39B1B3F2C9A6741003E5562 /* Repository */,
+				A350BDBF2CA26195006669D5 /* ViewModel */,
+				A3C142452C89CB1600D3CEC0 /* View */,
 				924352EC2CB060980052E4BC /* Theme */,
-				A3462F672C948C8400F79145 /* Protocols */,
 				A3462F682C948CAD00F79145 /* Export */,
-				A3C142412C897BE600D3CEC0 /* Info.plist */,
-				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
-				929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */,
-				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
-				A3C1425E2C8DE70300D3CEC0 /* EnvironmentManager.swift */,
-				924352E12CABD00C0052E4BC /* Cache.swift */,
-				A3C1422E2C89751600D3CEC0 /* Assets.xcassets */,
+				924352F32CB14DA70052E4BC /* App */,
 				920823F22CA3D11F00388AB2 /* Resources */,
 				A3C142302C89751600D3CEC0 /* Preview Content */,
+				A3C142412C897BE600D3CEC0 /* Info.plist */,
+				A3C1422E2C89751600D3CEC0 /* Assets.xcassets */,
 			);
 			path = MMEX;
 			sourceTree = "<group>";
@@ -474,7 +474,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		A3C142422C89B83A00D3CEC0 /* Models */ = {
+		A3C142422C89B83A00D3CEC0 /* Data */ = {
 			isa = PBXGroup;
 			children = (
 				929EF66A2CA03AF90051A3E6 /* Data.swift */,
@@ -502,25 +502,25 @@
 				9208240B2CA4C31B00388AB2 /* BudgetTableData.swift */,
 				9208240D2CA4C4FA00388AB2 /* ReportData.swift */,
 			);
-			path = Models;
+			path = Data;
 			sourceTree = "<group>";
 		};
-		A3C142452C89CB1600D3CEC0 /* Views */ = {
+		A3C142452C89CB1600D3CEC0 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				A3B51C072CA8E03100BB0681 /* Insights */,
 				A39B1B3E2C9A6714003E5562 /* Settings */,
-				A39B1B3D2C9A66F7003E5562 /* Currencies */,
-				A39B1B392C9A668F003E5562 /* Accounts */,
-				A30061742CA3B57700011B1A /* Assets */,
+				A39B1B3D2C9A66F7003E5562 /* Currency */,
+				A39B1B392C9A668F003E5562 /* Account */,
+				A30061742CA3B57700011B1A /* Asset */,
 				924352E72CAE1E480052E4BC /* Stock */,
-				A39B1B3C2C9A66E6003E5562 /* Categories */,
-				A39B1B3A2C9A66B8003E5562 /* Payees */,
+				A39B1B3C2C9A66E6003E5562 /* Category */,
+				A39B1B3A2C9A66B8003E5562 /* Payee */,
 				A39B1B3B2C9A66CB003E5562 /* Transactions */,
 				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
 				A37E7D832C9AC14800B4ECFC /* ManagementView.swift */,
 			);
-			path = Views;
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
