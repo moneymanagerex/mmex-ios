@@ -36,20 +36,18 @@ struct AccountListView: View {
                                     // Toggle expanded/collapsed state
                                     isTypeExpanded[accountType]?.toggle()
                                 }) {
-                                    HStack {
-                                        Image(systemName: accountType.symbolName)
-                                            .frame(width: 5, alignment: .leading) // Adjust width as needed
-                                            .font(.system(size: 16, weight: .bold)) // Customize size and weight
-                                            .foregroundColor(.blue) // Customize icon style
-                                        Text(accountType.rawValue)
-                                            .font(.subheadline)
-                                            .padding(.leading)
-                                        
-                                        Spacer()
-                                        
-                                        // Expand or collapse indicator
-                                        Image(systemName: isTypeExpanded[accountType] == true ? "chevron.down" : "chevron.right")
-                                            .foregroundColor(.gray)
+                                    env.theme.group.hstack(
+                                        isTypeExpanded[accountType] == true
+                                    ) {
+                                        HStack {
+                                            Image(systemName: accountType.symbolName)
+                                                .frame(width: 5, alignment: .leading) // Adjust width as needed
+                                                .font(.system(size: 16, weight: .bold)) // Customize size and weight
+                                                .foregroundColor(.blue) // Customize icon style
+                                            Text(accountType.rawValue)
+                                                .font(.subheadline)
+                                                .padding(.leading)
+                                        }
                                     }
                                 }
                             }

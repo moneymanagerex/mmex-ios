@@ -10,5 +10,6 @@ import SwiftUI
 
 struct Theme {
     var tab   = TabTheme()
+    var group = GroupTheme()
     var field = FieldTheme()
 }
