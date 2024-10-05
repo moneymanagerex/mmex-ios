@@ -36,6 +36,8 @@ struct CurrencyEditView: View {
                             Text(type.rawValue).tag(type)
                         }
                     }
+                } selected: {
+                    Text(currency.type.rawValue)
                 }
                 
                 if edit || !currency.unitName.isEmpty {

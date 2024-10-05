@@ -12,12 +12,22 @@ enum AccountStatus: String, EnumCollateNoCase {
     case open   = "Open"
     case closed = "Closed"
     static let defaultValue = Self.closed
+
+    var isOpen: Bool {
+        get { self == .open }
+        set { self = newValue ? .open : .closed }
+    }
 }
 
 enum AccountFavorite: String, EnumCollateNoCase {
     case boolFalse = "FALSE"
     case boolTrue  = "TRUE"
     static let defaultValue = Self.boolFalse
+
+    var asBool: Bool {
+        get { self == .boolTrue }
+        set { self = newValue ? .boolTrue : .boolFalse }
+    }
 }
 
 enum AccountType: String, EnumCollateNoCase {
