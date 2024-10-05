@@ -31,7 +31,7 @@ struct AccountEditView: View {
                             Text(type.name).tag(type)
                         }
                     }
-                } selected: {
+                } show: {
                     Text(account.type.name)
                 }
                 env.theme.field.picker(edit, "Currency") {
@@ -43,32 +43,30 @@ struct AccountEditView: View {
                             Text(name).tag(id) // Use currency.name to display and tag by id
                         }
                     }
-                } selected: {
+                } show: {
                     Text(currency?.name ?? "Unknown currency!")
                 }
 
                 env.theme.field.toggle(edit, "Status") {
-                    Toggle(isOn: $account.status.isOpen) {
-                        Text(account.status.rawValue)
-                    }
-                } selected: {
+                    Toggle(isOn: $account.status.isOpen) { }
+                } show: {
                     Text(account.status.rawValue)
                 }
                 env.theme.field.toggle(edit, "Favorite") {
-                    Toggle(isOn: $account.favoriteAcct.asBool) {
-                        Text(account.favoriteAcct.rawValue)
-                    }
-                } selected: {
+                    Toggle(isOn: $account.favoriteAcct.asBool) { }
+                } show: {
                     Text(account.favoriteAcct.rawValue)
                 }
                 
-                // TODO: use date picker
-                env.theme.field.text(edit, "Initial Date") {
-                    TextField("Initial Date", text: $account.initialDate)
+                env.theme.field.date(edit, "Initial Date") {
+                    DatePicker("", selection: $account.initialDate.date, displayedComponents: [.date]
+                    )
+                } show: {
+                    Text(account.initialDate.stringOrDash)
                 }
                 env.theme.field.text(edit, "Initial Balance") {
                     TextField("Initial Balance", value: $account.initialBal, format: .number)
-                } selected: {
+                } show: {
                     Text(account.initialBal.formatted(by: formatter))
                 }
                 
@@ -76,24 +74,23 @@ struct AccountEditView: View {
             
             Section() {
                 env.theme.field.toggle(edit, "Statement Locked") {
-                    Toggle(isOn: $account.statementLocked) {
-                        Text(account.statementLocked ? "YES" : "NO")
-                    }
-                } selected: {
+                    Toggle(isOn: $account.statementLocked) { }
+                } show: {
                     Text(account.statementLocked ? "YES" : "NO")
                 }
-                // TODO: use date picker
-                env.theme.field.text(edit, "Statement Date") {
-                    TextField("Statement Date", text: $account.statementDate)
+                env.theme.field.date(edit, "Statement Date") {
+                    DatePicker("", selection: $account.statementDate.date, displayedComponents: [.date])
+                } show: {
+                    Text(account.statementDate.stringOrDash)
                 }
                 env.theme.field.text(edit, "Minimum Balance") {
                     TextField("Minimum Balance", value: $account.minimumBalance, format: .number)
-                } selected: {
+                } show: {
                     Text(account.minimumBalance.formatted(by: formatter))
                 }
                 env.theme.field.text(edit, "Credit Limit") {
                     TextField("Credit Limit", value: $account.creditLimit, format: .number)
-                } selected: {
+                } show: {
                     Text(account.creditLimit.formatted(by: formatter))
                 }
                 env.theme.field.text(edit, "Interest Rate") {
@@ -101,11 +98,13 @@ struct AccountEditView: View {
                 }
                 // TODO: use date picker
                 env.theme.field.text(edit, "Payment Due Date") {
-                    TextField("Payment Due Date", text: $account.paymentDueDate)
+                    DatePicker("", selection: $account.paymentDueDate.date, displayedComponents: [.date])
+                } show: {
+                    Text(account.paymentDueDate.stringOrDash)
                 }
                 env.theme.field.text(edit, "Minimum Payment") {
                     TextField("Minimum Payment", value: $account.minimumPayment, format: .number)
-                } selected: {
+                } show: {
                     Text(account.minimumPayment.formatted(by: formatter))
                 }
             }
@@ -145,8 +144,9 @@ struct AccountEditView: View {
         
             Section() {
                 env.theme.field.text(edit, "Notes") {
-                    TextField("Notes", text: $account.notes)
+                    TextEditor(text: $account.notes)
                         .textInputAutocapitalization(.never)
+                        //.lineLimit(3)
                 }
             }
             

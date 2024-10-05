@@ -18,126 +18,160 @@ struct FieldTheme {
 }
 
 extension FieldTheme {
+    func vstackName(_ name: String) -> some View {
+        Text(name)
+            .font(.body.smallCaps())
+            .fontWeight(.thin)
+            .dynamicTypeSize(.small)
+            .padding(0)
+    }
+
     func text<ValueView: View>(
         _ edit: Bool,
-        _ name: String?,
-        @ViewBuilder valueView: @escaping () -> ValueView
+        _ name: String,
+        @ViewBuilder value valueView: @escaping () -> ValueView
     ) -> some View {
         return Group {
             switch choice {
             case .vstack:
                 VStack(alignment: .leading, spacing: 4.0) {
-                    if let name {
-                        Text(name)
-                            .font(.body.smallCaps())
-                            .fontWeight(.thin)
-                            .dynamicTypeSize(.small)
-                            .padding(0)
-                    }
+                    vstackName(name)
                     valueView()
-                        .padding(.top, 0.0)
-                        .padding(.bottom, 0.0)
+                        //.padding(.top, 0.0)
+                        //.padding(.bottom, 0.0)
                         .disabled(!edit)
                 }
                 .padding(0)
             }
         }
+        //.frame(maxWidth: .infinity)
+        //.background(Color.red).overlay(
+        //    GeometryReader { g in
+        //        Text("\(g.size)")
+        //    }
+        //)
     }
 
-    func text<ValueView: View, SelectedView: View>(
+    func text<EditView: View, ShowView: View>(
         _ edit: Bool,
-        _ name: String?,
-        @ViewBuilder valueView: @escaping () -> ValueView,
-        @ViewBuilder selected selectedView: @escaping () -> SelectedView
+        _ name: String,
+        @ViewBuilder edit editView: @escaping () -> EditView,
+        @ViewBuilder show showView: @escaping () -> ShowView
     ) -> some View {
         return Group {
             switch choice {
             case .vstack:
                 VStack(alignment: .leading, spacing: 4.0) {
-                    if let name {
-                        Text(name)
-                            .font(.body.smallCaps())
-                            .fontWeight(.thin)
-                            .dynamicTypeSize(.small)
-                            .padding(0)
-                    }
+                    vstackName(name)
                     if edit {
-                        valueView()
-                            .padding(.top, 0.0)
-                            .padding(.bottom, 0.0)
-                            .disabled(!edit)
-                    } else {
-                        selectedView()
-                            .padding(.top, 0.0)
-                            .padding(.bottom, 0.0)
-                    }
-                }
-                .padding(0)
-            }
-        }
-    }
-    func picker<ValueView: View, SelectedView: View>(
-        _ edit: Bool,
-        _ name: String?,
-        @ViewBuilder valueView: @escaping () -> ValueView,
-        @ViewBuilder selected selectedView: @escaping () -> SelectedView
-    ) -> some View {
-        return Group {
-            switch choice {
-            case .vstack:
-                VStack(alignment: .leading, spacing: 4.0) {
-                    if let name {
-                        Text(name)
-                            .font(.body.smallCaps())
-                            .fontWeight(.thin)
-                            .dynamicTypeSize(.small)
-                            .padding(0)
-                    }
-                    if edit {
-                        valueView()
-                            .padding(.top, 0.0)
-                            .padding(.bottom, 0.0)
-                            .disabled(!edit)
-                        //.border(.black)
-                        //.labelsHidden()
-                        //.pickerStyle(SegmentedPickerStyle()) // Adjust the style of the picker as needed
-                    } else {
-                        selectedView()
-                            .padding(.top, 0.0)
-                            .padding(.bottom, 0.0)
-                    }
-                }
-                .padding(0)
-            }
-        }
-    }
-
-    func toggle<ValueView: View, SelectedView: View>(
-        _ edit: Bool,
-        _ name: String?,
-        @ViewBuilder valueView: @escaping () -> ValueView,
-        @ViewBuilder selected selectedView: @escaping () -> SelectedView
-    ) -> some View {
-        return Group {
-            switch choice {
-            case .vstack:
-                VStack(alignment: .leading, spacing: 4.0) {
-                    if let name {
-                        Text(name)
-                            .font(.body.smallCaps())
-                            .fontWeight(.thin)
-                            .dynamicTypeSize(.small)
-                            .padding(0)
-                    }
-                    if edit {
-                        valueView()
-                            .padding(.top, 0.0)
-                            .padding(.bottom, 0.0)
+                        editView()
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
                             //.disabled(!edit)
                     } else {
-                        selectedView()
-                            .padding(.top, 0.0)
-                            .padding(.bottom, 0.0)
+                        showView()
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                    }
+                }
+                .padding(0)
+            }
+        }
+    }
+
+    func picker<EditView: View, ShowView: View>(
+        _ edit: Bool,
+        _ name: String,
+        @ViewBuilder edit editView: @escaping () -> EditView,
+        @ViewBuilder show showView: @escaping () -> ShowView
+    ) -> some View {
+        return Group {
+            switch choice {
+            case .vstack:
+                HStack {
+                    VStack(alignment: .leading, spacing: 4.0) {
+                        vstackName(name)
+                        showView()
+                            .opacity(edit ? 0 : 1)
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                    }
+                    if edit {
+                        editView()
+                            .disabled(!edit)
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                            //.border(.black)
+                            //.labelsHidden()
+                            //.pickerStyle(SegmentedPickerStyle()) // Adjust the style of the picker as needed
+                    }
+                }
+                .padding(0)
+            }
+        }
+    }
+
+    func toggle<EditView: View, ShowView: View>(
+        _ edit: Bool,
+        _ name: String,
+        @ViewBuilder edit editView: @escaping () -> EditView,
+        @ViewBuilder show showView: @escaping () -> ShowView
+    ) -> some View {
+        return Group {
+            switch choice {
+            case .vstack:
+                HStack {
+                    VStack(alignment: .leading, spacing: 4.0) {
+                        vstackName(name)
+                        showView()
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                    }
+                    if edit {
+                        editView()
+                            //.scaleEffect(0.9)
+                            //.offset(x: 10)
+                            .disabled(!edit)
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                            //.border(.black)
+                            //.labelsHidden()
+                            //.pickerStyle(SegmentedPickerStyle()) // Adjust the style of the picker as needed
+                    }
+                }
+                .padding(0)
+            }
+        }
+    }
+
+    func date<EditView: View, ShowView: View>(
+        _ edit: Bool,
+        _ name: String,
+        @ViewBuilder edit editView: @escaping () -> EditView,
+        @ViewBuilder show showView: @escaping () -> ShowView
+    ) -> some View {
+        return Group {
+            switch choice {
+            case .vstack:
+                HStack {
+                    VStack(alignment: .leading, spacing: 4.0) {
+                        vstackName(name)
+                        showView()
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                    }
+                    if edit {
+                        Spacer()
+                        editView()
+                            .labelsHidden() // Hide the default label to save space
+                            //.scaleEffect(0.9)
+                            //.offset(x: 10)
+                            .disabled(!edit)
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                            //.border(.black)
+                            //.labelsHidden()
+                            //.pickerStyle(SegmentedPickerStyle()) // Adjust the style of the picker as needed
                     }
                 }
                 .padding(0)

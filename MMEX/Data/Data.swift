@@ -34,3 +34,26 @@ extension EnumCollateNoCase {
     var id: String { self.rawValue }
     var name: String { rawValue.capitalized }
 }
+
+struct DateString: Codable {
+    var string: String
+
+    init(_ string: String) {
+        self.string = string
+    }
+
+    static var formatter: DateFormatter {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df
+    }
+
+    var stringOrDash: String {
+        !self.string.isEmpty ? self.string : "-"
+    }
+
+    var date: Date {
+        get { Self.formatter.date(from: self.string) ?? Date() }
+        set { self.string = Self.formatter.string(from: newValue) }
+    }
+}

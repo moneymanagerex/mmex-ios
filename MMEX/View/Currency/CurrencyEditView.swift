@@ -36,7 +36,7 @@ struct CurrencyEditView: View {
                             Text(type.rawValue).tag(type)
                         }
                     }
-                } selected: {
+                } show: {
                     Text(currency.type.rawValue)
                 }
                 
