@@ -15,7 +15,7 @@ struct StockListView: View {
     @State private var isTypeVisible:  [Int64: Bool] = [:]
     @State private var isTypeExpanded: [Int64: Bool] = [:]
     @State private var search: String = ""
-    @State private var isPresentingStockAddView = false
+    @State private var isPresentingAddView = false
     @State private var newStock = emptyStock
 
     static let emptyStock = StockData(
@@ -63,7 +63,7 @@ struct StockListView: View {
             }
             .toolbar {
                 Button(
-                    action: { isPresentingStockAddView = true },
+                    action: { isPresentingAddView = true },
                     label: { Image(systemName: "plus") }
                 )
                 .accessibilityLabel("New Stock")
@@ -79,11 +79,11 @@ struct StockListView: View {
             loadAccountName()
             loadStockData()
         }
-        .sheet(isPresented: $isPresentingStockAddView) {
+        .sheet(isPresented: $isPresentingAddView) {
             StockAddView(
                 allAccountName: $allAccountName,
                 newStock: $newStock,
-                isPresentingStockAddView: $isPresentingStockAddView
+                isPresentingAddView: $isPresentingAddView
             ) { newStock in
                 addStock(stock: &newStock)
                 newStock = Self.emptyStock
@@ -102,9 +102,13 @@ struct StockListView: View {
                 
                 Spacer()
 
-                Text("\(Int(stock.numShares))")
-                    .font(.subheadline)
-            }
+                if let account = env.accountCache[stock.accountId],
+                   let formatter = env.currencyCache[account.currencyId]?.formatter
+                {
+                    Text(stock.value.formatted(by: formatter))
+                        .font(.subheadline)
+                }
+           }
             .padding(.horizontal)
         }
     }

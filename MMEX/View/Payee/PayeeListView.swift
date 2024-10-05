@@ -13,7 +13,7 @@ struct PayeeListView: View {
     @State private var filteredPayees: [PayeeData] = [] // New: Filtered payees for search results
     @State private var categories: [CategoryData] = []
     @State private var newPayee = PayeeData()
-    @State private var isPresentingPayeeAddView = false
+    @State private var isPresentingAddView = false
     @State private var searchQuery: String = "" // New: Search query
     static let emptyPayee = PayeeData(
         categoryId : -1,
@@ -23,7 +23,10 @@ struct PayeeListView: View {
     var body: some View {
         NavigationStack {
             List($filteredPayees) { $payee in // Use filteredPayees instead of payees
-                NavigationLink(destination: PayeeDetailView(payee: $payee, categories: $categories)) {
+                NavigationLink(destination: PayeeDetailView(
+                    categories: $categories,
+                    payee: $payee
+                ) ) {
                     HStack {
                         Text(payee.name)
                         Spacer()
@@ -33,7 +36,7 @@ struct PayeeListView: View {
             }
             .toolbar {
                 Button(action: {
-                    isPresentingPayeeAddView = true
+                    isPresentingAddView = true
                 }, label: {
                     Image(systemName: "plus")
                 })
@@ -49,8 +52,11 @@ struct PayeeListView: View {
             loadPayees()
             loadCategories()
         }
-        .sheet(isPresented: $isPresentingPayeeAddView) {
-            PayeeAddView(newPayee: $newPayee, isPresentingPayeeAddView: $isPresentingPayeeAddView, categories: $categories
+        .sheet(isPresented: $isPresentingAddView) {
+            PayeeAddView(
+                categories: $categories,
+                newPayee: $newPayee,
+                isPresentingAddView: $isPresentingAddView
             ) { newPayee in
                 addPayee(payee: &newPayee)
                 newPayee = Self.emptyPayee

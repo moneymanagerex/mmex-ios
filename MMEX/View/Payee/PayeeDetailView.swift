@@ -3,20 +3,20 @@
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/6.
+//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 import UniformTypeIdentifiers
 
 struct PayeeDetailView: View {
-    @Binding var payee: PayeeData
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @Binding var categories: [CategoryData]
-    
-    @State private var editingPayee = PayeeData()
-    @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
+    @EnvironmentObject var env: EnvironmentManager
+    @Binding var categories: [CategoryData]
+    @Binding var payee: PayeeData
 
+    @State private var editPayee = PayeeData()
+    @State private var isPresentingEditView = false
     @State private var isExporting = false
     @State private var exportURL: URL?
 
@@ -24,45 +24,18 @@ struct PayeeDetailView: View {
     @State private var alertMessage = ""
 
     var body: some View {
-        List {
-            Section(header: Text("Payee Name")) {
-                Text("\(payee.name)")
-            }
-
-            Section(header: Text("Category")) {
-                Text(getCategoryName(for: payee.categoryId))
-            }
-
-            Section(header: Text("Number")) {
-                Text(payee.number)
-            }
-
-            Section(header: Text("Website")) {
-                Text(payee.website)
-            }
-
-            Section(header: Text("Notes")) {
-                Text(payee.notes)
-            }
-
-            Section(header: Text("Active")) {
-                Text(payee.active ? "Yes" : "No")
-            }
-
-            Section(header: Text("Pattern")) {
-                Text(payee.pattern)
-            }
-
-            Button("Delete Payee") {
-                deletePayee()
-            }
+        PayeeEditView(
+            categories: $categories,
+            payee: $payee,
+            edit: false
+        ) { () in
+            deletePayee()
         }
-        .textSelection(.enabled)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button("Edit") {
+                    editPayee = payee
                     isPresentingEditView = true
-                    editingPayee = payee
                 }
                 
                 // Export button for pasteboard and external storage
@@ -80,7 +53,11 @@ struct PayeeDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                PayeeEditView(payee: $editingPayee, categories: $categories)
+                PayeeEditView(
+                    categories: $categories,
+                    payee: $editPayee,
+                    edit: true
+                )
                     .navigationTitle(payee.name)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -91,9 +68,9 @@ struct PayeeDetailView: View {
                         ToolbarItem(placement: .confirmationAction) {
                             Button("Done") {
                                 if validatePayee() {
+                                    payee = editPayee
+                                    updatePayee()
                                     isPresentingEditView = false
-                                    payee = editingPayee
-                                    saveChanges()
                                 } else {
                                     isShowingAlert = true
                                 }
@@ -116,11 +93,14 @@ struct PayeeDetailView: View {
             }
         }
         .alert(isPresented: $isShowingAlert) {
-            Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(
+                title: Text("Validation Error"),
+                message: Text(alertMessage), dismissButton: .default(Text("OK"))
+            )
         }
     }
     
-    func saveChanges() {
+    func updatePayee() {
         let repository = env.payeeRepository // pass URL here
         if repository?.update(payee) == true {
             // TODO
@@ -147,7 +127,7 @@ struct PayeeDetailView: View {
     }
 
     func validatePayee() -> Bool {
-        if editingPayee.name.isEmpty {
+        if editPayee.name.isEmpty {
             alertMessage = "Payee name cannot be empty."
             return false
         }
@@ -159,14 +139,16 @@ struct PayeeDetailView: View {
 
 #Preview {
     PayeeDetailView(
-        payee: .constant(PayeeData.sampleData[0]),
-        categories: .constant(CategoryData.sampleData)
+        categories: .constant(CategoryData.sampleData),
+        payee: .constant(PayeeData.sampleData[0])
     )
+    .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview {
     PayeeDetailView(
-        payee: .constant(PayeeData.sampleData[1]),
-        categories: .constant(CategoryData.sampleData)
+        categories: .constant(CategoryData.sampleData),
+        payee: .constant(PayeeData.sampleData[1])
     )
+    .environmentObject(EnvironmentManager.sampleData)
 }

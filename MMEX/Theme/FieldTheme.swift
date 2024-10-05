@@ -79,6 +79,34 @@ extension FieldTheme {
         }
     }
 
+    func editor<EditView: View, ShowView: View>(
+        _ edit: Bool,
+        _ name: String,
+        @ViewBuilder edit editView: @escaping () -> EditView,
+        @ViewBuilder show showView: @escaping () -> ShowView
+    ) -> some View {
+        return Group {
+            switch choice {
+            case .vstack:
+                VStack(alignment: .leading, spacing: 4.0) {
+                    vstackName(name)
+                    if edit {
+                        editView()
+                            .frame(minHeight: 20)
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                            //.disabled(!edit)
+                    } else {
+                        showView()
+                            //.padding(.top, 0.0)
+                            //.padding(.bottom, 0.0)
+                    }
+                }
+                .padding(0)
+            }
+        }
+    }
+
     func picker<EditView: View, ShowView: View>(
         _ edit: Bool,
         _ name: String,

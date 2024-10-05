@@ -8,29 +8,32 @@
 import SwiftUI
 
 struct PayeeAddView: View {
-    @Binding var newPayee: PayeeData
-    @Binding var isPresentingPayeeAddView: Bool
     @Binding var categories: [CategoryData]
-    
+    @Binding var newPayee: PayeeData
+    @Binding var isPresentingAddView: Bool
+    var onSave: (inout PayeeData) -> Void
+
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
 
-    var onSave: (inout PayeeData) -> Void
-    
     var body: some View {
         NavigationStack {
-            PayeeEditView(payee: $newPayee, categories: $categories)
+            PayeeEditView(
+                categories: $categories,
+                payee: $newPayee,
+                edit: true
+            )
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
-                            isPresentingPayeeAddView = false
+                            isPresentingAddView = false
                         }
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Add") {
                             if validatePayee() {
-                                isPresentingPayeeAddView = false
                                 onSave(&newPayee)
+                                isPresentingAddView = false
                             } else {
                                 isShowingAlert = true
                             }
@@ -39,7 +42,10 @@ struct PayeeAddView: View {
                 }
         }
         .alert(isPresented: $isShowingAlert) {
-            Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(
+                title: Text("Validation Error"),
+                message: Text(alertMessage), dismissButton: .default(Text("OK"))
+            )
         }
     }
 
@@ -49,15 +55,16 @@ struct PayeeAddView: View {
             return false
         }
 
-        // Add more validation logic here if needed (e.g., category selection)
+        // TODO: Add more validation logic here if needed (e.g., category selection)
         return true
     }
 }
+
 /*
 #Preview {
     PayeeAddView(
         newPayee: .constant(PayeeData()),
-        isPresentingPayeeAddView: .constant(true),
+        isPresentingAddView: .constant(true),
         categories: .constant(CategoryData.sampleData)
     ) { newPayee in
         // Handle saving in preview

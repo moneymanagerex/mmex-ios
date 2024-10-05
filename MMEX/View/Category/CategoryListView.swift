@@ -45,7 +45,10 @@ struct CategoryListView: View {
             loadCategories()
         }
         .sheet(isPresented: $isPresentingAddView) {
-            CategoryAddView(newCategory: $newCategory, isPresentingCategoryAddView: $isPresentingAddView) { newCategory in
+            CategoryAddView(
+                newCategory: $newCategory,
+                isPresentingAddView: $isPresentingAddView
+            ) { newCategory in
                 addCategory(category: &newCategory)
             }
         }

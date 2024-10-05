@@ -12,6 +12,9 @@ struct CurrencyAddView: View {
     @Binding var isPresentingAddView: Bool
     var onSave: (inout CurrencyData) -> Void
 
+    @State private var isShowingAlert = false
+    @State private var alertMessage = ""
+
     var body: some View {
         NavigationStack {
             CurrencyEditView(
@@ -26,14 +29,39 @@ struct CurrencyAddView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        onSave(&newCurrency)
-                        isPresentingAddView = false
+                        if validateCurrency() {
+                            onSave(&newCurrency)
+                            isPresentingAddView = false
+                        } else {
+                            isShowingAlert = true
+                        }
                     }
                 }
             }
         }
+        .alert(isPresented: $isShowingAlert) {
+            Alert(
+                title: Text("Validation Error"),
+                message: Text(alertMessage), dismissButton: .default(Text("OK"))
+            )
+        }
+    }
+    
+    func validateCurrency() -> Bool {
+        if newCurrency.name.isEmpty {
+            alertMessage = "Currency name cannot be empty."
+            return false
+        }
+        else if newCurrency.symbol.isEmpty {
+            alertMessage = "Currency symbol cannot be empty."
+            return false
+        }
+
+        // TODO: Add more validation logic here if needed (e.g., category selection)
+        return true
     }
 }
+
 /*
 #Preview {
     CurrencyAddView(

@@ -28,11 +28,11 @@ struct AccountEditView: View {
                 env.theme.field.picker(edit, "Type") {
                     Picker("", selection: $account.type) {
                         ForEach(AccountType.allCases) { type in
-                            Text(type.name).tag(type)
+                            Text(type.rawValue).tag(type)
                         }
                     }
                 } show: {
-                    Text(account.type.name)
+                    Text(account.type.rawValue)
                 }
                 env.theme.field.picker(edit, "Currency") {
                     Picker("", selection: $account.currencyId) {
@@ -66,10 +66,10 @@ struct AccountEditView: View {
                 }
                 env.theme.field.text(edit, "Initial Balance") {
                     TextField("Initial Balance", value: $account.initialBal, format: .number)
+                        .keyboardType(.decimalPad)
                 } show: {
                     Text(account.initialBal.formatted(by: formatter))
                 }
-                
             }
             
             Section() {
@@ -85,25 +85,28 @@ struct AccountEditView: View {
                 }
                 env.theme.field.text(edit, "Minimum Balance") {
                     TextField("Minimum Balance", value: $account.minimumBalance, format: .number)
+                        .keyboardType(.decimalPad)
                 } show: {
                     Text(account.minimumBalance.formatted(by: formatter))
                 }
                 env.theme.field.text(edit, "Credit Limit") {
                     TextField("Credit Limit", value: $account.creditLimit, format: .number)
+                        .keyboardType(.decimalPad)
                 } show: {
                     Text(account.creditLimit.formatted(by: formatter))
                 }
                 env.theme.field.text(edit, "Interest Rate") {
                     TextField("Interest Rate", value: $account.interestRate, format: .number)
+                        .keyboardType(.decimalPad)
                 }
-                // TODO: use date picker
-                env.theme.field.text(edit, "Payment Due Date") {
+                env.theme.field.date(edit, "Payment Due Date") {
                     DatePicker("", selection: $account.paymentDueDate.date, displayedComponents: [.date])
                 } show: {
                     Text(account.paymentDueDate.stringOrDash)
                 }
                 env.theme.field.text(edit, "Minimum Payment") {
                     TextField("Minimum Payment", value: $account.minimumPayment, format: .number)
+                        .keyboardType(.decimalPad)
                 } show: {
                     Text(account.minimumPayment.formatted(by: formatter))
                 }
@@ -143,10 +146,11 @@ struct AccountEditView: View {
             }
         
             Section() {
-                env.theme.field.text(edit, "Notes") {
+                env.theme.field.editor(edit, "Notes") {
                     TextEditor(text: $account.notes)
                         .textInputAutocapitalization(.never)
-                        //.lineLimit(3)
+                } show: {
+                    Text(account.notes)
                 }
             }
             
@@ -174,7 +178,7 @@ struct AccountEditView: View {
 #Preview {
     AccountEditView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
-        account: .constant(AccountData.sampleData[1]),
+        account: .constant(AccountData.sampleData[0]),
         edit: true
     )
     .environmentObject(EnvironmentManager.sampleData)
