@@ -95,7 +95,11 @@ struct ManagementView: View {
 
 
 #Preview {
-    ManagementView(viewModel: InfotableViewModel(env: EnvironmentManager()),
-        isDocumentPickerPresented: .constant(false), isNewDocumentPickerPresented: .constant(false), isSampleDocument: .constant(false))
-        .environmentObject(EnvironmentManager())
+    ManagementView(
+        viewModel: InfotableViewModel(env: EnvironmentManager()),
+        isDocumentPickerPresented: .constant(false),
+        isNewDocumentPickerPresented: .constant(false),
+        isSampleDocument: .constant(false)
+    )
+    .environmentObject(EnvironmentManager.sampleData)
 }

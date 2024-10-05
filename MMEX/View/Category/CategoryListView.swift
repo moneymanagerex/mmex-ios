@@ -17,7 +17,7 @@ struct CategoryListView: View {
     @State private var searchQuery: String = "" // New: Search query
     
     var body: some View {
-        NavigationStack {
+        Group {
             List($filteredCategories) { $category in
                  NavigationLink(destination: CategoryDetailView(category: $category)) {
                      HStack {

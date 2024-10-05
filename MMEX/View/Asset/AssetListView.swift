@@ -23,7 +23,7 @@ struct AssetListView: View {
     )
 
     var body: some View {
-        NavigationStack {
+        Group {
             List {
                 ForEach(AssetType.allCases, id: \.self) { assetType in
                     if isTypeVisible[assetType] == true {

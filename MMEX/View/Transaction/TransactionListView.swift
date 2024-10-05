@@ -15,7 +15,7 @@ struct TransactionListView: View {
     @State private var isPresentingTransactionAddView = false
 
     var body: some View {
-        NavigationStack {
+        Group {
             List($viewModel.txns) { $txn in
                 NavigationLink(destination: TransactionDetailView(
                     viewModel: viewModel,

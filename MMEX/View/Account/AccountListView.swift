@@ -26,7 +26,7 @@ struct AccountListView: View {
     static let typeOrder: [AccountType] = [ .checking, .creditCard, .cash, .loan, .term, .asset, .shares, .investment ]
 
     var body: some View {
-        NavigationStack {
+        Group {
             List {
                 ForEach(Self.typeOrder, id: \.self) { accountType in
                     if isTypeVisible[accountType] == true {
