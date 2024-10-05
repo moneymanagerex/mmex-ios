@@ -20,7 +20,7 @@ struct GroupTheme {
 
 extension GroupTheme {
     func fold(_ open: Bool) -> some View {
-        Image(systemName: open ? "chevron.down" : "chevron.right")
+        Image(systemName: open ? "chevron.down.circle.fill" : "chevron.right.circle")
             .foregroundColor(.gray)
     }
 
