@@ -339,7 +339,7 @@
 			path = Payee;
 			sourceTree = "<group>";
 		};
-		A39B1B3B2C9A66CB003E5562 /* Transactions */ = {
+		A39B1B3B2C9A66CB003E5562 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
 				A3C142972C8FE62200D3CEC0 /* TransactionListView.swift */,
@@ -349,7 +349,7 @@
 				A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */,
 				A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */,
 			);
-			path = Transactions;
+			path = Transaction;
 			sourceTree = "<group>";
 		};
 		A39B1B3C2C9A66E6003E5562 /* Category */ = {
@@ -516,7 +516,7 @@
 				924352E72CAE1E480052E4BC /* Stock */,
 				A39B1B3C2C9A66E6003E5562 /* Category */,
 				A39B1B3A2C9A66B8003E5562 /* Payee */,
-				A39B1B3B2C9A66CB003E5562 /* Transactions */,
+				A39B1B3B2C9A66CB003E5562 /* Transaction */,
 				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
 				A37E7D832C9AC14800B4ECFC /* ManagementView.swift */,
 			);
