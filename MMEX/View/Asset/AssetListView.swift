@@ -15,7 +15,7 @@ struct AssetListView: View {
     @State private var isTypeVisible:  [AssetType: Bool] = [:]
     @State private var isTypeExpanded: [AssetType: Bool] = [:]
     @State private var search: String = ""
-    @State private var isPresentingAssetAddView = false
+    @State private var isPresentingAddView = false
     @State private var newAsset = emptyAsset
 
     static let emptyAsset = AssetData(
@@ -63,7 +63,7 @@ struct AssetListView: View {
             }
             .toolbar {
                 Button(
-                    action: { isPresentingAssetAddView = true },
+                    action: { isPresentingAddView = true },
                     label: { Image(systemName: "plus") }
                 )
                 .accessibilityLabel("New Asset")
@@ -79,11 +79,11 @@ struct AssetListView: View {
             loadCurrencyName()
             loadAssetData()
         }
-        .sheet(isPresented: $isPresentingAssetAddView) {
+        .sheet(isPresented: $isPresentingAddView) {
             AssetAddView(
                 allCurrencyName: $allCurrencyName,
                 newAsset: $newAsset,
-                isPresentingAssetAddView: $isPresentingAssetAddView
+                isPresentingAddView: $isPresentingAddView
             ) { newAsset in
                 addAsset(asset: &newAsset)
                 newAsset = Self.emptyAsset

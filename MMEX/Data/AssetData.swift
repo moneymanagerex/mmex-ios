@@ -23,6 +23,11 @@ enum AssetStatus: String, EnumCollateNoCase {
     case closed = "Closed"
     case open   = "Open"
     static let defaultValue = Self.open
+
+    var isOpen: Bool {
+        get { self == .open }
+        set { self = newValue ? .open : .closed }
+    }
 }
 
 enum AssetChange: String, EnumCollateNoCase {
@@ -43,7 +48,7 @@ struct AssetData: ExportableEntity {
     var type       : AssetType        = AssetType.defaultValue
     var status     : AssetStatus      = AssetStatus.defaultValue
     var name       : String           = ""
-    var startDate  : String           = ""
+    var startDate  : DateString       = DateString("")
     var currencyId : Int64            = 0
     var value      : Double           = 0.0
     var change     : AssetChange      = AssetChange.defaultValue
@@ -64,12 +69,12 @@ extension AssetData {
     static let sampleData: [AssetData] = [
         AssetData(
             id: 1, type: AssetType.property, status: AssetStatus.open, name: "House",
-            startDate: "2010-01-01", currencyId: 1, value: 100_000.0,
+            startDate: DateString("2010-01-01"), currencyId: 1, value: 100_000.0,
             change: AssetChange.none, notes: "Address"
         ),
         AssetData(
             id: 2, type: AssetType.automobile, status: AssetStatus.open, name: "Car",
-            startDate: "2020-01-01", currencyId: 1, value: 10_000.0,
+            startDate: DateString("2020-01-01"), currencyId: 1, value: 10_000.0,
             change: AssetChange.depreciates,
             changeMode: AssetChangeMode.percentage, changeRate: 5.0
         ),

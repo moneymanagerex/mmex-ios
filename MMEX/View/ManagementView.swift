@@ -18,25 +18,25 @@ struct ManagementView: View {
         List {
             Section(header: Text("Manage Data")) {
                 NavigationLink(destination: CurrencyListView()) {
-                    Text("Manage Currencies")
+                    Text("Currencies")
                 }
                 NavigationLink(destination: AccountListView()) {
-                    Text("Manage Accounts")
+                    Text("Accounts")
                 }
                 NavigationLink(destination: AssetListView()) {
-                    Text("Manage Assets")
+                    Text("Assets")
                 }
                 NavigationLink(destination: StockListView()) {
-                    Text("Manage Stocks")
+                    Text("Stocks")
                 }
                 NavigationLink(destination: CategoryListView()) {
-                    Text("Manage Categories")
+                    Text("Categories")
                 }
                 NavigationLink(destination: PayeeListView()) {
-                    Text("Manage Payees")
+                    Text("Payees")
                 }
                 NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
-                    Text("Manage Transactions")
+                    Text("Transactions")
                 }
             }
             

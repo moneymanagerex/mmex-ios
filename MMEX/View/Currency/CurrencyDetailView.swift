@@ -16,11 +16,6 @@ struct CurrencyDetailView: View {
     @State private var editCurrency = CurrencyData()
     @State private var isPresentingEditView = false
 
-    var format: String {
-        let amount: Double = 12345.67
-        return amount.formatted(by: currency.formatter)
-    }
-
     var body: some View {
         CurrencyEditView(
             currency: $currency,

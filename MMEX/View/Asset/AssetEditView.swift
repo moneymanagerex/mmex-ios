@@ -3,84 +3,128 @@
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/25.
+//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct AssetEditView: View {
+    @EnvironmentObject var env: EnvironmentManager
     @Binding var allCurrencyName: [(Int64, String)] // sorted by name
     @Binding var asset: AssetData
+    @State var edit: Bool
+    var onDelete: () -> Void = { }
+
+    var currency: CurrencyInfo? { env.currencyCache[asset.currencyId] }
+    var formatter: CurrencyFormatter? { currency?.formatter }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section(header: Text("Asset Name")) {
-                    TextField("Enter asset name", text: $asset.name)
+        Form {
+            Section {
+                env.theme.field.text(edit, "Name") {
+                    TextField("Asset Name", text: $asset.name)
+                        .textInputAutocapitalization(.words)
                 }
-
-                Section(header: Text("Type")) {
-                    Picker("Asset Type", selection: $asset.type) {
-                        ForEach(AssetType.allCases, id: \.self) { type in
+                env.theme.field.picker(edit, "Type") {
+                    Picker("", selection: $asset.type) {
+                        ForEach(AssetType.allCases) { type in
                             Text(type.rawValue).tag(type)
                         }
                     }
+                } show: {
+                    Text(asset.type.rawValue)
                 }
-
-                Section(header: Text("Status")) {
-                    Picker("Asset Status", selection: $asset.status) {
-                        ForEach(AssetStatus.allCases, id: \.self) { status in
-                            Text(status.rawValue).tag(status)
-                        }
-                    }
+                env.theme.field.toggle(edit, "Status") {
+                    Toggle(isOn: $asset.status.isOpen) { }
+                } show: {
+                    Text(asset.status.rawValue)
                 }
-
-                Section(header: Text("Currency")) {
-                    Picker("Currency", selection: $asset.currencyId) {
+                env.theme.field.date(edit, "Start Date") {
+                    DatePicker("", selection: $asset.startDate.date, displayedComponents: [.date]
+                    )
+                } show: {
+                    Text(asset.startDate.stringOrDash)
+                }
+                env.theme.field.picker(edit, "Currency") {
+                    Picker("", selection: $asset.currencyId) {
                         if (asset.currencyId == 0) {
-                            Text("Currency").tag(0 as Int64) // not set
+                            Text("Select Currency").tag(0 as Int64) // not set
                         }
                         ForEach(allCurrencyName, id: \.0) { id, name in
                             Text(name).tag(id) // Use currency.name to display and tag by id
                         }
                     }
-                    .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
+                } show: {
+                    Text(currency?.name ?? "Unknown currency!")
                 }
-
-                Section(header: Text("Value")) {
-                    TextField("Enter asset value", value: $asset.value, format: .number)
+                env.theme.field.text(edit, "Value") {
+                    TextField("Value", value: $asset.value, format: .number)
                         .keyboardType(.decimalPad)
+                } show: {
+                    Text(asset.value.formatted(by: formatter))
                 }
+            }
 
-                Section(header: Text("Change")) {
-                    Picker("Change Type", selection: $asset.change) {
-                        ForEach(AssetChange.allCases, id: \.self) { change in
+            Section {
+                env.theme.field.picker(edit, "Change") {
+                    Picker("", selection: $asset.change) {
+                        ForEach(AssetChange.allCases) { change in
                             Text(change.rawValue).tag(change)
                         }
                     }
-
-                    if asset.change != .none {
-                        Picker("Change Mode", selection: $asset.changeMode) {
-                            ForEach(AssetChangeMode.allCases, id: \.self) { mode in
-                                Text(mode.rawValue).tag(mode)
-                            }
-                        }
-
-                        TextField("Change Rate", value: $asset.changeRate, format: .number)
-                            .keyboardType(.decimalPad)
-                    }
+                } show: {
+                    Text(asset.change.rawValue)
                 }
-
-                Section(header: Text("Notes")) {
-                    TextField("Notes", text: $asset.notes)
+                env.theme.field.picker(edit, "Change Mode") {
+                    Picker("", selection: $asset.changeMode) {
+                        ForEach(AssetChangeMode.allCases) { mode in
+                            Text(mode.rawValue).tag(mode)
+                        }
+                    }
+                } show: {
+                    Text(asset.changeMode.rawValue)
+                }
+                env.theme.field.text(edit, "Change Rate") {
+                    TextField("Change Rate", value: $asset.changeRate, format: .number)
+                        .keyboardType(.decimalPad)
                 }
             }
+            
+            Section{
+                env.theme.field.editor(edit, "Notes") {
+                    TextEditor(text: $asset.notes)
+                        .textInputAutocapitalization(.never)
+                } show: {
+                    Text(asset.notes)
+                }
+            }
+
+            // TODO: delete account if not in use
+            if true {
+                Button("Delete Asset") {
+                    onDelete()
+                }
+                .foregroundColor(.red)
+            }
         }
+        .textSelection(.enabled)
     }
 }
 
 #Preview {
     AssetEditView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
-        asset: .constant(AssetData.sampleData[0])
+        asset: .constant(AssetData.sampleData[0]),
+        edit: false
     )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview {
+    AssetEditView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        asset: .constant(AssetData.sampleData[0]),
+        edit: true
+    )
+    .environmentObject(EnvironmentManager.sampleData)
 }

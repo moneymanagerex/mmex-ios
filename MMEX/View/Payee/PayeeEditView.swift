@@ -3,81 +3,99 @@
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/6.
+//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct PayeeEditView: View {
-    @Binding var payee: PayeeData
+    @EnvironmentObject var env: EnvironmentManager
     @Binding var categories: [CategoryData]
+    @Binding var payee: PayeeData
+    @State var edit: Bool
+    var onDelete: () -> Void = { }
+
+    var category: CategoryData? {
+        payee.categoryId >= categories.startIndex && payee.categoryId < categories.endIndex ?
+        categories[Int(payee.categoryId)] : nil
+    }
 
     var body: some View {
         Form {
-            Section(header: Text("Payee Name")) {
-                TextField("Payee Name", text: $payee.name)
+            Section {
+                env.theme.field.text(edit, "Name") {
+                    TextField("Payee Name", text: $payee.name)
+                        .textInputAutocapitalization(.words)
+                }
+                env.theme.field.toggle(edit, "Active") {
+                    Toggle(isOn: $payee.active) { }
+                } show: {
+                    Text(payee.active ? "YES" : "NO")
+                }
             }
 
-            Section(header: Text("Category")) {
-                Picker("Category", selection: Binding(
-                    get: { payee.categoryId }, // Safely unwrap the optional notes field
-                    set: { payee.categoryId = $0 } // Set
-                )) {
-                    Text("Category").tag(0 as Int64) // not set
-                    ForEach(categories) { category in
-                        Text(category.name).tag(category.id) // Use currency.name to display and tag by id
+            Section {
+                env.theme.field.picker(edit, "Category") {
+                    Picker("", selection: $payee.categoryId) {
+                        if (payee.categoryId <= 0) {
+                            Text("Select Category").tag(0 as Int64) // not set
+                        }
+                        ForEach(categories.indices, id: \.self) { i in
+                            Text(categories[i].name).tag(categories[i].id)
+                        }
                     }
+                } show: {
+                    Text(category?.name ?? "(None)")
                 }
-                .labelsHidden()
-                .pickerStyle(MenuPickerStyle()) // Adjust the style of the picker as needed
+                env.theme.field.text(edit, "Payment Number") {
+                    TextField("Payment Number", text: $payee.number)
+                        .textInputAutocapitalization(.never)
+                }
+                env.theme.field.text(edit, "Website") {
+                    TextField("Website", text: $payee.website)
+                        .textInputAutocapitalization(.never)
+                }
+                env.theme.field.text(edit, "Pattern") {
+                    TextField("Pattern", text: $payee.pattern)
+                        .textInputAutocapitalization(.never)
+                }
             }
-
-            Section(header: Text("Number")) {
-                TextField("Number", text: Binding(
-                    get: { payee.number }, // Safely unwrap the optional notes field
-                    set: { payee.number = $0 } // Set to nil if the input is empty
-                ))
-            }
-
-            Section(header: Text("Website")) {
-                TextField("Website", text: Binding(
-                    get: { payee.website }, // Safely unwrap the optional notes field
-                    set: { payee.website = $0 } // Set to nil if the input is empty
-                ))
-            }
-
-            Section(header: Text("Notes")) {
-                TextField("Notes", text: Binding(
-                    get: { payee.notes },
-                    set: { payee.notes = $0 }
-                ))
-            }
-
-            Section(header: Text("Active")) {
-                Toggle(isOn: Binding(
-                    get: { payee.active },
-                    set: { newValue in payee.active = newValue }
-                )) {
-                    Text("Is Active")
+            
+            Section {
+                env.theme.field.editor(edit, "Notes") {
+                    TextEditor(text: $payee.notes)
+                        .textInputAutocapitalization(.never)
+                } show: {
+                    Text(payee.notes)
                 }
             }
 
-            Section(header: Text("Pattern")) {
-                TextField("Pattern", text: $payee.pattern)
+            // TODO: delete payee if not in use
+            if true {
+                Button("Delete Payee") {
+                    onDelete()
+                }
+                .foregroundColor(.red)
             }
         }
+        .textSelection(.enabled)
     }
 }
 
 #Preview {
     PayeeEditView(
+        categories: .constant(CategoryData.sampleData),
         payee: .constant(PayeeData.sampleData[0]),
-        categories: .constant(CategoryData.sampleData)
+        edit: false
     )
+    .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview {
     PayeeEditView(
-        payee: .constant(PayeeData.sampleData[1]),
-        categories: .constant(CategoryData.sampleData)
+        categories: .constant(CategoryData.sampleData),
+        payee: .constant(PayeeData.sampleData[0]),
+        edit: true
     )
+    .environmentObject(EnvironmentManager.sampleData)
 }

@@ -10,30 +10,30 @@ import SwiftUI
 struct StockAddView: View {
     @Binding var allAccountName: [(Int64, String)] // sorted by name
     @Binding var newStock: StockData
-    @Binding var isPresentingStockAddView: Bool
+    @Binding var isPresentingAddView: Bool
+    var onSave: (inout StockData) -> Void
 
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
-
-    var onSave: (inout StockData) -> Void
 
     var body: some View {
         NavigationStack {
             StockEditView(
                 allAccountName: $allAccountName,
-                stock: $newStock
+                stock: $newStock,
+                edit: true
             )
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Dismiss") {
-                        isPresentingStockAddView = false
+                        isPresentingAddView = false
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
                         if validateStock() {
-                            isPresentingStockAddView = false
                             onSave(&newStock)
+                            isPresentingAddView = false
                         } else {
                             isShowingAlert = true
                         }
@@ -56,16 +56,17 @@ struct StockAddView: View {
             return false
         }
 
-        // Add more validation logic here if needed (e.g., account selection)
+        // TODO: Add more validation logic here if needed (e.g., account selection)
         return true
     }
 }
+
 /*
 #Preview {
     StockAddView(
         allAccountName: .constant(CurrencyData.sampleDataName),
         newStock: .constant(StockData()),
-        isPresentingStockAddView: .constant(true)
+        isPresentingAddView: .constant(true)
     ) { newStock in
         // Handle saving in preview
         print("New stock: \(newStock.name)")

@@ -10,30 +10,30 @@ import SwiftUI
 struct AssetAddView: View {
     @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
     @Binding var newAsset: AssetData
-    @Binding var isPresentingAssetAddView: Bool
+    @Binding var isPresentingAddView: Bool
+    var onSave: (inout AssetData) -> Void
 
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
-
-    var onSave: (inout AssetData) -> Void
 
     var body: some View {
         NavigationStack {
             AssetEditView(
                 allCurrencyName: $allCurrencyName,
-                asset: $newAsset
+                asset: $newAsset,
+                edit: true
             )
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Dismiss") {
-                        isPresentingAssetAddView = false
+                        isPresentingAddView = false
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
                         if validateAsset() {
-                            isPresentingAssetAddView = false
                             onSave(&newAsset)
+                            isPresentingAddView = false
                         } else {
                             isShowingAlert = true
                         }
@@ -42,7 +42,10 @@ struct AssetAddView: View {
             }
         }
         .alert(isPresented: $isShowingAlert) {
-            Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(
+                title: Text("Validation Error"),
+                message: Text(alertMessage), dismissButton: .default(Text("OK"))
+            )
         }
     }
 
@@ -52,16 +55,17 @@ struct AssetAddView: View {
             return false
         }
 
-        // Add more validation logic here if needed (e.g., category selection)
+        // TODO: Add more validation logic here if needed (e.g., category selection)
         return true
     }
 }
+
 /*
 #Preview {
     AssetAddView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         newAsset: .constant(AssetData()),
-        isPresentingAssetAddView: .constant(true)
+        isPresentingAddView: .constant(true)
     ) { newAsset in
         // Handle saving in preview
         log.info("New asset: \(newAsset.name)")

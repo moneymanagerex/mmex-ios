@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CategoryAddView: View {
     @Binding var newCategory: CategoryData
-    @Binding var isPresentingCategoryAddView: Bool
+    @Binding var isPresentingAddView: Bool
 
     var onSave: (inout CategoryData) -> Void
 
@@ -19,12 +19,12 @@ struct CategoryAddView: View {
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {
-                            isPresentingCategoryAddView = false
+                            isPresentingAddView = false
                         }
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Add") {
-                            isPresentingCategoryAddView = false
+                            isPresentingAddView = false
                             onSave(&newCategory)
                         }
                     }
@@ -36,7 +36,7 @@ struct CategoryAddView: View {
 #Preview {
     CategoryAddView(
         newCategory: .constant(CategoryData()),
-        isPresentingCategoryAddView: .constant(true)
+        isPresentingAddView: .constant(true)
     ) { newCategory in
         // Handle saving in preview
         log.info("New account: \(newCategory.name)")

@@ -55,6 +55,7 @@ struct CurrencyEditView: View {
 
                 env.theme.field.text(edit, "Conversion Rate") {
                     TextField("Conversion Rate", value: $currency.baseConvRate, format: .number)
+                        .keyboardType(.decimalPad)
                 }
             }
 
@@ -80,6 +81,7 @@ struct CurrencyEditView: View {
                     }
                     env.theme.field.text(edit, "Scale") {
                         TextField("Scale", value: $currency.scale, format: .number)
+                            .keyboardType(.decimalPad)
                     }
                 }
             }

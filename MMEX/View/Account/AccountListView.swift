@@ -4,6 +4,7 @@
 //
 //  Created by Lisheng Guan on 2024/9/5.
 //
+
 import SwiftUI
 
 struct AccountListView: View {
@@ -14,14 +15,14 @@ struct AccountListView: View {
     @State private var isTypeVisible:  [AccountType: Bool] = [:]
     @State private var isTypeExpanded: [AccountType: Bool] = [:]
     @State private var search: String = ""
-    @State private var isPresentingAccountAddView = false
+    @State private var isPresentingAddView = false
     @State private var newAccount = emptyAccount
 
     static let emptyAccount = AccountData(
         status       : .open,
         favoriteAcct : .boolTrue
     )
-    
+
     static let typeOrder: [AccountType] = [ .checking, .creditCard, .cash, .loan, .term, .asset, .shares, .investment ]
 
     var body: some View {
@@ -70,7 +71,7 @@ struct AccountListView: View {
             }
             .toolbar {
                 Button(
-                    action: { isPresentingAccountAddView = true },
+                    action: { isPresentingAddView = true },
                     label: { Image(systemName: "plus") }
                 )
                 .accessibilityLabel("New Account")
@@ -86,11 +87,11 @@ struct AccountListView: View {
             loadCurrencyName()
             loadAccountData()
         }
-        .sheet(isPresented: $isPresentingAccountAddView) {
+        .sheet(isPresented: $isPresentingAddView) {
             AccountAddView(
                 allCurrencyName: $allCurrencyName,
                 newAccount: $newAccount,
-                isPresentingAccountAddView: $isPresentingAccountAddView
+                isPresentingAddView: $isPresentingAddView
             ) { newAccount in
                 addAccount(account: &newAccount)
                 newAccount = Self.emptyAccount
