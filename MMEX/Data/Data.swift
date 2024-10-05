@@ -57,3 +57,26 @@ struct DateString: Codable {
         set { self.string = Self.formatter.string(from: newValue) }
     }
 }
+
+struct DateTimeString: Codable {
+    var string: String
+
+    init(_ string: String) {
+        self.string = string
+    }
+
+    static var formatter: DateFormatter {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        return df
+    }
+
+    var stringOrDash: String {
+        !self.string.isEmpty ? self.string : "-"
+    }
+
+    var date: Date {
+        get { Self.formatter.date(from: self.string) ?? DateString.formatter.date(from: self.string) ?? Date() }
+        set { self.string = Self.formatter.string(from: newValue) }
+    }
+}
