@@ -1,5 +1,5 @@
 //
-//  TransactionAddView2.swift
+//  EnterView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TransactionAddView2: View {    
+struct EnterView: View {
     @State var newTxn: TransactionData = TransactionData()
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel

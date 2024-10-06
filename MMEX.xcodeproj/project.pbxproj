@@ -114,9 +114,9 @@
 		A3C142A02C9025D600D3CEC0 /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1429F2C9025D600D3CEC0 /* CategoryData.swift */; };
 		A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */; };
 		A3C142A42C9033E300D3CEC0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A32C9033E300D3CEC0 /* SettingsView.swift */; };
-		A3C142A62C90417700D3CEC0 /* TransactionAddView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */; };
+		A3C142A62C90417700D3CEC0 /* EnterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A52C90417700D3CEC0 /* EnterView.swift */; };
 		A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */; };
-		A3C142AA2C90721800D3CEC0 /* TransactionListView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A92C90721800D3CEC0 /* TransactionListView2.swift */; };
+		A3C142AA2C90721800D3CEC0 /* CheckingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A92C90721800D3CEC0 /* CheckingView.swift */; };
 		A3C142AC2C909C1C00D3CEC0 /* TransactionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */; };
 		A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */; };
 /* End PBXBuildFile section */
@@ -228,9 +228,9 @@
 		A3C1429F2C9025D600D3CEC0 /* CategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryData.swift; sourceTree = "<group>"; };
 		A3C142A12C90267F00D3CEC0 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
 		A3C142A32C9033E300D3CEC0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAddView2.swift; sourceTree = "<group>"; };
+		A3C142A52C90417700D3CEC0 /* EnterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterView.swift; sourceTree = "<group>"; };
 		A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNumberPadView.swift; sourceTree = "<group>"; };
-		A3C142A92C90721800D3CEC0 /* TransactionListView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView2.swift; sourceTree = "<group>"; };
+		A3C142A92C90721800D3CEC0 /* CheckingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckingView.swift; sourceTree = "<group>"; };
 		A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionEditView.swift; sourceTree = "<group>"; };
 		A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -291,6 +291,30 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		924352F62CB2EA3D0052E4BC /* Management */ = {
+			isa = PBXGroup;
+			children = (
+				A37E7D832C9AC14800B4ECFC /* ManagementView.swift */,
+			);
+			path = Management;
+			sourceTree = "<group>";
+		};
+		924352F72CB2EA5C0052E4BC /* Checking */ = {
+			isa = PBXGroup;
+			children = (
+				A3C142A92C90721800D3CEC0 /* CheckingView.swift */,
+			);
+			path = Checking;
+			sourceTree = "<group>";
+		};
+		924352F82CB2EAD40052E4BC /* Enter */ = {
+			isa = PBXGroup;
+			children = (
+				A3C142A52C90417700D3CEC0 /* EnterView.swift */,
+			);
+			path = Enter;
+			sourceTree = "<group>";
+		};
 		A30061742CA3B57700011B1A /* Asset */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,10 +370,8 @@
 			isa = PBXGroup;
 			children = (
 				A3C142972C8FE62200D3CEC0 /* TransactionListView.swift */,
-				A3C142A92C90721800D3CEC0 /* TransactionListView2.swift */,
 				A3C142992C8FF77D00D3CEC0 /* TransactionDetailView.swift */,
 				A3C1429D2C8FFCF100D3CEC0 /* TransactionAddView.swift */,
-				A3C142A52C90417700D3CEC0 /* TransactionAddView2.swift */,
 				A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */,
 			);
 			path = Transaction;
@@ -511,7 +533,10 @@
 		A3C142452C89CB1600D3CEC0 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				924352F72CB2EA5C0052E4BC /* Checking */,
 				A3B51C072CA8E03100BB0681 /* Insights */,
+				924352F82CB2EAD40052E4BC /* Enter */,
+				924352F62CB2EA3D0052E4BC /* Management */,
 				A39B1B3E2C9A6714003E5562 /* Settings */,
 				A39B1B3D2C9A66F7003E5562 /* Currency */,
 				A39B1B392C9A668F003E5562 /* Account */,
@@ -521,7 +546,6 @@
 				A39B1B3A2C9A66B8003E5562 /* Payee */,
 				A39B1B3B2C9A66CB003E5562 /* Transaction */,
 				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
-				A37E7D832C9AC14800B4ECFC /* ManagementView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -644,8 +668,8 @@
 				920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */,
 				920824242CA5078900388AB2 /* TransactionShareData.swift in Sources */,
 				920824062CA4AE0A00388AB2 /* TransactionSplitRepository.swift in Sources */,
-				A3C142AA2C90721800D3CEC0 /* TransactionListView2.swift in Sources */,
-				A3C142A62C90417700D3CEC0 /* TransactionAddView2.swift in Sources */,
+				A3C142AA2C90721800D3CEC0 /* CheckingView.swift in Sources */,
+				A3C142A62C90417700D3CEC0 /* EnterView.swift in Sources */,
 				920824262CA5082D00388AB2 /* TransactionShareRepository.swift in Sources */,
 				A3C142472C89CB4200D3CEC0 /* AccountDetailView.swift in Sources */,
 				A3C1429A2C8FF77D00D3CEC0 /* TransactionDetailView.swift in Sources */,

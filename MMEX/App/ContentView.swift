@@ -56,9 +56,9 @@ struct ContentView: View {
                 let insightsViewModel = InsightsViewModel(env: env)
                 let infotableViewModel = TransactionViewModel(env: env)
                 TabView(selection: $selectedTab) {
-                    transactionTab(viewModel: infotableViewModel)
+                    checkingTab(viewModel: infotableViewModel)
                     insightsTab(viewModel: insightsViewModel)
-                    addTransactionTab(viewModel: infotableViewModel)
+                    enterTab(viewModel: infotableViewModel)
                     managementTab(viewModel: infotableViewModel)
                     settingsTab(viewModel: infotableViewModel)
                 }
@@ -106,9 +106,9 @@ struct ContentView: View {
     }
 
     // Transaction tab
-    private func transactionTab(viewModel: TransactionViewModel) -> some View {
+    private func checkingTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            TransactionListView2(viewModel: viewModel)
+            CheckingView(viewModel: viewModel)
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
         }
         .tabItem {
@@ -130,9 +130,9 @@ struct ContentView: View {
     }
 
     // Add transaction tab
-    private func addTransactionTab(viewModel: TransactionViewModel) -> some View {
+    private func enterTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            TransactionAddView2(viewModel: viewModel, selectedTab: $selectedTab)
+            EnterView(viewModel: viewModel, selectedTab: $selectedTab)
                 .navigationBarTitle("Add Transaction", displayMode: .inline)
         }
         .tabItem {
@@ -245,13 +245,13 @@ struct TabContentView: View {
         return Group {
             switch selectedTab {
             case 0:
-                TransactionListView2(viewModel: infotableViewModel) // Summary and Edit feature
+                CheckingView(viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
                 InsightsView(viewModel: InsightsViewModel(env: env))
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
-                TransactionAddView2(viewModel: infotableViewModel, selectedTab: $selectedTab)
+                EnterView(viewModel: infotableViewModel, selectedTab: $selectedTab)
                     .navigationBarTitle("Add Transaction", displayMode: .inline)
             case 3:
                 ManagementView(
