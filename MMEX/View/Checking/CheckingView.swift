@@ -1,5 +1,5 @@
 //
-//  TransactionListView2.swift
+//  CheckingView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TransactionListView2: View {
+struct CheckingView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
 
@@ -196,7 +196,7 @@ struct TransactionListView2: View {
 }
 
 #Preview {
-    TransactionListView2(
+    CheckingView(
         viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
