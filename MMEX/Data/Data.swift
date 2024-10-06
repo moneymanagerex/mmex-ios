@@ -35,56 +35,71 @@ extension EnumCollateNoCase {
     var name: String { rawValue.capitalized }
 }
 
-struct DateString: Codable {
-    var string: String
+protocol DateStringProtocal: Codable {
+    var string  : String { get set }
+    static var formatter: DateFormatter { get }
+    init(string: String)
+}
 
+extension DateStringProtocal {
     init(_ string: String) {
-        self.string = string
+        self.init(string: string)
     }
 
     init(_ date: Date) {
-        self.string = Self.formatter.string(from: date)
+        self.init(string: Self.dateToString(date))
     }
+
+    init(_ optDate: Date?) {
+        self.init(string: Self.optDateToString(optDate))
+    }
+
+    static func dateToString(_ date: Date) -> String {
+        Self.formatter.string(from: date)
+    }
+
+    static func optDateToString(_ optDate: Date?) -> String {
+        if let date = optDate { dateToString(date) } else { "" }
+    }
+
+    static func stringToOptDate(_ string: String) -> Date? {
+        if !string.isEmpty { Self.formatter.date(from: string) } else { nil }
+    }
+
+    static func stringToDate(_ string: String) -> Date {
+        stringToOptDate(string) ?? Date()
+    }
+
+    var stringOrDash: String {
+        !self.string.isEmpty ? self.string : "-"
+    }
+
+    var date: Date {
+        get { Self.stringToDate(self.string) }
+        set { self.string = Self.dateToString(newValue) }
+    }
+    var optDate: Date? {
+        get { Self.stringToOptDate(self.string) }
+        set { self.string = Self.optDateToString(newValue) }
+    }
+}
+
+struct DateString: DateStringProtocal {
+    var string: String
 
     static var formatter: DateFormatter {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         return df
     }
-
-    var stringOrDash: String {
-        !self.string.isEmpty ? self.string : "-"
-    }
-
-    var date: Date {
-        get { Self.formatter.date(from: self.string) ?? Date() }
-        set { self.string = Self.formatter.string(from: newValue) }
-    }
 }
 
-struct DateTimeString: Codable {
+struct DateTimeString: DateStringProtocal {
     var string: String
-
-    init(_ string: String) {
-        self.string = string
-    }
-
-    init(_ date: Date) {
-        self.string = Self.formatter.string(from: date)
-    }
 
     static var formatter: DateFormatter {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         return df
-    }
-
-    var stringOrDash: String {
-        !self.string.isEmpty ? self.string : "-"
-    }
-
-    var date: Date {
-        get { Self.formatter.date(from: self.string) ?? DateString.formatter.date(from: self.string) ?? Date() }
-        set { self.string = Self.formatter.string(from: newValue) }
     }
 }
