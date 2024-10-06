@@ -159,13 +159,13 @@ extension EnvironmentManager {
     func loadCurrency() {
         let repository = CurrencyRepository(db)
         //print("loading currencyCache")
-        DispatchQueue.global(qos: .background).async {
+//        DispatchQueue.global(qos: .background).async {
             let data: [Int64: CurrencyData] = repository?.dictUsed() ?? [:]
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 self.currencyCache.load(data)
                 //print("loaded currencyCache")
-            }
-        }
+//            }
+//        }
     }
 
     func loadAccount() {
