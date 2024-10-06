@@ -43,7 +43,7 @@ struct AssetEditView: View {
                     DatePicker("", selection: $asset.startDate.date, displayedComponents: [.date]
                     )
                 } show: {
-                    Text(asset.startDate.stringOrDash)
+                    Text(asset.startDate.string)
                 }
                 env.theme.field.picker(edit, "Currency") {
                     Picker("", selection: $asset.currencyId) {

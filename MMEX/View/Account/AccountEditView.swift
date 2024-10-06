@@ -22,7 +22,7 @@ struct AccountEditView: View {
         Form {
             Section {
                 env.theme.field.text(edit, "Name") {
-                    TextField("Account Name", text: $account.name)
+                    TextField("Cannot be empty!", text: $account.name)
                         .textInputAutocapitalization(.words)
                 }
                 env.theme.field.picker(edit, "Type") {
@@ -36,17 +36,16 @@ struct AccountEditView: View {
                 }
                 env.theme.field.picker(edit, "Currency") {
                     Picker("", selection: $account.currencyId) {
-                        if (account.currencyId == 0) {
+                        if (account.currencyId <= 0) {
                             Text("Select Currency").tag(0 as Int64) // not set
                         }
                         ForEach(allCurrencyName, id: \.0) { id, name in
-                            Text(name).tag(id) // Use currency.name to display and tag by id
+                            Text(name).tag(id)
                         }
                     }
                 } show: {
-                    Text(currency?.name ?? "Unknown currency!")
+                    env.theme.field.valueOrHint("Select Currency!", text: currency?.name)
                 }
-
                 env.theme.field.toggle(edit, "Status") {
                     Toggle(isOn: $account.status.isOpen) { }
                 } show: {
@@ -59,13 +58,12 @@ struct AccountEditView: View {
                 }
                 
                 env.theme.field.date(edit, "Initial Date") {
-                    DatePicker("", selection: $account.initialDate.date, displayedComponents: [.date]
-                    )
+                    DatePicker("", selection: $account.initialDate.date, displayedComponents: [.date])
                 } show: {
-                    Text(account.initialDate.stringOrDash)
+                    env.theme.field.valueOrHint("Should not be empty!", text: account.initialDate.string)
                 }
                 env.theme.field.text(edit, "Initial Balance") {
-                    TextField("Initial Balance", value: $account.initialBal, format: .number)
+                    TextField("Default is 0", value: $account.initialBal, format: .number)
                         .keyboardType(.decimalPad)
                 } show: {
                     Text(account.initialBal.formatted(by: formatter))
@@ -81,31 +79,31 @@ struct AccountEditView: View {
                 env.theme.field.date(edit, "Statement Date") {
                     DatePicker("", selection: $account.statementDate.date, displayedComponents: [.date])
                 } show: {
-                    Text(account.statementDate.stringOrDash)
+                    env.theme.field.valueOrHint("N/A", text: account.statementDate.string)
                 }
                 env.theme.field.text(edit, "Minimum Balance") {
-                    TextField("Minimum Balance", value: $account.minimumBalance, format: .number)
+                    TextField("Default is 0", value: $account.minimumBalance, format: .number)
                         .keyboardType(.decimalPad)
                 } show: {
                     Text(account.minimumBalance.formatted(by: formatter))
                 }
                 env.theme.field.text(edit, "Credit Limit") {
-                    TextField("Credit Limit", value: $account.creditLimit, format: .number)
+                    TextField("Default is 0", value: $account.creditLimit, format: .number)
                         .keyboardType(.decimalPad)
                 } show: {
                     Text(account.creditLimit.formatted(by: formatter))
                 }
                 env.theme.field.text(edit, "Interest Rate") {
-                    TextField("Interest Rate", value: $account.interestRate, format: .number)
+                    TextField("Default is 0", value: $account.interestRate, format: .number)
                         .keyboardType(.decimalPad)
                 }
                 env.theme.field.date(edit, "Payment Due Date") {
                     DatePicker("", selection: $account.paymentDueDate.date, displayedComponents: [.date])
                 } show: {
-                    Text(account.paymentDueDate.stringOrDash)
+                    env.theme.field.valueOrHint("N/A", text: account.paymentDueDate.string)
                 }
                 env.theme.field.text(edit, "Minimum Payment") {
-                    TextField("Minimum Payment", value: $account.minimumPayment, format: .number)
+                    TextField("Default is 0", value: $account.minimumPayment, format: .number)
                         .keyboardType(.decimalPad)
                 } show: {
                     Text(account.minimumPayment.formatted(by: formatter))
@@ -115,31 +113,31 @@ struct AccountEditView: View {
             Section() {
                 if edit || !account.num.isEmpty {
                     env.theme.field.text(edit, "Number") {
-                        TextField("Number", text: $account.num)
+                        TextField("N/A", text: $account.num)
                             .textInputAutocapitalization(.never)
                     }
                 }
                 if edit || !account.heldAt.isEmpty {
                     env.theme.field.text(edit, "Held at") {
-                        TextField("Held at", text: $account.heldAt)
+                        TextField("N/A", text: $account.heldAt)
                             .textInputAutocapitalization(.sentences)
                     }
                 }
                 if edit || !account.website.isEmpty {
                     env.theme.field.text(edit, "Website") {
-                        TextField("Website", text: $account.website)
+                        TextField("N/A", text: $account.website)
                             .textInputAutocapitalization(.never)
                     }
                 }
                 if edit || !account.contactInfo.isEmpty {
                     env.theme.field.text(edit, "Contact Info") {
-                        TextField("Contact Info", text: $account.contactInfo)
+                        TextField("N/A", text: $account.contactInfo)
                             .textInputAutocapitalization(.sentences)
                     }
                 }
                 if edit || !account.accessInfo.isEmpty {
                     env.theme.field.text(edit, "Access Info") {
-                        TextField("Access Info", text: $account.accessInfo)
+                        TextField("N/A", text: $account.accessInfo)
                             .textInputAutocapitalization(.sentences)
                     }
                 }
@@ -150,7 +148,7 @@ struct AccountEditView: View {
                     TextEditor(text: $account.notes)
                         .textInputAutocapitalization(.never)
                 } show: {
-                    Text(account.notes)
+                    env.theme.field.valueOrHint("N/A", text: account.notes)
                 }
             }
             

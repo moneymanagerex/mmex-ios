@@ -25,6 +25,16 @@ extension FieldTheme {
             .dynamicTypeSize(.small)
             .padding(0)
     }
+    
+    func valueOrHint(_ hint: String, text value: String?) -> some View {
+        Group {
+            if let value, !value.isEmpty {
+                Text(value)
+            } else {
+                Text(hint).foregroundColor(.gray)
+            }
+        }
+    }
 
     func text<ValueView: View>(
         _ edit: Bool,

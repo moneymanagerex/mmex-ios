@@ -70,10 +70,6 @@ extension DateStringProtocal {
         stringToOptDate(string) ?? Date()
     }
 
-    var stringOrDash: String {
-        !self.string.isEmpty ? self.string : "-"
-    }
-
     var date: Date {
         get { Self.stringToDate(self.string) }
         set { self.string = Self.dateToString(newValue) }

@@ -52,7 +52,7 @@ struct StockEditView: View {
                     DatePicker("", selection: $stock.purchaseDate.date, displayedComponents: [.date]
                     )
                 } show: {
-                    Text(stock.purchaseDate.stringOrDash)
+                    Text(stock.purchaseDate.string)
                 }
                 env.theme.field.text(edit, "Purchase Price") {
                     TextField("Purchase Price", value: $stock.purchasePrice, format: .number)
