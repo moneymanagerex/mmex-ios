@@ -36,13 +36,12 @@ extension FieldTheme {
         }
     }
 
-    func valueOrError(_ error: String, text value: @autoclosure () -> String?) -> some View {
-        let value = value()
+    func valueOrError(_ error: String, text value: String?) -> some View {
         return Group {
             if let value, !value.isEmpty {
                 Text(value)
             } else {
-                Text(error).foregroundColor(.accentColor)
+                Text(error).foregroundColor(.red).opacity(0.6)
             }
         }
     }

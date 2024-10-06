@@ -23,13 +23,19 @@ struct CurrencyEditView: View {
         return Form {
             Section {
                 env.theme.field.text(edit, "Name") {
-                    TextField("Currency Name", text: $currency.name)
+                    TextField("Cannot be empty!", text: $currency.name)
                         .textInputAutocapitalization(.sentences)
+                } show: {
+                    env.theme.field.valueOrError("Cannot be empty!", text: currency.name)
                 }
+
                 env.theme.field.text(edit, "Symbol") {
-                    TextField("Currency Symbol", text: $currency.symbol)
+                    TextField("Cannot be empty!", text: $currency.symbol)
                         .textInputAutocapitalization(.characters)
+                } show: {
+                    env.theme.field.valueOrError("Cannot be empty!", text: currency.symbol)
                 }
+
                 env.theme.field.picker(edit, "Type") {
                     Picker("", selection: $currency.type) {
                         ForEach(CurrencyType.allCases) { type in
@@ -39,22 +45,23 @@ struct CurrencyEditView: View {
                 } show: {
                     Text(currency.type.rawValue)
                 }
-                
+
                 if edit || !currency.unitName.isEmpty {
                     env.theme.field.text(edit, "Unit Name") {
-                        TextField("Unit Name", text: $currency.unitName)
+                        TextField("N/A", text: $currency.unitName)
                             .textInputAutocapitalization(.sentences)
                     }
+
                     if edit || !currency.centName.isEmpty {
                         env.theme.field.text(edit, "Cent Name") {
-                            TextField("Cent Name", text: $currency.centName)
+                            TextField("N/A", text: $currency.centName)
                                 .textInputAutocapitalization(.sentences)
                         }
                     }
                 }
 
                 env.theme.field.text(edit, "Conversion Rate") {
-                    TextField("Conversion Rate", value: $currency.baseConvRate, format: .number)
+                    TextField("Default is 0", value: $currency.baseConvRate, format: .number)
                         .keyboardType(.decimalPad)
                 }
             }
@@ -63,24 +70,25 @@ struct CurrencyEditView: View {
                 env.theme.field.text(edit, "Format") {
                     Text(format)
                         .frame(maxWidth: .infinity, alignment: .center)
+                        .foregroundColor(.gray)
                 }
                 if edit {
                     env.theme.field.text(edit, "Prefix Symbol") {
-                        TextField("Prefix Symbol", text: $currency.prefixSymbol)
+                        TextField("N/A", text: $currency.prefixSymbol)
                             .textInputAutocapitalization(.characters)
                     }
                     env.theme.field.text(edit, "Suffix Symbol") {
-                        TextField("Suffix Symbol", text: $currency.suffixSymbol)
+                        TextField("N/A", text: $currency.suffixSymbol)
                             .textInputAutocapitalization(.characters)
                     }
                     env.theme.field.text(edit, "Decimal Point") {
-                        TextField("Decimal Point", text: $currency.decimalPoint)
+                        TextField("N/A", text: $currency.decimalPoint)
                     }
                     env.theme.field.text(edit, "Thousands Separator") {
-                        TextField("Thousands Separator", text: $currency.groupSeparator)
+                        TextField("N/A", text: $currency.groupSeparator)
                     }
                     env.theme.field.text(edit, "Scale") {
-                        TextField("Scale", value: $currency.scale, format: .number)
+                        TextField("Default is 0", value: $currency.scale, format: .number)
                             .keyboardType(.decimalPad)
                     }
                 }

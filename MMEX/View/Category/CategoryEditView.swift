@@ -13,7 +13,7 @@ struct CategoryEditView: View {
     var body: some View {
         Form {
             Section(header: Text("Category Name")) {
-                TextField("Category Name", text: $category.name)
+                TextField("Cannot be empty!", text: $category.name)
             }
             Section(header: Text("Active")) {
                 Toggle("Is Active", isOn: Binding(

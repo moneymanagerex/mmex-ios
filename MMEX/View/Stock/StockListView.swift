@@ -99,7 +99,7 @@ struct StockListView: View {
                 if let account = env.accountCache[stock.accountId],
                    let formatter = env.currencyCache[account.currencyId]?.formatter
                 {
-                    Text(stock.value.formatted(by: formatter))
+                    Text(stock.purchaseValue.formatted(by: formatter))
                         .font(.subheadline)
                 }
            }

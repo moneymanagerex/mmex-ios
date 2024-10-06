@@ -22,9 +22,12 @@ struct AssetEditView: View {
         Form {
             Section {
                 env.theme.field.text(edit, "Name") {
-                    TextField("Asset Name", text: $asset.name)
+                    TextField("Cannot be empty!", text: $asset.name)
                         .textInputAutocapitalization(.words)
+                } show: {
+                    env.theme.field.valueOrError("Cannot be empty!", text: asset.name)
                 }
+
                 env.theme.field.picker(edit, "Type") {
                     Picker("", selection: $asset.type) {
                         ForEach(AssetType.allCases) { type in
@@ -34,31 +37,34 @@ struct AssetEditView: View {
                 } show: {
                     Text(asset.type.rawValue)
                 }
+
                 env.theme.field.toggle(edit, "Status") {
                     Toggle(isOn: $asset.status.isOpen) { }
                 } show: {
                     Text(asset.status.rawValue)
                 }
+
                 env.theme.field.date(edit, "Start Date") {
-                    DatePicker("", selection: $asset.startDate.date, displayedComponents: [.date]
-                    )
+                    DatePicker("", selection: $asset.startDate.date, displayedComponents: [.date])
                 } show: {
-                    Text(asset.startDate.string)
+                    env.theme.field.valueOrError("Should not be empty!", text: asset.startDate.string)
                 }
+
                 env.theme.field.picker(edit, "Currency") {
                     Picker("", selection: $asset.currencyId) {
-                        if (asset.currencyId == 0) {
+                        if (asset.currencyId <= 0) {
                             Text("Select Currency").tag(0 as Int64) // not set
                         }
                         ForEach(allCurrencyName, id: \.0) { id, name in
-                            Text(name).tag(id) // Use currency.name to display and tag by id
+                            Text(name).tag(id)
                         }
                     }
                 } show: {
-                    Text(currency?.name ?? "Unknown currency!")
+                    env.theme.field.valueOrError("Cannot be empty!", text: currency?.name)
                 }
+
                 env.theme.field.text(edit, "Value") {
-                    TextField("Value", value: $asset.value, format: .number)
+                    TextField("Default is 0", value: $asset.value, format: .number)
                         .keyboardType(.decimalPad)
                 } show: {
                     Text(asset.value.formatted(by: formatter))
@@ -75,6 +81,7 @@ struct AssetEditView: View {
                 } show: {
                     Text(asset.change.rawValue)
                 }
+
                 env.theme.field.picker(edit, "Change Mode") {
                     Picker("", selection: $asset.changeMode) {
                         ForEach(AssetChangeMode.allCases) { mode in
@@ -84,8 +91,9 @@ struct AssetEditView: View {
                 } show: {
                     Text(asset.changeMode.rawValue)
                 }
+
                 env.theme.field.text(edit, "Change Rate") {
-                    TextField("Change Rate", value: $asset.changeRate, format: .number)
+                    TextField("Default is 0", value: $asset.changeRate, format: .number)
                         .keyboardType(.decimalPad)
                 }
             }
@@ -95,7 +103,7 @@ struct AssetEditView: View {
                     TextEditor(text: $asset.notes)
                         .textInputAutocapitalization(.never)
                 } show: {
-                    Text(asset.notes)
+                    env.theme.field.valueOrHint("N/A", text: asset.notes)
                 }
             }
 

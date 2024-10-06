@@ -17,7 +17,7 @@ struct StockData: ExportableEntity {
     var purchaseDate  : DateString = DateString("")
     var purchasePrice : Double     = 0.0
     var currentPrice  : Double     = 0.0
-    var value         : Double     = 0.0
+    var purchaseValue : Double     = 0.0
     var commisison    : Double     = 0.0
     var notes         : String     = ""
 }
@@ -35,7 +35,7 @@ extension StockData {
         StockData(
             id: 1, accountId: 3, name: "Apple", symbol: "AAPL",
             numShares: 2, purchaseDate: DateString("2022-01-14"),
-            purchasePrice: 150.60, currentPrice: 200.00, value: 400.0,
+            purchasePrice: 150.60, currentPrice: 200.00, purchaseValue: 301.20,
             notes: "note"
         ),
     ]

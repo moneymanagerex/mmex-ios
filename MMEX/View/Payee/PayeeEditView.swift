@@ -24,9 +24,12 @@ struct PayeeEditView: View {
         Form {
             Section {
                 env.theme.field.text(edit, "Name") {
-                    TextField("Payee Name", text: $payee.name)
+                    TextField("Cannot be empty!", text: $payee.name)
                         .textInputAutocapitalization(.words)
+                } show: {
+                    env.theme.field.valueOrError("Cannot be empty!", text: payee.name)
                 }
+
                 env.theme.field.toggle(edit, "Active") {
                     Toggle(isOn: $payee.active) { }
                 } show: {
@@ -45,19 +48,28 @@ struct PayeeEditView: View {
                         }
                     }
                 } show: {
-                    Text(category?.name ?? "(None)")
+                    env.theme.field.valueOrHint("N/A", text: category?.name)
                 }
-                env.theme.field.text(edit, "Payment Number") {
-                    TextField("Payment Number", text: $payee.number)
-                        .textInputAutocapitalization(.never)
+
+                if edit || !payee.number.isEmpty {
+                    env.theme.field.text(edit, "Payment Number") {
+                        TextField("N/A", text: $payee.number)
+                            .textInputAutocapitalization(.never)
+                    }
                 }
-                env.theme.field.text(edit, "Website") {
-                    TextField("Website", text: $payee.website)
-                        .textInputAutocapitalization(.never)
+
+                if edit || !payee.website.isEmpty {
+                    env.theme.field.text(edit, "Website") {
+                        TextField("N/A", text: $payee.website)
+                            .textInputAutocapitalization(.never)
+                    }
                 }
-                env.theme.field.text(edit, "Pattern") {
-                    TextField("Pattern", text: $payee.pattern)
-                        .textInputAutocapitalization(.never)
+
+                if edit || !payee.pattern.isEmpty {
+                    env.theme.field.text(edit, "Pattern") {
+                        TextField("N/A", text: $payee.pattern)
+                            .textInputAutocapitalization(.never)
+                    }
                 }
             }
             
@@ -66,7 +78,7 @@ struct PayeeEditView: View {
                     TextEditor(text: $payee.notes)
                         .textInputAutocapitalization(.never)
                 } show: {
-                    Text(payee.notes)
+                    env.theme.field.valueOrHint("N/A", text: payee.notes)
                 }
             }
 
