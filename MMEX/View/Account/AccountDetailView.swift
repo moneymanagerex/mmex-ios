@@ -106,7 +106,7 @@ struct AccountDetailView: View {
     }
 }
 
-#Preview {
+#Preview(AccountData.sampleData[0].name) {
     AccountDetailView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         account: AccountData.sampleData[0]
@@ -114,10 +114,18 @@ struct AccountDetailView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview(AccountData.sampleData[1].name) {
     AccountDetailView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         account: AccountData.sampleData[1]
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview(AccountData.sampleData[2].name) {
+    AccountDetailView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        account: AccountData.sampleData[2]
     )
     .environmentObject(EnvironmentManager.sampleData)
 }

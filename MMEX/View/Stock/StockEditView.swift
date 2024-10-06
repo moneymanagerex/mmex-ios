@@ -97,7 +97,7 @@ struct StockEditView: View {
     }
 }
 
-#Preview {
+#Preview("\(StockData.sampleData[0].name) (show)") {
     StockEditView(
         allAccountName: .constant(CurrencyData.sampleDataName),
         stock: .constant(StockData.sampleData[0]),
@@ -106,7 +106,7 @@ struct StockEditView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview("\(StockData.sampleData[0].name) (edit)") {
     StockEditView(
         allAccountName: .constant(CurrencyData.sampleDataName),
         stock: .constant(StockData.sampleData[0]),

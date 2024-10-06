@@ -28,7 +28,7 @@ struct CategoryEditView: View {
     }
 }
 
-#Preview {
+#Preview(CategoryData.sampleData[0].name) {
     CategoryEditView(
         category: .constant(CategoryData.sampleData[0])
     )

@@ -275,7 +275,7 @@ struct TransactionEditView: View {
     }
 }
 
-#Preview {
+#Preview("txn 0") {
     TransactionEditView(
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
@@ -285,7 +285,7 @@ struct TransactionEditView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview("txn 3") {
     TransactionEditView(
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),

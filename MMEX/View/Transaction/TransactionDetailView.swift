@@ -179,7 +179,7 @@ struct TransactionDetailView: View {
     }
 }
 
-#Preview {
+#Preview("txn 0") {
     TransactionDetailView(
         viewModel: TransactionViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),
@@ -190,7 +190,7 @@ struct TransactionDetailView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview("txn 2") {
     TransactionDetailView(
         viewModel: TransactionViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),
@@ -201,7 +201,7 @@ struct TransactionDetailView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview("txn 3") {
     TransactionDetailView(
         viewModel: TransactionViewModel(env: EnvironmentManager()),
         accountId: .constant(AccountData.sampleDataIds),

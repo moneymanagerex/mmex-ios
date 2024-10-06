@@ -129,7 +129,7 @@ struct StockDetailView: View {
     }
 }
 
-#Preview {
+#Preview(StockData.sampleData[0].name) {
     StockDetailView(
         allAccountName: .constant(CurrencyData.sampleDataName),
         stock: StockData.sampleData[0]
