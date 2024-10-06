@@ -41,7 +41,7 @@ extension FieldTheme {
             if let value, !value.isEmpty {
                 Text(value)
             } else {
-                Text(error).foregroundColor(.red).opacity(0.5)
+                Text(error).foregroundColor(.red).opacity(0.6)
             }
         }
     }

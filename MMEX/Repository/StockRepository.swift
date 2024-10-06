@@ -46,7 +46,7 @@ struct StockRepository: RepositoryProtocol {
     static let col_purchaseDate  = SQLite.Expression<String>("PURCHASEDATE")
     static let col_purchasePrice = SQLite.Expression<Double>("PURCHASEPRICE")
     static let col_currentPrice  = SQLite.Expression<Double>("CURRENTPRICE")
-    static let col_value         = SQLite.Expression<Double?>("VALUE")
+    static let col_purchaseValue = SQLite.Expression<Double?>("VALUE")
     static let col_commisison    = SQLite.Expression<Double?>("COMMISSION")
     static let col_notes         = SQLite.Expression<String?>("NOTES")
 
@@ -54,7 +54,7 @@ struct StockRepository: RepositoryProtocol {
     static let cast_numShares     = cast(col_numShares)     as SQLite.Expression<Double?>
     static let cast_purchasePrice = cast(col_purchasePrice) as SQLite.Expression<Double>
     static let cast_currentPrice  = cast(col_currentPrice)  as SQLite.Expression<Double>
-    static let cast_value         = cast(col_value)         as SQLite.Expression<Double?>
+    static let cast_purchaseValue = cast(col_purchaseValue) as SQLite.Expression<Double?>
     static let cast_commisison    = cast(col_commisison)    as SQLite.Expression<Double?>
 
     static func selectData(from table: SQLite.Table) -> SQLite.Table {
@@ -67,7 +67,7 @@ struct StockRepository: RepositoryProtocol {
             col_purchaseDate,
             cast_purchasePrice,
             cast_currentPrice,
-            cast_value,
+            cast_purchaseValue,
             cast_commisison,
             col_notes
         )
@@ -83,7 +83,7 @@ struct StockRepository: RepositoryProtocol {
             purchaseDate  : DateString(row[col_purchaseDate]),
             purchasePrice : row[cast_purchasePrice],
             currentPrice  : row[cast_currentPrice],
-            value         : row[cast_value] ?? 0.0,
+            purchaseValue : row[cast_purchaseValue] ?? 0.0,
             commisison    : row[cast_commisison] ?? 0.0,
             notes         : row[col_notes] ?? ""
         )
@@ -98,7 +98,7 @@ struct StockRepository: RepositoryProtocol {
             col_purchaseDate  <- data.purchaseDate.string,
             col_purchasePrice <- data.purchasePrice,
             col_currentPrice  <- data.currentPrice,
-            col_value         <- data.value,
+            col_purchaseValue <- data.purchaseValue,
             col_commisison    <- data.commisison,
             col_notes         <- data.notes
         ]
