@@ -82,7 +82,7 @@ struct PayeeEditView: View {
     }
 }
 
-#Preview {
+#Preview("\(PayeeData.sampleData[0].name) (show)") {
     PayeeEditView(
         categories: .constant(CategoryData.sampleData),
         payee: .constant(PayeeData.sampleData[0]),
@@ -91,10 +91,28 @@ struct PayeeEditView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview("\(PayeeData.sampleData[0].name) (edit)") {
     PayeeEditView(
         categories: .constant(CategoryData.sampleData),
         payee: .constant(PayeeData.sampleData[0]),
+        edit: true
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview("\(PayeeData.sampleData[1].name) (show)") {
+    PayeeEditView(
+        categories: .constant(CategoryData.sampleData),
+        payee: .constant(PayeeData.sampleData[1]),
+        edit: false
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview("\(PayeeData.sampleData[1].name) (edit)") {
+    PayeeEditView(
+        categories: .constant(CategoryData.sampleData),
+        payee: .constant(PayeeData.sampleData[1]),
         edit: true
     )
     .environmentObject(EnvironmentManager.sampleData)

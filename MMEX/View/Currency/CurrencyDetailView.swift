@@ -78,9 +78,16 @@ struct CurrencyDetailView: View {
     }
 }
 
-#Preview {
+#Preview(CurrencyData.sampleData[0].symbol) {
     CurrencyDetailView(
         currency: .constant(CurrencyData.sampleData[0])
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview(CurrencyData.sampleData[1].symbol) {
+    CurrencyDetailView(
+        currency: .constant(CurrencyData.sampleData[1])
     )
     .environmentObject(EnvironmentManager.sampleData)
 }

@@ -24,6 +24,8 @@ struct AccountEditView: View {
                 env.theme.field.text(edit, "Name") {
                     TextField("Cannot be empty!", text: $account.name)
                         .textInputAutocapitalization(.words)
+                } show: {
+                    env.theme.field.valueOrError("Cannot be empty!", text: account.name)
                 }
                 env.theme.field.picker(edit, "Type") {
                     Picker("", selection: $account.type) {
@@ -44,7 +46,7 @@ struct AccountEditView: View {
                         }
                     }
                 } show: {
-                    env.theme.field.valueOrHint("Select Currency!", text: currency?.name)
+                    env.theme.field.valueOrError("Select Currency!", text: currency?.name)
                 }
                 env.theme.field.toggle(edit, "Status") {
                     Toggle(isOn: $account.status.isOpen) { }
@@ -60,7 +62,7 @@ struct AccountEditView: View {
                 env.theme.field.date(edit, "Initial Date") {
                     DatePicker("", selection: $account.initialDate.date, displayedComponents: [.date])
                 } show: {
-                    env.theme.field.valueOrHint("Should not be empty!", text: account.initialDate.string)
+                    env.theme.field.valueOrError("Should not be empty!", text: account.initialDate.string)
                 }
                 env.theme.field.text(edit, "Initial Balance") {
                     TextField("Default is 0", value: $account.initialBal, format: .number)
@@ -69,7 +71,7 @@ struct AccountEditView: View {
                     Text(account.initialBal.formatted(by: formatter))
                 }
             }
-            
+
             Section() {
                 env.theme.field.toggle(edit, "Statement Locked") {
                     Toggle(isOn: $account.statementLocked) { }
@@ -142,7 +144,7 @@ struct AccountEditView: View {
                     }
                 }
             }
-        
+
             Section() {
                 env.theme.field.editor(edit, "Notes") {
                     TextEditor(text: $account.notes)
@@ -151,7 +153,7 @@ struct AccountEditView: View {
                     env.theme.field.valueOrHint("N/A", text: account.notes)
                 }
             }
-            
+
             // TODO: delete account if not in use
             if true {
                 Button("Delete Account") {
@@ -161,10 +163,13 @@ struct AccountEditView: View {
             }
         }
         .textSelection(.enabled)
+        .onAppear {
+            //print("\(env.currencyCache.count)")
+        }
     }
 }
 
-#Preview {
+#Preview("\(AccountData.sampleData[0].name) (show)") {
     AccountEditView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         account: .constant(AccountData.sampleData[0]),
@@ -173,7 +178,7 @@ struct AccountEditView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview("\(AccountData.sampleData[0].name) (edit)") {
     AccountEditView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         account: .constant(AccountData.sampleData[0]),

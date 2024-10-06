@@ -109,13 +109,13 @@ struct CategoryDetailView: View {
     }
 }
 
-#Preview {
+#Preview(CategoryData.sampleData[0].name) {
     CategoryDetailView(
         category: .constant(CategoryData.sampleData[0])
     )
 }
 
-#Preview {
+#Preview(CategoryData.sampleData[1].name) {
     CategoryDetailView(
         category: .constant(CategoryData.sampleData[1])
     )

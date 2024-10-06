@@ -111,7 +111,7 @@ struct AssetEditView: View {
     }
 }
 
-#Preview {
+#Preview("\(AssetData.sampleData[0].name) (show)") {
     AssetEditView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         asset: .constant(AssetData.sampleData[0]),
@@ -120,10 +120,28 @@ struct AssetEditView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview("\(AssetData.sampleData[0].name) (edit)") {
     AssetEditView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         asset: .constant(AssetData.sampleData[0]),
+        edit: true
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview("\(AssetData.sampleData[1].name) (show)") {
+    AssetEditView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        asset: .constant(AssetData.sampleData[1]),
+        edit: false
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview("\(AssetData.sampleData[1].name) (edit)") {
+    AssetEditView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        asset: .constant(AssetData.sampleData[1]),
         edit: true
     )
     .environmentObject(EnvironmentManager.sampleData)

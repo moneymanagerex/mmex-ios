@@ -129,10 +129,18 @@ struct AssetDetailView: View {
     }
 }
 
-#Preview {
+#Preview(AssetData.sampleData[0].name) {
     AssetDetailView(
         allCurrencyName: .constant(CurrencyData.sampleDataName),
         asset: AssetData.sampleData[0]
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview(AssetData.sampleData[1].name) {
+    AssetDetailView(
+        allCurrencyName: .constant(CurrencyData.sampleDataName),
+        asset: AssetData.sampleData[1]
     )
     .environmentObject(EnvironmentManager.sampleData)
 }

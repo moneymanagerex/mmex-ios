@@ -82,6 +82,6 @@ extension AccountCache {
     }
 
     mutating func unload() {
-        self = [:]
+        self.removeAll()
     }
 }

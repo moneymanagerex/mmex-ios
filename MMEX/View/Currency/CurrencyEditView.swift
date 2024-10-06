@@ -98,7 +98,7 @@ struct CurrencyEditView: View {
     }
 }
 
-#Preview {
+#Preview("\(CurrencyData.sampleData[0].symbol) (show)") {
     CurrencyEditView(
         currency: .constant(CurrencyData.sampleData[0]),
         edit: false
@@ -106,9 +106,25 @@ struct CurrencyEditView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview("\(CurrencyData.sampleData[0].symbol) (edit)") {
     CurrencyEditView(
         currency: .constant(CurrencyData.sampleData[0]),
+        edit: true
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview("\(CurrencyData.sampleData[1].symbol) (show)") {
+    CurrencyEditView(
+        currency: .constant(CurrencyData.sampleData[1]),
+        edit: false
+    )
+    .environmentObject(EnvironmentManager.sampleData)
+}
+
+#Preview("\(CurrencyData.sampleData[1].symbol) (edit)") {
+    CurrencyEditView(
+        currency: .constant(CurrencyData.sampleData[1]),
         edit: true
     )
     .environmentObject(EnvironmentManager.sampleData)

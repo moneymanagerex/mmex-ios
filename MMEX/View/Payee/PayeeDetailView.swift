@@ -137,7 +137,7 @@ struct PayeeDetailView: View {
     }
 }
 
-#Preview {
+#Preview(PayeeData.sampleData[0].name) {
     PayeeDetailView(
         categories: .constant(CategoryData.sampleData),
         payee: .constant(PayeeData.sampleData[0])
@@ -145,7 +145,7 @@ struct PayeeDetailView: View {
     .environmentObject(EnvironmentManager.sampleData)
 }
 
-#Preview {
+#Preview(PayeeData.sampleData[1].name) {
     PayeeDetailView(
         categories: .constant(CategoryData.sampleData),
         payee: .constant(PayeeData.sampleData[1])
