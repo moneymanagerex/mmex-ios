@@ -133,7 +133,7 @@ struct ContentView: View {
     private func enterTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
             EnterView(viewModel: viewModel, selectedTab: $selectedTab)
-                .navigationBarTitle("Enter Transaction", displayMode: .inline)
+                // .navigationBarTitle("Enter Transaction", displayMode: .inline)
         }
         .tabItem {
             env.theme.tab.iconText(icon: "plus.circle", text: "Enter")
