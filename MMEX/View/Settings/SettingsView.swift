@@ -10,7 +10,8 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
-    
+
+    @AppStorage("appearance") private var appearance: Int = UIUserInterfaceStyle.unspecified.rawValue
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
 
@@ -18,30 +19,21 @@ struct SettingsView: View {
 
     var body: some View {
         List {
-            // Section: App Information
-            Section(header: Text("App Information")) {
-                NavigationLink(destination: AboutView()) {
-                    Text("About")
+            Section(header: Text("App Settings")) {
+                Picker("Appearance", selection: $appearance) {
+                    Text("System").tag(UIUserInterfaceStyle.unspecified.rawValue)
+                    Text("Light").tag(UIUserInterfaceStyle.light.rawValue)
+                    Text("Dark").tag(UIUserInterfaceStyle.dark.rawValue)
                 }
-                NavigationLink(destination: VersionInfoView()) {
-                    Text("Version")
+                .pickerStyle(NavigationLinkPickerStyle())
+                .onChange(of: appearance) {
+                    Appearance.apply(appearance)
                 }
-                NavigationLink(destination: LegalView()) {
-                    Text("Legal (Terms & Privacy)")
+
+                NavigationLink(destination: SettingsThemeView()) {
+                    Text("Theme")
                 }
-            }
-            
-            // Section: Support and Help
-            Section(header: Text("Support and Help")) {
-                NavigationLink(destination: HelpFAQView()) {
-                    Text("Help / FAQ")
-                }
-                NavigationLink(destination: ContactSupportView()) {
-                    Text("Contact Support")
-                }
-            }
-            // Section: Default Behavior Setting
-            Section(header: Text("Behavior")) {
+
                 Picker("Default Payee", selection: $defaultPayeeSetting) {
                     Text("None").tag(DefaultPayeeSetting.none)
                     Text("Last Used").tag(DefaultPayeeSetting.lastUsed)
@@ -55,8 +47,8 @@ struct SettingsView: View {
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
             }
-            // Section: Default Behavior Setting
-            Section(header: Text("Per-Database Behavior")) {
+
+            Section(header: Text("Database Settings")) {
                 HStack {
                     Text("Database File")
                     Spacer()
@@ -76,8 +68,8 @@ struct SettingsView: View {
                     ForEach(viewModel.currencies) { currency in
                         HStack {
                             Text(currency.name)
-                            Spacer()
-                            Text(currency.symbol)
+                            //Spacer()
+                            //Text(currency.symbol)
                         }
                         .tag(currency.id) // Use currency.name to display and tag by id
                     }
@@ -86,20 +78,53 @@ struct SettingsView: View {
  
                 Picker("Default Account", selection: $viewModel.defaultAccountId) {
                     ForEach(viewModel.accounts) { account in
-                        let currency = env.currencyCache[account.currencyId]
+                        //let currency = env.currencyCache[account.currencyId]
                         HStack {
                             Text(account.name)
-                            Spacer()
-                            Text(currency?.name ?? "")
+                            //Spacer()
+                            //Text(currency?.name ?? "")
                         }
                         .tag(account.id)
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
             }
+
+            Section(header: Text("Information")) {
+                NavigationLink(destination: AboutView()) {
+                    Text("About")
+                }
+                NavigationLink(destination: VersionInfoView()) {
+                    Text("Version")
+                }
+                NavigationLink(destination: LegalView()) {
+                    Text("Legal (Terms & Privacy)")
+                }
+            }
+            
+            Section(header: Text("Support and Help")) {
+                NavigationLink(destination: HelpFAQView()) {
+                    Text("Help / FAQ")
+                }
+                NavigationLink(destination: ContactSupportView()) {
+                    Text("Contact Support")
+                }
+            }
         }
         .onAppear() {
             // TODO
+        }
+    }
+}
+
+enum Appearance {
+    static func apply(_ appearance: Int) {
+        //print("appearance: \(appearance)")
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            windowScene.windows.forEach { window in
+                window.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: appearance) ?? .unspecified
+                window.reloadInputViews()
+            }
         }
     }
 }

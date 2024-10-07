@@ -133,10 +133,10 @@ struct ContentView: View {
     private func enterTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
             EnterView(viewModel: viewModel, selectedTab: $selectedTab)
-                .navigationBarTitle("Add Transaction", displayMode: .inline)
+                .navigationBarTitle("Enter Transaction", displayMode: .inline)
         }
         .tabItem {
-            env.theme.tab.iconText(icon: "plus.circle", text: "Add Transaction")
+            env.theme.tab.iconText(icon: "plus.circle", text: "Enter")
         }
         .tag(2)
     }
@@ -144,16 +144,16 @@ struct ContentView: View {
     // Management tab
     private func managementTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            ManagementView(
+            ManageView(
                 viewModel:viewModel,
                 isDocumentPickerPresented: $isDocumentPickerPresented,
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
             )
-            .navigationBarTitle("Management", displayMode: .inline)
+            .navigationBarTitle("Manage", displayMode: .inline)
         }
         .tabItem {
-            env.theme.tab.iconText(icon: "folder", text: "Management")
+            env.theme.tab.iconText(icon: "folder", text: "Manage")
         }
         .tag(3)
     }
@@ -217,10 +217,10 @@ struct SidebarView: View {
                 Label("Insights", systemImage: "arrow.up.right")
             }
             Button(action: { selectedTab = 2 }) {
-                Label("Add Transaction", systemImage: "plus.circle")
+                Label("Enter", systemImage: "plus.circle")
             }
             Button(action: { selectedTab = 3 }) {
-                Label("Management", systemImage: "folder")
+                Label("Manage", systemImage: "folder")
             }
             Button(action: { selectedTab = 4 }) {
                 Label("Settings", systemImage: "gearshape")
@@ -252,15 +252,15 @@ struct TabContentView: View {
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
                 EnterView(viewModel: infotableViewModel, selectedTab: $selectedTab)
-                    .navigationBarTitle("Add Transaction", displayMode: .inline)
+                    .navigationBarTitle("Enter Transaction", displayMode: .inline)
             case 3:
-                ManagementView(
+                ManageView(
                     viewModel:infotableViewModel,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
                 )
-                .navigationBarTitle("Management", displayMode: .inline)
+                .navigationBarTitle("Manage", displayMode: .inline)
             case 4:
                 SettingsView(viewModel: infotableViewModel)
                     .navigationBarTitle("Settings", displayMode: .inline)
