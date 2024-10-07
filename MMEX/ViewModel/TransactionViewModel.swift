@@ -177,9 +177,9 @@ class TransactionViewModel: ObservableObject {
         }
     }
 
-    func loadTransactions(for accountId: Int64? = nil) {
+    func loadTransactions(for accountId: Int64? = nil, startDate: Date? = nil, endDate: Date? = nil) {
         DispatchQueue.global(qos: .background).async {
-            var loadedTransactions = self.transactionRepo?.loadRecent(accountId: accountId) ?? []
+            var loadedTransactions = self.transactionRepo?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
             for i in loadedTransactions.indices {
                 // TODO other better indicator
                 if loadedTransactions[i].categId <= 0 {

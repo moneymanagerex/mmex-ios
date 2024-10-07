@@ -14,6 +14,9 @@ struct TransactionListView: View {
     @State private var newTxn = TransactionData()
     @State private var isPresentingTransactionAddView = false
 
+    // State variables for date filtering
+    @State private var selectedYear = Calendar.current.component(.year, from: Date())
+
     var body: some View {
         Group {
             List($viewModel.txns) { $txn in
@@ -57,19 +60,34 @@ struct TransactionListView: View {
                 }
             }
             .toolbar {
-                Button(action: {
-                    isPresentingTransactionAddView = true
-                }, label: {
-                    Image(systemName: "plus")
-                })
-                .accessibilityLabel("New Transaction")
+                // Year Picker
+                ToolbarItem(placement: .navigation) {
+                    Picker("Year", selection: $selectedYear) {
+                        ForEach((2010...Calendar.current.component(.year, from: Date())).reversed(), id: \.self) { year in
+                            Text(String(format: "%d", year)).tag(year) // Correct year format
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle()) // Show as a menu
+                    .onChange(of: selectedYear) {
+                        filterTransactions()
+                    }
+                }
+
+                ToolbarItem(placement: .navigation) {
+                    Button(action: {
+                        isPresentingTransactionAddView = true
+                    }, label: {
+                        Image(systemName: "plus")
+                    })
+                    .accessibilityLabel("New Transaction")
+                }
             }
         }
         .onAppear {
             viewModel.loadAccounts()
             viewModel.loadCategories()
             viewModel.loadPayees()
-            viewModel.loadTransactions()
+            filterTransactions()
 
             // database level setting
             let repository = env.infotableRepository
@@ -115,6 +133,14 @@ struct TransactionListView: View {
         }
         return isoDate
 */
+    }
+
+    // Filter transactions based on selected year
+    func filterTransactions() {
+        let startDate = Calendar.current.date(from: DateComponents(year: selectedYear, month: 1, day: 1)) ?? Date()
+        let endDate = Calendar.current.date(from: DateComponents(year: selectedYear + 1, month: 1, day: 1))?.addingTimeInterval(-1) ?? Date()
+
+        viewModel.loadTransactions(for: nil, startDate: startDate, endDate: endDate)
     }
 }
 
