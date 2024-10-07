@@ -1,5 +1,5 @@
 //
-//  ManagementView.swift
+//  ManageView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/18.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ManagementView: View {
+struct ManageView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
     @Binding var isDocumentPickerPresented: Bool
@@ -16,7 +16,7 @@ struct ManagementView: View {
     
     var body: some View {
         List {
-            Section(header: Text("Manage Data")) {
+            Section(header: Text("Data")) {
                 NavigationLink(destination: CurrencyListView()) {
                     Text("Currencies")
                 }
@@ -95,7 +95,7 @@ struct ManagementView: View {
 
 
 #Preview {
-    ManagementView(
+    ManageView(
         viewModel: TransactionViewModel(env: EnvironmentManager()),
         isDocumentPickerPresented: .constant(false),
         isNewDocumentPickerPresented: .constant(false),

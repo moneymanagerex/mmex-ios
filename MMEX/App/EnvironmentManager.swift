@@ -19,7 +19,7 @@ class EnvironmentManager: ObservableObject {
     var currencyCache = CurrencyCache()
     var accountCache  = AccountCache()
 
-    var theme = Theme()
+    @Published var theme = Theme()
 
     init(withStoredDatabase: Void) {
         connectToStoredDatabase()

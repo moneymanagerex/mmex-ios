@@ -21,6 +21,10 @@ struct MMEXApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(env)
+                .onAppear {
+                    let appearance: Int = UserDefaults.standard.integer(forKey: "appearance")
+                    Appearance.apply(appearance)
+                }
         }
     }
 }

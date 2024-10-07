@@ -47,6 +47,7 @@
 		924352F02CB061F10052E4BC /* FieldTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352EF2CB061F10052E4BC /* FieldTheme.swift */; };
 		924352F22CB0A93E0052E4BC /* TabTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352F12CB0A93E0052E4BC /* TabTheme.swift */; };
 		924352F52CB1C1400052E4BC /* GroupTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352F42CB1C1400052E4BC /* GroupTheme.swift */; };
+		924352FA2CB355CF0052E4BC /* SettingsThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352F92CB355CF0052E4BC /* SettingsThemeView.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -71,7 +72,7 @@
 		A350BDC12CA26415006669D5 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350BDC02CA26415006669D5 /* TransactionViewModel.swift */; };
 		A379C1A72CA3B79E00CC8E2C /* AssetAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A379C1A62CA3B79E00CC8E2C /* AssetAddView.swift */; };
 		A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */; };
-		A37E7D842C9AC14800B4ECFC /* ManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D832C9AC14800B4ECFC /* ManagementView.swift */; };
+		A37E7D842C9AC14800B4ECFC /* ManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D832C9AC14800B4ECFC /* ManageView.swift */; };
 		A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D852C9AC2D000B4ECFC /* AboutView.swift */; };
 		A37E7D882C9AC2E600B4ECFC /* VersionInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D872C9AC2E600B4ECFC /* VersionInfoView.swift */; };
 		A37E7D8A2C9AC30700B4ECFC /* HelpFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D892C9AC30700B4ECFC /* HelpFAQView.swift */; };
@@ -162,6 +163,7 @@
 		924352EF2CB061F10052E4BC /* FieldTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldTheme.swift; sourceTree = "<group>"; };
 		924352F12CB0A93E0052E4BC /* TabTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabTheme.swift; sourceTree = "<group>"; };
 		924352F42CB1C1400052E4BC /* GroupTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTheme.swift; sourceTree = "<group>"; };
+		924352F92CB355CF0052E4BC /* SettingsThemeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsThemeView.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -186,7 +188,7 @@
 		A350BDC02CA26415006669D5 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		A379C1A62CA3B79E00CC8E2C /* AssetAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAddView.swift; sourceTree = "<group>"; };
 		A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListView.swift; sourceTree = "<group>"; };
-		A37E7D832C9AC14800B4ECFC /* ManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementView.swift; sourceTree = "<group>"; };
+		A37E7D832C9AC14800B4ECFC /* ManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageView.swift; sourceTree = "<group>"; };
 		A37E7D852C9AC2D000B4ECFC /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		A37E7D872C9AC2E600B4ECFC /* VersionInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionInfoView.swift; sourceTree = "<group>"; };
 		A37E7D892C9AC30700B4ECFC /* HelpFAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpFAQView.swift; sourceTree = "<group>"; };
@@ -291,12 +293,12 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		924352F62CB2EA3D0052E4BC /* Management */ = {
+		924352F62CB2EA3D0052E4BC /* Manage */ = {
 			isa = PBXGroup;
 			children = (
-				A37E7D832C9AC14800B4ECFC /* ManagementView.swift */,
+				A37E7D832C9AC14800B4ECFC /* ManageView.swift */,
 			);
-			path = Management;
+			path = Manage;
 			sourceTree = "<group>";
 		};
 		924352F72CB2EA5C0052E4BC /* Checking */ = {
@@ -403,6 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				A3C142A32C9033E300D3CEC0 /* SettingsView.swift */,
+				924352F92CB355CF0052E4BC /* SettingsThemeView.swift */,
 				A37E7D852C9AC2D000B4ECFC /* AboutView.swift */,
 				A37E7D872C9AC2E600B4ECFC /* VersionInfoView.swift */,
 				A37E7D892C9AC30700B4ECFC /* HelpFAQView.swift */,
@@ -536,7 +539,7 @@
 				924352F72CB2EA5C0052E4BC /* Checking */,
 				A3B51C072CA8E03100BB0681 /* Insights */,
 				924352F82CB2EAD40052E4BC /* Enter */,
-				924352F62CB2EA3D0052E4BC /* Management */,
+				924352F62CB2EA3D0052E4BC /* Manage */,
 				A39B1B3E2C9A6714003E5562 /* Settings */,
 				A39B1B3D2C9A66F7003E5562 /* Currency */,
 				A39B1B392C9A668F003E5562 /* Account */,
@@ -690,6 +693,7 @@
 				A3C142442C89C8FA00D3CEC0 /* AccountData.swift in Sources */,
 				A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */,
 				A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */,
+				924352FA2CB355CF0052E4BC /* SettingsThemeView.swift in Sources */,
 				9208240A2CA4C2AD00388AB2 /* BudgetYearData.swift in Sources */,
 				A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */,
 				A37E7D942C9B217500B4ECFC /* InfotableData.swift in Sources */,
@@ -728,7 +732,7 @@
 				A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */,
 				929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */,
 				920824182CA4CF4300388AB2 /* AttachmentData.swift in Sources */,
-				A37E7D842C9AC14800B4ECFC /* ManagementView.swift in Sources */,
+				A37E7D842C9AC14800B4ECFC /* ManageView.swift in Sources */,
 				924352EE2CB060D80052E4BC /* Theme.swift in Sources */,
 				924352E82CAE1E480052E4BC /* StockDetailView.swift in Sources */,
 				924352E92CAE1E480052E4BC /* StockAddView.swift in Sources */,
