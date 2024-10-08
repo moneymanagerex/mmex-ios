@@ -97,7 +97,7 @@ struct ContentView: View {
             .controlSize(.large)
 
             Button(action: { isNewDocumentPickerPresented = true; isSampleDocument = true }) {
-                Label("Use Sample Database", systemImage: "doc.text.fill")
+                Label("Create and Use Sample Database", systemImage: "doc.text.fill")
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
