@@ -84,22 +84,15 @@ extension EnvironmentManager {
         openDatabase(at: url, isNew: true)
         guard let db else { return }
 
-        guard let tables = Bundle.main.url(forResource: "tables.sql", withExtension: "") else {
+        guard let tables = Bundle.main.url(forResource: "tables", withExtension: "sql") else {
             log.error("Cannot find tables.sql")
             closeDatabase()
             return
         }
 
-        if tables.startAccessingSecurityScopedResource() {
-            defer { tables.stopAccessingSecurityScopedResource() }
-            let repository = Repository(db)
-            repository.setUserVersion (19)
-            guard repository.execute(url: tables) else {
-                closeDatabase()
-                return
-            }
-        } else {
-            log.error("Failed to access security-scoped resource: \(tables.path)")
+        let repository = Repository(db)
+        repository.setUserVersion (19)
+        guard repository.execute(url: tables) else {
             closeDatabase()
             return
         }
