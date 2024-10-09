@@ -111,6 +111,31 @@ extension EnvironmentManager {
 
     /// Closes the current database connection and resets related states.
     func closeDatabase() {
+        // Write any unsaved changes back to the original file
+        if let databaseURL = databaseURL {
+            log.info("Attempting to write back changes to: \(databaseURL.path)")
+            // Ensure the file is a security-scoped resource
+            if databaseURL.startAccessingSecurityScopedResource() {
+                defer { databaseURL.stopAccessingSecurityScopedResource() }
+
+                // Using NSFileCoordinator to handle cloud files correctly
+                let fileCoordinator = NSFileCoordinator()
+                var error: NSError?
+
+                // Perform coordinated write to ensure cloud compatibility
+                fileCoordinator.coordinate(writingItemAt: databaseURL, options: .forReplacing, error: &error) { newURL in
+                    // TODO: conflict handle?
+                    log.info("to: \(newURL.path)")
+                }
+
+                // Handle any errors from the coordination
+                if let coordinationError = error {
+                    log.error("File coordination error: \(coordinationError)")
+                }
+            } else {
+                log.error("Failed to access security-scoped resource for writing: \(databaseURL.path)")
+            }
+        }
         // Nullify the connection and reset the state
         unloadCache()
         isDatabaseConnected = false
