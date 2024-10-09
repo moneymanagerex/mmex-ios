@@ -77,7 +77,7 @@ class TransactionViewModel: ObservableObject {
     private func setupBindings() {
         // Bind for defaultAccountId, using dropFirst to ignore initial assignment
         $defaultAccountId
-            //.dropFirst() // Ignore the first emitted value
+            .dropFirst() // Ignore the first emitted value
             .sink { [weak self] accountId in
                 self?.saveDefaultAccount(accountId)
                 self?.loadTransactions(for: accountId)
