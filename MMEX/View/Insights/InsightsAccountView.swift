@@ -118,7 +118,7 @@ struct InsightsAccountView: View {
                                         let value: Double? = switch Self.statusChoices[statusChoice].1 {
                                         case "Balance"            : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
                                         case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
-                                        case "None"      : flowByStatus?[.none]?.diff
+                                        case "None"      : flowByStatus?[.unreconciled]?.diff
                                         case "Duplicate" : flowByStatus?[.duplicate]?.diff
                                         case "Follow up" : flowByStatus?[.followUp]?.diff
                                         case "Void"      : flowByStatus?[.void]?.diff

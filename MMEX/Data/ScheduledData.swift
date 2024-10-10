@@ -113,17 +113,17 @@ extension ScheduledData {
     static let sampleData : [ScheduledData] = [
         ScheduledData(
             id: 1, accountId: 1, payeeId: 1, transCode: TransactionType.withdrawal,
-            transAmount: 10.01, status: TransactionStatus.none, categId: 1,
+            transAmount: 10.01, status: TransactionStatus.unreconciled, categId: 1,
             transDate: DateTimeString(Date())
         ),
         ScheduledData(
             id: 2, accountId: 2, payeeId: 2, transCode: TransactionType.deposit,
-            transAmount: 20.02, status: TransactionStatus.none, categId: 1,
+            transAmount: 20.02, status: TransactionStatus.unreconciled, categId: 1,
             transDate: DateTimeString(Date())
         ),
         ScheduledData(
             id: 3, accountId: 3, payeeId: 3, transCode: TransactionType.transfer,
-            transAmount: 30.03, status: TransactionStatus.none, categId: 1,
+            transAmount: 30.03, status: TransactionStatus.unreconciled, categId: 1,
             transDate: DateTimeString(Date())
         ),
     ]
