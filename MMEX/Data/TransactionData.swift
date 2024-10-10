@@ -17,17 +17,17 @@ enum TransactionType: String, EnumCollateNoCase {
 
 enum TransactionStatus: String, EnumCollateNoCase {
     // TODO: MMEX Desktop defines "" for none
-    case none       = "" // None
+    case unreconciled       = "" // None
     case reconciled = "R" // Reconciled
     case void       = "V" // Void
     case followUp   = "F" // Follow up
     case duplicate  = "D" // Duplicate
-    static let defaultValue = Self.none
+    static let defaultValue = Self.unreconciled
 
     var fullName: String {
         return switch self {
         // TODO: MMEX Desktop defines "Unreconciled" for none
-        case .none       : "Unreconciled"
+        case .unreconciled       : "Unreconciled"
         case .reconciled : "Reconciled"
         case .void       : "Void"
         case .followUp   : "Follow up"
@@ -154,24 +154,24 @@ extension TransactionData {
     static let sampleData : [TransactionData] = [
         TransactionData(
             id: 1, accountId: 1, payeeId: 1, transCode: TransactionType.withdrawal,
-            transAmount: 10.01, status: TransactionStatus.none, categId: 1,
+            transAmount: 10.01, status: TransactionStatus.unreconciled, categId: 1,
             transDate: DateTimeString(Date())
         ),
         TransactionData(
             id: 2, accountId: 2, payeeId: 2, transCode: TransactionType.deposit,
-            transAmount: 20.02, status: TransactionStatus.none, categId: 1,
+            transAmount: 20.02, status: TransactionStatus.unreconciled, categId: 1,
             transDate: DateTimeString(Date())
         ),
         TransactionData(
             id: 3, accountId: 3, toAccountId: 2, transCode: TransactionType.transfer,
-            transAmount: 30.03, status: TransactionStatus.none,
+            transAmount: 30.03, status: TransactionStatus.unreconciled,
             notes: "transfer transacion data",
             categId: 1,
             transDate: DateTimeString(Date())
         ),
         TransactionData(
             id: 4, accountId: 3, payeeId: 2, transCode: TransactionType.withdrawal,
-            transAmount: 40.04, status: TransactionStatus.none,
+            transAmount: 40.04, status: TransactionStatus.unreconciled,
             notes: "split transacion data",
             transDate: DateTimeString(Date()),
             splits: TransactionSplitData.sampleData

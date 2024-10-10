@@ -109,7 +109,7 @@ typealias AccountFlowByStatus = [TransactionStatus: AccountFlow]
 
 extension AccountFlowByStatus {
     var diffTotal      : Double {
-        (self[.none]?       .diff ?? 0.0) +
+        (self[.unreconciled]?       .diff ?? 0.0) +
         (self[.reconciled]? .diff ?? 0.0) +
         (self[.followUp]?   .diff ?? 0.0) +
         (self[.duplicate]?  .diff ?? 0.0)
