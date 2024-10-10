@@ -200,6 +200,66 @@ extension AccountRepository {
         }
     }
 
+    // load accounts by currency
+    func loadByCurrecncyId<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [Int64: [Result]] {
+        do {
+            var dataByCurrencyId: [Int64: [Result]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let currencyId = row[Self.col_currencyId]
+                if dataByCurrencyId[currencyId] == nil { dataByCurrencyId[currencyId] = [] }
+                dataByCurrencyId[currencyId]!.append(result(row))
+            }
+            log.info("Successfull select from \(Self.repositoryName): \(dataByCurrencyId.count)")
+            return dataByCurrencyId
+        } catch {
+            log.error("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
+    // load accounts by status
+    func loadByStatus<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [AccountStatus: [Result]] {
+        do {
+            var dataByStatus: [AccountStatus: [Result]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let status = AccountStatus(collateNoCase: row[Self.col_status])
+                if dataByStatus[status] == nil { dataByStatus[status] = [] }
+                dataByStatus[status]!.append(result(row))
+            }
+            log.info("Successfull select from \(Self.repositoryName): \(dataByStatus.count)")
+            return dataByStatus
+        } catch {
+            log.error("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
+    // load accounts by favorite
+    func loadByFavorite<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [AccountFavorite: [Result]] {
+        do {
+            var dataByFavorite: [AccountFavorite: [Result]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let fav = AccountFavorite(collateNoCase: row[Self.col_favoriteAcct])
+                if dataByFavorite[fav] == nil { dataByFavorite[fav] = [] }
+                dataByFavorite[fav]!.append(result(row))
+            }
+            log.info("Successfull select from \(Self.repositoryName): \(dataByFavorite.count)")
+            return dataByFavorite
+        } catch {
+            log.error("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
     // load account flow, indexed by id and transaction status
     func dictFlowByStatus(
         from table: SQLite.Table = Self.table,

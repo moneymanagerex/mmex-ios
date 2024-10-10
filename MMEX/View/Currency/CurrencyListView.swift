@@ -32,7 +32,7 @@ struct CurrencyListView: View {
                         env.theme.group.hstack(
                             isExpanded[inUse] == true
                         ) {
-                            Text(inUse ? "In-Use" : "Not-In-Use")
+                            Text(inUse ? "Used" : "Not Used")
                         }
                     }
                 }) {
@@ -49,7 +49,8 @@ struct CurrencyListView: View {
                             }
                         }
                     }
-                }
+                }.listSectionSpacing(10)
+                Text("end")
             } }
             .toolbar {
                 Button(action: {

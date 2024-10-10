@@ -17,8 +17,13 @@ protocol RepositoryProtocol {
     static var table: SQLite.Table { get }
     static func selectData(from table: SQLite.Table) -> SQLite.Table
     static func fetchData(_ row: SQLite.Row) -> RepositoryData
+    static func fetchId(_ row: SQLite.Row) -> Int64
     static var col_id: SQLite.Expression<Int64> { get }
     static func itemSetters(_ item: RepositoryData) -> [SQLite.Setter]
+}
+
+extension RepositoryProtocol {
+    static func fetchId(_ row: SQLite.Row) -> Int64 { row[Self.col_id] }
 }
 
 extension RepositoryProtocol {

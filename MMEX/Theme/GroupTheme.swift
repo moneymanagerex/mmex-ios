@@ -23,7 +23,7 @@ extension GroupTheme {
         Image(systemName: open ? "chevron.down.circle.fill" : "chevron.right.circle")
             .foregroundColor(.gray)
     }
-
+    
     func hstack<NameView: View>(
         _ open: Bool,
         @ViewBuilder name nameView: @escaping () -> NameView
@@ -34,21 +34,54 @@ extension GroupTheme {
                 HStack {
                     fold(open)
                     nameView()
-                        .font(.subheadline)
+                        .font(.headline.smallCaps())
                         .padding(.leading)
-
+                    
                     Spacer()
                 }
             case .nameFold:
                 HStack {
                     nameView()
-                        .font(.subheadline)
+                        .font(.headline.smallCaps())
                         .padding(.leading)
-
+                    
                     Spacer()
                     fold(open)
                 }
             }
         }
     }
+
+    /*
+    func section<NameView: View>(
+        _ isExpanded: @autoclosure () -> Bool?,
+        @ViewBuilder name nameView: @escaping () -> NameView
+    ) -> some View {
+        Section(header: HStack {
+            Button(action: {
+                isExpanded[inUse]?.toggle()
+            }) {
+                env.theme.group.hstack(
+                    isExpanded[inUse] == true
+                ) {
+                    Text(inUse ? "Used" : "Not Used")
+                }
+            }
+        }) {
+            if isExpanded[inUse] == true {
+                ForEach($allCurrencyData) { $currency in
+                    if (env.currencyCache[currency.id] != nil) == inUse {
+                        NavigationLink(destination: CurrencyDetailView(
+                            currency: $currency
+                        ) ) { HStack {
+                            Text(currency.name)
+                            Spacer()
+                            Text(currency.symbol)
+                        } }
+                    }
+                }
+            }
+        }.listSectionSpacing(10)
+    }
+     */
 }
