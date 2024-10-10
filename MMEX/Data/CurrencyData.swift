@@ -44,7 +44,7 @@ extension CurrencyData {
         let nf = NumberFormatter()
         nf.numberStyle = .decimal
         nf.positivePrefix    = self.prefixSymbol
-        nf.negativePrefix    = self.prefixSymbol
+        nf.negativePrefix    = self.prefixSymbol + (self.prefixSymbol.isEmpty ? "-" : " -")
         nf.positiveSuffix    = self.suffixSymbol
         nf.negativeSuffix    = self.suffixSymbol
         nf.decimalSeparator  = self.decimalPoint
