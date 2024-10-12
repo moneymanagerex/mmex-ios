@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 struct FieldTheme {
-    enum Choice: String, EnumCollateNoCase {
+    enum Layout: String, EnumCollateNoCase {
         case vstack = "VStack"
         static let defaultValue = Self.vstack
     }
 
-    var choice = Self.Choice.defaultValue
+    var layout = Self.Layout.defaultValue
 }
 
 extension FieldTheme {
@@ -52,7 +52,7 @@ extension FieldTheme {
         @ViewBuilder value valueView: @escaping () -> ValueView
     ) -> some View {
         return Group {
-            switch choice {
+            switch layout {
             case .vstack:
                 VStack(alignment: .leading, spacing: 4.0) {
                     vstackName(name)
@@ -79,7 +79,7 @@ extension FieldTheme {
         @ViewBuilder show showView: @escaping () -> ShowView
     ) -> some View {
         return Group {
-            switch choice {
+            switch layout {
             case .vstack:
                 VStack(alignment: .leading, spacing: 4.0) {
                     vstackName(name)
@@ -106,7 +106,7 @@ extension FieldTheme {
         @ViewBuilder show showView: @escaping () -> ShowView
     ) -> some View {
         return Group {
-            switch choice {
+            switch layout {
             case .vstack:
                 VStack(alignment: .leading, spacing: 4.0) {
                     vstackName(name)
@@ -134,7 +134,7 @@ extension FieldTheme {
         @ViewBuilder show showView: @escaping () -> ShowView
     ) -> some View {
         return Group {
-            switch choice {
+            switch layout {
             case .vstack:
                 HStack {
                     VStack(alignment: .leading, spacing: 4.0) {
@@ -166,7 +166,7 @@ extension FieldTheme {
         @ViewBuilder show showView: @escaping () -> ShowView
     ) -> some View {
         return Group {
-            switch choice {
+            switch layout {
             case .vstack:
                 HStack {
                     VStack(alignment: .leading, spacing: 4.0) {
@@ -199,7 +199,7 @@ extension FieldTheme {
         @ViewBuilder show showView: @escaping () -> ShowView
     ) -> some View {
         return Group {
-            switch choice {
+            switch layout {
             case .vstack:
                 HStack {
                     VStack(alignment: .leading, spacing: 4.0) {

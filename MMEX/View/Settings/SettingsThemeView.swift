@@ -13,6 +13,7 @@ struct SettingsThemeView: View {
     @State private var isExpanded: [String: Bool] = [
         "Tab Icons"    : true,
         "Group Layout" : true,
+        "Item Layout"  : true,
         "Field Layout" : true,
     ]
 
@@ -22,13 +23,13 @@ struct SettingsThemeView: View {
                 HStack {
                     Text("Tab Icons")
                     Spacer()
-                    Picker("", selection: $env.theme.tab.choice) {
-                        ForEach(TabTheme.Choice.allCases) { choice in
-                            Text(choice.rawValue).tag(choice)
+                    Picker("", selection: $env.theme.tab.layout) {
+                        ForEach(TabTheme.Layout.allCases) { layout in
+                            Text(layout.rawValue).tag(layout)
                         }
                     }
 //                    .onChange(of: tabChoice) { _, newChoice in
-//                        env.theme.tab.choice = newChoice
+//                        env.theme.tab.layout = newChoice
 //                    }
                 }
             }
@@ -37,18 +38,18 @@ struct SettingsThemeView: View {
                 Button(action: {
                     isExpanded["Group Layout"]?.toggle()
                 }) {
-                    env.theme.group.hstack(isExpanded["Group Layout"] == true) {
+                    env.theme.group.view(isExpanded["Group Layout"] == true) {
                         Text("Group Layout")
                     }
                 }
             }) {
                 if isExpanded["Group Layout"] == true {
                     VStack(spacing: 15) {
-                        ForEach(GroupTheme.Choice.allCases) { choice in
+                        ForEach(GroupTheme.Layout.allCases) { layout in
                             Button(action: {
-                                env.theme.group.choice = choice
+                                env.theme.group.layout = layout
                             }) {
-                                GroupTheme(choice: choice).hstack(false) {
+                                GroupTheme(layout: layout).view(false) {
                                     Text("Group Name")
                                 }
                             }
@@ -56,8 +57,42 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.group.choice == choice ? .blue : .gray,
-                                    lineWidth: env.theme.group.choice == choice ? 3 : 1
+                                    env.theme.group.layout == layout ? .blue : .gray,
+                                    lineWidth: env.theme.group.layout == layout ? 3 : 1
+                                )
+                            )
+                        }
+                    }
+                    .padding(0)
+                }
+            }
+
+            Section(header: HStack {
+                Button(action: {
+                    isExpanded["Item Layout"]?.toggle()
+                }) {
+                    env.theme.group.view(isExpanded["Item Layout"] == true) {
+                        Text("Item Layout")
+                    }
+                }
+            }) {
+                if isExpanded["Item Layout"] == true {
+                    VStack(spacing: 15) {
+                        ForEach(ItemTheme.Layout.allCases) { layout in
+                            Button(action: {
+                                env.theme.item.layout = layout
+                            }) {
+                                ItemTheme(layout: layout).view(
+                                    name: { Text("Item Name") },
+                                    info: { Text("Item Info") }
+                                )
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8).stroke(
+                                    env.theme.item.layout == layout ? .blue : .gray,
+                                    lineWidth: env.theme.item.layout == layout ? 3 : 1
                                 )
                             )
                         }
@@ -70,18 +105,18 @@ struct SettingsThemeView: View {
                 Button(action: {
                     isExpanded["Field Layout"]?.toggle()
                 }) {
-                    env.theme.group.hstack(isExpanded["Field Layout"] == true) {
+                    env.theme.group.view(isExpanded["Field Layout"] == true) {
                         Text("Field Layout")
                     }
                 }
             }) {
                 if isExpanded["Field Layout"] == true {
                     VStack(spacing: 15) {
-                        ForEach(FieldTheme.Choice.allCases) { choice in
+                        ForEach(FieldTheme.Layout.allCases) { layout in
                             Button(action: {
-                                env.theme.field.choice = choice
+                                env.theme.field.layout = layout
                             }) {
-                                FieldTheme(choice: choice).text(false, "Field Name") {
+                                FieldTheme(layout: layout).text(false, "Field Name") {
                                     Text("N/A")
                                 } show: {
                                     Text("Field Value")
@@ -93,8 +128,8 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.field.choice == choice ? .blue : .gray,
-                                    lineWidth: env.theme.field.choice == choice ? 3 : 1
+                                    env.theme.field.layout == layout ? .blue : .gray,
+                                    lineWidth: env.theme.field.layout == layout ? 3 : 1
                                 )
                             )
                         }

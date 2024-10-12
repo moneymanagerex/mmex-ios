@@ -29,7 +29,7 @@ struct CurrencyListView: View {
                     Button(action: {
                         isExpanded[inUse]?.toggle()
                     }) {
-                        env.theme.group.hstack(
+                        env.theme.group.view(
                             isExpanded[inUse] == true
                         ) {
                             Text(inUse ? "Used" : "Not Used")

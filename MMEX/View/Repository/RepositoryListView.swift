@@ -97,7 +97,7 @@ struct RepositoryListView<
             Button(action: {
                 viewModel.group[g].isExpanded.toggle()
             }) {
-                env.theme.group.hstack(
+                env.theme.group.view(
                     viewModel.group[g].isExpanded
                 ) {
                     groupName(g)
@@ -121,17 +121,10 @@ struct RepositoryListView<
         NavigationLink(destination: detailView(
             data
         ) ) {
-            HStack {
-                itemName(data)
-                    .font(.body)
-                Spacer()
-                itemInfo(data)
-                    .font(.caption)
-                    //.border(.red)
-            }
-            .listRowInsets(.init())
-            //.border(.red)
-            .padding(.horizontal, 0)
+            env.theme.item.view(
+                name: { itemName(data) },
+                info: { itemInfo(data) }
+            )
         }
     }
 

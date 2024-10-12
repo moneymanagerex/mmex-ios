@@ -9,20 +9,20 @@ import Foundation
 import SwiftUI
 
 struct TabTheme {
-    enum Choice: String, EnumCollateNoCase {
+    enum Layout: String, EnumCollateNoCase {
         case icon     = "Icon"
         case iconText = "Icon and Text"
         static let defaultValue = Self.iconText
     }
 
-    var choice = Choice.defaultValue
+    var layout = Layout.defaultValue
 }
 
 extension TabTheme {
     func iconText(icon: String, text: String) -> some View {
         VStack{
             Image(systemName: icon)
-            if self.choice == .iconText { Text(text) }
+            if self.layout == .iconText { Text(text) }
         }
     }
 }
