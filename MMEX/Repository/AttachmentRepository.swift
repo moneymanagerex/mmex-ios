@@ -70,7 +70,7 @@ struct AttachmentRepository: RepositoryProtocol {
 
 extension AttachmentRepository {
     // load all attachments
-    func load() -> [AttachmentData] {
+    func load() -> [AttachmentData]? {
         return select(from: Self.table
             .order(Self.col_id)
         )

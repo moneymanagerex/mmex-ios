@@ -33,7 +33,7 @@ class InsightsViewModel: ObservableObject {
             baseCurrency = env.currencyRepository?.pluck(
                 key: InfoKey.baseCurrencyID.id,
                 from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
-            )
+            ).toOptional()
         }
 
         // Load transactions on initialization
@@ -83,7 +83,10 @@ class InsightsViewModel: ObservableObject {
 
         // fetch open accounts
         DispatchQueue.global(qos: .background).async {
-            let dataByType = repository?.loadByType(
+            let dataByType: [AccountType: [AccountData]] = repository?.selectBy(
+                property: { row in
+                    AccountType(collateNoCase: row[AccountRepository.col_type])
+                },
                 from: table.order(AccountRepository.col_name)
             ) ?? [:]
             // Update the published stats on the main thread

@@ -28,10 +28,10 @@ extension Repository {
     func setPragma(name: String, value: String) -> Bool {
         do {
             try db.execute("PRAGMA \(name) = \(value)")
-            log.info("Successful set \(name) to \(value)")
+            log.info("INFO: Repository.setPragma(\(name), \(value))")
             return true
         } catch {
-            log.error("Failed to set \(name): \(error)")
+            log.error("ERROR: Repository.setPragma(\(name), \(value)): \(error)")
             return false
         }
     }
@@ -39,55 +39,58 @@ extension Repository {
     func select<Result>(
         from table: SQLite.Table,
         with result: (SQLite.Row) -> Result
-    ) -> [Result] {
+    ) -> [Result]? {
         do {
             var data: [Result] = []
+            log.trace("DEBUG: Repository.select(): \(table.expression.description)")
             for row in try db.prepare(table) {
                 data.append(result(row))
             }
-            log.info("Successfull select: \(data.count)")
+            log.info("INFO: Repository.select(): \(data.count)")
             return data
         } catch {
-            log.error("Failed select: \(error)")
-            return []
+            log.error("ERROR: Repository.select(): \(error)")
+            return nil
         }
     }
 
-    func dict<Result>(
+    func selectById<Result>(
         query: String,
         with result: (SQLite.Statement.Element) -> Result
-    ) -> [DataId: Result] {
-        log.trace("Repository.dict: \(query)")
+    ) -> [DataId: Result]? {
         do {
             var dict: [DataId: Result] = [:]
+            log.trace("DEBUG: Repository.selectById(): \(query)")
             for row in try db.prepare(query) {
                 let id = DataId(row[0] as! Int64)
                 dict[id] = result(row)
             }
-            log.info("Successfull dictionary: \(dict.count)")
+            log.info("INFO: Repository.selectById(): \(dict.count)")
             return dict
         } catch {
-            log.error("Failed dictionary: \(error)")
-            return [:]
+            log.error("ERROR: Repository.selectById(): \(error)")
+            return nil
         }
     }
 
     func execute(sql: String) -> Bool {
-        log.trace("Executing sql: \(sql)")
         do {
+            log.trace("DEBUG: Repository.execute(sql:): \(sql)")
             try db.execute(sql)
+            log.info("INFO: Repository.execute(sql:)")
             return true
         } catch {
-            log.error("Failed to execute sql: \(error)")
+            log.error("ERROR: Repository.execute(sql:): \(error)")
             return false
         }
     }
 
     func execute(url: URL) -> Bool {
         guard let contents = try? String(contentsOf: url) else {
-            log.error("Failed to read \(url)")
+            log.error("ERROR: Repository.execute(url:): cannot read \(url)")
             return false
         }
+        log.trace("DEBUG: Repository.execute(url: \(url))")
 
         // split contents into paragraphs and execute each paragraph
         var paragraph = ""

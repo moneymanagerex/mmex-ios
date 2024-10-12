@@ -119,7 +119,7 @@ struct SettingsView: View {
 
 enum Appearance {
     static func apply(_ appearance: Int) {
-        //print("appearance: \(appearance)")
+        //log.debug("DEBUG: appearance: \(appearance)")
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             windowScene.windows.forEach { window in
                 window.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: appearance) ?? .unspecified

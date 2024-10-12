@@ -130,8 +130,10 @@ struct TransactionRepository: RepositoryProtocol {
 
 extension TransactionRepository {
     // load all transactions
-    func load() -> [TransactionData] {
-        return select(from: Self.table.order(Self.col_transDate.desc))
+    func load() -> [TransactionData]? {
+        return select(
+            from: Self.table.order(Self.col_transDate.desc)
+        )
     }
 
     // load recent transactions
@@ -139,7 +141,7 @@ extension TransactionRepository {
         accountId: DataId? = nil,
         startDate: Date? = nil,
         endDate: Date? = nil
-    ) -> [TransactionData] {
+    ) -> [TransactionData]? {
         var table = Self.table
 
         if let accountId {
@@ -158,7 +160,7 @@ extension TransactionRepository {
     // TODO: update payee's category mapping after insert & update ?
 
     // Fetch the latest record, filtered by account (optional)
-    func latest(accountID: DataId? = nil) -> TransactionData? {
+    func latest(accountID: DataId? = nil) -> RepositoryPluckResult<TransactionData> {
         var query = Self.table.order(Self.col_id.desc) // Order by descending ID
             .filter(([TransactionType.withdrawal.id, TransactionType.deposit.id].contains(Self.col_transCode)))
 

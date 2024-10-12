@@ -104,7 +104,7 @@ struct AssetRepository: RepositoryProtocol {
 
 extension AssetRepository {
     // load all assets
-    func load() -> [AssetData] {
+    func load() -> [AssetData]? {
         return select(from: Self.table
             .order(Self.col_type, Self.col_status.desc, Self.col_name)
         )
@@ -114,7 +114,7 @@ extension AssetRepository {
     func loadByType<Result>(
         from table: SQLite.Table = Self.table,
         with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [AssetType: [Result]] {
+    ) -> [AssetType: [Result]]? {
         do {
             var dataByType: [AssetType: [Result]] = [:]
             for row in try db.prepare(Self.selectData(from: table)) {
@@ -122,20 +122,20 @@ extension AssetRepository {
                 if dataByType[type] == nil { dataByType[type] = [] }
                 dataByType[type]!.append(result(row))
             }
-            log.info("Successfull select from \(Self.repositoryName): \(dataByType.count)")
+            log.info("INFO: AssetRepository.loadByType(): \(dataByType.count)")
             return dataByType
         } catch {
-            log.error("Failed select from \(Self.repositoryName): \(error)")
-            return [:]
+            log.error("ERROR: AssetRepository.loadByType(): \(error)")
+            return nil
         }
     }
 
     // load currencyId for all accounts
-    func loadCurrencyId() -> [Int64] {
+    func loadCurrencyId() -> [DataId]? {
         return Repository(db).select(from: Self.table
             .select(distinct: Self.col_currencyId)
         ) { row in
-            row[Self.col_currencyId] ?? 0
+            DataId(row[Self.col_currencyId] ?? 0)
         }
     }
 }

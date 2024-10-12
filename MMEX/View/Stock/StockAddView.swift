@@ -69,7 +69,7 @@ struct StockAddView: View {
         isPresentingAddView: .constant(true)
     ) { newStock in
         // Handle saving in preview
-        print("New stock: \(newStock.name)")
+        log.trace("DEBUG: New stock: \(newStock.name)")
     }
 }
 */

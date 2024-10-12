@@ -73,42 +73,47 @@ struct TransactionSplitRepository: RepositoryProtocol {
 
 extension TransactionSplitRepository {
     // load all splits
-    func load() -> [TransactionSplitData] {
+    func load() -> [TransactionSplitData]? {
         return select(from: Self.table
             .order(Self.col_transId, Self.col_id)
         )
     }
 
     // load splits of a transaction
-    func load(forTransactionId transId: DataId) -> [TransactionSplitData] {
+    func load(forTransactionId transId: DataId) -> [TransactionSplitData]? {
         return select(from: Self.table
             .filter(Self.col_transId == Int64(transId))
             .order(Self.col_id)
         )
     }
-    func load(for trans: TransactionData) -> [TransactionSplitData] {
+    func load(for trans: TransactionData) -> [TransactionSplitData]? {
         return load(forTransactionId: trans.id)
     }
 
-    func delete(_ data: TransactionData) -> Bool {
+    func delete(_ trans: TransactionData) -> Bool {
+        let splits = load(for: trans)
+        guard let splits else { return false }
         var success = true
-        load(for: data).forEach { oldSplit in
-            success = success && delete(oldSplit)
+        splits.forEach { split in
+            success = success && delete(split)
         }
         return success
     }
+
     // FIXME: delete all old splits for the given transaction and then re-create all splits
-    func update(_ data: inout TransactionData) -> Bool {
+    func update(_ trans: inout TransactionData) -> Bool {
+        let splits = load(for: trans)
+        guard let splits else { return false }
         var success = true
 
         // TODO: distintish to add/update/delete
-        load(for: data).forEach { oldSplit in
-            success = success && delete(oldSplit)
+        splits.forEach { split in
+            success = success && delete(split)
         }
 
-        for i in data.splits.indices {
-            data.splits[i].transId = data.id
-            success = success && insert(&data.splits[i])
+        for i in trans.splits.indices {
+            trans.splits[i].transId = trans.id
+            success = success && insert(&trans.splits[i])
         }
         return success
     }

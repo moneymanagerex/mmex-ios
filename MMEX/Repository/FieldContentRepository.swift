@@ -67,7 +67,7 @@ struct FieldContentRepository: RepositoryProtocol {
 
 extension FieldContentRepository {
     // load all field content
-    func load() -> [FieldContentData] {
+    func load() -> [FieldContentData]? {
         return select(from: Self.table
             .order(Self.col_id)
         )

@@ -81,7 +81,7 @@ extension CurrencyData {
 
     /// Format a given amount using the currency's `NumberFormatter`.
     func formatOld(amount: Double) -> String {
-        log.trace("CurrencyFormatProtocol.format: name=\(name), scale=\(scale)")
+        log.trace("DEBUG: CurrencyData.formatOld(): name=\(name), scale=\(scale)")
         return switch formatterOld.string(from: NSNumber(value: amount)) {
         case .some(let s): s + self.suffixSymbol
         case .none: "\(amount)"

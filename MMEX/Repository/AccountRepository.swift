@@ -157,106 +157,26 @@ struct AccountRepository: RepositoryProtocol {
 
 extension AccountRepository {
     // load all accounts, sorted by name
-    func load() -> [AccountData] {
+    func load() -> [AccountData]? {
         return select(from: Self.table
             .order(Self.col_name)
         )
     }
 
     // load account ids
-    func loadId(from table: SQLite.Table = Self.table) -> [DataId] {
+    func loadId(from table: SQLite.Table = Self.table) -> [DataId]? {
         return select(from: table) { row in
             DataId(row[Self.col_id])
         }
     }
 
     // load all account names
-    func loadName() -> [(id: DataId, name: String)] {
-        log.trace("AccountRepository.loadName()")
+    func loadName() -> [(id: DataId, name: String)]? {
+        log.trace("DEBUG: AccountRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_name)
         ) { row in
             (id: DataId(row[Self.col_id]), name: row[Self.col_name])
-        }
-    }
-
-    // load accounts by type
-    func loadByType<Result>(
-        from table: SQLite.Table = Self.table,
-        with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [AccountType: [Result]] {
-        do {
-            var dataByType: [AccountType: [Result]] = [:]
-            for row in try db.prepare(Self.selectData(from: table)) {
-                let type = AccountType(collateNoCase: row[Self.col_type])
-                if dataByType[type] == nil { dataByType[type] = [] }
-                dataByType[type]!.append(result(row))
-            }
-            log.info("Successfull select from \(Self.repositoryName): \(dataByType.count)")
-            return dataByType
-        } catch {
-            log.error("Failed select from \(Self.repositoryName): \(error)")
-            return [:]
-        }
-    }
-
-    // load accounts by currency
-    func loadByCurrecncyId<Result>(
-        from table: SQLite.Table = Self.table,
-        with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [DataId: [Result]] {
-        do {
-            var dataByCurrencyId: [DataId: [Result]] = [:]
-            for row in try db.prepare(Self.selectData(from: table)) {
-                let currencyId = DataId(row[Self.col_currencyId])
-                if dataByCurrencyId[currencyId] == nil { dataByCurrencyId[currencyId] = [] }
-                dataByCurrencyId[currencyId]!.append(result(row))
-            }
-            log.info("Successfull select from \(Self.repositoryName): \(dataByCurrencyId.count)")
-            return dataByCurrencyId
-        } catch {
-            log.error("Failed select from \(Self.repositoryName): \(error)")
-            return [:]
-        }
-    }
-
-    // load accounts by status
-    func loadByStatus<Result>(
-        from table: SQLite.Table = Self.table,
-        with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [AccountStatus: [Result]] {
-        do {
-            var dataByStatus: [AccountStatus: [Result]] = [:]
-            for row in try db.prepare(Self.selectData(from: table)) {
-                let status = AccountStatus(collateNoCase: row[Self.col_status])
-                if dataByStatus[status] == nil { dataByStatus[status] = [] }
-                dataByStatus[status]!.append(result(row))
-            }
-            log.info("Successfull select from \(Self.repositoryName): \(dataByStatus.count)")
-            return dataByStatus
-        } catch {
-            log.error("Failed select from \(Self.repositoryName): \(error)")
-            return [:]
-        }
-    }
-
-    // load accounts by favorite
-    func loadByFavorite<Result>(
-        from table: SQLite.Table = Self.table,
-        with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [AccountFavorite: [Result]] {
-        do {
-            var dataByFavorite: [AccountFavorite: [Result]] = [:]
-            for row in try db.prepare(Self.selectData(from: table)) {
-                let fav = AccountFavorite(collateNoCase: row[Self.col_favoriteAcct])
-                if dataByFavorite[fav] == nil { dataByFavorite[fav] = [] }
-                dataByFavorite[fav]!.append(result(row))
-            }
-            log.info("Successfull select from \(Self.repositoryName): \(dataByFavorite.count)")
-            return dataByFavorite
-        } catch {
-            log.error("Failed select from \(Self.repositoryName): \(error)")
-            return [:]
         }
     }
 
@@ -265,7 +185,7 @@ extension AccountRepository {
         from table: SQLite.Table = Self.table,
         minDate: String? = nil,
         supDate: String? = nil
-    ) -> [DataId: AccountFlowByStatus] {
+    ) -> [DataId: AccountFlowByStatus]? {
         let minDate = minDate ?? ""
         let supDate = supDate ?? "z"
 
@@ -336,7 +256,7 @@ extension AccountRepository {
             )
             .group(A.table[A.col_id], B_table[T.col_status])
 
-        log.trace("AccountRepository.dictFlowByStatus: \(query.expression.description)")
+        log.trace("DEBUG: AccountRepository.dictFlowByStatus(): \(query.expression.description)")
         do {
             var dict: [DataId: AccountFlowByStatus] = [:]
             for row in try db.prepare(query) {
@@ -348,16 +268,16 @@ extension AccountRepository {
                     outflow : row[B_table[B_col_outflow].total]
                 )
             }
-            log.info("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
+            log.info("INFO: AccountRepository.dictFlowByStatus(): \(dict.count)")
             return dict
         } catch {
-            log.error("Failed dictionary from \(Self.repositoryName): \(error)")
-            return [:]
+            log.error("ERROR: AccountRepository.dictFlowByStatus(): \(error)")
+            return nil
         }
     }
 
     // load currencyId for all accounts
-    func loadCurrencyId() -> [DataId] {
+    func loadCurrencyId() -> [DataId]? {
         return select(from: Self.table
             .select(distinct: Self.col_currencyId)
         ) { row in
@@ -366,7 +286,7 @@ extension AccountRepository {
     }
 
     // load account of a stock
-    func pluck(for stock: StockData) -> AccountData? {
+    func pluck(for stock: StockData) -> RepositoryPluckResult<AccountData> {
         return pluck(
             key: "\(stock.accountId)",
             from: Self.table.filter(Self.col_id == Int64(stock.accountId))

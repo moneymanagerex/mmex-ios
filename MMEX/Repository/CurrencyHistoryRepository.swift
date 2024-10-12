@@ -74,7 +74,7 @@ struct CurrencyHistoryRepository: RepositoryProtocol {
 
 extension CurrencyHistoryRepository {
     // load all currency history
-    func load() -> [CurrencyHistoryData] {
+    func load() -> [CurrencyHistoryData]? {
         return select(from: Self.table
             .order(Self.col_currencyId, Self.col_currDate)
         )

@@ -74,7 +74,7 @@ struct StockHistoryRepository: RepositoryProtocol {
 
 extension StockHistoryRepository {
     // load all stock history
-    func load() -> [StockHistoryData] {
+    func load() -> [StockHistoryData]? {
         return select(from: Self.table
             .order(Self.col_symbol, Self.col_date)
         )

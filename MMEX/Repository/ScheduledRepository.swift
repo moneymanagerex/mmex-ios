@@ -139,7 +139,7 @@ struct ScheduledRepository: RepositoryProtocol {
 
 extension ScheduledRepository {
     // load all scheduled transactions
-    func load() -> [ScheduledData] {
+    func load() -> [ScheduledData]? {
         return select(from: Self.table)
     }
 }

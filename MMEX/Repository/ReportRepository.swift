@@ -85,7 +85,7 @@ struct ReportRepository: RepositoryProtocol {
 
 extension ReportRepository {
     // load all reports
-    func load() -> [ReportData] {
+    func load() -> [ReportData]? {
         return select(from: Self.table
             .order(Self.col_name)
         )

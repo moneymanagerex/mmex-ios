@@ -107,29 +107,32 @@ struct StockRepository: RepositoryProtocol {
 
 extension StockRepository {
     // load all stocks
-    func load() -> [StockData] {
+    func load() -> [StockData]? {
+        log.trace("DEBUG: StockRepository.load()")
         return select(from: Self.table
             .order(Self.col_name)
         )
     }
-    
+
     // load stock by account
     func loadByAccount<Result>(
         from table: SQLite.Table = Self.table,
         with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [DataId: [Result]] {
+    ) -> [DataId: [Result]]? {
         do {
             var dataByAccount: [DataId: [Result]] = [:]
-            for row in try db.prepare(Self.selectData(from: table)) {
+            let query = Self.selectData(from: table)
+            log.trace("DEBUG: (): StockRepository.loadByAccount\(query.expression.description)")
+            for row in try db.prepare(query) {
                 let accountId = DataId(row[Self.col_accountId] ?? 0)
                 if dataByAccount[accountId] == nil { dataByAccount[accountId] = [] }
                 dataByAccount[accountId]!.append(result(row))
             }
-            log.info("Successfull select from \(Self.repositoryName): \(dataByAccount.count)")
+            log.info("INFO: StockRepository.loadByAccount(): \(dataByAccount.count)")
             return dataByAccount
         } catch {
-            log.error("Failed select from \(Self.repositoryName): \(error)")
-            return [:]
+            log.error("ERROR: StockRepository.loadByAccount(): \(error)")
+            return nil
         }
     }
 

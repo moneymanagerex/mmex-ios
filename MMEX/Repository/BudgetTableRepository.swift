@@ -83,7 +83,7 @@ struct BudgetTableRepository: RepositoryProtocol {
 
 extension BudgetTableRepository {
     // load all budget tables
-    func load() -> [BudgetTableData] {
+    func load() -> [BudgetTableData]? {
         return select(from: Self.table
             .order(Self.col_id)
         )

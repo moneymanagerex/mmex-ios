@@ -70,7 +70,7 @@ struct FieldRepository: RepositoryProtocol {
 
 extension FieldRepository {
     // load all fields
-    func load() -> [FieldData] {
+    func load() -> [FieldData]? {
         return select(from: Self.table
             .order(Self.col_id)
         )
