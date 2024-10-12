@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StockEditView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @Binding var allAccountName: [(Int64, String)] // sorted by name
+    @Binding var allAccountName: [(DataId, String)] // sorted by name
     @Binding var stock: StockData
     @State var edit: Bool
     var onDelete: () -> Void = { }

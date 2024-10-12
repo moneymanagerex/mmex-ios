@@ -11,16 +11,16 @@ struct SettingsThemeView: View {
     @EnvironmentObject var env: EnvironmentManager
 
     @State private var isExpanded: [String: Bool] = [
-        "Tab"   : true,
-        "Group" : true,
-        "Field" : true,
+        "Tab Icons"    : true,
+        "Group Layout" : true,
+        "Field Layout" : true,
     ]
 
     var body: some View {
         List {
             Section() {
                 HStack {
-                    Text("Tab icons")
+                    Text("Tab Icons")
                     Spacer()
                     Picker("", selection: $env.theme.tab.choice) {
                         ForEach(TabTheme.Choice.allCases) { choice in
@@ -35,14 +35,14 @@ struct SettingsThemeView: View {
 
             Section(header: HStack {
                 Button(action: {
-                    isExpanded["Group"]?.toggle()
+                    isExpanded["Group Layout"]?.toggle()
                 }) {
-                    env.theme.group.hstack(isExpanded["Group"] == true) {
-                        Text("Group")
+                    env.theme.group.hstack(isExpanded["Group Layout"] == true) {
+                        Text("Group Layout")
                     }
                 }
             }) {
-                if isExpanded["Group"] == true {
+                if isExpanded["Group Layout"] == true {
                     VStack(spacing: 15) {
                         ForEach(GroupTheme.Choice.allCases) { choice in
                             Button(action: {
@@ -56,7 +56,7 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.group.choice == choice ? .red : .gray,
+                                    env.theme.group.choice == choice ? .blue : .gray,
                                     lineWidth: env.theme.group.choice == choice ? 3 : 1
                                 )
                             )
@@ -68,14 +68,14 @@ struct SettingsThemeView: View {
 
             Section(header: HStack {
                 Button(action: {
-                    isExpanded["Field"]?.toggle()
+                    isExpanded["Field Layout"]?.toggle()
                 }) {
-                    env.theme.group.hstack(isExpanded["Field"] == true) {
-                        Text("Field")
+                    env.theme.group.hstack(isExpanded["Field Layout"] == true) {
+                        Text("Field Layout")
                     }
                 }
             }) {
-                if isExpanded["Field"] == true {
+                if isExpanded["Field Layout"] == true {
                     VStack(spacing: 15) {
                         ForEach(FieldTheme.Choice.allCases) { choice in
                             Button(action: {
@@ -93,7 +93,7 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.field.choice == choice ? .red : .gray,
+                                    env.theme.field.choice == choice ? .blue : .gray,
                                     lineWidth: env.theme.field.choice == choice ? 3 : 1
                                 )
                             )

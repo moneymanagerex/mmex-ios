@@ -10,7 +10,7 @@ import SwiftUI
 struct AssetListView: View {
     @EnvironmentObject var env: EnvironmentManager
 
-    @State private var allCurrencyName: [(Int64, String)] = [] // sorted by name
+    @State private var allCurrencyName: [(DataId, String)] = [] // sorted by name
     @State private var allAssetDataByType: [AssetType: [AssetData]] = [:] // sorted by name
     @State private var isTypeVisible:  [AssetType: Bool] = [:]
     @State private var isTypeExpanded: [AssetType: Bool] = [:]

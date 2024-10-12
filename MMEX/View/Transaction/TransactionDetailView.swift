@@ -10,7 +10,7 @@ import SwiftUI
 struct TransactionDetailView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
-    @Binding var accountId: [Int64]  // sorted by name
+    @Binding var accountId: [DataId]  // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
     @Binding var txn: TransactionData
@@ -60,7 +60,7 @@ struct TransactionDetailView: View {
             } else {
                 Section(header: Text("Payee")) {
                     // Text(getPayeeName(txn.payeeID)) // Retrieve payee name
-                    Text(getPayeeName(for:txn.payeeId))
+                    Text(getPayeeName(for: txn.payeeId))
                 }
             }
 
@@ -170,11 +170,11 @@ struct TransactionDetailView: View {
         }
     }
     
-    func getCategoryName(for categoryID: Int64) -> String {
+    func getCategoryName(for categoryID: DataId) -> String {
         return categories.first {$0.id == categoryID}?.name ?? "Unknown"
     }
 
-    func getPayeeName(for payeeID: Int64) -> String {
+    func getPayeeName(for payeeID: DataId) -> String {
         return payees.first {$0.id == payeeID}?.name ?? "Unknown"
     }
 }

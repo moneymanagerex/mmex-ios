@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AssetAddView: View {
-    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
+    @Binding var allCurrencyName: [(DataId, String)] // Bind to the list of available currencies
     @Binding var newAsset: AssetData
     @Binding var isPresentingAddView: Bool
     var onSave: (inout AssetData) -> Void

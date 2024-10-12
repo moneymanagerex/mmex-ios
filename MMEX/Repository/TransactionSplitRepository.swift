@@ -53,9 +53,9 @@ struct TransactionSplitRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> TransactionSplitData {
         return TransactionSplitData(
-            id      : row[col_id],
-            transId : row[col_transId],
-            categId : row[col_categId] ?? -1,
+            id      : DataId(row[col_id]),
+            transId : DataId(row[col_transId]),
+            categId : DataId(row[col_categId] ?? -1),
             amount  : row[cast_amount] ?? 0,
             notes   : row[col_notes] ?? ""
         )
@@ -63,8 +63,8 @@ struct TransactionSplitRepository: RepositoryProtocol {
 
     static func itemSetters(_ data: TransactionSplitData) -> [SQLite.Setter] {
         return [
-            col_transId <- data.transId,
-            col_categId <- data.categId,
+            col_transId <- Int64(data.transId),
+            col_categId <- Int64(data.categId),
             col_amount  <- data.amount,
             col_notes   <- data.notes
         ]
@@ -80,9 +80,9 @@ extension TransactionSplitRepository {
     }
 
     // load splits of a transaction
-    func load(forTransactionId transId: Int64) -> [TransactionSplitData] {
+    func load(forTransactionId transId: DataId) -> [TransactionSplitData] {
         return select(from: Self.table
-            .filter(Self.col_transId == transId)
+            .filter(Self.col_transId == Int64(transId))
             .order(Self.col_id)
         )
     }

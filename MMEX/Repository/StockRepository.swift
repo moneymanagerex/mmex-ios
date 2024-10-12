@@ -75,8 +75,8 @@ struct StockRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> StockData {
         return StockData(
-            id            : row[col_id],
-            accountId     : row[col_accountId] ?? 0,
+            id            : DataId(row[col_id]),
+            accountId     : DataId(row[col_accountId] ?? 0),
             name          : row[col_name],
             symbol        : row[col_symbol] ?? "",
             numShares     : row[cast_numShares] ?? 0.0,
@@ -91,7 +91,7 @@ struct StockRepository: RepositoryProtocol {
 
     static func itemSetters(_ data: StockData) -> [SQLite.Setter] {
         return [
-            col_accountId     <- data.accountId,
+            col_accountId     <- Int64(data.accountId),
             col_name          <- data.name,
             col_symbol        <- data.symbol,
             col_numShares     <- data.numShares,
@@ -117,11 +117,11 @@ extension StockRepository {
     func loadByAccount<Result>(
         from table: SQLite.Table = Self.table,
         with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [Int64: [Result]] {
+    ) -> [DataId: [Result]] {
         do {
-            var dataByAccount: [Int64: [Result]] = [:]
+            var dataByAccount: [DataId: [Result]] = [:]
             for row in try db.prepare(Self.selectData(from: table)) {
-                let accountId = row[Self.col_accountId] ?? 0
+                let accountId = DataId(row[Self.col_accountId] ?? 0)
                 if dataByAccount[accountId] == nil { dataByAccount[accountId] = [] }
                 dataByAccount[accountId]!.append(result(row))
             }

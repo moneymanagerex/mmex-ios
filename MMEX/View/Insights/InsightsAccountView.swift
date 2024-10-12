@@ -10,8 +10,8 @@ import SwiftUI
 struct InsightsAccountInfo {
     var dataByType: [AccountType: [AccountData]] = [:]
     var today: String = ""
-    var flowUntilToday: [Int64: AccountFlowByStatus] = [:]
-    var flowAfterToday: [Int64: AccountFlowByStatus] = [:]
+    var flowUntilToday: [DataId: AccountFlowByStatus] = [:]
+    var flowAfterToday: [DataId: AccountFlowByStatus] = [:]
 }
 
 struct InsightsAccountView: View {

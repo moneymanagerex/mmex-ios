@@ -58,8 +58,8 @@ struct TransactionShareRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> TransactionShareData {
         return TransactionShareData(
-            id         : row[col_id],
-            transId    : row[col_transId],
+            id         : DataId(row[col_id]),
+            transId    : DataId(row[col_transId]),
             number     : row[cast_number] ?? 0,
             price      : row[cast_price] ?? 0,
             commission : row[cast_commission] ?? 0,
@@ -69,7 +69,7 @@ struct TransactionShareRepository: RepositoryProtocol {
 
     static func itemSetters(_ data: TransactionShareData) -> [SQLite.Setter] {
         return [
-            col_transId    <- data.transId,
+            col_transId    <- Int64(data.transId),
             col_number     <- data.number,
             col_price      <- data.price,
             col_commission <- data.commission,
@@ -87,9 +87,9 @@ extension TransactionShareRepository {
     }
 
     // load shares of a transaction
-    func load(forTransactionId transId: Int64) -> [TransactionShareData] {
+    func load(forTransactionId transId: DataId) -> [TransactionShareData] {
         return select(from: Self.table
-            .filter(Self.col_transId == transId)
+            .filter(Self.col_transId == Int64(transId))
             .order(Self.col_id)
         )
     }

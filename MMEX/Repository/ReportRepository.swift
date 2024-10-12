@@ -59,7 +59,7 @@ struct ReportRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> ReportData {
         return ReportData(
-            id              : row[col_id],
+            id              : DataId(row[col_id]),
             name            : row[col_name],
             groupName       : row[col_groupName] ?? "",
             active          : row[col_active] ?? 0 != 0,

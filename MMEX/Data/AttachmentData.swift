@@ -21,15 +21,15 @@ enum RefType: String, EnumCollateNoCase {
 }
 
 struct AttachmentData: ExportableEntity {
-    var id          : Int64   = 0
+    var id          : DataId  = 0
     var refType     : RefType = RefType.defaultValue
-    var refId       : Int64   = 0
+    var refId       : DataId  = 0
     var description : String  = ""
     var filename    : String  = ""
 }
 
 extension AttachmentData: DataProtocol {
-    static let dataName = "Attachment"
+    static let dataName = ("Attachment", "Attachments")
 
     func shortDesc() -> String {
         "\(self.id)"

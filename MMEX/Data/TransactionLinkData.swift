@@ -10,21 +10,21 @@ import SQLite
 
 
 /// copy from MMEX4Desktop
-enum CHECKING_TYPE: Int64 {
+enum CHECKING_TYPE: DataId {
     case AS_INCOME_EXPENSE = 32701
     case AS_TRANSFER
 }
 
 struct TransactionLinkData: ExportableEntity {
-    var id      : Int64   = 0
-    var transId : Int64   = 0
+    var id      : DataId  = 0
+    var transId : DataId  = 0
     var refType : RefType = RefType.asset
-    var refId   : Int64   = 0
+    var refId   : DataId  = 0
     static let refTypes: Set<RefType> = [ .asset, .stock ]
 }
 
 extension TransactionLinkData: DataProtocol {
-    static let dataName = "TransactionLink"
+    static let dataName = ("Transaction Link", "Transaction Links")
 
     func shortDesc() -> String {
         "\(self.id)"

@@ -10,10 +10,10 @@ import SwiftUI
 struct StockListView: View {
     @EnvironmentObject var env: EnvironmentManager
 
-    @State private var allAccountName: [(Int64, String)] = [] // sorted by name
-    @State private var allStockDataByAccount: [Int64: [StockData]] = [:] // sorted by name
-    @State private var isTypeVisible:  [Int64: Bool] = [:]
-    @State private var isTypeExpanded: [Int64: Bool] = [:]
+    @State private var allAccountName: [(DataId, String)] = [] // sorted by name
+    @State private var allStockDataByAccount: [DataId: [StockData]] = [:] // sorted by name
+    @State private var isTypeVisible:  [DataId: Bool] = [:]
+    @State private var isTypeExpanded: [DataId: Bool] = [:]
     @State private var search: String = ""
     @State private var isPresentingAddView = false
     @State private var newStock = emptyStock

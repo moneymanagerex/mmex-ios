@@ -50,9 +50,9 @@ struct AttachmentRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> AttachmentData {
         return AttachmentData(
-            id          : row[col_id],
+            id          : DataId(row[col_id]),
             refType     : RefType(collateNoCase: row[col_refType]),
-            refId       : row[col_refId],
+            refId       : DataId(row[col_refId]),
             description : row[col_description] ?? "",
             filename    : row[col_filename]
         )
@@ -61,7 +61,7 @@ struct AttachmentRepository: RepositoryProtocol {
     static func itemSetters(_ data: AttachmentData) -> [SQLite.Setter] {
         return [
             col_refType     <- data.refType.rawValue,
-            col_refId       <- data.refId,
+            col_refId       <- Int64(data.refId),
             col_description <- data.description,
             col_filename    <- data.filename
         ]

@@ -72,12 +72,12 @@ struct AssetRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> AssetData {
         return AssetData(
-            id         : row[col_id],
+            id         : DataId(row[col_id]),
             type       : AssetType(collateNoCase: row[col_type]),
             status     : AssetStatus(collateNoCase: row[col_status]),
             name       : row[col_name],
             startDate  : DateString(row[col_startDate]),
-            currencyId : row[col_currencyId] ?? 0,
+            currencyId : DataId(row[col_currencyId] ?? 0),
             value      : row[cast_value] ?? 0.0,
             change     : AssetChange(collateNoCase: row[col_change]),
             changeMode : AssetChangeMode(collateNoCase: row[col_changeMode]),
@@ -92,7 +92,7 @@ struct AssetRepository: RepositoryProtocol {
             col_status     <- data.status.name,
             col_name       <- data.name,
             col_startDate  <- data.startDate.string,
-            col_currencyId <- data.currencyId,
+            col_currencyId <- Int64(data.currencyId),
             col_value      <- data.value,
             col_change     <- data.change.name,
             col_changeMode <- data.changeMode.name,

@@ -11,7 +11,7 @@ import SwiftUI
 struct AssetDetailView: View {
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
+    @Binding var allCurrencyName: [(DataId, String)] // Bind to the list of available currencies
     @State var asset: AssetData
 
     @State private var editAsset = AssetData()

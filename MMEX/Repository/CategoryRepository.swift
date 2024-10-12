@@ -47,10 +47,10 @@ struct CategoryRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> CategoryData {
         return CategoryData(
-            id       : row[col_id],
+            id       : DataId(row[col_id]),
             name     : row[col_name],
             active   : row[col_active] ?? 0 != 0,
-            parentId : row[col_parentId] ?? 0
+            parentId : DataId(row[col_parentId] ?? 0)
         )
     }
 
@@ -58,7 +58,7 @@ struct CategoryRepository: RepositoryProtocol {
         return [
             col_name     <- data.name,
             col_active   <- data.active ? 1 : 0,
-            col_parentId <- data.parentId
+            col_parentId <- Int64(data.parentId)
         ]
     }
 }
@@ -73,7 +73,7 @@ extension CategoryRepository {
     func pluck(for payee: PayeeData) -> CategoryData? {
         return pluck(
             key: "\(payee.categoryId)",
-            from: Self.table.filter(Self.col_id == payee.categoryId)
+            from: Self.table.filter(Self.col_id == Int64(payee.categoryId))
         )
     }
 }

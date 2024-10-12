@@ -54,7 +54,7 @@ struct StockHistoryRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> StockHistoryData {
         return StockHistoryData(
-            id         : row[col_id],
+            id         : DataId(row[col_id]),
             symbol     : row[col_symbol],
             date       : DateString(row[col_date]),
             price      : row[cast_value],

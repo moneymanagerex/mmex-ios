@@ -15,7 +15,7 @@ enum CurrencyType: String, EnumCollateNoCase {
 }
 
 struct CurrencyData: ExportableEntity {
-    var id             : Int64        = 0
+    var id             : DataId       = 0
     var name           : String       = ""
     var prefixSymbol   : String       = ""
     var suffixSymbol   : String       = ""
@@ -30,7 +30,7 @@ struct CurrencyData: ExportableEntity {
 }
 
 extension CurrencyData: DataProtocol {
-    static let dataName = "Currency"
+    static let dataName = ("Currency", "Currencies")
 
     func shortDesc() -> String {
         "\(self.name)"
@@ -116,11 +116,11 @@ extension CurrencyData {
         ),
     ]
 
-    static let sampleDataById: [Int64: CurrencyData] = Dictionary(
+    static let sampleDataById: [DataId: CurrencyData] = Dictionary(
         uniqueKeysWithValues: sampleData.map { ($0.id, $0 ) }
     )
 
-    static let sampleDataName: [(Int64, String)] = CurrencyData.sampleData.map {
+    static let sampleDataName: [(DataId, String)] = CurrencyData.sampleData.map {
         ($0.id, $0.name)
     }
 }

@@ -16,7 +16,7 @@ struct EnterView: View {
     // Dismiss environment action
     @Environment(\.dismiss) var dismiss
     
-    @State private var accountId: [Int64] = []
+    @State private var accountId: [DataId] = []
     @State private var categories: [CategoryData] = []
     @State private var payees: [PayeeData] = []
     
@@ -58,7 +58,7 @@ struct EnterView: View {
             
             // database level setting
             let repository = env.infotableRepository
-            if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
+            if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
                 newTxn.accountId = storedDefaultAccount
             }
         }

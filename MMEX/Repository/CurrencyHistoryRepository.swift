@@ -54,8 +54,8 @@ struct CurrencyHistoryRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> CurrencyHistoryData {
         return CurrencyHistoryData(
-            id           : row[col_id],
-            currencyId   : row[col_currencyId],
+            id           : DataId(row[col_id]),
+            currencyId   : DataId(row[col_currencyId]),
             date         : DateString(row[col_currDate]),
             baseConvRate : row[cast_currValue],
             updateType   : UpdateType(rawValue: row[col_currUpdType] ?? -1)
@@ -64,7 +64,7 @@ struct CurrencyHistoryRepository: RepositoryProtocol {
 
     static func itemSetters(_ data: CurrencyHistoryData) -> [SQLite.Setter] {
         return [
-            col_currencyId  <- data.currencyId,
+            col_currencyId  <- Int64(data.currencyId),
             col_currDate    <- data.date.string,
             col_currValue   <- data.baseConvRate,
             col_currUpdType <- data.updateType?.rawValue

@@ -20,18 +20,18 @@ struct CurrencyInfo {
     }
 }
 
-typealias CurrencyCache = [Int64: CurrencyInfo]
+typealias CurrencyCache = [DataId: CurrencyInfo]
 
 extension CurrencyCache {
     init() {
         self = [:]
     }
 
-    mutating func load(_ dict: [Int64: CurrencyData]) {
+    mutating func load(_ dict: [DataId: CurrencyData]) {
         self = dict.mapValues { data in CurrencyInfo(data) }
     }
 
-    mutating func update(id: Int64, data: CurrencyData) {
+    mutating func update(id: DataId, data: CurrencyData) {
         self[id] = CurrencyInfo(data)
     }
 
@@ -46,7 +46,7 @@ struct AccountInfo {
     var status          : AccountStatus
     var initialDate     : DateString
     var initialBal      : Double
-    var currencyId      : Int64
+    var currencyId      : DataId
     var statementLocked : Bool
     var statementDate   : DateString
     var minimumBalance  : Double
@@ -66,18 +66,18 @@ struct AccountInfo {
     }
 }
 
-typealias AccountCache = [Int64: AccountInfo]
+typealias AccountCache = [DataId: AccountInfo]
 
 extension AccountCache {
     init() {
         self = [:]
     }
 
-    mutating func load(_ dict: [Int64: AccountData]) {
+    mutating func load(_ dict: [DataId: AccountData]) {
         self = dict.mapValues { data in AccountInfo(data) }
     }
 
-    mutating func update(id: Int64, data: AccountData) {
+    mutating func update(id: DataId, data: AccountData) {
         self[id] = AccountInfo(data)
     }
 

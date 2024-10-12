@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionAddView: View {
-    @Binding var accountId: [Int64]
+    @Binding var accountId: [DataId]
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
     @Binding var newTxn: TransactionData

@@ -47,18 +47,18 @@ struct TransactionLinkRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> TransactionLinkData {
         return TransactionLinkData(
-            id      : row[col_id],
-            transId : row[col_transId],
+            id      : DataId(row[col_id]),
+            transId : DataId(row[col_transId]),
             refType : RefType(collateNoCase: row[col_refType]),
-            refId   : row[col_refId]
+            refId   : DataId(row[col_refId])
         )
     }
 
     static func itemSetters(_ data: TransactionLinkData) -> [SQLite.Setter] {
         return [
-            col_transId <- data.transId,
+            col_transId <- Int64(data.transId),
             col_refType <- data.refType.rawValue,
-            col_refId   <- data.refId
+            col_refId   <- Int64(data.refId)
         ]
     }
 }
@@ -72,9 +72,9 @@ extension TransactionLinkRepository {
     }
 
     // load links of a transaction
-    func load(forTransactionId transId: Int64) -> [TransactionLinkData] {
+    func load(forTransactionId transId: DataId) -> [TransactionLinkData] {
         return select(from: Self.table
-            .filter(Self.col_transId == transId)
+            .filter(Self.col_transId == Int64(transId))
             .order(Self.col_id)
         )
     }

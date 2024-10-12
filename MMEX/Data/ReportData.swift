@@ -9,7 +9,7 @@ import Foundation
 import SQLite
 
 struct ReportData: ExportableEntity {
-    var id              : Int64  = 0
+    var id              : DataId = 0
     var name            : String = ""
     var groupName       : String = ""
     var active          : Bool   = false
@@ -20,7 +20,7 @@ struct ReportData: ExportableEntity {
 }
 
 extension ReportData: DataProtocol {
-    static let dataName = "Report"
+    static let dataName = ("Report", "Reports")
 
     func shortDesc() -> String {
         "\(self.name)"

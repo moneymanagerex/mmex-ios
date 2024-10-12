@@ -105,7 +105,7 @@ struct AccountRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> AccountData {
         return AccountData(
-            id              : row[col_id],
+            id              : DataId(row[col_id]),
             name            : row[col_name],
             type            : AccountType(collateNoCase: row[col_type]),
             num             : row[col_num] ?? "",
@@ -118,7 +118,7 @@ struct AccountRepository: RepositoryProtocol {
             initialDate     : DateString(row[col_initialDate] ?? ""),
             initialBal      : row[cast_initialBal] ?? 0.0,
             favoriteAcct    : AccountFavorite(collateNoCase: row[col_favoriteAcct]),
-            currencyId      : row[col_currencyId],
+            currencyId      : DataId(row[col_currencyId]),
             statementLocked : row[col_statementLocked] ?? 0 > 0,
             statementDate   : DateString(row[col_statementDate] ?? ""),
             minimumBalance  : row[cast_minimumBalance] ?? 0.0,
@@ -143,7 +143,7 @@ struct AccountRepository: RepositoryProtocol {
             col_initialDate     <- data.initialDate.string,
             col_initialBal      <- data.initialBal,
             col_favoriteAcct    <- data.favoriteAcct.rawValue,
-            col_currencyId      <- data.currencyId,
+            col_currencyId      <- Int64(data.currencyId),
             col_statementLocked <- data.statementLocked ? 1 : 0,
             col_statementDate   <- data.statementDate.string,
             col_minimumBalance  <- data.minimumBalance,
@@ -164,19 +164,19 @@ extension AccountRepository {
     }
 
     // load account ids
-    func loadId(from table: SQLite.Table = Self.table) -> [Int64] {
+    func loadId(from table: SQLite.Table = Self.table) -> [DataId] {
         return select(from: table) { row in
-            row[Self.col_id]
+            DataId(row[Self.col_id])
         }
     }
 
     // load all account names
-    func loadName() -> [(id: Int64, name: String)] {
+    func loadName() -> [(id: DataId, name: String)] {
         log.trace("AccountRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_name)
         ) { row in
-            (id: row[Self.col_id], name: row[Self.col_name])
+            (id: DataId(row[Self.col_id]), name: row[Self.col_name])
         }
     }
 
@@ -200,12 +200,72 @@ extension AccountRepository {
         }
     }
 
+    // load accounts by currency
+    func loadByCurrecncyId<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [DataId: [Result]] {
+        do {
+            var dataByCurrencyId: [DataId: [Result]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let currencyId = DataId(row[Self.col_currencyId])
+                if dataByCurrencyId[currencyId] == nil { dataByCurrencyId[currencyId] = [] }
+                dataByCurrencyId[currencyId]!.append(result(row))
+            }
+            log.info("Successfull select from \(Self.repositoryName): \(dataByCurrencyId.count)")
+            return dataByCurrencyId
+        } catch {
+            log.error("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
+    // load accounts by status
+    func loadByStatus<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [AccountStatus: [Result]] {
+        do {
+            var dataByStatus: [AccountStatus: [Result]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let status = AccountStatus(collateNoCase: row[Self.col_status])
+                if dataByStatus[status] == nil { dataByStatus[status] = [] }
+                dataByStatus[status]!.append(result(row))
+            }
+            log.info("Successfull select from \(Self.repositoryName): \(dataByStatus.count)")
+            return dataByStatus
+        } catch {
+            log.error("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
+    // load accounts by favorite
+    func loadByFavorite<Result>(
+        from table: SQLite.Table = Self.table,
+        with result: (SQLite.Row) -> Result = Self.fetchData
+    ) -> [AccountFavorite: [Result]] {
+        do {
+            var dataByFavorite: [AccountFavorite: [Result]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let fav = AccountFavorite(collateNoCase: row[Self.col_favoriteAcct])
+                if dataByFavorite[fav] == nil { dataByFavorite[fav] = [] }
+                dataByFavorite[fav]!.append(result(row))
+            }
+            log.info("Successfull select from \(Self.repositoryName): \(dataByFavorite.count)")
+            return dataByFavorite
+        } catch {
+            log.error("Failed select from \(Self.repositoryName): \(error)")
+            return [:]
+        }
+    }
+
     // load account flow, indexed by id and transaction status
     func dictFlowByStatus(
         from table: SQLite.Table = Self.table,
         minDate: String? = nil,
         supDate: String? = nil
-    ) -> [Int64: AccountFlowByStatus] {
+    ) -> [DataId: AccountFlowByStatus] {
         let minDate = minDate ?? ""
         let supDate = supDate ?? "z"
 
@@ -278,9 +338,9 @@ extension AccountRepository {
 
         log.trace("AccountRepository.dictFlowByStatus: \(query.expression.description)")
         do {
-            var dict: [Int64: AccountFlowByStatus] = [:]
+            var dict: [DataId: AccountFlowByStatus] = [:]
             for row in try db.prepare(query) {
-                let id = row[A.table[A.col_id]]
+                let id = DataId(row[A.table[A.col_id]])
                 let status = TransactionStatus(collateNoCase: row[B_table[T.col_status]])
                 if dict[id] == nil { dict[id] = [:] }
                 dict[id]![status] = AccountFlow(
@@ -297,11 +357,11 @@ extension AccountRepository {
     }
 
     // load currencyId for all accounts
-    func loadCurrencyId() -> [Int64] {
+    func loadCurrencyId() -> [DataId] {
         return select(from: Self.table
             .select(distinct: Self.col_currencyId)
         ) { row in
-            row[Self.col_currencyId]
+            DataId(row[Self.col_currencyId])
         }
     }
 
@@ -309,7 +369,7 @@ extension AccountRepository {
     func pluck(for stock: StockData) -> AccountData? {
         return pluck(
             key: "\(stock.accountId)",
-            from: Self.table.filter(Self.col_id == stock.accountId)
+            from: Self.table.filter(Self.col_id == Int64(stock.accountId))
         )
     }
 }

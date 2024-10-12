@@ -20,13 +20,13 @@ enum InfoKey: String {
 }
 
 struct InfotableData: ExportableEntity {
-    var id    : Int64  = 0
+    var id    : DataId = 0
     var name  : String = ""
     var value : String = ""
 }
 
 extension InfotableData: DataProtocol {
-    static let dataName = "Infotable"
+    static let dataName = ("Infotable", "Infotable")
 
     func shortDesc() -> String {
         "\(self.name)"

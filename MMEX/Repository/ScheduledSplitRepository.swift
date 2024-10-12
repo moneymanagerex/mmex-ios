@@ -53,9 +53,9 @@ struct ScheduledSplitRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> ScheduledSplitData {
         return ScheduledSplitData(
-            id      : row[col_id],
-            schedId : row[col_transId],
-            categId : row[col_categId] ?? -1,
+            id      : DataId(row[col_id]),
+            schedId : DataId(row[col_transId]),
+            categId : DataId(row[col_categId] ?? -1),
             amount  : row[cast_amount] ?? 0,
             notes   : row[col_notes] ?? ""
         )
@@ -63,8 +63,8 @@ struct ScheduledSplitRepository: RepositoryProtocol {
 
     static func itemSetters(_ data: ScheduledSplitData) -> [SQLite.Setter] {
         return [
-            col_transId <- data.schedId,
-            col_categId <- data.categId,
+            col_transId <- Int64(data.schedId),
+            col_categId <- Int64(data.categId),
             col_amount  <- data.amount,
             col_notes   <- data.notes
         ]
@@ -80,9 +80,9 @@ extension ScheduledSplitRepository {
     }
 
     // load splits of a scheduled transaction
-    func load(forScheduledId schedId: Int64) -> [ScheduledSplitData] {
+    func load(forScheduledId schedId: DataId) -> [ScheduledSplitData] {
         return select(from: Self.table
-            .filter(Self.col_transId == schedId)
+            .filter(Self.col_transId == Int64(schedId))
             .order(Self.col_id)
         )
     }

@@ -50,16 +50,16 @@ enum TransactionStatus: String, EnumCollateNoCase {
 }
 
 struct TransactionData: ExportableEntity {
-    var id                : Int64             = 0
-    var accountId         : Int64             = 0
-    var toAccountId       : Int64             = 0
-    var payeeId           : Int64             = 0
+    var id                : DataId            = 0
+    var accountId         : DataId            = 0
+    var toAccountId       : DataId            = 0
+    var payeeId           : DataId            = 0
     var transCode         : TransactionType   = TransactionType.defaultValue
     var transAmount       : Double            = 0.0
     var status            : TransactionStatus = TransactionStatus.defaultValue
     var transactionNumber : String            = ""
     var notes             : String            = ""
-    var categId           : Int64             = 0
+    var categId           : DataId            = 0
     var transDate         : DateTimeString    = DateTimeString("")
     var lastUpdatedTime   : DateTimeString    = DateTimeString("")
     var deletedTime       : DateTimeString    = DateTimeString("")
@@ -71,7 +71,7 @@ struct TransactionData: ExportableEntity {
 }
 
 extension TransactionData: DataProtocol {
-    static let dataName = "Transaction"
+    static let dataName = ("Transaction", "Transactions")
 
     func shortDesc() -> String {
         "\(self.id)"

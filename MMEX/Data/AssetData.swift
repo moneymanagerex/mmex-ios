@@ -44,12 +44,12 @@ enum AssetChangeMode: String, EnumCollateNoCase {
 }
 
 struct AssetData: ExportableEntity {
-    var id         : Int64            = 0
+    var id         : DataId           = 0
     var type       : AssetType        = AssetType.defaultValue
     var status     : AssetStatus      = AssetStatus.defaultValue
     var name       : String           = ""
     var startDate  : DateString       = DateString("")
-    var currencyId : Int64            = 0
+    var currencyId : DataId           = 0
     var value      : Double           = 0.0
     var change     : AssetChange      = AssetChange.defaultValue
     var changeMode : AssetChangeMode  = AssetChangeMode.defaultValue
@@ -58,7 +58,7 @@ struct AssetData: ExportableEntity {
 }
 
 extension AssetData: DataProtocol {
-    static let dataName = "Asset"
+    static let dataName = ("Asset", "Assets")
 
     func shortDesc() -> String {
         "\(self.name), \(self.id)"

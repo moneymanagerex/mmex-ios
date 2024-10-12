@@ -29,10 +29,10 @@ class InsightsViewModel: ObservableObject {
         self.endDate = Date()
 
         // get base currency
-        if let baseCurrencyId = env.infotableRepository?.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
+        if let baseCurrencyId = env.infotableRepository?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
             baseCurrency = env.currencyRepository?.pluck(
                 key: InfoKey.baseCurrencyID.id,
-                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId)
+                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
             )
         }
 

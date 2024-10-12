@@ -44,7 +44,7 @@ struct InfotableRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> InfotableData {
         return InfotableData(
-            id    : row[col_id],
+            id    : DataId(row[col_id]),
             name  : row[col_name],
             value : row[col_value]
         )
@@ -87,6 +87,8 @@ extension InfotableRepository {
         )) {
             if type == String.self {
                 return info.value as? T
+            } else if type == DataId.self {
+                return DataId(info.value) as? T
             } else if type == Int64.self {
                 return Int64(info.value) as? T
             }
@@ -99,6 +101,8 @@ extension InfotableRepository {
         var stringValue: String
         if let stringVal = value as? String {
             stringValue = stringVal
+        } else if let dataIdVal = value as? DataId {
+            stringValue = String(dataIdVal)
         } else if let intVal = value as? Int64 {
             stringValue = String(intVal)
         } else {
