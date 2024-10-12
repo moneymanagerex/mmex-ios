@@ -48,18 +48,18 @@ struct FieldContentRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> FieldContentData {
         return FieldContentData(
-            id      : row[col_id],
-            fieldId : row[col_fieldId],
-            refType : row[col_refId] < 0 ? RefType.scheduled : RefType.transaction,
-            refId   : { x in x < 0 ? -x : x }(row[col_refId]),
+            id      : DataId(row[col_id]),
+            fieldId : DataId(row[col_fieldId]),
+            refType : DataId(row[col_refId]) < 0 ? RefType.scheduled : RefType.transaction,
+            refId   : DataId({ x in x < 0 ? -x : x }(row[col_refId])),
             content : row[col_content] ?? ""
         )
     }
 
     static func itemSetters(_ data: FieldContentData) -> [SQLite.Setter] {
         return [
-            col_refId   <- data.refType == RefType.scheduled ? -data.refId : data.refId,
-            col_fieldId <- data.fieldId,
+            col_refId   <- data.refType == RefType.scheduled ? -Int64(data.refId) : Int64(data.refId),
+            col_fieldId <- Int64(data.fieldId),
             col_content <- data.content
         ]
     }

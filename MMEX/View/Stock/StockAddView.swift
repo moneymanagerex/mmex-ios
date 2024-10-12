@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct StockAddView: View {
-    @Binding var allAccountName: [(Int64, String)] // sorted by name
+    @Binding var allAccountName: [(DataId, String)] // sorted by name
     @Binding var newStock: StockData
     @Binding var isPresentingAddView: Bool
     var onSave: (inout StockData) -> Void

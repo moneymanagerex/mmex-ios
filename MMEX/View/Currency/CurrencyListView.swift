@@ -49,8 +49,8 @@ struct CurrencyListView: View {
                             }
                         }
                     }
-                }.listSectionSpacing(10)
-                Text("end")
+                }//.listSectionSpacing(10)
+                //Text("end")
             } }
             .toolbar {
                 Button(action: {

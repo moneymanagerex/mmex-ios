@@ -48,18 +48,18 @@ struct TagLinkRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> TagLinkData {
         return TagLinkData(
-            id      : row[col_id],
-            tagId   : row[col_tagId],
+            id      : DataId(row[col_id]),
+            tagId   : DataId(row[col_tagId]),
             refType : RefType(collateNoCase: row[col_refType]),
-            refId   : row[col_refId]
+            refId   : DataId(row[col_refId])
         )
     }
 
     static func itemSetters(_ data: TagLinkData) -> [SQLite.Setter] {
         return [
-            col_tagId   <- data.tagId,
+            col_tagId   <- Int64(data.tagId),
             col_refType <- data.refType.rawValue,
-            col_refId   <- data.refId
+            col_refId   <- Int64(data.refId)
         ]
     }
 }

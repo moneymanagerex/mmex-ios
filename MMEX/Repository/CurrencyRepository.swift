@@ -74,7 +74,7 @@ struct CurrencyRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> CurrencyData {
         return CurrencyData(
-            id             : row[col_id],
+            id             : DataId(row[col_id]),
             name           : row[col_name],
             prefixSymbol   : row[col_prefixSymbol] ?? "",
             suffixSymbol   : row[col_suffixSymbol] ?? "",
@@ -116,27 +116,27 @@ extension CurrencyRepository {
     }
 
     // load all currency names
-    func loadName() -> [(id: Int64, name: String)] {
+    func loadName() -> [(id: DataId, name: String)] {
         log.trace("CurrencyRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_name)
         ) { row in
-            (id: row[Self.col_id], name: row[Self.col_name])
+            (id: DataId(row[Self.col_id]), name: row[Self.col_name])
         }
     }
 
     // load all currency symbols
-    func loadSymbol() -> [(Int64, String)] {
+    func loadSymbol() -> [(DataId, String)] {
         log.trace("CurrencyRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_symbol)
         ) { row in
-            (id: row[Self.col_id], name: row[Self.col_symbol])
+            (id: DataId(row[Self.col_id]), name: row[Self.col_symbol])
         }
     }
 
     // load used currencies, indexed by id
-    func dictUsed() -> [Int64: CurrencyData] {
+    func dictUsed() -> [DataId: CurrencyData] {
         typealias A = AccountRepository
         typealias E = AssetRepository
         let cond = "EXISTS (" + A.table.select(1)
@@ -153,7 +153,7 @@ extension CurrencyRepository {
     func pluck(for account: AccountData) -> CurrencyData? {
         return pluck(
             key: "\(account.currencyId)",
-            from: Self.table.filter(Self.col_id == account.currencyId)
+            from: Self.table.filter(Self.col_id == Int64(account.currencyId))
         )
     }
 
@@ -161,7 +161,7 @@ extension CurrencyRepository {
     func pluck(for asset: AssetData) -> CurrencyData? {
         return pluck(
             key: "\(asset.currencyId)",
-            from: Self.table.filter(Self.col_id == asset.currencyId)
+            from: Self.table.filter(Self.col_id == Int64(asset.currencyId))
         )
     }
 }

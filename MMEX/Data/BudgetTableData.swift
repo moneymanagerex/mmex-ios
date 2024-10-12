@@ -22,9 +22,9 @@ enum BudgetPeriod: String, EnumCollateNoCase {
 }
 
 struct BudgetTableData: ExportableEntity {
-    var id      : Int64        = 0
-    var yearId  : Int64        = 0
-    var categId : Int64        = 0
+    var id      : DataId       = 0
+    var yearId  : DataId       = 0
+    var categId : DataId       = 0
     var period  : BudgetPeriod = BudgetPeriod.defaultValue
     var amount  : Double       = 0.0
     var notes   : String       = ""
@@ -32,7 +32,7 @@ struct BudgetTableData: ExportableEntity {
 }
 
 extension BudgetTableData: DataProtocol {
-    static let dataName = "BudgetTable"
+    static let dataName = ("Budget Table", "Budget Tables")
 
     func shortDesc() -> String {
         "\(self.id)"

@@ -7,10 +7,12 @@
 
 import Foundation
 
-protocol DataProtocol {
-    static var dataName: String { get }
+typealias DataId = Int
 
-    var id: Int64 { get set }
+protocol DataProtocol {
+    static var dataName: (String, String) { get }
+
+    var id: DataId { get set }
     func shortDesc() -> String
 }
 

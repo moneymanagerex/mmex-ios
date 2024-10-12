@@ -9,9 +9,9 @@ import Foundation
 import SQLite
 
 struct PayeeData: ExportableEntity {
-    var id         : Int64   = 0
+    var id         : DataId  = 0
     var name       : String  = ""
-    var categoryId : Int64   = 0
+    var categoryId : DataId  = 0
     var number     : String  = ""
     var website    : String  = ""
     var notes      : String  = ""
@@ -20,7 +20,7 @@ struct PayeeData: ExportableEntity {
 }
 
 extension PayeeData: DataProtocol {
-    static let dataName = "Payee"
+    static let dataName = ("Payee", "Payees")
 
     func shortDesc() -> String {
         "\(self.name)"

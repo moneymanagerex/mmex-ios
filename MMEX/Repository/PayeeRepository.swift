@@ -59,9 +59,9 @@ struct PayeeRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> PayeeData {
         return PayeeData(
-            id         : row[col_id],
+            id         : DataId(row[col_id]),
             name       : row[col_name],
-            categoryId : row[col_categoryId] ?? 0,
+            categoryId : DataId(row[col_categoryId] ?? 0),
             number     : row[col_number] ?? "",
             website    : row[col_website] ?? "",
             notes      : row[col_notes] ?? "",
@@ -73,7 +73,7 @@ struct PayeeRepository: RepositoryProtocol {
     static func itemSetters(_ data: PayeeData) -> [SQLite.Setter] {
         return [
             col_name       <- data.name,
-            col_categoryId <- data.categoryId,
+            col_categoryId <- Int64(data.categoryId),
             col_number     <- data.number,
             col_website    <- data.website,
             col_notes      <- data.notes,

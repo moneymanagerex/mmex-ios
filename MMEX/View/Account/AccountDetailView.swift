@@ -11,8 +11,8 @@ import SwiftUI
 struct AccountDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var env: EnvironmentManager
-    @Binding var allCurrencyName: [(Int64, String)] // sorted by name
-    @State var account: AccountData
+    @State var viewModel: AccountViewModel
+    @State var data: AccountData
 
     @State private var editAccount = AccountData()
     @State private var isPresentingEditView = false
@@ -20,21 +20,21 @@ struct AccountDetailView: View {
 
     var body: some View {
         AccountEditView(
-            allCurrencyName: $allCurrencyName,
-            account: $account,
+            viewModel: viewModel,
+            data: $data,
             edit: false
         ) { () in
             deleteAccount()
         }
         .toolbar {
             Button("Edit") {
-                editAccount = account
+                editAccount = data
                 isPresentingEditView = true
             }
             // Export button for pasteboard and external storage
             Menu {
                 Button("Copy to Clipboard") {
-                    account.copyToPasteboard()
+                    data.copyToPasteboard()
                 }
                 Button("Export as JSON File") {
                     isExporting = true
@@ -46,11 +46,11 @@ struct AccountDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 AccountEditView(
-                    allCurrencyName: $allCurrencyName,
-                    account: $editAccount,
+                    viewModel: viewModel,
+                    data: $data,
                     edit: true
                 )
-                .navigationTitle(account.name)
+                .navigationTitle(data.name)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") {
@@ -59,7 +59,7 @@ struct AccountDetailView: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
-                            account = editAccount
+                            data = editAccount
                             updateAccount()
                             isPresentingEditView = false
                         }
@@ -69,9 +69,9 @@ struct AccountDetailView: View {
         }
         .fileExporter(
             isPresented: $isExporting,
-            document: ExportableEntityDocument(entity: account),
+            document: ExportableEntityDocument(entity: data),
             contentType: .json,
-            defaultFilename: "\(account.name)_Account"
+            defaultFilename: "\(data.name)_Account"
         ) { result in
             switch result {
             case .success(let url):
@@ -84,12 +84,12 @@ struct AccountDetailView: View {
 
     func updateAccount() {
         guard let repository = env.accountRepository else { return }
-        if repository.update(account) {
+        if repository.update(data) {
             // Successfully updated
-            if env.currencyCache[account.currencyId] == nil {
+            if env.currencyCache[data.currencyId] == nil {
                 env.loadCurrency()
             }
-            env.accountCache.update(id: account.id, data: account)
+            env.accountCache.update(id: data.id, data: data)
         } else {
             // Handle failure
         }
@@ -97,7 +97,7 @@ struct AccountDetailView: View {
     
     func deleteAccount() {
         guard let repository = env.accountRepository else { return }
-        if repository.delete(account) {
+        if repository.delete(data) {
             env.loadAccount()
             presentationMode.wrappedValue.dismiss()
         } else {
@@ -108,24 +108,24 @@ struct AccountDetailView: View {
 
 #Preview(AccountData.sampleData[0].name) {
     AccountDetailView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        account: AccountData.sampleData[0]
+        viewModel: AccountViewModel(env: EnvironmentManager.sampleData),
+        data: AccountData.sampleData[0]
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview(AccountData.sampleData[1].name) {
     AccountDetailView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        account: AccountData.sampleData[1]
+        viewModel: AccountViewModel(env: EnvironmentManager.sampleData),
+        data: AccountData.sampleData[1]
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
 
 #Preview(AccountData.sampleData[2].name) {
     AccountDetailView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        account: AccountData.sampleData[2]
+        viewModel: AccountViewModel(env: EnvironmentManager.sampleData),
+        data: AccountData.sampleData[2]
     )
     .environmentObject(EnvironmentManager.sampleData)
 }

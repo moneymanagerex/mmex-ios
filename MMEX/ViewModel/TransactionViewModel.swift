@@ -12,8 +12,8 @@ import Combine
 
 class TransactionViewModel: ObservableObject {
     // for the view to observe
-    @Published var baseCurrencyId: Int64 = 0
-    @Published var defaultAccountId: Int64 = 0
+    @Published var baseCurrencyId: DataId = 0
+    @Published var defaultAccountId: DataId = 0
     @Published var baseCurrency: CurrencyData?
     @Published var defaultAccount: AccountData?
 
@@ -29,14 +29,14 @@ class TransactionViewModel: ObservableObject {
     @Published var currencies: [CurrencyData] = []
 
     @Published var accounts: [AccountData] = []
-    @Published var accountDict: [Int64: AccountData] = [: ] // for lookup
-    @Published var accountId: [Int64] = []  // sorted by name
+    @Published var accountDict: [DataId: AccountData] = [: ] // for lookup
+    @Published var accountId: [DataId] = []  // sorted by name
 
     @Published var categories: [CategoryData] = []
-    @Published var categoryDict: [Int64: CategoryData] = [:] // for lookup
+    @Published var categoryDict: [DataId: CategoryData] = [:] // for lookup
 
     @Published var payees: [PayeeData] = []
-    @Published var payeeDict: [Int64: PayeeData] = [:] // for lookup
+    @Published var payeeDict: [DataId: PayeeData] = [:] // for lookup
 
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
@@ -56,19 +56,19 @@ class TransactionViewModel: ObservableObject {
 
     // Load default values from Infotable and populate Published variables
     func loadInfo() {
-        if let baseCurrencyId = infotableRepo?.getValue(for: InfoKey.baseCurrencyID.id, as: Int64.self) {
+        if let baseCurrencyId = infotableRepo?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
             self.baseCurrencyId = baseCurrencyId
             baseCurrency = currencyRepo?.pluck(
                 key: InfoKey.baseCurrencyID.id,
-                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == baseCurrencyId)
+                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
             )
         }
 
-        if let defaultAccountId = infotableRepo?.getValue(for: InfoKey.defaultAccountID.id, as: Int64.self) {
+        if let defaultAccountId = infotableRepo?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
             self.defaultAccountId = defaultAccountId
             defaultAccount = accountRepo?.pluck(
                 key: InfoKey.defaultAccountID.id,
-                from: AccountRepository.table.filter(AccountRepository.col_id == defaultAccountId)
+                from: AccountRepository.table.filter(AccountRepository.col_id == Int64(defaultAccountId))
             )
         }
     }
@@ -94,12 +94,12 @@ class TransactionViewModel: ObservableObject {
     }
 
     // Save data back to Infotable
-    private func saveBaseCurrency(_ currencyId: Int64) {
-        infotableRepo?.setValue(currencyId, for: InfoKey.baseCurrencyID.id)
+    private func saveBaseCurrency(_ currencyId: DataId) {
+        infotableRepo?.setValue(Int64(currencyId), for: InfoKey.baseCurrencyID.id)
     }
 
-    private func saveDefaultAccount(_ accountId: Int64) {
-        infotableRepo?.setValue(accountId, for: InfoKey.defaultAccountID.id)
+    private func saveDefaultAccount(_ accountId: DataId) {
+        infotableRepo?.setValue(Int64(accountId), for: InfoKey.defaultAccountID.id)
     }
 
     func loadAccounts() {
@@ -132,7 +132,7 @@ class TransactionViewModel: ObservableObject {
         }
     }
 
-    func getCategoryName(for categoryID: Int64) -> String {
+    func getCategoryName(for categoryID: DataId) -> String {
         // Find the category with the given ID
         if let category = self.categoryDict[categoryID] {
             return category.name
@@ -155,7 +155,7 @@ class TransactionViewModel: ObservableObject {
     }
 
     // TODO pre-join via SQL?
-    func getPayeeName(for payeeID: Int64) -> String {
+    func getPayeeName(for payeeID: DataId) -> String {
         // Find the payee with the given ID
         if let payee = self.payeeDict[payeeID] {
             return payee.name
@@ -177,7 +177,7 @@ class TransactionViewModel: ObservableObject {
         }
     }
 
-    func loadTransactions(for accountId: Int64? = nil, startDate: Date? = nil, endDate: Date? = nil) {
+    func loadTransactions(for accountId: DataId? = nil, startDate: Date? = nil, endDate: Date? = nil) {
         DispatchQueue.global(qos: .background).async {
             var loadedTransactions = self.transactionRepo?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
             for i in loadedTransactions.indices {

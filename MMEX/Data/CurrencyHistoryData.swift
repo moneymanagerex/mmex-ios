@@ -9,15 +9,15 @@ import Foundation
 import SQLite
 
 struct CurrencyHistoryData: ExportableEntity {
-    var id           : Int64       = 0
-    var currencyId   : Int64       = 0
+    var id           : DataId      = 0
+    var currencyId   : DataId      = 0
     var date         : DateString  = DateString("")
     var baseConvRate : Double      = 0.0
     var updateType   : UpdateType? = nil
 }
 
 extension CurrencyHistoryData: DataProtocol {
-    static let dataName = "CurrencyHistory"
+    static let dataName = ("Currency History", "Currency History")
 
     func shortDesc() -> String {
         "\(self.id)"

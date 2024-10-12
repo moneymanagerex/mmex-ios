@@ -92,17 +92,17 @@ struct ScheduledRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> ScheduledData {
         return ScheduledData(
-          id                : row[col_id],
-          accountId         : row[col_accountId],
-          toAccountId       : row[col_toAccountId] ?? 0,
-          payeeId           : row[col_payeeId],
+          id                : DataId(row[col_id]),
+          accountId         : DataId(row[col_accountId]),
+          toAccountId       : DataId(row[col_toAccountId] ?? 0),
+          payeeId           : DataId(row[col_payeeId]),
           transCode         : TransactionType(collateNoCase: row[col_transCode]),
           transAmount       : row[cast_transAmount],
           // TODO: case insersitive, convert either key or value
           status            : TransactionStatus(collateNoCase: row[col_status]),
           transactionNumber : row[col_transactionNumber] ?? "",
           notes             : row[col_notes] ?? "",
-          categId           : row[col_categId] ?? 0,
+          categId           : DataId(row[col_categId] ?? 0),
           transDate         : DateTimeString(row[col_transDate] ?? ""),
           followUpId        : row[col_followUpId] ?? 0,
           toTransAmount     : row[cast_toTransAmount] ?? 0.0,
@@ -117,15 +117,15 @@ struct ScheduledRepository: RepositoryProtocol {
     static func itemSetters(_ data: ScheduledData) -> [SQLite.Setter] {
         let repeats = data.repeatAuto.rawValue * repeatBase + data.repeatType.rawValue
         return [
-            col_accountId          <- data.accountId,
-            col_toAccountId        <- data.toAccountId,
-            col_payeeId            <- data.payeeId,
+            col_accountId          <- Int64(data.accountId),
+            col_toAccountId        <- Int64(data.toAccountId),
+            col_payeeId            <- Int64(data.payeeId),
             col_transCode          <- data.transCode.id,
             col_transAmount        <- data.transAmount,
             col_status             <- data.status.id,
             col_transactionNumber  <- data.transactionNumber,
             col_notes              <- data.notes,
-            col_categId            <- data.categId,
+            col_categId            <- Int64(data.categId),
             col_transDate          <- data.transDate.string,
             col_followUpId         <- data.followUpId,
             col_toTransAmount      <- data.toTransAmount,

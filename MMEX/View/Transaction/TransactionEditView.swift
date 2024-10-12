@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionEditView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @Binding var accountId: [Int64] // sorted by name
+    @Binding var accountId: [DataId] // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
     @Binding var txn: TransactionData
@@ -270,7 +270,7 @@ struct TransactionEditView: View {
             }
         }
     }
-    func getCategoryName(for categoryID: Int64) -> String {
+    func getCategoryName(for categoryID: DataId) -> String {
         return categories.first {$0.id == categoryID}?.name ?? "Unknown"
     }
 }

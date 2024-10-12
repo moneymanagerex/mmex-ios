@@ -41,7 +41,7 @@ struct BudgetYearRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> BudgetYearData {
         return BudgetYearData(
-            id   : row[col_id],
+            id   : DataId(row[col_id]),
             name : row[col_name]
         )
     }

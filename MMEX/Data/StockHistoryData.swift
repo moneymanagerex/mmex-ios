@@ -23,7 +23,7 @@ enum UpdateType: Int, CaseIterable, Identifiable, Codable {
 }
 
 struct StockHistoryData: ExportableEntity {
-    var id         : Int64       = 0
+    var id         : DataId      = 0
     var symbol     : String      = ""
     var date       : DateString  = DateString("")
     var price      : Double      = 0.0
@@ -31,7 +31,7 @@ struct StockHistoryData: ExportableEntity {
 }
 
 extension StockHistoryData: DataProtocol {
-    static let dataName = "StockHistory"
+    static let dataName = ("Stock History", "Stock History")
 
     func shortDesc() -> String {
         "\(self.symbol), \(self.date)"

@@ -67,16 +67,16 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
 }
 
 struct ScheduledData: ExportableEntity {
-    var id                : Int64             = 0
-    var accountId         : Int64             = 0
-    var toAccountId       : Int64             = 0
-    var payeeId           : Int64             = 0
+    var id                : DataId            = 0
+    var accountId         : DataId            = 0
+    var toAccountId       : DataId            = 0
+    var payeeId           : DataId            = 0
     var transCode         : TransactionType   = TransactionType.defaultValue
     var transAmount       : Double            = 0.0
     var status            : TransactionStatus = TransactionStatus.defaultValue
     var transactionNumber : String            = ""
     var notes             : String            = ""
-    var categId           : Int64             = 0
+    var categId           : DataId            = 0
     var transDate         : DateTimeString    = DateTimeString("")
     var followUpId        : Int64             = 0
     var toTransAmount     : Double            = 0.0
@@ -88,7 +88,7 @@ struct ScheduledData: ExportableEntity {
 }
 
 extension ScheduledData: DataProtocol {
-    static let dataName = "Scheduled"
+    static let dataName = ("Scheduled Transaction", "Scheduled Transactions")
 
     func shortDesc() -> String {
         "\(self.id)"

@@ -44,7 +44,7 @@ struct TagRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> TagData {
         return TagData(
-            id     : row[col_id],
+            id     : DataId(row[col_id]),
             name   : row[col_name],
             active : row[col_active] ?? 0 != 0
         )
@@ -75,7 +75,7 @@ extension TagRepository {
             .join(L.table, on: L.table[L.col_tagId] == G.table[G.col_id])
             .join(T.table, on: T.table[T.col_id] == L.table[L.col_refId])
             .filter(L.table[L.col_refType] == RefType.transaction.rawValue)
-            .filter(T.table[T.col_id] == trans.id)
+            .filter(T.table[T.col_id] == Int64(trans.id))
             .order(L.table[L.col_id])
         ) { row in
             row[G.table[G.col_name]]
@@ -89,7 +89,7 @@ extension TagRepository {
             .join(L.table, on: L.table[L.col_tagId] == G.table[G.col_id])
             .join(T.table, on: T.table[T.col_id] == L.table[L.col_refId])
             .filter(L.table[L.col_refType] == RefType.scheduled.rawValue)
-            .filter(T.table[T.col_id] == sched.id)
+            .filter(T.table[T.col_id] == Int64(sched.id))
             .order(L.table[L.col_id])
         ) { row in
             row[G.table[G.col_name]]

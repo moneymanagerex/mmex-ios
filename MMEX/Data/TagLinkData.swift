@@ -9,10 +9,10 @@ import Foundation
 import SQLite
 
 struct TagLinkData: ExportableEntity {
-    var id      : Int64   = 0
-    var tagId   : Int64   = 0
+    var id      : DataId  = 0
+    var tagId   : DataId  = 0
     var refType : RefType = RefType.transaction
-    var refId   : Int64   = 0
+    var refId   : DataId  = 0
     static let refTypes: Set<RefType> = [
         .transaction, .transactionSplit,
         .scheduled, .scheduledSplit,
@@ -20,7 +20,7 @@ struct TagLinkData: ExportableEntity {
 }
 
 extension TagLinkData: DataProtocol {
-    static let dataName = "TagLink"
+    static let dataName = ("Tag Link", "Tag Links")
 
     func shortDesc() -> String {
         "\(self.id)"

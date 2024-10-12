@@ -87,17 +87,17 @@ struct TransactionRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> TransactionData {
         return TransactionData(
-          id                : row[col_id],
-          accountId         : row[col_accountId],
-          toAccountId       : row[col_toAccountId] ?? 0,
-          payeeId           : row[col_payeeId],
+          id                : DataId(row[col_id]),
+          accountId         : DataId(row[col_accountId]),
+          toAccountId       : DataId(row[col_toAccountId] ?? 0),
+          payeeId           : DataId(row[col_payeeId]),
           transCode         : TransactionType(collateNoCase: row[col_transCode]),
           transAmount       : row[cast_transAmount],
           // TODO: case insersitive, convert either key or value
           status            : TransactionStatus(collateNoCase: row[col_status]),
           transactionNumber : row[col_transactionNumber] ?? "",
           notes             : row[col_notes] ?? "",
-          categId           : row[col_categId] ?? 0,
+          categId           : DataId(row[col_categId] ?? 0),
           transDate         : DateTimeString(row[col_transDate] ?? ""),
           lastUpdatedTime   : DateTimeString(row[col_lastUpdatedTime] ?? ""),
           deletedTime       : DateTimeString(row[col_deletedTime] ?? ""),
@@ -109,15 +109,15 @@ struct TransactionRepository: RepositoryProtocol {
 
     static func itemSetters(_ data: TransactionData) -> [SQLite.Setter] {
         return [
-            col_accountId         <- data.accountId,
-            col_toAccountId       <- data.toAccountId,
-            col_payeeId           <- data.payeeId,
+            col_accountId         <- Int64(data.accountId),
+            col_toAccountId       <- Int64(data.toAccountId),
+            col_payeeId           <- Int64(data.payeeId),
             col_transCode         <- data.transCode.id,
             col_transAmount       <- data.transAmount,
             col_status            <- data.status.id,  // TODO: MMEX Desktop writes '' for .none
             col_transactionNumber <- data.transactionNumber,
             col_notes             <- data.notes,
-            col_categId           <- data.categId,
+            col_categId           <- Int64(data.categId),
             col_transDate         <- data.transDate.string,
             col_lastUpdatedTime   <- data.lastUpdatedTime.string,
             col_deletedTime       <- data.deletedTime.string,
@@ -136,14 +136,14 @@ extension TransactionRepository {
 
     // load recent transactions
     func loadRecent(
-        accountId: Int64? = nil,
+        accountId: DataId? = nil,
         startDate: Date? = nil,
         endDate: Date? = nil
     ) -> [TransactionData] {
         var table = Self.table
 
         if let accountId {
-            table = table.filter(Self.col_accountId == accountId || Self.col_toAccountId == accountId)
+            table = table.filter(Self.col_accountId == Int64(accountId) || Self.col_toAccountId == Int64(accountId))
         }
         if let startDate {
             table = table.filter(Self.col_transDate >= String(startDate.ISO8601Format().dropLast()))
@@ -158,13 +158,13 @@ extension TransactionRepository {
     // TODO: update payee's category mapping after insert & update ?
 
     // Fetch the latest record, filtered by account (optional)
-    func latest(accountID: Int64? = nil) -> TransactionData? {
+    func latest(accountID: DataId? = nil) -> TransactionData? {
         var query = Self.table.order(Self.col_id.desc) // Order by descending ID
             .filter(([TransactionType.withdrawal.id, TransactionType.deposit.id].contains(Self.col_transCode)))
 
         // If accountID is provided, add it to the filter
         if let accountID = accountID {
-            query = query.filter(Self.col_accountId == accountID)
+            query = query.filter(Self.col_accountId == Int64(accountID))
         }
 
         // Pluck the latest row

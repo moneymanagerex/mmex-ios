@@ -22,7 +22,7 @@ enum FieldType: String, EnumCollateNoCase {
 }
 
 struct FieldData: ExportableEntity {
-    var id          : Int64     = 0
+    var id          : DataId    = 0
     var refType     : RefType   = RefType.defaultValue
     var description : String    = ""
     var type        : FieldType = FieldType.defaultValue
@@ -31,7 +31,7 @@ struct FieldData: ExportableEntity {
 }
 
 extension FieldData: DataProtocol {
-    static let dataName = "Field"
+    static let dataName = ("Field", "Fields")
 
     func shortDesc() -> String {
         "\(self.id)"

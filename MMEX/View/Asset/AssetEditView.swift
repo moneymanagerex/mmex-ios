@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AssetEditView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @Binding var allCurrencyName: [(Int64, String)] // sorted by name
+    @Binding var allCurrencyName: [(DataId, String)] // sorted by name
     @Binding var asset: AssetData
     @State var edit: Bool
     var onDelete: () -> Void = { }

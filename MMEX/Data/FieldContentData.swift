@@ -9,16 +9,16 @@ import Foundation
 import SQLite
 
 struct FieldContentData: ExportableEntity {
-    var id      : Int64   = 0
-    var fieldId : Int64   = 0
+    var id      : DataId  = 0
+    var fieldId : DataId  = 0
     var refType : RefType = RefType.transaction
-    var refId   : Int64   = 0
+    var refId   : DataId  = 0
     var content : String  = ""
     static let refTypes: Set<RefType> = [ .transaction, .scheduled ]
 }
 
 extension FieldContentData: DataProtocol {
-    static let dataName = "FieldContent"
+    static let dataName = ("Field Content", "Field Contents")
 
     func shortDesc() -> String {
         "\(self.id)"

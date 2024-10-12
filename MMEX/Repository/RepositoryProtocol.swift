@@ -17,13 +17,13 @@ protocol RepositoryProtocol {
     static var table: SQLite.Table { get }
     static func selectData(from table: SQLite.Table) -> SQLite.Table
     static func fetchData(_ row: SQLite.Row) -> RepositoryData
-    static func fetchId(_ row: SQLite.Row) -> Int64
+    static func fetchId(_ row: SQLite.Row) -> DataId
     static var col_id: SQLite.Expression<Int64> { get }
     static func itemSetters(_ item: RepositoryData) -> [SQLite.Setter]
 }
 
 extension RepositoryProtocol {
-    static func fetchId(_ row: SQLite.Row) -> Int64 { row[Self.col_id] }
+    static func fetchId(_ row: SQLite.Row) -> DataId { DataId(row[Self.col_id]) }
 }
 
 extension RepositoryProtocol {
@@ -50,12 +50,12 @@ extension RepositoryProtocol {
     }
 
     func pluck<Result>(
-        id: Int64,
+        id: DataId,
         with result: (SQLite.Row) -> Result = Self.fetchData
     ) -> Result? {
         pluck(
             key: "id \(id)",
-            from: Self.table.filter(Self.col_id == id),
+            from: Self.table.filter(Self.col_id == Int64(id)),
             with: result
         )
     }
@@ -82,13 +82,14 @@ extension RepositoryProtocol {
     func dict<Result>(
         from table: SQLite.Table = Self.table,
         with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [Int64: Result] {
+    ) -> [DataId: Result] {
         do {
-            var dict: [Int64: Result] = [:]
+            var dict: [DataId: Result] = [:]
             let query = Self.selectData(from: table)
             log.trace("RepositoryProtocol.dict(): \(query.expression.description)")
             for row in try db.prepare(query) {
-                dict[row[Self.col_id]] = result(row)
+                let id = DataId(row[Self.col_id])
+                dict[id] = result(row)
             }
             log.info("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
             return dict
@@ -104,11 +105,11 @@ extension RepositoryProtocol {
                 .insert(Self.itemSetters(data))
             log.trace("RepositoryProtocol.insert(): \(query.expression.description)")
             let rowid = try db.run(query)
-            data.id = rowid
-            log.info("Successfull insert in \(RepositoryData.dataName)")
+            data.id = DataId(rowid)
+            log.info("Successfull insert in \(Self.repositoryName)")
             return true
         } catch {
-            log.error("Failed insert in \(RepositoryData.dataName): \(error)")
+            log.error("Failed insert in \(Self.repositoryName): \(error)")
             return false
         }
     }
@@ -117,14 +118,14 @@ extension RepositoryProtocol {
         guard data.id > 0 else { return false }
         do {
             let query = Self.table
-                .filter(Self.col_id == data.id)
+                .filter(Self.col_id == Int64(data.id))
                 .update(Self.itemSetters(data))
             log.trace("RepositoryProtocol.update(): \(query.expression.description)")
             try db.run(query)
-            log.info("Successfull update in \(RepositoryData.dataName): \(data.shortDesc())")
+            log.info("Successfull update in \(Self.repositoryName): \(data.shortDesc())")
             return true
         } catch {
-            log.error("Failed update in \(RepositoryData.dataName): \(error)")
+            log.error("Failed update in \(Self.repositoryName): \(error)")
             return false
         }
     }
@@ -133,14 +134,14 @@ extension RepositoryProtocol {
         guard data.id > 0 else { return false }
         do {
             let query = Self.table
-                .filter(Self.col_id == data.id)
+                .filter(Self.col_id == Int64(data.id))
                 .delete()
             log.trace("RepositoryProtocol.delete(): \(query.expression.description)")
             try db.run(query)
-            log.info("Successfull delete in \(RepositoryData.dataName): \(data.shortDesc())")
+            log.info("Successfull delete in \(Self.repositoryName): \(data.shortDesc())")
             return true
         } catch {
-            log.error("Failed delete in \(RepositoryData.dataName): \(error)")
+            log.error("Failed delete in \(Self.repositoryName): \(error)")
             return false
         }
     }
@@ -150,10 +151,10 @@ extension RepositoryProtocol {
             let query = Self.table.delete()
             log.trace("RepositoryProtocol.deleteAll(): \(query.expression.description)")
             try db.run(query)
-            log.info("Successfull delete all in \(RepositoryData.dataName)")
+            log.info("Successfull delete all in \(Self.repositoryName)")
             return true
         } catch {
-            log.error("Failed delete all in \(RepositoryData.dataName): \(error)")
+            log.error("Failed delete all in \(Self.repositoryName): \(error)")
             return false
         }
     }

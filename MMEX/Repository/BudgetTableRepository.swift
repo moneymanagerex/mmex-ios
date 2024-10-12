@@ -59,9 +59,9 @@ struct BudgetTableRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> BudgetTableData {
         return BudgetTableData(
-            id      : row[col_id],
-            yearId  : row[col_yearId] ?? -1,
-            categId : row[col_categId] ?? -1,
+            id      : DataId(row[col_id]),
+            yearId  : DataId(row[col_yearId] ?? -1),
+            categId : DataId(row[col_categId] ?? -1),
             period  : BudgetPeriod(collateNoCase: row[col_period]),
             amount  : row[cast_amount],
             notes   : row[col_notes] ?? "",
@@ -71,8 +71,8 @@ struct BudgetTableRepository: RepositoryProtocol {
 
     static func itemSetters(_ data: BudgetTableData) -> [SQLite.Setter] {
         return [
-            col_yearId  <- data.yearId,
-            col_categId <- data.categId,
+            col_yearId  <- Int64(data.yearId),
+            col_categId <- Int64(data.categId),
             col_period  <- data.period.rawValue,
             col_amount  <- data.amount,
             col_notes   <- data.notes,

@@ -178,7 +178,7 @@ extension EnvironmentManager {
         let repository = CurrencyRepository(db)
         //print("loading currencyCache")
 //        DispatchQueue.global(qos: .background).async {
-            let data: [Int64: CurrencyData] = repository?.dictUsed() ?? [:]
+            let data: [DataId: CurrencyData] = repository?.dictUsed() ?? [:]
 //            DispatchQueue.main.async {
                 self.currencyCache.load(data)
                 //print("loaded currencyCache")
@@ -188,12 +188,12 @@ extension EnvironmentManager {
 
     func loadAccount() {
         let repository = AccountRepository(db)
-        DispatchQueue.global(qos: .background).async {
-            let data: [Int64: AccountData] = repository?.dict() ?? [:]
-            DispatchQueue.main.async {
+//        DispatchQueue.global(qos: .background).async {
+            let data: [DataId: AccountData] = repository?.dict() ?? [:]
+//            DispatchQueue.main.async {
                 self.accountCache.load(data)
-            }
-        }
+//            }
+//        }
     }
 }
 

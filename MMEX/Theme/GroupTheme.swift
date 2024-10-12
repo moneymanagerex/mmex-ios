@@ -35,6 +35,7 @@ extension GroupTheme {
                     fold(open)
                     nameView()
                         .font(.headline.smallCaps())
+                        .foregroundColor(.blue)
                         .padding(.leading)
                     
                     Spacer()
@@ -43,6 +44,7 @@ extension GroupTheme {
                 HStack {
                     nameView()
                         .font(.headline.smallCaps())
+                        .foregroundColor(.blue)
                         .padding(.leading)
                     
                     Spacer()
@@ -51,7 +53,7 @@ extension GroupTheme {
             }
         }
     }
-
+    
     /*
     func section<NameView: View>(
         _ isExpanded: @autoclosure () -> Bool?,

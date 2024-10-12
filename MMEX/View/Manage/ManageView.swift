@@ -18,25 +18,27 @@ struct ManageView: View {
         List {
             Section(header: Text("Data")) {
                 NavigationLink(destination: CurrencyListView()) {
-                    Text("Currencies")
+                    Text(CurrencyData.dataName.1)
                 }
-                NavigationLink(destination: AccountListView()) {
-                    Text("Accounts")
+                NavigationLink(destination: AccountListView(
+                    viewModel: AccountViewModel(env: env)
+                )) {
+                    Text(AccountData.dataName.1)
                 }
                 NavigationLink(destination: AssetListView()) {
-                    Text("Assets")
+                    Text(AssetData.dataName.1)
                 }
                 NavigationLink(destination: StockListView()) {
-                    Text("Stocks")
+                    Text(StockData.dataName.1)
                 }
                 NavigationLink(destination: CategoryListView()) {
-                    Text("Categories")
+                    Text(CategoryData.dataName.1)
                 }
                 NavigationLink(destination: PayeeListView()) {
-                    Text("Payees")
+                    Text(PayeeData.dataName.1)
                 }
                 NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
-                    Text("Transactions")
+                    Text(TransactionData.dataName.1)
                 }
             }
             
@@ -93,10 +95,9 @@ struct ManageView: View {
     }
 }
 
-
 #Preview {
     ManageView(
-        viewModel: TransactionViewModel(env: EnvironmentManager()),
+        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
         isDocumentPickerPresented: .constant(false),
         isNewDocumentPickerPresented: .constant(false),
         isSampleDocument: .constant(false)

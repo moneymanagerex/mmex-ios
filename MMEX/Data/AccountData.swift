@@ -65,7 +65,7 @@ enum AccountType: String, EnumCollateNoCase {
 }
 
 struct AccountData: ExportableEntity {
-    var id              : Int64           = 0
+    var id              : DataId          = 0
     var name            : String          = ""
     var type            : AccountType     = AccountType.defaultValue
     var num             : String          = ""
@@ -78,7 +78,7 @@ struct AccountData: ExportableEntity {
     var initialDate     : DateString      = DateString("")
     var initialBal      : Double          = 0.0
     var favoriteAcct    : AccountFavorite = AccountFavorite.defaultValue
-    var currencyId      : Int64           = 0
+    var currencyId      : DataId          = 0
     var statementLocked : Bool            = false
     var statementDate   : DateString      = DateString("")
     var minimumBalance  : Double          = 0.0
@@ -89,7 +89,7 @@ struct AccountData: ExportableEntity {
 }
 
 extension AccountData: DataProtocol {
-    static let dataName = "Account"
+    static let dataName = ("Account", "Accounts")
 
     func shortDesc() -> String {
         "\(self.name)"
@@ -136,11 +136,11 @@ extension AccountData {
         ),
     ]
 
-    static var sampleDataIds : [Int64] {
+    static var sampleDataIds : [DataId] {
         sampleData.map { $0.id }
     }
 
-    static let sampleDataById: [Int64: AccountData] = Dictionary(
+    static let sampleDataById: [DataId: AccountData] = Dictionary(
         uniqueKeysWithValues: sampleData.map { ($0.id, $0 ) }
     )
 }

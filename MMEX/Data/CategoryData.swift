@@ -9,10 +9,10 @@ import Foundation
 import SQLite
 
 struct CategoryData: ExportableEntity {
-    var id       : Int64  = 0
+    var id       : DataId = 0
     var name     : String = ""
     var active   : Bool   = false
-    var parentId : Int64  = 0
+    var parentId : DataId = 0
 }
 
 extension CategoryData {
@@ -22,7 +22,7 @@ extension CategoryData {
 }
 
 extension CategoryData: DataProtocol {
-    static let dataName = "Category"
+    static let dataName = ("Category", "Categories")
 
     func shortDesc() -> String {
         "\(self.name), \(self.id)"

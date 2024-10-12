@@ -9,12 +9,12 @@ import Foundation
 import SQLite
 
 struct BudgetYearData: ExportableEntity {
-    var id   : Int64  = 0
+    var id   : DataId = 0
     var name : String = ""
 }
 
 extension BudgetYearData: DataProtocol {
-    static let dataName = "BudgetYear"
+    static let dataName = ("Budget Year", "Budget Years")
 
     func shortDesc() -> String {
         "\(self.name)"

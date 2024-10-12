@@ -9,13 +9,13 @@ import Foundation
 import SQLite
 
 struct TagData: ExportableEntity {
-    var id     : Int64  = 0
+    var id     : DataId = 0
     var name   : String = ""
     var active : Bool   = false
 }
 
 extension TagData: DataProtocol {
-    static let dataName = "Tag"
+    static let dataName = ("Tag", "Tags")
 
     func shortDesc() -> String {
         "\(self.name)"

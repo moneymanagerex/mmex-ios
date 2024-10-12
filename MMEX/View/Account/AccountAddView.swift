@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountAddView: View {
-    @Binding var allCurrencyName: [(Int64, String)] // Bind to the list of available currencies
+    @State var viewModel: AccountViewModel
     @Binding var newAccount: AccountData
     @Binding var isPresentingAddView: Bool
     var onSave: (inout AccountData) -> Void
@@ -19,8 +19,8 @@ struct AccountAddView: View {
     var body: some View {
         NavigationStack {
             AccountEditView(
-                allCurrencyName: $allCurrencyName,
-                account: $newAccount,
+                viewModel: viewModel,
+                data: $newAccount,
                 edit: true
             )
             .toolbar {

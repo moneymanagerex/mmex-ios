@@ -10,7 +10,7 @@ import SwiftUI
 struct StockDetailView: View {
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @Binding var allAccountName: [(Int64, String)] // sorted by name
+    @Binding var allAccountName: [(DataId, String)] // sorted by name
     @State var stock: StockData
 
     @State private var editStock = StockData()

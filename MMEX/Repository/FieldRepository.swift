@@ -50,7 +50,7 @@ struct FieldRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> FieldData {
         return FieldData(
-            id          : row[col_id],
+            id          : DataId(row[col_id]),
             refType     : RefType(collateNoCase: row[col_refType]),
             description : row[col_description] ?? "",
             type        : FieldType(collateNoCase: row[col_type]),

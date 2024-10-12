@@ -9,15 +9,15 @@ import Foundation
 import SQLite
 
 struct TransactionSplitData: ExportableEntity {
-    var id      : Int64  = 0
-    var transId : Int64  = 0
-    var categId : Int64  = 0
+    var id      : DataId = 0
+    var transId : DataId = 0
+    var categId : DataId = 0
     var amount  : Double = 0.0
     var notes   : String = ""
 }
 
 extension TransactionSplitData: DataProtocol {
-    static let dataName = "TransactionSplit"
+    static let dataName = ("Transaction Split", "Transaction Splits")
 
     func shortDesc() -> String {
         "\(self.id)"
