@@ -80,20 +80,20 @@ struct TransactionShareRepository: RepositoryProtocol {
 
 extension TransactionShareRepository {
     // load all shares
-    func load() -> [TransactionShareData] {
+    func load() -> [TransactionShareData]? {
         return select(from: Self.table
             .order(Self.col_transId, Self.col_id)
         )
     }
 
     // load shares of a transaction
-    func load(forTransactionId transId: DataId) -> [TransactionShareData] {
+    func load(forTransactionId transId: DataId) -> [TransactionShareData]? {
         return select(from: Self.table
             .filter(Self.col_transId == Int64(transId))
             .order(Self.col_id)
         )
     }
-    func load(for trans: TransactionData) -> [TransactionShareData] {
+    func load(for trans: TransactionData) -> [TransactionShareData]? {
         return load(forTransactionId: trans.id)
     }
 }

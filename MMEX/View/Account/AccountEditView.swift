@@ -179,7 +179,7 @@ struct AccountEditView: View {
         }
         .textSelection(.enabled)
         .onAppear {
-            //print("\(env.currencyCache.count)")
+            //log.debug("DEBUG: \(env.currencyCache.count)")
         }
     }
 }

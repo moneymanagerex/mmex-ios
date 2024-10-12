@@ -60,20 +60,21 @@ struct InfotableRepository: RepositoryProtocol {
 
 extension InfotableRepository {
     // load all keys
-    func load() -> [InfotableData] {
+    func load() -> [InfotableData]? {
+        log.trace("DEBUG: InfotableRepository.load()")
         return select(from: Self.table)
     }
 
     // load specific keys into a dictionary
     func load(for keys: [InfoKey]) -> [InfoKey: InfotableData] {
+        log.trace("DEBUG: InfotableRepository.load(for:)")
         var results: [InfoKey: InfotableData] = [:]
         for key in keys {
-            if let info: InfotableData = (pluck(
+            let info: InfotableData? = pluck(
                 key: key.rawValue,
                 from: Self.table.filter(Self.col_name == key.rawValue)
-            )) {
-                results[key] = info
-            }
+            ).toOptional()
+            if let info { results[key] = info }
         }
         return results
     }
@@ -81,23 +82,26 @@ extension InfotableRepository {
     // New Methods for Key-Value Pairs
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
-        if let info: InfotableData = (pluck(
+        log.trace("DEBUG: InfotableRepository.getValue(for: \(key))")
+        let info: InfotableData? = pluck(
             key: key,
             from: Self.table.filter(Self.col_name == key)
-        )) {
-            if type == String.self {
-                return info.value as? T
-            } else if type == DataId.self {
-                return DataId(info.value) as? T
-            } else if type == Int64.self {
-                return Int64(info.value) as? T
-            }
+        ).toOptional()
+        guard let info else { return nil }
+        if type == String.self {
+            return info.value as? T
+        } else if type == DataId.self {
+            return DataId(info.value) as? T
+        } else if type == Int64.self {
+            return Int64(info.value) as? T
+        } else {
+            return nil
         }
-        return nil
     }
 
     // Update or insert a setting with support for String or Int64 values
-    func setValue<T>(_ value: T, for key: String) {
+    func setValue<T>(_ value: T, for key: String) -> Bool {
+        log.trace("DEBUG: InfotableRepository.setValue(for: \(key))")
         var stringValue: String
         if let stringVal = value as? String {
             stringValue = stringVal
@@ -106,21 +110,25 @@ extension InfotableRepository {
         } else if let intVal = value as? Int64 {
             stringValue = String(intVal)
         } else {
-            log.warning("Unsupported type for value")
-            return
+            log.warning("WARNING: InfotableRepository.setValue(for: \(key)): Unsupported type for value")
+            return false
         }
 
-        if var info: InfotableData = (pluck(
+        let infoResult: RepositoryPluckResult<InfotableData> = pluck(
             key: key,
             from: Self.table.filter(Self.col_name == key)
-        )) {
+        )
+        switch infoResult {
+        case .some(var info):
             // Update existing setting
             info.value = stringValue
-            _ = update(info)
-        } else {
+            return update(info)
+        case .none:
             // Insert new setting
             var info = InfotableData(id: 0, name: key, value: stringValue)
-            _ = insert(&info)
+            return insert(&info)
+        case .error(_):
+            return false
         }
     }
 }

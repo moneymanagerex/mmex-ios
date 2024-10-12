@@ -108,16 +108,16 @@ struct CurrencyRepository: RepositoryProtocol {
 
 extension CurrencyRepository {
     // load all currencies, sorted by name
-    func load() -> [CurrencyData] {
-        log.trace("CurrencyRepository.load()")
+    func load() -> [CurrencyData]? {
+        log.trace("DEBUG: CurrencyRepository.load()")
         return select(from: Self.table
             .order(Self.col_name)
         )
     }
 
     // load all currency names
-    func loadName() -> [(id: DataId, name: String)] {
-        log.trace("CurrencyRepository.loadName()")
+    func loadName() -> [(id: DataId, name: String)]? {
+        log.trace("DEBUG: CurrencyRepository.loadName()")
         return select(from: Self.table
             .order(Self.col_name)
         ) { row in
@@ -126,8 +126,8 @@ extension CurrencyRepository {
     }
 
     // load all currency symbols
-    func loadSymbol() -> [(DataId, String)] {
-        log.trace("CurrencyRepository.loadName()")
+    func loadSymbol() -> [(DataId, String)]? {
+        log.trace("DEBUG: CurrencyRepository.loadSymbol()")
         return select(from: Self.table
             .order(Self.col_symbol)
         ) { row in
@@ -136,7 +136,8 @@ extension CurrencyRepository {
     }
 
     // load used currencies, indexed by id
-    func dictUsed() -> [DataId: CurrencyData] {
+    func dictUsed() -> [DataId: CurrencyData]? {
+        log.trace("DEBUG: CurrencyRepository.dictUsed()")
         typealias A = AccountRepository
         typealias E = AssetRepository
         let cond = "EXISTS (" + A.table.select(1)
@@ -144,13 +145,14 @@ extension CurrencyRepository {
             .union(E.table.select(1)
                 .where(E.table[E.col_currencyId] == Self.table[Self.col_id])
             ).expression.description + ")"
-        return dict(from: Self.table
+        return selectById(from: Self.table
             .filter(SQLite.Expression<Bool>(literal: cond))
         )
     }
 
     // load currency of an account
-    func pluck(for account: AccountData) -> CurrencyData? {
+    func pluck(for account: AccountData) -> RepositoryPluckResult<CurrencyData> {
+        log.trace("DEBUG: CurrencyRepository.pluck(account: \(account.name)")
         return pluck(
             key: "\(account.currencyId)",
             from: Self.table.filter(Self.col_id == Int64(account.currencyId))
@@ -158,7 +160,8 @@ extension CurrencyRepository {
     }
 
     // load currency of an asset
-    func pluck(for asset: AssetData) -> CurrencyData? {
+    func pluck(for asset: AssetData) -> RepositoryPluckResult<CurrencyData> {
+        log.trace("DEBUG: CurrencyRepository.pluck(asset: \(asset.name)")
         return pluck(
             key: "\(asset.currencyId)",
             from: Self.table.filter(Self.col_id == Int64(asset.currencyId))

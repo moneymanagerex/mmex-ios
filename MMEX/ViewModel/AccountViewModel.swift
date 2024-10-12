@@ -68,7 +68,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
             }
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                return .dataById(self.env.accountRepository?.dict(
+                return .dataById(self.env.accountRepository?.selectById(
                     from: A.table.order(A.col_name)
                 ) )
             }
@@ -136,6 +136,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
         groupIsReady = true
     }
 
+    /*
     func loadCurrencyName() {
         currencyName = []
         guard let repository = env.currencyRepository else { return }
@@ -175,6 +176,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
             }
         }
     }
+*/
 
     func visible(data: AccountData) -> Bool {
         search.isEmpty || data.name.localizedCaseInsensitiveContains(search)

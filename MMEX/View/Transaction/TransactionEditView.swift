@@ -260,7 +260,7 @@ struct TransactionEditView: View {
     }
 
     func loadLatestTxn() {
-        if let latestTxn = env.transactionRepository?.latest(accountID: txn.accountId) ?? env.transactionRepository?.latest() {
+        if let latestTxn = env.transactionRepository?.latest(accountID: txn.accountId).toOptional() ?? env.transactionRepository?.latest().toOptional() {
             // Update UI on the main thread
             DispatchQueue.main.async {
                 if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId == 0) {

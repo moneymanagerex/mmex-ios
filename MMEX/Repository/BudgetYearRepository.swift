@@ -55,7 +55,7 @@ struct BudgetYearRepository: RepositoryProtocol {
 
 extension BudgetYearRepository {
     // load all budget years
-    func load() -> [BudgetYearData] {
+    func load() -> [BudgetYearData]? {
         return select(from: Self.table
             .order(Self.col_name)
         )

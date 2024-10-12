@@ -8,6 +8,35 @@
 import Foundation
 import SQLite
 
+enum RepositoryError: Error {
+    case repositoryError
+}
+
+enum RepositoryPluckResult<Wrapped: ~Copyable>: ~Copyable {
+    case some(Wrapped)
+    case none
+    case error(RepositoryError)
+}
+
+extension RepositoryPluckResult: Copyable where Wrapped: Copyable {
+}
+
+extension RepositoryPluckResult {
+    init(_ value: Optional<Wrapped>) {
+       self = switch value {
+       case .some(let value): .some(value)
+       default: .none
+       }
+    }
+
+    func toOptional() -> Optional<Wrapped> {
+        return switch self {
+        case .some(let value): .some(value)
+        default: .none
+        }
+    }
+}
+
 protocol RepositoryProtocol {
     associatedtype RepositoryData: DataProtocol
 
@@ -27,75 +56,95 @@ extension RepositoryProtocol {
 }
 
 extension RepositoryProtocol {
-    func pluck<Result>(
+    func pluck<DataValue>(
         key: String,
         from table: SQLite.Table,
-        with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> Result? {
+        with value: (SQLite.Row) -> DataValue = Self.fetchData
+    ) -> RepositoryPluckResult<DataValue> {
         do {
             let query = Self.selectData(from: table)
-            log.trace("RepositoryProtocol.pluck(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.pluck(): \(query.expression.description)")
             if let row = try db.pluck(query) {
-                let data = result(row)
-                log.info("Successfull pluck of \(key) from \(Self.repositoryName)")
-                return data
+                let dataValue = value(row)
+                log.info("INFO: RepositoryProtocol.pluck(\(Self.repositoryName), \(key)): found")
+                return .some(dataValue)
             } else {
-                log.info("Unsuccefull pluck of \(key) from \(Self.repositoryName)")
-                return nil
+                log.info("INFO: RepositoryProtocol.pluck(\(Self.repositoryName), \(key)): not found")
+                return .none
             }
         } catch {
-            log.error("Failed pluck of \(key) from \(Self.repositoryName): \(error)")
+            log.error("ERROR: RepositoryProtocol.pluck(\(Self.repositoryName), \(key)): \(error)")
+            return .error(.repositoryError)
+        }
+    }
+
+    func pluck<DataValue>(
+        id: DataId,
+        with value: (SQLite.Row) -> DataValue = Self.fetchData
+    ) -> RepositoryPluckResult<DataValue> {
+        pluck(
+            key: "id \(id)",
+            from: Self.table.filter(Self.col_id == Int64(id)),
+            with: value
+        )
+    }
+
+    func select<DataValue>(
+        from table: SQLite.Table,
+        with value: (SQLite.Row) -> DataValue = Self.fetchData
+    ) -> [DataValue]? {
+        do {
+            var data: [DataValue] = []
+            let query = Self.selectData(from: table)
+            log.trace("DEBUG: RepositoryProtocol.select(): \(query.expression.description)")
+            for row in try db.prepare(query) {
+                data.append(value(row))
+            }
+            log.info("INFO: RepositoryProtocol.select(\(Self.repositoryName)): \(data.count)")
+            return data
+        } catch {
+            log.error("ERROR: RepositoryProtocol.select(\(Self.repositoryName)): \(error)")
             return nil
         }
     }
 
-    func pluck<Result>(
-        id: DataId,
-        with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> Result? {
-        pluck(
-            key: "id \(id)",
-            from: Self.table.filter(Self.col_id == Int64(id)),
-            with: result
-        )
-    }
-
-    func select<Result>(
-        from table: SQLite.Table,
-        with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [Result] {
+    func selectById<DataValue>(
+        from table: SQLite.Table = Self.table,
+        with value: (SQLite.Row) -> DataValue = Self.fetchData
+    ) -> [DataId: DataValue]? {
         do {
-            var data: [Result] = []
+            var dict: [DataId: DataValue] = [:]
             let query = Self.selectData(from: table)
-            log.trace("RepositoryProtocol.select(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.selectById(): \(query.expression.description)")
             for row in try db.prepare(query) {
-                data.append(result(row))
+                let id = DataId(row[Self.col_id])
+                dict[id] = value(row)
             }
-            log.info("Successfull select from \(Self.repositoryName): \(data.count)")
-            return data
+            log.info("INFO: RepositoryProtocol.selectById(\(Self.repositoryName)): \(dict.count)")
+            return dict
         } catch {
-            log.error("Failed select from \(Self.repositoryName): \(error)")
-            return []
+            log.error("ERROR: RepositoryProtocol.selectById(\(Self.repositoryName)): \(error)")
+            return nil
         }
     }
 
-    func dict<Result>(
+    func selectBy<DataProperty, DataValue>(
+        property: (SQLite.Row) -> DataProperty,
         from table: SQLite.Table = Self.table,
-        with result: (SQLite.Row) -> Result = Self.fetchData
-    ) -> [DataId: Result] {
+        with value: (SQLite.Row) -> DataValue = Self.fetchData
+    ) -> [DataProperty: [DataValue]]? {
         do {
-            var dict: [DataId: Result] = [:]
-            let query = Self.selectData(from: table)
-            log.trace("RepositoryProtocol.dict(): \(query.expression.description)")
-            for row in try db.prepare(query) {
-                let id = DataId(row[Self.col_id])
-                dict[id] = result(row)
+            var dataByProperty: [DataProperty: [DataValue]] = [:]
+            for row in try db.prepare(Self.selectData(from: table)) {
+                let i = property(row)
+                if dataByProperty[i] == nil { dataByProperty[i] = [] }
+                dataByProperty[i]!.append(value(row))
             }
-            log.info("Successfull dictionary from \(Self.repositoryName): \(dict.count)")
-            return dict
+            log.info("INFO: RepositoryProtocol.selectBy(): \(dataByProperty.count)")
+            return dataByProperty
         } catch {
-            log.error("Failed dictionary from \(Self.repositoryName): \(error)")
-            return [:]
+            log.error("ERROR: RepositoryProtocol.selectBy(): \(error)")
+            return nil
         }
     }
 
@@ -103,13 +152,14 @@ extension RepositoryProtocol {
         do {
             let query = Self.table
                 .insert(Self.itemSetters(data))
-            log.trace("RepositoryProtocol.insert(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.insert(): \(query.expression.description)")
             let rowid = try db.run(query)
             data.id = DataId(rowid)
-            log.info("Successfull insert in \(Self.repositoryName)")
+            let desc = data.shortDesc()
+            log.info("INFO: RepositoryProtocol.insert(\(Self.repositoryName)): \(desc)")
             return true
         } catch {
-            log.error("Failed insert in \(Self.repositoryName): \(error)")
+            log.error("ERROR: RepositoryProtocol.insert\(Self.repositoryName)): \(error)")
             return false
         }
     }
@@ -120,12 +170,12 @@ extension RepositoryProtocol {
             let query = Self.table
                 .filter(Self.col_id == Int64(data.id))
                 .update(Self.itemSetters(data))
-            log.trace("RepositoryProtocol.update(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.update(): \(query.expression.description)")
             try db.run(query)
-            log.info("Successfull update in \(Self.repositoryName): \(data.shortDesc())")
+            log.info("INFO: RepositoryProtocol.update(\(Self.repositoryName)): \(data.shortDesc())")
             return true
         } catch {
-            log.error("Failed update in \(Self.repositoryName): \(error)")
+            log.error("ERROR: RepositoryProtocol.update(\(Self.repositoryName)): \(error)")
             return false
         }
     }
@@ -136,12 +186,12 @@ extension RepositoryProtocol {
             let query = Self.table
                 .filter(Self.col_id == Int64(data.id))
                 .delete()
-            log.trace("RepositoryProtocol.delete(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.delete(): \(query.expression.description)")
             try db.run(query)
-            log.info("Successfull delete in \(Self.repositoryName): \(data.shortDesc())")
+            log.info("INFO: RepositoryProtocol.delete(\(Self.repositoryName)): \(data.shortDesc())")
             return true
         } catch {
-            log.error("Failed delete in \(Self.repositoryName): \(error)")
+            log.error("ERROR: RepositoryProtocol.delete(\(Self.repositoryName)): \(error)")
             return false
         }
     }
@@ -149,12 +199,12 @@ extension RepositoryProtocol {
     func deleteAll() -> Bool {
         do {
             let query = Self.table.delete()
-            log.trace("RepositoryProtocol.deleteAll(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.deleteAll(): \(query.expression.description)")
             try db.run(query)
-            log.info("Successfull delete all in \(Self.repositoryName)")
+            log.info("INFO: RepositoryProtocol.deleteAll(\(Self.repositoryName))")
             return true
         } catch {
-            log.error("Failed delete all in \(Self.repositoryName): \(error)")
+            log.error("ERROR: RepositoryProtocol.deleteAll(\(Self.repositoryName)): \(error)")
             return false
         }
     }
@@ -179,11 +229,11 @@ extension RepositoryProtocol {
             comma = true
         }
         query.append(")")
-        log.trace("Executing query: \(query)")
+        log.trace("DEBUG: RepositoryProtocol.create(): \(query)")
         do {
             try db.execute(query)
         } catch {
-            log.error("Failed to create table \(Self.repositoryName): \(error)")
+            log.error("ERROR: RepositoryProtocol.create(\(Self.repositoryName)): \(error)")
         }
     }
 */

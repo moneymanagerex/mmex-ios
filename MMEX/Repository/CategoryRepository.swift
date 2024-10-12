@@ -65,12 +65,12 @@ struct CategoryRepository: RepositoryProtocol {
 
 extension CategoryRepository {
     // load all categories
-    func load() -> [CategoryData] {
+    func load() -> [CategoryData]? {
         return select(from: Self.table)
     }
 
     // load category of a payee
-    func pluck(for payee: PayeeData) -> CategoryData? {
+    func pluck(for payee: PayeeData) -> RepositoryPluckResult<CategoryData> {
         return pluck(
             key: "\(payee.categoryId)",
             from: Self.table.filter(Self.col_id == Int64(payee.categoryId))

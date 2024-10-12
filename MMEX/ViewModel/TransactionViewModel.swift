@@ -61,7 +61,7 @@ class TransactionViewModel: ObservableObject {
             baseCurrency = currencyRepo?.pluck(
                 key: InfoKey.baseCurrencyID.id,
                 from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
-            )
+            ).toOptional()
         }
 
         if let defaultAccountId = infotableRepo?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
@@ -69,7 +69,7 @@ class TransactionViewModel: ObservableObject {
             defaultAccount = accountRepo?.pluck(
                 key: InfoKey.defaultAccountID.id,
                 from: AccountRepository.table.filter(AccountRepository.col_id == Int64(defaultAccountId))
-            )
+            ).toOptional()
         }
     }
 
@@ -95,11 +95,11 @@ class TransactionViewModel: ObservableObject {
 
     // Save data back to Infotable
     private func saveBaseCurrency(_ currencyId: DataId) {
-        infotableRepo?.setValue(Int64(currencyId), for: InfoKey.baseCurrencyID.id)
+        _ = infotableRepo?.setValue(Int64(currencyId), for: InfoKey.baseCurrencyID.id)
     }
 
     private func saveDefaultAccount(_ accountId: DataId) {
-        infotableRepo?.setValue(Int64(accountId), for: InfoKey.defaultAccountID.id)
+        _ = infotableRepo?.setValue(Int64(accountId), for: InfoKey.defaultAccountID.id)
     }
 
     func loadAccounts() {

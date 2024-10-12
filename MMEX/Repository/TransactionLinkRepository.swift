@@ -65,20 +65,20 @@ struct TransactionLinkRepository: RepositoryProtocol {
 
 extension TransactionLinkRepository {
     // load all transaction links
-    func load() -> [TransactionLinkData] {
+    func load() -> [TransactionLinkData]? {
         return select(from: Self.table
             .order(Self.col_id)
         )
     }
 
     // load links of a transaction
-    func load(forTransactionId transId: DataId) -> [TransactionLinkData] {
+    func load(forTransactionId transId: DataId) -> [TransactionLinkData]? {
         return select(from: Self.table
             .filter(Self.col_transId == Int64(transId))
             .order(Self.col_id)
         )
     }
-    func load(for trans: TransactionData) -> [TransactionLinkData] {
+    func load(for trans: TransactionData) -> [TransactionLinkData]? {
         return load(forTransactionId: trans.id)
     }
 }

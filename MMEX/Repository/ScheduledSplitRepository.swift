@@ -73,20 +73,20 @@ struct ScheduledSplitRepository: RepositoryProtocol {
 
 extension ScheduledSplitRepository {
     // load all splits
-    func load() -> [ScheduledSplitData] {
+    func load() -> [ScheduledSplitData]? {
         return select(from: Self.table
             .order(Self.col_transId, Self.col_id)
         )
     }
 
     // load splits of a scheduled transaction
-    func load(forScheduledId schedId: DataId) -> [ScheduledSplitData] {
+    func load(forScheduledId schedId: DataId) -> [ScheduledSplitData]? {
         return select(from: Self.table
             .filter(Self.col_transId == Int64(schedId))
             .order(Self.col_id)
         )
     }
-    func load(for sched: ScheduledData) -> [ScheduledSplitData] {
+    func load(for sched: ScheduledData) -> [ScheduledSplitData]? {
         return load(forScheduledId: sched.id)
     }
 }
