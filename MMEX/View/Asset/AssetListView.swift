@@ -32,7 +32,7 @@ struct AssetListView: View {
                                 Button(action: {
                                     isTypeExpanded[assetType]?.toggle()
                                 }) {
-                                    env.theme.group.hstack(
+                                    env.theme.group.view(
                                         isTypeExpanded[assetType] == true
                                     ) {
                                         Text(assetType.rawValue)

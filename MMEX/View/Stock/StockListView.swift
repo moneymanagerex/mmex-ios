@@ -32,7 +32,7 @@ struct StockListView: View {
                                 Button(action: {
                                     isTypeExpanded[accountId]?.toggle()
                                 }) {
-                                    env.theme.group.hstack(
+                                    env.theme.group.view(
                                         isTypeExpanded[accountId] == true
                                     ) {
                                         Text(env.accountCache[accountId]?.name ?? "(No Account)")

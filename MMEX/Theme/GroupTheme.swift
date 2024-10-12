@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 struct GroupTheme {
-    enum Choice: String, EnumCollateNoCase {
+    enum Layout: String, EnumCollateNoCase {
         case foldName = "Fold Name space"
         case nameFold = "Name space Fold"
         static let defaultValue = Self.foldName
     }
 
-    var choice = Self.Choice.defaultValue
+    var layout = Self.Layout.defaultValue
 }
 
 extension GroupTheme {
@@ -24,12 +24,12 @@ extension GroupTheme {
             .foregroundColor(.gray)
     }
     
-    func hstack<NameView: View>(
+    func view<NameView: View>(
         _ open: Bool,
         @ViewBuilder name nameView: @escaping () -> NameView
     ) -> some View {
         return Group {
-            switch choice {
+            switch layout {
             case .foldName:
                 HStack {
                     fold(open)
@@ -63,7 +63,7 @@ extension GroupTheme {
             Button(action: {
                 isExpanded[inUse]?.toggle()
             }) {
-                env.theme.group.hstack(
+                env.theme.group.layout(
                     isExpanded[inUse] == true
                 ) {
                     Text(inUse ? "Used" : "Not Used")
