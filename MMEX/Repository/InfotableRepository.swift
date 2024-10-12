@@ -82,7 +82,7 @@ extension InfotableRepository {
     // New Methods for Key-Value Pairs
     // Fetch value for a specific key, allowing for String or Int64
     func getValue<T>(for key: String, as type: T.Type) -> T? {
-        log.trace("DEBUG: InfotableRepository.getValue(for: \(key)")
+        log.trace("DEBUG: InfotableRepository.getValue(for: \(key))")
         let info: InfotableData? = pluck(
             key: key,
             from: Self.table.filter(Self.col_name == key)
@@ -101,7 +101,7 @@ extension InfotableRepository {
 
     // Update or insert a setting with support for String or Int64 values
     func setValue<T>(_ value: T, for key: String) -> Bool {
-        log.trace("DEBUG: InfotableRepository.setValue(for: \(key)")
+        log.trace("DEBUG: InfotableRepository.setValue(for: \(key))")
         var stringValue: String
         if let stringVal = value as? String {
             stringValue = stringVal
