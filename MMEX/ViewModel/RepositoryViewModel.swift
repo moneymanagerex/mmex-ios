@@ -34,8 +34,8 @@ protocol RepositoryViewModelProtocol: ObservableObject {
     init(env: EnvironmentManager)
 
     func loadData() async -> Bool
-    func newPartition(_ partition: RepositoryPartition)
-    func newSearch(_ search: String?)
+    func newPartition(_ partition: RepositoryPartition) -> Bool
+    func newSearch(_ search: String?) -> Bool
     func visible(data: RepositoryData) -> Bool
     func visible(groupId: Int) -> Bool
 }
@@ -63,11 +63,10 @@ extension RepositoryViewModelProtocol {
         ) != nil
     }
 
-    func newSearch(_ search: String? = nil) {
+    func newSearch(_ search: String? = nil) -> Bool {
         log.trace("RepositoryViewModelProtocol.newSearch(\(search ?? self.search))")
         if let search { self.search = search }
-        guard dataIsReady else { return }
-        groupIsReady = false
+        guard dataIsReady else { return false }
         for g in 0..<group.count {
             let isVisible = visible(groupId: g)
             group[g].isVisible = isVisible
@@ -76,6 +75,6 @@ extension RepositoryViewModelProtocol {
                 group[g].isExpanded = true
             }
         }
-        groupIsReady = true
+        return true
     }
 }

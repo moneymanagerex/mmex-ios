@@ -22,8 +22,8 @@ extension RepositoryPluckResult: Copyable where Wrapped: Copyable {
 }
 
 extension RepositoryPluckResult {
-    init(_ value: Optional<Wrapped>) {
-       self = switch value {
+    init(_ optValue: Optional<Wrapped>) {
+       self = switch optValue {
        case .some(let value): .some(value)
        default: .none
        }
@@ -117,7 +117,7 @@ extension RepositoryProtocol {
             let query = Self.selectData(from: table)
             log.trace("DEBUG: RepositoryProtocol.selectById(): \(query.expression.description)")
             for row in try db.prepare(query) {
-                let id = DataId(row[Self.col_id])
+                let id = Self.fetchId(row)
                 dict[id] = value(row)
             }
             log.info("INFO: RepositoryProtocol.selectById(\(Self.repositoryName)): \(dict.count)")
@@ -135,7 +135,9 @@ extension RepositoryProtocol {
     ) -> [DataProperty: [DataValue]]? {
         do {
             var dataByProperty: [DataProperty: [DataValue]] = [:]
-            for row in try db.prepare(Self.selectData(from: table)) {
+            let query = Self.selectData(from: table)
+            log.trace("DEBUG: RepositoryProtocol.selectBy(): \(query.expression.description)")
+            for row in try db.prepare(query) {
                 let i = property(row)
                 if dataByProperty[i] == nil { dataByProperty[i] = [] }
                 dataByProperty[i]!.append(value(row))

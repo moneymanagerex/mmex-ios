@@ -41,8 +41,10 @@ struct RepositoryListView<
                 }
                 .pickerStyle(MenuPickerStyle())
                 .onChange(of: partition) {
-                    viewModel.newPartition(partition)
-                    viewModel.newSearch()
+                    viewModel.groupIsReady = false
+                    if viewModel.newPartition(partition) {
+                        viewModel.groupIsReady = viewModel.newSearch()
+                    }
                 }
                 .padding(.vertical, -5)
                 //.border(.red)
@@ -55,10 +57,34 @@ struct RepositoryListView<
                         groupView(g)
                     }
                 }
-            } else {
-                Text("Loading data ...")
+            } else if !viewModel.dataIsReady {
+                Button(action: { Task {
+                    viewModel.groupIsReady = false
+                    viewModel.dataIsReady = false
+                    viewModel.dataIsReady = await viewModel.loadData()
+                    viewModel.groupIsReady = viewModel.newPartition(self.partition)
+                } } ) {
+                    Text("Load data")
+                }
+                .listRowBackground(Color.clear)
+                .padding()
+                .background(.secondary)
+                .foregroundColor(.primary)
+                .clipShape(Capsule())
+            } else if !viewModel.groupIsReady {
+                Button(action: {
+                    viewModel.groupIsReady = viewModel.newPartition(self.partition)
+                } ) {
+                    Text("Prepare groups")
+                }
+                .listRowBackground(Color.clear)
+                .padding()
+                .background(.secondary)
+                .foregroundColor(.primary)
+                .clipShape(Capsule())
             }
         }
+        //.listStyle(.plain)
         .listSectionSpacing(.compact)
         .toolbar {
             Button(
@@ -70,13 +96,15 @@ struct RepositoryListView<
         .searchable(text: $search, prompt: "Search by name")
         .textInputAutocapitalization(.never)
         .onChange(of: search) { _, newValue in
-            viewModel.newSearch(newValue)
+            viewModel.groupIsReady = false
+            viewModel.groupIsReady = viewModel.newSearch(newValue)
         }
         .navigationTitle(RepositoryData.dataName.1)
         .task {
+            viewModel.groupIsReady = false
             viewModel.dataIsReady = false
             viewModel.dataIsReady = await viewModel.loadData()
-            viewModel.newPartition(self.partition)
+            viewModel.groupIsReady = viewModel.newPartition(self.partition)
         }
         .sheet(isPresented: $isPresentingAddView) {
 /*
@@ -98,10 +126,10 @@ struct RepositoryListView<
                 viewModel.group[g].isExpanded.toggle()
             }) {
                 env.theme.group.view(
-                    viewModel.group[g].isExpanded
-                ) {
-                    groupName(g)
-                }
+                    name: { groupName(g) },
+                    count: { $0 > 0 ? $0 : nil }(viewModel.group[g].dataId.count),
+                    isExpanded: viewModel.group[g].isExpanded
+                )
             }
         }//.padding(.top, -10)
         ) {

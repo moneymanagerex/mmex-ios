@@ -14,3 +14,15 @@ struct Theme {
     var item  = ItemTheme()
     var field = FieldTheme()
 }
+
+struct BadgeCount: View {
+    var count: Int
+    var body: some View {
+        Text("\(count)")
+            .font(.caption)
+            .foregroundStyle(.white)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 2)
+            .background(.gray, in: .capsule)
+    }
+}

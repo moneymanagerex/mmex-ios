@@ -30,10 +30,9 @@ struct CurrencyListView: View {
                         isExpanded[inUse]?.toggle()
                     }) {
                         env.theme.group.view(
-                            isExpanded[inUse] == true
-                        ) {
-                            Text(inUse ? "Used" : "Not Used")
-                        }
+                            name: { Text(inUse ? "Used" : "Not Used") },
+                            isExpanded: isExpanded[inUse] == true
+                        )
                     }
                 }) {
                     if isExpanded[inUse] == true {
