@@ -27,8 +27,8 @@ class AccountViewModel: RepositoryViewModelProtocol {
     @Published var dataIsReady = false
     @Published var group: [RepositoryGroup] = []
     @Published var groupIsReady = false
-    @Published var partition = AccountPartition.defaultValue
-    @Published var search = ""
+    var partition = AccountPartition.defaultValue
+    var search = ""
 
     static let newData = AccountData(
         status       : .open,
@@ -97,10 +97,9 @@ class AccountViewModel: RepositoryViewModelProtocol {
         return dataIsReady
     }
 
-    func newPartition(_ partition: RepositoryPartition) {
+    func newPartition(_ partition: RepositoryPartition) -> Bool {
         log.trace("AccountViewModel.newPartition()")
-        guard dataIsReady else { return }
-        groupIsReady = false
+        guard dataIsReady else { return false }
         group = []
         groupByCurrency = []
         self.partition = partition
@@ -133,7 +132,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
                 dataId: dict[g] ?? [], isVisible: true, isExpanded: g == .boolTrue
             ) }
         }
-        groupIsReady = true
+        return true
     }
 
     /*

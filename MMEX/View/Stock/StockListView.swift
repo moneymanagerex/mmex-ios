@@ -33,10 +33,9 @@ struct StockListView: View {
                                     isTypeExpanded[accountId]?.toggle()
                                 }) {
                                     env.theme.group.view(
-                                        isTypeExpanded[accountId] == true
-                                    ) {
-                                        Text(env.accountCache[accountId]?.name ?? "(No Account)")
-                                    }
+                                        name: { Text(env.accountCache[accountId]?.name ?? "(No Account)") },
+                                        isExpanded: isTypeExpanded[accountId] == true
+                                    )
                                 }
                             }
                         ) {

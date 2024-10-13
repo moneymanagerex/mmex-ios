@@ -34,13 +34,22 @@ struct SettingsThemeView: View {
                 }
             }
 
+            Section() {
+                HStack {
+                    Text("Group Count")
+                    Spacer()
+                    Toggle(isOn: $env.theme.group.showCount) { }
+                }
+            }
+
             Section(header: HStack {
                 Button(action: {
                     isExpanded["Group Layout"]?.toggle()
                 }) {
-                    env.theme.group.view(isExpanded["Group Layout"] == true) {
-                        Text("Group Layout")
-                    }
+                    env.theme.group.view(
+                        name: { Text("Group Layout") },
+                        isExpanded: isExpanded["Group Layout"] == true
+                    )
                 }
             }) {
                 if isExpanded["Group Layout"] == true {
@@ -49,9 +58,11 @@ struct SettingsThemeView: View {
                             Button(action: {
                                 env.theme.group.layout = layout
                             }) {
-                                GroupTheme(layout: layout).view(false) {
-                                    Text("Group Name")
-                                }
+                                GroupTheme(layout: layout, showCount: env.theme.group.showCount).view(
+                                    name: { Text("Group Name") },
+                                    count: 10,
+                                    isExpanded: false
+                                )
                             }
                             .buttonStyle(BorderlessButtonStyle())
                             .padding(10)
@@ -71,9 +82,10 @@ struct SettingsThemeView: View {
                 Button(action: {
                     isExpanded["Item Layout"]?.toggle()
                 }) {
-                    env.theme.group.view(isExpanded["Item Layout"] == true) {
-                        Text("Item Layout")
-                    }
+                    env.theme.group.view(
+                        name: { Text("Item Layout") },
+                        isExpanded: isExpanded["Item Layout"] == true
+                    )
                 }
             }) {
                 if isExpanded["Item Layout"] == true {
@@ -105,9 +117,10 @@ struct SettingsThemeView: View {
                 Button(action: {
                     isExpanded["Field Layout"]?.toggle()
                 }) {
-                    env.theme.group.view(isExpanded["Field Layout"] == true) {
-                        Text("Field Layout")
-                    }
+                    env.theme.group.view(
+                        name: { Text("Field Layout") },
+                        isExpanded: isExpanded["Field Layout"] == true
+                    )
                 }
             }) {
                 if isExpanded["Field Layout"] == true {

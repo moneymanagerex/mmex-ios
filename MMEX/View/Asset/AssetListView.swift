@@ -33,10 +33,9 @@ struct AssetListView: View {
                                     isTypeExpanded[assetType]?.toggle()
                                 }) {
                                     env.theme.group.view(
-                                        isTypeExpanded[assetType] == true
-                                    ) {
-                                        Text(assetType.rawValue)
-                                    }
+                                        name: { Text(assetType.rawValue) },
+                                        isExpanded: isTypeExpanded[assetType] == true
+                                    )
                                 }
                             }
                         ) {

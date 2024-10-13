@@ -10,35 +10,40 @@ import SwiftUI
 
 struct GroupTheme {
     enum Layout: String, EnumCollateNoCase {
-        case foldName = "Fold Name space"
-        case nameFold = "Name space Fold"
+        case foldName = "Fold Name space Count"
+        case nameFold = "Name space Count Fold"
         static let defaultValue = Self.foldName
     }
 
     var layout = Self.Layout.defaultValue
+    var showCount: Bool = false
 }
 
 extension GroupTheme {
-    func fold(_ open: Bool) -> some View {
-        Image(systemName: open ? "chevron.down.circle.fill" : "chevron.right.circle")
+    func fold(_ isExpanded: Bool) -> some View {
+        Image(systemName: isExpanded ? "chevron.down.circle.fill" : "chevron.right.circle")
             .foregroundColor(.gray)
     }
     
     func view<NameView: View>(
-        _ open: Bool,
-        @ViewBuilder name nameView: @escaping () -> NameView
+        @ViewBuilder name nameView: @escaping () -> NameView,
+        count: Int? = nil,
+        isExpanded: Bool
     ) -> some View {
         return Group {
             switch layout {
             case .foldName:
                 HStack {
-                    fold(open)
+                    fold(isExpanded)
                     nameView()
                         .font(.headline.smallCaps())
                         .foregroundColor(.blue)
                         .padding(.leading)
                     
                     Spacer()
+                    if showCount, let count {
+                        BadgeCount(count: count)
+                    }
                 }
             case .nameFold:
                 HStack {
@@ -48,7 +53,10 @@ extension GroupTheme {
                         .padding(.leading)
                     
                     Spacer()
-                    fold(open)
+                    if showCount, let count {
+                        BadgeCount(count: count)
+                    }
+                    fold(isExpanded)
                 }
             }
         }
