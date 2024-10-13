@@ -120,13 +120,39 @@ class TransactionViewModel: ObservableObject {
         }
     }
 
+    private func populateParentCategories(for categories: [CategoryData]) -> [CategoryData] {
+        // Create a dictionary for quick parent lookups
+        let categoryDict = Dictionary(uniqueKeysWithValues: categories.map { ($0.id, $0) })
+
+        return categories.map { category in
+            var updatedCategory = category
+            updatedCategory.parentCategories = self.findParentCategories(for: category, in: categoryDict)
+            return updatedCategory
+        }
+    }
+
+    private func findParentCategories(for category: CategoryData, in categoryDict: [DataId: CategoryData]) -> [CategoryData] {
+        // Recursive function to find all parent categories
+        var parents: [CategoryData] = []
+
+        var currentCategory = category
+        while let parentCategory = categoryDict[currentCategory.parentId], parentCategory.id != 0 {
+            parents.insert(parentCategory, at: 0) // Insert at the beginning to maintain the correct order
+            currentCategory = parentCategory
+        }
+
+        return parents
+    }
+
     func loadCategories() {
         let repository = env.categoryRepository
         DispatchQueue.global(qos: .background).async {
             let loadedCategories = repository?.load() ?? []
-            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: loadedCategories.map { ($0.id, $0) })
+            let updatedCategories = self.populateParentCategories(for: loadedCategories)
+
+            let loadedCategoryDict = Dictionary(uniqueKeysWithValues: updatedCategories.map { ($0.id, $0) })
             DispatchQueue.main.async {
-                self.categories = loadedCategories
+                self.categories = updatedCategories
                 self.categoryDict = loadedCategoryDict
             }
         }

@@ -143,7 +143,7 @@ struct TransactionEditView: View {
                         Text("Category").tag(0 as Int64) // not set
                     }
                     ForEach(categories) { category in
-                        Text(category.name).tag(category.id)
+                        Text(category.fullName).tag(category.id)
                     }
                 }
                 .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker

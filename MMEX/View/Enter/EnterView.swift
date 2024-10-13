@@ -17,14 +17,13 @@ struct EnterView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var accountId: [DataId] = []
-    @State private var categories: [CategoryData] = []
     @State private var payees: [PayeeData] = []
     
     var body: some View {
         NavigationStack {
             TransactionEditView(
                 accountId: $accountId,
-                categories: $categories,
+                categories: $viewModel.categories,
                 payees: $payees,
                 txn: $newTxn
             )
@@ -51,7 +50,7 @@ struct EnterView: View {
         // .navigationBarTitle("Add Transaction", displayMode: .inline)
         .onAppear() {
             loadAccounts()
-            loadCategories()
+            viewModel.loadCategories()
             loadPayees()
             // TODO update initial payee (e.g. last used)
             // TODO update category, payee associated?
@@ -82,15 +81,6 @@ struct EnterView: View {
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees
-            }
-        }
-    }
-    
-    func loadCategories() {
-        DispatchQueue.global(qos: .background).async {
-            let loadedCategories = env.categoryRepository?.load() ?? []
-            DispatchQueue.main.async {
-                self.categories = loadedCategories
             }
         }
     }
