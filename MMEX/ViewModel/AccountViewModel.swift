@@ -47,7 +47,6 @@ struct AccountSearch: RepositorySearchProtocol {
 }
 
 @MainActor
-@Observable
 class AccountViewModel: RepositoryViewModelProtocol {
     typealias RepositoryData    = AccountData
     typealias RepositoryGroupBy = AccountGroupBy
@@ -55,22 +54,22 @@ class AccountViewModel: RepositoryViewModelProtocol {
 
     private(set) var env: EnvironmentManager
 
-    //@Published
+    @Published
     var dataState: RepositoryLoadState = .idle
     var dataById: [DataId : RepositoryData] = [:]
     private var dataId: [DataId] = [] // sorted by name
     private(set) var currencyName: [(DataId, String)] = [] // sorted by name
 
     var groupBy = AccountGroupBy.defaultValue
-    //@Published
+    @Published
     var groupState: RepositoryLoadState = .idle
-    //@Published
+    @Published
     var groupDataId: [[DataId]] = []
 
     var search = AccountSearch()
-    //@Published
+    @Published
     var groupIsVisible  : [Bool] = []
-    //@Published
+    @Published
     var groupIsExpanded : [Bool] = []
 
     static let newData = AccountData(

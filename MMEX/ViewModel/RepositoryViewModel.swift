@@ -34,7 +34,7 @@ protocol RepositorySearchProtocol: Copyable {
 }
 
 @MainActor
-protocol RepositoryViewModelProtocol: AnyObject, Observable {
+protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
     associatedtype RepositoryData    : DataProtocol
     associatedtype RepositoryGroupBy : RepositoryGroupByProtocol
     associatedtype RepositorySearch  : RepositorySearchProtocol

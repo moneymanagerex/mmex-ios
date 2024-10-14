@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountListView: View {
     @EnvironmentObject var env: EnvironmentManager
-    var vm: AccountViewModel
+    @ObservedObject var vm: AccountViewModel
 
     var body: some View {
         RepositoryListView(
@@ -68,9 +68,11 @@ struct AccountListView: View {
     }
 }
 
+/*
 #Preview {
     AccountListView(
         vm: AccountViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
+*/

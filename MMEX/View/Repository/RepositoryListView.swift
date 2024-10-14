@@ -17,7 +17,7 @@ struct RepositoryListView<
     typealias RepositoryGroupBy = RepositoryViewModel.RepositoryGroupBy
 
     @EnvironmentObject var env: EnvironmentManager
-    @Bindable var vm: RepositoryViewModel
+    @ObservedObject var vm: RepositoryViewModel
     @State var groupBy: RepositoryGroupBy
     @ViewBuilder var groupName: (_ groupId: Int) -> GroupNameView
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
@@ -51,7 +51,7 @@ struct RepositoryListView<
             //.border(.red)
             if vm.dataState == .ready, vm.groupState == .ready {
                 ForEach(0..<vm.groupDataId.count, id: \.self) { g in
-                    if vm.groupState == .ready && vm.groupIsVisible[g] {
+                    if vm.groupIsVisible[g] {
                         groupView(g)
                     }
                 }
@@ -173,9 +173,11 @@ struct RepositoryListView<
     }
 }
 
+/*
 #Preview("Account") {
     AccountListView(
         vm: AccountViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
+*/
