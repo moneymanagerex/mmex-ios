@@ -64,6 +64,11 @@ struct SettingsView: View {
                     Spacer()
                     Text("\(dateFormat)")
                 }
+                HStack {
+                    Text("Category Delimiter")
+                    Spacer()
+                    Text("\(viewModel.categDelimiter)")
+                }
                 Picker("Base Currency", selection: $viewModel.baseCurrencyId) {
                     ForEach(viewModel.currencies) { currency in
                         HStack {

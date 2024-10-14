@@ -131,6 +131,7 @@ struct TransactionDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 TransactionEditView(
+                    viewModel: viewModel,
                     accountId: $accountId,
                     categories: $categories,
                     payees: $payees,

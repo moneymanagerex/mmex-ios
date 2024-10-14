@@ -13,11 +13,18 @@ struct CategoryData: ExportableEntity {
     var name     : String = ""
     var active   : Bool   = false
     var parentId : DataId = 0
+
+    var parentCategories: [CategoryData] = []
 }
 
 extension CategoryData {
     var isRoot: Bool {
         return parentId <= 0
+    }
+    func fullName(with delimiter: String = ":") -> String {
+        // Join all parent category names followed by the current category's name
+        let parentNames = parentCategories.map { $0.name }
+        return (parentNames + [name]).joined(separator: delimiter)
     }
 }
 
