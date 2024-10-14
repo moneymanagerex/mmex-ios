@@ -15,6 +15,7 @@ enum InfoKey: String {
     case dateFormat       = "DATEFORMAT"
     case createDate       = "CREATEDATE"
     case uid              = "UID"
+    case categDelimiter   = "CATEG_DELIMITER"
 
     var id: String { return rawValue }
 }
@@ -57,5 +58,6 @@ extension InfotableData {
         InfotableData(id: 2, name: InfoKey.createDate.id,       value: DateString(Date()).string),
         InfotableData(id: 3, name: InfoKey.baseCurrencyID.id,   value: "1"),
         InfotableData(id: 4, name: InfoKey.defaultAccountID.id, value: "1"),
+        InfotableData(id: 5, name: InfoKey.categDelimiter.id, value: ":"),
     ]
 }

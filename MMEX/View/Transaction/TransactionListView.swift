@@ -97,6 +97,7 @@ struct TransactionListView: View {
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(
+                viewModel: viewModel,
                 accountId: $viewModel.accountId,
                 categories: $viewModel.categories,
                 payees: $viewModel.payees,

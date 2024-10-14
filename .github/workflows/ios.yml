@@ -16,7 +16,14 @@ jobs:
         uses: actions/checkout@v4
       - name: Clone SQLite.swift from GitHub
         run: |
-          git clone https://github.com/stephencelis/SQLite.swift.git ../SQLite.swift
+          git clone --branch 0.15.3 --single-branch https://github.com/stephencelis/SQLite.swift.git ../SQLite.swift
+      - name: Reset SDK Cache
+        run: |
+          echo "Resetting SDK cache..."
+          sudo rm -rf ~/Library/Caches/com.apple.dt.Xcode/SDKs
+          sudo rm -rf ~/Library/Developer/Xcode/DerivedData
+          sudo xcrun --sdk iphoneos --show-sdk-path
+          echo "SDK cache reset completed."
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
