@@ -15,7 +15,7 @@ struct AccountListView: View {
     var body: some View {
         RepositoryListView(
             vm: vm,
-            groupBy: vm.groupBy,
+            //groupBy: vm.groupBy,
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
