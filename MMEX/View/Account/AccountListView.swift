@@ -20,8 +20,12 @@ struct AccountListView: View {
             itemName: itemName,
             itemInfo: itemInfo,
             detailView: { data in AccountDetailView(
-                viewModel: vm,
+                vm: vm,
                 data: data
+            ) },
+            addView: { $isPresented in AccountAddView(
+                vm: vm,
+                isPresented: $isPresented
             ) }
         )
         .onAppear {

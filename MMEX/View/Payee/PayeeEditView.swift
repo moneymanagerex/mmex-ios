@@ -41,7 +41,7 @@ struct PayeeEditView: View {
                 env.theme.field.picker(edit, "Category") {
                     Picker("", selection: $payee.categoryId) {
                         if (payee.categoryId <= 0) {
-                            Text("Select Category").tag(0 as Int64) // not set
+                            Text("Select Category").tag(0 as DataId) // not set
                         }
                         ForEach(categories.indices, id: \.self) { i in
                             Text(categories[i].name).tag(categories[i].id)

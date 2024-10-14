@@ -53,7 +53,7 @@ struct AssetEditView: View {
                 env.theme.field.picker(edit, "Currency") {
                     Picker("", selection: $asset.currencyId) {
                         if (asset.currencyId <= 0) {
-                            Text("Select Currency").tag(0 as Int64) // not set
+                            Text("Select Currency").tag(0 as DataId) // not set
                         }
                         ForEach(allCurrencyName, id: \.0) { id, name in
                             Text(name).tag(id)

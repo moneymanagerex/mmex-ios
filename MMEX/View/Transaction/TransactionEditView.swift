@@ -41,7 +41,7 @@ struct TransactionEditView: View {
                 
                 Picker("Select account", selection: $txn.accountId) {
                     if (txn.accountId == 0) {
-                        Text("Account").tag(0 as Int64) // not set
+                        Text("Account").tag(0 as DataId) // not set
                     }
                     ForEach(accountId, id: \.self) { id in
                         if let account = env.accountCache[id] {
@@ -110,7 +110,7 @@ struct TransactionEditView: View {
                     // to Account picker
                     Picker("Select To Account", selection: $txn.toAccountId) {
                         if (txn.toAccountId == 0) {
-                            Text("Account").tag(0 as Int64) // not set
+                            Text("Account").tag(0 as DataId) // not set
                         }
                         ForEach(accountId, id: \.self) { id in
                             if let account = env.accountCache[id],
@@ -125,7 +125,7 @@ struct TransactionEditView: View {
                     // Payee picker
                     Picker("Select Payee", selection: $txn.payeeId) {
                         if (txn.payeeId == 0) {
-                            Text("Payee").tag(0 as Int64) // not set
+                            Text("Payee").tag(0 as DataId) // not set
                         }
                         ForEach(payees) { payee in
                             Text(payee.name).tag(payee.id)
@@ -141,7 +141,7 @@ struct TransactionEditView: View {
                     set: { txn.categId = $0 } // Set
                 )) {
                     if (txn.categId == 0 ) {
-                        Text("Category").tag(0 as Int64) // not set
+                        Text("Category").tag(0 as DataId) // not set
                     }
                     ForEach(categories) { category in
                         Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
@@ -187,7 +187,7 @@ struct TransactionEditView: View {
                             // Split Category picker
                             Picker("Select Category", selection: $newSplit.categId) {
                                 if (newSplit.categId == 0 ) {
-                                    Text("Category").tag(0 as Int64) // not set
+                                    Text("Category").tag(0 as DataId) // not set
                                 }
                                 ForEach(categories) { category in
                                     Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
