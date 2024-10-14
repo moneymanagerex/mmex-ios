@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct FieldTheme {
+struct FieldTheme: ThemeProtocol {
     enum Layout: String, EnumCollateNoCase {
         case vstack = "VStack"
         static let defaultValue = Self.vstack

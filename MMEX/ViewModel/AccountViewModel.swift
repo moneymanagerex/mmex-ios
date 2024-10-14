@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AccountPartition: String, RepositoryPartitionProtocol {
+enum AccountGroupBy: String, RepositoryGroupByProtocol {
     case void       = "Group:"
     case byType     = "by Type"
     case byCurrency = "by Currency"
@@ -16,19 +16,61 @@ enum AccountPartition: String, RepositoryPartitionProtocol {
     static let defaultValue = Self.void
 }
 
-class AccountViewModel: RepositoryViewModelProtocol {
-    typealias RepositoryData      = AccountData
-    typealias RepositoryPartition = AccountPartition
+struct AccountSearch: RepositorySearchProtocol {
+    var mode = RepositorySearchMode.defaultValue
+    var key: String = ""
 
-    var env: EnvironmentManager
-    private(set) var currencyName: [(DataId, String)] = [] // sorted by name
-    private(set) var dataById: [DataId : RepositoryData] = [:]
+    static var simpleConfig: [(String, Bool, (AccountData) -> [String])] = [
+        ("Name",  true,  { [$0.name] }),
+        ("Notes", false, { [$0.notes] }),
+        ("other", false, { [$0.num, $0.heldAt, $0.website, $0.contactInfo, $0.accessInfo] }),
+    ]
+    var simpleIsActive = simpleConfig.map { $0.1 }
+
+    var isEmpty: Bool { mode == .simple && key.isEmpty }
+    func match(_ data: AccountData) -> Bool {
+        if isEmpty { return true }
+
+        // TODO: advanced search
+        if mode != .simple { return true }
+
+        for i in 0 ..< Self.simpleConfig.count {
+            guard simpleIsActive[i] else { continue }
+            if Self.simpleConfig[i].2(data).first(
+                where: { $0.localizedCaseInsensitiveContains(key) }
+            ) != nil {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+@MainActor
+class AccountViewModel: RepositoryViewModelProtocol {
+    typealias RepositoryData    = AccountData
+    typealias RepositoryGroupBy = AccountGroupBy
+    typealias RepositorySearch  = AccountSearch
+
+    private(set) var env: EnvironmentManager
+
+    @Published
+    var dataState: RepositoryLoadState = .idle
+    var dataById: [DataId : RepositoryData] = [:]
     private var dataId: [DataId] = [] // sorted by name
-    @Published var dataIsReady = false
-    @Published var group: [RepositoryGroup] = []
-    @Published var groupIsReady = false
-    var partition = AccountPartition.defaultValue
-    var search = ""
+    private(set) var currencyName: [(DataId, String)] = [] // sorted by name
+
+    var groupBy = AccountGroupBy.defaultValue
+    @Published
+    var groupState: RepositoryLoadState = .idle
+    @Published
+    var groupDataId: [[DataId]] = []
+
+    var search = AccountSearch()
+    @Published
+    var groupIsVisible  : [Bool] = []
+    @Published
+    var groupIsExpanded : [Bool] = []
 
     static let newData = AccountData(
         status       : .open,
@@ -53,86 +95,134 @@ class AccountViewModel: RepositoryViewModelProtocol {
         self.env = env
     }
 
-    enum LoadData {
-        case currencyName([(DataId, String)]?)
+    enum LoadTaskData {
         case dataById([DataId: RepositoryData]?)
         case dataId([DataId]?)
+        case currencyName([(DataId, String)]?)
     }
+    typealias LoadData = (
+        dataById: [DataId: RepositoryData],
+        dataId: [DataId],
+        currencyName: [(DataId, String)]
+    )
 
-    func loadData() async -> Bool {
-        log.trace("AccountViewModel.loadData()")
-        var dataIsReady = true
-        await withTaskGroup(of: LoadData.self) { queue -> () in
-            queue.addTask(priority: .background) {
-                return .currencyName(self.env.currencyRepository?.loadName())
-            }
+    func loadData() async {
+        log.trace("DEBUG: AccountViewModel.loadData(): main=\(Thread.isMainThread)")
+        guard dataState == .idle else { return }
+        dataState = .loading
+        log.debug("DEBUG: AccountViewModel.loadData(): dataState=\(self.dataState.rawValue)")
+        log.debug("DEBUG: AccountViewModel.loadData(): groupState=\(self.groupState.rawValue)")
+        let data: LoadData? = await withTaskGroup(of: LoadTaskData.self) { queue -> LoadData? in
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                return .dataById(self.env.accountRepository?.selectById(
+                return await .dataById(self.env.accountRepository?.selectById(
                     from: A.table.order(A.col_name)
                 ) )
             }
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                return .dataId(self.env.accountRepository?.select(
+                return await .dataId(self.env.accountRepository?.select(
                     from: A.table.order(A.col_name),
                     with: A.fetchId
                 ) )
             }
+            queue.addTask(priority: .background) {
+                return await .currencyName(self.env.currencyRepository?.loadName())
+            }
 
-            for await result in queue {
-                switch result {
-                case .currencyName(let result):
-                    if let result { self.currencyName = result }
-                    else { dataIsReady = false }
+            var error = false
+            var data: LoadData = (dataById: [:], dataId: [], currencyName: [])
+            for await taskData in queue {
+                switch taskData {
                 case .dataById(let result):
-                    if let result { self.dataById = result }
-                    else { dataIsReady = false }
+                    if let result { data.dataById = result }
+                    else { error = true }
                 case .dataId(let result):
-                    if let result { self.dataId = result }
-                    else { dataIsReady = false }
+                    if let result { data.dataId = result }
+                    else { error = true }
+                case .currencyName(let result):
+                    if let result { data.currencyName = result }
+                    else { error = true }
                 }
             }
+            return error ? nil : data
         }
-        return dataIsReady
+
+        if let data {
+            dataById     = data.dataById
+            dataId       = data.dataId
+            currencyName = data.currencyName
+            dataState = .ready
+            log.info("INFO: AccountViewModel.loadData(): main=\(Thread.isMainThread), \(self.dataById.count), \(self.dataId.count), \(self.currencyName.count)")
+        } else {
+            dataState = .error
+            log.error("ERROR: AccountViewModel.loadData(): main=\(Thread.isMainThread)")
+        }
     }
 
-    func newPartition(_ partition: RepositoryPartition) -> Bool {
-        log.trace("AccountViewModel.newPartition()")
-        guard dataIsReady else { return false }
-        group = []
+    func unloadData() {
+        log.trace("DEBUG: AccountViewModel.unloadData(): main=\(Thread.isMainThread)")
+        if dataState == .idle { return }
+        if groupState != .idle { unloadGroup() }
+        dataState = .idle
+        dataById.removeAll()
+        dataId = []
+        currencyName = []
+    }
+
+    func addGroup(_ dataId: [DataId], _ isVisible: Bool, _ isExpanded: Bool) {
+        groupDataId.append(dataId)
+        groupIsVisible.append(isVisible)
+        groupIsExpanded.append(isExpanded)
+    }
+
+    func loadGroup(_ groupBy: AccountGroupBy) {
+        log.trace("DEBUG: AccountViewModel.loadGroup(\(groupBy.rawValue)): main=\(Thread.isMainThread)")
+        guard dataState == .ready && groupState != .loading else { return }
+        groupState = .loading
+        self.groupBy = groupBy
         groupByCurrency = []
-        self.partition = partition
-        switch partition {
+        groupDataId = []
+        groupIsVisible.removeAll(keepingCapacity: true)
+        groupIsExpanded.removeAll(keepingCapacity: true)
+        switch groupBy {
         case .void:
-            group = [ RepositoryGroup(
-                dataId: dataId, isVisible: true, isExpanded: true
-            ) ]
+            addGroup(dataId, true, true)
         case .byType:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.type }
-            group = Self.groupByType.map { g in RepositoryGroup(
-                dataId: dict[g] ?? [], isVisible: dict[g] != nil, isExpanded: true
-            ) }
+            for g in Self.groupByType {
+                addGroup(dict[g] ?? [], dict[g] != nil, true)
+            }
         case .byCurrency:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.currencyId }
             groupByCurrency = self.env.currencyCache.compactMap {
                 dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
-            group = groupByCurrency.map { g in RepositoryGroup(
-                dataId: dict[g] ?? [], isVisible: true, isExpanded: true
-            ) }
+            for g in groupByCurrency {
+                addGroup(dict[g] ?? [], dict[g] != nil, true)
+            }
         case .byStatus:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.status }
-            group = Self.groupByStatus.map { g in RepositoryGroup(
-                dataId: dict[g] ?? [], isVisible: true, isExpanded: g == .open
-            ) }
+            for g in Self.groupByStatus {
+                addGroup(dict[g] ?? [], true, g == .open)
+            }
         case .byFavorite:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.favoriteAcct }
-            group = Self.groupByFavorite.map { g in RepositoryGroup(
-                dataId: dict[g] ?? [], isVisible: true, isExpanded: g == .boolTrue
-            ) }
+            for g in Self.groupByFavorite {
+                addGroup(dict[g] ?? [], true, g == .boolTrue)
+            }
         }
-        return true
+        groupState = .ready
+    }
+
+    func groupIsVisible(_ g: Int) -> Bool {
+        if search.isEmpty {
+            return switch groupBy {
+            case .byType, .byCurrency: !groupDataId[g].isEmpty
+            default: true
+            }
+        }
+        return groupDataId[g].first(where: { dataIsVisible($0) }) != nil
     }
 
     /*
@@ -176,20 +266,4 @@ class AccountViewModel: RepositoryViewModelProtocol {
         }
     }
 */
-
-    func visible(data: AccountData) -> Bool {
-        search.isEmpty || data.name.localizedCaseInsensitiveContains(search)
-    }
-
-    func visible(groupId g: Int) -> Bool {
-        if search.isEmpty {
-            return switch partition {
-            case .byType: !group[g].dataId.isEmpty
-            default: true
-            }
-        }
-        return group[g].dataId.first(
-            where: { visible(dataId: $0) }
-        ) != nil
-    }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ItemTheme {
+struct ItemTheme: ThemeProtocol {
     enum Layout: String, EnumCollateNoCase {
         case hstack = "HStack"
         case vstack = "VStack"

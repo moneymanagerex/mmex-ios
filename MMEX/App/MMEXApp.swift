@@ -16,6 +16,7 @@ let log = Logger(
 @main
 struct MMEXApp: App {
     @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
+    //@StateObject private var env = EnvironmentManager(withSampleDatabaseInMemory: ())
 
     var body: some Scene {
         WindowGroup {

@@ -150,6 +150,7 @@ struct SettingsThemeView: View {
                 }
             }
         }
+        .navigationTitle("Theme")
     }
 }
 

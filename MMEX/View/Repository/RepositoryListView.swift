@@ -13,56 +13,52 @@ struct RepositoryListView<
     DetailView: View
 >: View
 {
-    typealias RepositoryData      = RepositoryViewModel.RepositoryData
-    typealias RepositoryPartition = RepositoryViewModel.RepositoryPartition
+    typealias RepositoryData    = RepositoryViewModel.RepositoryData
+    typealias RepositoryGroupBy = RepositoryViewModel.RepositoryGroupBy
 
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var viewModel: RepositoryViewModel
-    @State var partition: RepositoryPartition
-    @State var search = ""
+    @ObservedObject var vm: RepositoryViewModel
+    @State var groupBy: RepositoryGroupBy
     @ViewBuilder var groupName: (_ groupId: Int) -> GroupNameView
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
     @ViewBuilder var detailView: (_ data: RepositoryData) -> DetailView
 
+    @State var key = ""
     @State var isPresentingAddView = false
     @State var newData = RepositoryViewModel.newData
 
     var body: some View {
-        List {
+        return List {
             HStack {
                 Spacer()
-                Picker("", selection: $partition) {
-                    ForEach(RepositoryPartition.allCases, id: \.self) { p in
-                        Text("\(p.rawValue)")
+                Picker("", selection: $groupBy) {
+                    ForEach(RepositoryGroupBy.allCases, id: \.self) { choice in
+                        Text("\(choice.rawValue)")
                             .font(.subheadline)
-                            .tag(p)
+                            .tag(choice)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
-                .onChange(of: partition) {
-                    viewModel.groupIsReady = false
-                    if viewModel.newPartition(partition) {
-                        viewModel.groupIsReady = viewModel.newSearch()
-                    }
+                .onChange(of: groupBy) {
+                    vm.loadGroup(groupBy)
+                    vm.searchGroup()
                 }
                 .padding(.vertical, -5)
                 //.border(.red)
             }
             .listRowBackground(Color.clear)
             //.border(.red)
-            if viewModel.dataIsReady, viewModel.groupIsReady {
-                ForEach(0..<viewModel.group.count, id: \.self) { g in
-                    if viewModel.group[g].isVisible {
+            //Text("DEBUG: main=\(Thread.isMainThread), \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
+            if vm.dataState == .ready, vm.groupState == .ready {
+                ForEach(0..<vm.groupDataId.count, id: \.self) { g in
+                    if vm.groupIsVisible[g] {
                         groupView(g)
                     }
                 }
-            } else if !viewModel.dataIsReady {
+            } else if vm.dataState == .idle {
                 Button(action: { Task {
-                    viewModel.groupIsReady = false
-                    viewModel.dataIsReady = false
-                    viewModel.dataIsReady = await viewModel.loadData()
-                    viewModel.groupIsReady = viewModel.newPartition(self.partition)
+                    await load()
                 } } ) {
                     Text("Load data")
                 }
@@ -71,11 +67,11 @@ struct RepositoryListView<
                 .background(.secondary)
                 .foregroundColor(.primary)
                 .clipShape(Capsule())
-            } else if !viewModel.groupIsReady {
-                Button(action: {
-                    viewModel.groupIsReady = viewModel.newPartition(self.partition)
-                } ) {
-                    Text("Prepare groups")
+            } else if vm.groupState == .idle {
+                Button(action: { Task {
+                    vm.loadGroup(self.groupBy)
+                } } ) {
+                    Text("Load groups")
                 }
                 .listRowBackground(Color.clear)
                 .padding()
@@ -93,18 +89,19 @@ struct RepositoryListView<
             )
             .accessibilityLabel("New " + RepositoryData.dataName.0)
         }
-        .searchable(text: $search, prompt: "Search by name")
+        .searchable(text: $key, prompt: "Search by name") // TODO: fix prompt
         .textInputAutocapitalization(.never)
-        .onChange(of: search) { _, newValue in
-            viewModel.groupIsReady = false
-            viewModel.groupIsReady = viewModel.newSearch(newValue)
+        .onChange(of: key) { _, newValue in
+            vm.simpleSearch(with: newValue)
+            vm.searchGroup(expand: true)
         }
         .navigationTitle(RepositoryData.dataName.1)
-        .task {
-            viewModel.groupIsReady = false
-            viewModel.dataIsReady = false
-            viewModel.dataIsReady = await viewModel.loadData()
-            viewModel.groupIsReady = viewModel.newPartition(self.partition)
+        .onAppear { Task {
+            let _ = log.debug("DEBUG: RepositoryListView.onAppear()")
+            await load()
+        } }
+        .refreshable {
+            await load()
         }
         .sheet(isPresented: $isPresentingAddView) {
 /*
@@ -120,24 +117,36 @@ struct RepositoryListView<
         }
     }
 
+    private func load() async {
+        log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
+        await vm.loadData()
+        vm.loadGroup(self.groupBy)
+        vm.searchGroup()
+        log.trace("INFO: RepositoryListView.load(): \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
+    }
+
     func groupView(_ g: Int) -> some View {
+        //Text("group=\(g), \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
+        //Text("group=\(g), \(vm.dataById.count), \(vm.groupDataId.count)")
+
         Section(header: HStack {
             Button(action: {
-                viewModel.group[g].isExpanded.toggle()
+                vm.groupIsExpanded[g].toggle()
             }) {
                 env.theme.group.view(
                     name: { groupName(g) },
-                    count: { $0 > 0 ? $0 : nil }(viewModel.group[g].dataId.count),
-                    isExpanded: viewModel.group[g].isExpanded
+                    count: { $0 > 0 ? $0 : nil }(vm.groupDataId[g].count),
+                    isExpanded: vm.groupIsExpanded[g]
                 )
             }
         }//.padding(.top, -10)
         ) {
-            if viewModel.group[g].isExpanded {
-                ForEach(viewModel.group[g].dataId, id: \.self) { id in
+            if vm.groupIsExpanded[g] {
+                ForEach(vm.groupDataId[g], id: \.self) { id in
+                    let _ = print("TEST: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
                     // TODO: update View after change in account
-                    if viewModel.visible(dataId: id) {
-                        itemView(viewModel.dataById[id]!)
+                    if vm.dataIsVisible(id) {
+                        itemView(vm.dataById[id]!)
                     }
 
                 }
@@ -171,7 +180,7 @@ struct RepositoryListView<
 
 #Preview("Account") {
     AccountListView(
-        viewModel: AccountViewModel(env: EnvironmentManager.sampleData)
+        vm: AccountViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
