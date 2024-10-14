@@ -7,74 +7,126 @@
 
 import SwiftUI
 
-protocol RepositoryPartitionProtocol: EnumCollateNoCase, Hashable
+enum RepositoryLoadState: Int, Identifiable, Equatable {
+    case idle
+    case loading
+    case ready
+    case error
+    var id: Self { self }
+}
+
+protocol RepositoryGroupByProtocol: EnumCollateNoCase, Hashable
 where Self.AllCases: RandomAccessCollection {
 }
 
-struct RepositoryGroup {
-    var dataId     : [DataId] = []
-    var isVisible  : Bool = true
-    var isExpanded : Bool = true
+enum RepositorySearchMode: String, EnumCollateNoCase, Hashable {
+    case simple   = "Search"
+    case advanced = "Adv. Search"
+    static var defaultValue = Self.simple
 }
 
-protocol RepositoryViewModelProtocol: ObservableObject {
-    associatedtype RepositoryData      : DataProtocol
-    associatedtype RepositoryPartition : RepositoryPartitionProtocol
+protocol RepositorySearchProtocol: Copyable {
+    associatedtype RepositoryData: DataProtocol
+    var mode: RepositorySearchMode { get set }
+    var key: String { get set }
+    var isEmpty: Bool { get }
+    func match(_ data: RepositoryData) -> Bool
+}
 
-    var env          : EnvironmentManager { get }
-    var dataById     : [DataId: RepositoryData] { get }
-    var dataIsReady  : Bool { get set }
-    var group        : [RepositoryGroup] { get set }
-    var groupIsReady : Bool { get set }
-    var partition    : RepositoryPartition { get set }
-    var search       : String { get set }
+@MainActor
+protocol RepositoryViewModelProtocol: AnyObject, Observable {
+    associatedtype RepositoryData    : DataProtocol
+    associatedtype RepositoryGroupBy : RepositoryGroupByProtocol
+    associatedtype RepositorySearch  : RepositorySearchProtocol
+    where RepositorySearch.RepositoryData == Self.RepositoryData
+
+    var env         : EnvironmentManager       { get }
+    var dataState   : RepositoryLoadState      { get set }
+    var dataById    : [DataId: RepositoryData] { get set }
+
+    var groupBy     : RepositoryGroupBy        { get set }
+    var groupState  : RepositoryLoadState      { get set }
+    var groupDataId : [[DataId]]               { get set }
+
+    var search          : RepositorySearch     { get set }
+    var groupIsVisible  : [Bool]               { get set }
+    var groupIsExpanded : [Bool]               { get set }
 
     static var newData: RepositoryData { get }
 
     init(env: EnvironmentManager)
 
-    func loadData() async -> Bool
-    func newPartition(_ partition: RepositoryPartition) -> Bool
-    func newSearch(_ search: String?) -> Bool
-    func visible(data: RepositoryData) -> Bool
-    func visible(groupId: Int) -> Bool
+    // load `dataById`; set `dataState` to `.ready` or `.error`
+    // prerequisites: `dataState == .idle && groupState == .idle`
+    func loadData() async
+
+    // set `dataState` to `.idle`
+    // prerequisites: `groupState == .idle`
+    func unloadData()
+
+    // create `groupDataId`; initialize `groupIsVisible`, `groupIsExpanded`
+    // set `groupBy`; set `groupState` to `.ready` or `.error`
+    // prerequisites: `dataState == .ready`
+    func loadGroup(_ groupBy: RepositoryGroupBy)// async //-> RepositoryLoadState
+
+    // set `groupState` to `.idle`
+    func unloadGroup()
+
+    // set `search.mode`, `search.key`
+    func simpleSearch(with key: String)
+
+    // set `groupIsVisible`, `groupIsExpanded`; set `groupState` back to `.ready`
+    // prerequisites: `groupState == .ready`
+    func searchGroup(expand: Bool)
+
+    func groupIsVisible(_ groupId: Int) -> Bool
 }
 
 extension RepositoryViewModelProtocol {
-    func dataId(ofGroup g: Int) -> [DataId] {
-        self.group[g].dataId
+    func unloadData() {
+        log.trace("DEBUG: RepositoryViewModelProtocol.unloadData(): main=\(Thread.isMainThread)")
+        if groupState != .idle { unloadGroup() }
+        dataState = .idle
+        dataById.removeAll()
     }
 
-    func isVisible(group g: Int) -> Bool {
-        self.group[g].isVisible
+    func unloadGroup() {
+        log.trace("DEBUG: RepositoryViewModelProtocol.unloadGroup(): main=\(Thread.isMainThread)")
+        groupState = .idle
+        groupDataId = []
     }
 
-    func isExpanded(group g: Int) -> Bool {
-        self.group[g].isExpanded
+    func dataIsVisible(_ data: RepositoryData) -> Bool {
+        search.match(data)
     }
 
-    func visible(dataId: DataId) -> Bool {
-        visible(data: self.dataById[dataId]!)
+    func dataIsVisible(_ dataId: DataId) -> Bool {
+        search.match(dataById[dataId]!)
     }
 
-    func visible(groupId: Int) -> Bool {
-        return search.isEmpty || group[groupId].dataId.first(
-            where: { visible(dataId: $0) }
+    func simpleSearch(with key: String) {
+        search.mode = .simple
+        search.key = key
+    }
+
+    func groupIsVisible(_ groupId: Int) -> Bool {
+        return !search.isEmpty || groupDataId[groupId].first(
+            where: { dataIsVisible($0) }
         ) != nil
     }
 
-    func newSearch(_ search: String? = nil) -> Bool {
-        log.trace("RepositoryViewModelProtocol.newSearch(\(search ?? self.search))")
-        if let search { self.search = search }
-        guard dataIsReady else { return false }
-        for g in 0..<group.count {
-            let isVisible = visible(groupId: g)
-            group[g].isVisible = isVisible
-            //log.debug("newSearch: \(g) = \(isVisible)")
-            if (search != nil || !self.search.isEmpty) && isVisible {
-                group[g].isExpanded = true
+    func searchGroup(expand: Bool = false) {
+        log.trace("DEBUG: RepositoryViewModelProtocol.searchGroup()")
+        guard groupState == .ready else { return }
+        groupState = .loading
+        for g in 0 ..< groupDataId.count {
+            let isVisible = groupIsVisible(g)
+            log.debug("DEBUG: RepositoryViewModelProtocol.searchGroup(): \(g) = \(isVisible)")
+            if (expand || !self.search.isEmpty) && isVisible {
+                groupIsExpanded[g] = true
             }
+            groupIsVisible[g] = isVisible
         }
-        return true
+        groupState = .ready
     }
 }

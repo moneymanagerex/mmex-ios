@@ -10,17 +10,17 @@ import SwiftUI
 
 struct AccountListView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var viewModel: AccountViewModel
+    var vm: AccountViewModel
 
     var body: some View {
         RepositoryListView(
-            viewModel: viewModel,
-            partition: viewModel.partition,
+            vm: vm,
+            groupBy: vm.groupBy,
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
             detailView: { data in AccountDetailView(
-                viewModel: viewModel,
+                viewModel: vm,
                 data: data
             ) }
         )
@@ -28,7 +28,7 @@ struct AccountListView: View {
 
     func groupName(_ groupId: Int) -> some View {
         Group {
-            switch viewModel.partition {
+            switch vm.groupBy {
             case .void:
                 Text("All")
             case .byType:
@@ -42,7 +42,7 @@ struct AccountListView: View {
                     //.padding(.leading)
                 }
             case .byCurrency:
-                Text(env.currencyCache[viewModel.groupByCurrency[groupId]]?.name ?? "ERROR: unknown currency")
+                Text(env.currencyCache[vm.groupByCurrency[groupId]]?.name ?? "ERROR: unknown currency")
             case .byStatus:
                 Text(AccountViewModel.groupByStatus[groupId].rawValue)
             case .byFavorite:
@@ -57,7 +57,7 @@ struct AccountListView: View {
 
     func itemInfo(_ data: AccountData) -> some View {
         Group {
-            if viewModel.partition == .byType {
+            if vm.groupBy == .byType {
                 if let currency = env.currencyCache[data.currencyId] {
                     Text(currency.name)
                 }
@@ -70,7 +70,7 @@ struct AccountListView: View {
 
 #Preview {
     AccountListView(
-        viewModel: AccountViewModel(env: EnvironmentManager.sampleData)
+        vm: AccountViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
