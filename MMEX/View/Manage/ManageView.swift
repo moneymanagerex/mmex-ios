@@ -13,7 +13,7 @@ struct ManageView: View {
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
-
+    
     var body: some View {
         List {
             Section(header: Text("Data")) {
@@ -21,8 +21,8 @@ struct ManageView: View {
                     Text(CurrencyData.dataName.1)
                 }
                 NavigationLink(destination: AccountListView(
-                    vm: AccountViewModel(env: env).preloaded()
-                )) {
+                    vm: AccountViewModel(env: env)
+                ) ) {
                     Text(AccountData.dataName.1)
                 }
                 NavigationLink(destination: AssetListView()) {

@@ -40,7 +40,7 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
     associatedtype RepositorySearch  : RepositorySearchProtocol
     where RepositorySearch.RepositoryData == Self.RepositoryData
 
-    var env         : EnvironmentManager       { get }
+    //var env         : EnvironmentManager       { get }
     var dataState   : RepositoryLoadState      { get set }
     var dataById    : [DataId: RepositoryData] { get set }
 

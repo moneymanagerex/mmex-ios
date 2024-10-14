@@ -63,7 +63,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
     var groupBy = AccountGroupBy.defaultValue
     @Published
     var groupState: RepositoryLoadState = .idle
-    //@Published
+    @Published
     var groupDataId: [[DataId]] = []
 
     var search = AccountSearch()
@@ -178,7 +178,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
 
     func loadGroup(_ groupBy: AccountGroupBy) {
         log.trace("DEBUG: AccountViewModel.loadGroup(\(groupBy.rawValue)): main=\(Thread.isMainThread)")
-        guard dataState == .ready && groupState == .idle else { return }
+        guard dataState == .ready && groupState != .loading else { return }
         groupState = .loading
         self.groupBy = groupBy
         groupByCurrency = []

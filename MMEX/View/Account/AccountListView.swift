@@ -24,6 +24,9 @@ struct AccountListView: View {
                 data: data
             ) }
         )
+        .onAppear {
+            let _ = log.debug("DEBUG: AccountListView.onAppear()")
+        }
     }
 
     func groupName(_ groupId: Int) -> some View {

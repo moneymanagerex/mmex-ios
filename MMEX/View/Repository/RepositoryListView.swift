@@ -29,7 +29,7 @@ struct RepositoryListView<
     @State var newData = RepositoryViewModel.newData
 
     var body: some View {
-        List {
+        return List {
             HStack {
                 Spacer()
                 Picker("", selection: $groupBy) {
@@ -40,10 +40,10 @@ struct RepositoryListView<
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
-                .onChange(of: groupBy) { Task {
+                .onChange(of: groupBy) {
                     vm.loadGroup(groupBy)
                     vm.searchGroup()
-                } }
+                }
                 .padding(.vertical, -5)
                 //.border(.red)
             }
@@ -96,9 +96,10 @@ struct RepositoryListView<
             vm.searchGroup(expand: true)
         }
         .navigationTitle(RepositoryData.dataName.1)
-        .task {
+        .onAppear { Task {
+            let _ = log.debug("DEBUG: RepositoryListView.onAppear()")
             await load()
-        }
+        } }
         .refreshable {
             await load()
         }
