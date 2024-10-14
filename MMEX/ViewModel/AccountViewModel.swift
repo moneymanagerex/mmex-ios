@@ -60,12 +60,14 @@ class AccountViewModel: RepositoryViewModelProtocol {
     private var dataId: [DataId] = [] // sorted by name
     private(set) var currencyName: [(DataId, String)] = [] // sorted by name
 
+    @Published
     var groupBy = AccountGroupBy.defaultValue
     @Published
     var groupState: RepositoryLoadState = .idle
     @Published
     var groupDataId: [[DataId]] = []
 
+    @Published
     var search = AccountSearch()
     @Published
     var groupIsVisible  : [Bool] = []
@@ -176,11 +178,11 @@ class AccountViewModel: RepositoryViewModelProtocol {
         groupIsExpanded.append(isExpanded)
     }
 
-    func loadGroup(_ groupBy: AccountGroupBy) {
-        log.trace("DEBUG: AccountViewModel.loadGroup(\(groupBy.rawValue)): main=\(Thread.isMainThread)")
+    func loadGroup() {//_ groupBy: AccountGroupBy) {
+        log.trace("DEBUG: AccountViewModel.loadGroup(\(self.groupBy.rawValue)): main=\(Thread.isMainThread)")
         guard dataState == .ready && groupState != .loading else { return }
         groupState = .loading
-        self.groupBy = groupBy
+        //self.groupBy = groupBy
         groupByCurrency = []
         groupDataId = []
         groupIsVisible.removeAll(keepingCapacity: true)

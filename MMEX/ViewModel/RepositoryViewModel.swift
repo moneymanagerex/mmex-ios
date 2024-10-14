@@ -67,7 +67,7 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
     // create `groupDataId`; initialize `groupIsVisible`, `groupIsExpanded`
     // set `groupBy`; set `groupState` to `.ready` or `.error`
     // prerequisites: `dataState == .ready`
-    func loadGroup(_ groupBy: RepositoryGroupBy)// async
+    func loadGroup()//_ groupBy: RepositoryGroupBy)// async
 
     // set `groupState` to `.idle`
     func unloadGroup()
@@ -86,7 +86,8 @@ extension RepositoryViewModelProtocol {
     func preloaded() -> Self {
         Task {
             await loadData()
-            loadGroup(groupBy)
+            loadGroup()
+            searchGroup()
         }
         return self
     }

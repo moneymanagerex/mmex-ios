@@ -18,13 +18,13 @@ struct RepositoryListView<
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    @State var groupBy: RepositoryGroupBy
+    //@State var groupBy: RepositoryGroupBy
     @ViewBuilder var groupName: (_ groupId: Int) -> GroupNameView
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
     @ViewBuilder var detailView: (_ data: RepositoryData) -> DetailView
 
-    @State var key = ""
+    //@State var key = ""
     @State var isPresentingAddView = false
     @State var newData = RepositoryViewModel.newData
 
@@ -32,7 +32,7 @@ struct RepositoryListView<
         return List {
             HStack {
                 Spacer()
-                Picker("", selection: $groupBy) {
+                Picker("", selection: $vm.groupBy) {
                     ForEach(RepositoryGroupBy.allCases, id: \.self) { choice in
                         Text("\(choice.rawValue)")
                             .font(.subheadline)
@@ -40,8 +40,8 @@ struct RepositoryListView<
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
-                .onChange(of: groupBy) {
-                    vm.loadGroup(groupBy)
+                .onChange(of: vm.groupBy) {
+                    vm.loadGroup()
                     vm.searchGroup()
                 }
                 .padding(.vertical, -5)
@@ -56,28 +56,19 @@ struct RepositoryListView<
                         groupView(g)
                     }
                 }
-            } else if vm.dataState == .idle {
+            } else {
                 Button(action: { Task {
                     await load()
                 } } ) {
-                    Text("Load data")
+                    HStack {
+                        Text("Loading data ...")
+                        ProgressView()
+                    }
                 }
                 .listRowBackground(Color.clear)
                 .padding()
-                .background(.secondary)
-                .foregroundColor(.primary)
-                .clipShape(Capsule())
-            } else if vm.groupState == .idle {
-                Button(action: { Task {
-                    vm.loadGroup(self.groupBy)
-                } } ) {
-                    Text("Load groups")
-                }
-                .listRowBackground(Color.clear)
-                .padding()
-                .background(.secondary)
-                .foregroundColor(.primary)
-                .clipShape(Capsule())
+                //.background(.secondary)
+                .foregroundColor(.secondary)
             }
         }
         //.listStyle(.plain)
@@ -89,10 +80,10 @@ struct RepositoryListView<
             )
             .accessibilityLabel("New " + RepositoryData.dataName.0)
         }
-        .searchable(text: $key, prompt: "Search by name") // TODO: fix prompt
+        .searchable(text: $vm.search.key, prompt: "Search by name") // TODO: fix prompt
         .textInputAutocapitalization(.never)
-        .onChange(of: key) { _, newValue in
-            vm.simpleSearch(with: newValue)
+        .onChange(of: vm.search.key) { _, newValue in
+            //vm.simpleSearch(with: newValue)
             vm.searchGroup(expand: true)
         }
         .navigationTitle(RepositoryData.dataName.1)
@@ -120,7 +111,7 @@ struct RepositoryListView<
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
         await vm.loadData()
-        vm.loadGroup(self.groupBy)
+        vm.loadGroup()
         vm.searchGroup()
         log.trace("INFO: RepositoryListView.load(): \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
     }

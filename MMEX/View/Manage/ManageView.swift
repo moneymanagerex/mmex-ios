@@ -21,7 +21,7 @@ struct ManageView: View {
                     Text(CurrencyData.dataName.1)
                 }
                 NavigationLink(destination: AccountListView(
-                    vm: AccountViewModel(env: env)
+                    vm: AccountViewModel(env: env).preloaded()
                 ) ) {
                     Text(AccountData.dataName.1)
                 }
