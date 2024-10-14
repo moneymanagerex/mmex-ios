@@ -190,7 +190,7 @@ struct TransactionEditView: View {
                                     Text("Category").tag(0 as Int64) // not set
                                 }
                                 ForEach(categories) { category in
-                                    Text(category.name).tag(category.id)
+                                    Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
                                 }
                             }
                             .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
@@ -272,7 +272,7 @@ struct TransactionEditView: View {
         }
     }
     func getCategoryName(for categoryID: DataId) -> String {
-        return categories.first {$0.id == categoryID}?.name ?? "Unknown"
+        return categories.first {$0.id == categoryID}?.fullName(with: viewModel.categDelimiter) ?? "Unknown"
     }
 }
 
