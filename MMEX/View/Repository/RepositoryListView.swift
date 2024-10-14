@@ -49,6 +49,7 @@ struct RepositoryListView<
             }
             .listRowBackground(Color.clear)
             //.border(.red)
+            //Text("DEBUG: main=\(Thread.isMainThread), \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
             if vm.dataState == .ready, vm.groupState == .ready {
                 ForEach(0..<vm.groupDataId.count, id: \.self) { g in
                     if vm.groupIsVisible[g] {
@@ -116,8 +117,11 @@ struct RepositoryListView<
     }
 
     private func load() async {
+        log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
         await vm.loadData()
         vm.loadGroup(self.groupBy)
+        vm.searchGroup()
+        log.trace("INFO: RepositoryListView.load(): \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
     }
 
     func groupView(_ g: Int) -> some View {
@@ -173,11 +177,9 @@ struct RepositoryListView<
     }
 }
 
-/*
 #Preview("Account") {
     AccountListView(
         vm: AccountViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
-*/

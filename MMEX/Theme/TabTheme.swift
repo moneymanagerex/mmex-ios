@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct TabTheme {
+struct TabTheme: ThemeProtocol {
     enum Layout: String, EnumCollateNoCase {
         case icon     = "Icon"
         case iconText = "Icon and Text"

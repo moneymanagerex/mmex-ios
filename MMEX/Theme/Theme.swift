@@ -8,7 +8,10 @@
 import Foundation
 import SwiftUI
 
-struct Theme {
+protocol ThemeProtocol: Equatable {
+}
+
+struct Theme: ThemeProtocol {
     var tab   = TabTheme()
     var group = GroupTheme()
     var item  = ItemTheme()

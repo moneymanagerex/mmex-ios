@@ -63,7 +63,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
     var groupBy = AccountGroupBy.defaultValue
     @Published
     var groupState: RepositoryLoadState = .idle
-    @Published
+    //@Published
     var groupDataId: [[DataId]] = []
 
     var search = AccountSearch()
@@ -95,15 +95,6 @@ class AccountViewModel: RepositoryViewModelProtocol {
         self.env = env
     }
 
-    func unloadData() {
-        log.trace("DEBUG: AccountViewModel.unloadData(): main=\(Thread.isMainThread)")
-        if groupState != .idle { unloadGroup() }
-        dataState = .idle
-        dataById.removeAll()
-        dataId = []
-        currencyName = []
-    }
-
     enum LoadTaskData {
         case dataById([DataId: RepositoryData]?)
         case dataId([DataId]?)
@@ -117,7 +108,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
 
     func loadData() async {
         log.trace("DEBUG: AccountViewModel.loadData(): main=\(Thread.isMainThread)")
-        if dataState != .idle { unloadData() }
+        guard dataState == .idle else { return }
         dataState = .loading
         log.debug("DEBUG: AccountViewModel.loadData(): dataState=\(self.dataState.rawValue)")
         log.debug("DEBUG: AccountViewModel.loadData(): groupState=\(self.groupState.rawValue)")
@@ -169,6 +160,16 @@ class AccountViewModel: RepositoryViewModelProtocol {
         }
     }
 
+    func unloadData() {
+        log.trace("DEBUG: AccountViewModel.unloadData(): main=\(Thread.isMainThread)")
+        if dataState == .idle { return }
+        if groupState != .idle { unloadGroup() }
+        dataState = .idle
+        dataById.removeAll()
+        dataId = []
+        currencyName = []
+    }
+
     func addGroup(_ dataId: [DataId], _ isVisible: Bool, _ isExpanded: Bool) {
         groupDataId.append(dataId)
         groupIsVisible.append(isVisible)
@@ -177,7 +178,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
 
     func loadGroup(_ groupBy: AccountGroupBy) {
         log.trace("DEBUG: AccountViewModel.loadGroup(\(groupBy.rawValue)): main=\(Thread.isMainThread)")
-        guard dataState == .ready else { return }
+        guard dataState == .ready && groupState == .idle else { return }
         groupState = .loading
         self.groupBy = groupBy
         groupByCurrency = []
@@ -215,7 +216,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
     }
 
     func groupIsVisible(_ g: Int) -> Bool {
-        if search.key.isEmpty {
+        if search.isEmpty {
             return switch groupBy {
             case .byType, .byCurrency: !groupDataId[g].isEmpty
             default: true

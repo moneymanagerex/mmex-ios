@@ -68,11 +68,9 @@ struct AccountListView: View {
     }
 }
 
-/*
 #Preview {
     AccountListView(
         vm: AccountViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
-*/

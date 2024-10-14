@@ -67,7 +67,7 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
     // create `groupDataId`; initialize `groupIsVisible`, `groupIsExpanded`
     // set `groupBy`; set `groupState` to `.ready` or `.error`
     // prerequisites: `dataState == .ready`
-    func loadGroup(_ groupBy: RepositoryGroupBy)// async //-> RepositoryLoadState
+    func loadGroup(_ groupBy: RepositoryGroupBy)// async
 
     // set `groupState` to `.idle`
     func unloadGroup()
@@ -83,8 +83,17 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
 }
 
 extension RepositoryViewModelProtocol {
+    func preloaded() -> Self {
+        Task {
+            await loadData()
+            loadGroup(groupBy)
+        }
+        return self
+    }
+
     func unloadData() {
         log.trace("DEBUG: RepositoryViewModelProtocol.unloadData(): main=\(Thread.isMainThread)")
+        if dataState == .idle { return }
         if groupState != .idle { unloadGroup() }
         dataState = .idle
         dataById.removeAll()
@@ -92,6 +101,7 @@ extension RepositoryViewModelProtocol {
 
     func unloadGroup() {
         log.trace("DEBUG: RepositoryViewModelProtocol.unloadGroup(): main=\(Thread.isMainThread)")
+        if groupState == .idle { return }
         groupState = .idle
         groupDataId = []
     }

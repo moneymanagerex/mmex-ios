@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct GroupTheme {
+struct GroupTheme: ThemeProtocol {
     enum Layout: String, EnumCollateNoCase {
         case foldName = "Fold Name space Count"
         case nameFold = "Name space Count Fold"
