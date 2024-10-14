@@ -8,32 +8,32 @@
 import SwiftUI
 
 struct AccountAddView: View {
-    @State var viewModel: AccountViewModel
-    @Binding var newAccount: AccountData
-    @Binding var isPresentingAddView: Bool
-    var onSave: (inout AccountData) -> Void
+    @EnvironmentObject var env: EnvironmentManager
+    @State var vm: AccountViewModel
+    @Binding var isPresented: Bool
 
+    @State private var data = AccountViewModel.newData
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     
     var body: some View {
         NavigationStack {
             AccountEditView(
-                viewModel: viewModel,
-                data: $newAccount,
+                vm: vm,
+                data: $data,
                 edit: true
             )
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Dismiss") {
-                        isPresentingAddView = false
+                        isPresented = false
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
                         if validateAccount() {
-                            onSave(&newAccount)
-                            isPresentingAddView = false
+                            addAccount(&data)
+                            isPresented = false
                         } else {
                             isShowingAlert = true
                         }
@@ -50,13 +50,25 @@ struct AccountAddView: View {
     }
     
     func validateAccount() -> Bool {
-        if newAccount.name.isEmpty {
+        if data.name.isEmpty {
             alertMessage = "Account name cannot be empty."
             return false
         }
-
         // TODO: Add more validation logic here if needed (e.g., category selection)
         return true
+    }
+
+    func addAccount(_ account: inout AccountData) {
+        guard let repository = env.accountRepository else { return }
+        if repository.insert(&account) {
+            // self.accounts.append(account)
+            if env.currencyCache[account.currencyId] == nil {
+                // TODO: loadCurrency() -> addCurrency()
+                env.loadCurrency()
+            }
+            env.accountCache.update(id: account.id, data: account)
+            // TODO: update vm
+        }
     }
 }
 

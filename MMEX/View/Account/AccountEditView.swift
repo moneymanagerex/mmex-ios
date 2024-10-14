@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountEditView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @State var viewModel: AccountViewModel
+    @State var vm: AccountViewModel
     @Binding var data: AccountData
     @State var edit: Bool
     var onDelete: () -> Void = { }
@@ -41,9 +41,9 @@ struct AccountEditView: View {
                 env.theme.field.picker(edit, "Currency") {
                     Picker("", selection: $data.currencyId) {
                         if (data.currencyId <= 0) {
-                            Text("Select Currency").tag(0 as Int64) // not set
+                            Text("Select Currency").tag(0 as DataId) // not set
                         }
-                        ForEach(viewModel.currencyName, id: \.0) { id, name in
+                        ForEach(vm.currencyName, id: \.0) { id, name in
                             Text(name).tag(id)
                         }
                     }
@@ -186,7 +186,7 @@ struct AccountEditView: View {
 
 #Preview("\(AccountData.sampleData[0].name) (show)") {
     AccountEditView(
-        viewModel: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(env: EnvironmentManager.sampleData),
         data: .constant(AccountData.sampleData[0]),
         edit: false
     )
@@ -195,7 +195,7 @@ struct AccountEditView: View {
 
 #Preview("\(AccountData.sampleData[0].name) (edit)") {
     AccountEditView(
-        viewModel: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(env: EnvironmentManager.sampleData),
         data: .constant(AccountData.sampleData[0]),
         edit: true
     )

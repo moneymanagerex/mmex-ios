@@ -10,7 +10,7 @@ import SwiftUI
 struct RepositoryListView<
     RepositoryViewModel : RepositoryViewModelProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
-    DetailView: View
+    DetailView: View, InsertView: View
 >: View
 {
     typealias RepositoryData    = RepositoryViewModel.RepositoryData
@@ -23,10 +23,9 @@ struct RepositoryListView<
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
     @ViewBuilder var detailView: (_ data: RepositoryData) -> DetailView
+    @ViewBuilder var addView: (_ isPresented: Binding<Bool>) -> InsertView
 
-    //@State var key = ""
-    @State var isPresentingAddView = false
-    @State var newData = RepositoryViewModel.newData
+    @State var addIsPresented = false
 
     var body: some View {
         return List {
@@ -75,7 +74,7 @@ struct RepositoryListView<
         .listSectionSpacing(.compact)
         .toolbar {
             Button(
-                action: { isPresentingAddView = true },
+                action: { addIsPresented = true },
                 label: { Image(systemName: "plus") }
             )
             .accessibilityLabel("New " + RepositoryData.dataName.0)
@@ -92,19 +91,11 @@ struct RepositoryListView<
             await load()
         } }
         .refreshable {
+            vm.unloadData()
             await load()
         }
-        .sheet(isPresented: $isPresentingAddView) {
-/*
-            AccountAddView(
-                allCurrencyName: $allCurrencyName,
-                newAccount: $newAccount,
-                isPresentingAddView: $isPresentingAddView
-            ) { newAccount in
-                addAccount(account: &newAccount)
-                newAccount = RepositoryViewModel.newData
-            }
- */
+        .sheet(isPresented: $addIsPresented) {
+            addView($addIsPresented)
         }
     }
 
@@ -134,7 +125,7 @@ struct RepositoryListView<
         ) {
             if vm.groupIsExpanded[g] {
                 ForEach(vm.groupDataId[g], id: \.self) { id in
-                    let _ = print("TEST: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
+                    //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
                     // TODO: update View after change in account
                     if vm.dataIsVisible(id) {
                         itemView(vm.dataById[id]!)
@@ -153,18 +144,6 @@ struct RepositoryListView<
                 name: { itemName(data) },
                 info: { itemInfo(data) }
             )
-        }
-    }
-
-    func addAccount(account: inout AccountData) {
-        guard let repository = env.accountRepository else { return }
-        if repository.insert(&account) {
-            // self.accounts.append(account)
-            if env.currencyCache[account.currencyId] == nil {
-                env.loadCurrency()
-            }
-            env.accountCache.update(id: account.id, data: account)
-            //self.loadAccountData()
         }
     }
 }

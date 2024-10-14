@@ -11,7 +11,7 @@ import SwiftUI
 struct AccountDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var env: EnvironmentManager
-    @State var viewModel: AccountViewModel
+    @State var vm: AccountViewModel
     @State var data: AccountData
 
     @State private var editAccount = AccountData()
@@ -20,7 +20,7 @@ struct AccountDetailView: View {
 
     var body: some View {
         AccountEditView(
-            viewModel: viewModel,
+            vm: vm,
             data: $data,
             edit: false
         ) { () in
@@ -46,7 +46,7 @@ struct AccountDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 AccountEditView(
-                    viewModel: viewModel,
+                    vm: vm,
                     data: $data,
                     edit: true
                 )
@@ -90,16 +90,18 @@ struct AccountDetailView: View {
                 env.loadCurrency()
             }
             env.accountCache.update(id: data.id, data: data)
+            // TODO: update vm
         } else {
             // Handle failure
         }
     }
-    
+
     func deleteAccount() {
         guard let repository = env.accountRepository else { return }
         if repository.delete(data) {
             env.loadAccount()
             presentationMode.wrappedValue.dismiss()
+            // TODO: update vm
         } else {
             // Handle deletion failure
         }
@@ -108,7 +110,7 @@ struct AccountDetailView: View {
 
 #Preview(AccountData.sampleData[0].name) {
     AccountDetailView(
-        viewModel: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(env: EnvironmentManager.sampleData),
         data: AccountData.sampleData[0]
     )
     .environmentObject(EnvironmentManager.sampleData)
@@ -116,7 +118,7 @@ struct AccountDetailView: View {
 
 #Preview(AccountData.sampleData[1].name) {
     AccountDetailView(
-        viewModel: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(env: EnvironmentManager.sampleData),
         data: AccountData.sampleData[1]
     )
     .environmentObject(EnvironmentManager.sampleData)
@@ -124,7 +126,7 @@ struct AccountDetailView: View {
 
 #Preview(AccountData.sampleData[2].name) {
     AccountDetailView(
-        viewModel: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(env: EnvironmentManager.sampleData),
         data: AccountData.sampleData[2]
     )
     .environmentObject(EnvironmentManager.sampleData)
