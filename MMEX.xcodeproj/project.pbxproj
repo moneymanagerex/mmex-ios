@@ -996,14 +996,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SQLite;
 		};
-		A3B374C62C96A27800943FDB /* SQLite */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SQLite;
-		};
-		A3C142392C89754C00D3CEC0 /* SQLite */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SQLite;
-		};
 /* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A3C1421F2C89751500D3CEC0 /* Project object */;
