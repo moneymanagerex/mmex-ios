@@ -21,10 +21,10 @@ extension CategoryData {
     var isRoot: Bool {
         return parentId <= 0
     }
-    var fullName: String {
+    func fullName(with delimiter: String = ":") -> String {
         // Join all parent category names followed by the current category's name
         let parentNames = parentCategories.map { $0.name }
-        return (parentNames + [name]).joined(separator: ":")
+        return (parentNames + [name]).joined(separator: delimiter)
     }
 }
 

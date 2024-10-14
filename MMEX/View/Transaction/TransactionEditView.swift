@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionEditView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @ObservedObject var viewModel: TransactionViewModel
     @Binding var accountId: [DataId] // sorted by name
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
@@ -143,7 +144,7 @@ struct TransactionEditView: View {
                         Text("Category").tag(0 as Int64) // not set
                     }
                     ForEach(categories) { category in
-                        Text(category.fullName).tag(category.id)
+                        Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
                     }
                 }
                 .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
@@ -277,6 +278,7 @@ struct TransactionEditView: View {
 
 #Preview("txn 0") {
     TransactionEditView(
+        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
@@ -287,6 +289,7 @@ struct TransactionEditView: View {
 
 #Preview("txn 3") {
     TransactionEditView(
+        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),

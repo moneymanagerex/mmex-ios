@@ -22,6 +22,7 @@ struct EnterView: View {
     var body: some View {
         NavigationStack {
             TransactionEditView(
+                viewModel: viewModel,
                 accountId: $accountId,
                 categories: $viewModel.categories,
                 payees: $payees,

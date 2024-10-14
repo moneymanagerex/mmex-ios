@@ -16,6 +16,7 @@ class TransactionViewModel: ObservableObject {
     @Published var defaultAccountId: DataId = 0
     @Published var baseCurrency: CurrencyData?
     @Published var defaultAccount: AccountData?
+    @Published var categDelimiter: String = ":"
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -70,6 +71,10 @@ class TransactionViewModel: ObservableObject {
                 key: InfoKey.defaultAccountID.id,
                 from: AccountRepository.table.filter(AccountRepository.col_id == Int64(defaultAccountId))
             ).toOptional()
+        }
+
+        if let categDelimiter = infotableRepo?.getValue(for: InfoKey.categDelimiter.id, as: String.self) {
+            self.categDelimiter = categDelimiter
         }
     }
 

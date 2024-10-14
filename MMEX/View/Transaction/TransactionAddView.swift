@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TransactionAddView: View {
+    @ObservedObject var viewModel: TransactionViewModel
     @Binding var accountId: [DataId]
     @Binding var categories: [CategoryData]
     @Binding var payees: [PayeeData]
@@ -19,6 +20,7 @@ struct TransactionAddView: View {
     var body: some View {
         NavigationStack {
             TransactionEditView(
+                viewModel: viewModel,
                 accountId: $accountId,
                 categories: $categories,
                 payees: $payees,
