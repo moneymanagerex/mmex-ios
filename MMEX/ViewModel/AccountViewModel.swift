@@ -93,63 +93,44 @@ class AccountViewModel: RepositoryViewModelProtocol {
         .boolTrue, .boolFalse
     ]
 
-    enum LoadTaskData {
-        case dataById([DataId: RepositoryData]?)
-        case dataId([DataId]?)
-        case currencyName([(DataId, String)]?)
-    }
-    typealias LoadData = (
-        dataById: [DataId: RepositoryData],
-        dataId: [DataId],
-        currencyName: [(DataId, String)]
-    )
-
     func loadData(env: EnvironmentManager) async {
         log.trace("DEBUG: AccountViewModel.loadData(): main=\(Thread.isMainThread)")
         guard dataState == .idle else { return }
         dataState = .loading
-        log.debug("DEBUG: AccountViewModel.loadData(): dataState=\(self.dataState.rawValue)")
-        log.debug("DEBUG: AccountViewModel.loadData(): groupState=\(self.groupState.rawValue)")
-        let data: LoadData? = await withTaskGroup(of: LoadTaskData.self) { queue -> LoadData? in
+        //log.debug("DEBUG: AccountViewModel.loadData(): dataState=\(self.dataState.rawValue)")
+        //log.debug("DEBUG: AccountViewModel.loadData(): groupState=\(self.groupState.rawValue)")
+        let allOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                return .dataById(env.accountRepository?.selectById(
+                let data: [DataId: RepositoryData]? = env.accountRepository?.selectById(
                     from: A.table.order(A.col_name)
-                ) )
+                )
+                await MainActor.run { if let data { self.dataById = data } }
+                return data != nil
             }
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                return .dataId(env.accountRepository?.select(
+                let data: [DataId]? = env.accountRepository?.select(
                     from: A.table.order(A.col_name),
                     with: A.fetchId
-                ) )
+                )
+                await MainActor.run { if let data { self.dataId = data } }
+                return data != nil
             }
             queue.addTask(priority: .background) {
-                return .currencyName(env.currencyRepository?.loadName())
+                let data: [(DataId, String)]? = env.currencyRepository?.loadName()
+                await MainActor.run { if let data { self.currencyName = data } }
+                return data != nil
             }
 
-            var error = false
-            var data: LoadData = (dataById: [:], dataId: [], currencyName: [])
-            for await taskData in queue {
-                switch taskData {
-                case .dataById(let result):
-                    if let result { data.dataById = result }
-                    else { error = true }
-                case .dataId(let result):
-                    if let result { data.dataId = result }
-                    else { error = true }
-                case .currencyName(let result):
-                    if let result { data.currencyName = result }
-                    else { error = true }
-                }
+            var allOk = true
+            for await taskOk in queue {
+                if !taskOk { allOk = false }
             }
-            return error ? nil : data
+            return allOk
         }
 
-        if let data {
-            dataById     = data.dataById
-            dataId       = data.dataId
-            currencyName = data.currencyName
+        if allOk {
             dataState = .ready
             log.info("INFO: AccountViewModel.loadData(): main=\(Thread.isMainThread), \(self.dataById.count), \(self.dataId.count), \(self.currencyName.count)")
         } else {
