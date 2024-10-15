@@ -40,7 +40,6 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
     associatedtype RepositorySearch  : RepositorySearchProtocol
     where RepositorySearch.RepositoryData == Self.RepositoryData
 
-    //var env         : EnvironmentManager       { get }
     var dataState   : RepositoryLoadState      { get set }
     var dataById    : [DataId: RepositoryData] { get set }
 
@@ -54,11 +53,9 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
 
     static var newData: RepositoryData { get }
 
-    init(env: EnvironmentManager)
-
     // load `dataById`; set `dataState` to `.ready` or `.error`
     // prerequisites: `dataState == .idle && groupState == .idle`
-    func loadData() async
+    func loadData(env: EnvironmentManager) async
 
     // set `dataState` to `.idle`
     // prerequisites: `groupState == .idle`
@@ -67,7 +64,7 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
     // create `groupDataId`; initialize `groupIsVisible`, `groupIsExpanded`
     // set `groupBy`; set `groupState` to `.ready` or `.error`
     // prerequisites: `dataState == .ready`
-    func loadGroup()//_ groupBy: RepositoryGroupBy)// async
+    func loadGroup(env: EnvironmentManager, groupBy: RepositoryGroupBy)// async
 
     // set `groupState` to `.idle`
     func unloadGroup()
@@ -83,10 +80,10 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
 }
 
 extension RepositoryViewModelProtocol {
-    func preloaded() -> Self {
+    func preloaded(env: EnvironmentManager, groupBy: RepositoryGroupBy) -> Self {
         Task {
-            await loadData()
-            loadGroup()
+            await loadData(env: env)
+            loadGroup(env: env, groupBy: groupBy)
             searchGroup()
         }
         return self

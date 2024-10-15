@@ -52,7 +52,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
     typealias RepositoryGroupBy = AccountGroupBy
     typealias RepositorySearch  = AccountSearch
 
-    private(set) var env: EnvironmentManager
+    //private(set) var env: EnvironmentManager
 
     @Published
     var dataState: RepositoryLoadState = .idle
@@ -93,10 +93,6 @@ class AccountViewModel: RepositoryViewModelProtocol {
         .boolTrue, .boolFalse
     ]
 
-    required init(env: EnvironmentManager) {
-        self.env = env
-    }
-
     enum LoadTaskData {
         case dataById([DataId: RepositoryData]?)
         case dataId([DataId]?)
@@ -108,7 +104,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
         currencyName: [(DataId, String)]
     )
 
-    func loadData() async {
+    func loadData(env: EnvironmentManager) async {
         log.trace("DEBUG: AccountViewModel.loadData(): main=\(Thread.isMainThread)")
         guard dataState == .idle else { return }
         dataState = .loading
@@ -117,19 +113,19 @@ class AccountViewModel: RepositoryViewModelProtocol {
         let data: LoadData? = await withTaskGroup(of: LoadTaskData.self) { queue -> LoadData? in
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                return await .dataById(self.env.accountRepository?.selectById(
+                return .dataById(env.accountRepository?.selectById(
                     from: A.table.order(A.col_name)
                 ) )
             }
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                return await .dataId(self.env.accountRepository?.select(
+                return .dataId(env.accountRepository?.select(
                     from: A.table.order(A.col_name),
                     with: A.fetchId
                 ) )
             }
             queue.addTask(priority: .background) {
-                return await .currencyName(self.env.currencyRepository?.loadName())
+                return .currencyName(env.currencyRepository?.loadName())
             }
 
             var error = false
@@ -178,11 +174,11 @@ class AccountViewModel: RepositoryViewModelProtocol {
         groupIsExpanded.append(isExpanded)
     }
 
-    func loadGroup() {//_ groupBy: AccountGroupBy) {
+    func loadGroup(env: EnvironmentManager, groupBy: AccountGroupBy) {
         log.trace("DEBUG: AccountViewModel.loadGroup(\(self.groupBy.rawValue)): main=\(Thread.isMainThread)")
         guard dataState == .ready && groupState != .loading else { return }
         groupState = .loading
-        //self.groupBy = groupBy
+        self.groupBy = groupBy
         groupByCurrency = []
         groupDataId = []
         groupIsVisible.removeAll(keepingCapacity: true)
@@ -197,7 +193,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
             }
         case .byCurrency:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.currencyId }
-            groupByCurrency = self.env.currencyCache.compactMap {
+            groupByCurrency = env.currencyCache.compactMap {
                 dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in groupByCurrency {
