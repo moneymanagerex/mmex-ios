@@ -52,27 +52,18 @@ class AccountViewModel: RepositoryViewModelProtocol {
     typealias RepositoryGroupBy = AccountGroupBy
     typealias RepositorySearch  = AccountSearch
 
-    //private(set) var env: EnvironmentManager
-
-    @Published
-    var dataState: RepositoryLoadState = .idle
+    @Published var dataState: RepositoryLoadState = .idle
     var dataById: [DataId : RepositoryData] = [:]
     private var dataId: [DataId] = [] // sorted by name
     private(set) var currencyName: [(DataId, String)] = [] // sorted by name
 
-    @Published
-    var groupBy = AccountGroupBy.defaultValue
-    @Published
-    var groupState: RepositoryLoadState = .idle
-    @Published
-    var groupDataId: [[DataId]] = []
+    @Published var groupBy = AccountGroupBy.defaultValue
+    @Published var groupState: RepositoryLoadState = .idle
+    @Published var groupDataId: [[DataId]] = []
 
-    @Published
-    var search = AccountSearch()
-    @Published
-    var groupIsVisible  : [Bool] = []
-    @Published
-    var groupIsExpanded : [Bool] = []
+    @Published var search = AccountSearch()
+    @Published var groupIsVisible  : [Bool] = []
+    @Published var groupIsExpanded : [Bool] = []
 
     static let newData = AccountData(
         status       : .open,
