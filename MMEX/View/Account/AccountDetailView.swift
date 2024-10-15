@@ -110,7 +110,7 @@ struct AccountDetailView: View {
 
 #Preview(AccountData.sampleData[0].name) {
     AccountDetailView(
-        vm: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(),
         data: AccountData.sampleData[0]
     )
     .environmentObject(EnvironmentManager.sampleData)
@@ -118,7 +118,7 @@ struct AccountDetailView: View {
 
 #Preview(AccountData.sampleData[1].name) {
     AccountDetailView(
-        vm: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(),
         data: AccountData.sampleData[1]
     )
     .environmentObject(EnvironmentManager.sampleData)
@@ -126,7 +126,7 @@ struct AccountDetailView: View {
 
 #Preview(AccountData.sampleData[2].name) {
     AccountDetailView(
-        vm: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(),
         data: AccountData.sampleData[2]
     )
     .environmentObject(EnvironmentManager.sampleData)

@@ -186,7 +186,7 @@ struct AccountEditView: View {
 
 #Preview("\(AccountData.sampleData[0].name) (show)") {
     AccountEditView(
-        vm: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(),
         data: .constant(AccountData.sampleData[0]),
         edit: false
     )
@@ -195,7 +195,7 @@ struct AccountEditView: View {
 
 #Preview("\(AccountData.sampleData[0].name) (edit)") {
     AccountEditView(
-        vm: AccountViewModel(env: EnvironmentManager.sampleData),
+        vm: AccountViewModel(),
         data: .constant(AccountData.sampleData[0]),
         edit: true
     )

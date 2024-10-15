@@ -18,7 +18,7 @@ struct RepositoryListView<
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    //@State var groupBy: RepositoryGroupBy
+    @State var groupBy: RepositoryGroupBy
     @ViewBuilder var groupName: (_ groupId: Int) -> GroupNameView
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
@@ -31,7 +31,7 @@ struct RepositoryListView<
         return List {
             HStack {
                 Spacer()
-                Picker("", selection: $vm.groupBy) {
+                Picker("", selection: $groupBy) {
                     ForEach(RepositoryGroupBy.allCases, id: \.self) { choice in
                         Text("\(choice.rawValue)")
                             .font(.subheadline)
@@ -39,8 +39,8 @@ struct RepositoryListView<
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
-                .onChange(of: vm.groupBy) {
-                    vm.loadGroup()
+                .onChange(of: groupBy) {
+                    vm.loadGroup(env: env, groupBy: groupBy)
                     vm.searchGroup()
                 }
                 .padding(.vertical, -5)
@@ -88,6 +88,7 @@ struct RepositoryListView<
         .navigationTitle(RepositoryData.dataName.1)
         .onAppear { Task {
             let _ = log.debug("DEBUG: RepositoryListView.onAppear()")
+            groupBy = vm.groupBy
             await load()
         } }
         .refreshable {
@@ -101,8 +102,8 @@ struct RepositoryListView<
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
-        await vm.loadData()
-        vm.loadGroup()
+        await vm.loadData(env: env)
+        vm.loadGroup(env: env, groupBy: groupBy)
         vm.searchGroup()
         log.trace("INFO: RepositoryListView.load(): \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
     }
@@ -150,7 +151,7 @@ struct RepositoryListView<
 
 #Preview("Account") {
     AccountListView(
-        vm: AccountViewModel(env: EnvironmentManager.sampleData)
+        vm: AccountViewModel()
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
