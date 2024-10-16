@@ -16,7 +16,7 @@ enum TransactionType: String, EnumCollateNoCase {
 }
 
 enum TransactionStatus: String, EnumCollateNoCase {
-    case none       = "" // None
+    case none       = "-" // None
     case reconciled = "R" // Reconciled
     case void       = "V" // Void
     case followUp   = "F" // Follow up
