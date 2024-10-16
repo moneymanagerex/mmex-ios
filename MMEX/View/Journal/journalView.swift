@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct CheckingView: View {
+struct journalView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
 
-    @State private var searchQuery: String = "" // New: Search query
-    @State private var accountId: DataId = 0 //
+    @State private var searchQuery: String = "" // Search query
+    @State private var accountId: DataId = 0
     
     var body: some View {
         NavigationStack {
@@ -52,7 +52,7 @@ struct CheckingView: View {
                     }
                 }
             }
-            .searchable(text: $searchQuery, prompt: "Search by notes") // New: Search bar
+            .searchable(text: $searchQuery, prompt: "Search") // Search bar
             .onChange(of: searchQuery) { _, query in
                 viewModel.filterTransactions(by: query)
             }
@@ -196,7 +196,7 @@ struct CheckingView: View {
 }
 
 #Preview {
-    CheckingView(
+    journalView(
         viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)
