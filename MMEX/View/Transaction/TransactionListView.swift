@@ -1,5 +1,5 @@
 //
-//  CheckingListView.swift
+//  TransactionListView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
