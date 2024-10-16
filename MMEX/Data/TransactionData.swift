@@ -16,8 +16,7 @@ enum TransactionType: String, EnumCollateNoCase {
 }
 
 enum TransactionStatus: String, EnumCollateNoCase {
-    // TODO: MMEX Desktop defines "" for none
-    case none       = "N" // None
+    case none       = "" // None
     case reconciled = "R" // Reconciled
     case void       = "V" // Void
     case followUp   = "F" // Follow up
@@ -26,8 +25,7 @@ enum TransactionStatus: String, EnumCollateNoCase {
 
     var fullName: String {
         return switch self {
-        // TODO: MMEX Desktop defines "Unreconciled" for none
-        case .none       : "None"
+        case .none       : "Unreconciled"
         case .reconciled : "Reconciled"
         case .void       : "Void"
         case .followUp   : "Follow up"

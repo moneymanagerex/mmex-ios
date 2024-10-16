@@ -8,11 +8,11 @@
 import SwiftUI
 
 enum AccountGroupBy: String, RepositoryGroupByProtocol {
-    case void       = "Group:"
-    case byType     = "by Type"
-    case byCurrency = "by Currency"
-    case byStatus   = "by Status"
-    case byFavorite = "by Favorite"
+    case void       = "All" // No grouping by default
+    case byType     = "By Type"
+    case byCurrency = "By Currency"
+    case byStatus   = "By Status"
+    case byFavorite = "By Favorite"
     static let defaultValue = Self.void
 }
 

@@ -87,7 +87,7 @@ struct journalView: View {
                 // Left column (Category Icon or Category Name)
                 if let categorySymbol = CategoryData.categoryToSFSymbol[viewModel.getCategoryName(for: txn.categId)] {
                     Image(systemName: categorySymbol)
-                        .frame(width: 50, alignment: .leading) // Adjust width as needed
+                        .frame(width: 20, alignment: .leading) // Adjust width as needed
                         .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
                         .foregroundColor(.blue) // Customize icon style
                 } else {
@@ -106,7 +106,7 @@ struct journalView: View {
                         .font(.system(size: 14))
                         .foregroundColor(.gray)
                 }
-                .frame(width: 100, alignment: .leading) // Widen middle column, ensuring enough space
+                .frame(width: 150, alignment: .leading) // Widen middle column, ensuring enough space
 
                 Spacer() // To push the amount to the right side
 
