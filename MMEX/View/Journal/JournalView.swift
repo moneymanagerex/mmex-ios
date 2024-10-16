@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct journalView: View {
+struct JournalView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
 
@@ -196,7 +196,7 @@ struct journalView: View {
 }
 
 #Preview {
-    journalView(
+    JournalView(
         viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
     )
     .environmentObject(EnvironmentManager.sampleData)

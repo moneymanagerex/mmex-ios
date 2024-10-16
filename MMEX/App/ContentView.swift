@@ -108,7 +108,7 @@ struct ContentView: View {
     // Journal tab
     private func journalTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            journalView(viewModel: viewModel)
+            JournalView(viewModel: viewModel)
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
         }
         .tabItem {
@@ -245,7 +245,7 @@ struct TabContentView: View {
         return Group {
             switch selectedTab {
             case 0:
-                journalView(viewModel: infotableViewModel) // Summary and Edit feature
+                JournalView(viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
                 InsightsView(viewModel: InsightsViewModel(env: env))
