@@ -13,12 +13,12 @@ struct RepositoryListView<
     DetailView: View, InsertView: View
 >: View
 {
-    typealias RepositoryData    = RepositoryViewModel.RepositoryData
-    typealias RepositoryGroupBy = RepositoryViewModel.RepositoryGroupBy
+    typealias RepositoryData  = RepositoryViewModel.RepositoryData
+    typealias RepositoryGroup = RepositoryViewModel.RepositoryGroup
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    @State var groupBy: RepositoryGroupBy
+    @State var group: RepositoryGroup
     @ViewBuilder var groupName: (_ groupId: Int) -> GroupNameView
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
@@ -30,22 +30,42 @@ struct RepositoryListView<
     var body: some View {
         return List {
             HStack {
-                Spacer()
-                Picker("", selection: $groupBy) {
-                    ForEach(RepositoryGroupBy.allCases, id: \.self) { choice in
+                Picker("", selection: $group) {
+                    ForEach(RepositoryGroup.allCases, id: \.self) { choice in
                         Text("\(choice.rawValue)")
                             .font(.subheadline)
                             .tag(choice)
                     }
                 }
+                .scaledToFit()
+                .labelsHidden()
                 .pickerStyle(MenuPickerStyle())
-                .onChange(of: groupBy) {
-                    vm.loadGroup(env: env, groupBy: groupBy)
+                .onChange(of: group) {
+                    vm.loadGroup(env: env, group: group)
                     vm.searchGroup()
                 }
                 .padding(.vertical, -5)
+                //.padding(.trailing, 50)
                 //.border(.red)
+                Button(action: {}){
+                    Text("").frame(maxWidth: .infinity)
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                //.border(.red)
+                HStack {
+                    NavigationLink(
+                        destination: RepositorySearchAreaView(area: $vm.search.area)
+                    ) {
+                        Text("Search area")
+                            .font(.subheadline)
+                            .foregroundColor(.accentColor)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        //.border(.red)
+                    }
+                    //.border(.red)
+                }
             }
+            .listRowInsets(.init())
             .listRowBackground(Color.clear)
             //.border(.red)
             //Text("DEBUG: main=\(Thread.isMainThread), \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
@@ -79,16 +99,15 @@ struct RepositoryListView<
             )
             .accessibilityLabel("New " + RepositoryData.dataName.0)
         }
-        .searchable(text: $vm.search.key, prompt: "Search by name") // TODO: fix prompt
+        .searchable(text: $vm.search.key, prompt: vm.search.prompt)
         .textInputAutocapitalization(.never)
         .onChange(of: vm.search.key) { _, newValue in
-            //vm.simpleSearch(with: newValue)
             vm.searchGroup(expand: true)
         }
         .navigationTitle(RepositoryData.dataName.1)
         .onAppear { Task {
             let _ = log.debug("DEBUG: RepositoryListView.onAppear()")
-            groupBy = vm.groupBy
+            group = vm.group
             await load()
         } }
         .refreshable {
@@ -103,24 +122,25 @@ struct RepositoryListView<
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
         await vm.loadData(env: env)
-        vm.loadGroup(env: env, groupBy: groupBy)
+        vm.loadGroup(env: env, group: group)
         vm.searchGroup()
         log.trace("INFO: RepositoryListView.load(): \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
     }
 
     func groupView(_ g: Int) -> some View {
-        //Text("group=\(g), \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
-        //Text("group=\(g), \(vm.dataById.count), \(vm.groupDataId.count)")
-
-        Section(header: HStack {
-            Button(action: {
-                vm.groupIsExpanded[g].toggle()
-            }) {
-                env.theme.group.view(
-                    name: { groupName(g) },
-                    count: { $0 > 0 ? $0 : nil }(vm.groupDataId[g].count),
-                    isExpanded: vm.groupIsExpanded[g]
-                )
+        Section(header: Group {
+            if !RepositoryGroup.isSingleton.contains(vm.group) {
+                HStack {
+                    Button(action: {
+                        vm.groupIsExpanded[g].toggle()
+                    }) {
+                        env.theme.group.view(
+                            name: { groupName(g) },
+                            count: { $0 > 0 ? $0 : nil }(vm.groupDataId[g].count),
+                            isExpanded: vm.groupIsExpanded[g]
+                        )
+                    }
+                }
             }
         }//.padding(.top, -10)
         ) {
@@ -145,6 +165,32 @@ struct RepositoryListView<
                 name: { itemName(data) },
                 info: { itemInfo(data) }
             )
+        }
+    }
+}
+
+struct RepositorySearchAreaView<RepositoryData: DataProtocol>: View {
+    @Binding var area: [RepositorySearchArea<RepositoryData>]
+
+    var body: some View {
+        List{
+            Section(header: Text("Search area")) {
+                ForEach(0 ..< area.count, id: \.self) { i in
+                    Button(action: {
+                        area[i].isSelected.toggle()
+                        if area.first(where: { $0.isSelected }) == nil { area[0].isSelected = true }
+                    } ) {
+                        HStack {
+                            Text(area[i].name)
+                            Spacer()
+                            if area[i].isSelected {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.accentColor)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
