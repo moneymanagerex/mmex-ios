@@ -169,8 +169,7 @@ struct AccountEditView: View {
                 }
             }
 
-            // TODO: delete account if not in use
-            if true {
+            if !edit && !vm.usedId.contains(data.id) {
                 Button("Delete Account") {
                     onDelete()
                 }

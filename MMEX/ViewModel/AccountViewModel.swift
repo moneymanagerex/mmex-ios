@@ -7,57 +7,39 @@
 
 import SwiftUI
 
-enum AccountGroupBy: String, RepositoryGroupByProtocol {
-    case void       = "Group:"
-    case byType     = "by Type"
-    case byCurrency = "by Currency"
-    case byStatus   = "by Status"
-    case byFavorite = "by Favorite"
-    static let defaultValue = Self.void
+enum AccountGroup: String, RepositoryGroupProtocol {
+    case all      = "All"
+    case used     = "Used"
+    case type     = "Type"
+    case currency = "Currency"
+    case status   = "Status"
+    case favorite = "Favorite"
+    static let defaultValue = Self.all
+    static let isSingleton: Set<Self> = [.all]
 }
 
 struct AccountSearch: RepositorySearchProtocol {
-    var mode = RepositorySearchMode.defaultValue
-    var key: String = ""
-
-    static var simpleConfig: [(String, Bool, (AccountData) -> [String])] = [
-        ("Name",  true,  { [$0.name] }),
-        ("Notes", false, { [$0.notes] }),
-        ("other", false, { [$0.num, $0.heldAt, $0.website, $0.contactInfo, $0.accessInfo] }),
+    var area: [RepositorySearchArea<AccountData>] = [
+        ("Name",  true,  [ {$0.name} ]),
+        ("Notes", false, [ {$0.notes} ]),
+        ("Other", false, [ {$0.num}, {$0.heldAt}, {$0.website}, {$0.contactInfo}, {$0.accessInfo} ]),
     ]
-    var simpleIsActive = simpleConfig.map { $0.1 }
-
-    var isEmpty: Bool { mode == .simple && key.isEmpty }
-    func match(_ data: AccountData) -> Bool {
-        if isEmpty { return true }
-
-        // TODO: advanced search
-        if mode != .simple { return true }
-
-        for i in 0 ..< Self.simpleConfig.count {
-            guard simpleIsActive[i] else { continue }
-            if Self.simpleConfig[i].2(data).first(
-                where: { $0.localizedCaseInsensitiveContains(key) }
-            ) != nil {
-                return true
-            }
-        }
-        return false
-    }
+    var key: String = ""
 }
 
 @MainActor
 class AccountViewModel: RepositoryViewModelProtocol {
-    typealias RepositoryData    = AccountData
-    typealias RepositoryGroupBy = AccountGroupBy
-    typealias RepositorySearch  = AccountSearch
+    typealias RepositoryData   = AccountData
+    typealias RepositoryGroup  = AccountGroup
+    typealias RepositorySearch = AccountSearch
 
     @Published var dataState: RepositoryLoadState = .idle
     var dataById: [DataId : RepositoryData] = [:]
+    var usedId: Set<DataId> = []
     private var dataId: [DataId] = [] // sorted by name
     private(set) var currencyName: [(DataId, String)] = [] // sorted by name
 
-    @Published var groupBy = AccountGroupBy.defaultValue
+    @Published var group = AccountGroup.defaultValue
     @Published var groupState: RepositoryLoadState = .idle
     @Published var groupDataId: [[DataId]] = []
 
@@ -70,17 +52,21 @@ class AccountViewModel: RepositoryViewModelProtocol {
         favoriteAcct : .boolTrue
     )
 
-    static let groupByType: [AccountType] = [
+    static let groupUsed: [Bool] = [
+        true, false
+    ]
+
+    static let groupType: [AccountType] = [
         .checking, .creditCard, .cash, .loan, .term, .asset, .shares, .investment
     ]
 
-    var groupByCurrency: [DataId] = []
+    var groupCurrency: [DataId] = []
 
-    static let groupByStatus: [AccountStatus] = [
+    static let groupStatus: [AccountStatus] = [
         .open, .closed
     ]
 
-    static let groupByFavorite: [AccountFavorite] = [
+    static let groupFavorite: [AccountFavorite] = [
         .boolTrue, .boolFalse
     ]
 
@@ -101,9 +87,18 @@ class AccountViewModel: RepositoryViewModelProtocol {
             }
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                let data: [DataId]? = env.accountRepository?.select(
-                    from: A.table.order(A.col_name),
-                    with: A.fetchId
+                let data: [DataId]? = env.accountRepository?.selectId(
+                    from: A.selectUsed(from: A.table)
+                )
+                await MainActor.run { if let data {
+                    self.usedId = Set(data)
+                } }
+                return data != nil
+            }
+            queue.addTask(priority: .background) {
+                typealias A = AccountRepository
+                let data: [DataId]? = env.accountRepository?.selectId(
+                    from: A.table.order(A.col_name)
                 )
                 await MainActor.run { if let data { self.dataId = data } }
                 return data != nil
@@ -146,39 +141,44 @@ class AccountViewModel: RepositoryViewModelProtocol {
         groupIsExpanded.append(isExpanded)
     }
 
-    func loadGroup(env: EnvironmentManager, groupBy: AccountGroupBy) {
-        log.trace("DEBUG: AccountViewModel.loadGroup(\(self.groupBy.rawValue)): main=\(Thread.isMainThread)")
+    func loadGroup(env: EnvironmentManager, group: AccountGroup) {
+        log.trace("DEBUG: AccountViewModel.loadGroup(\(self.group.rawValue)): main=\(Thread.isMainThread)")
         guard dataState == .ready && groupState != .loading else { return }
         groupState = .loading
-        self.groupBy = groupBy
-        groupByCurrency = []
+        self.group = group
+        groupCurrency = []
         groupDataId = []
         groupIsVisible.removeAll(keepingCapacity: true)
         groupIsExpanded.removeAll(keepingCapacity: true)
-        switch groupBy {
-        case .void:
+        switch group {
+        case .all:
             addGroup(dataId, true, true)
-        case .byType:
+        case .used:
+            let dict = Dictionary(grouping: dataId) { usedId.contains($0) }
+            for g in Self.groupUsed {
+                addGroup(dict[g] ?? [], true, true)
+            }
+        case .type:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.type }
-            for g in Self.groupByType {
+            for g in Self.groupType {
                 addGroup(dict[g] ?? [], dict[g] != nil, true)
             }
-        case .byCurrency:
+        case .currency:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.currencyId }
-            groupByCurrency = env.currencyCache.compactMap {
+            groupCurrency = env.currencyCache.compactMap {
                 dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
-            for g in groupByCurrency {
+            for g in groupCurrency {
                 addGroup(dict[g] ?? [], dict[g] != nil, true)
             }
-        case .byStatus:
+        case .status:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.status }
-            for g in Self.groupByStatus {
+            for g in Self.groupStatus {
                 addGroup(dict[g] ?? [], true, g == .open)
             }
-        case .byFavorite:
+        case .favorite:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.favoriteAcct }
-            for g in Self.groupByFavorite {
+            for g in Self.groupFavorite {
                 addGroup(dict[g] ?? [], true, g == .boolTrue)
             }
         }
@@ -187,8 +187,8 @@ class AccountViewModel: RepositoryViewModelProtocol {
 
     func groupIsVisible(_ g: Int) -> Bool {
         if search.isEmpty {
-            return switch groupBy {
-            case .byType, .byCurrency: !groupDataId[g].isEmpty
+            return switch group {
+            case .type, .currency: !groupDataId[g].isEmpty
             default: true
             }
         }

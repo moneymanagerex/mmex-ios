@@ -15,41 +15,60 @@ enum RepositoryLoadState: Int, Identifiable, Equatable {
     var id: Self { self }
 }
 
-protocol RepositoryGroupByProtocol: EnumCollateNoCase, Hashable
+protocol RepositoryGroupProtocol: EnumCollateNoCase, Hashable
 where Self.AllCases: RandomAccessCollection {
+    static var isSingleton: Set<Self> { get }
 }
 
-enum RepositorySearchMode: String, EnumCollateNoCase, Hashable {
-    case simple   = "Search"
-    case advanced = "Adv. Search"
-    static var defaultValue = Self.simple
-}
+typealias RepositorySearchArea<RepositoryData: DataProtocol> = (
+    name: String,
+    isSelected: Bool,
+    values: [(RepositoryData) -> String]
+)
 
 protocol RepositorySearchProtocol: Copyable {
     associatedtype RepositoryData: DataProtocol
-    var mode: RepositorySearchMode { get set }
+    var area: [RepositorySearchArea<RepositoryData>] { get set }
     var key: String { get set }
-    var isEmpty: Bool { get }
-    func match(_ data: RepositoryData) -> Bool
+}
+
+extension RepositorySearchProtocol {
+    var prompt: String {
+        "Search in " + area.compactMap { $0.isSelected ? $0.name : nil }.joined(separator: ", ")
+    }
+    var isEmpty: Bool { key.isEmpty }
+    func match(_ data: RepositoryData) -> Bool {
+        if key.isEmpty { return true }
+        for i in 0 ..< area.count {
+            guard area[i].isSelected else { continue }
+            if area[i].values.first(
+                where: { $0(data).localizedCaseInsensitiveContains(key) }
+            ) != nil {
+                return true
+            }
+        }
+        return false
+    }
 }
 
 @MainActor
 protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
-    associatedtype RepositoryData    : DataProtocol
-    associatedtype RepositoryGroupBy : RepositoryGroupByProtocol
-    associatedtype RepositorySearch  : RepositorySearchProtocol
+    associatedtype RepositoryData   : DataProtocol
+    associatedtype RepositoryGroup  : RepositoryGroupProtocol
+    associatedtype RepositorySearch : RepositorySearchProtocol
     where RepositorySearch.RepositoryData == Self.RepositoryData
 
-    var dataState   : RepositoryLoadState      { get set }
-    var dataById    : [DataId: RepositoryData] { get set }
+    var dataState        : RepositoryLoadState      { get set }
+    var dataById         : [DataId: RepositoryData] { get set }
+    var usedId           : Set<DataId>              { get set }
 
-    var groupBy     : RepositoryGroupBy        { get set }
-    var groupState  : RepositoryLoadState      { get set }
-    var groupDataId : [[DataId]]               { get set }
+    var group            : RepositoryGroup          { get set }
+    var groupState       : RepositoryLoadState      { get set }
+    var groupDataId      : [[DataId]]               { get set }
 
-    var search          : RepositorySearch     { get set }
-    var groupIsVisible  : [Bool]               { get set }
-    var groupIsExpanded : [Bool]               { get set }
+    var search           : RepositorySearch         { get set }
+    var groupIsVisible   : [Bool]                   { get set }
+    var groupIsExpanded  : [Bool]                   { get set }
 
     static var newData: RepositoryData { get }
 
@@ -62,15 +81,12 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
     func unloadData()
 
     // create `groupDataId`; initialize `groupIsVisible`, `groupIsExpanded`
-    // set `groupBy`; set `groupState` to `.ready` or `.error`
+    // set `group`; set `groupState` to `.ready` or `.error`
     // prerequisites: `dataState == .ready`
-    func loadGroup(env: EnvironmentManager, groupBy: RepositoryGroupBy)// async
+    func loadGroup(env: EnvironmentManager, group: RepositoryGroup)// async
 
     // set `groupState` to `.idle`
     func unloadGroup()
-
-    // set `search.mode`, `search.key`
-    func simpleSearch(with key: String)
 
     // set `groupIsVisible`, `groupIsExpanded`; set `groupState` back to `.ready`
     // prerequisites: `groupState == .ready`
@@ -80,10 +96,10 @@ protocol RepositoryViewModelProtocol: AnyObject, ObservableObject {
 }
 
 extension RepositoryViewModelProtocol {
-    func preloaded(env: EnvironmentManager, groupBy: RepositoryGroupBy) -> Self {
+    func preloaded(env: EnvironmentManager, group: RepositoryGroup) -> Self {
         Task {
             await loadData(env: env)
-            loadGroup(env: env, groupBy: groupBy)
+            loadGroup(env: env, group: group)
             searchGroup()
         }
         return self
@@ -110,11 +126,6 @@ extension RepositoryViewModelProtocol {
 
     func dataIsVisible(_ dataId: DataId) -> Bool {
         search.match(dataById[dataId]!)
-    }
-
-    func simpleSearch(with key: String) {
-        search.mode = .simple
-        search.key = key
     }
 
     func groupIsVisible(_ groupId: Int) -> Bool {

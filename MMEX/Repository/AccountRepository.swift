@@ -153,6 +153,28 @@ struct AccountRepository: RepositoryProtocol {
             col_minimumPayment  <- data.minimumPayment
         ]
     }
+    
+    static func selectUsed(from table: SQLite.Table) -> SQLite.Table {
+        typealias S = StockRepository
+        typealias T = TransactionRepository
+        typealias R = ScheduledRepository
+        typealias AA = AttachmentRepository
+        let cond = "EXISTS (" + S.table.select(1)
+            .where(S.table[S.col_accountId] == Self.table[Self.col_id])
+            .union(T.table.select(1)
+                .where(T.table[T.col_accountId] == Self.table[Self.col_id])
+            ).union(T.table.select(1)
+                .where(T.table[T.col_toAccountId] == Self.table[Self.col_id])
+            ).union(R.table.select(1)
+                .where(R.table[T.col_accountId] == Self.table[Self.col_id])
+            ).union(R.table.select(1)
+                .where(R.table[T.col_toAccountId] == Self.table[Self.col_id])
+            ).union(AA.table.select(1).where(
+                AA.table[AA.col_refType] == RefType.account.rawValue &&
+                AA.table[AA.col_refId] == Self.table[Self.col_id]
+            ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
 }
 
 extension AccountRepository {

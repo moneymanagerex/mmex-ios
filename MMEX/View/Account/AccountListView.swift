@@ -15,7 +15,7 @@ struct AccountListView: View {
     var body: some View {
         RepositoryListView(
             vm: vm,
-            groupBy: vm.groupBy,
+            group: vm.group,
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
@@ -35,25 +35,27 @@ struct AccountListView: View {
 
     func groupName(_ groupId: Int) -> some View {
         Group {
-            switch vm.groupBy {
-            case .void:
+            switch vm.group {
+            case .all:
                 Text("All")
-            case .byType:
+            case .used:
+                Text(AccountViewModel.groupUsed[groupId] ? "Used" : "Other")
+            case .type:
                 HStack {
-                    Image(systemName: AccountViewModel.groupByType[groupId].symbolName)
+                    Image(systemName: AccountViewModel.groupType[groupId].symbolName)
                         .frame(minWidth: 10, alignment: .leading)
                         .font(.system(size: 16, weight: .bold))
                         //.foregroundColor(.blue)
-                    Text(AccountViewModel.groupByType[groupId].rawValue)
+                    Text(AccountViewModel.groupType[groupId].rawValue)
                     //.font(.subheadline)
                     //.padding(.leading)
                 }
-            case .byCurrency:
-                Text(env.currencyCache[vm.groupByCurrency[groupId]]?.name ?? "ERROR: unknown currency")
-            case .byStatus:
-                Text(AccountViewModel.groupByStatus[groupId].rawValue)
-            case .byFavorite:
-                Text(AccountViewModel.groupByFavorite[groupId] == .boolTrue ? "Favorite" : "Other")
+            case .currency:
+                Text(env.currencyCache[vm.groupCurrency[groupId]]?.name ?? "ERROR: unknown currency")
+            case .status:
+                Text(AccountViewModel.groupStatus[groupId].rawValue)
+            case .favorite:
+                Text(AccountViewModel.groupFavorite[groupId] == .boolTrue ? "Favorite" : "Other")
             }
         }
     }
@@ -64,7 +66,7 @@ struct AccountListView: View {
 
     func itemInfo(_ data: AccountData) -> some View {
         Group {
-            if vm.groupBy == .byType {
+            if vm.group == .type {
                 if let currency = env.currencyCache[data.currencyId] {
                     Text(currency.name)
                 }

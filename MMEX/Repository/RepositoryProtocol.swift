@@ -108,6 +108,24 @@ extension RepositoryProtocol {
         }
     }
 
+    func selectId(
+        from table: SQLite.Table
+    ) -> [DataId]? {
+        do {
+            var dataId: [DataId] = []
+            let query = table.select(Self.col_id)
+            log.trace("DEBUG: RepositoryProtocol.selectId(): \(query.expression.description)")
+            for row in try db.prepare(query) {
+                dataId.append(Self.fetchId(row))
+            }
+            log.info("INFO: RepositoryProtocol.selectId(\(Self.repositoryName)): \(dataId.count)")
+            return dataId
+        } catch {
+            log.error("ERROR: RepositoryProtocol.selectId(\(Self.repositoryName)): \(error)")
+            return nil
+        }
+    }
+
     func selectById<DataValue>(
         from table: SQLite.Table = Self.table,
         with value: (SQLite.Row) -> DataValue = Self.fetchData
