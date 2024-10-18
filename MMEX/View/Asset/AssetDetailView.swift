@@ -99,7 +99,7 @@ struct AssetDetailView: View {
     }
 
     func updateAsset() {
-        let repository = env.assetRepository // pass URL here
+        let repository = AssetRepository(env) // pass URL here
         if repository?.update(asset) == true {
             // TODO
         } else {
@@ -108,7 +108,7 @@ struct AssetDetailView: View {
     }
 
     func deleteAsset(){
-        let repository = env.assetRepository // pass URL here
+        let repository = AssetRepository(env) // pass URL here
         if repository?.delete(asset) == true {
             // Dismiss the AssetDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()

@@ -56,7 +56,7 @@ struct CurrencyDetailView: View {
     }
 
     func updateCurrency() {
-        guard let repository = env.currencyRepository else { return }
+        guard let repository = CurrencyRepository(env) else { return }
         if repository.update(currency) {
             if env.currencyCache[currency.id] != nil {
                 env.currencyCache.update(id: currency.id, data: currency)
@@ -69,7 +69,7 @@ struct CurrencyDetailView: View {
 
     func deleteCurrency() {
         guard env.currencyCache[currency.id] == nil else { return }
-        guard let repository = env.currencyRepository else { return }
+        guard let repository = CurrencyRepository(env) else { return }
         if repository.delete(currency) {
             presentationMode.wrappedValue.dismiss()
         } else {

@@ -127,9 +127,9 @@ struct StockListView: View {
     }
 
     func loadAccountName() {
-        let repo = env.accountRepository
+        let repository = AccountRepository(env)
         DispatchQueue.global(qos: .background).async {
-            let id_name = repo?.loadName() ?? []
+            let id_name = repository?.loadName() ?? []
             DispatchQueue.main.async {
                 self.allAccountName = id_name
             }
@@ -137,7 +137,7 @@ struct StockListView: View {
     }
 
     func loadStockData() {
-        let repository = env.stockRepository
+        let repository = StockRepository(env)
         DispatchQueue.global(qos: .background).async {
             typealias S = StockRepository
             let dataByAccount = repository?.loadByAccount(
@@ -151,7 +151,7 @@ struct StockListView: View {
     }
 
     func addStock(stock: inout StockData) {
-        guard let repository = env.stockRepository else { return }
+        guard let repository = StockRepository(env) else { return }
         if repository.insert(&stock) {
             self.loadStockData()
         }

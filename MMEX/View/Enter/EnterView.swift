@@ -57,7 +57,7 @@ struct EnterView: View {
             // TODO update category, payee associated?
             
             // database level setting
-            let repository = env.infotableRepository
+            let repository = InfotableRepository(env)
             if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
                 newTxn.accountId = storedDefaultAccount
             }
@@ -65,7 +65,7 @@ struct EnterView: View {
     }
 
     func loadAccounts() {
-        let repository = env.accountRepository
+        let repository = AccountRepository(env)
         DispatchQueue.global(qos: .background).async {
             typealias A = AccountRepository
             let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
@@ -78,7 +78,7 @@ struct EnterView: View {
     func loadPayees() {
         // Fetch accounts using repository and update the view
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = env.payeeRepository?.load() ?? []
+            let loadedPayees = PayeeRepository(self.env)?.load() ?? []
             // Update UI on the main thread
             DispatchQueue.main.async {
                 self.payees = loadedPayees

@@ -56,7 +56,7 @@ struct CategoryListView: View {
     
     func loadCategories() {
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = env.categoryRepository?.load() ?? []
+            let loadedCategories = CategoryRepository(self.env)?.load() ?? []
             DispatchQueue.main.async {
                 self.categories = loadedCategories
                 self.filteredCategories = loadedCategories
@@ -65,7 +65,7 @@ struct CategoryListView: View {
     }
 
     func addCategory(category: inout CategoryData) {
-        guard let repository = env.categoryRepository else { return }
+        guard let repository = CategoryRepository(env) else { return }
         if repository.insert(&category) {
             self.categories.append(category)
         }

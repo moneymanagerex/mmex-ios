@@ -29,8 +29,8 @@ class InsightsViewModel: ObservableObject {
         self.endDate = Date()
 
         // get base currency
-        if let baseCurrencyId = env.infotableRepository?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
-            baseCurrency = env.currencyRepository?.pluck(
+        if let baseCurrencyId = InfotableRepository(env)?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
+            baseCurrency = CurrencyRepository(env)?.pluck(
                 key: InfoKey.baseCurrencyID.id,
                 from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
             ).toOptional()
@@ -51,7 +51,7 @@ class InsightsViewModel: ObservableObject {
     }
     
     func loadRecentTransactions() {
-        let repository = env.transactionRepository
+        let repository = TransactionRepository(env)
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {
             let transactions = repository?.loadRecent(startDate: self.startDate, endDate: self.endDate) ?? []
@@ -63,7 +63,7 @@ class InsightsViewModel: ObservableObject {
     }
     
     func loadTransactions() {
-        let repository = env.transactionRepository
+        let repository = TransactionRepository(env)
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {
             let transactions = repository?.load() ?? []
@@ -76,7 +76,7 @@ class InsightsViewModel: ObservableObject {
 
     func loadAccountInfo() {
         self.accountInfo.today = String(self.endDate.ISO8601Format().prefix(10))
-        let repository = env.accountRepository
+        let repository = AccountRepository(env)
         typealias A = AccountRepository
         let table = A.table
             .filter(A.table[A.col_status] == AccountStatus.open.rawValue)

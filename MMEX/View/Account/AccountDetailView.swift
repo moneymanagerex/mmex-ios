@@ -83,7 +83,7 @@ struct AccountDetailView: View {
     }
 
     func updateAccount() {
-        guard let repository = env.accountRepository else { return }
+        guard let repository = AccountRepository(env) else { return }
         if repository.update(data) {
             // Successfully updated
             if env.currencyCache[data.currencyId] == nil {
@@ -97,7 +97,7 @@ struct AccountDetailView: View {
     }
 
     func deleteAccount() {
-        guard let repository = env.accountRepository else { return }
+        guard let repository = AccountRepository(env) else { return }
         if repository.delete(data) {
             env.loadAccount()
             presentationMode.wrappedValue.dismiss()

@@ -8,16 +8,35 @@
 import SwiftUI
 
 enum RepositoryLoadState: Int, Identifiable, Equatable {
+    case error
     case idle
     case loading
     case ready
-    case error
     var id: Self { self }
+}
+
+struct RepositoryLoad<LoadData: Copyable>: Copyable {
+    var state: RepositoryLoadState = .idle
+    var data: LoadData
+}
+
+extension RepositoryLoad {
+    init(_ data: LoadData) {
+        self.init(data: data)
+    }
 }
 
 protocol RepositoryGroupProtocol: EnumCollateNoCase, Hashable
 where Self.AllCases: RandomAccessCollection {
     static var isSingleton: Set<Self> { get }
+}
+
+struct RepositoryGroup<Group: RepositoryGroupProtocol> {
+    var state: RepositoryLoadState = .idle
+    var group: Group = Group.defaultValue
+    var groupDataId     : [[DataId]] = []
+    var groupIsVisible  : [Bool]     = []
+    var groupIsExpanded : [Bool]     = []
 }
 
 typealias RepositorySearchArea<RepositoryData: DataProtocol> = (
@@ -148,4 +167,21 @@ extension RepositoryViewModelProtocol {
         }
         groupState = .ready
     }
+}
+
+class RepositoryViewModel: ObservableObject {
+    var currencyCount         : RepositoryLoad<Int>                    = .init(0)
+    var currencyData          : RepositoryLoad<[DataId: CurrencyData]> = .init([:])
+    var currencyOrder         : RepositoryLoad<[DataId]>               = .init([])
+    var currencyUsed          : RepositoryLoad<Set<DataId>>            = .init([])
+    var currencyOrderWithName : RepositoryLoad<[(DataId, String)]>     = .init([])
+
+    var accountCount            : RepositoryLoad<Int>                   = .init(0)
+    var accountData             : RepositoryLoad<[DataId: AccountData]> = .init([:])
+    var accountCountAttachments : RepositoryLoad<[DataId: Int]>         = .init([:])
+    var accountOrder            : RepositoryLoad<[DataId]>              = .init([])
+    var accountUsed             : RepositoryLoad<Set<DataId>>           = .init([])
+
+    //var currencyGroup : RepositoryGroup<CurrencyGroup> = .init()
+    var accountGroup  : RepositoryGroup<AccountGroup>  = .init()
 }

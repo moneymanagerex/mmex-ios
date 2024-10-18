@@ -261,7 +261,8 @@ struct TransactionEditView: View {
     }
 
     func loadLatestTxn() {
-        if let latestTxn = env.transactionRepository?.latest(accountID: txn.accountId).toOptional() ?? env.transactionRepository?.latest().toOptional() {
+        let repository = TransactionRepository(env)
+        if let latestTxn = repository?.latest(accountID: txn.accountId).toOptional() ?? repository?.latest().toOptional() {
             // Update UI on the main thread
             DispatchQueue.main.async {
                 if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId == 0) {
@@ -271,6 +272,7 @@ struct TransactionEditView: View {
             }
         }
     }
+
     func getCategoryName(for categoryID: DataId) -> String {
         return categories.first {$0.id == categoryID}?.fullName(with: viewModel.categDelimiter) ?? "Unknown"
     }

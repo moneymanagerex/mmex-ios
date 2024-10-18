@@ -90,7 +90,7 @@ struct CategoryDetailView: View {
     }
     
     func saveChanges() {
-        let repository = env.categoryRepository
+        let repository = CategoryRepository(env)
         if repository?.update(category) == true {
             // Handle success
         } else {
@@ -99,7 +99,7 @@ struct CategoryDetailView: View {
     }
     
     func deleteCategory() {
-        let repository = env.categoryRepository
+        let repository = CategoryRepository(env)
         if repository?.delete(category) == true {
             // Dismiss the view and go back
             presentationMode.wrappedValue.dismiss()

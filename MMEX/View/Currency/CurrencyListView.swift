@@ -75,7 +75,7 @@ struct CurrencyListView: View {
     }
 
     func loadCurrencyData() {
-        let repository = env.currencyRepository
+        let repository = CurrencyRepository(env)
         DispatchQueue.global(qos: .background).async {
             let data = repository?.load() ?? []
             // Update UI on the main thread
@@ -86,7 +86,7 @@ struct CurrencyListView: View {
     }
 
     func addCurrency(_ currency: inout CurrencyData) {
-        guard let repository = env.currencyRepository else { return }
+        guard let repository = CurrencyRepository(env) else { return }
         if repository.insert(&currency) {
             self.loadCurrencyData()
         } else {

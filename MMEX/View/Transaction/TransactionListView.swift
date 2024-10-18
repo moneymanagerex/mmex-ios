@@ -90,7 +90,7 @@ struct TransactionListView: View {
             filterTransactions()
 
             // database level setting
-            let repository = env.infotableRepository
+            let repository = InfotableRepository(env)
             if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
                 newTxn.accountId = storedDefaultAccount
             }

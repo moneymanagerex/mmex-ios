@@ -10,9 +10,15 @@ import SQLite
 
 struct Repository {
     let db: Connection
+
+    init(db: Connection) {
+        self.db = db
+    }
+
     init(_ db: Connection) {
         self.db = db
     }
+
     init?(_ db: Connection?) {
         guard let db else { return nil }
         self.db = db

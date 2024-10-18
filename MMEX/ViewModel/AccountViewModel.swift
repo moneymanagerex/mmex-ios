@@ -10,10 +10,10 @@ import SwiftUI
 enum AccountGroup: String, RepositoryGroupProtocol {
     case all      = "All"
     case used     = "Used"
+    case favorite = "Favorite"
     case type     = "Type"
     case currency = "Currency"
     case status   = "Status"
-    case favorite = "Favorite"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
 }
@@ -79,7 +79,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
         let allOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                let data: [DataId: RepositoryData]? = env.accountRepository?.selectById(
+                let data: [DataId: RepositoryData]? = AccountRepository(env)?.selectById(
                     from: A.table.order(A.col_name)
                 )
                 await MainActor.run { if let data { self.dataById = data } }
@@ -87,7 +87,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
             }
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                let data: [DataId]? = env.accountRepository?.selectId(
+                let data: [DataId]? = AccountRepository(env)?.selectId(
                     from: A.selectUsed(from: A.table)
                 )
                 await MainActor.run { if let data {
@@ -97,14 +97,14 @@ class AccountViewModel: RepositoryViewModelProtocol {
             }
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
-                let data: [DataId]? = env.accountRepository?.selectId(
+                let data: [DataId]? = AccountRepository(env)?.selectId(
                     from: A.table.order(A.col_name)
                 )
                 await MainActor.run { if let data { self.dataId = data } }
                 return data != nil
             }
             queue.addTask(priority: .background) {
-                let data: [(DataId, String)]? = env.currencyRepository?.loadName()
+                let data: [(DataId, String)]? = CurrencyRepository(env)?.loadName()
                 await MainActor.run { if let data { self.currencyName = data } }
                 return data != nil
             }
@@ -156,7 +156,12 @@ class AccountViewModel: RepositoryViewModelProtocol {
         case .used:
             let dict = Dictionary(grouping: dataId) { usedId.contains($0) }
             for g in Self.groupUsed {
-                addGroup(dict[g] ?? [], true, true)
+                addGroup(dict[g] ?? [], true, g)
+            }
+        case .favorite:
+            let dict = Dictionary(grouping: dataId) { dataById[$0]!.favoriteAcct }
+            for g in Self.groupFavorite {
+                addGroup(dict[g] ?? [], true, g == .boolTrue)
             }
         case .type:
             let dict = Dictionary(grouping: dataId) { dataById[$0]!.type }
@@ -176,11 +181,6 @@ class AccountViewModel: RepositoryViewModelProtocol {
             for g in Self.groupStatus {
                 addGroup(dict[g] ?? [], true, g == .open)
             }
-        case .favorite:
-            let dict = Dictionary(grouping: dataId) { dataById[$0]!.favoriteAcct }
-            for g in Self.groupFavorite {
-                addGroup(dict[g] ?? [], true, g == .boolTrue)
-            }
         }
         groupState = .ready
     }
@@ -198,7 +198,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
     /*
     func loadCurrencyName() {
         currencyName = []
-        guard let repository = env.currencyRepository else { return }
+        guard let repository = CurrencyRepository(env) else { return }
         DispatchQueue.global(qos: .background).async {
             let id_name = repository.loadName()
             DispatchQueue.main.async {
@@ -209,7 +209,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
 
     func loadDataById() {
         dataById = [:]
-        guard let repository = env.accountRepository else { return }
+        guard let repository = AccountRepository(env) else { return }
         DispatchQueue.global(qos: .background).async {
             typealias A = AccountRepository
             let dataById: [DataId: RepositoryData] = repository.dict(
@@ -223,7 +223,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
 
     func loadDataId() {
         dataId = []
-        guard let repository = env.accountRepository else { return }
+        guard let repository = AccountRepository(env) else { return }
         DispatchQueue.global(qos: .background).async {
             typealias A = AccountRepository
             let dataId: [DataId] = repository.select(
