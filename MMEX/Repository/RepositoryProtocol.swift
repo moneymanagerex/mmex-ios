@@ -41,6 +41,7 @@ protocol RepositoryProtocol {
     associatedtype RepositoryData: DataProtocol
 
     var db: Connection { get }
+    init(db: Connection)
 
     static var repositoryName: String { get }
     static var table: SQLite.Table { get }
@@ -49,6 +50,17 @@ protocol RepositoryProtocol {
     static func fetchId(_ row: SQLite.Row) -> DataId
     static var col_id: SQLite.Expression<Int64> { get }
     static func itemSetters(_ item: RepositoryData) -> [SQLite.Setter]
+}
+
+extension RepositoryProtocol {
+    init(_ db: Connection) {
+        self.init(db: db)
+    }
+
+    init?(_ db: Connection?) {
+        guard let db else { return nil }
+        self.init(db: db)
+    }
 }
 
 extension RepositoryProtocol {

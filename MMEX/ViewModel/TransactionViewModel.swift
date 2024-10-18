@@ -20,12 +20,7 @@ class TransactionViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    //
     private var env: EnvironmentManager
-    private var infotableRepo: InfotableRepository?
-    private var transactionRepo: TransactionRepository?
-    private var accountRepo: AccountRepository?
-    private var currencyRepo: CurrencyRepository?
 
     @Published var currencies: [CurrencyData] = []
 
@@ -45,10 +40,6 @@ class TransactionViewModel: ObservableObject {
     init(env: EnvironmentManager) {
         self.env = env
 
-        self.infotableRepo = self.env.infotableRepository
-        self.transactionRepo = self.env.transactionRepository
-        self.accountRepo = self.env.accountRepository
-        self.currencyRepo = self.env.currencyRepository
         loadInfo()
         setupBindings()
         loadAccounts()
@@ -57,23 +48,24 @@ class TransactionViewModel: ObservableObject {
 
     // Load default values from Infotable and populate Published variables
     func loadInfo() {
-        if let baseCurrencyId = infotableRepo?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
+        let infotableRepository = InfotableRepository(env)
+        if let baseCurrencyId = infotableRepository?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
             self.baseCurrencyId = baseCurrencyId
-            baseCurrency = currencyRepo?.pluck(
+            baseCurrency = CurrencyRepository(env)?.pluck(
                 key: InfoKey.baseCurrencyID.id,
                 from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
             ).toOptional()
         }
 
-        if let defaultAccountId = infotableRepo?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
+        if let defaultAccountId = infotableRepository?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
             self.defaultAccountId = defaultAccountId
-            defaultAccount = accountRepo?.pluck(
+            defaultAccount = AccountRepository(env)?.pluck(
                 key: InfoKey.defaultAccountID.id,
                 from: AccountRepository.table.filter(AccountRepository.col_id == Int64(defaultAccountId))
             ).toOptional()
         }
 
-        if let categDelimiter = infotableRepo?.getValue(for: InfoKey.categDelimiter.id, as: String.self) {
+        if let categDelimiter = infotableRepository?.getValue(for: InfoKey.categDelimiter.id, as: String.self) {
             self.categDelimiter = categDelimiter
         }
     }
@@ -100,19 +92,20 @@ class TransactionViewModel: ObservableObject {
 
     // Save data back to Infotable
     private func saveBaseCurrency(_ currencyId: DataId) {
-        _ = infotableRepo?.setValue(Int64(currencyId), for: InfoKey.baseCurrencyID.id)
+        _ = InfotableRepository(env)?.setValue(Int64(currencyId), for: InfoKey.baseCurrencyID.id)
     }
 
     private func saveDefaultAccount(_ accountId: DataId) {
-        _ = infotableRepo?.setValue(Int64(accountId), for: InfoKey.defaultAccountID.id)
+        _ = InfotableRepository(env)?.setValue(Int64(accountId), for: InfoKey.defaultAccountID.id)
     }
 
     func loadAccounts() {
+        let accountRepository = AccountRepository(self.env)
         DispatchQueue.global(qos: .background).async {
-            let loadedAccounts = self.accountRepo?.load() ?? []
+            let loadedAccounts = accountRepository?.load() ?? []
             let loadedAccountDict = Dictionary(uniqueKeysWithValues: loadedAccounts.map { ($0.id, $0) })
             typealias A = AccountRepository
-            let id = self.accountRepo?.loadId(from: A.table.order(A.col_name)) ?? []
+            let id = accountRepository?.loadId(from: A.table.order(A.col_name)) ?? []
             DispatchQueue.main.async {
                 self.accounts = loadedAccounts
                 self.accountDict = loadedAccountDict
@@ -150,11 +143,10 @@ class TransactionViewModel: ObservableObject {
     }
 
     func loadCategories() {
-        let repository = env.categoryRepository
+        let categoryRepository = CategoryRepository(env)
         DispatchQueue.global(qos: .background).async {
-            let loadedCategories = repository?.load() ?? []
+            let loadedCategories = categoryRepository?.load() ?? []
             let updatedCategories = self.populateParentCategories(for: loadedCategories)
-
             let loadedCategoryDict = Dictionary(uniqueKeysWithValues: updatedCategories.map { ($0.id, $0) })
             DispatchQueue.main.async {
                 self.categories = updatedCategories
@@ -172,12 +164,10 @@ class TransactionViewModel: ObservableObject {
     }
 
     func loadPayees() {
-        let repository = env.payeeRepository
-
+        let payeeRepository = PayeeRepository(env)
         DispatchQueue.global(qos: .background).async {
-            let loadedPayees = repository?.load() ?? []
+            let loadedPayees = payeeRepository?.load() ?? []
             let loadedPayeeDict = Dictionary(uniqueKeysWithValues: loadedPayees.map { ($0.id, $0) })
-
             DispatchQueue.main.async {
                 self.payees = loadedPayees
                 self.payeeDict = loadedPayeeDict
@@ -196,11 +186,11 @@ class TransactionViewModel: ObservableObject {
     }
 
     func loadCurrencies() {
+        let currencyRepository = CurrencyRepository(env)
         DispatchQueue.global(qos: .background).async {
-            let loadedCurrencies = self.currencyRepo?.load() ?? []
+            let loadedCurrencies = currencyRepository?.load() ?? []
             DispatchQueue.main.async {
                 self.currencies = loadedCurrencies
-
                 if (loadedCurrencies.count == 1) {
                     self.baseCurrencyId = loadedCurrencies.first!.id
                 }
@@ -209,12 +199,14 @@ class TransactionViewModel: ObservableObject {
     }
 
     func loadTransactions(for accountId: DataId? = nil, startDate: Date? = nil, endDate: Date? = nil) {
+        let transactionRepository = TransactionRepository(env)
+        let transactionSplitRepository = TransactionSplitRepository(env)
         DispatchQueue.global(qos: .background).async {
-            var loadedTransactions = self.transactionRepo?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
+            var loadedTransactions = transactionRepository?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
             for i in loadedTransactions.indices {
                 // TODO other better indicator
                 if loadedTransactions[i].categId <= 0 {
-                    loadedTransactions[i].splits = self.env.transactionSplitRepository?.load(for: loadedTransactions[i]) ?? []
+                    loadedTransactions[i].splits = transactionSplitRepository?.load(for: loadedTransactions[i]) ?? []
                 }
             }
 
@@ -263,21 +255,23 @@ class TransactionViewModel: ObservableObject {
             txn.toAccountId = 0
         }
 
-        guard let repository = env.transactionRepository else { return }
+        guard let transactionRepository = TransactionRepository(env) else { return }
 
-        if repository.insertWithSplits(&txn) {
+        if transactionRepository.insertWithSplits(&txn) {
             self.txns.append(txn) // id is ready after repo call
         } else {
             // TODO
         }
     }
+
     func updateTransaction(_ data: inout TransactionData) -> Bool {
-        guard let repository = env.transactionRepository else { return false } 
-        return repository.updateWithSplits(&data)
+        guard let transactionRepository = TransactionRepository(env) else { return false }
+        return transactionRepository.updateWithSplits(&data)
     }
+
     func deleteTransaction(_ data: TransactionData) -> Bool {
-        guard let repository = env.transactionRepository else { return false }
-        guard let repositorySplit = env.transactionSplitRepository else { return false }
-        return repository.delete(data) && repositorySplit.delete(data)
+        guard let transactionRepository = TransactionRepository(env) else { return false }
+        guard let transactionSplitRepository = TransactionSplitRepository(env) else { return false }
+        return transactionRepository.delete(data) && transactionSplitRepository.delete(data)
     }
 }

@@ -101,7 +101,7 @@ struct PayeeDetailView: View {
     }
     
     func updatePayee() {
-        let repository = env.payeeRepository // pass URL here
+        let repository = PayeeRepository(env) // pass URL here
         if repository?.update(payee) == true {
             // TODO
         } else {
@@ -110,7 +110,7 @@ struct PayeeDetailView: View {
     }
     
     func deletePayee(){
-        let repository = env.payeeRepository // pass URL here
+        let repository = PayeeRepository(env) // pass URL here
         if repository?.delete(payee) == true {
             // Dismiss the PayeeDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()

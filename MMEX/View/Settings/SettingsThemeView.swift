@@ -17,6 +17,8 @@ struct SettingsThemeView: View {
         "Field Layout" : true,
     ]
 
+    let accentColor = Color.blue
+
     var body: some View {
         List {
             Section() {
@@ -68,7 +70,7 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.group.layout == layout ? .blue : .gray,
+                                    env.theme.group.layout == layout ? accentColor : .gray,
                                     lineWidth: env.theme.group.layout == layout ? 3 : 1
                                 )
                             )
@@ -103,7 +105,7 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.item.layout == layout ? .blue : .gray,
+                                    env.theme.item.layout == layout ? accentColor : .gray,
                                     lineWidth: env.theme.item.layout == layout ? 3 : 1
                                 )
                             )
@@ -141,7 +143,7 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.field.layout == layout ? .blue : .gray,
+                                    env.theme.field.layout == layout ? accentColor : .gray,
                                     lineWidth: env.theme.field.layout == layout ? 3 : 1
                                 )
                             )

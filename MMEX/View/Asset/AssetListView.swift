@@ -126,9 +126,9 @@ struct AssetListView: View {
     }
 
     func loadCurrencyName() {
-        let repo = env.currencyRepository
+        let repository = CurrencyRepository(env)
         DispatchQueue.global(qos: .background).async {
-            let id_name = repo?.loadName() ?? []
+            let id_name = repository?.loadName() ?? []
             DispatchQueue.main.async {
                 self.allCurrencyName = id_name
             }
@@ -136,7 +136,7 @@ struct AssetListView: View {
     }
 
     func loadAssetData() {
-        let repository = env.assetRepository
+        let repository = AssetRepository(env)
         DispatchQueue.global(qos: .background).async {
             typealias E = AssetRepository
             let dataByType = repository?.loadByType(
@@ -150,7 +150,7 @@ struct AssetListView: View {
     }
 
     func addAsset(asset: inout AssetData) {
-        guard let repository = env.assetRepository else { return }
+        guard let repository = AssetRepository(env) else { return }
         if repository.insert(&asset) {
             if env.currencyCache[asset.currencyId] == nil {
                 env.loadCurrency()

@@ -12,13 +12,6 @@ struct AccountRepository: RepositoryProtocol {
     typealias RepositoryData = AccountData
 
     let db: Connection
-    init(_ db: Connection) {
-        self.db = db
-    }
-    init?(_ db: Connection?) {
-        guard let db else { return nil }
-        self.db = db
-    }
 
     static let repositoryName = "ACCOUNTLIST_V1"
     static let table = SQLite.Table(repositoryName)
@@ -153,7 +146,7 @@ struct AccountRepository: RepositoryProtocol {
             col_minimumPayment  <- data.minimumPayment
         ]
     }
-    
+
     static func selectUsed(from table: SQLite.Table) -> SQLite.Table {
         typealias S = StockRepository
         typealias T = TransactionRepository
@@ -169,10 +162,7 @@ struct AccountRepository: RepositoryProtocol {
                 .where(R.table[T.col_accountId] == Self.table[Self.col_id])
             ).union(R.table.select(1)
                 .where(R.table[T.col_toAccountId] == Self.table[Self.col_id])
-            ).union(AA.table.select(1).where(
-                AA.table[AA.col_refType] == RefType.account.rawValue &&
-                AA.table[AA.col_refId] == Self.table[Self.col_id]
-            ) ).expression.description + ")"
+            ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
 }

@@ -197,6 +197,19 @@ extension EnvironmentManager {
     }
 }
 
+extension Repository {
+    init?(_ env: EnvironmentManager) {
+        self.init(env.db)
+    }
+}
+
+extension RepositoryProtocol {
+    init?(_ env: EnvironmentManager) {
+        self.init(env.db)
+    }
+}
+
+/*
 extension EnvironmentManager {
     var repository                 : Repository?                 { Repository(db) }
     var infotableRepository        : InfotableRepository?        { InfotableRepository(db) }
@@ -223,6 +236,7 @@ extension EnvironmentManager {
     var budgetTableRepository      : BudgetTableRepository?      { BudgetTableRepository(db) }
     var reportRepository           : ReportRepository?           { ReportRepository(db) }
 }
+*/
 
 extension EnvironmentManager {
     static var sampleData: EnvironmentManager {

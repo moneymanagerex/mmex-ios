@@ -99,7 +99,7 @@ struct StockDetailView: View {
     }
 
     func updateStock() {
-        let repository = env.stockRepository // pass URL here
+        let repository = StockRepository(env) // pass URL here
         if repository?.update(stock) == true {
             // TODO
         } else {
@@ -108,7 +108,7 @@ struct StockDetailView: View {
     }
 
     func deleteStock(){
-        let repository = env.stockRepository // pass URL here
+        let repository = StockRepository(env) // pass URL here
         if repository?.delete(stock) == true {
             // Dismiss the StockDetailView and go back to the previous view
             presentationMode.wrappedValue.dismiss()

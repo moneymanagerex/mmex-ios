@@ -59,7 +59,7 @@ struct AccountAddView: View {
     }
 
     func addAccount(_ account: inout AccountData) {
-        guard let repository = env.accountRepository else { return }
+        guard let repository = AccountRepository(env) else { return }
         if repository.insert(&account) {
             // self.accounts.append(account)
             if env.currencyCache[account.currencyId] == nil {
