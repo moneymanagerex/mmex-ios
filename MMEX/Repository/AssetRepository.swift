@@ -10,12 +10,12 @@ import SQLite
 
 struct AssetRepository: RepositoryProtocol {
     typealias RepositoryData = AssetData
-
+    
     let db: Connection
-
+    
     static let repositoryName = "ASSETS_V1"
     static let table = SQLite.Table(repositoryName)
-
+    
     // column          | type    | other
     // ----------------+---------+------
     // ASSETID         | INTEGER | PRIMARY KEY
@@ -29,7 +29,7 @@ struct AssetRepository: RepositoryProtocol {
     // VALUECHANGEMODE | TEXT    | (Percentage, Linear)
     // VALUECHANGERATE | NUMERIC |
     // NOTES           | TEXT    |
-
+    
     // column expressions
     static let col_id         = SQLite.Expression<Int64>("ASSETID")
     static let col_type       = SQLite.Expression<String?>("ASSETTYPE")
@@ -42,11 +42,11 @@ struct AssetRepository: RepositoryProtocol {
     static let col_changeMode = SQLite.Expression<String?>("VALUECHANGEMODE")
     static let col_changeRate = SQLite.Expression<Double?>("VALUECHANGERATE")
     static let col_notes      = SQLite.Expression<String?>("NOTES")
-
+    
     // cast NUMERIC to REAL
     static let cast_value      = cast(col_value)      as SQLite.Expression<Double?>
     static let cast_changeRate = cast(col_changeRate) as SQLite.Expression<Double?>
-
+    
     static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
@@ -62,7 +62,7 @@ struct AssetRepository: RepositoryProtocol {
             col_notes
         )
     }
-
+    
     static func fetchData(_ row: SQLite.Row) -> AssetData {
         return AssetData(
             id         : DataId(row[col_id]),
@@ -78,7 +78,7 @@ struct AssetRepository: RepositoryProtocol {
             notes      : row[col_notes] ?? ""
         )
     }
-
+    
     static func itemSetters(_ data: AssetData) -> [SQLite.Setter] {
         return [
             col_type       <- data.type.name,
@@ -92,6 +92,24 @@ struct AssetRepository: RepositoryProtocol {
             col_changeRate <- data.changeRate,
             col_notes      <- data.notes
         ]
+    }
+    
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias TE = TransactionLinkRepository
+        let cond = "EXISTS (" + (TE.table.select(1).where(
+            TE.table[TE.col_refType] == RefType.asset.rawValue &&
+            TE.table[TE.col_refId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
+
+    static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
+        typealias AE = AttachmentRepository
+        let cond = "EXISTS (" + (AE.table.select(1).where(
+            AE.table[AE.col_refType] == RefType.account.rawValue &&
+            AE.table[AE.col_refId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
 }
 

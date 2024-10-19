@@ -97,6 +97,25 @@ struct CurrencyRepository: RepositoryProtocol {
             col_type           <- data.type.rawValue
         ]
     }
+
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias A = AccountRepository
+        typealias E = AssetRepository
+        let cond = "EXISTS (" + (A.table.select(1).where(
+            A.table[A.col_currencyId] == Self.table[Self.col_id]
+        ) ).union(E.table.select(1).where(
+            E.table[E.col_currencyId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
+
+    static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
+        typealias CH = CurrencyHistoryRepository
+        let cond = "EXISTS (" + (CH.table.select(1).where(
+            CH.table[CH.col_currencyId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
 }
 
 extension CurrencyRepository {

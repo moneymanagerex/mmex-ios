@@ -74,6 +74,26 @@ struct PayeeRepository: RepositoryProtocol {
             col_pattern    <- data.pattern
         ]
     }
+
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias T = TransactionRepository
+        typealias R = ScheduledRepository
+        let cond = "EXISTS (" + (T.table.select(1).where(
+            T.table[T.col_payeeId] == Self.table[Self.col_id]
+        ) ).union(R.table.select(1).where(
+            R.table[R.col_payeeId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
+
+    static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
+        typealias AP = AttachmentRepository
+        let cond = "EXISTS (" + (AP.table.select(1).where(
+            AP.table[AP.col_refType] == RefType.account.rawValue &&
+            AP.table[AP.col_refId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
 }
 
 extension PayeeRepository {

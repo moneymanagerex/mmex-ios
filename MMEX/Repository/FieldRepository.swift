@@ -59,6 +59,14 @@ struct FieldRepository: RepositoryProtocol {
             col_properties  <- data.properties
         ]
     }
+
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias FC = FieldContentRepository
+        let cond = "EXISTS (" + (FC.table.select(1).where(
+            FC.table[FC.col_fieldId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
 }
 
 extension FieldRepository {

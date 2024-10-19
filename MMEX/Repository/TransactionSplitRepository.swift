@@ -62,6 +62,15 @@ struct TransactionSplitRepository: RepositoryProtocol {
             col_notes   <- data.notes
         ]
     }
+
+    static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
+        typealias GL = TagLinkRepository
+        let cond = "EXISTS (" + (GL.table.select(1).where(
+            GL.table[GL.col_refType] == RefType.transactionSplit.rawValue &&
+            GL.table[GL.col_refId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
 }
 
 extension TransactionSplitRepository {

@@ -10,23 +10,23 @@ import SQLite
 
 struct TagRepository: RepositoryProtocol {
     typealias RepositoryData = TagData
-
+    
     let db: Connection
-
+    
     static let repositoryName = "TAG_V1"
     static let table = SQLite.Table(repositoryName)
-
+    
     // column  | type    | other
     // --------+---------+------
     // TAGID   | INTEGER | PRIMARY KEY
     // TAGNAME | TEXT    | NOT NULL UNIQUE COLLATE NOCASE
     // ACTIVE  | INTEGER |
-
+    
     // column expressions
     static let col_id     = SQLite.Expression<Int64>("TAGID")
     static let col_name   = SQLite.Expression<String>("TAGNAME")
     static let col_active = SQLite.Expression<Int?>("ACTIVE")
-
+    
     static func selectData(from table: SQLite.Table) -> SQLite.Table {
         return table.select(
             col_id,
@@ -34,7 +34,7 @@ struct TagRepository: RepositoryProtocol {
             col_active
         )
     }
-
+    
     static func fetchData(_ row: SQLite.Row) -> TagData {
         return TagData(
             id     : DataId(row[col_id]),
@@ -42,12 +42,20 @@ struct TagRepository: RepositoryProtocol {
             active : row[col_active] ?? 0 != 0
         )
     }
-
+    
     static func itemSetters(_ data: TagData) -> [SQLite.Setter] {
         return [
             col_name   <- data.name,
             col_active <- data.active ? 1 : 0
         ]
+    }
+
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias GL = TagLinkRepository
+        let cond = "EXISTS (" + (GL.table.select(1).where(
+            GL.table[GL.col_tagId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
 }
 

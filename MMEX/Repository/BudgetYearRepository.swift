@@ -44,6 +44,14 @@ struct BudgetYearRepository: RepositoryProtocol {
             col_name <- data.name
         ]
     }
+
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias B = BudgetTableRepository
+        let cond = "EXISTS (" + (B.table.select(1).where(
+            B.table[B.col_yearId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
 }
 
 extension BudgetYearRepository {

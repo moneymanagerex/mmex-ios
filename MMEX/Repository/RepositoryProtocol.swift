@@ -45,11 +45,14 @@ protocol RepositoryProtocol {
 
     static var repositoryName: String { get }
     static var table: SQLite.Table { get }
+    static var col_id: SQLite.Expression<Int64> { get }
     static func selectData(from table: SQLite.Table) -> SQLite.Table
     static func fetchData(_ row: SQLite.Row) -> RepositoryData
-    static func fetchId(_ row: SQLite.Row) -> DataId
-    static var col_id: SQLite.Expression<Int64> { get }
     static func itemSetters(_ item: RepositoryData) -> [SQLite.Setter]
+    static func selectId(from table: SQLite.Table) -> SQLite.Table
+    static func fetchId(_ row: SQLite.Row) -> DataId
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table
+    static func filterDeps(_ table: SQLite.Table) -> SQLite.Table
 }
 
 extension RepositoryProtocol {
@@ -64,10 +67,39 @@ extension RepositoryProtocol {
 }
 
 extension RepositoryProtocol {
-    static func fetchId(_ row: SQLite.Row) -> DataId { DataId(row[Self.col_id]) }
+    static func selectId(from table: SQLite.Table) -> SQLite.Table {
+        return table.select(Self.col_id)
+    }
+
+    static func fetchId(_ row: SQLite.Row) -> DataId {
+        DataId(row[Self.col_id])
+    }
+
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        return table.filter(SQLite.Expression<Bool>(value: false))
+    }
+
+    static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
+        return table.filter(SQLite.Expression<Bool>(value: false))
+    }
 }
 
 extension RepositoryProtocol {
+    func count(
+        from table: SQLite.Table = Self.table
+    ) -> Int? {
+        do {
+            let query = table.count
+            log.trace("DEBUG: RepositoryProtocol.count(): \(query.expression.description)")
+            let count: Int = try db.scalar(query)
+            log.info("INFO: RepositoryProtocol.count(\(Self.repositoryName): \(count)")
+            return count
+        } catch {
+            log.error("ERROR: RepositoryProtocol.count(\(Self.repositoryName): \(error)")
+            return nil
+        }
+    }
+
     func pluck<DataValue>(
         key: String,
         from table: SQLite.Table,
@@ -102,7 +134,7 @@ extension RepositoryProtocol {
     }
 
     func select<DataValue>(
-        from table: SQLite.Table,
+        from table: SQLite.Table = Self.table,
         with value: (SQLite.Row) -> DataValue = Self.fetchData
     ) -> [DataValue]? {
         do {
@@ -121,11 +153,11 @@ extension RepositoryProtocol {
     }
 
     func selectId(
-        from table: SQLite.Table
+        from table: SQLite.Table = Self.table
     ) -> [DataId]? {
         do {
             var dataId: [DataId] = []
-            let query = table.select(Self.col_id)
+            let query = Self.selectId(from: table)
             log.trace("DEBUG: RepositoryProtocol.selectId(): \(query.expression.description)")
             for row in try db.prepare(query) {
                 dataId.append(Self.fetchId(row))

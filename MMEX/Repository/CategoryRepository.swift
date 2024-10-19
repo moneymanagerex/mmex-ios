@@ -54,6 +54,40 @@ struct CategoryRepository: RepositoryProtocol {
             col_parentId <- Int64(data.parentId)
         ]
     }
+
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias C = CategoryRepository
+        typealias P = PayeeRepository
+        typealias T = TransactionRepository
+        typealias TS = TransactionSplitRepository
+        typealias R = ScheduledRepository
+        typealias RS = ScheduledSplitRepository
+        typealias B = BudgetTableRepository
+        let CP_table: SQLite.Table = C.table.alias("Parent")
+
+        // problem: compiler cannot determine the type with too many union terms
+        // fix: split union in two parts
+        let cond1 = "EXISTS (" + (CP_table.select(1).where(
+            CP_table[C.col_parentId] == Self.table[Self.col_id]
+        ) ).union(P.table.select(1).where(
+            P.table[P.col_categoryId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+
+        let cond2 = "EXISTS (" + (T.table.select(1).where(
+            T.table[T.col_categId] == Self.table[Self.col_id]
+        ) ).union(TS.table.select(1).where(
+            TS.table[TS.col_categId] == Self.table[Self.col_id]
+        ) ).union(R.table.select(1).where(
+            R.table[R.col_categId] == Self.table[Self.col_id]
+        ) ).union(RS.table.select(1).where(
+            RS.table[RS.col_categId] == Self.table[Self.col_id]
+        ) ).union(B.table.select(1).where(
+            B.table[B.col_categId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+
+        return table.filter(SQLite.Expression<Bool>(literal: cond1))
+            .union(table.filter(SQLite.Expression<Bool>(literal: cond2)))
+    }
 }
 
 extension CategoryRepository {
