@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var env: EnvironmentManager
+    @StateObject private var expViewModel: ExpRepositoryViewModel
     @State private var isDocumentPickerPresented = false
     @State private var isNewDocumentPickerPresented = false
     @State private var isSampleDocument = false
@@ -16,7 +18,11 @@ struct ContentView: View {
     @State private var isPresentingTransactionAddView = false
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    @EnvironmentObject var env: EnvironmentManager
+
+    init(env: EnvironmentManager) {
+        log.debug("ContentView.init()")
+        self._expViewModel = StateObject(wrappedValue: ExpRepositoryViewModel(env: env))
+    }
 
     var body: some View {
         ZStack {
@@ -53,9 +59,11 @@ struct ContentView: View {
                     )
                 }
             } else {
+                // problem: if viewModel is declared here, it is re-instantiated on switching between tabs
+                // fix: move viewModel declaration to View and initialize it in init()
+                //let expViewModel = ExpRepositoryViewModel(env: env)
                 let insightsViewModel = InsightsViewModel(env: env)
                 let infotableViewModel = TransactionViewModel(env: env)
-                let expViewModel = ExpRepositoryViewModel()
                 TabView(selection: $selectedTab) {
                     checkingTab(viewModel: infotableViewModel)
                     insightsTab(viewModel: insightsViewModel)
@@ -78,9 +86,9 @@ struct ContentView: View {
                 .frame(width: 80, height: 80)
                 .foregroundColor(.accentColor)
             Text("No Database Connected")
-                .font(.title)
+                .font(.headline)
                 .padding(.bottom, 10)
-            Text("Please open an existing database or create a new one to get started.")
+            Text("Please open or create a database to get started.")
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
@@ -98,12 +106,28 @@ struct ContentView: View {
             .controlSize(.large)
 
             Button(action: { isNewDocumentPickerPresented = true; isSampleDocument = true }) {
-                Label("Create and Use Sample Database", systemImage: "doc.text.fill")
+                Label("Create Sample Database", systemImage: "doc.text.fill")
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.large)
+
+            Button(action: {
+                env.createDatabase(at: nil, sampleData: true)
+                guard env.isDatabaseConnected else { return }
+                log.info("Successfully created sample database in memory")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    selectedTab = 0
+                }
+            }) {
+                Label("Sample Database in Memory", systemImage: "memorychip.fill")
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
         }
         .padding()
+        .onAppear {
+            expViewModel.unloadAll()
+        }
     }
 
     // Transaction tab
@@ -247,7 +271,7 @@ struct TabContentView: View {
         // Use @StateObject to manage the lifecycle of TransactionViewModel
         let insightsViewModel = InsightsViewModel(env: env)
         let infotableViewModel = TransactionViewModel(env: env)
-        let expViewModel = ExpRepositoryViewModel()
+        let expViewModel = ExpRepositoryViewModel(env: env)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {
@@ -281,6 +305,6 @@ struct TabContentView: View {
 }
 
 #Preview(){
-    ContentView()
+    ContentView(env: EnvironmentManager.sampleData)
         .environmentObject(EnvironmentManager.sampleData) // Inject EnvironmentManager
 }

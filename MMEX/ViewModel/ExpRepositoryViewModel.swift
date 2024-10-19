@@ -23,6 +23,13 @@ protocol ExpRepositoryLoadProtocol {
     associatedtype DataType: Copyable
     var state: ExpRepositoryLoadState<DataType> { get set }
     func load(env: EnvironmentManager) -> DataType?
+    mutating func unload()
+}
+
+extension ExpRepositoryLoadProtocol {
+    mutating func unload() {
+        self.state = .idle
+    }
 }
 
 struct ExpRepositoryLoadCount<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
@@ -90,6 +97,8 @@ struct ExpRepositoryLoadUsed<RepositoryType: RepositoryProtocol>: ExpRepositoryL
 
 @MainActor
 class ExpRepositoryViewModel: ObservableObject {
+    let env: EnvironmentManager
+
     typealias U = CurrencyRepository
     @Published var currencyCount    : ExpRepositoryLoadCount<U> = .init()
     @Published var currencyDataById : ExpRepositoryLoadDataById<U> = .init()
@@ -102,6 +111,7 @@ class ExpRepositoryViewModel: ObservableObject {
     @Published var accountDataById : ExpRepositoryLoadDataById<A> = .init()
     @Published var accountOrder    : ExpRepositoryLoadOrder<A> = .init(expr: [A.col_name])
     @Published var accountUsed     : ExpRepositoryLoadUsed<A> = .init()
+    //@Published var accountGroup    : ExpRepositoryLoadGroup<AccountGroup> = .init()
     @Published var accountList     : ExpRepositoryLoadState<Void> = .init()
 
     typealias E = AssetRepository
@@ -129,18 +139,21 @@ class ExpRepositoryViewModel: ObservableObject {
     //var accountGroup  : ExpRepositoryGroup<AccountGroup>  = .init()
     
     @Published var manageCount: ExpRepositoryLoadState<Void> = .init()
+    
+    init(env: EnvironmentManager) {
+        self.env = env
+    }
 }
 
 extension ExpRepositoryViewModel {
     func load<ExpRepositoryLoadType>(
         queue: inout TaskGroup<Bool>,
-        env: EnvironmentManager,
         keyPath: ReferenceWritableKeyPath<ExpRepositoryViewModel, ExpRepositoryLoadType>
     ) where ExpRepositoryLoadType: ExpRepositoryLoadProtocol {
         if case .idle = self[keyPath: keyPath].state {
             self[keyPath: keyPath].state = .loading
             queue.addTask(priority: .background) {
-                let data = self[keyPath: keyPath].load(env: env)
+                let data = await self[keyPath: keyPath].load(env: self.env)
                 await MainActor.run {
                     if let data { self[keyPath: keyPath].state = .ready(data) }
                     else { self[keyPath: keyPath].state = .error("Cannot load data.") }
@@ -160,38 +173,69 @@ extension ExpRepositoryViewModel {
 }
 
 extension ExpRepositoryViewModel {
-    func loadManage(env: EnvironmentManager) async {
+    func loadManage() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, env: env, keyPath: \Self.currencyCount)
-            load(queue: &queue, env: env, keyPath: \Self.accountCount)
-            load(queue: &queue, env: env, keyPath: \Self.assetCount)
-            load(queue: &queue, env: env, keyPath: \Self.stockCount)
-            load(queue: &queue, env: env, keyPath: \Self.categoryCount)
-            load(queue: &queue, env: env, keyPath: \Self.payeeCount)
-            load(queue: &queue, env: env, keyPath: \Self.transactionCount)
-            load(queue: &queue, env: env, keyPath: \Self.scheduledCount)
+            load(queue: &queue, keyPath: \Self.currencyCount)
+            load(queue: &queue, keyPath: \Self.accountCount)
+            load(queue: &queue, keyPath: \Self.assetCount)
+            load(queue: &queue, keyPath: \Self.stockCount)
+            load(queue: &queue, keyPath: \Self.categoryCount)
+            load(queue: &queue, keyPath: \Self.payeeCount)
+            load(queue: &queue, keyPath: \Self.transactionCount)
+            load(queue: &queue, keyPath: \Self.scheduledCount)
             return await allOk(queue: queue)
         }
         manageCount = queueOk ? .ready(()) : .error("Cannot load data.")
     }
 
-    func loadCurrencyList(env: EnvironmentManager) async {
+    func unloadManege() {
+        currencyCount.unload()
+        accountCount.unload()
+        assetCount.unload()
+        stockCount.unload()
+        categoryCount.unload()
+        payeeCount.unload()
+        transactionCount.unload()
+        scheduledCount.unload()
+    }
+
+    func loadCurrencyList() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, env: env, keyPath: \Self.currencyDataById)
-            load(queue: &queue, env: env, keyPath: \Self.currencyOrder)
-            load(queue: &queue, env: env, keyPath: \Self.currencyUsed)
+            load(queue: &queue, keyPath: \Self.currencyDataById)
+            load(queue: &queue, keyPath: \Self.currencyOrder)
+            load(queue: &queue, keyPath: \Self.currencyUsed)
             return await allOk(queue: queue)
         }
         currencyList = queueOk ? .ready(()) : .error("Cannot load data.")
     }
 
-    func loadAccountList(env: EnvironmentManager) async {
+    func unloadCurrencyList() {
+        currencyDataById.unload()
+        currencyOrder.unload()
+        currencyUsed.unload()
+        currencyList = .idle
+    }
+
+    func loadAccountList() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, env: env, keyPath: \Self.accountDataById)
-            load(queue: &queue, env: env, keyPath: \Self.accountOrder)
-            load(queue: &queue, env: env, keyPath: \Self.accountUsed)
+            load(queue: &queue, keyPath: \Self.accountDataById)
+            load(queue: &queue, keyPath: \Self.accountOrder)
+            load(queue: &queue, keyPath: \Self.accountUsed)
             return await allOk(queue: queue)
         }
         accountList = queueOk ? .ready(()) : .error("Cannot load data.")
+    }
+
+    func unloadAccountList() {
+        accountDataById.unload()
+        accountOrder.unload()
+        accountUsed.unload()
+        accountList = .idle
+    }
+
+    func unloadAll() {
+        unloadManege()
+        unloadCurrencyList()
+        unloadAccountList()
     }
 }

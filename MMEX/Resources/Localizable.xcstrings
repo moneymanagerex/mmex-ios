@@ -116,10 +116,10 @@
     "Copy to Clipboard" : {
 
     },
-    "Create and Use Sample Database" : {
+    "Create New Database" : {
 
     },
-    "Create New Database" : {
+    "Create Sample Database" : {
 
     },
     "Credits" : {
@@ -383,13 +383,10 @@
     "Payees" : {
 
     },
-    "Please open an existing database or create a new one to get started." : {
+    "Please open or create a database to get started." : {
 
     },
     "Privacy Policy" : {
-
-    },
-    "Re-open Database" : {
 
     },
     "Release Notes" : {
@@ -405,6 +402,9 @@
 
     },
     "Sample Database" : {
+
+    },
+    "Sample Database in Memory" : {
 
     },
     "Schema Version" : {
