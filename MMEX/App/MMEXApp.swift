@@ -16,11 +16,10 @@ let log = Logger(
 @main
 struct MMEXApp: App {
     @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
-    //@StateObject private var env = EnvironmentManager(withSampleDatabaseInMemory: ())
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(env: env)
                 .environmentObject(env)
                 .onAppear {
                     let appearance: Int = UserDefaults.standard.integer(forKey: "appearance")

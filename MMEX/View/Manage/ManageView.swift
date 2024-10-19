@@ -68,7 +68,7 @@ struct ManageView: View {
                 Button(action: {
                     isDocumentPickerPresented = true
                 }) {
-                    Text("Re-open Database")
+                    Text("Open Database")
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .padding()
@@ -115,7 +115,7 @@ struct ManageView: View {
         }
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .task {
-            await expViewModel.loadManage(env: env)
+            await expViewModel.loadManage()
         }
     }
 }
@@ -123,7 +123,7 @@ struct ManageView: View {
 #Preview {
     ManageView(
         viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
-        expViewModel: ExpRepositoryViewModel(),
+        expViewModel: ExpRepositoryViewModel(env: EnvironmentManager.sampleData),
         isDocumentPickerPresented: .constant(false),
         isNewDocumentPickerPresented: .constant(false),
         isSampleDocument: .constant(false)
