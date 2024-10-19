@@ -55,11 +55,12 @@ struct ContentView: View {
             } else {
                 let insightsViewModel = InsightsViewModel(env: env)
                 let infotableViewModel = TransactionViewModel(env: env)
+                let expViewModel = ExpRepositoryViewModel()
                 TabView(selection: $selectedTab) {
                     checkingTab(viewModel: infotableViewModel)
                     insightsTab(viewModel: insightsViewModel)
                     enterTab(viewModel: infotableViewModel)
-                    managementTab(viewModel: infotableViewModel)
+                    managementTab(viewModel: infotableViewModel, expViewModel: expViewModel)
                     settingsTab(viewModel: infotableViewModel)
                 }
                 .onChange(of: selectedTab) { _, tab in
@@ -142,10 +143,14 @@ struct ContentView: View {
     }
 
     // Management tab
-    private func managementTab(viewModel: TransactionViewModel) -> some View {
+    private func managementTab(
+        viewModel: TransactionViewModel,
+        expViewModel: ExpRepositoryViewModel
+    ) -> some View {
         NavigationView {
             ManageView(
-                viewModel:viewModel,
+                viewModel: viewModel,
+                expViewModel: expViewModel,
                 isDocumentPickerPresented: $isDocumentPickerPresented,
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
@@ -240,7 +245,9 @@ struct TabContentView: View {
     var body: some View {
         log.trace("TabContentView.body")
         // Use @StateObject to manage the lifecycle of TransactionViewModel
+        let insightsViewModel = InsightsViewModel(env: env)
         let infotableViewModel = TransactionViewModel(env: env)
+        let expViewModel = ExpRepositoryViewModel()
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {
@@ -248,7 +255,7 @@ struct TabContentView: View {
                 CheckingView(viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
-                InsightsView(viewModel: InsightsViewModel(env: env))
+                InsightsView(viewModel: insightsViewModel)
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
                 EnterView(viewModel: infotableViewModel, selectedTab: $selectedTab)
@@ -256,6 +263,7 @@ struct TabContentView: View {
             case 3:
                 ManageView(
                     viewModel:infotableViewModel,
+                    expViewModel: expViewModel,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument

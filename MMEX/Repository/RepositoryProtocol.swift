@@ -92,10 +92,10 @@ extension RepositoryProtocol {
             let query = table.count
             log.trace("DEBUG: RepositoryProtocol.count(): \(query.expression.description)")
             let count: Int = try db.scalar(query)
-            log.info("INFO: RepositoryProtocol.count(\(Self.repositoryName): \(count)")
+            log.info("INFO: RepositoryProtocol.count(\(Self.repositoryName)): \(count)")
             return count
         } catch {
-            log.error("ERROR: RepositoryProtocol.count(\(Self.repositoryName): \(error)")
+            log.error("ERROR: RepositoryProtocol.count(\(Self.repositoryName)): \(error)")
             return nil
         }
     }

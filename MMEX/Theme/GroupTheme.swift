@@ -16,7 +16,7 @@ struct GroupTheme: ThemeProtocol {
     }
 
     var layout = Self.Layout.defaultValue
-    var showCount: Bool = false
+    var showCount: Bool = true
 }
 
 extension GroupTheme {
@@ -24,7 +24,7 @@ extension GroupTheme {
         Image(systemName: isExpanded ? "chevron.down.circle.fill" : "chevron.right.circle")
             .foregroundColor(.gray)
     }
-    
+
     func view<NameView: View>(
         @ViewBuilder name nameView: @escaping () -> NameView,
         count: Int? = nil,
@@ -61,7 +61,28 @@ extension GroupTheme {
             }
         }
     }
-    
+
+    func manageItem<NameView: View>(
+        @ViewBuilder name nameView: @escaping () -> NameView,
+        count: ExpRepositoryLoadState<Int>
+    ) -> some View {
+        HStack {
+            nameView()
+                .font(.headline)
+            Spacer()
+            if showCount { switch count {
+            case .ready(let value):
+                BadgeCount(count: value)
+            case .loading:
+                ProgressView()
+            case .error(_):
+                ProgressView().tint(.red)
+            case .idle:
+                EmptyView()
+            } }
+        }
+    }
+
     /*
     func section<NameView: View>(
         _ isExpanded: @autoclosure () -> Bool?,

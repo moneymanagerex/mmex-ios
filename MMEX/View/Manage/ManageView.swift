@@ -10,35 +10,57 @@ import SwiftUI
 struct ManageView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
+    @ObservedObject var expViewModel: ExpRepositoryViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
-    
+
     var body: some View {
         List {
             Section(header: Text("Data")) {
                 NavigationLink(destination: CurrencyListView()) {
-                    Text(CurrencyData.dataName.1)
+                    env.theme.group.manageItem(
+                        name: { Text(CurrencyData.dataName.1) },
+                        count: expViewModel.currencyCount.state
+                    )
                 }
                 NavigationLink(destination: AccountListView(
                     vm: AccountViewModel().preloaded(env: env, group: AccountGroup.defaultValue)
                 ) ) {
-                    Text(AccountData.dataName.1)
+                    env.theme.group.manageItem(
+                        name: { Text(AccountData.dataName.1) },
+                        count: expViewModel.accountCount.state
+                    )
                 }
                 NavigationLink(destination: AssetListView()) {
-                    Text(AssetData.dataName.1)
+                    env.theme.group.manageItem(
+                        name: { Text(AssetData.dataName.1) },
+                        count: expViewModel.assetCount.state
+                    )
                 }
                 NavigationLink(destination: StockListView()) {
-                    Text(StockData.dataName.1)
+                    env.theme.group.manageItem(
+                        name: { Text(StockData.dataName.1) },
+                        count: expViewModel.stockCount.state
+                    )
                 }
                 NavigationLink(destination: CategoryListView()) {
-                    Text(CategoryData.dataName.1)
+                    env.theme.group.manageItem(
+                        name: { Text(CategoryData.dataName.1) },
+                        count: expViewModel.categoryCount.state
+                    )
                 }
                 NavigationLink(destination: PayeeListView()) {
-                    Text(PayeeData.dataName.1)
+                    env.theme.group.manageItem(
+                        name: { Text(PayeeData.dataName.1) },
+                        count: expViewModel.payeeCount.state
+                    )
                 }
                 NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
-                    Text(TransactionData.dataName.1)
+                    env.theme.group.manageItem(
+                        name: { Text(TransactionData.dataName.1) },
+                        count: expViewModel.transactionCount.state
+                    )
                 }
             }
             
@@ -92,12 +114,16 @@ struct ManageView: View {
             }
         }
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
+        .task {
+            await expViewModel.loadManage(env: env)
+        }
     }
 }
 
 #Preview {
     ManageView(
         viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
+        expViewModel: ExpRepositoryViewModel(),
         isDocumentPickerPresented: .constant(false),
         isNewDocumentPickerPresented: .constant(false),
         isSampleDocument: .constant(false)
