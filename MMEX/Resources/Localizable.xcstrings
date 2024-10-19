@@ -1,0 +1,556 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@" : {
+
+    },
+    "%lf" : {
+
+    },
+    "%lld" : {
+
+    },
+    "• Initial release with transaction tracking, insights, and account management.\n• Bug fixes and improvements." : {
+
+    },
+    "1. Use of the App" : {
+
+    },
+    "2. Content Ownership" : {
+
+    },
+    "About" : {
+
+    },
+    "About MMEX4iOS" : {
+
+    },
+    "Account" : {
+
+    },
+    "Account Income Summary" : {
+
+    },
+    "Account Name" : {
+
+    },
+    "Active" : {
+
+    },
+    "ACTIVE" : {
+
+    },
+    "Add" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "增加"
+          }
+        }
+      }
+    },
+    "Add Note" : {
+
+    },
+    "Add split" : {
+
+    },
+    "Advanced" : {
+
+    },
+    "All" : {
+
+    },
+    "All content provided by the app is owned by the app developers or its licensors. You are not allowed to copy, reproduce, or distribute any content without permission." : {
+
+    },
+    "Amount" : {
+
+    },
+    "App Settings" : {
+
+    },
+    "Appearance" : {
+
+    },
+    "Assets" : {
+
+    },
+    "Base Currency" : {
+
+    },
+    "Build" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Cannot be empty!" : {
+
+    },
+    "Categories" : {
+
+    },
+    "Category" : {
+
+    },
+    "Category Delimiter" : {
+
+    },
+    "Category Name" : {
+
+    },
+    "Checking" : {
+
+    },
+    "Close Database" : {
+
+    },
+    "Contact Support" : {
+
+    },
+    "Copy to Clipboard" : {
+
+    },
+    "Create and Use Sample Database" : {
+
+    },
+    "Create New Database" : {
+
+    },
+    "Credits" : {
+
+    },
+    "Currencies" : {
+
+    },
+    "Dark" : {
+
+    },
+    "Data" : {
+
+    },
+    "Database" : {
+
+    },
+    "Database File" : {
+
+    },
+    "Database Settings" : {
+
+    },
+    "Date" : {
+
+    },
+    "Date Format" : {
+
+    },
+    "Day" : {
+
+    },
+    "Default Account" : {
+
+    },
+    "Default is 0" : {
+
+    },
+    "Default Payee" : {
+
+    },
+    "Default Status" : {
+
+    },
+    "Delete Account" : {
+
+    },
+    "Delete Asset" : {
+
+    },
+    "Delete Category" : {
+
+    },
+    "Delete Currency" : {
+
+    },
+    "Delete Payee" : {
+
+    },
+    "Delete Stock" : {
+
+    },
+    "Delete Transaction" : {
+
+    },
+    "Developed by Lisheng Guan, George Ef" : {
+
+    },
+    "Dismiss" : {
+      "comment" : "Button to dismiss the current screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        }
+      }
+    },
+    "Done" : {
+
+    },
+    "Edit" : {
+
+    },
+    "Email Support" : {
+
+    },
+    "End Date" : {
+
+    },
+    "Enter" : {
+
+    },
+    "Enter Transaction" : {
+
+    },
+    "expenses" : {
+
+    },
+    "Export as JSON File" : {
+
+    },
+    "Facebook" : {
+
+    },
+    "Favorite" : {
+
+    },
+    "Field Layout" : {
+
+    },
+    "Field Value" : {
+
+    },
+    "General" : {
+
+    },
+    "Group Count" : {
+
+    },
+    "Group Layout" : {
+
+    },
+    "Group Name" : {
+
+    },
+    "Help / FAQ" : {
+
+    },
+    "How to add a transaction?" : {
+
+    },
+    "How to generate reports?" : {
+
+    },
+    "How to import/export data?" : {
+
+    },
+    "How to manage categories?" : {
+
+    },
+    "INACTIVE" : {
+
+    },
+    "income" : {
+
+    },
+    "Income vs Expense Over Time" : {
+
+    },
+    "Information" : {
+
+    },
+    "Insights" : {
+
+    },
+    "Is Active" : {
+
+    },
+    "Item Info" : {
+
+    },
+    "Item Layout" : {
+
+    },
+    "Item Name" : {
+
+    },
+    "Key" : {
+      "extractionState" : "manual"
+    },
+    "Last updated: September 18, 2024" : {
+
+    },
+    "Last Used" : {
+
+    },
+    "Latest Transactions" : {
+
+    },
+    "Legal" : {
+
+    },
+    "Legal (Terms & Privacy)" : {
+
+    },
+    "Legal Documents" : {
+
+    },
+    "Light" : {
+
+    },
+    "Loading data ..." : {
+
+    },
+    "Manage" : {
+
+    },
+    "More Insights Coming Soon..." : {
+
+    },
+    "n/a" : {
+
+    },
+    "N/A" : {
+
+    },
+    "New Asset" : {
+
+    },
+    "New Category" : {
+
+    },
+    "New Database" : {
+
+    },
+    "New Payee" : {
+
+    },
+    "New Stock" : {
+
+    },
+    "New Transaction" : {
+
+    },
+    "No" : {
+
+    },
+    "NO" : {
+
+    },
+    "No Database Connected" : {
+
+    },
+    "Non Root" : {
+
+    },
+    "None" : {
+
+    },
+    "Not Used" : {
+
+    },
+    "Notes" : {
+
+    },
+    "OK" : {
+
+    },
+    "Open Database" : {
+
+    },
+    "Other" : {
+
+    },
+    "Parent ID" : {
+
+    },
+    "Payee" : {
+
+    },
+    "Payees" : {
+
+    },
+    "Please open an existing database or create a new one to get started." : {
+
+    },
+    "Privacy Policy" : {
+
+    },
+    "Re-open Database" : {
+
+    },
+    "Release Notes" : {
+
+    },
+    "Report an Issue" : {
+
+    },
+    "Reports and Insights" : {
+
+    },
+    "Root" : {
+
+    },
+    "Sample Database" : {
+
+    },
+    "Schema Version" : {
+
+    },
+    "Search area" : {
+
+    },
+    "Search by name" : {
+
+    },
+    "Search by notes" : {
+
+    },
+    "Select account" : {
+
+    },
+    "Select Account" : {
+
+    },
+    "Select Category" : {
+
+    },
+    "Select Currency" : {
+
+    },
+    "Select Payee" : {
+
+    },
+    "Select To Account" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Social Media" : {
+
+    },
+    "Special thanks to all open-source contributors!" : {
+
+    },
+    "split amount" : {
+
+    },
+    "split notes" : {
+
+    },
+    "Splits" : {
+
+    },
+    "Start Date" : {
+
+    },
+    "Status" : {
+
+    },
+    "Status Choice" : {
+
+    },
+    "Stocks" : {
+
+    },
+    "Support and Help" : {
+
+    },
+    "System" : {
+
+    },
+    "Tab Icons" : {
+
+    },
+    "Terms of Service" : {
+
+    },
+    "Theme" : {
+
+    },
+    "These Terms of Service govern your use of our app. By using the app, you agree to comply with and be bound by these terms." : {
+
+    },
+    "This app helps you manage your finances efficiently by tracking transactions, accounts, and generating insights." : {
+
+    },
+    "This Privacy Policy outlines how we handle your personal information while using the app." : {
+
+    },
+    "To Account" : {
+
+    },
+    "Total" : {
+
+    },
+    "Total: %@" : {
+
+    },
+    "Transaction Amount" : {
+
+    },
+    "Transaction Date" : {
+
+    },
+    "Transaction Status" : {
+
+    },
+    "Transaction Type" : {
+
+    },
+    "Twitter" : {
+
+    },
+    "Upcoming Features" : {
+
+    },
+    "Used" : {
+
+    },
+    "User Forum" : {
+
+    },
+    "Validation Error" : {
+
+    },
+    "Version" : {
+
+    },
+    "Version Info" : {
+
+    },
+    "Visit Official Website" : {
+
+    },
+    "Year" : {
+
+    },
+    "Yes" : {
+
+    },
+    "YES" : {
+
+    },
+    "You must use the app in compliance with all applicable laws. Any misuse or illegal activities related to the app may result in termination of your access." : {
+
+    }
+  },
+  "version" : "1.0"
+}
