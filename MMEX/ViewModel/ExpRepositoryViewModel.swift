@@ -19,69 +19,47 @@ enum ExpRepositoryLoadState<DataType: Copyable>: Copyable {
     }
 }
 
-@MainActor
-protocol ExpRepositoryLoadProtocol: AnyObject, ObservableObject {
+protocol ExpRepositoryLoadProtocol {
     associatedtype DataType: Copyable
     var state: ExpRepositoryLoadState<DataType> { get set }
+    func load(env: EnvironmentManager) -> DataType?
 }
 
-extension ExpRepositoryLoadProtocol {
-    func load(
-        with loadData: @escaping () -> DataType?
-    ) async -> Bool? {
-        switch state {
-        case .idle:
-            self.state = .loading
-            return await Task {
-                let data: DataType? = loadData()
-                await MainActor.run {
-                    if let data {
-                        self.state = .ready(data)
-                    } else {
-                        self.state = .error("Cannot load data.")
-                    }
-                }
-                return data != nil
-            }.value
-        case .ready(_): return true
-        case .error(_), .loading: return nil
-        }
-    }
-}
+struct ExpRepositoryLoadCount<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
+    typealias DataType = Int
 
-@MainActor
-class ExpRepositoryLoadCount<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
-    @Published var state: ExpRepositoryLoadState<Int> = .idle
     let table: SQLite.Table
+    var state: ExpRepositoryLoadState<DataType> = .init()
 
     init(table: SQLite.Table = RepositoryType.table) {
         self.table = table
     }
 
-    func load(env: EnvironmentManager) async -> Bool? {
-        return await load() { () in RepositoryType(env)?.count(from: self.table) }
+    func load(env: EnvironmentManager) -> DataType? {
+        RepositoryType(env)?.count(from: self.table)
     }
 }
 
-@MainActor
-class ExpRepositoryLoadDataById<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
+struct ExpRepositoryLoadDataById<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
     typealias RepositoryData = RepositoryType.RepositoryData
-    @Published var state: ExpRepositoryLoadState<[DataId: RepositoryData]> = .idle
+    typealias DataType = [DataId: RepositoryData]
+
     let table: SQLite.Table
+    var state: ExpRepositoryLoadState<DataType> = .init()
 
     init(table: SQLite.Table = RepositoryType.table) {
         self.table = table
     }
 
-    func load(env: EnvironmentManager) async -> Bool? {
-        return await load() { () in RepositoryType(env)?.selectById(from: self.table) }
+    func load(env: EnvironmentManager) -> DataType? {
+        RepositoryType(env)?.selectById(from: self.table)
     }
 }
 
-@MainActor
-class ExpRepositoryLoadOrder<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
-    @Published var state: ExpRepositoryLoadState<[DataId]> = .idle
+struct ExpRepositoryLoadOrder<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
+    typealias DataType = [DataId]
     let table: SQLite.Table
+    var state: ExpRepositoryLoadState<DataType> = .init()
 
     init(table: SQLite.Table) {
         self.table = table
@@ -91,44 +69,129 @@ class ExpRepositoryLoadOrder<RepositoryType: RepositoryProtocol>: ExpRepositoryL
         self.table = RepositoryType.table.order(expr)
     }
 
-    func load(env: EnvironmentManager) async -> Bool? {
-        return await load() { () in RepositoryType(env)?.selectId(from: self.table) }
+    func load(env: EnvironmentManager) -> DataType? {
+        RepositoryType(env)?.selectId(from: self.table)
     }
 }
 
-@MainActor
-class ExpRepositoryLoadUsed<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
-    @Published var state: ExpRepositoryLoadState<Set<DataId>> = .idle
+struct ExpRepositoryLoadUsed<RepositoryType: RepositoryProtocol>: ExpRepositoryLoadProtocol {
+    typealias DataType = Set<DataId>
     let table: SQLite.Table
+    var state: ExpRepositoryLoadState<DataType> = .init()
 
     init(table: SQLite.Table = RepositoryType.table) {
-        self.table = table
+        self.table = RepositoryType.filterUsed(table)
     }
 
-    func load(env: EnvironmentManager) async -> Bool? {
-        return await load() { () in RepositoryType(env)?.selectId(
-            from: RepositoryType.filterUsed(self.table)
-        ).map { Set($0) } }
+    func load(env: EnvironmentManager) -> DataType? {
+        RepositoryType(env)?.selectId(from: self.table).map { Set($0) }
     }
 }
 
 @MainActor
 class ExpRepositoryViewModel: ObservableObject {
-    typealias C = CurrencyRepository
-    @Published var currencyCount    : ExpRepositoryLoadCount<C> = .init()
-    @Published var currencyDataById : ExpRepositoryLoadDataById<C> = .init()
-    @Published var currencyOrder    : ExpRepositoryLoadOrder<C> = .init(expr: [C.col_name])
-    @Published var currencyUsed     : ExpRepositoryLoadUsed<C> = .init()
+    typealias U = CurrencyRepository
+    @Published var currencyCount    : ExpRepositoryLoadCount<U> = .init()
+    @Published var currencyDataById : ExpRepositoryLoadDataById<U> = .init()
+    @Published var currencyOrder    : ExpRepositoryLoadOrder<U> = .init(expr: [C.col_name])
+    @Published var currencyUsed     : ExpRepositoryLoadUsed<U> = .init()
+    @Published var currencyList     : ExpRepositoryLoadState<Void> = .init()
 
     typealias A = AccountRepository
     @Published var accountCount    : ExpRepositoryLoadCount<A> = .init()
     @Published var accountDataById : ExpRepositoryLoadDataById<A> = .init()
     @Published var accountOrder    : ExpRepositoryLoadOrder<A> = .init(expr: [A.col_name])
     @Published var accountUsed     : ExpRepositoryLoadUsed<A> = .init()
+    @Published var accountList     : ExpRepositoryLoadState<Void> = .init()
+
+    typealias E = AssetRepository
+    @Published var assetCount    : ExpRepositoryLoadCount<E> = .init()
+    
+    typealias S = StockRepository
+    @Published var stockCount    : ExpRepositoryLoadCount<S> = .init()
+    
+    typealias C = CategoryRepository
+    @Published var categoryCount    : ExpRepositoryLoadCount<C> = .init()
+
+    typealias P = PayeeRepository
+    @Published var payeeCount    : ExpRepositoryLoadCount<P> = .init()
+
+    typealias T = TransactionRepository
+    static let T_table: SQLite.Table = T.table.filter(T.col_deletedTime == "")
+    @Published var transactionCount    : ExpRepositoryLoadCount<T> = .init(table: T_table)
+
+    typealias R = ScheduledRepository
+    @Published var scheduledCount    : ExpRepositoryLoadCount<R> = .init()
 
     //var currencyName : ExpRepositoryLoad<[(DataId, String)]>     = .init([])
     //var accountAttachmentCount : ExpRepositoryLoad<[DataId: Int]>         = .init([:])
-
     //var currencyGroup : ExpRepositoryGroup<CurrencyGroup> = .init()
     //var accountGroup  : ExpRepositoryGroup<AccountGroup>  = .init()
+    
+    @Published var manageCount: ExpRepositoryLoadState<Void> = .init()
+}
+
+extension ExpRepositoryViewModel {
+    func load<ExpRepositoryLoadType>(
+        queue: inout TaskGroup<Bool>,
+        env: EnvironmentManager,
+        keyPath: ReferenceWritableKeyPath<ExpRepositoryViewModel, ExpRepositoryLoadType>
+    ) where ExpRepositoryLoadType: ExpRepositoryLoadProtocol {
+        if case .idle = self[keyPath: keyPath].state {
+            self[keyPath: keyPath].state = .loading
+            queue.addTask(priority: .background) {
+                let data = self[keyPath: keyPath].load(env: env)
+                await MainActor.run {
+                    if let data { self[keyPath: keyPath].state = .ready(data) }
+                    else { self[keyPath: keyPath].state = .error("Cannot load data.") }
+                }
+                return data != nil
+            }
+        }
+    }
+    
+    func allOk(queue: TaskGroup<Bool>) async -> Bool {
+        var queueOk = true
+        for await taskOk in queue {
+            if !taskOk { queueOk = false }
+        }
+        return queueOk
+    }
+}
+
+extension ExpRepositoryViewModel {
+    func loadManage(env: EnvironmentManager) async {
+        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
+            load(queue: &queue, env: env, keyPath: \Self.currencyCount)
+            load(queue: &queue, env: env, keyPath: \Self.accountCount)
+            load(queue: &queue, env: env, keyPath: \Self.assetCount)
+            load(queue: &queue, env: env, keyPath: \Self.stockCount)
+            load(queue: &queue, env: env, keyPath: \Self.categoryCount)
+            load(queue: &queue, env: env, keyPath: \Self.payeeCount)
+            load(queue: &queue, env: env, keyPath: \Self.transactionCount)
+            load(queue: &queue, env: env, keyPath: \Self.scheduledCount)
+            return await allOk(queue: queue)
+        }
+        manageCount = queueOk ? .ready(()) : .error("Cannot load data.")
+    }
+
+    func loadCurrencyList(env: EnvironmentManager) async {
+        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
+            load(queue: &queue, env: env, keyPath: \Self.currencyDataById)
+            load(queue: &queue, env: env, keyPath: \Self.currencyOrder)
+            load(queue: &queue, env: env, keyPath: \Self.currencyUsed)
+            return await allOk(queue: queue)
+        }
+        currencyList = queueOk ? .ready(()) : .error("Cannot load data.")
+    }
+
+    func loadAccountList(env: EnvironmentManager) async {
+        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
+            load(queue: &queue, env: env, keyPath: \Self.accountDataById)
+            load(queue: &queue, env: env, keyPath: \Self.accountOrder)
+            load(queue: &queue, env: env, keyPath: \Self.accountUsed)
+            return await allOk(queue: queue)
+        }
+        accountList = queueOk ? .ready(()) : .error("Cannot load data.")
+    }
 }

@@ -136,7 +136,7 @@ struct RepositoryListView<
                     }) {
                         env.theme.group.view(
                             name: { groupName(g) },
-                            count: { $0 > 0 ? $0 : nil }(vm.groupDataId[g].count),
+                            count: vm.groupDataId[g].count,
                             isExpanded: vm.groupIsExpanded[g]
                         )
                     }

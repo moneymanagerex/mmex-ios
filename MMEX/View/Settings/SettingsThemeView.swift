@@ -38,7 +38,7 @@ struct SettingsThemeView: View {
 
             Section() {
                 HStack {
-                    Text("Group Count")
+                    Text("Show Count")
                     Spacer()
                     Toggle(isOn: $env.theme.group.showCount) { }
                 }
