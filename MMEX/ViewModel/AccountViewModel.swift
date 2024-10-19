@@ -80,7 +80,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
                 let data: [DataId: RepositoryData]? = AccountRepository(env)?.selectById(
-                    from: A.table.order(A.col_name)
+                    from: A.table
                 )
                 await MainActor.run { if let data { self.dataById = data } }
                 return data != nil
@@ -88,7 +88,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
             queue.addTask(priority: .background) {
                 typealias A = AccountRepository
                 let data: [DataId]? = AccountRepository(env)?.selectId(
-                    from: A.selectUsed(from: A.table)
+                    from: A.filterUsed(A.table)
                 )
                 await MainActor.run { if let data {
                     self.usedId = Set(data)

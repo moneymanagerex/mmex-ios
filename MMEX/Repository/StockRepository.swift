@@ -96,6 +96,24 @@ struct StockRepository: RepositoryProtocol {
             col_notes         <- data.notes
         ]
     }
+
+    static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias TS = TransactionLinkRepository
+        let cond = "EXISTS (" + (TS.table.select(1).where(
+            TS.table[TS.col_refType] == RefType.stock.rawValue &&
+            TS.table[TS.col_refId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
+
+    static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
+        typealias AS = AttachmentRepository
+        let cond = "EXISTS (" + (AS.table.select(1).where(
+            AS.table[AS.col_refType] == RefType.account.rawValue &&
+            AS.table[AS.col_refId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
 }
 
 extension StockRepository {

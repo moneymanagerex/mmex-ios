@@ -119,6 +119,31 @@ struct TransactionRepository: RepositoryProtocol {
             col_color             <- data.color,
         ]
     }
+
+    static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
+        typealias TS = TransactionSplitRepository
+        typealias TL = TransactionLinkRepository
+        typealias TH = TransactionShareRepository
+        typealias GL = TagLinkRepository
+        typealias FT = FieldContentRepository
+        typealias AT = AttachmentRepository
+        let cond = "EXISTS (" + (TS.table.select(1).where(
+            TS.table[TS.col_transId] == Self.table[Self.col_id]
+        ) ).union(TL.table.select(1).where(
+            TL.table[TL.col_transId] == Self.table[Self.col_id]
+        ) ).union(TH.table.select(1).where(
+            TH.table[TH.col_transId] == Self.table[Self.col_id]
+        ) ).union(GL.table.select(1).where(
+            GL.table[GL.col_refType] == RefType.transaction.rawValue &&
+            GL.table[GL.col_refId] == Self.table[Self.col_id]
+        ) ).union(FT.table.select(1).where(
+            FT.table[FT.col_refId] == Self.table[Self.col_id]
+        ) ).union(AT.table.select(1).where(
+            AT.table[AT.col_refType] == RefType.transaction.rawValue &&
+            AT.table[AT.col_refId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
 }
 
 extension TransactionRepository {
