@@ -39,7 +39,7 @@ class AccountViewModel: OldRepositoryViewModelProtocol {
     private var dataId: [DataId] = [] // sorted by name
     private(set) var currencyName: [(DataId, String)] = [] // sorted by name
 
-    @Published var group = AccountGroupChoice.defaultValue
+    @Published var groupChoice = AccountGroupChoice.defaultValue
     @Published var groupState: OldRepositoryLoadState = .idle
     @Published var groupDataId: [[DataId]] = []
 
@@ -142,10 +142,10 @@ class AccountViewModel: OldRepositoryViewModelProtocol {
     }
 
     func loadGroup(env: EnvironmentManager, group: AccountGroupChoice) {
-        log.trace("DEBUG: AccountViewModel.loadGroup(\(self.group.rawValue)): main=\(Thread.isMainThread)")
+        log.trace("DEBUG: AccountViewModel.loadGroup(\(self.groupChoice.rawValue)): main=\(Thread.isMainThread)")
         guard dataState == .ready && groupState != .loading else { return }
         groupState = .loading
-        self.group = group
+        self.groupChoice = group
         groupCurrency = []
         groupDataId = []
         groupIsVisible.removeAll(keepingCapacity: true)
@@ -187,7 +187,7 @@ class AccountViewModel: OldRepositoryViewModelProtocol {
 
     func groupIsVisible(_ g: Int) -> Bool {
         if search.isEmpty {
-            return switch group {
+            return switch groupChoice {
             case .type, .currency: !groupDataId[g].isEmpty
             default: true
             }

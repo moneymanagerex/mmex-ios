@@ -53,8 +53,10 @@
 		924353012CBA06210052E4BC /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353002CBA06210052E4BC /* AccountViewModel.swift */; };
 		924353032CBB2AB90052E4BC /* ItemTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353022CBB2AB90052E4BC /* ItemTheme.swift */; };
 		924353052CC3B2E30052E4BC /* RepositoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353042CC3B2E30052E4BC /* RepositoryViewModel.swift */; };
-		924353072CC4A1170052E4BC /* RepositoryLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353062CC4A1170052E4BC /* RepositoryLoad.swift */; };
 		924353092CC4A2590052E4BC /* RepositoryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353082CC4A2590052E4BC /* RepositoryGroup.swift */; };
+		9243530F2CC516B70052E4BC /* RepositoryLoadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243530D2CC516B70052E4BC /* RepositoryLoadData.swift */; };
+		924353102CC516B70052E4BC /* RepositoryLoadProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243530E2CC516B70052E4BC /* RepositoryLoadProtocol.swift */; };
+		924353122CC5170A0052E4BC /* RepositoryLoadList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353112CC5170A0052E4BC /* RepositoryLoadList.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -177,8 +179,10 @@
 		924353002CBA06210052E4BC /* AccountViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		924353022CBB2AB90052E4BC /* ItemTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTheme.swift; sourceTree = "<group>"; };
 		924353042CC3B2E30052E4BC /* RepositoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryViewModel.swift; sourceTree = "<group>"; };
-		924353062CC4A1170052E4BC /* RepositoryLoad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryLoad.swift; sourceTree = "<group>"; };
 		924353082CC4A2590052E4BC /* RepositoryGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryGroup.swift; sourceTree = "<group>"; };
+		9243530D2CC516B70052E4BC /* RepositoryLoadData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryLoadData.swift; sourceTree = "<group>"; };
+		9243530E2CC516B70052E4BC /* RepositoryLoadProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryLoadProtocol.swift; sourceTree = "<group>"; };
+		924353112CC5170A0052E4BC /* RepositoryLoadList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryLoadList.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -343,6 +347,17 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
+		924353132CC5181D0052E4BC /* RepositoryLoad */ = {
+			isa = PBXGroup;
+			children = (
+				9243530E2CC516B70052E4BC /* RepositoryLoadProtocol.swift */,
+				9243530D2CC516B70052E4BC /* RepositoryLoadData.swift */,
+				924353082CC4A2590052E4BC /* RepositoryGroup.swift */,
+				924353112CC5170A0052E4BC /* RepositoryLoadList.swift */,
+			);
+			path = RepositoryLoad;
+			sourceTree = "<group>";
+		};
 		A30061742CA3B57700011B1A /* Asset */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,8 +383,7 @@
 			children = (
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
 				A350BDC02CA26415006669D5 /* TransactionViewModel.swift */,
-				924353062CC4A1170052E4BC /* RepositoryLoad.swift */,
-				924353082CC4A2590052E4BC /* RepositoryGroup.swift */,
+				924353132CC5181D0052E4BC /* RepositoryLoad */,
 				924353042CC3B2E30052E4BC /* RepositoryViewModel.swift */,
 				924352FE2CB99F1D0052E4BC /* OldRepositoryViewModel.swift */,
 				924353002CBA06210052E4BC /* AccountViewModel.swift */,
@@ -687,7 +701,6 @@
 				A30061762CA3B58700011B1A /* AssetDetailView.swift in Sources */,
 				929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */,
 				A350BDC12CA26415006669D5 /* TransactionViewModel.swift in Sources */,
-				924353072CC4A1170052E4BC /* RepositoryLoad.swift in Sources */,
 				A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */,
 				A30061782CA3B68300011B1A /* AssetEditView.swift in Sources */,
 				A37E7D8C2C9AC36800B4ECFC /* LegalView.swift in Sources */,
@@ -711,6 +724,7 @@
 				A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */,
 				924352E02CA9CC5A0052E4BC /* InsightsAccountView.swift in Sources */,
 				929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */,
+				924353122CC5170A0052E4BC /* RepositoryLoadList.swift in Sources */,
 				920823FE2CA4A3F700388AB2 /* TagData.swift in Sources */,
 				A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */,
 				920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */,
@@ -742,6 +756,8 @@
 				9208240A2CA4C2AD00388AB2 /* BudgetYearData.swift in Sources */,
 				A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */,
 				A37E7D942C9B217500B4ECFC /* InfotableData.swift in Sources */,
+				9243530F2CC516B70052E4BC /* RepositoryLoadData.swift in Sources */,
+				924353102CC516B70052E4BC /* RepositoryLoadProtocol.swift in Sources */,
 				9208242E2CA617FB00388AB2 /* FieldContentRepository.swift in Sources */,
 				9208241E2CA4E1C500388AB2 /* TransactionLinkRepository.swift in Sources */,
 				9208241A2CA4D35700388AB2 /* AttachmentRepository.swift in Sources */,

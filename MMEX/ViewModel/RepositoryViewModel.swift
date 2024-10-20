@@ -15,49 +15,49 @@ class RepositoryViewModel: ObservableObject {
     @Published var manageCount: RepositoryLoadState<Void> = .init()
 
     typealias U = CurrencyRepository
-    @Published var currencyCount    : RepositoryLoadCount<U> = .init()
-    @Published var currencyDataById : RepositoryLoadDataById<U> = .init()
-    @Published var currencyOrder    : RepositoryLoadOrder<U> = .init(expr: [U.col_name])
-    @Published var currencyUsed     : RepositoryLoadUsed<U> = .init()
-    @Published var currencyList     : RepositoryLoadList<U> = .init()
+    @Published var currencyCount : RepositoryLoadDataCount<U> = .init()
+    @Published var currencyDict  : RepositoryLoadDataDict<U> = .init()
+    @Published var currencyOrder : RepositoryLoadDataOrder<U> = .init(expr: [U.col_name])
+    @Published var currencyUsed  : RepositoryLoadDataUsed<U> = .init()
+    @Published var currencyList  : RepositoryLoadList<U> = .init()
 
     typealias A = AccountRepository
-    @Published var accountCount    : RepositoryLoadCount<A> = .init()
-    @Published var accountDataById : RepositoryLoadDataById<A> = .init()
-    @Published var accountOrder    : RepositoryLoadOrder<A> = .init(expr: [A.col_name])
-    @Published var accountUsed     : RepositoryLoadUsed<A> = .init()
-    @Published var accountList     : RepositoryLoadList<A> = .init()
+    @Published var accountCount : RepositoryLoadDataCount<A> = .init()
+    @Published var accountDict  : RepositoryLoadDataDict<A> = .init()
+    @Published var accountOrder : RepositoryLoadDataOrder<A> = .init(expr: [A.col_name])
+    @Published var accountUsed  : RepositoryLoadDataUsed<A> = .init()
+    @Published var accountList  : RepositoryLoadList<A> = .init()
 
     typealias E = AssetRepository
-    @Published var assetCount    : RepositoryLoadCount<E> = .init()
-    @Published var assetDataById : RepositoryLoadDataById<E> = .init()
-    @Published var assetOrder    : RepositoryLoadOrder<E> = .init(expr: [E.col_name])
-    @Published var assetUsed     : RepositoryLoadUsed<E> = .init()
-    @Published var assetList     : RepositoryLoadList<E> = .init()
+    @Published var assetCount : RepositoryLoadDataCount<E> = .init()
+    @Published var assetDict  : RepositoryLoadDataDict<E> = .init()
+    @Published var assetOrder : RepositoryLoadDataOrder<E> = .init(expr: [E.col_name])
+    @Published var assetUsed  : RepositoryLoadDataUsed<E> = .init()
+    @Published var assetList  : RepositoryLoadList<E> = .init()
 
     typealias S = StockRepository
-    @Published var stockCount    : RepositoryLoadCount<S> = .init()
-    @Published var stockDataById : RepositoryLoadDataById<S> = .init()
-    @Published var stockOrder    : RepositoryLoadOrder<S> = .init(expr: [S.col_name])
-    @Published var stockUsed     : RepositoryLoadUsed<S> = .init()
-    @Published var stockList     : RepositoryLoadList<S> = .init()
+    @Published var stockCount : RepositoryLoadDataCount<S> = .init()
+    @Published var stockDict  : RepositoryLoadDataDict<S> = .init()
+    @Published var stockOrder : RepositoryLoadDataOrder<S> = .init(expr: [S.col_name])
+    @Published var stockUsed  : RepositoryLoadDataUsed<S> = .init()
+    @Published var stockList  : RepositoryLoadList<S> = .init()
 
     typealias C = CategoryRepository
-    @Published var categoryCount    : RepositoryLoadCount<C> = .init()
+    @Published var categoryCount    : RepositoryLoadDataCount<C> = .init()
 
     typealias P = PayeeRepository
-    @Published var payeeCount    : RepositoryLoadCount<P> = .init()
-    @Published var payeeDataById : RepositoryLoadDataById<P> = .init()
-    @Published var payeeOrder    : RepositoryLoadOrder<P> = .init(expr: [P.col_name])
-    @Published var payeeUsed     : RepositoryLoadUsed<P> = .init()
-    @Published var payeeList     : RepositoryLoadList<P> = .init()
+    @Published var payeeCount : RepositoryLoadDataCount<P> = .init()
+    @Published var payeeDict  : RepositoryLoadDataDict<P> = .init()
+    @Published var payeeOrder : RepositoryLoadDataOrder<P> = .init(expr: [P.col_name])
+    @Published var payeeUsed  : RepositoryLoadDataUsed<P> = .init()
+    @Published var payeeList  : RepositoryLoadList<P> = .init()
 
     typealias T = TransactionRepository
     static let T_table: SQLite.Table = T.table.filter(T.col_deletedTime == "")
-    @Published var transactionCount    : RepositoryLoadCount<T> = .init(table: T_table)
+    @Published var transactionCount    : RepositoryLoadDataCount<T> = .init(table: T_table)
 
     typealias R = ScheduledRepository
-    @Published var scheduledCount    : RepositoryLoadCount<R> = .init()
+    @Published var scheduledCount    : RepositoryLoadDataCount<R> = .init()
 
     //var currencyName : RepositoryLoad<[(DataId, String)]>     = .init([])
     //var accountAttachmentCount : RepositoryLoad<[DataId: Int]>         = .init([:])
@@ -123,7 +123,7 @@ extension RepositoryViewModel {
 
     func loadCurrencyList() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.currencyDataById)
+            load(queue: &queue, keyPath: \Self.currencyDict)
             load(queue: &queue, keyPath: \Self.currencyOrder)
             load(queue: &queue, keyPath: \Self.currencyUsed)
             return await allOk(queue: queue)
@@ -132,7 +132,7 @@ extension RepositoryViewModel {
     }
 
     func unloadCurrencyList() {
-        currencyDataById.unload()
+        currencyDict.unload()
         currencyOrder.unload()
         currencyUsed.unload()
         currencyList.state = .idle
@@ -140,7 +140,7 @@ extension RepositoryViewModel {
 
     func loadAccountList() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.accountDataById)
+            load(queue: &queue, keyPath: \Self.accountDict)
             load(queue: &queue, keyPath: \Self.accountOrder)
             load(queue: &queue, keyPath: \Self.accountUsed)
             return await allOk(queue: queue)
@@ -149,13 +149,13 @@ extension RepositoryViewModel {
             accountList.state = queueOk ? .ready(()) : .error("Cannot load data.")
         }
         log.debug("DEBUG: RepositoryViewModel.loadAccountList(): \(queueOk)")
-        if case .ready(_) = accountDataById.state {
+        if case .ready(_) = accountDict.state {
             log.debug("DEBUG: RepositoryViewModel.loadAccountList(): dataById=.ready")
         }
     }
 
     func unloadAccountList() {
-        accountDataById.unload()
+        accountDict.unload()
         accountOrder.unload()
         accountUsed.unload()
         accountList.state = .idle
@@ -163,7 +163,7 @@ extension RepositoryViewModel {
 
     func loadAssetList() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.assetDataById)
+            load(queue: &queue, keyPath: \Self.assetDict)
             load(queue: &queue, keyPath: \Self.assetOrder)
             load(queue: &queue, keyPath: \Self.assetUsed)
             return await allOk(queue: queue)
@@ -172,7 +172,7 @@ extension RepositoryViewModel {
     }
 
     func unloadAssetList() {
-        assetDataById.unload()
+        assetDict.unload()
         assetOrder.unload()
         assetUsed.unload()
         assetList.state = .idle
@@ -180,7 +180,7 @@ extension RepositoryViewModel {
 
     func loadStockList() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.stockDataById)
+            load(queue: &queue, keyPath: \Self.stockDict)
             load(queue: &queue, keyPath: \Self.stockOrder)
             load(queue: &queue, keyPath: \Self.stockUsed)
             return await allOk(queue: queue)
@@ -189,7 +189,7 @@ extension RepositoryViewModel {
     }
 
     func unloadStockList() {
-        stockDataById.unload()
+        stockDict.unload()
         stockOrder.unload()
         stockUsed.unload()
         stockList.state = .idle
@@ -197,7 +197,7 @@ extension RepositoryViewModel {
 
     func loadPayeeList() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.payeeDataById)
+            load(queue: &queue, keyPath: \Self.payeeDict)
             load(queue: &queue, keyPath: \Self.payeeOrder)
             load(queue: &queue, keyPath: \Self.payeeUsed)
             return await allOk(queue: queue)
@@ -206,7 +206,7 @@ extension RepositoryViewModel {
     }
 
     func unloadPayeeList() {
-        payeeDataById.unload()
+        payeeDict.unload()
         payeeOrder.unload()
         payeeUsed.unload()
         payeeList.state = .idle

@@ -15,12 +15,12 @@ enum OldRepositoryLoadState: Int, Identifiable, Equatable {
     var id: Self { self }
 }
 
-struct OldRepositoryGroup<Group: RepositoryGroupChoiceProtocol> {
+struct OldRepositoryGroup<GroupChoice: RepositoryGroupChoiceProtocol> {
     var state: OldRepositoryLoadState = .idle
-    var group: Group = Group.defaultValue
-    var groupDataId     : [[DataId]] = []
-    var groupIsVisible  : [Bool]     = []
-    var groupIsExpanded : [Bool]     = []
+    var groupChoice     : GroupChoice = GroupChoice.defaultValue
+    var groupDataId     : [[DataId]]  = []
+    var groupIsVisible  : [Bool]      = []
+    var groupIsExpanded : [Bool]      = []
 }
 
 typealias RepositorySearchArea<RepositoryData: DataProtocol> = (
@@ -65,7 +65,7 @@ protocol OldRepositoryViewModelProtocol: AnyObject, ObservableObject {
     var dataById         : [DataId: RepositoryData] { get set }
     var usedId           : Set<DataId>              { get set }
 
-    var group            : GroupChoiceType          { get set }
+    var groupChoice      : GroupChoiceType          { get set }
     var groupState       : OldRepositoryLoadState   { get set }
     var groupDataId      : [[DataId]]               { get set }
 

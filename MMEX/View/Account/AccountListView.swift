@@ -13,13 +13,17 @@ struct AccountListView: View {
     @ObservedObject var vm: RepositoryViewModel
     @ObservedObject var oldvm: AccountViewModel
 
+    @State var group: RepositoryLoadGroup<AccountGroupChoice> = .init()
+    @State var search: AccountSearch = .init()
+
     var body: some View {
         RepositoryListView(
             vm: vm,
-            list: vm.accountList,
-            dataById: vm.accountDataById,
+            vmList: vm.accountList,
+            vmDict: vm.accountDict,
+
             oldvm: oldvm,
-            group: oldvm.group,
+            groupChoice: oldvm.groupChoice,
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
@@ -39,7 +43,7 @@ struct AccountListView: View {
 
     func groupName(_ groupId: Int) -> some View {
         Group {
-            switch oldvm.group {
+            switch oldvm.groupChoice {
             case .all:
                 Text("All")
             case .used:
@@ -70,7 +74,7 @@ struct AccountListView: View {
 
     func itemInfo(_ data: AccountData) -> some View {
         Group {
-            if oldvm.group == .type {
+            if oldvm.groupChoice == .type {
                 if let currency = env.currencyCache[data.currencyId] {
                     Text(currency.name)
                 }
