@@ -25,17 +25,6 @@ struct PayeeGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
-    func unloadPayeeGroup() -> Bool? {
-        log.trace("DEBUG: RepositoryViewModel.unloadPayeeGroup(main=\(Thread.isMainThread))")
-        if case .loading = payeeGroup.state { return nil }
-        payeeGroup.state = .idle
-        payeeGroup.isVisible  = []
-        payeeGroup.isExpanded = []
-        return true
-    }
-}
-
-extension RepositoryViewModel {
     func loadPayeeData() async {
         log.trace("DEBUG: RepositoryViewModel.loadPayeeData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
@@ -59,5 +48,16 @@ extension RepositoryViewModel {
         payeeOrder.unload()
         payeeUsed.unload()
         payeeData.state = .idle
+    }
+}
+
+extension RepositoryViewModel {
+    func unloadPayeeGroup() -> Bool? {
+        log.trace("DEBUG: RepositoryViewModel.unloadPayeeGroup(main=\(Thread.isMainThread))")
+        if case .loading = payeeGroup.state { return nil }
+        payeeGroup.state = .idle
+        payeeGroup.isVisible  = []
+        payeeGroup.isExpanded = []
+        return true
     }
 }

@@ -25,17 +25,6 @@ struct AssetGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
-    func unloadAssetGroup() -> Bool? {
-        log.trace("DEBUG: RepositoryViewModel.unloadAssetGroup(main=\(Thread.isMainThread))")
-        if case .loading = assetGroup.state { return nil }
-        assetGroup.state = .idle
-        assetGroup.isVisible  = []
-        assetGroup.isExpanded = []
-        return true
-    }
-}
-
-extension RepositoryViewModel {
     func loadAssetData() async {
         log.trace("DEBUG: RepositoryViewModel.loadAssetData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
@@ -59,5 +48,16 @@ extension RepositoryViewModel {
         assetOrder.unload()
         assetUsed.unload()
         assetData.state = .idle
+    }
+}
+
+extension RepositoryViewModel {
+    func unloadAssetGroup() -> Bool? {
+        log.trace("DEBUG: RepositoryViewModel.unloadAssetGroup(main=\(Thread.isMainThread))")
+        if case .loading = assetGroup.state { return nil }
+        assetGroup.state = .idle
+        assetGroup.isVisible  = []
+        assetGroup.isExpanded = []
+        return true
     }
 }

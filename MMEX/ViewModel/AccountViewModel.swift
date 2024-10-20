@@ -18,6 +18,15 @@ enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
     static let isSingleton: Set<Self> = [.all]
 }
 
+struct AccountSearch: RepositorySearchProtocol {
+    var area: [RepositorySearchArea<AccountData>] = [
+        ("Name",  true,  [ {$0.name} ]),
+        ("Notes", false, [ {$0.notes} ]),
+        ("Other", false, [ {$0.num}, {$0.heldAt}, {$0.website}, {$0.contactInfo}, {$0.accessInfo} ]),
+    ]
+    var key: String = ""
+}
+
 struct AccountGroup: RepositoryLoadGroupProtocol {
     typealias GroupChoice    = AccountGroupChoice
     typealias RepositoryType = AccountRepository
@@ -44,6 +53,33 @@ struct AccountGroup: RepositoryLoadGroupProtocol {
     static let groupStatus: [AccountStatus] = [
         .open, .closed
     ]
+}
+
+extension RepositoryViewModel {
+    func loadAccountData() async {
+        log.trace("DEBUG: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread))")
+        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
+            load(queue: &queue, keyPath: \Self.accountDict)
+            load(queue: &queue, keyPath: \Self.accountOrder)
+            load(queue: &queue, keyPath: \Self.accountUsed)
+            return await allOk(queue: queue)
+        }
+        accountData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        if queueOk {
+            log.info("INFO: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread)): Ready.")
+        } else {
+            log.debug("ERROR: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread)): Cannot load data.")
+            return
+        }
+    }
+
+    func unloadAccountData() {
+        log.trace("DEBUG: RepositoryViewModel.unloadAccountData(main=\(Thread.isMainThread))")
+        accountDict.unload()
+        accountOrder.unload()
+        accountUsed.unload()
+        accountData.state = .idle
+    }
 }
 
 extension RepositoryViewModel {
@@ -108,42 +144,6 @@ extension RepositoryViewModel {
         accountGroup.isVisible  = []
         accountGroup.isExpanded = []
         return true
-    }
-}
-
-struct AccountSearch: RepositorySearchProtocol {
-    var area: [RepositorySearchArea<AccountData>] = [
-        ("Name",  true,  [ {$0.name} ]),
-        ("Notes", false, [ {$0.notes} ]),
-        ("Other", false, [ {$0.num}, {$0.heldAt}, {$0.website}, {$0.contactInfo}, {$0.accessInfo} ]),
-    ]
-    var key: String = ""
-}
-
-extension RepositoryViewModel {
-    func loadAccountData() async {
-        log.trace("DEBUG: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread))")
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.accountDict)
-            load(queue: &queue, keyPath: \Self.accountOrder)
-            load(queue: &queue, keyPath: \Self.accountUsed)
-            return await allOk(queue: queue)
-        }
-        accountData.state = queueOk ? .ready(()) : .error("Cannot load data.")
-        if queueOk {
-            log.info("INFO: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread)): Ready.")
-        } else {
-            log.debug("ERROR: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread)): Cannot load data.")
-            return
-        }
-    }
-
-    func unloadAccountData() {
-        log.trace("DEBUG: RepositoryViewModel.unloadAccountData(main=\(Thread.isMainThread))")
-        accountDict.unload()
-        accountOrder.unload()
-        accountUsed.unload()
-        accountData.state = .idle
     }
 }
 

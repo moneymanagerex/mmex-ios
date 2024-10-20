@@ -25,17 +25,6 @@ struct CurrencyGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
-    func unloadCurrencyGroup() -> Bool? {
-        log.trace("DEBUG: RepositoryViewModel.unloadCurrencyGroup(main=\(Thread.isMainThread))")
-        if case .loading = currencyGroup.state { return nil }
-        currencyGroup.state = .idle
-        currencyGroup.isVisible  = []
-        currencyGroup.isExpanded = []
-        return true
-    }
-}
-
-extension RepositoryViewModel {
     func loadCurrencyData() async {
         log.trace("DEBUG: RepositoryViewModel.loadCurrencyData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
@@ -59,5 +48,16 @@ extension RepositoryViewModel {
         currencyOrder.unload()
         currencyUsed.unload()
         currencyData.state = .idle
+    }
+}
+
+extension RepositoryViewModel {
+    func unloadCurrencyGroup() -> Bool? {
+        log.trace("DEBUG: RepositoryViewModel.unloadCurrencyGroup(main=\(Thread.isMainThread))")
+        if case .loading = currencyGroup.state { return nil }
+        currencyGroup.state = .idle
+        currencyGroup.isVisible  = []
+        currencyGroup.isExpanded = []
+        return true
     }
 }
