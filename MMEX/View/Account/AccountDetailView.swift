@@ -11,7 +11,7 @@ import SwiftUI
 struct AccountDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var env: EnvironmentManager
-    @State var vm: RepositoryViewModel
+    var vm: RepositoryViewModel
     @State var data: AccountData
 
     @State private var editAccount = AccountData()

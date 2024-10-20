@@ -39,6 +39,27 @@ struct RepositoryLoadDataDict<RepositoryType: RepositoryProtocol>: RepositoryLoa
     }
 }
 
+struct RepositoryLoadDataValue<RepositoryType: RepositoryProtocol, DataValue>: RepositoryLoadProtocol {
+    typealias RepositoryData = RepositoryType.RepositoryData
+    typealias DataType = [DataId: DataValue]
+
+    let table: SQLite.Table
+    let fetch: (SQLite.Row) -> DataValue
+    var state: RepositoryLoadState<DataType> = .init()
+
+    init(table: SQLite.Table = RepositoryType.table, fetch: @escaping (SQLite.Row) -> DataValue) {
+        self.table = table
+        self.fetch = fetch
+    }
+
+    func load(env: EnvironmentManager) -> DataType? {
+        RepositoryType(env)?.selectById(from: self.table, with: fetch)
+    }
+}
+
+typealias RepositoryLoadDataName<RepositoryType: RepositoryProtocol>
+= RepositoryLoadDataValue<RepositoryType, String>
+
 struct RepositoryLoadDataOrder<RepositoryType: RepositoryProtocol>: RepositoryLoadProtocol {
     typealias DataType = [DataId]
     let table: SQLite.Table
@@ -69,9 +90,4 @@ struct RepositoryLoadDataUsed<RepositoryType: RepositoryProtocol>: RepositoryLoa
     func load(env: EnvironmentManager) -> DataType? {
         RepositoryType(env)?.selectId(from: self.table).map { Set($0) }
     }
-}
-
-struct RepositoryLoadData<RepositoryType: RepositoryProtocol> {
-    //let type = RepositoryType.self
-    var state: RepositoryLoadState<Void> = .init()
 }

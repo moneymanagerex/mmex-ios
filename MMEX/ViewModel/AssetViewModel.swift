@@ -25,29 +25,29 @@ struct AssetGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
-    func loadAssetData() async {
-        log.trace("DEBUG: RepositoryViewModel.loadAssetData(main=\(Thread.isMainThread))")
+    func loadAssetList() async {
+        log.trace("DEBUG: RepositoryViewModel.loadAssetList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.assetDict)
-            load(queue: &queue, keyPath: \Self.assetOrder)
-            load(queue: &queue, keyPath: \Self.assetUsed)
+            load(queue: &queue, keyPath: \Self.assetDataDict)
+            load(queue: &queue, keyPath: \Self.assetDataOrder)
+            load(queue: &queue, keyPath: \Self.assetDataUsed)
             return await allOk(queue: queue)
         }
-        assetData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        assetList.state = queueOk ? .ready(()) : .error("Cannot load data.")
         if queueOk {
-            log.info("INFO: RepositoryViewModel.loadAssetData(main=\(Thread.isMainThread)): Ready.")
+            log.info("INFO: RepositoryViewModel.loadAssetList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: RepositoryViewModel.loadAssetData(main=\(Thread.isMainThread)): Cannot load data.")
+            log.debug("ERROR: RepositoryViewModel.loadAssetList(main=\(Thread.isMainThread)): Cannot load data.")
             return
         }
     }
 
-    func unloadAssetData() {
-        log.trace("DEBUG: RepositoryViewModel.unloadAssetData(main=\(Thread.isMainThread))")
-        assetDict.unload()
-        assetOrder.unload()
-        assetUsed.unload()
-        assetData.state = .idle
+    func unloadAssetList() {
+        log.trace("DEBUG: RepositoryViewModel.unloadAssetList(main=\(Thread.isMainThread))")
+        assetDataDict.unload()
+        assetDataOrder.unload()
+        assetDataUsed.unload()
+        assetList.state = .idle
     }
 }
 

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountEditView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @State var vm: RepositoryViewModel
+    var vm: RepositoryViewModel
     @Binding var data: AccountData
     @State var edit: Bool
     var onDelete: () -> Void = { }
@@ -38,17 +38,22 @@ struct AccountEditView: View {
                     Text(data.type.rawValue)
                 }
 
-                env.theme.field.picker(edit, "Currency") {
-                    Picker("", selection: $data.currencyId) {
-                        if (data.currencyId <= 0) {
-                            Text("Select Currency").tag(0 as DataId) // not set
+                if
+                    case let .ready(currencyOrder) = vm.currencyDataOrder.state,
+                    case let .ready(currencyName) = vm.currencyDataName.state
+                {
+                    env.theme.field.picker(edit, "Currency") {
+                        Picker("", selection: $data.currencyId) {
+                            if (data.currencyId <= 0) {
+                                Text("Select Currency").tag(0 as DataId) // not set
+                            }
+                            ForEach(currencyOrder, id: \.self) { id in
+                                Text(currencyName[id] ?? "").tag(id)
+                            }
                         }
-                        //ForEach(vm.currencyName, id: \.0) { id, name in
-                        //    Text(name).tag(id)
-                        //}
+                    } show: {
+                        env.theme.field.valueOrError("Cannot be empty!", text: currency?.name)
                     }
-                } show: {
-                    env.theme.field.valueOrError("Cannot be empty!", text: currency?.name)
                 }
 
                 env.theme.field.toggle(edit, "Status") {
@@ -169,7 +174,7 @@ struct AccountEditView: View {
                 }
             }
 
-            if !edit, case let .ready(used) = vm.accountUsed.state, !used.contains(data.id) {
+            if !edit, case let .ready(used) = vm.accountDataUsed.state, !used.contains(data.id) {
                 Button("Delete Account") {
                     onDelete()
                 }

@@ -10,27 +10,27 @@ import SwiftUI
 extension RepositoryViewModel {
     func loadManage() async {
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.currencyCount)
-            load(queue: &queue, keyPath: \Self.accountCount)
-            load(queue: &queue, keyPath: \Self.assetCount)
-            load(queue: &queue, keyPath: \Self.stockCount)
-            load(queue: &queue, keyPath: \Self.categoryCount)
-            load(queue: &queue, keyPath: \Self.payeeCount)
-            load(queue: &queue, keyPath: \Self.transactionCount)
-            load(queue: &queue, keyPath: \Self.scheduledCount)
+            load(queue: &queue, keyPath: \Self.currencyDataCount)
+            load(queue: &queue, keyPath: \Self.accountDataCount)
+            load(queue: &queue, keyPath: \Self.assetDataCount)
+            load(queue: &queue, keyPath: \Self.stockDataCount)
+            load(queue: &queue, keyPath: \Self.categoryDataCount)
+            load(queue: &queue, keyPath: \Self.payeeDataCount)
+            load(queue: &queue, keyPath: \Self.transactionDataCount)
+            load(queue: &queue, keyPath: \Self.scheduledDataCount)
             return await allOk(queue: queue)
         }
         manageCount = queueOk ? .ready(()) : .error("Cannot load data.")
     }
 
     func unloadManege() {
-        currencyCount.unload()
-        accountCount.unload()
-        assetCount.unload()
-        stockCount.unload()
-        categoryCount.unload()
-        payeeCount.unload()
-        transactionCount.unload()
-        scheduledCount.unload()
+        currencyDataCount.unload()
+        accountDataCount.unload()
+        assetDataCount.unload()
+        stockDataCount.unload()
+        categoryDataCount.unload()
+        payeeDataCount.unload()
+        transactionDataCount.unload()
+        scheduledDataCount.unload()
     }
 }

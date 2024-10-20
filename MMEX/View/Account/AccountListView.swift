@@ -22,8 +22,8 @@ struct AccountListView: View {
     var body: some View {
         RepositoryListView(
             vm: vm,
-            vmData: vm.accountData,
-            vmDict: vm.accountDict,
+            vmList: vm.accountList,
+            vmDataDict: vm.accountDataDict,
             groupChoice: vm.accountGroup.choice,
             vmGroup: $vm.accountGroup,
             search: $search,

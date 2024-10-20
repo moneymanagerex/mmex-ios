@@ -58,7 +58,7 @@ struct AccountGroup: RepositoryLoadGroupProtocol {
 extension RepositoryViewModel {
     func accountGroupIsVisible(_ g: Int, search: AccountSearch) -> Bool? {
         guard
-            case let .ready(dataDict) = accountDict.state,
+            case let .ready(dataDict) = accountDataDict.state,
             case let .ready(dataId) = accountGroup.state
         else { return nil }
         if search.isEmpty {
@@ -71,11 +71,11 @@ extension RepositoryViewModel {
     }
 
     func searchAccountGroup(search: AccountSearch, expand: Bool = false) {
-        log.trace("DEBUG: RepositoryViewModel.searchAccountGroup()")
+        //log.trace("DEBUG: RepositoryViewModel.searchAccountGroup()")
         guard case let .ready(dataId) = accountGroup.state else { return }
         for g in 0 ..< dataId.count {
             guard let isVisible = accountGroupIsVisible(g, search: search) else { return }
-            log.debug("DEBUG: RepositoryViewModel.searchAccountGroup(): \(g) = \(isVisible)")
+            //log.debug("DEBUG: RepositoryViewModel.searchAccountGroup(): \(g) = \(isVisible)")
             accountGroup.isVisible[g] = isVisible
             if (expand || !search.isEmpty) && isVisible {
                 accountGroup.isExpanded[g] = true
@@ -85,29 +85,31 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func loadAccountData() async {
-        log.trace("DEBUG: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread))")
+    func loadAccountList() async {
+        log.trace("DEBUG: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.accountDict)
-            load(queue: &queue, keyPath: \Self.accountOrder)
-            load(queue: &queue, keyPath: \Self.accountUsed)
+            load(queue: &queue, keyPath: \Self.accountDataDict)
+            load(queue: &queue, keyPath: \Self.accountDataOrder)
+            load(queue: &queue, keyPath: \Self.accountDataUsed)
+            load(queue: &queue, keyPath: \Self.currencyDataName)
+            load(queue: &queue, keyPath: \Self.currencyDataOrder)
             return await allOk(queue: queue)
         }
-        accountData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        accountList.state = queueOk ? .ready(()) : .error("Cannot load data.")
         if queueOk {
-            log.info("INFO: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread)): Ready.")
+            log.info("INFO: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread)): Cannot load data.")
+            log.debug("ERROR: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread)): Cannot load data.")
             return
         }
     }
 
-    func unloadAccountData() {
-        log.trace("DEBUG: RepositoryViewModel.unloadAccountData(main=\(Thread.isMainThread))")
-        accountDict.unload()
-        accountOrder.unload()
-        accountUsed.unload()
-        accountData.state = .idle
+    func unloadAccountList() {
+        log.trace("DEBUG: RepositoryViewModel.unloadAccountList(main=\(Thread.isMainThread))")
+        accountDataDict.unload()
+        accountDataOrder.unload()
+        accountDataUsed.unload()
+        accountList.state = .idle
     }
 }
 
@@ -116,10 +118,10 @@ extension RepositoryViewModel {
         log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         if case .loading = accountGroup.state { return nil }
         guard
-            case .ready(_) = accountData.state,
-            case let .ready(dataDict)  = accountDict.state,
-            case let .ready(dataOrder) = accountOrder.state,
-            case let .ready(dataUsed)  = accountUsed.state
+            case .ready(_) = accountList.state,
+            case let .ready(dataDict)  = accountDataDict.state,
+            case let .ready(dataOrder) = accountDataOrder.state,
+            case let .ready(dataUsed)  = accountDataUsed.state
         else { return nil }
 
         accountGroup.state = .loading
@@ -175,21 +177,3 @@ extension RepositoryViewModel {
         return true
     }
 }
-
-/*
-class AccountViewModel: OldRepositoryViewModelProtocol {
-    typealias RepositoryData   = AccountData
-    typealias GroupChoiceType  = AccountGroupChoice
-    typealias RepositorySearch = AccountSearch
-
-    private(set) var currencyName: [(DataId, String)] = [] // sorted by name
-
-    @Published var search = AccountSearch()
-
-    queue.addTask(priority: .background) {
-        let data: [(DataId, String)]? = CurrencyRepository(env)?.loadName()
-        await MainActor.run { if let data { self.currencyName = data } }
-        return data != nil
-    }
-}
-*/

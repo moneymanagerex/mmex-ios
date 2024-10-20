@@ -21,8 +21,8 @@ where GroupType.RepositoryType == RepositoryType,
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    var vmData: RepositoryLoadData<RepositoryType>
-    var vmDict: RepositoryLoadDataDict<RepositoryType>
+    var vmList: RepositoryLoadList<RepositoryType>
+    var vmDataDict: RepositoryLoadDataDict<RepositoryType>
     @State var groupChoice: GroupChoiceType
     @Binding var vmGroup: GroupType
     @Binding var search: SearchType
@@ -127,7 +127,7 @@ where GroupType.RepositoryType == RepositoryType,
             await load()
         } }
         .refreshable {
-            vm.unloadData(for: vmData)
+            vm.unloadList(for: vmList)
             await load()
         }
         .sheet(isPresented: $addIsPresented) {
@@ -137,7 +137,7 @@ where GroupType.RepositoryType == RepositoryType,
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(main=\(Thread.isMainThread))")
-        await vm.loadData(for: vmData)
+        await vm.loadList(for: vmList)
         vm.loadGroup(for: vmGroup, groupChoice)
         vm.searchGroup(for: vmGroup, search: search)
     }
@@ -163,7 +163,7 @@ where GroupType.RepositoryType == RepositoryType,
                 ForEach(dataId[g], id: \.self) { id in
                     //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
                     // TODO: update View after change in account
-                    if case let .ready(dataDict) = vmDict.state,
+                    if case let .ready(dataDict) = vmDataDict.state,
                        let data = dataDict[id],
                        search.match(data)
                     {

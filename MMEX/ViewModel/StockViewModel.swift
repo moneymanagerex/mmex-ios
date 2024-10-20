@@ -25,29 +25,29 @@ struct StockGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
-    func loadStockData() async {
-        log.trace("DEBUG: RepositoryViewModel.loadStockData(main=\(Thread.isMainThread))")
+    func loadStockList() async {
+        log.trace("DEBUG: RepositoryViewModel.loadStockList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.stockDict)
-            load(queue: &queue, keyPath: \Self.stockOrder)
-            load(queue: &queue, keyPath: \Self.stockUsed)
+            load(queue: &queue, keyPath: \Self.stockDataDict)
+            load(queue: &queue, keyPath: \Self.stockDataOrder)
+            load(queue: &queue, keyPath: \Self.stockDataUsed)
             return await allOk(queue: queue)
         }
-        stockData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        stockList.state = queueOk ? .ready(()) : .error("Cannot load data.")
         if queueOk {
-            log.info("INFO: RepositoryViewModel.loadStockData(main=\(Thread.isMainThread)): Ready.")
+            log.info("INFO: RepositoryViewModel.loadStockList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: RepositoryViewModel.loadStockData(main=\(Thread.isMainThread)): Cannot load data.")
+            log.debug("ERROR: RepositoryViewModel.loadStockList(main=\(Thread.isMainThread)): Cannot load data.")
             return
         }
     }
 
-    func unloadStockData() {
-        log.trace("DEBUG: RepositoryViewModel.unloadStockData(main=\(Thread.isMainThread))")
-        stockDict.unload()
-        stockOrder.unload()
-        stockUsed.unload()
-        stockData.state = .idle
+    func unloadStockList() {
+        log.trace("DEBUG: RepositoryViewModel.unloadStockList(main=\(Thread.isMainThread))")
+        stockDataDict.unload()
+        stockDataOrder.unload()
+        stockDataUsed.unload()
+        stockList.state = .idle
     }
 }
 
