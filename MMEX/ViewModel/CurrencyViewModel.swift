@@ -25,29 +25,29 @@ struct CurrencyGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
-    func loadCurrencyData() async {
-        log.trace("DEBUG: RepositoryViewModel.loadCurrencyData(main=\(Thread.isMainThread))")
+    func loadCurrencyList() async {
+        log.trace("DEBUG: RepositoryViewModel.loadCurrencyList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.currencyDict)
-            load(queue: &queue, keyPath: \Self.currencyOrder)
-            load(queue: &queue, keyPath: \Self.currencyUsed)
+            load(queue: &queue, keyPath: \Self.currencyDataDict)
+            load(queue: &queue, keyPath: \Self.currencyDataOrder)
+            load(queue: &queue, keyPath: \Self.currencyDataUsed)
             return await allOk(queue: queue)
         }
-        currencyData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        currencyList.state = queueOk ? .ready(()) : .error("Cannot load data.")
         if queueOk {
-            log.info("INFO: RepositoryViewModel.loadCurrencyData(main=\(Thread.isMainThread)): Ready.")
+            log.info("INFO: RepositoryViewModel.loadCurrencyList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: RepositoryViewModel.loadCurrencyData(main=\(Thread.isMainThread)): Cannot load data.")
+            log.debug("ERROR: RepositoryViewModel.loadCurrencyList(main=\(Thread.isMainThread)): Cannot load data.")
             return
         }
     }
 
-    func unloadCurrencyData() {
-        log.trace("DEBUG: RepositoryViewModel.unloadCurrencyData(main=\(Thread.isMainThread))")
-        currencyDict.unload()
-        currencyOrder.unload()
-        currencyUsed.unload()
-        currencyData.state = .idle
+    func unloadCurrencyList() {
+        log.trace("DEBUG: RepositoryViewModel.unloadCurrencyList(main=\(Thread.isMainThread))")
+        currencyDataDict.unload()
+        currencyDataOrder.unload()
+        currencyDataUsed.unload()
+        currencyList.state = .idle
     }
 }
 

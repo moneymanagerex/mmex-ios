@@ -9,10 +9,10 @@ import SwiftUI
 
 struct AccountAddView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @State var vm: AccountViewModel
+    @State var vm: RepositoryViewModel
     @Binding var isPresented: Bool
 
-    @State private var data = AccountViewModel.newData
+    @State private var data = AccountListView.newData
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     

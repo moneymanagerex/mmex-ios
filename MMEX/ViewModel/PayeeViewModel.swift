@@ -25,29 +25,29 @@ struct PayeeGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
-    func loadPayeeData() async {
-        log.trace("DEBUG: RepositoryViewModel.loadPayeeData(main=\(Thread.isMainThread))")
+    func loadPayeeList() async {
+        log.trace("DEBUG: RepositoryViewModel.loadPayeeList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.payeeDict)
-            load(queue: &queue, keyPath: \Self.payeeOrder)
-            load(queue: &queue, keyPath: \Self.payeeUsed)
+            load(queue: &queue, keyPath: \Self.payeeDataDict)
+            load(queue: &queue, keyPath: \Self.payeeDataOrder)
+            load(queue: &queue, keyPath: \Self.payeeDataUsed)
             return await allOk(queue: queue)
         }
-        payeeData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        payeeList.state = queueOk ? .ready(()) : .error("Cannot load data.")
         if queueOk {
-            log.info("INFO: RepositoryViewModel.loadPayeeData(main=\(Thread.isMainThread)): Ready.")
+            log.info("INFO: RepositoryViewModel.loadPayeeList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: RepositoryViewModel.loadPayeeData(main=\(Thread.isMainThread)): Cannot load data.")
+            log.debug("ERROR: RepositoryViewModel.loadPayeeList(main=\(Thread.isMainThread)): Cannot load data.")
             return
         }
     }
 
-    func unloadPayeeData() {
-        log.trace("DEBUG: RepositoryViewModel.unloadPayeeData(main=\(Thread.isMainThread))")
-        payeeDict.unload()
-        payeeOrder.unload()
-        payeeUsed.unload()
-        payeeData.state = .idle
+    func unloadPayeeList() {
+        log.trace("DEBUG: RepositoryViewModel.unloadPayeeList(main=\(Thread.isMainThread))")
+        payeeDataDict.unload()
+        payeeDataOrder.unload()
+        payeeDataUsed.unload()
+        payeeList.state = .idle
     }
 }
 

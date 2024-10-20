@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @StateObject private var vm: RepositoryViewModel
+    /* @StateObject */ private var vm: RepositoryViewModel
     @State private var isDocumentPickerPresented = false
     @State private var isNewDocumentPickerPresented = false
     @State private var isSampleDocument = false
@@ -21,7 +21,8 @@ struct ContentView: View {
 
     init(env: EnvironmentManager) {
         log.debug("ContentView.init()")
-        self._vm = StateObject(wrappedValue: RepositoryViewModel(env: env))
+        self.vm = RepositoryViewModel(env: env)
+        //self._vm = StateObject(wrappedValue: RepositoryViewModel(env: env))
     }
 
     var body: some View {

@@ -11,7 +11,6 @@ import SwiftUI
 struct AccountListView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    @ObservedObject var oldvm: AccountViewModel
 
     @State var search: AccountSearch = .init()
 
@@ -23,21 +22,20 @@ struct AccountListView: View {
     var body: some View {
         RepositoryListView(
             vm: vm,
-            vmData: vm.accountData,
-            vmDict: vm.accountDict,
+            vmList: vm.accountList,
+            vmDataDict: vm.accountDataDict,
+            groupChoice: vm.accountGroup.choice,
             vmGroup: $vm.accountGroup,
-
-            oldvm: oldvm,
-            groupChoice: oldvm.groupChoice,
+            search: $search,
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
             detailView: { data in AccountDetailView(
-                vm: oldvm,
+                vm: vm,
                 data: data
             ) },
             addView: { $isPresented in AccountAddView(
-                vm: oldvm,
+                vm: vm,
                 isPresented: $isPresented
             ) }
         )
@@ -46,29 +44,29 @@ struct AccountListView: View {
         }
     }
 
-    func groupName(_ groupId: Int) -> some View {
+    func groupName(_ g: Int) -> some View {
         Group {
             switch vm.accountGroup.choice {
             case .all:
                 Text("All")
             case .used:
-                Text(AccountViewModel.groupUsed[groupId] ? "Used" : "Other")
+                Text(AccountGroup.groupUsed[g] ? "Used" : "Other")
             case .favorite:
-                Text(AccountViewModel.groupFavorite[groupId] == .boolTrue ? "Favorite" : "Other")
+                Text(AccountGroup.groupFavorite[g] == .boolTrue ? "Favorite" : "Other")
             case .type:
                 HStack {
-                    Image(systemName: AccountViewModel.groupType[groupId].symbolName)
+                    Image(systemName: AccountGroup.groupType[g].symbolName)
                         .frame(minWidth: 10, alignment: .leading)
                         .font(.system(size: 16, weight: .bold))
                         //.foregroundColor(.blue)
-                    Text(AccountViewModel.groupType[groupId].rawValue)
+                    Text(AccountGroup.groupType[g].rawValue)
                     //.font(.subheadline)
                     //.padding(.leading)
                 }
             case .currency:
-                Text(env.currencyCache[vm.accountGroup.groupCurrency[groupId]]?.name ?? "ERROR: unknown currency")
+                Text(env.currencyCache[vm.accountGroup.groupCurrency[g]]?.name ?? "ERROR: unknown currency")
             case .status:
-                Text(AccountViewModel.groupStatus[groupId].rawValue)
+                Text(AccountGroup.groupStatus[g].rawValue)
             }
         }
     }
@@ -93,8 +91,7 @@ struct AccountListView: View {
 #Preview {
     let env = EnvironmentManager.sampleData
     AccountListView(
-        vm: RepositoryViewModel(env: env),
-        oldvm: AccountViewModel()
+        vm: RepositoryViewModel(env: env)
     )
     .environmentObject(env)
 }
