@@ -77,16 +77,15 @@ extension RepositoryViewModel {
         queue: inout TaskGroup<Bool>,
         keyPath: ReferenceWritableKeyPath<RepositoryViewModel, RepositoryLoadType>
     ) where RepositoryLoadType: RepositoryLoadProtocol {
-        if case .idle = self[keyPath: keyPath].state {
-            self[keyPath: keyPath].state = .loading
-            queue.addTask(priority: .background) {
-                let data = await self[keyPath: keyPath].load(env: self.env)
-                await MainActor.run {
-                    if let data { self[keyPath: keyPath].state = .ready(data) }
-                    else { self[keyPath: keyPath].state = .error("Cannot load data.") }
-                }
-                return data != nil
+        guard case .idle = self[keyPath: keyPath].state else { return }
+        self[keyPath: keyPath].state = .loading
+        queue.addTask(priority: .background) {
+            let data = await self[keyPath: keyPath].load(env: self.env)
+            await MainActor.run {
+                if let data { self[keyPath: keyPath].state = .ready(data) }
+                else { self[keyPath: keyPath].state = .error("Cannot load data.") }
             }
+            return data != nil
         }
     }
 

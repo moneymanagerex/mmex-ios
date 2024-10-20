@@ -44,52 +44,56 @@ struct AccountGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
-    /*
-    func loadAccountGroup(env: EnvironmentManager, choice: AccountGroupChoice) -> Bool {
+    func loadAccountGroup(env: EnvironmentManager, choice: AccountGroupChoice) -> Bool? {
         log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue)): main=\(Thread.isMainThread)")
-        guard accountList.state == .ready && groupState != .loading else { return }
-        groupState = .loading
-        self.groupChoice = group
-        groupCurrency = []
-        groupDataId = []
-        groupIsVisible.removeAll(keepingCapacity: true)
-        groupIsExpanded.removeAll(keepingCapacity: true)
-        switch group {
+        guard
+            case .idle = accountGroup.state,
+            case .ready(_) = accountData.state,
+            case let .ready(dataDict)  = accountDict.state,
+            case let .ready(dataOrder) = accountOrder.state,
+            case let .ready(dataUsed)  = accountUsed.state
+        else { return nil }
+
+        accountGroup.state = .loading
+        accountGroup.choice = choice
+        accountGroup.groupCurrency = []
+
+        var group: RepositoryGroup = .init()
+        switch choice {
         case .all:
-            addGroup(dataId, true, true)
+            RepositoryGroup.append(into: &group, dataOrder, true, true)
         case .used:
-            let dict = Dictionary(grouping: dataId) { usedId.contains($0) }
-            for g in Self.groupUsed {
-                addGroup(dict[g] ?? [], true, g)
+            let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
+            for g in AccountGroup.groupUsed {
+                RepositoryGroup.append(into: &group, dict[g] ?? [], true, g)
             }
         case .favorite:
-            let dict = Dictionary(grouping: dataId) { dataById[$0]!.favoriteAcct }
-            for g in Self.groupFavorite {
-                addGroup(dict[g] ?? [], true, g == .boolTrue)
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.favoriteAcct }
+            for g in AccountGroup.groupFavorite {
+                RepositoryGroup.append(into: &group, dict[g] ?? [], true, g == .boolTrue)
             }
         case .type:
-            let dict = Dictionary(grouping: dataId) { dataById[$0]!.type }
-            for g in Self.groupType {
-                addGroup(dict[g] ?? [], dict[g] != nil, true)
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.type }
+            for g in AccountGroup.groupType {
+                RepositoryGroup.append(into: &group, dict[g] ?? [], dict[g] != nil, true)
             }
         case .currency:
-            let dict = Dictionary(grouping: dataId) { dataById[$0]!.currencyId }
-            groupCurrency = env.currencyCache.compactMap {
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.currencyId }
+            accountGroup.groupCurrency = env.currencyCache.compactMap {
                 dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
-            for g in groupCurrency {
-                addGroup(dict[g] ?? [], dict[g] != nil, true)
+            for g in accountGroup.groupCurrency {
+                RepositoryGroup.append(into: &group, dict[g] ?? [], dict[g] != nil, true)
             }
         case .status:
-            let dict = Dictionary(grouping: dataId) { dataById[$0]!.status }
-            for g in Self.groupStatus {
-                addGroup(dict[g] ?? [], true, g == .open)
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.status }
+            for g in AccountGroup.groupStatus {
+                RepositoryGroup.append(into: &group, dict[g] ?? [], true, g == .open)
             }
         }
-        groupState = .ready
+        accountGroup.state = .ready(group)
         return true
     }
-     */
 }
 
 struct AccountSearch: RepositorySearchProtocol {

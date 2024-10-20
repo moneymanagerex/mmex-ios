@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RepositoryListView<
-    RepositoryType: RepositoryProtocol,
+    RepositoryType: RepositoryProtocol, GroupType: RepositoryLoadGroupProtocol,
     OldRepositoryViewModel : OldRepositoryViewModelProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
     DetailView: View, InsertView: View
@@ -22,6 +22,7 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
     @ObservedObject var vm: RepositoryViewModel
     var vmData: RepositoryLoadData<RepositoryType>
     var vmDict: RepositoryLoadDataDict<RepositoryType>
+    var vmGroup: GroupType
 
     @ObservedObject var oldvm: OldRepositoryViewModel
     @State var groupChoice: GroupChoiceType
@@ -47,6 +48,7 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
                 .labelsHidden()
                 .pickerStyle(MenuPickerStyle())
                 .onChange(of: groupChoice) {
+                    //vm.loadGroup(env: env, choice: groupChoice)
                     oldvm.loadGroup(env: env, group: groupChoice)
                     oldvm.searchGroup()
                 }

@@ -25,6 +25,7 @@ struct AccountListView: View {
             vm: vm,
             vmData: vm.accountData,
             vmDict: vm.accountDict,
+            vmGroup: vm.accountGroup,
 
             oldvm: oldvm,
             groupChoice: oldvm.groupChoice,

@@ -19,9 +19,9 @@ struct RepositoryGroup {
 }
 
 extension RepositoryGroup {
-    static func addGroup(
-        group: inout RepositoryGroup,
-        dataId: [DataId],
+    static func append(
+        into group: inout RepositoryGroup,
+        _ dataId: [DataId],
         _ isVisible: Bool,
         _ isExpanded: Bool
     ) {
