@@ -26,6 +26,7 @@ class RepositoryViewModel: ObservableObject {
     @Published var accountDict  : RepositoryLoadDataDict<A> = .init()
     @Published var accountOrder : RepositoryLoadDataOrder<A> = .init(expr: [A.col_name])
     @Published var accountUsed  : RepositoryLoadDataUsed<A> = .init()
+    @Published var accountGroup : RepositoryLoadGroup<AccountGroupChoice> = .init()
     @Published var accountList  : RepositoryLoadList<A> = .init()
 
     typealias E = AssetRepository
@@ -95,123 +96,6 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func loadManage() async {
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.currencyCount)
-            load(queue: &queue, keyPath: \Self.accountCount)
-            load(queue: &queue, keyPath: \Self.assetCount)
-            load(queue: &queue, keyPath: \Self.stockCount)
-            load(queue: &queue, keyPath: \Self.categoryCount)
-            load(queue: &queue, keyPath: \Self.payeeCount)
-            load(queue: &queue, keyPath: \Self.transactionCount)
-            load(queue: &queue, keyPath: \Self.scheduledCount)
-            return await allOk(queue: queue)
-        }
-        manageCount = queueOk ? .ready(()) : .error("Cannot load data.")
-    }
-
-    func unloadManege() {
-        currencyCount.unload()
-        accountCount.unload()
-        assetCount.unload()
-        stockCount.unload()
-        categoryCount.unload()
-        payeeCount.unload()
-        transactionCount.unload()
-        scheduledCount.unload()
-    }
-
-    func loadCurrencyList() async {
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.currencyDict)
-            load(queue: &queue, keyPath: \Self.currencyOrder)
-            load(queue: &queue, keyPath: \Self.currencyUsed)
-            return await allOk(queue: queue)
-        }
-        currencyList.state = queueOk ? .ready(()) : .error("Cannot load data.")
-    }
-
-    func unloadCurrencyList() {
-        currencyDict.unload()
-        currencyOrder.unload()
-        currencyUsed.unload()
-        currencyList.state = .idle
-    }
-
-    func loadAccountList() async {
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.accountDict)
-            load(queue: &queue, keyPath: \Self.accountOrder)
-            load(queue: &queue, keyPath: \Self.accountUsed)
-            return await allOk(queue: queue)
-        }
-        await MainActor.run {
-            accountList.state = queueOk ? .ready(()) : .error("Cannot load data.")
-        }
-        log.debug("DEBUG: RepositoryViewModel.loadAccountList(): \(queueOk)")
-        if case .ready(_) = accountDict.state {
-            log.debug("DEBUG: RepositoryViewModel.loadAccountList(): dataById=.ready")
-        }
-    }
-
-    func unloadAccountList() {
-        accountDict.unload()
-        accountOrder.unload()
-        accountUsed.unload()
-        accountList.state = .idle
-    }
-
-    func loadAssetList() async {
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.assetDict)
-            load(queue: &queue, keyPath: \Self.assetOrder)
-            load(queue: &queue, keyPath: \Self.assetUsed)
-            return await allOk(queue: queue)
-        }
-        assetList.state = queueOk ? .ready(()) : .error("Cannot load data.")
-    }
-
-    func unloadAssetList() {
-        assetDict.unload()
-        assetOrder.unload()
-        assetUsed.unload()
-        assetList.state = .idle
-    }
-
-    func loadStockList() async {
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.stockDict)
-            load(queue: &queue, keyPath: \Self.stockOrder)
-            load(queue: &queue, keyPath: \Self.stockUsed)
-            return await allOk(queue: queue)
-        }
-        stockList.state = queueOk ? .ready(()) : .error("Cannot load data.")
-    }
-
-    func unloadStockList() {
-        stockDict.unload()
-        stockOrder.unload()
-        stockUsed.unload()
-        stockList.state = .idle
-    }
-
-    func loadPayeeList() async {
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.payeeDict)
-            load(queue: &queue, keyPath: \Self.payeeOrder)
-            load(queue: &queue, keyPath: \Self.payeeUsed)
-            return await allOk(queue: queue)
-        }
-        payeeList.state = queueOk ? .ready(()) : .error("Cannot load data.")
-    }
-
-    func unloadPayeeList() {
-        payeeDict.unload()
-        payeeOrder.unload()
-        payeeUsed.unload()
-        payeeList.state = .idle
-    }
-
     func loadList<RepositoryType>(_ list: RepositoryLoadList<RepositoryType>) async {
         if list.type == U.self {
             async let _ = loadCurrencyList()

@@ -1,5 +1,5 @@
 //
-//  AccountListView.swift
+//  AccountViewModel.swift
 //  MMEX
 //
 //  2024-10-11: Created by George Ef (george.a.ef@gmail.com)
@@ -27,6 +27,32 @@ struct AccountSearch: RepositorySearchProtocol {
     var key: String = ""
 }
 
+extension RepositoryViewModel {
+    func loadAccountList() async {
+        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
+            load(queue: &queue, keyPath: \Self.accountDict)
+            load(queue: &queue, keyPath: \Self.accountOrder)
+            load(queue: &queue, keyPath: \Self.accountUsed)
+            return await allOk(queue: queue)
+        }
+        await MainActor.run {
+            accountList.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        }
+        log.debug("DEBUG: RepositoryViewModel.loadAccountList(): \(queueOk)")
+        if case .ready(_) = accountDict.state {
+            log.debug("DEBUG: RepositoryViewModel.loadAccountList(): dataById=.ready")
+        }
+    }
+
+    func unloadAccountList() {
+        accountDict.unload()
+        accountOrder.unload()
+        accountUsed.unload()
+        accountList.state = .idle
+    }
+}
+
+// OLD
 @MainActor
 class AccountViewModel: OldRepositoryViewModelProtocol {
     typealias RepositoryData   = AccountData
