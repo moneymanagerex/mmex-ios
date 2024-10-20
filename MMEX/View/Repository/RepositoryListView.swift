@@ -8,17 +8,23 @@
 import SwiftUI
 
 struct RepositoryListView<
-    RepositoryViewModel : RepositoryViewModelProtocol,
+    RepositoryType: RepositoryProtocol,
+    OldRepositoryViewModel : OldRepositoryViewModelProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
     DetailView: View, InsertView: View
 >: View
+where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
 {
-    typealias RepositoryData  = RepositoryViewModel.RepositoryData
-    typealias RepositoryGroup = RepositoryViewModel.RepositoryGroup
+    typealias RepositoryData  = RepositoryType.RepositoryData
+    typealias GroupChoiceType = OldRepositoryViewModel.GroupChoiceType
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    @State var group: RepositoryGroup
+    var list: RepositoryLoadList<RepositoryType>
+    var dataById: RepositoryLoadDataById<RepositoryType>
+
+    @ObservedObject var oldvm: OldRepositoryViewModel
+    @State var group: GroupChoiceType
     @ViewBuilder var groupName: (_ groupId: Int) -> GroupNameView
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
@@ -31,7 +37,7 @@ struct RepositoryListView<
         return List {
             HStack {
                 Picker("", selection: $group) {
-                    ForEach(RepositoryGroup.allCases, id: \.self) { choice in
+                    ForEach(GroupChoiceType.allCases, id: \.self) { choice in
                         Text("\(choice.rawValue)")
                             .font(.subheadline)
                             .tag(choice)
@@ -41,8 +47,8 @@ struct RepositoryListView<
                 .labelsHidden()
                 .pickerStyle(MenuPickerStyle())
                 .onChange(of: group) {
-                    vm.loadGroup(env: env, group: group)
-                    vm.searchGroup()
+                    oldvm.loadGroup(env: env, group: group)
+                    oldvm.searchGroup()
                 }
                 .padding(.vertical, -5)
                 //.padding(.trailing, 50)
@@ -54,7 +60,7 @@ struct RepositoryListView<
                 //.border(.red)
                 HStack {
                     NavigationLink(
-                        destination: RepositorySearchAreaView(area: $vm.search.area)
+                        destination: RepositorySearchAreaView(area: $oldvm.search.area)
                     ) {
                         Text("Search area")
                             .font(.subheadline)
@@ -69,11 +75,36 @@ struct RepositoryListView<
             .listRowBackground(Color.clear)
             //.border(.red)
             //Text("DEBUG: main=\(Thread.isMainThread), \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
-            if vm.dataState == .ready, vm.groupState == .ready {
-                ForEach(0..<vm.groupDataId.count, id: \.self) { g in
-                    if vm.groupIsVisible[g] {
-                        groupView(g)
+            if oldvm.dataState == .ready, oldvm.groupState == .ready {
+                switch dataById.state {
+                case .ready(_):
+                    ForEach(0..<oldvm.groupDataId.count, id: \.self) { g in
+                        if oldvm.groupIsVisible[g] {
+                            groupView(g)
+                        }
                     }
+                case .loading:
+                    HStack {
+                        Text("Loading data ...")
+                        ProgressView()
+                    }
+                case .error(_):
+                    HStack {
+                        Text("Load error ...")
+                        ProgressView()
+                    }.tint(.red)
+                case .idle:
+                    Button(action: { Task {
+                        await load()
+                    } } ) {
+                        HStack {
+                            Text("Load data")
+                        }
+                    }
+                    .listRowBackground(Color.clear)
+                    .padding()
+                    //.background(.secondary)
+                    .foregroundColor(.secondary)
                 }
             } else {
                 Button(action: { Task {
@@ -99,19 +130,20 @@ struct RepositoryListView<
             )
             .accessibilityLabel("New " + RepositoryData.dataName.0)
         }
-        .searchable(text: $vm.search.key, prompt: vm.search.prompt)
+        .searchable(text: $oldvm.search.key, prompt: oldvm.search.prompt)
         .textInputAutocapitalization(.never)
-        .onChange(of: vm.search.key) { _, newValue in
-            vm.searchGroup(expand: true)
+        .onChange(of: oldvm.search.key) { _, newValue in
+            oldvm.searchGroup(expand: true)
         }
         .navigationTitle(RepositoryData.dataName.1)
         .onAppear { Task {
             let _ = log.debug("DEBUG: RepositoryListView.onAppear()")
-            group = vm.group
+            group = oldvm.group
             await load()
         } }
         .refreshable {
-            vm.unloadData()
+            vm.unloadList(list)
+            oldvm.unloadData()
             await load()
         }
         .sheet(isPresented: $addIsPresented) {
@@ -121,35 +153,36 @@ struct RepositoryListView<
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
-        await vm.loadData(env: env)
-        vm.loadGroup(env: env, group: group)
-        vm.searchGroup()
-        log.trace("INFO: RepositoryListView.load(): \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
+        await vm.loadList(list)
+        await oldvm.loadData(env: env)
+        oldvm.loadGroup(env: env, group: group)
+        oldvm.searchGroup()
+        log.trace("INFO: RepositoryListView.load(): \(oldvm.dataState.rawValue), \(oldvm.groupState.rawValue)")
     }
 
     func groupView(_ g: Int) -> some View {
         Section(header: Group {
-            if !RepositoryGroup.isSingleton.contains(vm.group) {
+            if !GroupChoiceType.isSingleton.contains(oldvm.group) {
                 HStack {
                     Button(action: {
-                        vm.groupIsExpanded[g].toggle()
+                        oldvm.groupIsExpanded[g].toggle()
                     }) {
                         env.theme.group.view(
                             name: { groupName(g) },
-                            count: vm.groupDataId[g].count,
-                            isExpanded: vm.groupIsExpanded[g]
+                            count: oldvm.groupDataId[g].count,
+                            isExpanded: oldvm.groupIsExpanded[g]
                         )
                     }
                 }
             }
         }//.padding(.top, -10)
         ) {
-            if vm.groupIsExpanded[g] {
-                ForEach(vm.groupDataId[g], id: \.self) { id in
+            if oldvm.groupIsExpanded[g] {
+                ForEach(oldvm.groupDataId[g], id: \.self) { id in
                     //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
                     // TODO: update View after change in account
-                    if vm.dataIsVisible(id) {
-                        itemView(vm.dataById[id]!)
+                    if oldvm.dataIsVisible(id), case let .ready(dataById) = dataById.state {
+                        itemView(dataById[id]!)
                     }
 
                 }
@@ -196,8 +229,10 @@ struct RepositorySearchAreaView<RepositoryData: DataProtocol>: View {
 }
 
 #Preview("Account") {
+    let env = EnvironmentManager.sampleData
     AccountListView(
-        vm: AccountViewModel()
+        vm: RepositoryViewModel(env: env),
+        oldvm: AccountViewModel()
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

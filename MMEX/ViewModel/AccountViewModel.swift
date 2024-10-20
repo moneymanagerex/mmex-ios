@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AccountGroup: String, RepositoryGroupProtocol {
+enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
     case all      = "All"
     case used     = "Used"
     case favorite = "Favorite"
@@ -28,19 +28,19 @@ struct AccountSearch: RepositorySearchProtocol {
 }
 
 @MainActor
-class AccountViewModel: RepositoryViewModelProtocol {
+class AccountViewModel: OldRepositoryViewModelProtocol {
     typealias RepositoryData   = AccountData
-    typealias RepositoryGroup  = AccountGroup
+    typealias GroupChoiceType  = AccountGroupChoice
     typealias RepositorySearch = AccountSearch
 
-    @Published var dataState: RepositoryLoadState = .idle
+    @Published var dataState: OldRepositoryLoadState = .idle
     var dataById: [DataId : RepositoryData] = [:]
     var usedId: Set<DataId> = []
     private var dataId: [DataId] = [] // sorted by name
     private(set) var currencyName: [(DataId, String)] = [] // sorted by name
 
-    @Published var group = AccountGroup.defaultValue
-    @Published var groupState: RepositoryLoadState = .idle
+    @Published var group = AccountGroupChoice.defaultValue
+    @Published var groupState: OldRepositoryLoadState = .idle
     @Published var groupDataId: [[DataId]] = []
 
     @Published var search = AccountSearch()
@@ -141,7 +141,7 @@ class AccountViewModel: RepositoryViewModelProtocol {
         groupIsExpanded.append(isExpanded)
     }
 
-    func loadGroup(env: EnvironmentManager, group: AccountGroup) {
+    func loadGroup(env: EnvironmentManager, group: AccountGroupChoice) {
         log.trace("DEBUG: AccountViewModel.loadGroup(\(self.group.rawValue)): main=\(Thread.isMainThread)")
         guard dataState == .ready && groupState != .loading else { return }
         groupState = .loading

@@ -10,21 +10,25 @@ import SwiftUI
 
 struct AccountListView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: AccountViewModel
+    @ObservedObject var vm: RepositoryViewModel
+    @ObservedObject var oldvm: AccountViewModel
 
     var body: some View {
         RepositoryListView(
             vm: vm,
-            group: vm.group,
+            list: vm.accountList,
+            dataById: vm.accountDataById,
+            oldvm: oldvm,
+            group: oldvm.group,
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
             detailView: { data in AccountDetailView(
-                vm: vm,
+                vm: oldvm,
                 data: data
             ) },
             addView: { $isPresented in AccountAddView(
-                vm: vm,
+                vm: oldvm,
                 isPresented: $isPresented
             ) }
         )
@@ -35,7 +39,7 @@ struct AccountListView: View {
 
     func groupName(_ groupId: Int) -> some View {
         Group {
-            switch vm.group {
+            switch oldvm.group {
             case .all:
                 Text("All")
             case .used:
@@ -51,7 +55,7 @@ struct AccountListView: View {
                     //.padding(.leading)
                 }
             case .currency:
-                Text(env.currencyCache[vm.groupCurrency[groupId]]?.name ?? "ERROR: unknown currency")
+                Text(env.currencyCache[oldvm.groupCurrency[groupId]]?.name ?? "ERROR: unknown currency")
             case .status:
                 Text(AccountViewModel.groupStatus[groupId].rawValue)
             case .favorite:
@@ -66,7 +70,7 @@ struct AccountListView: View {
 
     func itemInfo(_ data: AccountData) -> some View {
         Group {
-            if vm.group == .type {
+            if oldvm.group == .type {
                 if let currency = env.currencyCache[data.currencyId] {
                     Text(currency.name)
                 }
@@ -78,8 +82,10 @@ struct AccountListView: View {
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     AccountListView(
-        vm: AccountViewModel()
+        vm: RepositoryViewModel(env: env),
+        oldvm: AccountViewModel()
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

@@ -17,7 +17,7 @@ struct SettingsThemeView: View {
         "Field Layout" : true,
     ]
 
-    let accentColor = Color.blue
+    let accentColor = Color.green
 
     var body: some View {
         List {
@@ -100,6 +100,7 @@ struct SettingsThemeView: View {
                                     name: { Text("Item Name") },
                                     info: { Text("Item Info") }
                                 )
+                                .foregroundColor(.primary)
                             }
                             .buttonStyle(BorderlessButtonStyle())
                             .padding(10)

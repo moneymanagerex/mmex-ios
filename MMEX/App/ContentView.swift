@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @StateObject private var expViewModel: ExpRepositoryViewModel
+    @StateObject private var vm: RepositoryViewModel
     @State private var isDocumentPickerPresented = false
     @State private var isNewDocumentPickerPresented = false
     @State private var isSampleDocument = false
@@ -21,7 +21,7 @@ struct ContentView: View {
 
     init(env: EnvironmentManager) {
         log.debug("ContentView.init()")
-        self._expViewModel = StateObject(wrappedValue: ExpRepositoryViewModel(env: env))
+        self._vm = StateObject(wrappedValue: RepositoryViewModel(env: env))
     }
 
     var body: some View {
@@ -59,16 +59,16 @@ struct ContentView: View {
                     )
                 }
             } else {
-                // problem: if viewModel is declared here, it is re-instantiated on switching between tabs
-                // fix: move viewModel declaration to View and initialize it in init()
-                //let expViewModel = ExpRepositoryViewModel(env: env)
+                // problem: if VM is declared here, it is re-instantiated on switching between tabs
+                // fix: move VM declaration to View and initialize it in init()
+                //let vm = RepositoryViewModel(env: env)
                 let insightsViewModel = InsightsViewModel(env: env)
                 let infotableViewModel = TransactionViewModel(env: env)
                 TabView(selection: $selectedTab) {
                     checkingTab(viewModel: infotableViewModel)
                     insightsTab(viewModel: insightsViewModel)
                     enterTab(viewModel: infotableViewModel)
-                    managementTab(viewModel: infotableViewModel, expViewModel: expViewModel)
+                    managementTab(viewModel: infotableViewModel, vm: vm)
                     settingsTab(viewModel: infotableViewModel)
                 }
                 .onChange(of: selectedTab) { _, tab in
@@ -126,7 +126,7 @@ struct ContentView: View {
         }
         .padding()
         .onAppear {
-            expViewModel.unloadAll()
+            vm.unloadAll()
         }
     }
 
@@ -169,12 +169,12 @@ struct ContentView: View {
     // Management tab
     private func managementTab(
         viewModel: TransactionViewModel,
-        expViewModel: ExpRepositoryViewModel
+        vm: RepositoryViewModel
     ) -> some View {
         NavigationView {
             ManageView(
                 viewModel: viewModel,
-                expViewModel: expViewModel,
+                vm: vm,
                 isDocumentPickerPresented: $isDocumentPickerPresented,
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
@@ -271,7 +271,7 @@ struct TabContentView: View {
         // Use @StateObject to manage the lifecycle of TransactionViewModel
         let insightsViewModel = InsightsViewModel(env: env)
         let infotableViewModel = TransactionViewModel(env: env)
-        let expViewModel = ExpRepositoryViewModel(env: env)
+        let expViewModel = RepositoryViewModel(env: env)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {
@@ -287,7 +287,7 @@ struct TabContentView: View {
             case 3:
                 ManageView(
                     viewModel:infotableViewModel,
-                    expViewModel: expViewModel,
+                    vm: expViewModel,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
