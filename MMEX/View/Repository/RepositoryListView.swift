@@ -13,16 +13,18 @@ struct RepositoryListView<
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
     DetailView: View, InsertView: View
 >: View
-where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
+where GroupType.RepositoryType == RepositoryType,
+      OldRepositoryViewModel.RepositoryData == RepositoryType.RepositoryData,
+      OldRepositoryViewModel.GroupChoiceType == GroupType.GroupChoiceType
 {
     typealias RepositoryData  = RepositoryType.RepositoryData
-    typealias GroupChoiceType = OldRepositoryViewModel.GroupChoiceType
+    typealias GroupChoiceType = GroupType.GroupChoiceType
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
     var vmData: RepositoryLoadData<RepositoryType>
     var vmDict: RepositoryLoadDataDict<RepositoryType>
-    var vmGroup: GroupType
+    @Binding var vmGroup: GroupType
 
     @ObservedObject var oldvm: OldRepositoryViewModel
     @State var groupChoice: GroupChoiceType
@@ -48,7 +50,7 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
                 .labelsHidden()
                 .pickerStyle(MenuPickerStyle())
                 .onChange(of: groupChoice) {
-                    //vm.loadGroup(env: env, choice: groupChoice)
+                    vm.loadGroup(for: vmGroup, groupChoice)
                     oldvm.loadGroup(env: env, group: groupChoice)
                     oldvm.searchGroup()
                 }
@@ -76,45 +78,29 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
             .listRowInsets(.init())
             .listRowBackground(Color.clear)
             //.border(.red)
-            //Text("DEBUG: main=\(Thread.isMainThread), \(vm.dataState.rawValue), \(vm.groupState.rawValue)")
-            if oldvm.dataState == .ready, oldvm.groupState == .ready {
-                switch vmDict.state {
-                case .ready(_):
-                    ForEach(0..<oldvm.groupDataId.count, id: \.self) { g in
-                        if oldvm.groupIsVisible[g] {
-                            groupView(g)
-                        }
+            switch vmGroup.state {
+            case let .ready(dataId):
+                ForEach(0 ..< dataId.count, id: \.self) { g in
+                    if vmGroup.isVisible[g] {
+                        groupView(g)
                     }
-                case .loading:
-                    HStack {
-                        Text("Loading data ...")
-                        ProgressView()
-                    }
-                case .error(_):
-                    HStack {
-                        Text("Load error ...")
-                        ProgressView()
-                    }.tint(.red)
-                case .idle:
-                    Button(action: { Task {
-                        await load()
-                    } } ) {
-                        HStack {
-                            Text("Load data")
-                        }
-                    }
-                    .listRowBackground(Color.clear)
-                    .padding()
-                    //.background(.secondary)
-                    .foregroundColor(.secondary)
                 }
-            } else {
+            case .loading:
+                HStack {
+                    Text("Loading data ...")
+                    ProgressView()
+                }
+            case .error(_):
+                HStack {
+                    Text("Load error ...")
+                    ProgressView()
+                }.tint(.red)
+            case .idle:
                 Button(action: { Task {
                     await load()
                 } } ) {
                     HStack {
-                        Text("Loading data ...")
-                        ProgressView()
+                        Text("Load data")
                     }
                 }
                 .listRowBackground(Color.clear)
@@ -140,11 +126,11 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
         .navigationTitle(RepositoryData.dataName.1)
         .onAppear { Task {
             let _ = log.debug("DEBUG: RepositoryListView.onAppear()")
-            groupChoice = oldvm.groupChoice
+            groupChoice = vmGroup.choice
             await load()
         } }
         .refreshable {
-            vm.unloadData(vmData)
+            vm.unloadData(for: vmData)
             oldvm.unloadData()
             await load()
         }
@@ -155,42 +141,43 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
-        await vm.loadData(vmData)
+        await vm.loadData(for: vmData)
+        vm.loadGroup(for: vmGroup, groupChoice)
         await oldvm.loadData(env: env)
         oldvm.loadGroup(env: env, group: groupChoice)
         oldvm.searchGroup()
         log.trace("INFO: RepositoryListView.load(): \(oldvm.dataState.rawValue), \(oldvm.groupState.rawValue)")
     }
 
-    func groupView(_ g: Int) -> some View {
+    func groupView(_ g: Int) -> some View { Group { if case let .ready(dataId) = vmGroup.state {
         Section(header: Group {
-            if !GroupChoiceType.isSingleton.contains(oldvm.groupChoice) {
+            if !GroupChoiceType.isSingleton.contains(vmGroup.choice) {
                 HStack {
                     Button(action: {
-                        oldvm.groupIsExpanded[g].toggle()
+                        vmGroup.isExpanded[g].toggle()
                     }) {
                         env.theme.group.view(
                             name: { groupName(g) },
-                            count: oldvm.groupDataId[g].count,
-                            isExpanded: oldvm.groupIsExpanded[g]
+                            count: dataId[g].count,
+                            isExpanded: vmGroup.isExpanded[g]
                         )
                     }
                 }
             }
         }//.padding(.top, -10)
         ) {
-            if oldvm.groupIsExpanded[g] {
-                ForEach(oldvm.groupDataId[g], id: \.self) { id in
+            if vmGroup.isExpanded[g] {
+                ForEach(dataId[g], id: \.self) { id in
                     //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
                     // TODO: update View after change in account
-                    if oldvm.dataIsVisible(id), case let .ready(dataDict) = vmDict.state {
+                    if /* oldvm.dataIsVisible(id), */ case let .ready(dataDict) = vmDict.state {
                         itemView(dataDict[id]!)
                     }
-
+                    
                 }
             }
         }
-    }
+    } } }
 
     func itemView(_ data: RepositoryData) -> some View {
         NavigationLink(destination: detailView(

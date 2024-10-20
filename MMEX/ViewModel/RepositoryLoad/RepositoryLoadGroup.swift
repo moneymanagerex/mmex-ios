@@ -12,15 +12,21 @@ where Self.AllCases: RandomAccessCollection {
     static var isSingleton: Set<Self> { get }
 }
 
-struct RepositoryGroup {
-    var dataId     : [[DataId]] = []
-    var isVisible  : [Bool]     = []
-    var isExpanded : [Bool]     = []
+protocol RepositoryLoadGroupProtocol {
+    associatedtype GroupChoiceType : RepositoryGroupChoiceProtocol
+    associatedtype RepositoryType  : RepositoryProtocol
+
+    var choice: GroupChoiceType { get set }
+    var state: RepositoryLoadState<[[DataId]]> { get set }
+    var isVisible  : [Bool] { get set }
+    var isExpanded : [Bool] { get set }
 }
 
-extension RepositoryGroup {
+enum RepositoryGroup {
+    typealias AsTuple = (dataId: [[DataId]], isVisible: [Bool], isExpanded: [Bool])
+
     static func append(
-        into group: inout RepositoryGroup,
+        into group: inout AsTuple,
         _ dataId: [DataId],
         _ isVisible: Bool,
         _ isExpanded: Bool
@@ -29,11 +35,4 @@ extension RepositoryGroup {
         group.isVisible.append(isVisible)
         group.isExpanded.append(isExpanded)
     }
-}
-
-protocol RepositoryLoadGroupProtocol {
-    associatedtype GroupChoice: RepositoryGroupChoiceProtocol
-
-    var choice: GroupChoice { get set }
-    var state: RepositoryLoadState<RepositoryGroup> { get set }
 }

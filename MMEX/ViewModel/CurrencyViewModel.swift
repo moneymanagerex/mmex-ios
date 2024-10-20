@@ -15,10 +15,13 @@ enum CurrencyGroupChoice: String, RepositoryGroupChoiceProtocol {
 }
 
 struct CurrencyGroup: RepositoryLoadGroupProtocol {
-    typealias GroupChoice = CurrencyGroupChoice
+    typealias GroupChoice    = CurrencyGroupChoice
+    typealias RepositoryType = CurrencyRepository
     
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<RepositoryGroup> = .init()
+    var state: RepositoryLoadState<[[DataId]]> = .init()
+    var isVisible  : [Bool] = []
+    var isExpanded : [Bool] = []
 }
 
 extension RepositoryViewModel {

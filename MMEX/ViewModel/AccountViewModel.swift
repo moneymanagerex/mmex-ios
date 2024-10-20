@@ -19,10 +19,13 @@ enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
 }
 
 struct AccountGroup: RepositoryLoadGroupProtocol {
-    typealias GroupChoice = AccountGroupChoice
+    typealias GroupChoice    = AccountGroupChoice
+    typealias RepositoryType = AccountRepository
 
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<RepositoryGroup> = .init()
+    var state: RepositoryLoadState<[[DataId]]> = .init()
+    var isVisible  : [Bool] = []
+    var isExpanded : [Bool] = []
 
     static let groupUsed: [Bool] = [
         true, false
@@ -45,9 +48,9 @@ struct AccountGroup: RepositoryLoadGroupProtocol {
 
 extension RepositoryViewModel {
     func loadAccountGroup(env: EnvironmentManager, choice: AccountGroupChoice) -> Bool? {
-        log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue)): main=\(Thread.isMainThread)")
+        log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
+        if case .loading = accountGroup.state { return nil }
         guard
-            case .idle = accountGroup.state,
             case .ready(_) = accountData.state,
             case let .ready(dataDict)  = accountDict.state,
             case let .ready(dataOrder) = accountOrder.state,
@@ -58,7 +61,7 @@ extension RepositoryViewModel {
         accountGroup.choice = choice
         accountGroup.groupCurrency = []
 
-        var group: RepositoryGroup = .init()
+        var group: RepositoryGroup.AsTuple = ([], [], [])
         switch choice {
         case .all:
             RepositoryGroup.append(into: &group, dataOrder, true, true)
@@ -91,7 +94,10 @@ extension RepositoryViewModel {
                 RepositoryGroup.append(into: &group, dict[g] ?? [], true, g == .open)
             }
         }
-        accountGroup.state = .ready(group)
+
+        accountGroup.isVisible  = group.isVisible
+        accountGroup.isExpanded = group.isExpanded
+        accountGroup.state = .ready(group.dataId)
         return true
     }
 }

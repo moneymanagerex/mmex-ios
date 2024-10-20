@@ -25,7 +25,7 @@ struct AccountListView: View {
             vm: vm,
             vmData: vm.accountData,
             vmDict: vm.accountDict,
-            vmGroup: vm.accountGroup,
+            vmGroup: $vm.accountGroup,
 
             oldvm: oldvm,
             groupChoice: oldvm.groupChoice,
@@ -48,11 +48,13 @@ struct AccountListView: View {
 
     func groupName(_ groupId: Int) -> some View {
         Group {
-            switch oldvm.groupChoice {
+            switch vm.accountGroup.choice {
             case .all:
                 Text("All")
             case .used:
                 Text(AccountViewModel.groupUsed[groupId] ? "Used" : "Other")
+            case .favorite:
+                Text(AccountViewModel.groupFavorite[groupId] == .boolTrue ? "Favorite" : "Other")
             case .type:
                 HStack {
                     Image(systemName: AccountViewModel.groupType[groupId].symbolName)
@@ -64,11 +66,9 @@ struct AccountListView: View {
                     //.padding(.leading)
                 }
             case .currency:
-                Text(env.currencyCache[oldvm.groupCurrency[groupId]]?.name ?? "ERROR: unknown currency")
+                Text(env.currencyCache[vm.accountGroup.groupCurrency[groupId]]?.name ?? "ERROR: unknown currency")
             case .status:
                 Text(AccountViewModel.groupStatus[groupId].rawValue)
-            case .favorite:
-                Text(AccountViewModel.groupFavorite[groupId] == .boolTrue ? "Favorite" : "Other")
             }
         }
     }
@@ -79,7 +79,7 @@ struct AccountListView: View {
 
     func itemInfo(_ data: AccountData) -> some View {
         Group {
-            if oldvm.groupChoice == .type {
+            if vm.accountGroup.choice == .type {
                 if let currency = env.currencyCache[data.currencyId] {
                     Text(currency.name)
                 }

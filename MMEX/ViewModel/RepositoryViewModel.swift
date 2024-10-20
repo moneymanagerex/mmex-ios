@@ -99,31 +99,37 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func loadData<RepositoryType>(_ list: RepositoryLoadData<RepositoryType>) async {
-        if list.type == U.self {
-            async let _ = loadCurrencyData()
-        } else if list.type == A.self {
-            async let _ = loadAccountData()
-        } else if list.type == E.self {
-            async let _ = loadAssetData()
-        } else if list.type == S.self {
-            async let _ = loadStockData()
-        } else if list.type == P.self {
-            async let _ = loadPayeeData()
-        }
+    func loadData<RepositoryType>(for data: RepositoryLoadData<RepositoryType>) async {
+        /**/ if RepositoryType.self == U.self { async let _ = loadCurrencyData() }
+        else if RepositoryType.self == A.self { async let _ = loadAccountData() }
+        else if RepositoryType.self == E.self { async let _ = loadAssetData() }
+        else if RepositoryType.self == S.self { async let _ = loadStockData() }
+        else if RepositoryType.self == P.self { async let _ = loadPayeeData() }
     }
 
-    func unloadData<RepositoryType>(_ list: RepositoryLoadData<RepositoryType>) {
-        if list.type == U.self {
-            unloadCurrencyData()
-        } else if list.type == A.self {
-            unloadAccountData()
-        } else if list.type == E.self {
-            unloadAssetData()
-        } else if list.type == S.self {
-            unloadStockData()
-        } else if list.type == P.self {
-            unloadPayeeData()
+    func unloadData<RepositoryType>(for data: RepositoryLoadData<RepositoryType>) {
+        /**/ if RepositoryType.self == U.self { unloadCurrencyData() }
+        else if RepositoryType.self == A.self { unloadAccountData() }
+        else if RepositoryType.self == E.self { unloadAssetData() }
+        else if RepositoryType.self == S.self { unloadStockData() }
+        else if RepositoryType.self == P.self { unloadPayeeData() }
+    }
+
+    func loadGroup<GroupType: RepositoryLoadGroupProtocol, GroupChoiceType>(
+        for group: GroupType,
+        _ choice: GroupChoiceType
+    ) where GroupChoiceType == GroupType.GroupChoiceType
+    {
+        if GroupType.RepositoryType.self == U.self {
+//            let _ = loadCurrencyGroup(env: env)
+        } else if GroupType.RepositoryType.self == A.self {
+            let _ = loadAccountGroup(env: env, choice: choice as! AccountGroupChoice)
+        } else if GroupType.RepositoryType.self == E.self {
+//            let _ = loadAssetGroup()
+        } else if GroupType.RepositoryType.self == S.self {
+//            let _ = loadStockGroup()
+        } else if GroupType.RepositoryType.self == P.self {
+//            let _ = loadPayeeGroup()
         }
     }
 

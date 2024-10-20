@@ -72,6 +72,6 @@ struct RepositoryLoadDataUsed<RepositoryType: RepositoryProtocol>: RepositoryLoa
 }
 
 struct RepositoryLoadData<RepositoryType: RepositoryProtocol> {
-    let type = RepositoryType.self
+    //let type = RepositoryType.self
     var state: RepositoryLoadState<Void> = .init()
 }

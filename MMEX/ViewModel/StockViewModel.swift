@@ -15,10 +15,13 @@ enum StockGroupChoice: String, RepositoryGroupChoiceProtocol {
 }
 
 struct StockGroup: RepositoryLoadGroupProtocol {
-    typealias GroupChoice = StockGroupChoice
+    typealias GroupChoice    = StockGroupChoice
+    typealias RepositoryType = StockRepository
     
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<RepositoryGroup> = .init()
+    var state: RepositoryLoadState<[[DataId]]> = .init()
+    var isVisible  : [Bool] = []
+    var isExpanded : [Bool] = []
 }
 
 extension RepositoryViewModel {

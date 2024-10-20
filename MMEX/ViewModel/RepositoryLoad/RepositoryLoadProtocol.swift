@@ -18,6 +18,8 @@ enum RepositoryLoadState<DataType: Copyable>: Copyable {
     }
 }
 
+extension RepositoryLoadState: Equatable where DataType: Equatable { }
+
 protocol RepositoryLoadProtocol {
     associatedtype DataType: Copyable
     var state: RepositoryLoadState<DataType> { get set }
