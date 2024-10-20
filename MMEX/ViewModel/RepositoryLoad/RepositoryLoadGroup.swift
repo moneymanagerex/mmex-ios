@@ -18,13 +18,22 @@ struct RepositoryGroup {
     var isExpanded : [Bool]     = []
 }
 
-struct RepositoryLoadGroup<GroupChoice: RepositoryGroupChoiceProtocol> {
-    typealias DataType = RepositoryGroup
-    
-    var choice: GroupChoice = GroupChoice.defaultValue
-    var state: RepositoryLoadState<DataType> = .init()
-
-    init(choice: GroupChoice = GroupChoice.defaultValue) {
-        self.choice = choice
+extension RepositoryGroup {
+    static func addGroup(
+        group: inout RepositoryGroup,
+        dataId: [DataId],
+        _ isVisible: Bool,
+        _ isExpanded: Bool
+    ) {
+        group.dataId.append(dataId)
+        group.isVisible.append(isVisible)
+        group.isExpanded.append(isExpanded)
     }
+}
+
+protocol RepositoryLoadGroupProtocol {
+    associatedtype GroupChoice: RepositoryGroupChoiceProtocol
+
+    var choice: GroupChoice { get set }
+    var state: RepositoryLoadState<RepositoryGroup> { get set }
 }

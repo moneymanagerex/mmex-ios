@@ -70,3 +70,8 @@ struct RepositoryLoadDataUsed<RepositoryType: RepositoryProtocol>: RepositoryLoa
         RepositoryType(env)?.selectId(from: self.table).map { Set($0) }
     }
 }
+
+struct RepositoryLoadData<RepositoryType: RepositoryProtocol> {
+    let type = RepositoryType.self
+    var state: RepositoryLoadState<Void> = .init()
+}

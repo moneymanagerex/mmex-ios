@@ -19,29 +19,32 @@ class RepositoryViewModel: ObservableObject {
     @Published var currencyDict  : RepositoryLoadDataDict<U> = .init()
     @Published var currencyOrder : RepositoryLoadDataOrder<U> = .init(expr: [U.col_name])
     @Published var currencyUsed  : RepositoryLoadDataUsed<U> = .init()
-    @Published var currencyList  : RepositoryLoadList<U> = .init()
+    @Published var currencyData  : RepositoryLoadData<U> = .init()
+    @Published var currencyGroup : CurrencyGroup = .init()
 
     typealias A = AccountRepository
     @Published var accountCount : RepositoryLoadDataCount<A> = .init()
     @Published var accountDict  : RepositoryLoadDataDict<A> = .init()
     @Published var accountOrder : RepositoryLoadDataOrder<A> = .init(expr: [A.col_name])
     @Published var accountUsed  : RepositoryLoadDataUsed<A> = .init()
-    @Published var accountGroup : RepositoryLoadGroup<AccountGroupChoice> = .init()
-    @Published var accountList  : RepositoryLoadList<A> = .init()
+    @Published var accountData  : RepositoryLoadData<A> = .init()
+    @Published var accountGroup : AccountGroup = .init()
 
     typealias E = AssetRepository
     @Published var assetCount : RepositoryLoadDataCount<E> = .init()
     @Published var assetDict  : RepositoryLoadDataDict<E> = .init()
     @Published var assetOrder : RepositoryLoadDataOrder<E> = .init(expr: [E.col_name])
     @Published var assetUsed  : RepositoryLoadDataUsed<E> = .init()
-    @Published var assetList  : RepositoryLoadList<E> = .init()
+    @Published var assetData  : RepositoryLoadData<E> = .init()
+    @Published var assetGroup : AssetGroup = .init()
 
     typealias S = StockRepository
     @Published var stockCount : RepositoryLoadDataCount<S> = .init()
     @Published var stockDict  : RepositoryLoadDataDict<S> = .init()
     @Published var stockOrder : RepositoryLoadDataOrder<S> = .init(expr: [S.col_name])
     @Published var stockUsed  : RepositoryLoadDataUsed<S> = .init()
-    @Published var stockList  : RepositoryLoadList<S> = .init()
+    @Published var stockData  : RepositoryLoadData<S> = .init()
+    @Published var stockGroup : StockGroup = .init()
 
     typealias C = CategoryRepository
     @Published var categoryCount    : RepositoryLoadDataCount<C> = .init()
@@ -51,7 +54,8 @@ class RepositoryViewModel: ObservableObject {
     @Published var payeeDict  : RepositoryLoadDataDict<P> = .init()
     @Published var payeeOrder : RepositoryLoadDataOrder<P> = .init(expr: [P.col_name])
     @Published var payeeUsed  : RepositoryLoadDataUsed<P> = .init()
-    @Published var payeeList  : RepositoryLoadList<P> = .init()
+    @Published var payeeData  : RepositoryLoadData<P> = .init()
+    @Published var payeeGroup : PayeeGroup = .init()
 
     typealias T = TransactionRepository
     static let T_table: SQLite.Table = T.table.filter(T.col_deletedTime == "")
@@ -96,49 +100,49 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func loadList<RepositoryType>(_ list: RepositoryLoadList<RepositoryType>) async {
+    func loadData<RepositoryType>(_ list: RepositoryLoadData<RepositoryType>) async {
         if list.type == U.self {
-            async let _ = loadCurrencyList()
+            async let _ = loadCurrencyData()
         } else if list.type == A.self {
-            async let _ = loadAccountList()
+            async let _ = loadAccountData()
         } else if list.type == E.self {
-            async let _ = loadAssetList()
+            async let _ = loadAssetData()
         } else if list.type == S.self {
-            async let _ = loadStockList()
+            async let _ = loadStockData()
         } else if list.type == P.self {
-            async let _ = loadPayeeList()
+            async let _ = loadPayeeData()
         }
     }
 
-    func unloadList<RepositoryType>(_ list: RepositoryLoadList<RepositoryType>) {
+    func unloadData<RepositoryType>(_ list: RepositoryLoadData<RepositoryType>) {
         if list.type == U.self {
-            unloadCurrencyList()
+            unloadCurrencyData()
         } else if list.type == A.self {
-            unloadAccountList()
+            unloadAccountData()
         } else if list.type == E.self {
-            unloadAssetList()
+            unloadAssetData()
         } else if list.type == S.self {
-            unloadStockList()
+            unloadStockData()
         } else if list.type == P.self {
-            unloadPayeeList()
+            unloadPayeeData()
         }
     }
 
     func loadAll() async {
         async let _ = loadManage()
-        async let _ = loadCurrencyList()
-        async let _ = loadAccountList()
-        async let _ = loadAssetList()
-        async let _ = loadStockList()
-        async let _ = loadPayeeList()
+        async let _ = loadCurrencyData()
+        async let _ = loadAccountData()
+        async let _ = loadAssetData()
+        async let _ = loadStockData()
+        async let _ = loadPayeeData()
     }
 
     func unloadAll() {
         unloadManege()
-        unloadCurrencyList()
-        unloadAccountList()
-        unloadAssetList()
-        unloadStockList()
-        unloadPayeeList()
+        unloadCurrencyData()
+        unloadAccountData()
+        unloadAssetData()
+        unloadStockData()
+        unloadPayeeData()
     }
 }

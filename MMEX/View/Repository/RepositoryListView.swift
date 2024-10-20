@@ -20,7 +20,7 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    var vmList: RepositoryLoadList<RepositoryType>
+    var vmData: RepositoryLoadData<RepositoryType>
     var vmDict: RepositoryLoadDataDict<RepositoryType>
 
     @ObservedObject var oldvm: OldRepositoryViewModel
@@ -142,7 +142,7 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
             await load()
         } }
         .refreshable {
-            vm.unloadList(vmList)
+            vm.unloadData(vmData)
             oldvm.unloadData()
             await load()
         }
@@ -153,7 +153,7 @@ where RepositoryType.RepositoryData == OldRepositoryViewModel.RepositoryData
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
-        await vm.loadList(vmList)
+        await vm.loadData(vmData)
         await oldvm.loadData(env: env)
         oldvm.loadGroup(env: env, group: groupChoice)
         oldvm.searchGroup()

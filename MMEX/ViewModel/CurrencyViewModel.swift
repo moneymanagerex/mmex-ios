@@ -7,21 +7,43 @@
 
 import SwiftUI
 
+enum CurrencyGroupChoice: String, RepositoryGroupChoiceProtocol {
+    case all      = "All"
+    case used     = "Used"
+    static let defaultValue = Self.all
+    static let isSingleton: Set<Self> = [.all]
+}
+
+struct CurrencyGroup: RepositoryLoadGroupProtocol {
+    typealias GroupChoice = CurrencyGroupChoice
+    
+    var choice: GroupChoice = .defaultValue
+    var state: RepositoryLoadState<RepositoryGroup> = .init()
+}
+
 extension RepositoryViewModel {
-    func loadCurrencyList() async {
+    func loadCurrencyData() async {
+        log.trace("DEBUG: RepositoryViewModel.loadCurrencyData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.currencyDict)
             load(queue: &queue, keyPath: \Self.currencyOrder)
             load(queue: &queue, keyPath: \Self.currencyUsed)
             return await allOk(queue: queue)
         }
-        currencyList.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        currencyData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        if queueOk {
+            log.info("INFO: RepositoryViewModel.loadCurrencyData(main=\(Thread.isMainThread)): Ready.")
+        } else {
+            log.debug("ERROR: RepositoryViewModel.loadCurrencyData(main=\(Thread.isMainThread)): Cannot load data.")
+            return
+        }
     }
 
-    func unloadCurrencyList() {
+    func unloadCurrencyData() {
+        log.trace("DEBUG: RepositoryViewModel.unloadCurrencyData(main=\(Thread.isMainThread))")
         currencyDict.unload()
         currencyOrder.unload()
         currencyUsed.unload()
-        currencyList.state = .idle
+        currencyData.state = .idle
     }
 }

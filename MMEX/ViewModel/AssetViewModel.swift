@@ -7,21 +7,43 @@
 
 import SwiftUI
 
+enum AssetGroupChoice: String, RepositoryGroupChoiceProtocol {
+    case all      = "All"
+    case used     = "Used"
+    static let defaultValue = Self.all
+    static let isSingleton: Set<Self> = [.all]
+}
+
+struct AssetGroup: RepositoryLoadGroupProtocol {
+    typealias GroupChoice = AssetGroupChoice
+    
+    var choice: GroupChoice = .defaultValue
+    var state: RepositoryLoadState<RepositoryGroup> = .init()
+}
+
 extension RepositoryViewModel {
-    func loadAssetList() async {
+    func loadAssetData() async {
+        log.trace("DEBUG: RepositoryViewModel.loadAssetData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.assetDict)
             load(queue: &queue, keyPath: \Self.assetOrder)
             load(queue: &queue, keyPath: \Self.assetUsed)
             return await allOk(queue: queue)
         }
-        assetList.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        assetData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        if queueOk {
+            log.info("INFO: RepositoryViewModel.loadAssetData(main=\(Thread.isMainThread)): Ready.")
+        } else {
+            log.debug("ERROR: RepositoryViewModel.loadAssetData(main=\(Thread.isMainThread)): Cannot load data.")
+            return
+        }
     }
 
-    func unloadAssetList() {
+    func unloadAssetData() {
+        log.trace("DEBUG: RepositoryViewModel.unloadAssetData(main=\(Thread.isMainThread))")
         assetDict.unload()
         assetOrder.unload()
         assetUsed.unload()
-        assetList.state = .idle
+        assetData.state = .idle
     }
 }

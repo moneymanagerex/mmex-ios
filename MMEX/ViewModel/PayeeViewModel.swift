@@ -7,21 +7,43 @@
 
 import SwiftUI
 
+enum PayeeGroupChoice: String, RepositoryGroupChoiceProtocol {
+    case all      = "All"
+    case used     = "Used"
+    static let defaultValue = Self.all
+    static let isSingleton: Set<Self> = [.all]
+}
+
+struct PayeeGroup: RepositoryLoadGroupProtocol {
+    typealias GroupChoice = PayeeGroupChoice
+    
+    var choice: GroupChoice = .defaultValue
+    var state: RepositoryLoadState<RepositoryGroup> = .init()
+}
+
 extension RepositoryViewModel {
-    func loadPayeeList() async {
+    func loadPayeeData() async {
+        log.trace("DEBUG: RepositoryViewModel.loadPayeeData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.payeeDict)
             load(queue: &queue, keyPath: \Self.payeeOrder)
             load(queue: &queue, keyPath: \Self.payeeUsed)
             return await allOk(queue: queue)
         }
-        payeeList.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        payeeData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        if queueOk {
+            log.info("INFO: RepositoryViewModel.loadPayeeData(main=\(Thread.isMainThread)): Ready.")
+        } else {
+            log.debug("ERROR: RepositoryViewModel.loadPayeeData(main=\(Thread.isMainThread)): Cannot load data.")
+            return
+        }
     }
 
-    func unloadPayeeList() {
+    func unloadPayeeData() {
+        log.trace("DEBUG: RepositoryViewModel.unloadPayeeData(main=\(Thread.isMainThread))")
         payeeDict.unload()
         payeeOrder.unload()
         payeeUsed.unload()
-        payeeList.state = .idle
+        payeeData.state = .idle
     }
 }

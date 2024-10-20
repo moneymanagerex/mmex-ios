@@ -56,7 +56,6 @@
 		924353092CC4A2590052E4BC /* RepositoryLoadGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353082CC4A2590052E4BC /* RepositoryLoadGroup.swift */; };
 		9243530F2CC516B70052E4BC /* RepositoryLoadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243530D2CC516B70052E4BC /* RepositoryLoadData.swift */; };
 		924353102CC516B70052E4BC /* RepositoryLoadProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243530E2CC516B70052E4BC /* RepositoryLoadProtocol.swift */; };
-		924353122CC5170A0052E4BC /* RepositoryLoadList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353112CC5170A0052E4BC /* RepositoryLoadList.swift */; };
 		924353152CC51F590052E4BC /* AssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353142CC51F590052E4BC /* AssetViewModel.swift */; };
 		924353172CC51F8E0052E4BC /* StockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353162CC51F8E0052E4BC /* StockViewModel.swift */; };
 		924353192CC51FA00052E4BC /* PayeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353182CC51FA00052E4BC /* PayeeViewModel.swift */; };
@@ -187,7 +186,6 @@
 		924353082CC4A2590052E4BC /* RepositoryLoadGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryLoadGroup.swift; sourceTree = "<group>"; };
 		9243530D2CC516B70052E4BC /* RepositoryLoadData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryLoadData.swift; sourceTree = "<group>"; };
 		9243530E2CC516B70052E4BC /* RepositoryLoadProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryLoadProtocol.swift; sourceTree = "<group>"; };
-		924353112CC5170A0052E4BC /* RepositoryLoadList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryLoadList.swift; sourceTree = "<group>"; };
 		924353142CC51F590052E4BC /* AssetViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetViewModel.swift; sourceTree = "<group>"; };
 		924353162CC51F8E0052E4BC /* StockViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockViewModel.swift; sourceTree = "<group>"; };
 		924353182CC51FA00052E4BC /* PayeeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayeeViewModel.swift; sourceTree = "<group>"; };
@@ -363,7 +361,6 @@
 				9243530E2CC516B70052E4BC /* RepositoryLoadProtocol.swift */,
 				9243530D2CC516B70052E4BC /* RepositoryLoadData.swift */,
 				924353082CC4A2590052E4BC /* RepositoryLoadGroup.swift */,
-				924353112CC5170A0052E4BC /* RepositoryLoadList.swift */,
 			);
 			path = RepositoryLoad;
 			sourceTree = "<group>";
@@ -740,7 +737,6 @@
 				A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */,
 				924352E02CA9CC5A0052E4BC /* InsightsAccountView.swift in Sources */,
 				929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */,
-				924353122CC5170A0052E4BC /* RepositoryLoadList.swift in Sources */,
 				920823FE2CA4A3F700388AB2 /* TagData.swift in Sources */,
 				A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */,
 				920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */,

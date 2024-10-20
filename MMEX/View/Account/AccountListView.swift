@@ -13,13 +13,17 @@ struct AccountListView: View {
     @ObservedObject var vm: RepositoryViewModel
     @ObservedObject var oldvm: AccountViewModel
 
-    @State var group: RepositoryLoadGroup<AccountGroupChoice> = .init()
     @State var search: AccountSearch = .init()
+
+    static let newData = AccountData(
+        status       : .open,
+        favoriteAcct : .boolTrue
+    )
 
     var body: some View {
         RepositoryListView(
             vm: vm,
-            vmList: vm.accountList,
+            vmData: vm.accountData,
             vmDict: vm.accountDict,
 
             oldvm: oldvm,

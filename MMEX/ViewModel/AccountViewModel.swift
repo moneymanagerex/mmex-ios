@@ -18,6 +18,80 @@ enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
     static let isSingleton: Set<Self> = [.all]
 }
 
+struct AccountGroup: RepositoryLoadGroupProtocol {
+    typealias GroupChoice = AccountGroupChoice
+
+    var choice: GroupChoice = .defaultValue
+    var state: RepositoryLoadState<RepositoryGroup> = .init()
+
+    static let groupUsed: [Bool] = [
+        true, false
+    ]
+
+    static let groupFavorite: [AccountFavorite] = [
+        .boolTrue, .boolFalse
+    ]
+
+    static let groupType: [AccountType] = [
+        .checking, .creditCard, .cash, .loan, .term, .asset, .shares, .investment
+    ]
+
+    var groupCurrency: [DataId] = []
+
+    static let groupStatus: [AccountStatus] = [
+        .open, .closed
+    ]
+}
+
+extension RepositoryViewModel {
+    /*
+    func loadAccountGroup(env: EnvironmentManager, choice: AccountGroupChoice) -> Bool {
+        log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue)): main=\(Thread.isMainThread)")
+        guard accountList.state == .ready && groupState != .loading else { return }
+        groupState = .loading
+        self.groupChoice = group
+        groupCurrency = []
+        groupDataId = []
+        groupIsVisible.removeAll(keepingCapacity: true)
+        groupIsExpanded.removeAll(keepingCapacity: true)
+        switch group {
+        case .all:
+            addGroup(dataId, true, true)
+        case .used:
+            let dict = Dictionary(grouping: dataId) { usedId.contains($0) }
+            for g in Self.groupUsed {
+                addGroup(dict[g] ?? [], true, g)
+            }
+        case .favorite:
+            let dict = Dictionary(grouping: dataId) { dataById[$0]!.favoriteAcct }
+            for g in Self.groupFavorite {
+                addGroup(dict[g] ?? [], true, g == .boolTrue)
+            }
+        case .type:
+            let dict = Dictionary(grouping: dataId) { dataById[$0]!.type }
+            for g in Self.groupType {
+                addGroup(dict[g] ?? [], dict[g] != nil, true)
+            }
+        case .currency:
+            let dict = Dictionary(grouping: dataId) { dataById[$0]!.currencyId }
+            groupCurrency = env.currencyCache.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
+            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            for g in groupCurrency {
+                addGroup(dict[g] ?? [], dict[g] != nil, true)
+            }
+        case .status:
+            let dict = Dictionary(grouping: dataId) { dataById[$0]!.status }
+            for g in Self.groupStatus {
+                addGroup(dict[g] ?? [], true, g == .open)
+            }
+        }
+        groupState = .ready
+        return true
+    }
+     */
+}
+
 struct AccountSearch: RepositorySearchProtocol {
     var area: [RepositorySearchArea<AccountData>] = [
         ("Name",  true,  [ {$0.name} ]),
@@ -28,27 +102,29 @@ struct AccountSearch: RepositorySearchProtocol {
 }
 
 extension RepositoryViewModel {
-    func loadAccountList() async {
+    func loadAccountData() async {
+        log.trace("DEBUG: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.accountDict)
             load(queue: &queue, keyPath: \Self.accountOrder)
             load(queue: &queue, keyPath: \Self.accountUsed)
             return await allOk(queue: queue)
         }
-        await MainActor.run {
-            accountList.state = queueOk ? .ready(()) : .error("Cannot load data.")
-        }
-        log.debug("DEBUG: RepositoryViewModel.loadAccountList(): \(queueOk)")
-        if case .ready(_) = accountDict.state {
-            log.debug("DEBUG: RepositoryViewModel.loadAccountList(): dataById=.ready")
+        accountData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        if queueOk {
+            log.info("INFO: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread)): Ready.")
+        } else {
+            log.debug("ERROR: RepositoryViewModel.loadAccountData(main=\(Thread.isMainThread)): Cannot load data.")
+            return
         }
     }
 
-    func unloadAccountList() {
+    func unloadAccountData() {
+        log.trace("DEBUG: RepositoryViewModel.unloadAccountData(main=\(Thread.isMainThread))")
         accountDict.unload()
         accountOrder.unload()
         accountUsed.unload()
-        accountList.state = .idle
+        accountData.state = .idle
     }
 }
 
@@ -68,10 +144,10 @@ class AccountViewModel: OldRepositoryViewModelProtocol {
     @Published var groupChoice = AccountGroupChoice.defaultValue
     @Published var groupState: OldRepositoryLoadState = .idle
     @Published var groupDataId: [[DataId]] = []
-
-    @Published var search = AccountSearch()
     @Published var groupIsVisible  : [Bool] = []
     @Published var groupIsExpanded : [Bool] = []
+
+    @Published var search = AccountSearch()
 
     static let newData = AccountData(
         status       : .open,

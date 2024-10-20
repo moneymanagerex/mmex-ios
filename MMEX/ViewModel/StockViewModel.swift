@@ -7,21 +7,43 @@
 
 import SwiftUI
 
+enum StockGroupChoice: String, RepositoryGroupChoiceProtocol {
+    case all      = "All"
+    case used     = "Used"
+    static let defaultValue = Self.all
+    static let isSingleton: Set<Self> = [.all]
+}
+
+struct StockGroup: RepositoryLoadGroupProtocol {
+    typealias GroupChoice = StockGroupChoice
+    
+    var choice: GroupChoice = .defaultValue
+    var state: RepositoryLoadState<RepositoryGroup> = .init()
+}
+
 extension RepositoryViewModel {
-    func loadStockList() async {
+    func loadStockData() async {
+        log.trace("DEBUG: RepositoryViewModel.loadStockData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.stockDict)
             load(queue: &queue, keyPath: \Self.stockOrder)
             load(queue: &queue, keyPath: \Self.stockUsed)
             return await allOk(queue: queue)
         }
-        stockList.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        stockData.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        if queueOk {
+            log.info("INFO: RepositoryViewModel.loadStockData(main=\(Thread.isMainThread)): Ready.")
+        } else {
+            log.debug("ERROR: RepositoryViewModel.loadStockData(main=\(Thread.isMainThread)): Cannot load data.")
+            return
+        }
     }
 
-    func unloadStockList() {
+    func unloadStockData() {
+        log.trace("DEBUG: RepositoryViewModel.unloadStockData(main=\(Thread.isMainThread))")
         stockDict.unload()
         stockOrder.unload()
         stockUsed.unload()
-        stockList.state = .idle
+        stockData.state = .idle
     }
 }
