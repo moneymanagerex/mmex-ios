@@ -10,7 +10,7 @@ import SwiftUI
 struct ManageView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
-    @ObservedObject var expViewModel: ExpRepositoryViewModel
+    @ObservedObject var vm: RepositoryViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
@@ -21,45 +21,46 @@ struct ManageView: View {
                 NavigationLink(destination: CurrencyListView()) {
                     env.theme.group.manageItem(
                         name: { Text(CurrencyData.dataName.1) },
-                        count: expViewModel.currencyCount.state
+                        count: vm.currencyCount.state
                     )
                 }
                 NavigationLink(destination: AccountListView(
-                    vm: AccountViewModel().preloaded(env: env, group: AccountGroup.defaultValue)
+                    vm: vm,
+                    oldvm: AccountViewModel().preloaded(env: env, group: AccountGroupChoice.defaultValue)
                 ) ) {
                     env.theme.group.manageItem(
                         name: { Text(AccountData.dataName.1) },
-                        count: expViewModel.accountCount.state
+                        count: vm.accountCount.state
                     )
                 }
                 NavigationLink(destination: AssetListView()) {
                     env.theme.group.manageItem(
                         name: { Text(AssetData.dataName.1) },
-                        count: expViewModel.assetCount.state
+                        count: vm.assetCount.state
                     )
                 }
                 NavigationLink(destination: StockListView()) {
                     env.theme.group.manageItem(
                         name: { Text(StockData.dataName.1) },
-                        count: expViewModel.stockCount.state
+                        count: vm.stockCount.state
                     )
                 }
                 NavigationLink(destination: CategoryListView()) {
                     env.theme.group.manageItem(
                         name: { Text(CategoryData.dataName.1) },
-                        count: expViewModel.categoryCount.state
+                        count: vm.categoryCount.state
                     )
                 }
                 NavigationLink(destination: PayeeListView()) {
                     env.theme.group.manageItem(
                         name: { Text(PayeeData.dataName.1) },
-                        count: expViewModel.payeeCount.state
+                        count: vm.payeeCount.state
                     )
                 }
                 NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(TransactionData.dataName.1) },
-                        count: expViewModel.transactionCount.state
+                        count: vm.transactionCount.state
                     )
                 }
             }
@@ -115,7 +116,7 @@ struct ManageView: View {
         }
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .task {
-            await expViewModel.loadManage()
+            await vm.loadManage()
         }
     }
 }
@@ -123,7 +124,7 @@ struct ManageView: View {
 #Preview {
     ManageView(
         viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
-        expViewModel: ExpRepositoryViewModel(env: EnvironmentManager.sampleData),
+        vm: RepositoryViewModel(env: EnvironmentManager.sampleData),
         isDocumentPickerPresented: .constant(false),
         isNewDocumentPickerPresented: .constant(false),
         isSampleDocument: .constant(false)

@@ -10,21 +10,34 @@ import SwiftUI
 
 struct AccountListView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: AccountViewModel
+    @ObservedObject var vm: RepositoryViewModel
+    @ObservedObject var oldvm: AccountViewModel
+
+    @State var search: AccountSearch = .init()
+
+    static let newData = AccountData(
+        status       : .open,
+        favoriteAcct : .boolTrue
+    )
 
     var body: some View {
         RepositoryListView(
             vm: vm,
-            group: vm.group,
+            vmData: vm.accountData,
+            vmDict: vm.accountDict,
+            vmGroup: $vm.accountGroup,
+
+            oldvm: oldvm,
+            groupChoice: oldvm.groupChoice,
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
             detailView: { data in AccountDetailView(
-                vm: vm,
+                vm: oldvm,
                 data: data
             ) },
             addView: { $isPresented in AccountAddView(
-                vm: vm,
+                vm: oldvm,
                 isPresented: $isPresented
             ) }
         )
@@ -35,11 +48,13 @@ struct AccountListView: View {
 
     func groupName(_ groupId: Int) -> some View {
         Group {
-            switch vm.group {
+            switch vm.accountGroup.choice {
             case .all:
                 Text("All")
             case .used:
                 Text(AccountViewModel.groupUsed[groupId] ? "Used" : "Other")
+            case .favorite:
+                Text(AccountViewModel.groupFavorite[groupId] == .boolTrue ? "Favorite" : "Other")
             case .type:
                 HStack {
                     Image(systemName: AccountViewModel.groupType[groupId].symbolName)
@@ -51,11 +66,9 @@ struct AccountListView: View {
                     //.padding(.leading)
                 }
             case .currency:
-                Text(env.currencyCache[vm.groupCurrency[groupId]]?.name ?? "ERROR: unknown currency")
+                Text(env.currencyCache[vm.accountGroup.groupCurrency[groupId]]?.name ?? "ERROR: unknown currency")
             case .status:
                 Text(AccountViewModel.groupStatus[groupId].rawValue)
-            case .favorite:
-                Text(AccountViewModel.groupFavorite[groupId] == .boolTrue ? "Favorite" : "Other")
             }
         }
     }
@@ -66,7 +79,7 @@ struct AccountListView: View {
 
     func itemInfo(_ data: AccountData) -> some View {
         Group {
-            if vm.group == .type {
+            if vm.accountGroup.choice == .type {
                 if let currency = env.currencyCache[data.currencyId] {
                     Text(currency.name)
                 }
@@ -78,8 +91,10 @@ struct AccountListView: View {
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     AccountListView(
-        vm: AccountViewModel()
+        vm: RepositoryViewModel(env: env),
+        oldvm: AccountViewModel()
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
