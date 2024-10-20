@@ -25,6 +25,17 @@ struct StockGroup: RepositoryLoadGroupProtocol {
 }
 
 extension RepositoryViewModel {
+    func unloadStockGroup() -> Bool? {
+        log.trace("DEBUG: RepositoryViewModel.unloadStockGroup(main=\(Thread.isMainThread))")
+        if case .loading = stockGroup.state { return nil }
+        stockGroup.state = .idle
+        stockGroup.isVisible  = []
+        stockGroup.isExpanded = []
+        return true
+    }
+}
+
+extension RepositoryViewModel {
     func loadStockData() async {
         log.trace("DEBUG: RepositoryViewModel.loadStockData(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in

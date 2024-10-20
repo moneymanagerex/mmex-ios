@@ -100,6 +100,15 @@ extension RepositoryViewModel {
         accountGroup.state = .ready(group.dataId)
         return true
     }
+
+    func unloadAccountGroup() -> Bool? {
+        log.trace("DEBUG: RepositoryViewModel.unloadAccountGroup(main=\(Thread.isMainThread))")
+        if case .loading = accountGroup.state { return nil }
+        accountGroup.state = .idle
+        accountGroup.isVisible  = []
+        accountGroup.isExpanded = []
+        return true
+    }
 }
 
 struct AccountSearch: RepositorySearchProtocol {

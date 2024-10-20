@@ -121,16 +121,26 @@ extension RepositoryViewModel {
     ) where GroupChoiceType == GroupType.GroupChoiceType
     {
         if GroupType.RepositoryType.self == U.self {
-//            let _ = loadCurrencyGroup(env: env)
+//            let _ = loadCurrencyGroup(env: env, choice: choice as! CurrencyGroupChoice)
         } else if GroupType.RepositoryType.self == A.self {
             let _ = loadAccountGroup(env: env, choice: choice as! AccountGroupChoice)
         } else if GroupType.RepositoryType.self == E.self {
-//            let _ = loadAssetGroup()
+//            let _ = loadAssetGroup(env: env, choice: choice as! AssetGroupChoice)
         } else if GroupType.RepositoryType.self == S.self {
-//            let _ = loadStockGroup()
+//            let _ = loadStockGroup(env: env, choice: choice as! StockGroupChoice)
         } else if GroupType.RepositoryType.self == P.self {
-//            let _ = loadPayeeGroup()
+//            let _ = loadPayeeGroup(env: env, choice: choice as! PayeeGroupChoice)
         }
+    }
+
+    func unloadGroup<GroupType: RepositoryLoadGroupProtocol>(
+        for group: GroupType
+    ) {
+        /**/ if GroupType.RepositoryType.self == U.self { let _ = unloadCurrencyGroup() }
+        else if GroupType.RepositoryType.self == A.self { let _ = unloadAccountGroup() }
+        else if GroupType.RepositoryType.self == E.self { let _ = unloadAssetGroup() }
+        else if GroupType.RepositoryType.self == S.self { let _ = unloadStockGroup() }
+        else if GroupType.RepositoryType.self == P.self { let _ = unloadPayeeGroup() }
     }
 
     func loadAll() async {

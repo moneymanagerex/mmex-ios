@@ -49,7 +49,7 @@
 		924352F52CB1C1400052E4BC /* GroupTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352F42CB1C1400052E4BC /* GroupTheme.swift */; };
 		924352FA2CB355CF0052E4BC /* SettingsThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352F92CB355CF0052E4BC /* SettingsThemeView.swift */; };
 		924352FC2CB6F5D40052E4BC /* RepositoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352FB2CB6F5D40052E4BC /* RepositoryListView.swift */; };
-		924352FF2CB99F1D0052E4BC /* OldRepositoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352FE2CB99F1D0052E4BC /* OldRepositoryViewModel.swift */; };
+		924352FF2CB99F1D0052E4BC /* RepositorySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924352FE2CB99F1D0052E4BC /* RepositorySearch.swift */; };
 		924353012CBA06210052E4BC /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353002CBA06210052E4BC /* AccountViewModel.swift */; };
 		924353032CBB2AB90052E4BC /* ItemTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353022CBB2AB90052E4BC /* ItemTheme.swift */; };
 		924353052CC3B2E30052E4BC /* RepositoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353042CC3B2E30052E4BC /* RepositoryViewModel.swift */; };
@@ -179,7 +179,7 @@
 		924352F42CB1C1400052E4BC /* GroupTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTheme.swift; sourceTree = "<group>"; };
 		924352F92CB355CF0052E4BC /* SettingsThemeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsThemeView.swift; sourceTree = "<group>"; };
 		924352FB2CB6F5D40052E4BC /* RepositoryListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryListView.swift; sourceTree = "<group>"; };
-		924352FE2CB99F1D0052E4BC /* OldRepositoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldRepositoryViewModel.swift; sourceTree = "<group>"; };
+		924352FE2CB99F1D0052E4BC /* RepositorySearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositorySearch.swift; sourceTree = "<group>"; };
 		924353002CBA06210052E4BC /* AccountViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		924353022CBB2AB90052E4BC /* ItemTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTheme.swift; sourceTree = "<group>"; };
 		924353042CC3B2E30052E4BC /* RepositoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryViewModel.swift; sourceTree = "<group>"; };
@@ -391,6 +391,7 @@
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
 				A350BDC02CA26415006669D5 /* TransactionViewModel.swift */,
 				924353132CC5181D0052E4BC /* RepositoryLoad */,
+				924352FE2CB99F1D0052E4BC /* RepositorySearch.swift */,
 				924353042CC3B2E30052E4BC /* RepositoryViewModel.swift */,
 				9243531C2CC5201C0052E4BC /* ManageViewModel.swift */,
 				9243531A2CC51FB10052E4BC /* CurrencyViewModel.swift */,
@@ -398,7 +399,6 @@
 				924353142CC51F590052E4BC /* AssetViewModel.swift */,
 				924353162CC51F8E0052E4BC /* StockViewModel.swift */,
 				924353182CC51FA00052E4BC /* PayeeViewModel.swift */,
-				924352FE2CB99F1D0052E4BC /* OldRepositoryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -788,7 +788,7 @@
 				924353092CC4A2590052E4BC /* RepositoryLoadGroup.swift in Sources */,
 				924353152CC51F590052E4BC /* AssetViewModel.swift in Sources */,
 				924353052CC3B2E30052E4BC /* RepositoryViewModel.swift in Sources */,
-				924352FF2CB99F1D0052E4BC /* OldRepositoryViewModel.swift in Sources */,
+				924352FF2CB99F1D0052E4BC /* RepositorySearch.swift in Sources */,
 				929EF66D2CA0BA5E0051A3E6 /* ScheduledData.swift in Sources */,
 				920824022CA4AD0C00388AB2 /* TransactionSplitData.swift in Sources */,
 				924353172CC51F8E0052E4BC /* StockViewModel.swift in Sources */,

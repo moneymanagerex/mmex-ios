@@ -1,27 +1,11 @@
 //
-//  RepositoryViewModel.swift
+//  RepositorySearch.swift
 //  MMEX
 //
-//  2024-10-11: Created by George Ef (george.a.ef@gmail.com)
+//  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
-
-enum OldRepositoryLoadState: Int, Identifiable, Equatable {
-    case error
-    case idle
-    case loading
-    case ready
-    var id: Self { self }
-}
-
-struct OldRepositoryGroup<GroupChoice: RepositoryGroupChoiceProtocol> {
-    var state: OldRepositoryLoadState = .idle
-    var groupChoice     : GroupChoice = GroupChoice.defaultValue
-    var groupDataId     : [[DataId]]  = []
-    var groupIsVisible  : [Bool]      = []
-    var groupIsExpanded : [Bool]      = []
-}
 
 typealias RepositorySearchArea<RepositoryData: DataProtocol> = (
     name: String,
@@ -52,6 +36,24 @@ extension RepositorySearchProtocol {
         }
         return false
     }
+}
+
+// OLD
+
+enum OldRepositoryLoadState: Int, Identifiable, Equatable {
+    case error
+    case idle
+    case loading
+    case ready
+    var id: Self { self }
+}
+
+struct OldRepositoryGroup<GroupChoice: RepositoryGroupChoiceProtocol> {
+    var state: OldRepositoryLoadState = .idle
+    var groupChoice     : GroupChoice = GroupChoice.defaultValue
+    var groupDataId     : [[DataId]]  = []
+    var groupIsVisible  : [Bool]      = []
+    var groupIsExpanded : [Bool]      = []
 }
 
 @MainActor
