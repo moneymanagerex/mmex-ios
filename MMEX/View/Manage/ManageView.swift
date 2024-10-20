@@ -24,10 +24,7 @@ struct ManageView: View {
                         count: vm.currencyCount.state
                     )
                 }
-                NavigationLink(destination: AccountListView(
-                    vm: vm,
-                    oldvm: AccountViewModel().preloaded(env: env, group: AccountGroupChoice.defaultValue)
-                ) ) {
+                NavigationLink(destination: AccountListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(AccountData.dataName.1) },
                         count: vm.accountCount.state

@@ -9,13 +9,12 @@ import SwiftUI
 
 struct RepositoryListView<
     RepositoryType: RepositoryProtocol, GroupType: RepositoryLoadGroupProtocol,
-    OldRepositoryViewModel : OldRepositoryViewModelProtocol,
+    SearchType: RepositorySearchProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
     DetailView: View, InsertView: View
 >: View
 where GroupType.RepositoryType == RepositoryType,
-      OldRepositoryViewModel.RepositoryData == RepositoryType.RepositoryData,
-      OldRepositoryViewModel.GroupChoiceType == GroupType.GroupChoiceType
+      SearchType.RepositoryData == RepositoryType.RepositoryData
 {
     typealias RepositoryData  = RepositoryType.RepositoryData
     typealias GroupChoiceType = GroupType.GroupChoiceType
@@ -24,10 +23,9 @@ where GroupType.RepositoryType == RepositoryType,
     @ObservedObject var vm: RepositoryViewModel
     var vmData: RepositoryLoadData<RepositoryType>
     var vmDict: RepositoryLoadDataDict<RepositoryType>
-    @Binding var vmGroup: GroupType
-
-    @ObservedObject var oldvm: OldRepositoryViewModel
     @State var groupChoice: GroupChoiceType
+    @Binding var vmGroup: GroupType
+    @Binding var search: SearchType
     @ViewBuilder var groupName: (_ groupId: Int) -> GroupNameView
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
@@ -51,8 +49,7 @@ where GroupType.RepositoryType == RepositoryType,
                 .pickerStyle(MenuPickerStyle())
                 .onChange(of: groupChoice) {
                     vm.loadGroup(for: vmGroup, groupChoice)
-                    oldvm.loadGroup(env: env, group: groupChoice)
-                    oldvm.searchGroup()
+                    vm.searchGroup(for: vmGroup, search: search)
                 }
                 .padding(.vertical, -5)
                 //.padding(.trailing, 50)
@@ -64,7 +61,7 @@ where GroupType.RepositoryType == RepositoryType,
                 //.border(.red)
                 HStack {
                     NavigationLink(
-                        destination: RepositorySearchAreaView(area: $oldvm.search.area)
+                        destination: RepositorySearchAreaView(area: $search.area)
                     ) {
                         Text("Search area")
                             .font(.subheadline)
@@ -118,10 +115,10 @@ where GroupType.RepositoryType == RepositoryType,
             )
             .accessibilityLabel("New " + RepositoryData.dataName.0)
         }
-        .searchable(text: $oldvm.search.key, prompt: oldvm.search.prompt)
+        .searchable(text: $search.key, prompt: search.prompt)
         .textInputAutocapitalization(.never)
-        .onChange(of: oldvm.search.key) { _, newValue in
-            oldvm.searchGroup(expand: true)
+        .onChange(of: search.key) { _, newValue in
+            vm.searchGroup(for: vmGroup, search: search, expand: true)
         }
         .navigationTitle(RepositoryData.dataName.1)
         .onAppear { Task {
@@ -131,7 +128,6 @@ where GroupType.RepositoryType == RepositoryType,
         } }
         .refreshable {
             vm.unloadData(for: vmData)
-            oldvm.unloadData()
             await load()
         }
         .sheet(isPresented: $addIsPresented) {
@@ -140,13 +136,10 @@ where GroupType.RepositoryType == RepositoryType,
     }
 
     private func load() async {
-        log.trace("DEBUG: RepositoryListView.load(): main=\(Thread.isMainThread)")
+        log.trace("DEBUG: RepositoryListView.load(main=\(Thread.isMainThread))")
         await vm.loadData(for: vmData)
         vm.loadGroup(for: vmGroup, groupChoice)
-        await oldvm.loadData(env: env)
-        oldvm.loadGroup(env: env, group: groupChoice)
-        oldvm.searchGroup()
-        log.trace("INFO: RepositoryListView.load(): \(oldvm.dataState.rawValue), \(oldvm.groupState.rawValue)")
+        vm.searchGroup(for: vmGroup, search: search)
     }
 
     func groupView(_ g: Int) -> some View { Group { if case let .ready(dataId) = vmGroup.state {
@@ -170,8 +163,11 @@ where GroupType.RepositoryType == RepositoryType,
                 ForEach(dataId[g], id: \.self) { id in
                     //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
                     // TODO: update View after change in account
-                    if /* oldvm.dataIsVisible(id), */ case let .ready(dataDict) = vmDict.state {
-                        itemView(dataDict[id]!)
+                    if case let .ready(dataDict) = vmDict.state,
+                       let data = dataDict[id],
+                       search.match(data)
+                    {
+                        itemView(data)
                     }
                     
                 }
@@ -220,8 +216,7 @@ struct RepositorySearchAreaView<RepositoryData: DataProtocol>: View {
 #Preview("Account") {
     let env = EnvironmentManager.sampleData
     AccountListView(
-        vm: RepositoryViewModel(env: env),
-        oldvm: AccountViewModel()
+        vm: RepositoryViewModel(env: env)
     )
     .environmentObject(env)
 }

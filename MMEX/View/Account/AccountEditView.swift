@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountEditView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @State var vm: AccountViewModel
+    @State var vm: RepositoryViewModel
     @Binding var data: AccountData
     @State var edit: Bool
     var onDelete: () -> Void = { }
@@ -43,9 +43,9 @@ struct AccountEditView: View {
                         if (data.currencyId <= 0) {
                             Text("Select Currency").tag(0 as DataId) // not set
                         }
-                        ForEach(vm.currencyName, id: \.0) { id, name in
-                            Text(name).tag(id)
-                        }
+                        //ForEach(vm.currencyName, id: \.0) { id, name in
+                        //    Text(name).tag(id)
+                        //}
                     }
                 } show: {
                     env.theme.field.valueOrError("Cannot be empty!", text: currency?.name)
@@ -169,7 +169,7 @@ struct AccountEditView: View {
                 }
             }
 
-            if !edit && !vm.usedId.contains(data.id) {
+            if !edit, case let .ready(used) = vm.accountUsed.state, !used.contains(data.id) {
                 Button("Delete Account") {
                     onDelete()
                 }
@@ -184,19 +184,21 @@ struct AccountEditView: View {
 }
 
 #Preview("\(AccountData.sampleData[0].name) (show)") {
+    let env = EnvironmentManager.sampleData
     AccountEditView(
-        vm: AccountViewModel(),
+        vm: RepositoryViewModel(env: env),
         data: .constant(AccountData.sampleData[0]),
         edit: false
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
 
 #Preview("\(AccountData.sampleData[0].name) (edit)") {
+    let env = EnvironmentManager.sampleData
     AccountEditView(
-        vm: AccountViewModel(),
+        vm: RepositoryViewModel(env: env),
         data: .constant(AccountData.sampleData[0]),
         edit: true
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

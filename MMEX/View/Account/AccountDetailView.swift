@@ -11,7 +11,7 @@ import SwiftUI
 struct AccountDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var env: EnvironmentManager
-    @State var vm: AccountViewModel
+    @State var vm: RepositoryViewModel
     @State var data: AccountData
 
     @State private var editAccount = AccountData()
@@ -109,25 +109,28 @@ struct AccountDetailView: View {
 }
 
 #Preview(AccountData.sampleData[0].name) {
+    let env = EnvironmentManager.sampleData
     AccountDetailView(
-        vm: AccountViewModel(),
+        vm: RepositoryViewModel(env: env),
         data: AccountData.sampleData[0]
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
 
 #Preview(AccountData.sampleData[1].name) {
+    let env = EnvironmentManager.sampleData
     AccountDetailView(
-        vm: AccountViewModel(),
+        vm: RepositoryViewModel(env: env),
         data: AccountData.sampleData[1]
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
 
 #Preview(AccountData.sampleData[2].name) {
+    let env = EnvironmentManager.sampleData
     AccountDetailView(
-        vm: AccountViewModel(),
+        vm: RepositoryViewModel(env: env),
         data: AccountData.sampleData[2]
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

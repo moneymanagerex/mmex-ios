@@ -115,24 +115,44 @@ extension RepositoryViewModel {
         else if RepositoryType.self == P.self { unloadPayeeData() }
     }
 
+    func loadAllData() async {
+        async let _ = loadManage()
+        async let _ = loadCurrencyData()
+        async let _ = loadAccountData()
+        async let _ = loadAssetData()
+        async let _ = loadStockData()
+        async let _ = loadPayeeData()
+    }
+
+    func unloadAllData() {
+        unloadManege()
+        unloadCurrencyData()
+        unloadAccountData()
+        unloadAssetData()
+        unloadStockData()
+        unloadPayeeData()
+    }
+}
+
+extension RepositoryViewModel {
     func loadGroup<GroupType: RepositoryLoadGroupProtocol, GroupChoiceType>(
         for group: GroupType,
         _ choice: GroupChoiceType
     ) where GroupChoiceType == GroupType.GroupChoiceType
     {
         if GroupType.RepositoryType.self == U.self {
-//            let _ = loadCurrencyGroup(env: env, choice: choice as! CurrencyGroupChoice)
+            //            let _ = loadCurrencyGroup(env: env, choice: choice as! CurrencyGroupChoice)
         } else if GroupType.RepositoryType.self == A.self {
             let _ = loadAccountGroup(env: env, choice: choice as! AccountGroupChoice)
         } else if GroupType.RepositoryType.self == E.self {
-//            let _ = loadAssetGroup(env: env, choice: choice as! AssetGroupChoice)
+            //            let _ = loadAssetGroup(env: env, choice: choice as! AssetGroupChoice)
         } else if GroupType.RepositoryType.self == S.self {
-//            let _ = loadStockGroup(env: env, choice: choice as! StockGroupChoice)
+            //            let _ = loadStockGroup(env: env, choice: choice as! StockGroupChoice)
         } else if GroupType.RepositoryType.self == P.self {
-//            let _ = loadPayeeGroup(env: env, choice: choice as! PayeeGroupChoice)
+            //            let _ = loadPayeeGroup(env: env, choice: choice as! PayeeGroupChoice)
         }
     }
-
+    
     func unloadGroup<GroupType: RepositoryLoadGroupProtocol>(
         for group: GroupType
     ) {
@@ -143,21 +163,38 @@ extension RepositoryViewModel {
         else if GroupType.RepositoryType.self == P.self { let _ = unloadPayeeGroup() }
     }
 
-    func loadAll() async {
-        async let _ = loadManage()
-        async let _ = loadCurrencyData()
-        async let _ = loadAccountData()
-        async let _ = loadAssetData()
-        async let _ = loadStockData()
-        async let _ = loadPayeeData()
+    func unloadAllGroup() {
+        let _ = unloadCurrencyGroup()
+        let _ = unloadAccountGroup()
+        let _ = unloadAssetGroup()
+        let _ = unloadStockGroup()
+        let _ = unloadPayeeGroup()
     }
 
     func unloadAll() {
-        unloadManege()
-        unloadCurrencyData()
-        unloadAccountData()
-        unloadAssetData()
-        unloadStockData()
-        unloadPayeeData()
+        unloadAllData()
+        unloadAllGroup()
     }
+}
+
+extension RepositoryViewModel {
+    func searchGroup<GroupType: RepositoryLoadGroupProtocol, SearchType: RepositorySearchProtocol>(
+        for group: GroupType,
+        search: SearchType,
+        expand: Bool = false
+    ) where GroupType.RepositoryType.RepositoryData == SearchType.RepositoryData
+    {
+        if GroupType.RepositoryType.self == U.self {
+//            let _ = searchCurrencyGroup(search: search as! CurrencySearch, expand: expand)
+        } else if GroupType.RepositoryType.self == A.self {
+            let _ = searchAccountGroup(search: search as! AccountSearch, expand: expand)
+        } else if GroupType.RepositoryType.self == E.self {
+//            let _ = searchAssetGroup(search: search as! AssetSearch, expand: expand)
+        } else if GroupType.RepositoryType.self == S.self {
+//            let _ = searchStockGroup(search: search as! StockSearch, expand: expand)
+        } else if GroupType.RepositoryType.self == P.self {
+//            let _ = searchPayeeGroup(search: search as! PayeeSearch, expand: expand)
+        }
+    }
+
 }
