@@ -42,7 +42,7 @@ struct ManageView: View {
                         count: vm.stockDataCount.state
                     )
                 }
-                NavigationLink(destination: CategoryListView()) {
+                NavigationLink(destination: CategoryListView(viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(CategoryData.dataName.1) },
                         count: vm.categoryDataCount.state

@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct CategoryListView: View {
-    @State private var categories: [CategoryData] = []
-    @State private var filteredCategories: [CategoryData] = []
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @ObservedObject var viewModel: TransactionViewModel
     
     @State private var isPresentingAddView = false
     @State private var newCategory = CategoryData()
@@ -18,12 +17,12 @@ struct CategoryListView: View {
     
     var body: some View {
         Group {
-            List($filteredCategories) { $category in
+            List($viewModel.filteredCategories) { $category in
                  NavigationLink(destination: CategoryDetailView(category: $category)) {
                      HStack {
-                         Text(category.name)
+                         Text(category.fullName(with: viewModel.categDelimiter))
                          Spacer()
-                         Text(category.isRoot ? "Root" : "Non Root")
+                         Text(category.isRoot ? String(localized: "Root") : String(localized: "Non Root"))
                     }
                 }
             }
@@ -33,55 +32,29 @@ struct CategoryListView: View {
                 }, label: {
                     Image(systemName: "plus")
                 })
-                .accessibilityLabel("New Category")
+                .accessibilityLabel(String(localized: "New Category"))
             }
-            .searchable(text: $searchQuery, prompt: "Search by name") // New: Search bar
+            .searchable(text: $searchQuery, prompt: String(localized: "Search by name")) // New: Search bar
             .onChange(of: searchQuery) { _, query in
-                filterCategories(by: query)
+                viewModel.filterCategories(by: query)
             }
         }
-        .navigationTitle("Categories")
+        .navigationTitle(String(localized: "Categories"))
         .onAppear {
-            loadCategories()
+            viewModel.loadCategories()
         }
         .sheet(isPresented: $isPresentingAddView) {
             CategoryAddView(
                 newCategory: $newCategory,
                 isPresentingAddView: $isPresentingAddView
             ) { newCategory in
-                addCategory(category: &newCategory)
+                viewModel.addCategory(category: &newCategory)
             }
-        }
-    }
-    
-    func loadCategories() {
-        DispatchQueue.global(qos: .background).async {
-            let loadedCategories = CategoryRepository(self.env)?.load() ?? []
-            DispatchQueue.main.async {
-                self.categories = loadedCategories
-                self.filteredCategories = loadedCategories
-            }
-        }
-    }
-
-    func addCategory(category: inout CategoryData) {
-        guard let repository = CategoryRepository(env) else { return }
-        if repository.insert(&category) {
-            self.categories.append(category)
-        }
-    }
-
-    // New: Filter based on the search query
-    func filterCategories(by query: String) {
-        if query.isEmpty {
-            filteredCategories = categories
-        } else {
-            filteredCategories = categories.filter { $0.name.localizedCaseInsensitiveContains(query) }
         }
     }
 }
 
 #Preview {
-    CategoryListView()
+    CategoryListView(viewModel: TransactionViewModel(env: EnvironmentManager.sampleData))
         .environmentObject(EnvironmentManager.sampleData)
 }

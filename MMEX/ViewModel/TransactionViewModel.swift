@@ -30,6 +30,7 @@ class TransactionViewModel: ObservableObject {
 
     @Published var categories: [CategoryData] = []
     @Published var categoryDict: [DataId: CategoryData] = [:] // for lookup
+    @Published var filteredCategories: [CategoryData] = []
 
     @Published var payees: [PayeeData] = []
     @Published var payeeDict: [DataId: PayeeData] = [:] // for lookup
@@ -151,6 +152,28 @@ class TransactionViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.categories = updatedCategories
                 self.categoryDict = loadedCategoryDict
+                self.filteredCategories = updatedCategories
+            }
+        }
+    }
+
+    func addCategory(category: inout CategoryData) {
+        guard let repository = CategoryRepository(env) else { return }
+        if repository.insert(&category) {
+            self.categories.append(category)
+        }
+    }
+
+    func filterCategories(by query: String) {
+        if query.isEmpty {
+            filteredCategories = categories
+        } else {
+            filteredCategories = categories.filter { $0.name.localizedCaseInsensitiveContains(query) }
+            filteredCategories = categories.filter { category in
+                category.name.localizedCaseInsensitiveContains(query) ||
+                category.parentCategories.contains { parent in
+                    parent.name.localizedCaseInsensitiveContains(query)
+                }
             }
         }
     }
