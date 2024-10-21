@@ -7,6 +7,9 @@
     "%@" : {
 
     },
+    "%@ " : {
+
+    },
     "%lf" : {
 
     },
@@ -60,9 +63,6 @@
 
     },
     "Advanced" : {
-
-    },
-    "All" : {
 
     },
     "All content provided by the app is owned by the app developers or its licensors. You are not allowed to copy, reproduce, or distribute any content without permission." : {
@@ -227,9 +227,6 @@
     "Facebook" : {
 
     },
-    "Favorite" : {
-
-    },
     "Field Layout" : {
 
     },
@@ -375,9 +372,6 @@
 
     },
     "Open Database" : {
-
-    },
-    "Other" : {
 
     },
     "Parent ID" : {

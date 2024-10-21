@@ -8,14 +8,19 @@
 import SwiftUI
 
 enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
-    case all      = "All"
-    case used     = "Used"
-    case favorite = "Favorite"
-    case type     = "Type"
-    case currency = "Currency"
-    case status   = "Status"
+    case all        = "All"
+    case used       = "Used"
+    case favorite   = "Favorite"
+    case type       = "Type"
+    case currency   = "Currency"
+    case status     = "Status"
+    case attachment = "Attachment"
     static let defaultValue = Self.all
+
     static let isSingleton: Set<Self> = [.all]
+    var shortName: String {
+        switch self { case .attachment: "Att."; default: rawValue }
+    }
 }
 
 struct AccountSearch: RepositorySearchProtocol {
@@ -29,10 +34,10 @@ struct AccountSearch: RepositorySearchProtocol {
 
 struct AccountGroup: RepositoryLoadGroupProtocol {
     typealias GroupChoice    = AccountGroupChoice
-    typealias RepositoryType = AccountRepository
+    typealias MainRepository = AccountRepository
 
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<[[DataId]]> = .init()
+    var state: RepositoryLoadState<[RepositoryGroupData]> = .init()
     var isVisible  : [Bool] = []
     var isExpanded : [Bool] = []
 
@@ -53,27 +58,31 @@ struct AccountGroup: RepositoryLoadGroupProtocol {
     static let groupStatus: [AccountStatus] = [
         .open, .closed
     ]
+
+    static let groupAttachment: [Bool] = [
+        true, false
+    ]
 }
 
 extension RepositoryViewModel {
     func accountGroupIsVisible(_ g: Int, search: AccountSearch) -> Bool? {
         guard
-            case let .ready(dataDict) = accountDataDict.state,
-            case let .ready(dataId) = accountGroup.state
+            case let .ready(dataDict) = accountData.state,
+            case let .ready(groupData) = accountGroup.state
         else { return nil }
         if search.isEmpty {
             return switch accountGroup.choice {
-            case .type, .currency: !dataId[g].isEmpty
+            case .type, .currency: !groupData[g].dataId.isEmpty
             default: true
             }
         }
-        return dataId[g].first(where: { search.match(dataDict[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(dataDict[$0]!) }) != nil
     }
 
     func searchAccountGroup(search: AccountSearch, expand: Bool = false) {
         //log.trace("DEBUG: RepositoryViewModel.searchAccountGroup()")
-        guard case let .ready(dataId) = accountGroup.state else { return }
-        for g in 0 ..< dataId.count {
+        guard case let .ready(groupData) = accountGroup.state else { return }
+        for g in 0 ..< groupData.count {
             guard let isVisible = accountGroupIsVisible(g, search: search) else { return }
             //log.debug("DEBUG: RepositoryViewModel.searchAccountGroup(): \(g) = \(isVisible)")
             accountGroup.isVisible[g] = isVisible
@@ -88,11 +97,13 @@ extension RepositoryViewModel {
     func loadAccountList() async {
         log.trace("DEBUG: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.accountDataDict)
-            load(queue: &queue, keyPath: \Self.accountDataOrder)
-            load(queue: &queue, keyPath: \Self.accountDataUsed)
-            load(queue: &queue, keyPath: \Self.currencyDataName)
-            load(queue: &queue, keyPath: \Self.currencyDataOrder)
+            load(queue: &queue, keyPath: \Self.accountData)
+            load(queue: &queue, keyPath: \Self.accountOrder)
+            load(queue: &queue, keyPath: \Self.accountUsed)
+            load(queue: &queue, keyPath: \Self.accountAtt)
+            // needed in EditView
+            load(queue: &queue, keyPath: \Self.currencyName)
+            load(queue: &queue, keyPath: \Self.currencyOrder)
             return await allOk(queue: queue)
         }
         accountList.state = queueOk ? .ready(()) : .error("Cannot load data.")
@@ -106,9 +117,10 @@ extension RepositoryViewModel {
 
     func unloadAccountList() {
         log.trace("DEBUG: RepositoryViewModel.unloadAccountList(main=\(Thread.isMainThread))")
-        accountDataDict.unload()
-        accountDataOrder.unload()
-        accountDataUsed.unload()
+        accountData.unload()
+        accountOrder.unload()
+        accountUsed.unload()
+        accountAtt.unload()
         accountList.state = .idle
     }
 }
@@ -119,33 +131,36 @@ extension RepositoryViewModel {
         if case .loading = accountGroup.state { return nil }
         guard
             case .ready(_) = accountList.state,
-            case let .ready(dataDict)  = accountDataDict.state,
-            case let .ready(dataOrder) = accountDataOrder.state,
-            case let .ready(dataUsed)  = accountDataUsed.state
+            case let .ready(dataDict)  = accountData.state,
+            case let .ready(dataOrder) = accountOrder.state,
+            case let .ready(dataUsed)  = accountUsed.state,
+            case let .ready(dataAtt)   = accountAtt.state
         else { return nil }
 
         accountGroup.state = .loading
         accountGroup.choice = choice
         accountGroup.groupCurrency = []
 
-        var group: RepositoryGroup.AsTuple = ([], [], [])
+        var groupTuple: RepositoryGroup.AsTuple = ([], [], [])
         switch choice {
         case .all:
-            RepositoryGroup.append(into: &group, dataOrder, true, true)
+            RepositoryGroup.append(into: &groupTuple, "All", dataOrder, true, true)
         case .used:
             let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
             for g in AccountGroup.groupUsed {
-                RepositoryGroup.append(into: &group, dict[g] ?? [], true, g)
+                let name = g ? "Used" : "Other"
+                RepositoryGroup.append(into: &groupTuple, name, dict[g] ?? [], true, g)
             }
         case .favorite:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.favoriteAcct }
             for g in AccountGroup.groupFavorite {
-                RepositoryGroup.append(into: &group, dict[g] ?? [], true, g == .boolTrue)
+                let name = g == .boolTrue ? "Favorite" : "Other"
+                RepositoryGroup.append(into: &groupTuple, name, dict[g] ?? [], true, g == .boolTrue)
             }
         case .type:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.type }
             for g in AccountGroup.groupType {
-                RepositoryGroup.append(into: &group, dict[g] ?? [], dict[g] != nil, true)
+                RepositoryGroup.append(into: &groupTuple, g.rawValue, dict[g] ?? [], dict[g] != nil, true)
             }
         case .currency:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.currencyId }
@@ -153,18 +168,25 @@ extension RepositoryViewModel {
                 dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in accountGroup.groupCurrency {
-                RepositoryGroup.append(into: &group, dict[g] ?? [], dict[g] != nil, true)
+                let name = env.currencyCache[g]?.name
+                RepositoryGroup.append(into: &groupTuple, name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .status:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.status }
             for g in AccountGroup.groupStatus {
-                RepositoryGroup.append(into: &group, dict[g] ?? [], true, g == .open)
+                RepositoryGroup.append(into: &groupTuple, g.rawValue, dict[g] ?? [], true, g == .open)
+            }
+        case .attachment:
+            let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
+            for g in AccountGroup.groupAttachment {
+                let name = g ? "With Attachment" : "Other"
+                RepositoryGroup.append(into: &groupTuple, name, dict[g] ?? [], true, g)
             }
         }
 
-        accountGroup.isVisible  = group.isVisible
-        accountGroup.isExpanded = group.isExpanded
-        accountGroup.state = .ready(group.dataId)
+        accountGroup.isVisible  = groupTuple.isVisible
+        accountGroup.isExpanded = groupTuple.isExpanded
+        accountGroup.state = .ready(groupTuple.groupData)
         return true
     }
 

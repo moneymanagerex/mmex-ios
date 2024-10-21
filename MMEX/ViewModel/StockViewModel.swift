@@ -16,10 +16,10 @@ enum StockGroupChoice: String, RepositoryGroupChoiceProtocol {
 
 struct StockGroup: RepositoryLoadGroupProtocol {
     typealias GroupChoice    = StockGroupChoice
-    typealias RepositoryType = StockRepository
+    typealias MainRepository = StockRepository
     
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<[[DataId]]> = .init()
+    var state: RepositoryLoadState<[RepositoryGroupData]> = .init()
     var isVisible  : [Bool] = []
     var isExpanded : [Bool] = []
 }
@@ -28,9 +28,9 @@ extension RepositoryViewModel {
     func loadStockList() async {
         log.trace("DEBUG: RepositoryViewModel.loadStockList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.stockDataDict)
-            load(queue: &queue, keyPath: \Self.stockDataOrder)
-            load(queue: &queue, keyPath: \Self.stockDataUsed)
+            load(queue: &queue, keyPath: \Self.stockData)
+            load(queue: &queue, keyPath: \Self.stockOrder)
+            load(queue: &queue, keyPath: \Self.stockUsed)
             return await allOk(queue: queue)
         }
         stockList.state = queueOk ? .ready(()) : .error("Cannot load data.")
@@ -44,9 +44,9 @@ extension RepositoryViewModel {
 
     func unloadStockList() {
         log.trace("DEBUG: RepositoryViewModel.unloadStockList(main=\(Thread.isMainThread))")
-        stockDataDict.unload()
-        stockDataOrder.unload()
-        stockDataUsed.unload()
+        stockData.unload()
+        stockOrder.unload()
+        stockUsed.unload()
         stockList.state = .idle
     }
 }

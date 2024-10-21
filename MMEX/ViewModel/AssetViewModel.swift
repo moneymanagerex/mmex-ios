@@ -16,10 +16,10 @@ enum AssetGroupChoice: String, RepositoryGroupChoiceProtocol {
 
 struct AssetGroup: RepositoryLoadGroupProtocol {
     typealias GroupChoice    = AssetGroupChoice
-    typealias RepositoryType = AssetRepository
+    typealias MainRepository = AssetRepository
 
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<[[DataId]]> = .init()
+    var state: RepositoryLoadState<[RepositoryGroupData]> = .init()
     var isVisible  : [Bool] = []
     var isExpanded : [Bool] = []
 }
@@ -28,9 +28,9 @@ extension RepositoryViewModel {
     func loadAssetList() async {
         log.trace("DEBUG: RepositoryViewModel.loadAssetList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.assetDataDict)
-            load(queue: &queue, keyPath: \Self.assetDataOrder)
-            load(queue: &queue, keyPath: \Self.assetDataUsed)
+            load(queue: &queue, keyPath: \Self.assetData)
+            load(queue: &queue, keyPath: \Self.assetOrder)
+            load(queue: &queue, keyPath: \Self.assetUsed)
             return await allOk(queue: queue)
         }
         assetList.state = queueOk ? .ready(()) : .error("Cannot load data.")
@@ -44,9 +44,9 @@ extension RepositoryViewModel {
 
     func unloadAssetList() {
         log.trace("DEBUG: RepositoryViewModel.unloadAssetList(main=\(Thread.isMainThread))")
-        assetDataDict.unload()
-        assetDataOrder.unload()
-        assetDataUsed.unload()
+        assetData.unload()
+        assetOrder.unload()
+        assetUsed.unload()
         assetList.state = .idle
     }
 }

@@ -13,21 +13,27 @@ enum TransactionType: String, EnumCollateNoCase {
     case deposit    = "Deposit"
     case transfer   = "Transfer"
     static let defaultValue = Self.withdrawal
+
+    var shortName: String {
+        switch self { case .withdrawal: "W"; case .deposit: "D"; case .transfer: "T" }
+    }
 }
 
 enum TransactionStatus: String, EnumCollateNoCase {
-    // TODO: MMEX Desktop defines "" for none
-    case none       = "N" // None
-    case reconciled = "R" // Reconciled
-    case void       = "V" // Void
-    case followUp   = "F" // Follow up
-    case duplicate  = "D" // Duplicate
+    case none       = ""
+    case reconciled = "R"
+    case void       = "V"
+    case followUp   = "F"
+    case duplicate  = "D"
     static let defaultValue = Self.none
+
+    var shortName: String {
+        switch self { case .none: "-"; default: rawValue }
+    }
 
     var fullName: String {
         return switch self {
-        // TODO: MMEX Desktop defines "Unreconciled" for none
-        case .none       : "None"
+        case .none       : "(none)"
         case .reconciled : "Reconciled"
         case .void       : "Void"
         case .followUp   : "Follow up"

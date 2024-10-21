@@ -32,13 +32,25 @@ struct TransactionEditView: View {
             HStack {
                 Picker("", selection: $txn.transCode) {
                     ForEach(TransactionType.allCases) { transCode in
-                        Text(transCode.name).tag(transCode)
+                        Text(transCode.shortName).tag(transCode)
                     }
                 }
+                .padding(0)
                 .pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
-                
+                Menu(content: {
+                    Picker("", selection: $txn.transCode) {
+                        ForEach(TransactionType.allCases) { transCode in
+                            Text(transCode.name).tag(transCode)
+                        }
+                    }
+                    //.pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
+                }, label: { (
+                    //Text("\(txn.transCode.shortName) ") +
+                    Text(Image(systemName: "chevron.up.chevron.down"))
+                ) } )
+
                 Spacer()
-                
+
                 Picker("Select account", selection: $txn.accountId) {
                     if (txn.accountId == 0) {
                         Text("Account").tag(0 as DataId) // not set
@@ -96,11 +108,17 @@ struct TransactionEditView: View {
                 Spacer()
                 
                 // Transaction status picker
-                Picker("Transaction Status", selection: $txn.status) {
-                    ForEach(TransactionStatus.allCases) { status in
-                        Text(status.id).tag(status)
+                Menu(content: {
+                    Picker("Transaction Status", selection: $txn.status) {
+                        ForEach(TransactionStatus.allCases) { status in
+                            Text(status.fullName).tag(status)
+                        }
                     }
-                }
+                }, label: { (
+                    Text("\(txn.status.shortName) ") +
+                    Text(Image(systemName: "chevron.up.chevron.down"))
+                ) } )
+
             }
             .padding(.horizontal, 0)
 

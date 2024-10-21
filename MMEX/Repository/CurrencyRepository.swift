@@ -110,9 +110,9 @@ struct CurrencyRepository: RepositoryProtocol {
     }
 
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
-        typealias CH = CurrencyHistoryRepository
-        let cond = "EXISTS (" + (CH.table.select(1).where(
-            CH.table[CH.col_currencyId] == Self.table[Self.col_id]
+        typealias UH = CurrencyHistoryRepository
+        let cond = "EXISTS (" + (UH.table.select(1).where(
+            UH.table[UH.col_currencyId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }

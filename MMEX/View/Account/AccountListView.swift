@@ -23,7 +23,7 @@ struct AccountListView: View {
         RepositoryListView(
             vm: vm,
             vmList: vm.accountList,
-            vmDataDict: vm.accountDataDict,
+            vmData: vm.accountData,
             groupChoice: vm.accountGroup.choice,
             vmGroup: $vm.accountGroup,
             search: $search,
@@ -44,29 +44,21 @@ struct AccountListView: View {
         }
     }
 
-    func groupName(_ g: Int) -> some View {
+    func groupName(_ g: Int, name: String?) -> some View {
         Group {
             switch vm.accountGroup.choice {
-            case .all:
-                Text("All")
-            case .used:
-                Text(AccountGroup.groupUsed[g] ? "Used" : "Other")
-            case .favorite:
-                Text(AccountGroup.groupFavorite[g] == .boolTrue ? "Favorite" : "Other")
             case .type:
                 HStack {
                     Image(systemName: AccountGroup.groupType[g].symbolName)
                         .frame(minWidth: 10, alignment: .leading)
                         .font(.system(size: 16, weight: .bold))
                         //.foregroundColor(.blue)
-                    Text(AccountGroup.groupType[g].rawValue)
+                    Text(name ?? "(unknown group name)")
                     //.font(.subheadline)
                     //.padding(.leading)
                 }
-            case .currency:
-                Text(env.currencyCache[vm.accountGroup.groupCurrency[g]]?.name ?? "ERROR: unknown currency")
-            case .status:
-                Text(AccountGroup.groupStatus[g].rawValue)
+            default:
+                Text(name ?? "(unknown group name)")
             }
         }
     }

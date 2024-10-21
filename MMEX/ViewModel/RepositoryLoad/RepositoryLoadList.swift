@@ -7,6 +7,6 @@
 
 import SwiftUI
 
-struct RepositoryLoadList<RepositoryType: RepositoryProtocol> {
+struct RepositoryLoadList<MainRepository: RepositoryProtocol> {
     var state: RepositoryLoadState<Void> = .init()
 }
