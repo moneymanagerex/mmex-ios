@@ -17,7 +17,6 @@ struct EnterView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var accountId: [DataId] = []
-    @State private var payees: [PayeeData] = []
     
     var body: some View {
         NavigationStack {
@@ -25,7 +24,7 @@ struct EnterView: View {
                 viewModel: viewModel,
                 accountId: $accountId,
                 categories: $viewModel.categories,
-                payees: $payees,
+                payees: $viewModel.payees,
                 txn: $newTxn
             )
                 .toolbar {
@@ -52,9 +51,7 @@ struct EnterView: View {
         .onAppear() {
             loadAccounts()
             viewModel.loadCategories()
-            loadPayees()
-            // TODO update initial payee (e.g. last used)
-            // TODO update category, payee associated?
+            viewModel.loadPayees()
             
             // database level setting
             let repository = InfotableRepository(env)
@@ -71,17 +68,6 @@ struct EnterView: View {
             let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
             DispatchQueue.main.async {
                 self.accountId = id
-            }
-        }
-    }
-
-    func loadPayees() {
-        // Fetch accounts using repository and update the view
-        DispatchQueue.global(qos: .background).async {
-            let loadedPayees = PayeeRepository(self.env)?.load() ?? []
-            // Update UI on the main thread
-            DispatchQueue.main.async {
-                self.payees = loadedPayees
             }
         }
     }
