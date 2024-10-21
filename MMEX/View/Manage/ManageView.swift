@@ -21,43 +21,43 @@ struct ManageView: View {
                 NavigationLink(destination: CurrencyListView()) {
                     env.theme.group.manageItem(
                         name: { Text(CurrencyData.dataName.1) },
-                        count: vm.currencyDataCount.state
+                        count: vm.currencyCount.state
                     )
                 }
                 NavigationLink(destination: AccountListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(AccountData.dataName.1) },
-                        count: vm.accountDataCount.state
+                        count: vm.accountCount.state
                     )
                 }
                 NavigationLink(destination: AssetListView()) {
                     env.theme.group.manageItem(
                         name: { Text(AssetData.dataName.1) },
-                        count: vm.assetDataCount.state
+                        count: vm.assetCount.state
                     )
                 }
                 NavigationLink(destination: StockListView()) {
                     env.theme.group.manageItem(
                         name: { Text(StockData.dataName.1) },
-                        count: vm.stockDataCount.state
+                        count: vm.stockCount.state
                     )
                 }
                 NavigationLink(destination: CategoryListView(viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(CategoryData.dataName.1) },
-                        count: vm.categoryDataCount.state
+                        count: vm.categoryCount.state
                     )
                 }
                 NavigationLink(destination: PayeeListView()) {
                     env.theme.group.manageItem(
                         name: { Text(PayeeData.dataName.1) },
-                        count: vm.payeeDataCount.state
+                        count: vm.payeeCount.state
                     )
                 }
                 NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(TransactionData.dataName.1) },
-                        count: vm.transactionDataCount.state
+                        count: vm.transactionCount.state
                     )
                 }
             }

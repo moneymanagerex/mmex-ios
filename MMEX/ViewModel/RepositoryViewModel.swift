@@ -15,61 +15,64 @@ class RepositoryViewModel: ObservableObject {
     @Published var manageCount: RepositoryLoadState<Void> = .init()
 
     typealias U = CurrencyRepository
-    @Published var currencyDataCount : RepositoryLoadDataCount<U> = .init()
-    @Published var currencyDataDict  : RepositoryLoadDataDict<U>  = .init()
-    @Published var currencyDataName  : RepositoryLoadDataName<U>  = .init { $0[U.col_name] }
-    @Published var currencyDataOrder : RepositoryLoadDataOrder<U> = .init(expr: [U.col_name])
-    @Published var currencyDataUsed  : RepositoryLoadDataUsed<U>  = .init()
-    @Published var currencyList      : RepositoryLoadList<U>      = .init()
-    @Published var currencyGroup     : CurrencyGroup              = .init()
+    @Published var currencyCount : RepositoryLoadMainCount<U> = .init()
+    @Published var currencyData  : RepositoryLoadMainData<U>  = .init()
+    @Published var currencyName  : RepositoryLoadMainName<U>  = .init { $0[U.col_name] }
+    @Published var currencyOrder : RepositoryLoadMainOrder<U> = .init(order: [U.col_name])
+    @Published var currencyUsed  : RepositoryLoadMainUsed<U>  = .init()
+    @Published var currencyList  : RepositoryLoadList<U>      = .init()
+    @Published var currencyGroup : CurrencyGroup              = .init()
 
     typealias A = AccountRepository
-    @Published var accountDataCount : RepositoryLoadDataCount<A> = .init()
-    @Published var accountDataDict  : RepositoryLoadDataDict<A>  = .init()
-    @Published var accountDataName  : RepositoryLoadDataName<A>  = .init { $0[A.col_name] }
-    @Published var accountDataOrder : RepositoryLoadDataOrder<A> = .init(expr: [A.col_name])
-    @Published var accountDataUsed  : RepositoryLoadDataUsed<A>  = .init()
-    @Published var accountList      : RepositoryLoadList<A>      = .init()
-    @Published var accountGroup     : AccountGroup               = .init()
+    @Published var accountCount : RepositoryLoadMainCount<A> = .init()
+    @Published var accountData  : RepositoryLoadMainData<A>  = .init()
+    @Published var accountName  : RepositoryLoadMainName<A>  = .init { $0[A.col_name] }
+    @Published var accountOrder : RepositoryLoadMainOrder<A> = .init(order: [A.col_name])
+    @Published var accountUsed  : RepositoryLoadMainUsed<A>  = .init()
+    @Published var accountAtt   : RepositoryLoadAuxAtt<A>    = .init()
+    @Published var accountList  : RepositoryLoadList<A>      = .init()
+    @Published var accountGroup : AccountGroup               = .init()
 
     typealias E = AssetRepository
-    @Published var assetDataCount : RepositoryLoadDataCount<E> = .init()
-    @Published var assetDataDict  : RepositoryLoadDataDict<E>  = .init()
-    @Published var assetDataOrder : RepositoryLoadDataOrder<E> = .init(expr: [E.col_name])
-    @Published var assetDataUsed  : RepositoryLoadDataUsed<E>  = .init()
-    @Published var assetList      : RepositoryLoadList<E>      = .init()
-    @Published var assetGroup     : AssetGroup                 = .init()
+    @Published var assetCount : RepositoryLoadMainCount<E> = .init()
+    @Published var assetData  : RepositoryLoadMainData<E>  = .init()
+    @Published var assetOrder : RepositoryLoadMainOrder<E> = .init(order: [E.col_name])
+    @Published var assetUsed  : RepositoryLoadMainUsed<E>  = .init()
+    @Published var assetAtt   : RepositoryLoadAuxAtt<E>    = .init()
+    @Published var assetList  : RepositoryLoadList<E>      = .init()
+    @Published var assetGroup : AssetGroup                 = .init()
 
     typealias S = StockRepository
-    @Published var stockDataCount : RepositoryLoadDataCount<S> = .init()
-    @Published var stockDataDict  : RepositoryLoadDataDict<S>  = .init()
-    @Published var stockDataOrder : RepositoryLoadDataOrder<S> = .init(expr: [S.col_name])
-    @Published var stockDataUsed  : RepositoryLoadDataUsed<S>  = .init()
-    @Published var stockList      : RepositoryLoadList<S>      = .init()
-    @Published var stockGroup     : StockGroup                 = .init()
+    @Published var stockCount : RepositoryLoadMainCount<S> = .init()
+    @Published var stockData  : RepositoryLoadMainData<S>  = .init()
+    @Published var stockOrder : RepositoryLoadMainOrder<S> = .init(order: [S.col_name])
+    @Published var stockUsed  : RepositoryLoadMainUsed<S>  = .init()
+    @Published var stockAtt   : RepositoryLoadAuxAtt<S>    = .init()
+    @Published var stockList  : RepositoryLoadList<S>      = .init()
+    @Published var stockGroup : StockGroup                 = .init()
 
     typealias C = CategoryRepository
-    @Published var categoryDataCount : RepositoryLoadDataCount<C> = .init()
+    @Published var categoryCount : RepositoryLoadMainCount<C> = .init()
 
     typealias P = PayeeRepository
-    @Published var payeeDataCount : RepositoryLoadDataCount<P> = .init()
-    @Published var payeeDataDict  : RepositoryLoadDataDict<P>  = .init()
-    @Published var payeeDataName  : RepositoryLoadDataName<P>  = .init { $0[P.col_name] }
-    @Published var payeeDataOrder : RepositoryLoadDataOrder<P> = .init(expr: [P.col_name])
-    @Published var payeeDataUsed  : RepositoryLoadDataUsed<P>  = .init()
-    @Published var payeeList      : RepositoryLoadList<P>      = .init()
-    @Published var payeeGroup     : PayeeGroup                 = .init()
+    @Published var payeeCount : RepositoryLoadMainCount<P> = .init()
+    @Published var payeeData  : RepositoryLoadMainData<P>  = .init()
+    @Published var payeeName  : RepositoryLoadMainName<P>  = .init { $0[P.col_name] }
+    @Published var payeeOrder : RepositoryLoadMainOrder<P> = .init(order: [P.col_name])
+    @Published var payeeUsed  : RepositoryLoadMainUsed<P>  = .init()
+    @Published var payeeAtt   : RepositoryLoadAuxAtt<P>    = .init()
+    @Published var payeeList  : RepositoryLoadList<P>      = .init()
+    @Published var payeeGroup : PayeeGroup                 = .init()
 
     typealias T = TransactionRepository
     static let T_table: SQLite.Table = T.table.filter(T.col_deletedTime == "")
-    @Published var transactionDataCount : RepositoryLoadDataCount<T> = .init(table: T_table)
+    @Published var transactionCount : RepositoryLoadMainCount<T> = .init(table: T_table)
 
     typealias R = ScheduledRepository
-    @Published var scheduledDataCount : RepositoryLoadDataCount<R> = .init()
+    @Published var scheduledCount : RepositoryLoadMainCount<R> = .init()
 
-    //var currencyName : RepositoryLoad<[(DataId, String)]>     = .init([])
     //var accountAttachmentCount : RepositoryLoad<[DataId: Int]>         = .init([:])
-    
+
     init(env: EnvironmentManager) {
         self.env = env
     }
@@ -102,20 +105,20 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func loadList<RepositoryType>(for data: RepositoryLoadList<RepositoryType>) async {
-        /**/ if RepositoryType.self == U.self { async let _ = loadCurrencyList() }
-        else if RepositoryType.self == A.self { async let _ = loadAccountList() }
-        else if RepositoryType.self == E.self { async let _ = loadAssetList() }
-        else if RepositoryType.self == S.self { async let _ = loadStockList() }
-        else if RepositoryType.self == P.self { async let _ = loadPayeeList() }
+    func loadList<MainRepository>(for list: RepositoryLoadList<MainRepository>) async {
+        /**/ if MainRepository.self == U.self { async let _ = loadCurrencyList() }
+        else if MainRepository.self == A.self { async let _ = loadAccountList() }
+        else if MainRepository.self == E.self { async let _ = loadAssetList() }
+        else if MainRepository.self == S.self { async let _ = loadStockList() }
+        else if MainRepository.self == P.self { async let _ = loadPayeeList() }
     }
 
-    func unloadList<RepositoryType>(for data: RepositoryLoadList<RepositoryType>) {
-        /**/ if RepositoryType.self == U.self { unloadCurrencyList() }
-        else if RepositoryType.self == A.self { unloadAccountList() }
-        else if RepositoryType.self == E.self { unloadAssetList() }
-        else if RepositoryType.self == S.self { unloadStockList() }
-        else if RepositoryType.self == P.self { unloadPayeeList() }
+    func unloadList<MainRepository>(for list: RepositoryLoadList<MainRepository>) {
+        /**/ if MainRepository.self == U.self { unloadCurrencyList() }
+        else if MainRepository.self == A.self { unloadAccountList() }
+        else if MainRepository.self == E.self { unloadAssetList() }
+        else if MainRepository.self == S.self { unloadStockList() }
+        else if MainRepository.self == P.self { unloadPayeeList() }
     }
 
     func loadList() async {
@@ -141,17 +144,17 @@ extension RepositoryViewModel {
     func loadGroup<GroupType: RepositoryLoadGroupProtocol, GroupChoiceType>(
         for group: GroupType,
         _ choice: GroupChoiceType
-    ) where GroupChoiceType == GroupType.GroupChoiceType
+    ) where GroupChoiceType == GroupType.GroupChoice
     {
-        if GroupType.RepositoryType.self == U.self {
+        if GroupType.MainRepository.self == U.self {
             //            let _ = loadCurrencyGroup(env: env, choice: choice as! CurrencyGroupChoice)
-        } else if GroupType.RepositoryType.self == A.self {
+        } else if GroupType.MainRepository.self == A.self {
             let _ = loadAccountGroup(env: env, choice: choice as! AccountGroupChoice)
-        } else if GroupType.RepositoryType.self == E.self {
+        } else if GroupType.MainRepository.self == E.self {
             //            let _ = loadAssetGroup(env: env, choice: choice as! AssetGroupChoice)
-        } else if GroupType.RepositoryType.self == S.self {
+        } else if GroupType.MainRepository.self == S.self {
             //            let _ = loadStockGroup(env: env, choice: choice as! StockGroupChoice)
-        } else if GroupType.RepositoryType.self == P.self {
+        } else if GroupType.MainRepository.self == P.self {
             //            let _ = loadPayeeGroup(env: env, choice: choice as! PayeeGroupChoice)
         }
     }
@@ -159,11 +162,11 @@ extension RepositoryViewModel {
     func unloadGroup<GroupType: RepositoryLoadGroupProtocol>(
         for group: GroupType
     ) {
-        /**/ if GroupType.RepositoryType.self == U.self { let _ = unloadCurrencyGroup() }
-        else if GroupType.RepositoryType.self == A.self { let _ = unloadAccountGroup() }
-        else if GroupType.RepositoryType.self == E.self { let _ = unloadAssetGroup() }
-        else if GroupType.RepositoryType.self == S.self { let _ = unloadStockGroup() }
-        else if GroupType.RepositoryType.self == P.self { let _ = unloadPayeeGroup() }
+        /**/ if GroupType.MainRepository.self == U.self { let _ = unloadCurrencyGroup() }
+        else if GroupType.MainRepository.self == A.self { let _ = unloadAccountGroup() }
+        else if GroupType.MainRepository.self == E.self { let _ = unloadAssetGroup() }
+        else if GroupType.MainRepository.self == S.self { let _ = unloadStockGroup() }
+        else if GroupType.MainRepository.self == P.self { let _ = unloadPayeeGroup() }
     }
 
     func unloadGroup() {
@@ -185,18 +188,34 @@ extension RepositoryViewModel {
         for group: GroupType,
         search: SearchType,
         expand: Bool = false
-    ) where GroupType.RepositoryType.RepositoryData == SearchType.RepositoryData
+    ) where GroupType.MainRepository.RepositoryData == SearchType.MainData
     {
-        if GroupType.RepositoryType.self == U.self {
+        if GroupType.MainRepository.self == U.self {
 //            let _ = searchCurrencyGroup(search: search as! CurrencySearch, expand: expand)
-        } else if GroupType.RepositoryType.self == A.self {
+        } else if GroupType.MainRepository.self == A.self {
             let _ = searchAccountGroup(search: search as! AccountSearch, expand: expand)
-        } else if GroupType.RepositoryType.self == E.self {
+        } else if GroupType.MainRepository.self == E.self {
 //            let _ = searchAssetGroup(search: search as! AssetSearch, expand: expand)
-        } else if GroupType.RepositoryType.self == S.self {
+        } else if GroupType.MainRepository.self == S.self {
 //            let _ = searchStockGroup(search: search as! StockSearch, expand: expand)
-        } else if GroupType.RepositoryType.self == P.self {
+        } else if GroupType.MainRepository.self == P.self {
 //            let _ = searchPayeeGroup(search: search as! PayeeSearch, expand: expand)
         }
     }
 }
+
+/*
+extension OldRepositoryViewModelProtocol {
+    func preloaded(env: EnvironmentManager, group: GroupChoiceType) -> Self {
+        Task {
+            await loadData(env: env)
+            loadGroup(env: env, group: group)
+            searchGroup()
+        }
+        return self
+    }
+    func dataIsVisible(_ dataId: DataId) -> Bool {
+        search.match(dataById[dataId]!)
+    }
+}
+*/

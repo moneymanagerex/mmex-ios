@@ -13,20 +13,20 @@ struct RepositoryListView<
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
     DetailView: View, InsertView: View
 >: View
-where GroupType.RepositoryType == RepositoryType,
-      SearchType.RepositoryData == RepositoryType.RepositoryData
+where GroupType.MainRepository == RepositoryType,
+      SearchType.MainData == RepositoryType.RepositoryData
 {
     typealias RepositoryData  = RepositoryType.RepositoryData
-    typealias GroupChoiceType = GroupType.GroupChoiceType
+    typealias GroupChoiceType = GroupType.GroupChoice
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
     var vmList: RepositoryLoadList<RepositoryType>
-    var vmDataDict: RepositoryLoadDataDict<RepositoryType>
+    var vmData: RepositoryLoadMainData<RepositoryType>
     @State var groupChoice: GroupChoiceType
     @Binding var vmGroup: GroupType
     @Binding var search: SearchType
-    @ViewBuilder var groupName: (_ groupId: Int) -> GroupNameView
+    @ViewBuilder var groupName: (_ g: Int, _ name: String?) -> GroupNameView
     @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
     @ViewBuilder var detailView: (_ data: RepositoryData) -> DetailView
@@ -37,16 +37,21 @@ where GroupType.RepositoryType == RepositoryType,
     var body: some View {
         return List {
             HStack {
-                Picker("", selection: $groupChoice) {
-                    ForEach(GroupChoiceType.allCases, id: \.self) { choice in
-                        Text("\(choice.rawValue)")
-                            .font(.subheadline)
-                            .tag(choice)
+                Menu(content: {
+                    Picker("", selection: $groupChoice) {
+                        ForEach(GroupChoiceType.allCases, id: \.self) { choice in
+                            Text("\(choice.rawValue)")
+                                .font(.subheadline)
+                                .tag(choice)
+                        }
                     }
-                }
-                .scaledToFit()
-                .labelsHidden()
-                .pickerStyle(MenuPickerStyle())
+                    //.scaledToFit()
+                    //.labelsHidden()
+                    //.pickerStyle(MenuPickerStyle())
+                }, label: { (
+                    Text("\(groupChoice.shortName) ") +
+                    Text(Image(systemName: "chevron.up.chevron.down"))
+                ) } )
                 .onChange(of: groupChoice) {
                     vm.loadGroup(for: vmGroup, groupChoice)
                     vm.searchGroup(for: vmGroup, search: search)
@@ -76,8 +81,8 @@ where GroupType.RepositoryType == RepositoryType,
             .listRowBackground(Color.clear)
             //.border(.red)
             switch vmGroup.state {
-            case let .ready(dataId):
-                ForEach(0 ..< dataId.count, id: \.self) { g in
+            case let .ready(groupData):
+                ForEach(0 ..< groupData.count, id: \.self) { g in
                     if vmGroup.isVisible[g] {
                         groupView(g)
                     }
@@ -142,7 +147,7 @@ where GroupType.RepositoryType == RepositoryType,
         vm.searchGroup(for: vmGroup, search: search)
     }
 
-    func groupView(_ g: Int) -> some View { Group { if case let .ready(dataId) = vmGroup.state {
+    func groupView(_ g: Int) -> some View { Group { if case let .ready(groupData) = vmGroup.state {
         Section(header: Group {
             if !GroupChoiceType.isSingleton.contains(vmGroup.choice) {
                 HStack {
@@ -150,8 +155,8 @@ where GroupType.RepositoryType == RepositoryType,
                         vmGroup.isExpanded[g].toggle()
                     }) {
                         env.theme.group.view(
-                            name: { groupName(g) },
-                            count: dataId[g].count,
+                            name: { groupName(g, groupData[g].name) },
+                            count: groupData[g].dataId.count,
                             isExpanded: vmGroup.isExpanded[g]
                         )
                     }
@@ -160,10 +165,10 @@ where GroupType.RepositoryType == RepositoryType,
         }//.padding(.top, -10)
         ) {
             if vmGroup.isExpanded[g] {
-                ForEach(dataId[g], id: \.self) { id in
+                ForEach(groupData[g].dataId, id: \.self) { id in
                     //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
                     // TODO: update View after change in account
-                    if case let .ready(dataDict) = vmDataDict.state,
+                    if case let .ready(dataDict) = vmData.state,
                        let data = dataDict[id],
                        search.match(data)
                     {

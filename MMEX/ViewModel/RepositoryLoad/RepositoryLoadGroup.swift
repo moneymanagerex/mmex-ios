@@ -10,29 +10,39 @@ import SwiftUI
 protocol RepositoryGroupChoiceProtocol: EnumCollateNoCase, Hashable
 where Self.AllCases: RandomAccessCollection {
     static var isSingleton: Set<Self> { get }
+    var shortName: String { get }
 }
 
-protocol RepositoryLoadGroupProtocol {
-    associatedtype GroupChoiceType : RepositoryGroupChoiceProtocol
-    associatedtype RepositoryType  : RepositoryProtocol
+extension RepositoryGroupChoiceProtocol {
+    var shortName: String { self.rawValue }
+}
 
-    var choice: GroupChoiceType { get set }
-    var state: RepositoryLoadState<[[DataId]]> { get set }
+typealias RepositoryGroupData = (name: String?, dataId: [DataId])
+
+protocol RepositoryLoadGroupProtocol {
+    associatedtype GroupChoice : RepositoryGroupChoiceProtocol
+    associatedtype MainRepository  : RepositoryProtocol
+
+    var choice: GroupChoice { get set }
+    var state: RepositoryLoadState<[RepositoryGroupData]> { get set }
+    // problem: xListView cannot refresh if `isExpanded` is inside an enum
+    // fix: store the following outside of `state`
     var isVisible  : [Bool] { get set }
     var isExpanded : [Bool] { get set }
 }
 
 enum RepositoryGroup {
-    typealias AsTuple = (dataId: [[DataId]], isVisible: [Bool], isExpanded: [Bool])
+    typealias AsTuple = (groupData: [RepositoryGroupData], isVisible: [Bool], isExpanded: [Bool])
 
     static func append(
-        into group: inout AsTuple,
+        into groupTuple: inout AsTuple,
+        _ name: String?,
         _ dataId: [DataId],
         _ isVisible: Bool,
         _ isExpanded: Bool
     ) {
-        group.dataId.append(dataId)
-        group.isVisible.append(isVisible)
-        group.isExpanded.append(isExpanded)
+        groupTuple.groupData.append((name, dataId))
+        groupTuple.isVisible.append(isVisible)
+        groupTuple.isExpanded.append(isExpanded)
     }
 }

@@ -7,23 +7,23 @@
 
 import SwiftUI
 
-enum RepositoryLoadState<DataType: Copyable>: Copyable {
+enum RepositoryLoadState<LoadType: Copyable>: Copyable {
     case error(String)
     case idle
     case loading
-    case ready(DataType)
+    case ready(LoadType)
     
     init() {
         self = .idle
     }
 }
 
-extension RepositoryLoadState: Equatable where DataType: Equatable { }
+extension RepositoryLoadState: Equatable where LoadType: Equatable { }
 
 protocol RepositoryLoadProtocol {
-    associatedtype DataType: Copyable
-    var state: RepositoryLoadState<DataType> { get set }
-    func load(env: EnvironmentManager) -> DataType?
+    associatedtype LoadType: Copyable
+    var state: RepositoryLoadState<LoadType> { get set }
+    func load(env: EnvironmentManager) -> LoadType?
     mutating func unload()
 }
 

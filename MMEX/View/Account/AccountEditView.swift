@@ -39,8 +39,8 @@ struct AccountEditView: View {
                 }
 
                 if
-                    case let .ready(currencyOrder) = vm.currencyDataOrder.state,
-                    case let .ready(currencyName) = vm.currencyDataName.state
+                    case let .ready(currencyOrder) = vm.currencyOrder.state,
+                    case let .ready(currencyName) = vm.currencyName.state
                 {
                     env.theme.field.picker(edit, "Currency") {
                         Picker("", selection: $data.currencyId) {
@@ -174,7 +174,7 @@ struct AccountEditView: View {
                 }
             }
 
-            if !edit, case let .ready(used) = vm.accountDataUsed.state, !used.contains(data.id) {
+            if !edit, case let .ready(used) = vm.accountUsed.state, !used.contains(data.id) {
                 Button("Delete Account") {
                     onDelete()
                 }

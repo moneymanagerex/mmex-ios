@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-typealias RepositorySearchArea<RepositoryData: DataProtocol> = (
+typealias RepositorySearchArea<MainData: DataProtocol> = (
     name: String,
     isSelected: Bool,
-    values: [(RepositoryData) -> String]
+    values: [(MainData) -> String]
 )
 
 protocol RepositorySearchProtocol: Copyable {
-    associatedtype RepositoryData: DataProtocol
-    var area: [RepositorySearchArea<RepositoryData>] { get set }
+    associatedtype MainData: DataProtocol
+    var area: [RepositorySearchArea<MainData>] { get set }
     var key: String { get set }
 }
 
@@ -26,7 +26,7 @@ extension RepositorySearchProtocol {
 
     var isEmpty: Bool { key.isEmpty }
 
-    func match(_ data: RepositoryData) -> Bool {
+    func match(_ data: MainData) -> Bool {
         if key.isEmpty { return true }
         for i in 0 ..< area.count {
             guard area[i].isSelected else { continue }
@@ -39,19 +39,3 @@ extension RepositorySearchProtocol {
         return false
     }
 }
-
-/*
-extension OldRepositoryViewModelProtocol {
-    func preloaded(env: EnvironmentManager, group: GroupChoiceType) -> Self {
-        Task {
-            await loadData(env: env)
-            loadGroup(env: env, group: group)
-            searchGroup()
-        }
-        return self
-    }
-    func dataIsVisible(_ dataId: DataId) -> Bool {
-        search.match(dataById[dataId]!)
-    }
-}
-*/

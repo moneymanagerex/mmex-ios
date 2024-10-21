@@ -16,10 +16,10 @@ enum CurrencyGroupChoice: String, RepositoryGroupChoiceProtocol {
 
 struct CurrencyGroup: RepositoryLoadGroupProtocol {
     typealias GroupChoice    = CurrencyGroupChoice
-    typealias RepositoryType = CurrencyRepository
+    typealias MainRepository = CurrencyRepository
     
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<[[DataId]]> = .init()
+    var state: RepositoryLoadState<[RepositoryGroupData]> = .init()
     var isVisible  : [Bool] = []
     var isExpanded : [Bool] = []
 }
@@ -28,9 +28,9 @@ extension RepositoryViewModel {
     func loadCurrencyList() async {
         log.trace("DEBUG: RepositoryViewModel.loadCurrencyList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.currencyDataDict)
-            load(queue: &queue, keyPath: \Self.currencyDataOrder)
-            load(queue: &queue, keyPath: \Self.currencyDataUsed)
+            load(queue: &queue, keyPath: \Self.currencyData)
+            load(queue: &queue, keyPath: \Self.currencyOrder)
+            load(queue: &queue, keyPath: \Self.currencyUsed)
             return await allOk(queue: queue)
         }
         currencyList.state = queueOk ? .ready(()) : .error("Cannot load data.")
@@ -44,9 +44,9 @@ extension RepositoryViewModel {
 
     func unloadCurrencyList() {
         log.trace("DEBUG: RepositoryViewModel.unloadCurrencyList(main=\(Thread.isMainThread))")
-        currencyDataDict.unload()
-        currencyDataOrder.unload()
-        currencyDataUsed.unload()
+        currencyData.unload()
+        currencyOrder.unload()
+        currencyUsed.unload()
         currencyList.state = .idle
     }
 }
