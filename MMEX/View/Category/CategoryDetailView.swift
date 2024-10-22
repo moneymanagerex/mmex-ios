@@ -24,7 +24,7 @@ struct CategoryDetailView: View {
             }
             
             Section(header: Text("Active")) {
-                Text(category.active == true ? "Yes" : "No")
+                Text(category.active == true ? "YES" : "NO")
             }
             
             // TODO show name and link to its partent
