@@ -32,22 +32,12 @@ struct TransactionEditView: View {
             HStack {
                 Picker("", selection: $txn.transCode) {
                     ForEach(TransactionType.allCases) { transCode in
-                        Text(transCode.shortName).tag(transCode)
+                        Text(transCode.name).tag(transCode)
                     }
                 }
                 .padding(0)
-                .pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
-                Menu(content: {
-                    Picker("", selection: $txn.transCode) {
-                        ForEach(TransactionType.allCases) { transCode in
-                            Text(transCode.name).tag(transCode)
-                        }
-                    }
-                    //.pickerStyle(SegmentedPickerStyle()) // Use a segmented style for the picker
-                }, label: { (
-                    //Text("\(txn.transCode.shortName) ") +
-                    Text(Image(systemName: "chevron.up.chevron.down"))
-                ) } )
+                // do not use segmented style, in order to avoid truncation in smaller displays
+                //.pickerStyle(SegmentedPickerStyle())
 
                 Spacer()
 
