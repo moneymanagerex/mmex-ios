@@ -10,11 +10,11 @@ import SwiftUI
 protocol RepositoryGroupChoiceProtocol: EnumCollateNoCase, Hashable
 where Self.AllCases: RandomAccessCollection {
     static var isSingleton: Set<Self> { get }
-    var shortName: String { get }
+    var fullName: String { get }
 }
 
 extension RepositoryGroupChoiceProtocol {
-    var shortName: String { self.rawValue }
+    var fullName: String { self.rawValue }
 }
 
 typealias RepositoryGroupData = (name: String?, dataId: [DataId])

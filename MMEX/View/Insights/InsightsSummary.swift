@@ -9,13 +9,14 @@ import SwiftUI
 import Charts
 
 struct InsightsSummaryView: View {
+    @EnvironmentObject var env: EnvironmentManager
     @Binding var stats: [TransactionData]
 
     var body: some View {
         Chart(stats) {
             BarMark(
                 x: .value("Amount", $0.income),
-                y: .value("Account", String($0.accountId))
+                y: .value("Account", env.accountCache[$0.accountId]?.name ?? "#\($0.accountId)")
             )
             .foregroundStyle(by: .value("Status", $0.status.fullName))
         }

@@ -40,7 +40,7 @@ where GroupType.MainRepository == RepositoryType,
                 Menu(content: {
                     Picker("", selection: $groupChoice) {
                         ForEach(GroupChoiceType.allCases, id: \.self) { choice in
-                            Text("\(choice.rawValue)")
+                            Text("\(choice.fullName)")
                                 .font(.subheadline)
                                 .tag(choice)
                         }
@@ -49,7 +49,7 @@ where GroupType.MainRepository == RepositoryType,
                     //.labelsHidden()
                     //.pickerStyle(MenuPickerStyle())
                 }, label: { (
-                    Text("\(groupChoice.shortName) ") +
+                    Text("\(groupChoice.rawValue) ") +
                     Text(Image(systemName: "chevron.up.chevron.down"))
                 ) } )
                 .onChange(of: groupChoice) {

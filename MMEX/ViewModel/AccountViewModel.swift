@@ -14,12 +14,12 @@ enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
     case type       = "Type"
     case currency   = "Currency"
     case status     = "Status"
-    case attachment = "Attachment"
+    case attachment = "Att."
     static let defaultValue = Self.all
 
     static let isSingleton: Set<Self> = [.all]
-    var shortName: String {
-        switch self { case .attachment: "Att."; default: rawValue }
+    var fullName: String {
+        switch self { case .attachment: "Attachment"; default: rawValue }
     }
 }
 

@@ -12,30 +12,39 @@ struct InsightsView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: InsightsViewModel
     @State var statusChoice: Int = 0
-
+    @State var accountBalanceIsExpanded = true
+    @State var accountIncomeIsExpanded = true
+    @State var incomeExpenseIsExpanded = true
+    
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    Section {
+                    Section(header: HStack {
+                        Button(action: { accountBalanceIsExpanded.toggle() }) {
+                            env.theme.group.view(
+                                name: { Text(InsightsAccountView.statusChoices[statusChoice].0) },
+                                isExpanded: accountBalanceIsExpanded
+                            )
+                        }
+                    } ) { if accountBalanceIsExpanded {
                         InsightsAccountView(
                             viewModel: viewModel,
                             statusChoice: $statusChoice
                         )
-                    } header: {
-                        Text(InsightsAccountView.statusChoices[statusChoice].0)
-                            .font(.headline)
-                            .padding(.horizontal)
-                    }
+                    } }
 
-                    Section {
+                    Section(header: HStack {
+                        Button(action: { accountIncomeIsExpanded.toggle() }) {
+                            env.theme.group.view(
+                                name: { Text("Account Income Summary") },
+                                isExpanded: accountIncomeIsExpanded
+                            )
+                        }
+                    } ) { if accountIncomeIsExpanded {
                         InsightsSummaryView(stats: $viewModel.stats)
-                    } header: {
-                        Text("Account Income Summary")
-                            .font(.headline)
-                            .padding(.horizontal)
-                    }
-                    
+                    } }
+
                     // Date Range Filters Section
                     Section {
                         HStack {
@@ -55,14 +64,17 @@ struct InsightsView: View {
                         .shadow(radius: 2)
                     }
 
-                    Section {
+                    Section(header: HStack {
+                        Button(action: { incomeExpenseIsExpanded.toggle() }) {
+                            env.theme.group.view(
+                                name: { Text("Income vs Expense Over Time") },
+                                isExpanded: incomeExpenseIsExpanded
+                            )
+                        }
+                    } ) { if incomeExpenseIsExpanded {
                         IncomeExpenseView(stats: $viewModel.recentStats)
-                    } header: {
-                        Text("Income vs Expense Over Time")
-                            .font(.headline)
-                            .padding(.horizontal)
-                    }
-                    
+                    } }
+
                     // Placeholder for Future Sections
                     Section {
                         VStack {
