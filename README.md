@@ -49,4 +49,4 @@ This project is very early, and we got inspired by [Dime](https://github.com/rar
   - [ ] Entity Icon
   - [ ] Navigation Icon
 - Translator
-  - [ ] Crowdin project is TBD
+  - [![Crowdin](https://badges.crowdin.net/mmex4ios/localized.svg)](https://crowdin.com/project/mmex4ios)
