@@ -5,62 +5,166 @@
 
     },
     "%@" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
     },
     "%@ " : {
 
     },
     "%lf" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lf"
+          }
+        }
+      }
     },
     "%lld" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
     },
     "• Initial release with transaction tracking, insights, and account management.\n• Bug fixes and improvements." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• Versione iniziale con tracciamento delle transazioni, approfondimenti e gestione degli account.\n• Correzioni di bug e miglioramenti."
+          }
+        }
+      }
     },
     "1. Use of the App" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Utilizzo dell'app"
+          }
+        }
+      }
     },
     "2. Content Ownership" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Proprietà Dei Contenuti"
+          }
+        }
+      }
     },
     "About" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info"
+          }
+        }
+      }
     },
     "About MMEX4iOS" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informazioni Su MMEX4iOS"
+          }
+        }
+      }
     },
     "Account" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conto"
+          }
+        }
+      }
     },
     "Account Income Summary" : {
 
     },
     "Account Name" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome Conto"
+          }
+        }
+      }
     },
     "Active" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attivo"
+          }
+        }
+      }
     },
     "ACTIVE" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ATTIVO"
+          }
+        }
+      }
     },
     "Add" : {
       "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "增加"
+            "value" : "添加"
           }
         }
       }
     },
     "Add Note" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi Nota"
+          }
+        }
+      }
     },
     "Add split" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi suddivisione"
+          }
+        }
+      }
     },
     "Advanced" : {
 
@@ -77,6 +181,9 @@
     "Appearance" : {
 
     },
+    "Asset" : {
+      "extractionState" : "manual"
+    },
     "Assets" : {
 
     },
@@ -87,22 +194,60 @@
 
     },
     "Cancel" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulla"
+          }
+        }
+      }
     },
     "Cannot be empty!" : {
 
     },
+    "Cash" : {
+      "extractionState" : "manual"
+    },
     "Categories" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categorie"
+          }
+        }
+      }
     },
     "Category" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categoria"
+          }
+        }
+      }
     },
     "Category Delimiter" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delimitatore Di Categoria"
+          }
+        }
+      }
     },
     "Category Name" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome Categoria"
+          }
+        }
+      }
     },
     "Checking" : {
 
@@ -122,71 +267,221 @@
     "Create Sample Database" : {
 
     },
+    "Credit Card" : {
+      "extractionState" : "manual"
+    },
     "Credits" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ringraziamenti"
+          }
+        }
+      }
     },
     "Currencies" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valute"
+          }
+        }
+      }
     },
     "Dark" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        }
+      }
     },
     "Data" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dati"
+          }
+        }
+      }
     },
     "Database" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database"
+          }
+        }
+      }
     },
     "Database File" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Del Database"
+          }
+        }
+      }
     },
     "Database Settings" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impostazioni Database"
+          }
+        }
+      }
     },
     "Date" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        }
+      }
     },
     "Date Format" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato Data"
+          }
+        }
+      }
     },
     "Day" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giorno"
+          }
+        }
+      }
     },
     "Default Account" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conto Predefinito"
+          }
+        }
+      }
     },
     "Default is 0" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predefinito è 0"
+          }
+        }
+      }
     },
     "Default Payee" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beneficiario Predefinito"
+          }
+        }
+      }
     },
     "Default Status" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stato Predefinito"
+          }
+        }
+      }
     },
     "Delete Account" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina Conto"
+          }
+        }
+      }
     },
     "Delete Asset" : {
 
     },
     "Delete Category" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina Categoria"
+          }
+        }
+      }
     },
     "Delete Currency" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina Valuta"
+          }
+        }
+      }
     },
     "Delete Payee" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina Beneficiario"
+          }
+        }
+      }
     },
     "Delete Stock" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina Azioni"
+          }
+        }
+      }
     },
     "Delete Transaction" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina Transazione"
+          }
+        }
+      }
     },
     "Developed by Lisheng Guan, George Ef" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sviluppato da Lisheng Guan, George Ef"
+          }
+        }
+      }
     },
     "Dismiss" : {
       "comment" : "Button to dismiss the current screen",
@@ -201,31 +496,87 @@
       }
     },
     "Done" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completato"
+          }
+        }
+      }
     },
     "Edit" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifica"
+          }
+        }
+      }
     },
     "Email Support" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistenza Email"
+          }
+        }
+      }
     },
     "End Date" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Finale"
+          }
+        }
+      }
     },
     "Enter" : {
 
     },
     "Enter Transaction" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci Transazione"
+          }
+        }
+      }
     },
     "expenses" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "spese"
+          }
+        }
+      }
     },
     "Export as JSON File" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esporta come file JSON"
+          }
+        }
+      }
     },
     "Facebook" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facebook"
+          }
+        }
+      }
     },
     "Field Layout" : {
 
@@ -234,7 +585,14 @@
 
     },
     "General" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generale"
+          }
+        }
+      }
     },
     "Group Layout" : {
 
@@ -243,13 +601,34 @@
 
     },
     "Help / FAQ" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aiuto / FAQ"
+          }
+        }
+      }
     },
     "How to add a transaction?" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come aggiungere una transazione?"
+          }
+        }
+      }
     },
     "How to generate reports?" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come generare resoconti?"
+          }
+        }
+      }
     },
     "How to import/export data?" : {
 
@@ -261,7 +640,14 @@
 
     },
     "income" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "entrate"
+          }
+        }
+      }
     },
     "Income vs Expense Over Time" : {
 
@@ -272,20 +658,27 @@
     "Insights" : {
 
     },
+    "Investment" : {
+      "extractionState" : "manual"
+    },
     "Is Active" : {
 
     },
     "Item Info" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informazioni Elemento"
+          }
+        }
+      }
     },
     "Item Layout" : {
 
     },
     "Item Name" : {
 
-    },
-    "Key" : {
-      "extractionState" : "manual"
     },
     "Last updated: September 18, 2024" : {
 
@@ -317,6 +710,9 @@
     "Loading data ..." : {
 
     },
+    "Loan" : {
+      "extractionState" : "manual"
+    },
     "Manage" : {
 
     },
@@ -324,34 +720,87 @@
 
     },
     "n/a" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "n.d."
+          }
+        }
+      }
     },
     "N/A" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N/D"
+          }
+        }
+      }
     },
     "New Asset" : {
 
     },
     "New Category" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuova Categoria"
+          }
+        }
+      }
     },
     "New Database" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuovo Database"
+          }
+        }
+      }
     },
     "New Payee" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuovo Beneficiario"
+          }
+        }
+      }
     },
     "New Stock" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuova Azione"
+          }
+        }
+      }
     },
     "New Transaction" : {
-
-    },
-    "No" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuova Transazione"
+          }
+        }
+      }
     },
     "NO" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NO"
+          }
+        }
+      }
     },
     "No Database Connected" : {
 
@@ -366,37 +815,100 @@
 
     },
     "Notes" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note"
+          }
+        }
+      }
     },
     "OK" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
     },
     "Open Database" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri Database"
+          }
+        }
+      }
     },
     "Parent ID" : {
 
     },
     "Payee" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beneficiario"
+          }
+        }
+      }
     },
     "Payees" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beneficiari"
+          }
+        }
+      }
     },
     "Please open or create a database to get started." : {
 
     },
     "Privacy Policy" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informativa Privacy"
+          }
+        }
+      }
     },
     "Release Notes" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note Di Rilascio"
+          }
+        }
+      }
     },
     "Report an Issue" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Segnala un problema"
+          }
+        }
+      }
     },
     "Reports and Insights" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resoconti e Approfondimenti"
+          }
+        }
+      }
     },
     "Root" : {
 
@@ -414,40 +926,113 @@
 
     },
     "Search by name" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca per nome"
+          }
+        }
+      }
     },
     "Search by notes" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca per note"
+          }
+        }
+      }
     },
     "Select account" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona conto"
+          }
+        }
+      }
     },
     "Select Account" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona Conto"
+          }
+        }
+      }
     },
     "Select Category" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona Categoria"
+          }
+        }
+      }
     },
     "Select Currency" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona Valuta"
+          }
+        }
+      }
     },
     "Select Payee" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona Beneficiario"
+          }
+        }
+      }
     },
     "Select To Account" : {
 
     },
     "Settings" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impostazioni"
+          }
+        }
+      }
+    },
+    "Shares" : {
+      "extractionState" : "manual"
     },
     "Show Count" : {
 
     },
     "Social Media" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social Media"
+          }
+        }
+      }
     },
     "Special thanks to all open-source contributors!" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un ringraziamento speciale a tutti i collaboratori open-source!"
+          }
+        }
+      }
     },
     "split amount" : {
 
@@ -459,13 +1044,34 @@
 
     },
     "Start Date" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Iniziale"
+          }
+        }
+      }
     },
     "Status" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stato"
+          }
+        }
+      }
     },
     "Status Choice" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scelta Stato"
+          }
+        }
+      }
     },
     "Stocks" : {
 
@@ -474,16 +1080,40 @@
 
     },
     "System" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistema"
+          }
+        }
+      }
     },
     "Tab Icons" : {
 
     },
+    "Term" : {
+      "extractionState" : "manual"
+    },
     "Terms of Service" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Termini del Servizio"
+          }
+        }
+      }
     },
     "Theme" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tema"
+          }
+        }
+      }
     },
     "These Terms of Service govern your use of our app. By using the app, you agree to comply with and be bound by these terms." : {
 
@@ -498,7 +1128,14 @@
 
     },
     "Total" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totale"
+          }
+        }
+      }
     },
     "Total: %@" : {
 
@@ -507,19 +1144,54 @@
 
     },
     "Transaction Date" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data Transazione"
+          }
+        }
+      }
     },
     "Transaction Status" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stato Transazione"
+          }
+        }
+      }
     },
     "Transaction Type" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo Di Transazione"
+          }
+        }
+      }
     },
     "Twitter" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twitter"
+          }
+        }
+      }
     },
     "Upcoming Features" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funzionalità In Arrivo"
+          }
+        }
+      }
     },
     "Used" : {
 
@@ -540,16 +1212,34 @@
 
     },
     "Year" : {
-
-    },
-    "Yes" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anno"
+          }
+        }
+      }
     },
     "YES" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SÌ"
+          }
+        }
+      }
     },
     "You must use the app in compliance with all applicable laws. Any misuse or illegal activities related to the app may result in termination of your access." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'utente deve utilizzare l'applicazione nel rispetto di tutte le leggi vigenti. Qualsiasi uso improprio o attività illegale legata all'applicazione può comportare l'interruzione del tuo accesso."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

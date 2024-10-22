@@ -29,14 +29,14 @@ struct EnterView: View {
             )
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button(String(localized: "Dismiss")) {
+                        Button("Dismiss") {
                             dismiss()
                             selectedTab = 0
                             newTxn = TransactionData()
                         }
                     }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button(String(localized: "Add")) {
+                        Button("Add") {
                             viewModel.addTransaction(txn: &newTxn)
                             dismiss()
                             selectedTab = 0
