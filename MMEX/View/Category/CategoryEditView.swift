@@ -15,7 +15,7 @@ struct CategoryEditView: View {
             Section(header: Text("Category Name")) {
                 TextField("Cannot be empty!", text: $category.name)
             }
-            Section(header: Text("Active")) {
+            Section(header: Text("ACTIVE")) {
                 Toggle("Is Active", isOn: Binding(
                     get: { category.active },
                     set: { category.active = $0 }

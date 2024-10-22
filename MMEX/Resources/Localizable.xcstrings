@@ -110,16 +110,6 @@
         }
       }
     },
-    "Active" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Attivo"
-          }
-        }
-      }
-    },
     "ACTIVE" : {
       "localizations" : {
         "it" : {
