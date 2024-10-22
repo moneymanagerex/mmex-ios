@@ -24,10 +24,10 @@ struct InsightsAccountView: View {
     static let statusChoices = [
         ("Account Balance", "Balance"),
         ("Account Balance", "Reconciled Balance"),
-        ("Account Flow", "None"),
-        ("Account Flow", "Duplicate"),
-        ("Account Flow", "Follow up"),
-        ("Account Flow", "Void")
+        ("Account Flow", "Status: (none)"),
+        ("Account Flow", "Status: Duplicate"),
+        ("Account Flow", "Status: Follow up"),
+        ("Account Flow", "Status: Void")
     ]
 
     var body: some View {
