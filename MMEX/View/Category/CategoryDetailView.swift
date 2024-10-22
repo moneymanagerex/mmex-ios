@@ -23,7 +23,7 @@ struct CategoryDetailView: View {
                 Text(category.name)
             }
             
-            Section(header: Text("Active")) {
+            Section(header: Text("ACTIVE")) {
                 Text(category.active == true ? "YES" : "NO")
             }
             
