@@ -45,8 +45,15 @@ struct InsightsView: View {
                         InsightsSummaryView(stats: $viewModel.stats)
                     } }
 
-                    // Date Range Filters Section
-                    Section {
+                    Section(header: HStack {
+                        Button(action: { incomeExpenseIsExpanded.toggle() }) {
+                            env.theme.group.view(
+                                name: { Text("Income vs Expense Over Time") },
+                                isExpanded: incomeExpenseIsExpanded
+                            )
+                        }
+                    } ) { if incomeExpenseIsExpanded {
+                        // Date Range Filters
                         HStack {
                             DatePicker("Start Date", selection: $viewModel.startDate, displayedComponents: .date)
                                 .labelsHidden()
@@ -62,16 +69,7 @@ struct InsightsView: View {
                         .background(Color(.systemGray6))
                         .cornerRadius(10)
                         .shadow(radius: 2)
-                    }
 
-                    Section(header: HStack {
-                        Button(action: { incomeExpenseIsExpanded.toggle() }) {
-                            env.theme.group.view(
-                                name: { Text("Income vs Expense Over Time") },
-                                isExpanded: incomeExpenseIsExpanded
-                            )
-                        }
-                    } ) { if incomeExpenseIsExpanded {
                         IncomeExpenseView(stats: $viewModel.recentStats)
                     } }
 
