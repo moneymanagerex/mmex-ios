@@ -204,6 +204,16 @@ extension RepositoryViewModel {
     }
 }
 
+extension RepositoryViewModel {
+    func reload<MainData: DataProtocol>(_ oldData: MainData?, _ newData: MainData?) {
+        env.loadCurrency()
+        env.loadAccount()
+
+        _ = unloadAccountGroup()
+        unloadAccountList()
+    }
+}
+
 /*
 extension OldRepositoryViewModelProtocol {
     func preloaded(env: EnvironmentManager, group: GroupChoiceType) -> Self {

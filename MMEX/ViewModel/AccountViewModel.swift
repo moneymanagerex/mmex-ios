@@ -14,22 +14,13 @@ enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
     case type       = "Type"
     case currency   = "Currency"
     case status     = "Status"
-    case attachment = "Att."
+    case attachment = "Att." // full name does not fit in iPhoneSE display
     static let defaultValue = Self.all
 
     static let isSingleton: Set<Self> = [.all]
     var fullName: String {
         switch self { case .attachment: "Attachment"; default: rawValue }
     }
-}
-
-struct AccountSearch: RepositorySearchProtocol {
-    var area: [RepositorySearchArea<AccountData>] = [
-        ("Name",  true,  [ {$0.name} ]),
-        ("Notes", false, [ {$0.notes} ]),
-        ("Other", false, [ {$0.num}, {$0.heldAt}, {$0.website}, {$0.contactInfo}, {$0.accessInfo} ]),
-    ]
-    var key: String = ""
 }
 
 struct AccountGroup: RepositoryLoadGroupProtocol {
@@ -64,33 +55,13 @@ struct AccountGroup: RepositoryLoadGroupProtocol {
     ]
 }
 
-extension RepositoryViewModel {
-    func accountGroupIsVisible(_ g: Int, search: AccountSearch) -> Bool? {
-        guard
-            case let .ready(dataDict) = accountData.state,
-            case let .ready(groupData) = accountGroup.state
-        else { return nil }
-        if search.isEmpty {
-            return switch accountGroup.choice {
-            case .type, .currency: !groupData[g].dataId.isEmpty
-            default: true
-            }
-        }
-        return groupData[g].dataId.first(where: { search.match(dataDict[$0]!) }) != nil
-    }
-
-    func searchAccountGroup(search: AccountSearch, expand: Bool = false) {
-        //log.trace("DEBUG: RepositoryViewModel.searchAccountGroup()")
-        guard case let .ready(groupData) = accountGroup.state else { return }
-        for g in 0 ..< groupData.count {
-            guard let isVisible = accountGroupIsVisible(g, search: search) else { return }
-            //log.debug("DEBUG: RepositoryViewModel.searchAccountGroup(): \(g) = \(isVisible)")
-            accountGroup.isVisible[g] = isVisible
-            if (expand || !search.isEmpty) && isVisible {
-                accountGroup.isExpanded[g] = true
-            }
-        }
-    }
+struct AccountSearch: RepositorySearchProtocol {
+    var area: [RepositorySearchArea<AccountData>] = [
+        ("Name",  true,  [ {$0.name} ]),
+        ("Notes", false, [ {$0.notes} ]),
+        ("Other", false, [ {$0.num}, {$0.heldAt}, {$0.website}, {$0.contactInfo}, {$0.accessInfo} ]),
+    ]
+    var key: String = ""
 }
 
 extension RepositoryViewModel {
@@ -101,7 +72,7 @@ extension RepositoryViewModel {
             load(queue: &queue, keyPath: \Self.accountOrder)
             load(queue: &queue, keyPath: \Self.accountUsed)
             load(queue: &queue, keyPath: \Self.accountAtt)
-            // needed in EditView
+            // needed in EditForm
             load(queue: &queue, keyPath: \Self.currencyName)
             load(queue: &queue, keyPath: \Self.currencyOrder)
             return await allOk(queue: queue)
@@ -197,5 +168,132 @@ extension RepositoryViewModel {
         accountGroup.isVisible  = []
         accountGroup.isExpanded = []
         return true
+    }
+}
+
+extension RepositoryViewModel {
+    func accountGroupIsVisible(_ g: Int, search: AccountSearch) -> Bool? {
+        guard
+            case let .ready(dataDict) = accountData.state,
+            case let .ready(groupData) = accountGroup.state
+        else { return nil }
+        if search.isEmpty {
+            return switch accountGroup.choice {
+            case .type, .currency: !groupData[g].dataId.isEmpty
+            default: true
+            }
+        }
+        return groupData[g].dataId.first(where: { search.match(dataDict[$0]!) }) != nil
+    }
+
+    func searchAccountGroup(search: AccountSearch, expand: Bool = false) {
+        //log.trace("DEBUG: RepositoryViewModel.searchAccountGroup()")
+        guard case let .ready(groupData) = accountGroup.state else { return }
+        for g in 0 ..< groupData.count {
+            guard let isVisible = accountGroupIsVisible(g, search: search) else { return }
+            //log.debug("DEBUG: RepositoryViewModel.searchAccountGroup(): \(g) = \(isVisible)")
+            accountGroup.isVisible[g] = isVisible
+            if (expand || !search.isEmpty) && isVisible {
+                accountGroup.isExpanded[g] = true
+            }
+        }
+    }
+}
+
+extension RepositoryViewModel {
+    func validateAccount(_ data: AccountData) -> String? {
+        if data.name.isEmpty {
+            return "Name is empty"
+        }
+
+        // TODO: data.name is unique
+
+        if case let .ready(currency) = currencyName.state {
+            if data.currencyId <= 0 {
+                return "No currency is selected"
+            } else if currency[data.currencyId] == nil {
+                return "* Unknown currency #\(data.currencyId)"
+            }
+        } else {
+            return "* currencyName is not loaded"
+        }
+
+        return nil
+    }
+}
+
+extension RepositoryViewModel {
+    func createAccount(_ data: inout AccountData) -> String? {
+        if let validateError = validateAccount(data) {
+            return validateError
+        }
+
+        guard let repository = AccountRepository(env) else {
+            return "* Database is not available"
+        }
+        guard repository.insert(&data) else {
+            return "* Cannot create new account"
+        }
+
+        return nil
+    }
+}
+
+extension RepositoryViewModel {
+    func updateAccount(_ data: AccountData) -> String? {
+        if let validateError = validateAccount(data) {
+            return validateError
+        }
+
+        guard let repository = AccountRepository(env) else {
+            return "* Database is not available"
+        }
+        guard repository.update(data) else {
+            return "* Cannot update account #\(data.id)"
+        }
+
+        return nil
+    }
+}
+
+extension RepositoryViewModel {
+    func deleteAccount(_ data: AccountData) -> String? {
+        if case let .ready(used) = accountUsed.state {
+            if used.contains(data.id) {
+                return "* Account #\(data.id) is used"
+            }
+        } else {
+            return "* accountUsed is not loaded"
+        }
+
+        guard let repository = AccountRepository(env) else {
+            return "* Database is not available"
+        }
+        guard repository.delete(data) else {
+            return "* Cannot delete account \(data.id)"
+        }
+
+        return nil
+    }
+}
+
+extension RepositoryViewModel {
+    func reload(_ oldData: AccountData?, _ newData: AccountData?) async {
+        if let newData {
+            if env.currencyCache[newData.currencyId] == nil {
+                // TODO: loadCurrency() -> addCurrency()
+                env.loadCurrency()
+            }
+            env.accountCache.update(id: newData.id, data: newData)
+        } else if let _ = oldData {
+            // TODO: loadAccount() -> removeAccount()
+            env.loadAccount()
+        }
+
+        // TODO: update vm
+        _ = unloadAccountGroup()
+        unloadAccountList()
+        await loadAccountList()
+        _ = loadAccountGroup(env: env, choice: accountGroup.choice)
     }
 }

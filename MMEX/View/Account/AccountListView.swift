@@ -30,13 +30,17 @@ struct AccountListView: View {
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
-            detailView: { data in AccountDetailView(
+            createView: { $newData, $isPresented in AccountCreateView(
                 vm: vm,
-                data: data
-            ) },
-            addView: { $isPresented in AccountAddView(
-                vm: vm,
+                data: Self.newData,
+                newData: $newData,
                 isPresented: $isPresented
+            ) },
+            readView: { data, $newData, $deleteData in AccountReadView(
+                vm: vm,
+                data: data,
+                newData: $newData,
+                deleteData: $deleteData
             ) }
         )
         .onAppear {

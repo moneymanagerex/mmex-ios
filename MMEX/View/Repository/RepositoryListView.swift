@@ -8,38 +8,40 @@
 import SwiftUI
 
 struct RepositoryListView<
-    RepositoryType: RepositoryProtocol, GroupType: RepositoryLoadGroupProtocol,
+    MainRepository: RepositoryProtocol, GroupType: RepositoryLoadGroupProtocol,
     SearchType: RepositorySearchProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
     DetailView: View, InsertView: View
 >: View
-where GroupType.MainRepository == RepositoryType,
-      SearchType.MainData == RepositoryType.RepositoryData
+where GroupType.MainRepository == MainRepository,
+      SearchType.MainData == MainRepository.RepositoryData
 {
-    typealias RepositoryData  = RepositoryType.RepositoryData
-    typealias GroupChoiceType = GroupType.GroupChoice
+    typealias MainData  = MainRepository.RepositoryData
+    typealias GroupChoice = GroupType.GroupChoice
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    var vmList: RepositoryLoadList<RepositoryType>
-    var vmData: RepositoryLoadMainData<RepositoryType>
-    @State var groupChoice: GroupChoiceType
+    var vmList: RepositoryLoadList<MainRepository>
+    var vmData: RepositoryLoadMainData<MainRepository>
+    @State var groupChoice: GroupChoice
     @Binding var vmGroup: GroupType
     @Binding var search: SearchType
     @ViewBuilder var groupName: (_ g: Int, _ name: String?) -> GroupNameView
-    @ViewBuilder var itemName: (_ data: RepositoryData) -> ItemNameView
-    @ViewBuilder var itemInfo: (_ data: RepositoryData) -> ItemInfoView
-    @ViewBuilder var detailView: (_ data: RepositoryData) -> DetailView
-    @ViewBuilder var addView: (_ isPresented: Binding<Bool>) -> InsertView
+    @ViewBuilder var itemName: (_ data: MainData) -> ItemNameView
+    @ViewBuilder var itemInfo: (_ data: MainData) -> ItemInfoView
+    @ViewBuilder var createView: (_ newData: Binding<MainData?>, _ isPresented: Binding<Bool>) -> InsertView
+    @ViewBuilder var readView: (_ data: MainData, _ newData: Binding<MainData?>, _ deleteData: Binding<Bool>) -> DetailView
 
-    @State var addIsPresented = false
+    @State var newData: MainData? = nil
+    @State var deleteData: Bool = false
+    @State var createIsPresented = false
 
     var body: some View {
         return List {
             HStack {
                 Menu(content: {
                     Picker("", selection: $groupChoice) {
-                        ForEach(GroupChoiceType.allCases, id: \.self) { choice in
+                        ForEach(GroupChoice.allCases, id: \.self) { choice in
                             Text("\(choice.fullName)")
                                 .font(.subheadline)
                                 .tag(choice)
@@ -59,11 +61,14 @@ where GroupType.MainRepository == RepositoryType,
                 .padding(.vertical, -5)
                 //.padding(.trailing, 50)
                 //.border(.red)
+
+                // dummy button in order to force some spacing
                 Button(action: {}){
                     Text("").frame(maxWidth: .infinity)
                 }
                 .buttonStyle(BorderlessButtonStyle())
                 //.border(.red)
+
                 HStack {
                     NavigationLink(
                         destination: RepositorySearchAreaView(area: $search.area)
@@ -80,6 +85,7 @@ where GroupType.MainRepository == RepositoryType,
             .listRowInsets(.init())
             .listRowBackground(Color.clear)
             //.border(.red)
+
             switch vmGroup.state {
             case let .ready(groupData):
                 ForEach(0 ..< groupData.count, id: \.self) { g in
@@ -115,17 +121,17 @@ where GroupType.MainRepository == RepositoryType,
         .listSectionSpacing(.compact)
         .toolbar {
             Button(
-                action: { addIsPresented = true },
+                action: { createIsPresented = true },
                 label: { Image(systemName: "plus") }
             )
-            .accessibilityLabel("New " + RepositoryData.dataName.0)
+            .accessibilityLabel("New " + MainData.dataName.0)
         }
         .searchable(text: $search.key, prompt: search.prompt)
         .textInputAutocapitalization(.never)
         .onChange(of: search.key) { _, newValue in
             vm.searchGroup(for: vmGroup, search: search, expand: true)
         }
-        .navigationTitle(RepositoryData.dataName.1)
+        .navigationTitle(MainData.dataName.1)
         .onAppear { Task {
             let _ = log.debug("DEBUG: RepositoryListView.onAppear()")
             groupChoice = vmGroup.choice
@@ -135,8 +141,14 @@ where GroupType.MainRepository == RepositoryType,
             vm.unloadList(for: vmList)
             await load()
         }
-        .sheet(isPresented: $addIsPresented) {
-            addView($addIsPresented)
+        .sheet(isPresented: $createIsPresented) {
+            createView(
+                $newData, $createIsPresented
+            )
+            .onAppear { newData = nil }
+            .onDisappear {
+                if newData != nil { vm.reload(nil, newData) }
+            }
         }
     }
 
@@ -149,11 +161,11 @@ where GroupType.MainRepository == RepositoryType,
 
     func groupView(_ g: Int) -> some View { Group { if case let .ready(groupData) = vmGroup.state {
         Section(header: Group {
-            if !GroupChoiceType.isSingleton.contains(vmGroup.choice) {
+            if !GroupChoice.isSingleton.contains(vmGroup.choice) {
                 HStack {
-                    Button(action: {
-                        vmGroup.isExpanded[g].toggle()
-                    }) {
+                    Button(
+                        action: { vmGroup.isExpanded[g].toggle() }
+                    ) {
                         env.theme.group.view(
                             name: { groupName(g, groupData[g].name) },
                             count: groupData[g].dataId.count,
@@ -166,7 +178,7 @@ where GroupType.MainRepository == RepositoryType,
         ) {
             if vmGroup.isExpanded[g] {
                 ForEach(groupData[g].dataId, id: \.self) { id in
-                    //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), dataState=\(vm.dataState)")
+                    //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), vmData.state=\(vmData.state)")
                     // TODO: update View after change in account
                     if case let .ready(dataDict) = vmData.state,
                        let data = dataDict[id],
@@ -180,10 +192,20 @@ where GroupType.MainRepository == RepositoryType,
         }
     } } }
 
-    func itemView(_ data: RepositoryData) -> some View {
-        NavigationLink(destination: detailView(
-            data
-        ) ) {
+    func itemView(_ data: MainData) -> some View {
+        NavigationLink(
+            destination: readView(
+                data, $newData, $deleteData
+            )
+            .onAppear {
+                newData = nil
+                deleteData = false
+            }
+            .onDisappear {
+                if deleteData { vm.reload(data, nil) }
+                else if newData != nil { vm.reload(data, newData) }
+            }
+        ) {
             env.theme.item.view(
                 name: { itemName(data) },
                 info: { itemInfo(data) }
