@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SQLite
 
 enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
     case all        = "All"
@@ -14,13 +15,9 @@ enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
     case type       = "Type"
     case currency   = "Currency"
     case status     = "Status"
-    case attachment = "Att." // full name does not fit in iPhoneSE display
+    case attachment = "Attachment"
     static let defaultValue = Self.all
-
     static let isSingleton: Set<Self> = [.all]
-    var fullName: String {
-        switch self { case .attachment: "Attachment"; default: rawValue }
-    }
 }
 
 struct AccountGroup: RepositoryLoadGroupProtocol {
@@ -67,6 +64,8 @@ struct AccountSearch: RepositorySearchProtocol {
 extension RepositoryViewModel {
     func loadAccountList() async {
         log.trace("DEBUG: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread))")
+        guard case .idle = accountList.state else { return }
+        accountList.state = .loading
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.accountData)
             load(queue: &queue, keyPath: \Self.accountOrder)
@@ -77,17 +76,19 @@ extension RepositoryViewModel {
             load(queue: &queue, keyPath: \Self.currencyOrder)
             return await allOk(queue: queue)
         }
-        accountList.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        accountList.state = queueOk ? .ready(()) : .error("Cannot load.")
         if queueOk {
             log.info("INFO: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread)): Cannot load data.")
+            log.debug("ERROR: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread)): Cannot load.")
             return
         }
     }
 
     func unloadAccountList() {
         log.trace("DEBUG: RepositoryViewModel.unloadAccountList(main=\(Thread.isMainThread))")
+        if case .loading = accountList.state { return }
+        accountList.state = .loading
         accountData.unload()
         accountOrder.unload()
         accountUsed.unload()
@@ -97,16 +98,16 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func loadAccountGroup(env: EnvironmentManager, choice: AccountGroupChoice) -> Bool? {
+    func loadAccountGroup(env: EnvironmentManager, choice: AccountGroupChoice) {
         log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
-        if case .loading = accountGroup.state { return nil }
+        guard case .idle = accountGroup.state else { return }
         guard
             case .ready(_) = accountList.state,
             case let .ready(dataDict)  = accountData.state,
             case let .ready(dataOrder) = accountOrder.state,
             case let .ready(dataUsed)  = accountUsed.state,
             case let .ready(dataAtt)   = accountAtt.state
-        else { return nil }
+        else { return }
 
         accountGroup.state = .loading
         accountGroup.choice = choice
@@ -158,16 +159,15 @@ extension RepositoryViewModel {
         accountGroup.isVisible  = groupTuple.isVisible
         accountGroup.isExpanded = groupTuple.isExpanded
         accountGroup.state = .ready(groupTuple.groupData)
-        return true
     }
 
-    func unloadAccountGroup() -> Bool? {
+    func unloadAccountGroup() {
         log.trace("DEBUG: RepositoryViewModel.unloadAccountGroup(main=\(Thread.isMainThread))")
-        if case .loading = accountGroup.state { return nil }
-        accountGroup.state = .idle
+        if case .loading = accountGroup.state { return }
+        accountGroup.state = .loading
         accountGroup.isVisible  = []
         accountGroup.isExpanded = []
-        return true
+        accountGroup.state = .idle
     }
 }
 
@@ -201,12 +201,10 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func validateAccount(_ data: AccountData) -> String? {
+    func updateAccount(_ data: inout AccountData) -> String? {
         if data.name.isEmpty {
             return "Name is empty"
         }
-
-        // TODO: data.name is unique
 
         if case let .ready(currency) = currencyName.state {
             if data.currencyId <= 0 {
@@ -218,38 +216,28 @@ extension RepositoryViewModel {
             return "* currencyName is not loaded"
         }
 
-        return nil
-    }
-}
-
-extension RepositoryViewModel {
-    func createAccount(_ data: inout AccountData) -> String? {
-        if let validateError = validateAccount(data) {
-            return validateError
-        }
-
-        guard let repository = AccountRepository(env) else {
+        typealias A = AccountRepository
+        guard let a = A(env) else {
             return "* Database is not available"
         }
-        guard repository.insert(&data) else {
-            return "* Cannot create new account"
+
+        guard let dataName = a.selectId(from: A.table.filter(
+            A.table[A.col_id] == Int64(data.id) || A.table[A.col_name] == data.name
+        ) ) else {
+            return "* Cannot fetch from database"
+        }
+        guard dataName.count == (data.id <= 0 ? 0 : 1) else {
+            return "Account \(data.name) already exists"
         }
 
-        return nil
-    }
-}
-
-extension RepositoryViewModel {
-    func updateAccount(_ data: AccountData) -> String? {
-        if let validateError = validateAccount(data) {
-            return validateError
-        }
-
-        guard let repository = AccountRepository(env) else {
-            return "* Database is not available"
-        }
-        guard repository.update(data) else {
-            return "* Cannot update account #\(data.id)"
+        if data.id <= 0 {
+            guard a.insert(&data) else {
+                return "* Cannot create new account"
+            }
+        } else {
+            guard a.update(data) else {
+                return "* Cannot update account #\(data.id)"
+            }
         }
 
         return nil
@@ -266,11 +254,25 @@ extension RepositoryViewModel {
             return "* accountUsed is not loaded"
         }
 
-        guard let repository = AccountRepository(env) else {
+        guard
+            let a = AccountRepository(env),
+            let ax = AttachmentRepository(env)
+        else {
             return "* Database is not available"
         }
-        guard repository.delete(data) else {
-            return "* Cannot delete account \(data.id)"
+
+        if case let .ready(att) = accountAtt.state {
+            if att[data.id] != nil {
+                guard ax.delete(refType: .account, refId: data.id) else {
+                    return "* Cannot delete attachments for account #\(data.id)"
+                }
+            }
+        } else {
+            return "* accountAtt is not loaded"
+        }
+
+        guard a.delete(data) else {
+            return "* Cannot delete account #\(data.id)"
         }
 
         return nil
@@ -278,22 +280,46 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func reload(_ oldData: AccountData?, _ newData: AccountData?) async {
+    func reloadAccount(_ oldData: AccountData?, _ newData: AccountData?) async {
         if let newData {
             if env.currencyCache[newData.currencyId] == nil {
-                // TODO: loadCurrency() -> addCurrency()
                 env.loadCurrency()
             }
             env.accountCache.update(id: newData.id, data: newData)
-        } else if let _ = oldData {
-            // TODO: loadAccount() -> removeAccount()
-            env.loadAccount()
+        } else if let oldData {
+            env.accountCache[oldData.id] = nil
         }
 
-        // TODO: update vm
-        _ = unloadAccountGroup()
+        // save isExpanded
+        let groupIsExpanded: [Bool]? = switch accountGroup.state {
+        case .ready(_): accountGroup.isExpanded
+        default: nil
+        }
+        var currencyIsExpanded: [DataId: Bool] = [:]
+        if let groupIsExpanded, case .currency = accountGroup.choice {
+            for (i, currencyId) in accountGroup.groupCurrency.enumerated() {
+                currencyIsExpanded[currencyId] = groupIsExpanded[i]
+            }
+        }
+
+        // TODO: improve performance
+        unloadAccountGroup()
         unloadAccountList()
         await loadAccountList()
-        _ = loadAccountGroup(env: env, choice: accountGroup.choice)
+        loadAccountGroup(env: env, choice: accountGroup.choice)
+
+        // restore isExpanded
+        if let groupIsExpanded { switch accountGroup.choice {
+        case .currency:
+            for (i, currencyId) in accountGroup.groupCurrency.enumerated() {
+                if let isExpanded = currencyIsExpanded[currencyId] {
+                    accountGroup.isExpanded[i] = isExpanded
+                }
+            }
+        default:
+            if accountGroup.isExpanded.count == groupIsExpanded.count {
+                accountGroup.isExpanded = groupIsExpanded
+            }
+        } }
     }
 }

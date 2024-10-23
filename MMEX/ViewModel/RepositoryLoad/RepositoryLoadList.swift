@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+/*
+typealias RepositoryLoadList<MainRepository: RepositoryProtocol>
+= RepositoryLoadState<Void>
+*/
+
 struct RepositoryLoadList<MainRepository: RepositoryProtocol> {
     var state: RepositoryLoadState<Void> = .init()
 }

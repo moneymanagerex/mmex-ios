@@ -27,23 +27,27 @@ struct CurrencyGroup: RepositoryLoadGroupProtocol {
 extension RepositoryViewModel {
     func loadCurrencyList() async {
         log.trace("DEBUG: RepositoryViewModel.loadCurrencyList(main=\(Thread.isMainThread))")
+        guard case .idle = currencyList.state else { return }
+        currencyList.state = .loading
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.currencyData)
             load(queue: &queue, keyPath: \Self.currencyOrder)
             load(queue: &queue, keyPath: \Self.currencyUsed)
             return await allOk(queue: queue)
         }
-        currencyList.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        currencyList.state = queueOk ? .ready(()) : .error("Cannot load.")
         if queueOk {
             log.info("INFO: RepositoryViewModel.loadCurrencyList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: RepositoryViewModel.loadCurrencyList(main=\(Thread.isMainThread)): Cannot load data.")
+            log.debug("ERROR: RepositoryViewModel.loadCurrencyList(main=\(Thread.isMainThread)): Cannot load.")
             return
         }
     }
 
     func unloadCurrencyList() {
         log.trace("DEBUG: RepositoryViewModel.unloadCurrencyList(main=\(Thread.isMainThread))")
+        if case .loading = currencyList.state { return }
+        currencyList.state = .loading
         currencyData.unload()
         currencyOrder.unload()
         currencyUsed.unload()
@@ -52,12 +56,12 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func unloadCurrencyGroup() -> Bool? {
+    func unloadCurrencyGroup() {
         log.trace("DEBUG: RepositoryViewModel.unloadCurrencyGroup(main=\(Thread.isMainThread))")
-        if case .loading = currencyGroup.state { return nil }
-        currencyGroup.state = .idle
+        if case .loading = currencyGroup.state { return }
+        currencyGroup.state = .loading
         currencyGroup.isVisible  = []
         currencyGroup.isExpanded = []
-        return true
+        currencyGroup.state = .idle
     }
 }

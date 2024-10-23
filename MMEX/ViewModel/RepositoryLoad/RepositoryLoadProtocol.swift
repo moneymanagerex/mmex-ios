@@ -29,6 +29,7 @@ protocol RepositoryLoadProtocol {
 
 extension RepositoryLoadProtocol {
     mutating func unload() {
+        if case .loading = self.state { return }
         self.state = .idle
     }
 }
