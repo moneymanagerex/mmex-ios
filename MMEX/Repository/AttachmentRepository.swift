@@ -68,4 +68,20 @@ extension AttachmentRepository {
             .order(Self.col_id)
         )
     }
+
+    func delete(refType: RefType, refId: DataId) -> Bool {
+        do {
+            let query = Self.table
+                .filter(Self.col_refType == refType.rawValue && Self.col_refId == Int64(refId))
+                .delete()
+            log.trace("DEBUG: AttachmentRepository.delete(): \(query.expression.description)")
+            try db.run(query)
+            log.info("INFO: AttachmentRepository.delete(\(Self.repositoryName))")
+            return true
+        } catch {
+            log.error("ERROR: AttachmentRepository.delete(\(Self.repositoryName)): \(error)")
+            return false
+        }
+
+    }
 }

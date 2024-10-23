@@ -27,23 +27,27 @@ struct StockGroup: RepositoryLoadGroupProtocol {
 extension RepositoryViewModel {
     func loadStockList() async {
         log.trace("DEBUG: RepositoryViewModel.loadStockList(main=\(Thread.isMainThread))")
+        guard case .idle = stockList.state else { return }
+        stockList.state = .loading
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.stockData)
             load(queue: &queue, keyPath: \Self.stockOrder)
             load(queue: &queue, keyPath: \Self.stockUsed)
             return await allOk(queue: queue)
         }
-        stockList.state = queueOk ? .ready(()) : .error("Cannot load data.")
+        stockList.state = queueOk ? .ready(()) : .error("Cannot load.")
         if queueOk {
             log.info("INFO: RepositoryViewModel.loadStockList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: RepositoryViewModel.loadStockList(main=\(Thread.isMainThread)): Cannot load data.")
+            log.debug("ERROR: RepositoryViewModel.loadStockList(main=\(Thread.isMainThread)): Cannot load.")
             return
         }
     }
 
     func unloadStockList() {
         log.trace("DEBUG: RepositoryViewModel.unloadStockList(main=\(Thread.isMainThread))")
+        if case .loading = stockList.state { return }
+        stockList.state = .loading
         stockData.unload()
         stockOrder.unload()
         stockUsed.unload()
@@ -52,12 +56,12 @@ extension RepositoryViewModel {
 }
 
 extension RepositoryViewModel {
-    func unloadStockGroup() -> Bool? {
+    func unloadStockGroup() {
         log.trace("DEBUG: RepositoryViewModel.unloadStockGroup(main=\(Thread.isMainThread))")
-        if case .loading = stockGroup.state { return nil }
-        stockGroup.state = .idle
+        if case .loading = stockGroup.state { return }
+        stockGroup.state = .loading
         stockGroup.isVisible  = []
         stockGroup.isExpanded = []
-        return true
+        stockGroup.state = .idle
     }
 }

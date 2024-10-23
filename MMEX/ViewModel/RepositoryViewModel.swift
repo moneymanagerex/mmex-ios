@@ -177,9 +177,22 @@ extension RepositoryViewModel {
         let _ = unloadPayeeGroup()
     }
 
+    func reload<MainData: DataProtocol>(
+        _ oldData: MainData?,
+        _ newData: MainData?
+    ) async {
+        if MainData.self == U.RepositoryData.self {
+        } else if MainData.self == A.RepositoryData.self {
+            await reloadAccount(oldData as! AccountData?, newData as! AccountData?)
+        } else if MainData.self == E.RepositoryData.self {
+        } else if MainData.self == S.RepositoryData.self {
+        } else if MainData.self == P.RepositoryData.self {
+        }
+    }
+
     func unloadAll() {
-        unloadList()
         unloadGroup()
+        unloadList()
     }
 }
 
@@ -201,16 +214,6 @@ extension RepositoryViewModel {
         } else if GroupType.MainRepository.self == P.self {
 //            let _ = searchPayeeGroup(search: search as! PayeeSearch, expand: expand)
         }
-    }
-}
-
-extension RepositoryViewModel {
-    func reload<MainData: DataProtocol>(_ oldData: MainData?, _ newData: MainData?) {
-        env.loadCurrency()
-        env.loadAccount()
-
-        _ = unloadAccountGroup()
-        unloadAccountList()
     }
 }
 

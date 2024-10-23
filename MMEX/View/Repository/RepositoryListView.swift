@@ -55,6 +55,7 @@ where GroupType.MainRepository == MainRepository,
                     Text(Image(systemName: "chevron.up.chevron.down"))
                 ) } )
                 .onChange(of: groupChoice) {
+                    vm.unloadGroup(for: vmGroup)
                     vm.loadGroup(for: vmGroup, groupChoice)
                     vm.searchGroup(for: vmGroup, search: search)
                 }
@@ -138,6 +139,7 @@ where GroupType.MainRepository == MainRepository,
             await load()
         } }
         .refreshable {
+            vm.unloadGroup(for: vmGroup)
             vm.unloadList(for: vmList)
             await load()
         }
@@ -147,7 +149,10 @@ where GroupType.MainRepository == MainRepository,
             )
             .onAppear { newData = nil }
             .onDisappear {
-                if newData != nil { vm.reload(nil, newData) }
+                if newData != nil { Task {
+                    await vm.reload(nil as MainData?, newData)
+                    vm.searchGroup(for: vmGroup, search: search)
+                } }
             }
         }
     }
@@ -201,10 +206,13 @@ where GroupType.MainRepository == MainRepository,
                 newData = nil
                 deleteData = false
             }
-            .onDisappear {
-                if deleteData { vm.reload(data, nil) }
-                else if newData != nil { vm.reload(data, newData) }
-            }
+                .onDisappear {
+                    log.debug("DEBUG: RepositoryListView.itemView.onDisappear")
+                    if deleteData || newData != nil { Task {
+                        await vm.reload(data, newData)
+                        vm.searchGroup(for: vmGroup, search: search)
+                    } }
+                }
         ) {
             env.theme.item.view(
                 name: { itemName(data) },
