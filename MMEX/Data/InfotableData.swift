@@ -59,5 +59,6 @@ extension InfotableData {
         InfotableData(id: 3, name: InfoKey.baseCurrencyID.id,   value: "1"),
         InfotableData(id: 4, name: InfoKey.defaultAccountID.id, value: "1"),
         InfotableData(id: 5, name: InfoKey.categDelimiter.id, value: ":"),
+        InfotableData(id: 6, name: InfoKey.uid.id, value: String(format: "ios_%@", TimestampString(Date()).string)),
     ]
 }

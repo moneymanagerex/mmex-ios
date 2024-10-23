@@ -101,3 +101,13 @@ struct DateTimeString: DateStringProtocal {
         return df
     }
 }
+
+struct TimestampString: DateStringProtocal {
+    var string: String
+
+    static var formatter: DateFormatter {
+        let df = DateFormatter()
+        df.dateFormat = "yyyyMMddHHmmssSSS"
+        return df
+    }
+}
