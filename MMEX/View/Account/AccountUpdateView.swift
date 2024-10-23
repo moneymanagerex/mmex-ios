@@ -11,9 +11,11 @@ import SwiftUI
 struct AccountUpdateView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: RepositoryViewModel
+    var title: String
     @State var data: AccountData
     @Binding var newData: AccountData?
     @Binding var isPresented: Bool
+    var dismiss: DismissAction
 
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
@@ -28,7 +30,7 @@ struct AccountUpdateView: View {
                 )
             }
             .textSelection(.enabled)
-            .navigationTitle(data.name)
+            .navigationTitle(title)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -44,6 +46,7 @@ struct AccountUpdateView: View {
                         } else {
                             newData = data
                             isPresented = false
+                            dismiss()
                         }
                     }
                 }

@@ -206,12 +206,13 @@ where GroupType.MainRepository == MainRepository,
                 newData = nil
                 deleteData = false
             }
-                .onDisappear { Task {
-                    if deleteData || newData != nil {
+                .onDisappear {
+                    log.debug("DEBUG: RepositoryListView.itemView.onDisappear")
+                    if deleteData || newData != nil { Task {
                         await vm.reload(data, newData)
                         vm.searchGroup(for: vmGroup, search: search)
-                    }
-                } }
+                    } }
+                }
         ) {
             env.theme.item.view(
                 name: { itemName(data) },

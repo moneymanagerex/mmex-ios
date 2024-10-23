@@ -281,6 +281,7 @@ extension RepositoryViewModel {
 
 extension RepositoryViewModel {
     func reloadAccount(_ oldData: AccountData?, _ newData: AccountData?) async {
+        log.trace("DEBUG: RepositoryViewModel.reloadAccount(main=\(Thread.isMainThread))")
         if let newData {
             if env.currencyCache[newData.currencyId] == nil {
                 env.loadCurrency()

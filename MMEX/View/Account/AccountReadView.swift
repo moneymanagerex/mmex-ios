@@ -70,15 +70,12 @@ struct AccountReadView: View {
         .sheet(isPresented: $updateViewIsPresented) {
             AccountUpdateView(
                 vm: vm,
+                title: data.name,
                 data: data,
                 newData: $newData,
-                isPresented: $updateViewIsPresented
+                isPresented: $updateViewIsPresented,
+                dismiss: dismiss
             )
-            .onDisappear {
-                if newData != nil {
-                    dismiss()
-                }
-            }
         }
         .fileExporter(
             isPresented: $exporterIsPresented,
