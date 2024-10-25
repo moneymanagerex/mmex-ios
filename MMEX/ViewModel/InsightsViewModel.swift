@@ -10,6 +10,13 @@ import SwiftUI
 import SQLite
 import Combine
 
+struct InsightsAccountInfo {
+    var dataByType: [AccountType: [AccountData]] = [:]
+    var today: String = ""
+    var flowUntilToday: [DataId: AccountFlowByStatus] = [:]
+    var flowAfterToday: [DataId: AccountFlowByStatus] = [:]
+}
+
 class InsightsViewModel: ObservableObject {
     private var env: EnvironmentManager
 

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SQLite
 
 enum PayeeGroupChoice: String, RepositoryGroupChoiceProtocol {
     case all      = "All"
@@ -14,28 +15,33 @@ enum PayeeGroupChoice: String, RepositoryGroupChoiceProtocol {
     static let isSingleton: Set<Self> = [.all]
 }
 
-struct PayeeGroup: RepositoryLoadGroupProtocol {
-    typealias GroupChoice    = PayeeGroupChoice
+struct PayeeGroup: RepositoryGroupProtocol {
     typealias MainRepository = PayeeRepository
-    
+    typealias GroupChoice    = PayeeGroupChoice
+
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<[RepositoryGroupData]> = .init()
-    var isVisible  : [Bool] = []
-    var isExpanded : [Bool] = []
+    var state: RepositoryLoadState = .init()
+    var value: ValueType = []
+}
+
+struct PayeeSearch: RepositorySearchProtocol {
+    var area: [RepositorySearchArea<PayeeData>] = [
+        ("Name",  true,  [ {$0.name} ]),
+    ]
+    var key: String = ""
 }
 
 extension RepositoryViewModel {
     func loadPayeeList() async {
+        guard payeeList.state.loading() else { return }
         log.trace("DEBUG: RepositoryViewModel.loadPayeeList(main=\(Thread.isMainThread))")
-        guard case .idle = payeeList.state else { return }
-        payeeList.state = .loading
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.payeeData)
             load(queue: &queue, keyPath: \Self.payeeOrder)
             load(queue: &queue, keyPath: \Self.payeeUsed)
             return await allOk(queue: queue)
         }
-        payeeList.state = queueOk ? .ready(()) : .error("Cannot load.")
+        payeeList.state.loaded(ok: queueOk)
         if queueOk {
             log.info("INFO: RepositoryViewModel.loadPayeeList(main=\(Thread.isMainThread)): Ready.")
         } else {
@@ -45,23 +51,56 @@ extension RepositoryViewModel {
     }
 
     func unloadPayeeList() {
+        guard payeeList.state.unloading() else { return }
         log.trace("DEBUG: RepositoryViewModel.unloadPayeeList(main=\(Thread.isMainThread))")
-        if case .loading = payeeList.state { return }
-        payeeList.state = .loading
         payeeData.unload()
         payeeOrder.unload()
         payeeUsed.unload()
-        payeeList.state = .idle
+        payeeList.state.loaded()
     }
 }
 
 extension RepositoryViewModel {
+    func loadPayeeGroup(choice: PayeeGroupChoice) {
+    }
+
     func unloadPayeeGroup() {
-        log.trace("DEBUG: RepositoryViewModel.unloadPayeeGroup(main=\(Thread.isMainThread))")
-        if case .loading = payeeGroup.state { return }
-        payeeGroup.state = .loading
-        payeeGroup.isVisible  = []
-        payeeGroup.isExpanded = []
-        payeeGroup.state = .idle
+        payeeGroup.unload()
+    }
+}
+
+extension RepositoryViewModel {
+    func reloadPayeeList(_ oldData: PayeeData?, _ newData: PayeeData?) async {
+    }
+}
+
+extension RepositoryViewModel {
+    func payeeGroupIsVisible(_ g: Int, search: PayeeSearch
+    ) -> Bool? {
+        guard
+            payeeData.state  == .ready,
+            payeeGroup.state == .ready
+        else { return nil }
+
+        let dataDict  = payeeData.value
+        let groupData = payeeGroup.value
+
+        if search.isEmpty {
+            return switch payeeGroup.choice {
+            default: true
+            }
+        }
+        return groupData[g].dataId.first(where: { search.match(dataDict[$0]!) }) != nil
+    }
+
+    func searchPayeeGroup(search: PayeeSearch, expand: Bool = false ) {
+        guard payeeGroup.state == .ready else { return }
+        for g in 0 ..< payeeGroup.value.count {
+            guard let isVisible = payeeGroupIsVisible(g, search: search) else { return }
+            payeeGroup.value[g].isVisible = isVisible
+            if (expand || !search.isEmpty) && isVisible {
+                payeeGroup.value[g].isExpanded = true
+            }
+        }
     }
 }

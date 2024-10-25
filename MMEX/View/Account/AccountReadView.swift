@@ -29,7 +29,7 @@ struct AccountReadView: View {
                 data: $data,
                 edit: false
             )
-            if case let .ready(used) = vm.accountUsed.state, !used.contains(data.id) {
+            if vm.accountUsed.state == .ready, !vm.accountUsed.value.contains(data.id) {
                 Button("Delete Account") {
                     let deleteError = vm.deleteAccount(data)
                     if deleteError != nil {
