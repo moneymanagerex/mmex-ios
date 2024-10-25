@@ -37,16 +37,6 @@
         }
       }
     },
-    "• Initial release with transaction tracking, insights, and account management.\n• Bug fixes and improvements." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "• Versione iniziale con tracciamento delle transazioni, approfondimenti e gestione degli account.\n• Correzioni di bug e miglioramenti."
-          }
-        }
-      }
-    },
     "1. Use of the App" : {
       "localizations" : {
         "it" : {
@@ -570,6 +560,9 @@
           }
         }
       }
+    },
+    "Failed to render release notes." : {
+
     },
     "Field Layout" : {
 
