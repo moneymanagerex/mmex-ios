@@ -8,52 +8,79 @@
 import SwiftUI
 import SQLite
 
+struct RepositoryLoadMainList<MainRepository: RepositoryProtocol> {
+    var state: RepositoryLoadState = .init()
+}
+
 struct RepositoryLoadMainCount<MainRepository: RepositoryProtocol>: RepositoryLoadProtocol {
-    typealias LoadType = Int
+    typealias ValueType = Int
 
     let table: SQLite.Table
-    var state: RepositoryLoadState<LoadType> = .init()
+    var state: RepositoryLoadState = .init()
+    var value: Int = 0
 
     init(table: SQLite.Table = MainRepository.table) {
         self.table = table
     }
 
-    func load(env: EnvironmentManager) -> LoadType? {
+    func fetch(env: EnvironmentManager) -> ValueType? {
         MainRepository(env)?.count(from: self.table)
+    }
+
+    mutating func unload() {
+        guard state.unloading() else { return }
+        log.trace("DEBUG: RepositoryLoadMainCount.unload(\(MainRepository.repositoryName), main=\(Thread.isMainThread))")
+        value = 0
+        state.unloaded()
     }
 }
 
 struct RepositoryLoadMainData<MainRepository: RepositoryProtocol>: RepositoryLoadProtocol {
     typealias MainData = MainRepository.RepositoryData
-    typealias LoadType = [DataId: MainData]
+    typealias ValueType = [DataId: MainData]
 
     let table: SQLite.Table
-    var state: RepositoryLoadState<LoadType> = .init()
+    var state: RepositoryLoadState = .init()
+    var value: ValueType = [:]
 
     init(table: SQLite.Table = MainRepository.table) {
         self.table = table
     }
 
-    func load(env: EnvironmentManager) -> LoadType? {
+    func fetch(env: EnvironmentManager) -> ValueType? {
         MainRepository(env)?.selectById(from: self.table)
+    }
+    
+    mutating func unload() {
+        guard state.unloading() else { return }
+        log.trace("DEBUG: RepositoryLoadMainData.unload(\(MainRepository.repositoryName), main=\(Thread.isMainThread))")
+        value = [:]
+        state.unloaded()
     }
 }
 
-struct RepositoryLoadMainValue<MainRepository: RepositoryProtocol, ValueType>: RepositoryLoadProtocol {
-    typealias MainData = MainRepository.RepositoryData
-    typealias LoadType = [DataId: ValueType]
+struct RepositoryLoadMainValue<MainRepository: RepositoryProtocol, MainValue>: RepositoryLoadProtocol {
+    typealias ValueType = [DataId: MainValue]
 
     let table: SQLite.Table
-    let fetch: (SQLite.Row) -> ValueType
-    var state: RepositoryLoadState<LoadType> = .init()
+    let rowValue: (SQLite.Row) -> MainValue
+    var state: RepositoryLoadState = .init()
+    var value: ValueType = [:]
 
-    init(table: SQLite.Table = MainRepository.table, fetch: @escaping (SQLite.Row) -> ValueType) {
+    init(table: SQLite.Table = MainRepository.table, with rowValue: @escaping (SQLite.Row) -> MainValue) {
         self.table = table
-        self.fetch = fetch
+        self.rowValue = rowValue
     }
 
-    func load(env: EnvironmentManager) -> LoadType? {
-        MainRepository(env)?.selectById(from: self.table, with: fetch)
+    func fetch(env: EnvironmentManager) -> ValueType? {
+        MainRepository(env)?.selectById(from: self.table, with: rowValue)
+    }
+
+    mutating func unload() {
+        guard state.unloading() else { return }
+        log.trace("DEBUG: RepositoryLoadMainValue.unload(\(MainRepository.repositoryName), main=\(Thread.isMainThread))")
+        value = [:]
+        state.unloaded()
     }
 }
 
@@ -61,9 +88,11 @@ typealias RepositoryLoadMainName<MainRepository: RepositoryProtocol>
 = RepositoryLoadMainValue<MainRepository, String>
 
 struct RepositoryLoadMainOrder<MainRepository: RepositoryProtocol>: RepositoryLoadProtocol {
-    typealias LoadType = [DataId]
+    typealias ValueType = [DataId]
+
     let table: SQLite.Table
-    var state: RepositoryLoadState<LoadType> = .init()
+    var state: RepositoryLoadState = .init()
+    var value: ValueType = []
 
     init(table: SQLite.Table) {
         self.table = table
@@ -73,21 +102,37 @@ struct RepositoryLoadMainOrder<MainRepository: RepositoryProtocol>: RepositoryLo
         self.table = MainRepository.table.order(order)
     }
 
-    func load(env: EnvironmentManager) -> LoadType? {
+    func fetch(env: EnvironmentManager) -> ValueType? {
         MainRepository(env)?.selectId(from: self.table)
+    }
+
+    mutating func unload() {
+        guard state.unloading() else { return }
+        log.trace("DEBUG: RepositoryLoadMainOrder.unload(\(MainRepository.repositoryName), main=\(Thread.isMainThread))")
+        value = []
+        state.unloaded()
     }
 }
 
 struct RepositoryLoadMainUsed<MainRepository: RepositoryProtocol>: RepositoryLoadProtocol {
-    typealias LoadType = Set<DataId>
+    typealias ValueType = Set<DataId>
+
     let table: SQLite.Table
-    var state: RepositoryLoadState<LoadType> = .init()
+    var state: RepositoryLoadState = .init()
+    var value: ValueType = []
 
     init(table: SQLite.Table = MainRepository.table) {
         self.table = MainRepository.filterUsed(table)
     }
 
-    func load(env: EnvironmentManager) -> LoadType? {
+    func fetch(env: EnvironmentManager) -> ValueType? {
         MainRepository(env)?.selectId(from: self.table).map { Set($0) }
+    }
+
+    mutating func unload() {
+        guard state.unloading() else { return }
+        log.trace("DEBUG: RepositoryLoadMainUsed.unload(\(MainRepository.repositoryName), main=\(Thread.isMainThread))")
+        value = []
+        state.unloaded()
     }
 }

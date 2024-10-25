@@ -37,16 +37,16 @@ struct AccountEditForm: View {
             }
             
             if
-                case let .ready(currencyOrder) = vm.currencyOrder.state,
-                case let .ready(currencyName) = vm.currencyName.state
+                vm.currencyOrder.state == .ready,
+                vm.currencyName.state  == .ready
             {
                 env.theme.field.picker(edit, "Currency") {
                     Picker("", selection: $data.currencyId) {
                         if (data.currencyId <= 0) {
                             Text("Select Currency").tag(0 as DataId) // not set
                         }
-                        ForEach(currencyOrder, id: \.self) { id in
-                            Text(currencyName[id] ?? "").tag(id)
+                        ForEach(vm.currencyOrder.value, id: \.self) { id in
+                            Text(vm.currencyName.value[id] ?? "").tag(id)
                         }
                     }
                 } show: {

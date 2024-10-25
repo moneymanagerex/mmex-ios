@@ -62,20 +62,20 @@ extension GroupTheme {
         }
     }
 
-    func manageItem<NameView: View>(
+    func manageItem<NameView: View, MainRepository: RepositoryProtocol>(
         @ViewBuilder name nameView: @escaping () -> NameView,
-        count: RepositoryLoadState<Int>
+        count: RepositoryLoadMainCount<MainRepository>
     ) -> some View {
         HStack {
             nameView()
                 .font(.headline)
             Spacer()
-            if showCount { switch count {
-            case .ready(let value):
-                BadgeCount(count: value)
+            if showCount { switch count.state {
+            case .ready:
+                BadgeCount(count: count.value)
             case .loading:
                 ProgressView()
-            case .error(_):
+            case .error:
                 ProgressView().tint(.red)
             case .idle:
                 EmptyView()

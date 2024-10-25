@@ -21,43 +21,43 @@ struct ManageView: View {
                 NavigationLink(destination: CurrencyListView()) {
                     env.theme.group.manageItem(
                         name: { Text(CurrencyData.dataName.1) },
-                        count: vm.currencyCount.state
+                        count: vm.currencyCount
                     )
                 }
                 NavigationLink(destination: AccountListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(AccountData.dataName.1) },
-                        count: vm.accountCount.state
+                        count: vm.accountCount
                     )
                 }
                 NavigationLink(destination: AssetListView()) {
                     env.theme.group.manageItem(
                         name: { Text(AssetData.dataName.1) },
-                        count: vm.assetCount.state
+                        count: vm.assetCount
                     )
                 }
                 NavigationLink(destination: StockListView()) {
                     env.theme.group.manageItem(
                         name: { Text(StockData.dataName.1) },
-                        count: vm.stockCount.state
+                        count: vm.stockCount
                     )
                 }
                 NavigationLink(destination: CategoryListView(viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(CategoryData.dataName.1) },
-                        count: vm.categoryCount.state
+                        count: vm.categoryCount
                     )
                 }
                 NavigationLink(destination: PayeeListView()) {
                     env.theme.group.manageItem(
                         name: { Text(PayeeData.dataName.1) },
-                        count: vm.payeeCount.state
+                        count: vm.payeeCount
                     )
                 }
                 NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(TransactionData.dataName.1) },
-                        count: vm.transactionCount.state
+                        count: vm.transactionCount
                     )
                 }
             }

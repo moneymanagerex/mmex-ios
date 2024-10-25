@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RepositoryListView<
-    MainRepository: RepositoryProtocol, GroupType: RepositoryLoadGroupProtocol,
+    MainRepository: RepositoryProtocol, GroupType: RepositoryGroupProtocol,
     SearchType: RepositorySearchProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
     DetailView: View, InsertView: View
@@ -21,7 +21,7 @@ where GroupType.MainRepository == MainRepository,
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: RepositoryViewModel
-    var vmList: RepositoryLoadList<MainRepository>
+    var vmList: RepositoryLoadMainList<MainRepository>
     var vmData: RepositoryLoadMainData<MainRepository>
     @State var groupChoice: GroupChoice
     @Binding var vmGroup: GroupType
@@ -55,9 +55,9 @@ where GroupType.MainRepository == MainRepository,
                     Text(Image(systemName: "chevron.up.chevron.down"))
                 ) } )
                 .onChange(of: groupChoice) {
-                    vm.unloadGroup(for: vmGroup)
-                    vm.loadGroup(for: vmGroup, groupChoice)
-                    vm.searchGroup(for: vmGroup, search: search)
+                    vm.unloadGroup(vmGroup)
+                    vm.loadGroup(vmGroup, choice: groupChoice)
+                    vm.searchGroup(vmGroup, search: search)
                 }
                 .padding(.vertical, -5)
                 //.padding(.trailing, 50)
@@ -88,9 +88,9 @@ where GroupType.MainRepository == MainRepository,
             //.border(.red)
 
             switch vmGroup.state {
-            case let .ready(groupData):
-                ForEach(0 ..< groupData.count, id: \.self) { g in
-                    if vmGroup.isVisible[g] {
+            case .ready:
+                ForEach(0 ..< vmGroup.value.count, id: \.self) { g in
+                    if vmGroup.value[g].isVisible {
                         groupView(g)
                     }
                 }
@@ -99,7 +99,7 @@ where GroupType.MainRepository == MainRepository,
                     Text("Loading data ...")
                     ProgressView()
                 }
-            case .error(_):
+            case .error:
                 HStack {
                     Text("Load error ...")
                     ProgressView()
@@ -130,7 +130,7 @@ where GroupType.MainRepository == MainRepository,
         .searchable(text: $search.key, prompt: search.prompt)
         .textInputAutocapitalization(.never)
         .onChange(of: search.key) { _, newValue in
-            vm.searchGroup(for: vmGroup, search: search, expand: true)
+            vm.searchGroup(vmGroup, search: search, expand: true)
         }
         .navigationTitle(MainData.dataName.1)
         .onAppear { Task {
@@ -139,19 +139,20 @@ where GroupType.MainRepository == MainRepository,
             await load()
         } }
         .refreshable {
-            vm.unloadGroup(for: vmGroup)
-            vm.unloadList(for: vmList)
+            vm.unloadGroup(vmGroup)
+            vm.unloadList(vmList)
             await load()
         }
         .sheet(isPresented: $createIsPresented) {
             createView(
                 $newData, $createIsPresented
             )
-            .onAppear { newData = nil }
+            //.onAppear { newData = nil }
             .onDisappear {
                 if newData != nil { Task {
-                    await vm.reload(nil as MainData?, newData)
-                    vm.searchGroup(for: vmGroup, search: search)
+                    await vm.reloadList(nil as MainData?, newData)
+                    newData = nil
+                    vm.searchGroup(vmGroup, search: search)
                 } }
             }
         }
@@ -159,39 +160,59 @@ where GroupType.MainRepository == MainRepository,
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(main=\(Thread.isMainThread))")
-        await vm.loadList(for: vmList)
-        vm.loadGroup(for: vmGroup, groupChoice)
-        vm.searchGroup(for: vmGroup, search: search)
+        await vm.loadList(vmList)
+        vm.loadGroup(vmGroup, choice: groupChoice)
+        vm.searchGroup(vmGroup, search: search)
     }
 
-    func groupView(_ g: Int) -> some View { Group { if case let .ready(groupData) = vmGroup.state {
+    func groupView(_ g: Int) -> some View { Group { if vmGroup.state == .ready {
         Section(header: Group {
             if !GroupChoice.isSingleton.contains(vmGroup.choice) {
                 HStack {
                     Button(
-                        action: { vmGroup.isExpanded[g].toggle() }
+                        action: { vmGroup.value[g].isExpanded.toggle() }
                     ) {
                         env.theme.group.view(
-                            name: { groupName(g, groupData[g].name) },
-                            count: groupData[g].dataId.count,
-                            isExpanded: vmGroup.isExpanded[g]
+                            name: { groupName(g, vmGroup.value[g].name) },
+                            count: vmGroup.value[g].dataId.count,
+                            isExpanded: vmGroup.value[g].isExpanded
                         )
                     }
                 }
             }
         }//.padding(.top, -10)
         ) {
-            if vmGroup.isExpanded[g] {
-                ForEach(groupData[g].dataId, id: \.self) { id in
-                    //let _ = print("DEBUG: main=\(Thread.isMainThread), id=\(id), vmData.state=\(vmData.state)")
-                    // TODO: update View after change in account
-                    if case let .ready(dataDict) = vmData.state,
-                       let data = dataDict[id],
-                       search.match(data)
-                    {
-                        itemView(data)
+            if vmGroup.value[g].isExpanded {
+                switch vmData.state {
+                case .ready:
+                    ForEach(vmGroup.value[g].dataId, id: \.self) { id in
+                        if let data = vmData.value[id], search.match(data) {
+                            itemView(data)
+                        }
+                        
                     }
-                    
+                case .loading:
+                    HStack {
+                        Text("Loading data ...")
+                        ProgressView()
+                    }
+                case .error:
+                    HStack {
+                        Text("Load error ...")
+                        ProgressView()
+                    }.tint(.red)
+                case .idle:
+                    Button(action: { Task {
+                        await load()
+                    } } ) {
+                        HStack {
+                            Text("Load data")
+                        }
+                    }
+                    .listRowBackground(Color.clear)
+                    .padding()
+                    //.background(.secondary)
+                    .foregroundColor(.secondary)
                 }
             }
         }
@@ -202,15 +223,17 @@ where GroupType.MainRepository == MainRepository,
             destination: readView(
                 data, $newData, $deleteData
             )
-            .onAppear {
-                newData = nil
-                deleteData = false
-            }
+            //.onAppear {
+            //    newData = nil
+            //    deleteData = false
+            //}
                 .onDisappear {
                     log.debug("DEBUG: RepositoryListView.itemView.onDisappear")
                     if deleteData || newData != nil { Task {
-                        await vm.reload(data, newData)
-                        vm.searchGroup(for: vmGroup, search: search)
+                        await vm.reloadList(data, newData)
+                        newData = nil
+                        deleteData = false
+                        vm.searchGroup(vmGroup, search: search)
                     } }
                 }
         ) {

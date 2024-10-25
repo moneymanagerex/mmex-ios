@@ -9,9 +9,8 @@ import SwiftUI
 
 extension RepositoryViewModel {
     func loadManage() async {
+        guard manageCount.loading() else { return }
         log.trace("DEBUG: RepositoryViewModel.loadManage(main=\(Thread.isMainThread))")
-        guard case .idle = manageCount else { return }
-        manageCount = .loading
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.currencyCount)
             load(queue: &queue, keyPath: \Self.accountCount)
@@ -23,7 +22,7 @@ extension RepositoryViewModel {
             load(queue: &queue, keyPath: \Self.scheduledCount)
             return await allOk(queue: queue)
         }
-        manageCount = queueOk ? .ready(()) : .error("Cannot load.")
+        manageCount.loaded(ok: queueOk)
         if queueOk {
             log.info("INFO: RepositoryViewModel.loadManage(main=\(Thread.isMainThread)): Ready.")
         } else {
@@ -33,9 +32,8 @@ extension RepositoryViewModel {
     }
 
     func unloadManege() {
+        guard manageCount.unloading() else { return }
         log.trace("DEBUG: RepositoryViewModel.unloadManage(main=\(Thread.isMainThread))")
-        if case .loading = manageCount { return }
-        manageCount = .loading
         currencyCount.unload()
         accountCount.unload()
         assetCount.unload()
@@ -44,6 +42,6 @@ extension RepositoryViewModel {
         payeeCount.unload()
         transactionCount.unload()
         scheduledCount.unload()
-        manageCount = .idle
+        manageCount.unloaded()
     }
 }

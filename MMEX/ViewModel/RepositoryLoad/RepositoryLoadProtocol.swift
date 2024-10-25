@@ -5,31 +5,12 @@
 //  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
 //
 
-import SwiftUI
+protocol RepositoryLoadProtocol: Copyable {
+    associatedtype ValueType: Copyable
 
-enum RepositoryLoadState<LoadType: Copyable>: Copyable {
-    case error(String)
-    case idle
-    case loading
-    case ready(LoadType)
-    
-    init() {
-        self = .idle
-    }
-}
+    var state: RepositoryLoadState { get set }
+    var value: ValueType { get set }
 
-extension RepositoryLoadState: Equatable where LoadType: Equatable { }
-
-protocol RepositoryLoadProtocol {
-    associatedtype LoadType: Copyable
-    var state: RepositoryLoadState<LoadType> { get set }
-    func load(env: EnvironmentManager) -> LoadType?
+    func fetch(env: EnvironmentManager) -> ValueType?
     mutating func unload()
-}
-
-extension RepositoryLoadProtocol {
-    mutating func unload() {
-        if case .loading = self.state { return }
-        self.state = .idle
-    }
 }

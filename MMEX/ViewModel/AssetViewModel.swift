@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SQLite
 
 enum AssetGroupChoice: String, RepositoryGroupChoiceProtocol {
     case all      = "All"
@@ -14,28 +15,33 @@ enum AssetGroupChoice: String, RepositoryGroupChoiceProtocol {
     static let isSingleton: Set<Self> = [.all]
 }
 
-struct AssetGroup: RepositoryLoadGroupProtocol {
-    typealias GroupChoice    = AssetGroupChoice
+struct AssetGroup: RepositoryGroupProtocol {
     typealias MainRepository = AssetRepository
+    typealias GroupChoice    = AssetGroupChoice
 
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<[RepositoryGroupData]> = .init()
-    var isVisible  : [Bool] = []
-    var isExpanded : [Bool] = []
+    var state: RepositoryLoadState = .init()
+    var value: ValueType = []
+}
+
+struct AssetSearch: RepositorySearchProtocol {
+    var area: [RepositorySearchArea<AssetData>] = [
+        ("Name",  true,  [ {$0.name} ]),
+    ]
+    var key: String = ""
 }
 
 extension RepositoryViewModel {
     func loadAssetList() async {
+        guard assetList.state.loading() else { return }
         log.trace("DEBUG: RepositoryViewModel.loadAssetList(main=\(Thread.isMainThread))")
-        guard case .idle = assetList.state else { return }
-        assetList.state = .loading
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.assetData)
             load(queue: &queue, keyPath: \Self.assetOrder)
             load(queue: &queue, keyPath: \Self.assetUsed)
             return await allOk(queue: queue)
         }
-        assetList.state = queueOk ? .ready(()) : .error("Cannot load.")
+        assetList.state.loaded(ok: queueOk)
         if queueOk {
             log.info("INFO: RepositoryViewModel.loadAssetList(main=\(Thread.isMainThread)): Ready.")
         } else {
@@ -45,23 +51,56 @@ extension RepositoryViewModel {
     }
 
     func unloadAssetList() {
+        guard assetList.state.unloading() else { return }
         log.trace("DEBUG: RepositoryViewModel.unloadAssetList(main=\(Thread.isMainThread))")
-        if case .loading = assetList.state { return }
-        assetList.state = .loading
         assetData.unload()
         assetOrder.unload()
         assetUsed.unload()
-        assetList.state = .idle
+        assetList.state.unloaded()
     }
 }
 
 extension RepositoryViewModel {
+    func loadAssetGroup(choice: AssetGroupChoice) {
+    }
+
     func unloadAssetGroup() {
-        log.trace("DEBUG: RepositoryViewModel.unloadAssetGroup(main=\(Thread.isMainThread))")
-        if case .loading = assetGroup.state { return }
-        assetGroup.state = .loading
-        assetGroup.isVisible  = []
-        assetGroup.isExpanded = []
-        assetGroup.state = .idle
+        assetGroup.unload()
+    }
+}
+
+extension RepositoryViewModel {
+    func reloadAssetList(_ oldData: AssetData?, _ newData: AssetData?) async {
+    }
+}
+
+extension RepositoryViewModel {
+    func assetGroupIsVisible(_ g: Int, search: AssetSearch
+    ) -> Bool? {
+        guard
+            assetData.state  == .ready,
+            assetGroup.state == .ready
+        else { return nil }
+
+        let dataDict  = assetData.value
+        let groupData = assetGroup.value
+
+        if search.isEmpty {
+            return switch assetGroup.choice {
+            default: true
+            }
+        }
+        return groupData[g].dataId.first(where: { search.match(dataDict[$0]!) }) != nil
+    }
+
+    func searchAssetGroup(search: AssetSearch, expand: Bool = false ) {
+        guard assetGroup.state == .ready else { return }
+        for g in 0 ..< assetGroup.value.count {
+            guard let isVisible = assetGroupIsVisible(g, search: search) else { return }
+            assetGroup.value[g].isVisible = isVisible
+            if (expand || !search.isEmpty) && isVisible {
+                assetGroup.value[g].isExpanded = true
+            }
+        }
     }
 }

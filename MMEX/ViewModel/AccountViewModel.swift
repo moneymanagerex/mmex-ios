@@ -20,14 +20,13 @@ enum AccountGroupChoice: String, RepositoryGroupChoiceProtocol {
     static let isSingleton: Set<Self> = [.all]
 }
 
-struct AccountGroup: RepositoryLoadGroupProtocol {
-    typealias GroupChoice    = AccountGroupChoice
+struct AccountGroup: RepositoryGroupProtocol {
     typealias MainRepository = AccountRepository
+    typealias GroupChoice    = AccountGroupChoice
 
     var choice: GroupChoice = .defaultValue
-    var state: RepositoryLoadState<[RepositoryGroupData]> = .init()
-    var isVisible  : [Bool] = []
-    var isExpanded : [Bool] = []
+    var state: RepositoryLoadState = .init()
+    var value: ValueType = []
 
     static let groupUsed: [Bool] = [
         true, false
@@ -63,9 +62,8 @@ struct AccountSearch: RepositorySearchProtocol {
 
 extension RepositoryViewModel {
     func loadAccountList() async {
+        guard accountList.state.loading() else { return }
         log.trace("DEBUG: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread))")
-        guard case .idle = accountList.state else { return }
-        accountList.state = .loading
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.accountData)
             load(queue: &queue, keyPath: \Self.accountOrder)
@@ -76,7 +74,7 @@ extension RepositoryViewModel {
             load(queue: &queue, keyPath: \Self.currencyOrder)
             return await allOk(queue: queue)
         }
-        accountList.state = queueOk ? .ready(()) : .error("Cannot load.")
+        accountList.state.loaded(ok: queueOk)
         if queueOk {
             log.info("INFO: RepositoryViewModel.loadAccountList(main=\(Thread.isMainThread)): Ready.")
         } else {
@@ -86,53 +84,56 @@ extension RepositoryViewModel {
     }
 
     func unloadAccountList() {
+        guard accountList.state.unloading() else { return }
         log.trace("DEBUG: RepositoryViewModel.unloadAccountList(main=\(Thread.isMainThread))")
-        if case .loading = accountList.state { return }
-        accountList.state = .loading
         accountData.unload()
         accountOrder.unload()
         accountUsed.unload()
         accountAtt.unload()
-        accountList.state = .idle
+        accountList.state.unloaded()
     }
 }
 
 extension RepositoryViewModel {
-    func loadAccountGroup(env: EnvironmentManager, choice: AccountGroupChoice) {
-        log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
-        guard case .idle = accountGroup.state else { return }
+    func loadAccountGroup(choice: AccountGroupChoice) {
         guard
-            case .ready(_) = accountList.state,
-            case let .ready(dataDict)  = accountData.state,
-            case let .ready(dataOrder) = accountOrder.state,
-            case let .ready(dataUsed)  = accountUsed.state,
-            case let .ready(dataAtt)   = accountAtt.state
+            accountList.state  == .ready,
+            accountData.state  == .ready,
+            accountOrder.state == .ready,
+            accountUsed.state  == .ready,
+            accountAtt.state   == .ready
         else { return }
-
-        accountGroup.state = .loading
+        
+        guard accountGroup.state.loading() else { return }
+        log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
+        
         accountGroup.choice = choice
         accountGroup.groupCurrency = []
-
-        var groupTuple: RepositoryGroup.AsTuple = ([], [], [])
+        
+        let dataDict  = accountData.value
+        let dataOrder = accountOrder.value
+        let dataUsed  = accountUsed.value
+        let dataAtt   = accountAtt.value
+        
         switch choice {
         case .all:
-            RepositoryGroup.append(into: &groupTuple, "All", dataOrder, true, true)
+            accountGroup.append("All", dataOrder, true, true)
         case .used:
             let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
             for g in AccountGroup.groupUsed {
                 let name = g ? "Used" : "Other"
-                RepositoryGroup.append(into: &groupTuple, name, dict[g] ?? [], true, g)
+                accountGroup.append(name, dict[g] ?? [], true, g)
             }
         case .favorite:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.favoriteAcct }
             for g in AccountGroup.groupFavorite {
                 let name = g == .boolTrue ? "Favorite" : "Other"
-                RepositoryGroup.append(into: &groupTuple, name, dict[g] ?? [], true, g == .boolTrue)
+                accountGroup.append(name, dict[g] ?? [], true, g == .boolTrue)
             }
         case .type:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.type }
             for g in AccountGroup.groupType {
-                RepositoryGroup.append(into: &groupTuple, g.rawValue, dict[g] ?? [], dict[g] != nil, true)
+                accountGroup.append(g.rawValue, dict[g] ?? [], dict[g] != nil, true)
             }
         case .currency:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.currencyId }
@@ -141,42 +142,107 @@ extension RepositoryViewModel {
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in accountGroup.groupCurrency {
                 let name = env.currencyCache[g]?.name
-                RepositoryGroup.append(into: &groupTuple, name, dict[g] ?? [], dict[g] != nil, true)
+                accountGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .status:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.status }
             for g in AccountGroup.groupStatus {
-                RepositoryGroup.append(into: &groupTuple, g.rawValue, dict[g] ?? [], true, g == .open)
+                accountGroup.append(g.rawValue, dict[g] ?? [], true, g == .open)
             }
         case .attachment:
             let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
             for g in AccountGroup.groupAttachment {
                 let name = g ? "With Attachment" : "Other"
-                RepositoryGroup.append(into: &groupTuple, name, dict[g] ?? [], true, g)
+                accountGroup.append(name, dict[g] ?? [], true, g)
             }
         }
-
-        accountGroup.isVisible  = groupTuple.isVisible
-        accountGroup.isExpanded = groupTuple.isExpanded
-        accountGroup.state = .ready(groupTuple.groupData)
+        
+        accountGroup.state.loaded()
     }
 
     func unloadAccountGroup() {
-        log.trace("DEBUG: RepositoryViewModel.unloadAccountGroup(main=\(Thread.isMainThread))")
-        if case .loading = accountGroup.state { return }
-        accountGroup.state = .loading
-        accountGroup.isVisible  = []
-        accountGroup.isExpanded = []
-        accountGroup.state = .idle
+        accountGroup.unload()
     }
 }
 
 extension RepositoryViewModel {
-    func accountGroupIsVisible(_ g: Int, search: AccountSearch) -> Bool? {
+    func reloadAccountList(_ oldData: AccountData?, _ newData: AccountData?) async {
+        log.trace("DEBUG: RepositoryViewModel.reloadAccount(main=\(Thread.isMainThread))")
+        if let newData {
+            if env.currencyCache[newData.currencyId] == nil {
+                env.loadCurrency()
+            }
+            env.accountCache.update(id: newData.id, data: newData)
+        } else if let oldData {
+            env.accountCache[oldData.id] = nil
+        }
+        
+        // save isExpanded
+        let groupIsExpanded: [Bool]? = switch accountGroup.state {
+        case .ready: accountGroup.value.map { $0.isExpanded }
+        default: nil
+        }
+        let currencyIndex: [DataId: Int] = Dictionary(
+            uniqueKeysWithValues: accountGroup.groupCurrency.enumerated().map { ($0.1, $0.0) }
+        )
+        
+        // TODO: improve performance
+        unloadAccountGroup()
+        if accountList.state.unloading() {
+            if accountData.state.unloading() {
+                if let newData {
+                    accountData.value[newData.id] = newData
+                } else if let oldData {
+                    accountData.value[oldData.id] = nil
+                }
+                accountData.state.loaded()
+            }
+
+            //accountData.unload()
+            accountOrder.unload()
+
+            if accountAtt.state.unloading() {
+                if let _ = newData {
+                    // TODO
+                } else if let oldData {
+                    accountAtt.value[oldData.id] = nil
+                }
+                accountAtt.state.loaded()
+            }
+
+            accountList.state.unloaded()
+        }
+        await loadAccountList()
+        loadAccountGroup(choice: accountGroup.choice)
+
+        // restore isExpanded
+        if let groupIsExpanded { switch accountGroup.choice {
+        case .currency:
+            for (g, currencyId) in accountGroup.groupCurrency.enumerated() {
+                guard let i = currencyIndex[currencyId] else { continue }
+                accountGroup.value[g].isExpanded = groupIsExpanded[i]
+            }
+        default:
+            if accountGroup.value.count == groupIsExpanded.count {
+                for g in 0 ..< groupIsExpanded.count {
+                    accountGroup.value[g].isExpanded = groupIsExpanded[g]
+                }
+            }
+        } }
+    }
+}
+
+extension RepositoryViewModel {
+    func accountGroupIsVisible(_ g: Int, search: AccountSearch
+    ) -> Bool? {
         guard
-            case let .ready(dataDict) = accountData.state,
-            case let .ready(groupData) = accountGroup.state
+            accountData.state  == .ready,
+            accountGroup.state == .ready
         else { return nil }
+
+        let dataDict  = accountData.value
+        let groupData = accountGroup.value
+
         if search.isEmpty {
             return switch accountGroup.choice {
             case .type, .currency: !groupData[g].dataId.isEmpty
@@ -186,15 +252,15 @@ extension RepositoryViewModel {
         return groupData[g].dataId.first(where: { search.match(dataDict[$0]!) }) != nil
     }
 
-    func searchAccountGroup(search: AccountSearch, expand: Bool = false) {
+    func searchAccountGroup(search: AccountSearch, expand: Bool = false ) {
         //log.trace("DEBUG: RepositoryViewModel.searchAccountGroup()")
-        guard case let .ready(groupData) = accountGroup.state else { return }
-        for g in 0 ..< groupData.count {
+        guard accountGroup.state == .ready else { return }
+        for g in 0 ..< accountGroup.value.count {
             guard let isVisible = accountGroupIsVisible(g, search: search) else { return }
             //log.debug("DEBUG: RepositoryViewModel.searchAccountGroup(): \(g) = \(isVisible)")
-            accountGroup.isVisible[g] = isVisible
+            accountGroup.value[g].isVisible = isVisible
             if (expand || !search.isEmpty) && isVisible {
-                accountGroup.isExpanded[g] = true
+                accountGroup.value[g].isExpanded = true
             }
         }
     }
@@ -206,14 +272,14 @@ extension RepositoryViewModel {
             return "Name is empty"
         }
 
-        if case let .ready(currency) = currencyName.state {
-            if data.currencyId <= 0 {
-                return "No currency is selected"
-            } else if currency[data.currencyId] == nil {
-                return "* Unknown currency #\(data.currencyId)"
-            }
-        } else {
+        guard data.currencyId > 0 else {
+            return "No currency is selected"
+        }
+        guard currencyName.state == .ready else {
             return "* currencyName is not loaded"
+        }
+        if currencyName.value[data.currencyId] == nil {
+            return "* Unknown currency #\(data.currencyId)"
         }
 
         typealias A = AccountRepository
@@ -246,12 +312,11 @@ extension RepositoryViewModel {
 
 extension RepositoryViewModel {
     func deleteAccount(_ data: AccountData) -> String? {
-        if case let .ready(used) = accountUsed.state {
-            if used.contains(data.id) {
-                return "* Account #\(data.id) is used"
-            }
-        } else {
+        guard accountUsed.state == .ready else {
             return "* accountUsed is not loaded"
+        }
+        if accountUsed.value.contains(data.id) {
+            return "* Account #\(data.id) is used"
         }
 
         guard
@@ -261,14 +326,13 @@ extension RepositoryViewModel {
             return "* Database is not available"
         }
 
-        if case let .ready(att) = accountAtt.state {
-            if att[data.id] != nil {
-                guard ax.delete(refType: .account, refId: data.id) else {
-                    return "* Cannot delete attachments for account #\(data.id)"
-                }
-            }
-        } else {
+        guard accountAtt.state == .ready else {
             return "* accountAtt is not loaded"
+        }
+        if accountAtt.value[data.id] != nil {
+            guard ax.delete(refType: .account, refId: data.id) else {
+                return "* Cannot delete attachments for account #\(data.id)"
+            }
         }
 
         guard a.delete(data) else {
@@ -276,51 +340,5 @@ extension RepositoryViewModel {
         }
 
         return nil
-    }
-}
-
-extension RepositoryViewModel {
-    func reloadAccount(_ oldData: AccountData?, _ newData: AccountData?) async {
-        log.trace("DEBUG: RepositoryViewModel.reloadAccount(main=\(Thread.isMainThread))")
-        if let newData {
-            if env.currencyCache[newData.currencyId] == nil {
-                env.loadCurrency()
-            }
-            env.accountCache.update(id: newData.id, data: newData)
-        } else if let oldData {
-            env.accountCache[oldData.id] = nil
-        }
-
-        // save isExpanded
-        let groupIsExpanded: [Bool]? = switch accountGroup.state {
-        case .ready(_): accountGroup.isExpanded
-        default: nil
-        }
-        var currencyIsExpanded: [DataId: Bool] = [:]
-        if let groupIsExpanded, case .currency = accountGroup.choice {
-            for (i, currencyId) in accountGroup.groupCurrency.enumerated() {
-                currencyIsExpanded[currencyId] = groupIsExpanded[i]
-            }
-        }
-
-        // TODO: improve performance
-        unloadAccountGroup()
-        unloadAccountList()
-        await loadAccountList()
-        loadAccountGroup(env: env, choice: accountGroup.choice)
-
-        // restore isExpanded
-        if let groupIsExpanded { switch accountGroup.choice {
-        case .currency:
-            for (i, currencyId) in accountGroup.groupCurrency.enumerated() {
-                if let isExpanded = currencyIsExpanded[currencyId] {
-                    accountGroup.isExpanded[i] = isExpanded
-                }
-            }
-        default:
-            if accountGroup.isExpanded.count == groupIsExpanded.count {
-                accountGroup.isExpanded = groupIsExpanded
-            }
-        } }
     }
 }
