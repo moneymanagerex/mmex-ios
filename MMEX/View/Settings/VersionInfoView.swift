@@ -32,10 +32,15 @@ struct VersionInfoView: View {
             } else if let errorMessage = errorMessage {
                 Text(errorMessage)
                     .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
             } else {
-                if let attributedString = try? AttributedString(markdown: releaseNotes) {
-                    Text(attributedString)
-                        .padding()
+                // Attempt to render the markdown
+                if let attributedString = try? AttributedString(markdown: releaseNotes, options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)) {
+                    ScrollView {
+                        Text(attributedString)
+                            .padding()
+                            .multilineTextAlignment(.leading)
+                    }
                 } else {
                     Text("Failed to render release notes.")
                         .foregroundColor(.red)
