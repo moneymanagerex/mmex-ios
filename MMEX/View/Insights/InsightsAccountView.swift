@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-struct InsightsAccountInfo {
-    var dataByType: [AccountType: [AccountData]] = [:]
-    var today: String = ""
-    var flowUntilToday: [DataId: AccountFlowByStatus] = [:]
-    var flowAfterToday: [DataId: AccountFlowByStatus] = [:]
-}
-
 struct InsightsAccountView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: InsightsViewModel
