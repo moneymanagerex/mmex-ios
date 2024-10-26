@@ -9,9 +9,9 @@ enum AccountGroupChoice: String, GroupChoiceProtocol {
     case all        = "All"
     case used       = "Used"
     case favorite   = "Favorite"
+    case status     = "Status"
     case type       = "Type"
     case currency   = "Currency"
-    case status     = "Status"
     case attachment = "Attachment"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
@@ -33,15 +33,15 @@ struct AccountGroup: GroupProtocol {
         .boolTrue, .boolFalse
     ]
 
+    static let groupStatus: [AccountStatus] = [
+        .open, .closed
+    ]
+
     static let groupType: [AccountType] = [
         .checking, .creditCard, .cash, .loan, .term, .asset, .shares, .investment
     ]
 
     var groupCurrency: [DataId] = []
-
-    static let groupStatus: [AccountStatus] = [
-        .open, .closed
-    ]
 
     static let groupAttachment: [Bool] = [
         true, false

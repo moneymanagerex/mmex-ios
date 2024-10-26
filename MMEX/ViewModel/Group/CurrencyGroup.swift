@@ -6,8 +6,9 @@
 //
 
 enum CurrencyGroupChoice: String, GroupChoiceProtocol {
-    case all      = "All"
-    case used     = "Used"
+    case all  = "All"
+    case used = "Used"
+    case type = "Type"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
 }
@@ -19,4 +20,12 @@ struct CurrencyGroup: GroupProtocol {
     var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: [GroupData] = []
+
+    static let groupUsed: [Bool] = [
+        true, false
+    ]
+
+    static let groupType: [CurrencyType] = [
+        .fiat, .crypto
+    ]
 }

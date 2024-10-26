@@ -16,6 +16,7 @@ extension ViewModel {
             load(queue: &queue, keyPath: \Self.assetList.data)
             load(queue: &queue, keyPath: \Self.assetList.order)
             load(queue: &queue, keyPath: \Self.assetList.used)
+            load(queue: &queue, keyPath: \Self.assetList.att)
             return await allOk(queue: queue)
         }
         assetList.state.loaded(ok: queueOk)
@@ -39,6 +40,62 @@ extension ViewModel {
 
 extension ViewModel {
     func loadAssetGroup(choice: AssetGroupChoice) {
+        guard
+            assetList.state       == .ready,
+            assetList.data.state  == .ready,
+            assetList.order.state == .ready,
+            assetList.used.state  == .ready,
+            assetList.att.state   == .ready
+        else { return }
+
+        guard assetGroup.state.loading() else { return }
+        log.trace("DEBUG: ViewModel.loadAssetGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
+        
+        assetGroup.choice = choice
+        assetGroup.groupCurrency = []
+
+        let dataDict  = assetList.data.value
+        let dataOrder = assetList.order.value
+        let dataUsed  = assetList.used.value
+        let dataAtt   = assetList.att.value
+
+        switch choice {
+        case .all:
+            assetGroup.append("All", dataOrder, true, true)
+        case .used:
+            let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
+            for g in AssetGroup.groupUsed {
+                let name = g ? "Used" : "Other"
+                assetGroup.append(name, dict[g] ?? [], true, g)
+            }
+        case .status:
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.status }
+            for g in AssetGroup.groupStatus {
+                assetGroup.append(g.rawValue, dict[g] ?? [], true, g == .open)
+            }
+        case .type:
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.type }
+            for g in AssetGroup.groupType {
+                assetGroup.append(g.rawValue, dict[g] ?? [], dict[g] != nil, true)
+            }
+        case .currency:
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.currencyId }
+            assetGroup.groupCurrency = env.currencyCache.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
+            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            for g in assetGroup.groupCurrency {
+                let name = env.currencyCache[g]?.name
+                assetGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
+            }
+        case .attachment:
+            let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
+            for g in AssetGroup.groupAttachment {
+                let name = g ? "With Attachment" : "Other"
+                assetGroup.append(name, dict[g] ?? [], true, g)
+            }
+        }
+
+        assetGroup.state.loaded()
     }
 
     func unloadAssetGroup() {

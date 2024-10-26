@@ -16,6 +16,7 @@ extension ViewModel {
             load(queue: &queue, keyPath: \Self.payeeList.data)
             load(queue: &queue, keyPath: \Self.payeeList.order)
             load(queue: &queue, keyPath: \Self.payeeList.used)
+            load(queue: &queue, keyPath: \Self.payeeList.att)
             return await allOk(queue: queue)
         }
         payeeList.state.loaded(ok: queueOk)
@@ -39,6 +40,60 @@ extension ViewModel {
 
 extension ViewModel {
     func loadPayeeGroup(choice: PayeeGroupChoice) {
+        guard
+            payeeList.state       == .ready,
+            payeeList.data.state  == .ready,
+            payeeList.order.state == .ready,
+            payeeList.used.state  == .ready,
+            payeeList.att.state   == .ready
+        else { return }
+
+        guard payeeGroup.state.loading() else { return }
+        log.trace("DEBUG: ViewModel.loadPayeeGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
+        
+        payeeGroup.choice = choice
+        payeeGroup.groupCategory = []
+
+        let dataDict  = payeeList.data.value
+        let dataOrder = payeeList.order.value
+        let dataUsed  = payeeList.used.value
+        let dataAtt   = payeeList.att.value
+        // TODO
+        let categoryData: [DataId: CategoryData] = [:]
+
+        switch choice {
+        case .all:
+            payeeGroup.append("All", dataOrder, true, true)
+        case .used:
+            let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
+            for g in PayeeGroup.groupUsed {
+                let name = g ? "Used" : "Other"
+                payeeGroup.append(name, dict[g] ?? [], true, g)
+            }
+        case .active:
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.active }
+            for g in PayeeGroup.groupActive {
+                let name = g ? "Active" : "Other"
+                payeeGroup.append(name, dict[g] ?? [], true, g)
+            }
+        case .category:
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.categoryId }
+            payeeGroup.groupCategory = categoryData.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
+            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            for g in payeeGroup.groupCategory {
+                let name = categoryData[g]?.name
+                payeeGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
+            }
+        case .attachment:
+            let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
+            for g in PayeeGroup.groupAttachment {
+                let name = g ? "With Attachment" : "Other"
+                payeeGroup.append(name, dict[g] ?? [], true, g)
+            }
+        }
+
+        payeeGroup.state.loaded()
     }
 
     func unloadPayeeGroup() {

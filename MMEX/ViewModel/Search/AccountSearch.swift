@@ -5,9 +5,6 @@
 //  2024-10-11: Created by George Ef (george.a.ef@gmail.com)
 //
 
-import SwiftUI
-import SQLite
-
 struct AccountSearch: SearchProtocol {
     var area: [SearchArea<AccountData>] = [
         ("Name",  true,  [ {$0.name} ]),
