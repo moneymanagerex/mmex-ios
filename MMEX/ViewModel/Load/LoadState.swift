@@ -1,11 +1,11 @@
 //
-//  RepositoryLoadProtocol.swift
+//  LoadState.swift
 //  MMEX
 //
 //  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
 //
 
-enum RepositoryLoadState: Int, Copyable, Equatable {
+enum LoadState: Int, Copyable, Equatable {
     case idle
     case loading
     case ready
@@ -16,7 +16,7 @@ enum RepositoryLoadState: Int, Copyable, Equatable {
     }
 }
 
-extension RepositoryLoadState {
+extension LoadState {
     mutating func loading() -> Bool {
         guard self.rawValue < Self.loading.rawValue else { return false }
         self = .loading

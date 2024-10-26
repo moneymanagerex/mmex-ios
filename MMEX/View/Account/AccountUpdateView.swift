@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountUpdateView: View {
     @EnvironmentObject var env: EnvironmentManager
-    var vm: RepositoryViewModel
+    var vm: ViewModel
     var title: String
     @State var data: AccountData
     @Binding var newData: AccountData?

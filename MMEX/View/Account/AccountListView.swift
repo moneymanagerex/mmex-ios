@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountListView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: RepositoryViewModel
+    @ObservedObject var vm: ViewModel
 
     @State var search: AccountSearch = .init()
 
@@ -23,7 +23,6 @@ struct AccountListView: View {
         RepositoryListView(
             vm: vm,
             vmList: vm.accountList,
-            vmData: vm.accountData,
             groupChoice: vm.accountGroup.choice,
             vmGroup: $vm.accountGroup,
             search: $search,
@@ -87,7 +86,7 @@ struct AccountListView: View {
 #Preview {
     let env = EnvironmentManager.sampleData
     AccountListView(
-        vm: RepositoryViewModel(env: env)
+        vm: ViewModel(env: env)
     )
     .environmentObject(env)
 }

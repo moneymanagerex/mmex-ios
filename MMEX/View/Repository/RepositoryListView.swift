@@ -8,21 +8,20 @@
 import SwiftUI
 
 struct RepositoryListView<
-    MainRepository: RepositoryProtocol, GroupType: RepositoryGroupProtocol,
-    SearchType: RepositorySearchProtocol,
+    ListType: ListProtocol, GroupType: GroupProtocol, SearchType: SearchProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
     DetailView: View, InsertView: View
 >: View
-where GroupType.MainRepository == MainRepository,
-      SearchType.MainData == MainRepository.RepositoryData
+where GroupType.MainRepository == ListType.MainRepository,
+      SearchType.MainData == ListType.MainRepository.RepositoryData
 {
-    typealias MainData  = MainRepository.RepositoryData
+    typealias MainRepository = ListType.MainRepository
+    typealias MainData = MainRepository.RepositoryData
     typealias GroupChoice = GroupType.GroupChoice
 
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: RepositoryViewModel
-    var vmList: RepositoryLoadMainList<MainRepository>
-    var vmData: RepositoryLoadMainData<MainRepository>
+    @ObservedObject var vm: ViewModel
+    var vmList: ListType
     @State var groupChoice: GroupChoice
     @Binding var vmGroup: GroupType
     @Binding var search: SearchType
@@ -183,10 +182,10 @@ where GroupType.MainRepository == MainRepository,
         }//.padding(.top, -10)
         ) {
             if vmGroup.value[g].isExpanded {
-                switch vmData.state {
+                switch vmList.data.state {
                 case .ready:
                     ForEach(vmGroup.value[g].dataId, id: \.self) { id in
-                        if let data = vmData.value[id], search.match(data) {
+                        if let data = vmList.data.value[id], search.match(data) {
                             itemView(data)
                         }
                         
@@ -246,7 +245,7 @@ where GroupType.MainRepository == MainRepository,
 }
 
 struct RepositorySearchAreaView<RepositoryData: DataProtocol>: View {
-    @Binding var area: [RepositorySearchArea<RepositoryData>]
+    @Binding var area: [SearchArea<RepositoryData>]
 
     var body: some View {
         List{
@@ -274,7 +273,7 @@ struct RepositorySearchAreaView<RepositoryData: DataProtocol>: View {
 #Preview("Account") {
     let env = EnvironmentManager.sampleData
     AccountListView(
-        vm: RepositoryViewModel(env: env)
+        vm: ViewModel(env: env)
     )
     .environmentObject(env)
 }

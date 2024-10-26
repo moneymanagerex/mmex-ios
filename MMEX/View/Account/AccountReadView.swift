@@ -11,7 +11,7 @@ import SwiftUI
 struct AccountReadView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var env: EnvironmentManager
-    var vm: RepositoryViewModel
+    var vm: ViewModel
     @State var data: AccountData
     @Binding var newData: AccountData?
     @Binding var deleteData: Bool
@@ -29,7 +29,7 @@ struct AccountReadView: View {
                 data: $data,
                 edit: false
             )
-            if vm.accountUsed.state == .ready, !vm.accountUsed.value.contains(data.id) {
+            if vm.isUsed(data) == false {
                 Button("Delete Account") {
                     let deleteError = vm.deleteAccount(data)
                     if deleteError != nil {
@@ -96,7 +96,7 @@ struct AccountReadView: View {
 #Preview(AccountData.sampleData[0].name) {
     let env = EnvironmentManager.sampleData
     AccountReadView(
-        vm: RepositoryViewModel(env: env),
+        vm: ViewModel(env: env),
         data: AccountData.sampleData[0],
         newData: .constant(nil),
         deleteData: .constant(false)
@@ -107,7 +107,7 @@ struct AccountReadView: View {
 #Preview(AccountData.sampleData[1].name) {
     let env = EnvironmentManager.sampleData
     AccountReadView(
-        vm: RepositoryViewModel(env: env),
+        vm: ViewModel(env: env),
         data: AccountData.sampleData[1],
         newData: .constant(nil),
         deleteData: .constant(false)
@@ -118,7 +118,7 @@ struct AccountReadView: View {
 #Preview(AccountData.sampleData[2].name) {
     let env = EnvironmentManager.sampleData
     AccountReadView(
-        vm: RepositoryViewModel(env: env),
+        vm: ViewModel(env: env),
         data: AccountData.sampleData[2],
         newData: .constant(nil),
         deleteData: .constant(false)

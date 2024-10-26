@@ -1,5 +1,5 @@
 //
-//  RepositorySearch.swift
+//  SearchProtocol.swift
 //  MMEX
 //
 //  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
@@ -7,19 +7,13 @@
 
 import SwiftUI
 
-typealias RepositorySearchArea<MainData: DataProtocol> = (
-    name: String,
-    isSelected: Bool,
-    values: [(MainData) -> String]
-)
-
-protocol RepositorySearchProtocol: Copyable {
+protocol SearchProtocol: Copyable {
     associatedtype MainData: DataProtocol
-    var area: [RepositorySearchArea<MainData>] { get set }
+    var area: [SearchArea<MainData>] { get set }
     var key: String { get set }
 }
 
-extension RepositorySearchProtocol {
+extension SearchProtocol {
     var prompt: String {
         "Search in " + area.compactMap { $0.isSelected ? $0.name : nil }.joined(separator: ", ")
     }

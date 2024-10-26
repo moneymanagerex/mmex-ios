@@ -10,7 +10,7 @@ import SwiftUI
 struct ManageView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
-    @ObservedObject var vm: RepositoryViewModel
+    @ObservedObject var vm: ViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
@@ -21,25 +21,25 @@ struct ManageView: View {
                 NavigationLink(destination: CurrencyListView()) {
                     env.theme.group.manageItem(
                         name: { Text(CurrencyData.dataName.1) },
-                        count: vm.currencyCount
+                        count: vm.currencyList.count
                     )
                 }
                 NavigationLink(destination: AccountListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(AccountData.dataName.1) },
-                        count: vm.accountCount
+                        count: vm.accountList.count
                     )
                 }
                 NavigationLink(destination: AssetListView()) {
                     env.theme.group.manageItem(
                         name: { Text(AssetData.dataName.1) },
-                        count: vm.assetCount
+                        count: vm.assetList.count
                     )
                 }
                 NavigationLink(destination: StockListView()) {
                     env.theme.group.manageItem(
                         name: { Text(StockData.dataName.1) },
-                        count: vm.stockCount
+                        count: vm.stockList.count
                     )
                 }
                 NavigationLink(destination: CategoryListView(viewModel: viewModel)) {
@@ -51,7 +51,7 @@ struct ManageView: View {
                 NavigationLink(destination: PayeeListView()) {
                     env.theme.group.manageItem(
                         name: { Text(PayeeData.dataName.1) },
-                        count: vm.payeeCount
+                        count: vm.payeeList.count
                     )
                 }
                 NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
@@ -121,7 +121,7 @@ struct ManageView: View {
 #Preview {
     ManageView(
         viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
-        vm: RepositoryViewModel(env: EnvironmentManager.sampleData),
+        vm: ViewModel(env: EnvironmentManager.sampleData),
         isDocumentPickerPresented: .constant(false),
         isNewDocumentPickerPresented: .constant(false),
         isSampleDocument: .constant(false)
