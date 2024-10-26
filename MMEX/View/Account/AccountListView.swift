@@ -73,10 +73,7 @@ struct AccountListView: View {
         }
     }
 
-    func editView(
-        _ data: Binding<MainData>,
-        _ edit: Bool
-    ) -> some View {
+    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         AccountEditView(
             vm: vm,
             data: data,
