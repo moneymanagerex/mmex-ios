@@ -81,3 +81,13 @@ extension ViewModel {
         }
     }
 }
+
+extension ViewModel {
+    func updatePayee(_ data: inout PayeeData) -> String? {
+        return "* not implemented"
+    }
+
+    func deletePayee(_ data: PayeeData) -> String? {
+        return "* not implemented"
+    }
+}

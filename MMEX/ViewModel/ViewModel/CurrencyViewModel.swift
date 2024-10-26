@@ -82,3 +82,13 @@ extension ViewModel {
         }
     }
 }
+
+extension ViewModel {
+    func updateCurrency(_ data: inout CurrencyData) -> String? {
+        return "* not implemented"
+    }
+
+    func deleteCurrency(_ data: CurrencyData) -> String? {
+        return "* not implemented"
+    }
+}

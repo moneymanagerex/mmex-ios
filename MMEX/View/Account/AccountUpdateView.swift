@@ -39,7 +39,7 @@ struct AccountUpdateView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        let updateError = vm.updateAccount(&data)
+                        let updateError = vm.update(&data)
                         if updateError != nil {
                             alertMessage = updateError
                             alertIsPresented = true

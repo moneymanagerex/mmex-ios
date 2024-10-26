@@ -256,9 +256,7 @@ extension ViewModel {
 
         return nil
     }
-}
 
-extension ViewModel {
     func deleteAccount(_ data: AccountData) -> String? {
         guard accountList.used.state == .ready else {
             return "* accountUsed is not loaded"

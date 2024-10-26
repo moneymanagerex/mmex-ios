@@ -81,3 +81,13 @@ extension ViewModel {
         }
     }
 }
+
+extension ViewModel {
+    func updateAsset(_ data: inout AssetData) -> String? {
+        return "* not implemented"
+    }
+
+    func deleteAsset(_ data: AssetData) -> String? {
+        return "* not implemented"
+    }
+}

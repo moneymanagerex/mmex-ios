@@ -35,7 +35,7 @@ struct AccountCreateView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        if let createError = vm.updateAccount(&data) {
+                        if let createError = vm.update(&data) {
                             alertMessage = createError
                             alertIsPresented = true
                         } else {

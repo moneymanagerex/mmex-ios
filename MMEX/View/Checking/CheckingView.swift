@@ -36,7 +36,7 @@ struct CheckingView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Picker("Select Account", selection: $accountId) {
-                        Text("Select Account").tag(0)
+                        //Text("Select Account").tag(0)
                         ForEach(viewModel.accounts) { account in
                             HStack{
                                 Image(systemName: account.type.symbolName)

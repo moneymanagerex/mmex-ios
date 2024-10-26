@@ -31,7 +31,7 @@ struct AccountReadView: View {
             )
             if vm.isUsed(data) == false {
                 Button("Delete Account") {
-                    let deleteError = vm.deleteAccount(data)
+                    let deleteError = vm.delete(data)
                     if deleteError != nil {
                         alertMessage = deleteError
                         alertIsPresented = true
