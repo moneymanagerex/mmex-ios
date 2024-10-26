@@ -10,7 +10,7 @@ import SwiftUI
 struct RepositoryListView<
     ListType: ListProtocol, GroupType: GroupProtocol, SearchType: SearchProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
-    DetailView: View, InsertView: View
+    EditView: View
 >: View
 where GroupType.MainRepository == ListType.MainRepository,
       SearchType.MainData == ListType.MainRepository.RepositoryData
@@ -25,11 +25,11 @@ where GroupType.MainRepository == ListType.MainRepository,
     @State var groupChoice: GroupChoice
     @Binding var vmGroup: GroupType
     @Binding var search: SearchType
+    let initData: MainData
     @ViewBuilder var groupName: (_ g: Int, _ name: String?) -> GroupNameView
     @ViewBuilder var itemName: (_ data: MainData) -> ItemNameView
     @ViewBuilder var itemInfo: (_ data: MainData) -> ItemInfoView
-    @ViewBuilder var createView: (_ newData: Binding<MainData?>, _ isPresented: Binding<Bool>) -> InsertView
-    @ViewBuilder var readView: (_ data: MainData, _ newData: Binding<MainData?>, _ deleteData: Binding<Bool>) -> DetailView
+    @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
 
     @State var newData: MainData? = nil
     @State var deleteData: Bool = false
@@ -143,10 +143,13 @@ where GroupType.MainRepository == ListType.MainRepository,
             await load()
         }
         .sheet(isPresented: $createIsPresented) {
-            createView(
-                $newData, $createIsPresented
+            RepositoryCreateView(
+                vm: vm,
+                data: initData,
+                newData: $newData,
+                isPresented: $createIsPresented,
+                editView: editView
             )
-            //.onAppear { newData = nil }
             .onDisappear {
                 if newData != nil { Task {
                     await vm.reloadList(nil as MainData?, newData)
@@ -219,8 +222,12 @@ where GroupType.MainRepository == ListType.MainRepository,
 
     func itemView(_ data: MainData) -> some View {
         NavigationLink(
-            destination: readView(
-                data, $newData, $deleteData
+            destination: RepositoryReadView(
+                vm: vm,
+                data: data,
+                newData: $newData,
+                deleteData: $deleteData,
+                editView: editView
             )
             //.onAppear {
             //    newData = nil

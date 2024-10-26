@@ -9,7 +9,7 @@ import Foundation
 
 typealias DataId = Int
 
-protocol DataProtocol {
+protocol DataProtocol: ExportableEntity {
     static var dataName: (String, String) { get }
 
     var id: DataId { get set }

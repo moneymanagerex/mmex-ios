@@ -1,18 +1,23 @@
 //
-//  AccountCreateView.swift
+//  RepositoryCreateView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/9.
+//  2024-09-09: (AccountAddView) Created by Lisheng Guan
+//  2024-10-26: (RepositoryCreateView) Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
-struct AccountCreateView: View {
+struct RepositoryCreateView<
+    MainData: DataProtocol,
+    EditView: View
+>: View {
     @EnvironmentObject var env: EnvironmentManager
-    @State var vm: ViewModel
-    @State var data: AccountData
-    @Binding var newData: AccountData?
+    @ObservedObject var vm: ViewModel
+    @State var data: MainData
+    @Binding var newData: MainData?
     @Binding var isPresented: Bool
+    @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
 
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
@@ -20,11 +25,7 @@ struct AccountCreateView: View {
     var body: some View {
         NavigationStack {
             Form {
-                AccountEditForm(
-                    vm: vm,
-                    data: $data,
-                    edit: true
-                )
+                editView($data, true)
             }
             .textSelection(.enabled)
             .toolbar {
@@ -56,15 +57,19 @@ struct AccountCreateView: View {
     }
 }
 
-/*
-#Preview {
-    AccountCreateView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        newAccount: .constant(AccountData()),
-        isPresentingAddView: .constant(true)
-    ) { newAccount in
-        // Handle saving in preview
-        log.info("New account: \(newAccount.name)")
-    }
+#Preview("Account") {
+    let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
+    RepositoryCreateView(
+        vm: vm,
+        data: AccountListView.initData,
+        newData: .constant(nil),
+        isPresented: .constant(true),
+        editView: { $data, edit in AccountEditView(
+            vm: vm,
+            data: $data,
+            edit: edit
+        ) }
+    )
+    .environmentObject(env)
 }
-*/
