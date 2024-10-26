@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var env: EnvironmentManager
-    /* @StateObject */ private var vm: RepositoryViewModel
+    /* @StateObject */ private var vm: ViewModel
     @State private var isDocumentPickerPresented = false
     @State private var isNewDocumentPickerPresented = false
     @State private var isSampleDocument = false
@@ -21,7 +21,7 @@ struct ContentView: View {
 
     init(env: EnvironmentManager) {
         log.debug("ContentView.init()")
-        self.vm = RepositoryViewModel(env: env)
+        self.vm = ViewModel(env: env)
         //self._vm = StateObject(wrappedValue: RepositoryViewModel(env: env))
     }
 
@@ -170,7 +170,7 @@ struct ContentView: View {
     // Management tab
     private func managementTab(
         viewModel: TransactionViewModel,
-        vm: RepositoryViewModel
+        vm: ViewModel
     ) -> some View {
         NavigationView {
             ManageView(
@@ -272,7 +272,7 @@ struct TabContentView: View {
         // Use @StateObject to manage the lifecycle of TransactionViewModel
         let insightsViewModel = InsightsViewModel(env: env)
         let infotableViewModel = TransactionViewModel(env: env)
-        let expViewModel = RepositoryViewModel(env: env)
+        let expViewModel = ViewModel(env: env)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {

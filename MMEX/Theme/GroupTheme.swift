@@ -64,7 +64,7 @@ extension GroupTheme {
 
     func manageItem<NameView: View, MainRepository: RepositoryProtocol>(
         @ViewBuilder name nameView: @escaping () -> NameView,
-        count: RepositoryLoadMainCount<MainRepository>
+        count: LoadMainCount<MainRepository>
     ) -> some View {
         HStack {
             nameView()

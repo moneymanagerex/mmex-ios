@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountEditForm: View {
     @EnvironmentObject var env: EnvironmentManager
-    var vm: RepositoryViewModel
+    var vm: ViewModel
     @Binding var data: AccountData
     @State var edit: Bool
 
@@ -37,16 +37,16 @@ struct AccountEditForm: View {
             }
             
             if
-                vm.currencyOrder.state == .ready,
-                vm.currencyName.state  == .ready
+                vm.currencyList.order.state == .ready,
+                vm.currencyList.name.state  == .ready
             {
                 env.theme.field.picker(edit, "Currency") {
                     Picker("", selection: $data.currencyId) {
                         if (data.currencyId <= 0) {
                             Text("Select Currency").tag(0 as DataId) // not set
                         }
-                        ForEach(vm.currencyOrder.value, id: \.self) { id in
-                            Text(vm.currencyName.value[id] ?? "").tag(id)
+                        ForEach(vm.currencyList.order.value, id: \.self) { id in
+                            Text(vm.currencyList.name.value[id] ?? "").tag(id)
                         }
                     }
                 } show: {
@@ -177,7 +177,7 @@ struct AccountEditForm: View {
 #Preview("\(AccountData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
     Form { AccountEditForm(
-        vm: RepositoryViewModel(env: env),
+        vm: ViewModel(env: env),
         data: .constant(AccountData.sampleData[0]),
         edit: false
     ) }
@@ -187,7 +187,7 @@ struct AccountEditForm: View {
 #Preview("\(AccountData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
     Form { AccountEditForm(
-        vm: RepositoryViewModel(env: env),
+        vm: ViewModel(env: env),
         data: .constant(AccountData.sampleData[0]),
         edit: true
     ) }

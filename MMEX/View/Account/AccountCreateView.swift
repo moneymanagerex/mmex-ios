@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountCreateView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @State var vm: RepositoryViewModel
+    @State var vm: ViewModel
     @State var data: AccountData
     @Binding var newData: AccountData?
     @Binding var isPresented: Bool
@@ -35,7 +35,7 @@ struct AccountCreateView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        if let createError = vm.updateAccount(&data) {
+                        if let createError = vm.update(&data) {
                             alertMessage = createError
                             alertIsPresented = true
                         } else {

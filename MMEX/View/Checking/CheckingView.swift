@@ -13,7 +13,7 @@ struct CheckingView: View {
 
     @State private var searchQuery: String = "" // New: Search query
     @State private var accountId: DataId = 0 //
-    
+
     var body: some View {
         NavigationStack {
             List {
@@ -36,6 +36,7 @@ struct CheckingView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Picker("Select Account", selection: $accountId) {
+                        //Text("Select Account").tag(0)
                         ForEach(viewModel.accounts) { account in
                             HStack{
                                 Image(systemName: account.type.symbolName)

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountUpdateView: View {
     @EnvironmentObject var env: EnvironmentManager
-    var vm: RepositoryViewModel
+    var vm: ViewModel
     var title: String
     @State var data: AccountData
     @Binding var newData: AccountData?
@@ -39,7 +39,7 @@ struct AccountUpdateView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        let updateError = vm.updateAccount(&data)
+                        let updateError = vm.update(&data)
                         if updateError != nil {
                             alertMessage = updateError
                             alertIsPresented = true
