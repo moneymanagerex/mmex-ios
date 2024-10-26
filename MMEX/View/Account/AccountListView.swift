@@ -9,12 +9,13 @@
 import SwiftUI
 
 struct AccountListView: View {
+    typealias MainData = AccountData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
 
     @State var search: AccountSearch = .init()
 
-    static let newData = AccountData(
+    static let initData = AccountData(
         status       : .open,
         favoriteAcct : .boolTrue
     )
@@ -26,28 +27,18 @@ struct AccountListView: View {
             groupChoice: vm.accountGroup.choice,
             vmGroup: $vm.accountGroup,
             search: $search,
+            initData: Self.initData,
             groupName: groupName,
             itemName: itemName,
             itemInfo: itemInfo,
-            createView: { $newData, $isPresented in AccountCreateView(
-                vm: vm,
-                data: Self.newData,
-                newData: $newData,
-                isPresented: $isPresented
-            ) },
-            readView: { data, $newData, $deleteData in AccountReadView(
-                vm: vm,
-                data: data,
-                newData: $newData,
-                deleteData: $deleteData
-            ) }
+            editView: editView
         )
         .onAppear {
             let _ = log.debug("DEBUG: AccountListView.onAppear()")
         }
     }
-
-    func groupName(_ g: Int, name: String?) -> some View {
+    
+    func groupName(_ g: Int, _ name: String?) -> some View {
         Group {
             switch vm.accountGroup.choice {
             case .type:
@@ -55,7 +46,7 @@ struct AccountListView: View {
                     Image(systemName: AccountGroup.groupType[g].symbolName)
                         .frame(minWidth: 10, alignment: .leading)
                         .font(.system(size: 16, weight: .bold))
-                        //.foregroundColor(.blue)
+                    //.foregroundColor(.blue)
                     Text(name ?? "(unknown group name)")
                     //.font(.subheadline)
                     //.padding(.leading)
@@ -65,11 +56,11 @@ struct AccountListView: View {
             }
         }
     }
-
+    
     func itemName(_ data: AccountData) -> some View {
         Text(data.name)
     }
-
+    
     func itemInfo(_ data: AccountData) -> some View {
         Group {
             if vm.accountGroup.choice == .type {
@@ -80,6 +71,14 @@ struct AccountListView: View {
                 Text(data.type.rawValue)
             }
         }
+    }
+
+    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        AccountEditView(
+            vm: vm,
+            data: data,
+            edit: edit
+        )
     }
 }
 

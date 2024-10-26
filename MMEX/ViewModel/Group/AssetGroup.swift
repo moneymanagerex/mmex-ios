@@ -6,8 +6,12 @@
 //
 
 enum AssetGroupChoice: String, GroupChoiceProtocol {
-    case all      = "All"
-    case used     = "Used"
+    case all        = "All"
+    case used       = "Used"
+    case status     = "Status"
+    case type       = "Type"
+    case currency   = "Currency"
+    case attachment = "Attachment"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
 }
@@ -19,4 +23,22 @@ struct AssetGroup: GroupProtocol {
     var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: [GroupData] = []
+
+    static let groupUsed: [Bool] = [
+        true, false
+    ]
+
+    static let groupStatus: [AssetStatus] = [
+        .open, .closed
+    ]
+
+    static let groupType: [AssetType] = [
+        .property, .automobile, .household, .art, .jewellery, .cash, .other
+    ]
+
+    var groupCurrency: [DataId] = []
+
+    static let groupAttachment: [Bool] = [
+        true, false
+    ]
 }

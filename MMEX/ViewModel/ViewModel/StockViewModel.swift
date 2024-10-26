@@ -16,6 +16,7 @@ extension ViewModel {
             load(queue: &queue, keyPath: \Self.stockList.data)
             load(queue: &queue, keyPath: \Self.stockList.order)
             load(queue: &queue, keyPath: \Self.stockList.used)
+            load(queue: &queue, keyPath: \Self.stockList.att)
             return await allOk(queue: queue)
         }
         stockList.state.loaded(ok: queueOk)
@@ -39,6 +40,52 @@ extension ViewModel {
 
 extension ViewModel {
     func loadStockGroup(choice: StockGroupChoice) {
+        guard
+            stockList.state       == .ready,
+            stockList.data.state  == .ready,
+            stockList.order.state == .ready,
+            stockList.used.state  == .ready,
+            stockList.att.state   == .ready
+        else { return }
+
+        guard stockGroup.state.loading() else { return }
+        log.trace("DEBUG: ViewModel.loadStockGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
+        
+        stockGroup.choice = choice
+        stockGroup.groupAccount = []
+
+        let dataDict  = stockList.data.value
+        let dataOrder = stockList.order.value
+        let dataUsed  = stockList.used.value
+        let dataAtt   = stockList.att.value
+
+        switch choice {
+        case .all:
+            stockGroup.append("All", dataOrder, true, true)
+        case .used:
+            let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
+            for g in StockGroup.groupUsed {
+                let name = g ? "Used" : "Other"
+                stockGroup.append(name, dict[g] ?? [], true, g)
+            }
+        case .account:
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.accountId }
+            stockGroup.groupAccount = env.accountCache.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
+            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            for g in stockGroup.groupAccount {
+                let name = env.accountCache[g]?.name
+                stockGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
+            }
+        case .attachment:
+            let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
+            for g in StockGroup.groupAttachment {
+                let name = g ? "With Attachment" : "Other"
+                stockGroup.append(name, dict[g] ?? [], true, g)
+            }
+        }
+
+        stockGroup.state.loaded()
     }
 
     func unloadStockGroup() {

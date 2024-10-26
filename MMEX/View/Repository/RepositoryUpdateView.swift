@@ -1,21 +1,25 @@
 //
-//  AccountUpdateView.swift
+//  RepositoryUpdateView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/5.
-//  Edited 2024-10-23 by George Ef (george.a.ef@gmail.com)
+//  2024-09-05: (AccountDetailView) Created by Lisheng Guan on 2024/9/5.
+//  2024-10-26: (RepositoryUpdateView) Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
-struct AccountUpdateView: View {
+struct RepositoryUpdateView<
+    MainData: DataProtocol,
+    EditView: View
+>: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     var title: String
-    @State var data: AccountData
-    @Binding var newData: AccountData?
+    @State var data: MainData
+    @Binding var newData: MainData?
     @Binding var isPresented: Bool
-    var dismiss: DismissAction
+    var dismiss: DismissAction?
+    @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
 
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
@@ -23,11 +27,7 @@ struct AccountUpdateView: View {
     var body: some View {
         NavigationStack {
             Form {
-                AccountEditForm(
-                    vm: vm,
-                    data: $data,
-                    edit: true
-                )
+                editView($data, true)
             }
             .textSelection(.enabled)
             .navigationTitle(title)
@@ -46,7 +46,7 @@ struct AccountUpdateView: View {
                         } else {
                             newData = data
                             isPresented = false
-                            dismiss()
+                            if let dismiss { dismiss() }
                         }
                     }
                 }
@@ -60,4 +60,24 @@ struct AccountUpdateView: View {
             }
         }
     }
+}
+
+#Preview(AccountData.sampleData[0].name) {
+    let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
+    let data = AccountData.sampleData[0]
+    RepositoryUpdateView(
+        vm: vm,
+        title: vm.name(data),
+        data: data,
+        newData: .constant(nil),
+        isPresented: .constant(true),
+        dismiss: nil,
+        editView: { $data, edit in AccountEditView(
+            vm: vm,
+            data: $data,
+            edit: edit
+        ) }
+    )
+    .environmentObject(env)
 }

@@ -6,8 +6,11 @@
 //
 
 enum PayeeGroupChoice: String, GroupChoiceProtocol {
-    case all      = "All"
-    case used     = "Used"
+    case all        = "All"
+    case used       = "Used"
+    case active     = "Active"
+    case category   = "Category"
+    case attachment = "Attachment"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
 }
@@ -19,4 +22,18 @@ struct PayeeGroup: GroupProtocol {
     var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: [GroupData] = []
+
+    static let groupUsed: [Bool] = [
+        true, false
+    ]
+
+    static let groupActive: [Bool] = [
+        true, false
+    ]
+
+    var groupCategory: [DataId] = []
+
+    static let groupAttachment: [Bool] = [
+        true, false
+    ]
 }

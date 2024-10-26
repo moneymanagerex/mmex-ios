@@ -17,7 +17,7 @@ extension ViewModel {
             load(queue: &queue, keyPath: \Self.accountList.order)
             load(queue: &queue, keyPath: \Self.accountList.used)
             load(queue: &queue, keyPath: \Self.accountList.att)
-            // needed in EditForm
+            // used in EditView
             load(queue: &queue, keyPath: \Self.currencyList.name)
             load(queue: &queue, keyPath: \Self.currencyList.order)
             return await allOk(queue: queue)
@@ -51,9 +51,9 @@ extension ViewModel {
             accountList.used.state  == .ready,
             accountList.att.state   == .ready
         else { return }
-        
+
         guard accountGroup.state.loading() else { return }
-        log.trace("DEBUG: RepositoryViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
+        log.trace("DEBUG: ViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         accountGroup.choice = choice
         accountGroup.groupCurrency = []
@@ -78,6 +78,11 @@ extension ViewModel {
                 let name = g == .boolTrue ? "Favorite" : "Other"
                 accountGroup.append(name, dict[g] ?? [], true, g == .boolTrue)
             }
+        case .status:
+            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.status }
+            for g in AccountGroup.groupStatus {
+                accountGroup.append(g.rawValue, dict[g] ?? [], true, g == .open)
+            }
         case .type:
             let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.type }
             for g in AccountGroup.groupType {
@@ -91,11 +96,6 @@ extension ViewModel {
             for g in accountGroup.groupCurrency {
                 let name = env.currencyCache[g]?.name
                 accountGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
-            }
-        case .status:
-            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.status }
-            for g in AccountGroup.groupStatus {
-                accountGroup.append(g.rawValue, dict[g] ?? [], true, g == .open)
             }
         case .attachment:
             let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
@@ -115,7 +115,7 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadAccountList(_ oldData: AccountData?, _ newData: AccountData?) async {
-        log.trace("DEBUG: RepositoryViewModel.reloadAccount(main=\(Thread.isMainThread))")
+        log.trace("DEBUG: ViewModel.reloadAccountList(main=\(Thread.isMainThread))")
         if let newData {
             if env.currencyCache[newData.currencyId] == nil {
                 env.loadCurrency()
@@ -201,11 +201,11 @@ extension ViewModel {
     }
 
     func searchAccountGroup(search: AccountSearch, expand: Bool = false ) {
-        //log.trace("DEBUG: RepositoryViewModel.searchAccountGroup()")
+        //log.trace("DEBUG: ViewModel.searchAccountGroup()")
         guard accountGroup.state == .ready else { return }
         for g in 0 ..< accountGroup.value.count {
             guard let isVisible = accountGroupIsVisible(g, search: search) else { return }
-            //log.debug("DEBUG: RepositoryViewModel.searchAccountGroup(): \(g) = \(isVisible)")
+            //log.debug("DEBUG: ViewModel.searchAccountGroup(): \(g) = \(isVisible)")
             accountGroup.value[g].isVisible = isVisible
             if (expand || !search.isEmpty) && isVisible {
                 accountGroup.value[g].isExpanded = true

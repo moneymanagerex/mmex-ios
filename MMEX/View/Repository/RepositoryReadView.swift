@@ -1,20 +1,24 @@
 //
-//  AccountReadView.swift
+//  RepositoryReadView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/5.
-//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
+//  2024-09-05: (AccountDetailView) Created by Lisheng Guan
+//  2024-10-26: (RepositoryReadView) Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
-struct AccountReadView: View {
+struct RepositoryReadView<
+    MainData: DataProtocol,
+    EditView: View
+>: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
-    @State var data: AccountData
-    @Binding var newData: AccountData?
+    @State var data: MainData
+    @Binding var newData: MainData?
     @Binding var deleteData: Bool
+    @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
 
     @State private var updateViewIsPresented = false
     @State private var exporterIsPresented = false
@@ -24,11 +28,7 @@ struct AccountReadView: View {
 
     var body: some View {
         Form {
-            AccountEditForm(
-                vm: vm,
-                data: $data,
-                edit: false
-            )
+            editView($data, false)
             if vm.isUsed(data) == false {
                 Button("Delete Account") {
                     let deleteError = vm.delete(data)
@@ -68,20 +68,21 @@ struct AccountReadView: View {
             )
         }
         .sheet(isPresented: $updateViewIsPresented) {
-            AccountUpdateView(
+            RepositoryUpdateView(
                 vm: vm,
-                title: data.name,
+                title: vm.name(data),
                 data: data,
                 newData: $newData,
                 isPresented: $updateViewIsPresented,
-                dismiss: dismiss
+                dismiss: dismiss,
+                editView: editView
             )
         }
         .fileExporter(
             isPresented: $exporterIsPresented,
             document: ExportableEntityDocument(entity: data),
             contentType: .json,
-            defaultFilename: "\(data.name)_Account"
+            defaultFilename: vm.filename(data)
         ) { result in
             switch result {
             case .success(let url):
@@ -95,33 +96,17 @@ struct AccountReadView: View {
 
 #Preview(AccountData.sampleData[0].name) {
     let env = EnvironmentManager.sampleData
-    AccountReadView(
-        vm: ViewModel(env: env),
+    let vm = ViewModel(env: env)
+    RepositoryReadView(
+        vm: vm,
         data: AccountData.sampleData[0],
         newData: .constant(nil),
-        deleteData: .constant(false)
-    )
-    .environmentObject(env)
-}
-
-#Preview(AccountData.sampleData[1].name) {
-    let env = EnvironmentManager.sampleData
-    AccountReadView(
-        vm: ViewModel(env: env),
-        data: AccountData.sampleData[1],
-        newData: .constant(nil),
-        deleteData: .constant(false)
-    )
-    .environmentObject(env)
-}
-
-#Preview(AccountData.sampleData[2].name) {
-    let env = EnvironmentManager.sampleData
-    AccountReadView(
-        vm: ViewModel(env: env),
-        data: AccountData.sampleData[2],
-        newData: .constant(nil),
-        deleteData: .constant(false)
+        deleteData: .constant(false),
+        editView: { $data, edit in AccountEditView(
+            vm: vm,
+            data: $data,
+            edit: edit
+        ) }
     )
     .environmentObject(env)
 }

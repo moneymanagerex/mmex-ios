@@ -6,8 +6,10 @@
 //
 
 enum StockGroupChoice: String, GroupChoiceProtocol {
-    case all      = "All"
-    case used     = "Used"
+    case all        = "All"
+    case used       = "Used"
+    case account    = "Account"
+    case attachment = "Attachment"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
 }
@@ -19,4 +21,14 @@ struct StockGroup: GroupProtocol {
     var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: [GroupData] = []
+
+    static let groupUsed: [Bool] = [
+        true, false
+    ]
+
+    var groupAccount: [DataId] = []
+
+    static let groupAttachment: [Bool] = [
+        true, false
+    ]
 }
