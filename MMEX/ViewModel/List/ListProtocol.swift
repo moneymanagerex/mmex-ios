@@ -12,6 +12,5 @@ protocol ListProtocol {
     var state : LoadState                     { get set }
     var count : LoadMainCount<MainRepository> { get set }
     var data  : LoadMainData<MainRepository>  { get set }
-    var order : LoadMainOrder<MainRepository> { get set }
     var used  : LoadMainUsed<MainRepository>  { get set }
 }

@@ -20,10 +20,16 @@ enum AccountGroupChoice: String, GroupChoiceProtocol {
 struct AccountGroup: GroupProtocol {
     typealias MainRepository = AccountRepository
     typealias GroupChoice    = AccountGroupChoice
+    let loadName: String = "Group\(MainRepository.repositoryName)"
+    let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
-    var value: [GroupData] = []
+    var value: ValueType
+    
+    init() {
+        self.value = idleValue
+    }
 
     static let groupUsed: [Bool] = [
         true, false

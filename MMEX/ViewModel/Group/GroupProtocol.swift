@@ -7,15 +7,11 @@
 
 import SwiftUI
 
-protocol GroupProtocol: Copyable {
+protocol GroupProtocol: LoadProtocol where ValueType == [GroupData] {
     associatedtype MainRepository: RepositoryProtocol
     associatedtype GroupChoice: GroupChoiceProtocol
 
     var choice: GroupChoice { get set }
-    var state: LoadState { get set }
-    var value: [GroupData] { get set }
-
-    mutating func unload()
 }
 
 extension GroupProtocol {
@@ -27,14 +23,5 @@ extension GroupProtocol {
         value.append(GroupData(
             name: name, dataId: dataId, isVisible: isVisible, isExpanded: isExpanded
         ) )
-    }
-}
-
-extension GroupProtocol {
-    mutating func unload() {
-        guard state.unloading() else { return }
-        log.trace("DEBUG: GroupProtocol.unload(\(MainRepository.repositoryName), main=\(Thread.isMainThread))")
-        value = []
-        state.unloaded()
     }
 }

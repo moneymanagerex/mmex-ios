@@ -16,10 +16,16 @@ enum CurrencyGroupChoice: String, GroupChoiceProtocol {
 struct CurrencyGroup: GroupProtocol {
     typealias MainRepository = CurrencyRepository
     typealias GroupChoice    = CurrencyGroupChoice
+    let loadName: String = "Group\(MainRepository.repositoryName)"
+    let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
-    var value: [GroupData] = []
+    var value: ValueType
+
+    init() {
+        self.value = idleValue
+    }
 
     static let groupUsed: [Bool] = [
         true, false

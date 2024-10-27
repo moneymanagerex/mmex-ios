@@ -1,22 +1,21 @@
 //
-//  StockGroup.swift
+//  CategoryGroup.swift
 //  MMEX
 //
-//  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
+//  2024-10-27: Created by George Ef (george.a.ef@gmail.com)
 //
 
-enum StockGroupChoice: String, GroupChoiceProtocol {
+enum CategoryGroupChoice: String, GroupChoiceProtocol {
     case all        = "All"
     case used       = "Used"
-    case account    = "Account"
-    case attachment = "Attachment"
+    case active     = "Active"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
 }
 
-struct StockGroup: GroupProtocol {
-    typealias MainRepository = StockRepository
-    typealias GroupChoice    = StockGroupChoice
+struct CategoryGroup: GroupProtocol {
+    typealias MainRepository = CategoryRepository
+    typealias GroupChoice    = CategoryGroupChoice
     let loadName: String = "Group\(MainRepository.repositoryName)"
     let idleValue: ValueType = []
 
@@ -32,9 +31,7 @@ struct StockGroup: GroupProtocol {
         true, false
     ]
 
-    var groupAccount: [DataId] = []
-
-    static let groupAttachment: [Bool] = [
+    static let groupActive: [Bool] = [
         true, false
     ]
 }

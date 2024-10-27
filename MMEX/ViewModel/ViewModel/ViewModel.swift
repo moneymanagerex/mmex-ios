@@ -31,7 +31,8 @@ class ViewModel: ObservableObject {
     @Published var stockGroup : StockGroup = .init()
 
     typealias C = CategoryRepository
-    @Published var categoryCount : LoadMainCount<C> = .init()
+    @Published var categoryList  : CategoryList  = .init()
+    @Published var categoryGroup : CategoryGroup = .init()
 
     typealias P = PayeeRepository
     @Published var payeeList  : PayeeList  = .init()
@@ -50,13 +51,34 @@ class ViewModel: ObservableObject {
 }
 
 extension ViewModel {
+    func load<RepositoryLoadType: LoadProtocol>(
+        eval: @escaping () -> RepositoryLoadType.ValueType?,
+        keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
+    ) async -> Bool {
+        guard self[keyPath: keyPath].state.loading() else { return true }
+        let loadName = self[keyPath: keyPath].loadName
+        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        return await Task(priority: .background) {
+            let value = eval()
+            await MainActor.run {
+                if let value {
+                    self[keyPath: keyPath].value = value
+                }
+                self[keyPath: keyPath].state.loaded(ok: value != nil)
+            }
+            return value != nil
+        }.value
+    }
+
     func load<RepositoryLoadType>(
         queue: inout TaskGroup<Bool>,
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
-    ) where RepositoryLoadType: LoadProtocol {
+    ) where RepositoryLoadType: LoadFetchProtocol {
         guard self[keyPath: keyPath].state.loading() else { return }
+        let loadName = self[keyPath: keyPath].loadName
+        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         queue.addTask(priority: .background) {
-            let value = await self[keyPath: keyPath].fetch(env: self.env)
+            let value = await self[keyPath: keyPath].fetchValue(env: self.env)
             await MainActor.run {
                 if let value {
                     self[keyPath: keyPath].value = value
@@ -83,6 +105,7 @@ extension ViewModel {
         else if MainRepository.self == A.self { async let _ = loadAccountList() }
         else if MainRepository.self == E.self { async let _ = loadAssetList() }
         else if MainRepository.self == S.self { async let _ = loadStockList() }
+        else if MainRepository.self == C.self { async let _ = loadCategoryList() }
         else if MainRepository.self == P.self { async let _ = loadPayeeList() }
     }
 
@@ -92,6 +115,7 @@ extension ViewModel {
         else if MainRepository.self == A.self { unloadAccountList() }
         else if MainRepository.self == E.self { unloadAssetList() }
         else if MainRepository.self == S.self { unloadStockList() }
+        else if MainRepository.self == C.self { unloadCategoryList() }
         else if MainRepository.self == P.self { unloadPayeeList() }
     }
 
@@ -101,6 +125,7 @@ extension ViewModel {
         async let _ = loadAccountList()
         async let _ = loadAssetList()
         async let _ = loadStockList()
+        async let _ = loadCategoryList()
         async let _ = loadPayeeList()
     }
 
@@ -110,6 +135,7 @@ extension ViewModel {
         unloadAccountList()
         unloadAssetList()
         unloadStockList()
+        unloadCategoryList()
         unloadPayeeList()
     }
 }
@@ -124,6 +150,7 @@ extension ViewModel {
         else if MainRepository.self == A.self { loadAccountGroup(choice: choice as! AccountGroupChoice) }
         else if MainRepository.self == E.self { loadAssetGroup(choice: choice as! AssetGroupChoice) }
         else if MainRepository.self == S.self { loadStockGroup(choice: choice as! StockGroupChoice) }
+        else if MainRepository.self == C.self { loadCategoryGroup(choice: choice as! CategoryGroupChoice) }
         else if MainRepository.self == P.self { loadPayeeGroup(choice: choice as! PayeeGroupChoice) }
     }
     
@@ -133,6 +160,7 @@ extension ViewModel {
         else if MainRepository.self == A.self { unloadAccountGroup() }
         else if MainRepository.self == E.self { unloadAssetGroup() }
         else if MainRepository.self == S.self { unloadStockGroup() }
+        else if MainRepository.self == C.self { unloadCategoryGroup() }
         else if MainRepository.self == P.self { unloadPayeeGroup() }
     }
 
@@ -141,6 +169,7 @@ extension ViewModel {
         unloadAccountGroup()
         unloadAssetGroup()
         unloadStockGroup()
+        unloadCategoryGroup()
         unloadPayeeGroup()
     }
 
@@ -160,6 +189,8 @@ extension ViewModel {
             async let _ = reloadAssetList(oldData as! AssetData?, newData as! AssetData?)
         } else if MainData.self == S.RepositoryData.self {
             async let _ = reloadStockList(oldData as! StockData?, newData as! StockData?)
+        } else if MainData.self == C.RepositoryData.self {
+            async let _ = reloadCategoryList(oldData as! CategoryData?, newData as! CategoryData?)
         } else if MainData.self == P.RepositoryData.self {
             async let _ = reloadPayeeList(oldData as! PayeeData?, newData as! PayeeData?)
         }
@@ -180,6 +211,8 @@ extension ViewModel {
             searchAssetGroup(search: search as! AssetSearch, expand: expand)
         } else if GroupType.MainRepository.self == S.self {
             searchStockGroup(search: search as! StockSearch, expand: expand)
+        } else if GroupType.MainRepository.self == C.self {
+            searchCategoryGroup(search: search as! CategorySearch, expand: expand)
         } else if GroupType.MainRepository.self == P.self {
             searchPayeeGroup(search: search as! PayeeSearch, expand: expand)
         }
@@ -196,6 +229,8 @@ extension ViewModel {
             return assetList.used.state == .ready ? assetList.used.value.contains(data.id) : nil
         } else if DataType.self == S.RepositoryData.self {
             return stockList.used.state == .ready ? stockList.used.value.contains(data.id) : nil
+        } else if DataType.self == C.RepositoryData.self {
+            return categoryList.used.state == .ready ? categoryList.used.value.contains(data.id) : nil
         } else if DataType.self == P.RepositoryData.self {
             return payeeList.used.state == .ready ? payeeList.used.value.contains(data.id) : nil
         }
@@ -211,6 +246,8 @@ extension ViewModel {
             return updateAsset(&data)
         } else if var data = data as? StockData {
             return updateStock(&data)
+        } else if var data = data as? CategoryData {
+            return updateCategory(&data)
         } else if var data = data as? PayeeData {
             return updatePayee(&data)
         }
@@ -226,6 +263,8 @@ extension ViewModel {
             return deleteAsset(data)
         } else if let data = data as? StockData {
             return deleteStock(data)
+        } else if let data = data as? CategoryData {
+            return deleteCategory(data)
         } else if let data = data as? PayeeData {
             return deletePayee(data)
         }
@@ -242,6 +281,9 @@ extension ViewModel {
         } else if let data = data as? AssetData {
             return data.name
         } else if let data = data as? StockData {
+            return data.name
+        } else if let data = data as? CategoryData {
+            // TODO: name -> path
             return data.name
         } else if let data = data as? PayeeData {
             return data.name

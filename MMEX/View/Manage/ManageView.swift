@@ -45,7 +45,7 @@ struct ManageView: View {
                 NavigationLink(destination: CategoryListView(viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(CategoryData.dataName.1) },
-                        count: vm.categoryCount
+                        count: vm.categoryList.count
                     )
                 }
                 NavigationLink(destination: PayeeListView()) {
