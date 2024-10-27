@@ -85,6 +85,7 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadCategoryList(_ oldData: CategoryData?, _ newData: CategoryData?) async {
+        // not implemented
     }
 }
 

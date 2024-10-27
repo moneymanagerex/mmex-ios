@@ -95,6 +95,7 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadStockList(_ oldData: StockData?, _ newData: StockData?) async {
+        // not implemented
     }
 }
 

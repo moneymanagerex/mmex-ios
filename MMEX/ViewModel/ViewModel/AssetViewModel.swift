@@ -105,6 +105,7 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadAssetList(_ oldData: AssetData?, _ newData: AssetData?) async {
+        // not implemented
     }
 }
 

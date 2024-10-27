@@ -260,17 +260,17 @@ extension ViewModel {
 extension ViewModel {
     func isUsed<DataType: DataProtocol>(_ data: DataType) -> Bool? {
         if DataType.self == U.RepositoryData.self {
-            return currencyList.used.state == .ready ? currencyList.used.value.contains(data.id) : nil
+            return currencyList.used.readyValue?.contains(data.id)
         } else if DataType.self == A.RepositoryData.self {
-            return accountList.used.state == .ready ? accountList.used.value.contains(data.id) : nil
+            return accountList.used.readyValue?.contains(data.id)
         } else if DataType.self == E.RepositoryData.self {
-            return assetList.used.state == .ready ? assetList.used.value.contains(data.id) : nil
+            return assetList.used.readyValue?.contains(data.id)
         } else if DataType.self == S.RepositoryData.self {
-            return stockList.used.state == .ready ? stockList.used.value.contains(data.id) : nil
+            return stockList.used.readyValue?.contains(data.id)
         } else if DataType.self == C.RepositoryData.self {
-            return categoryList.used.state == .ready ? categoryList.used.value.contains(data.id) : nil
+            return categoryList.used.readyValue?.contains(data.id)
         } else if DataType.self == P.RepositoryData.self {
-            return payeeList.used.state == .ready ? payeeList.used.value.contains(data.id) : nil
+            return payeeList.used.readyValue?.contains(data.id)
         }
         return nil
     }

@@ -217,10 +217,10 @@ extension ViewModel {
         guard data.currencyId > 0 else {
             return "No currency is selected"
         }
-        guard currencyList.name.state == .ready else {
+        guard let currencyName = currencyList.name.readyValue else {
             return "* currencyName is not loaded"
         }
-        if currencyList.name.value[data.currencyId] == nil {
+        if currencyName[data.currencyId] == nil {
             return "* Unknown currency #\(data.currencyId)"
         }
 
@@ -252,10 +252,10 @@ extension ViewModel {
     }
 
     func deleteAccount(_ data: AccountData) -> String? {
-        guard accountList.used.state == .ready else {
+        guard let accountUsed = accountList.used.readyValue else {
             return "* accountUsed is not loaded"
         }
-        if accountList.used.value.contains(data.id) {
+        if accountUsed.contains(data.id) {
             return "* Account #\(data.id) is used"
         }
 
@@ -266,10 +266,10 @@ extension ViewModel {
             return "* Database is not available"
         }
 
-        guard accountList.att.state == .ready else {
+        guard let accountAtt = accountList.att.readyValue else {
             return "* accountAtt is not loaded"
         }
-        if accountList.att.value[data.id] != nil {
+        if accountAtt[data.id] != nil {
             guard ax.delete(refType: .account, refId: data.id) else {
                 return "* Cannot delete attachments for account #\(data.id)"
             }

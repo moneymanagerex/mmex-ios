@@ -78,6 +78,7 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadCurrencyList(_ oldData: CurrencyData?, _ newData: CurrencyData?) async {
+        // not implemented
     }
 }
 
