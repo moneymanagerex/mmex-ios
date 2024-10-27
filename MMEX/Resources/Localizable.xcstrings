@@ -100,6 +100,9 @@
         }
       }
     },
+    "Active" : {
+
+    },
     "ACTIVE" : {
       "localizations" : {
         "it" : {
@@ -622,7 +625,7 @@
     "How to manage categories?" : {
 
     },
-    "INACTIVE" : {
+    "Inactive" : {
 
     },
     "income" : {
