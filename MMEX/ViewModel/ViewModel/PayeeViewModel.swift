@@ -12,15 +12,17 @@ extension ViewModel {
     func loadPayeeList() async {
         guard payeeList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadPayeeList(main=\(Thread.isMainThread))")
-        let allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
-            load(&taskGroup, keyPath: \Self.payeeList.data)
-            load(&taskGroup, keyPath: \Self.payeeList.used)
-            load(&taskGroup, keyPath: \Self.payeeList.order)
-            load(&taskGroup, keyPath: \Self.payeeList.att)
-            return await taskGroupOk(taskGroup)
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.payeeList.data),
+                load(&taskGroup, keyPath: \Self.payeeList.used),
+                load(&taskGroup, keyPath: \Self.payeeList.order),
+                load(&taskGroup, keyPath: \Self.payeeList.att),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-        payeeList.state.loaded(ok: allOk)
-        if allOk {
+        payeeList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Error.")

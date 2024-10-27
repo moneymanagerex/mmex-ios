@@ -12,18 +12,20 @@ extension ViewModel {
     func loadAccountList() async {
         guard accountList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadAccountList(main=\(Thread.isMainThread))")
-        let allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
-            load(&taskGroup, keyPath: \Self.accountList.data)
-            load(&taskGroup, keyPath: \Self.accountList.used)
-            load(&taskGroup, keyPath: \Self.accountList.order)
-            load(&taskGroup, keyPath: \Self.accountList.att)
-            // used in EditView
-            load(&taskGroup, keyPath: \Self.currencyList.name)
-            load(&taskGroup, keyPath: \Self.currencyList.order)
-            return await taskGroupOk(taskGroup)
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.accountList.data),
+                load(&taskGroup, keyPath: \Self.accountList.used),
+                load(&taskGroup, keyPath: \Self.accountList.order),
+                load(&taskGroup, keyPath: \Self.accountList.att),
+                // used in EditView
+                load(&taskGroup, keyPath: \Self.currencyList.name),
+                load(&taskGroup, keyPath: \Self.currencyList.order),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-        accountList.state.loaded(ok: allOk)
-        if allOk {
+        accountList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Error.")

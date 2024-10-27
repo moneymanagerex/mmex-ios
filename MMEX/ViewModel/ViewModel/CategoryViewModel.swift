@@ -12,20 +12,23 @@ extension ViewModel {
     func loadCategoryList() async {
         guard categoryList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadCategoryList(main=\(Thread.isMainThread))")
-
-        var allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
-            load(&taskGroup, keyPath: \Self.categoryList.data)
-            load(&taskGroup, keyPath: \Self.categoryList.used)
-            load(&taskGroup, keyPath: \Self.categoryList.order)
-            return await taskGroupOk(taskGroup)
+        var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.categoryList.data),
+                load(&taskGroup, keyPath: \Self.categoryList.used),
+                load(&taskGroup, keyPath: \Self.categoryList.order),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-
-        if allOk { allOk = await load(
-            keyPath: \Self.categoryList.path
-        ) }
-
-        categoryList.state.loaded(ok: allOk)
-        if allOk {
+        if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.categoryList.path),
+                load(&taskGroup, keyPath: \Self.categoryList.tree),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
+        } }
+        categoryList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: ViewModel.loadCategoryList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadCategoryList(main=\(Thread.isMainThread)): Error.")

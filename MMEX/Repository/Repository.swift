@@ -48,7 +48,7 @@ extension Repository {
     ) -> [Result]? {
         do {
             var data: [Result] = []
-            log.trace("DEBUG: Repository.select(): \(table.expression.description)")
+            log.trace("DEBUG: Repository.select(main=\(Thread.isMainThread)): \(table.expression.description)")
             for row in try db.prepare(table) {
                 data.append(result(row))
             }
@@ -66,7 +66,7 @@ extension Repository {
     ) -> [DataId: Result]? {
         do {
             var dict: [DataId: Result] = [:]
-            log.trace("DEBUG: Repository.selectById(): \(query)")
+            log.trace("DEBUG: Repository.selectById(main=\(Thread.isMainThread)): \(query)")
             for row in try db.prepare(query) {
                 let id = DataId(row[0] as! Int64)
                 dict[id] = result(row)
@@ -81,7 +81,7 @@ extension Repository {
 
     func execute(sql: String) -> Bool {
         do {
-            log.trace("DEBUG: Repository.execute(sql:): \(sql)")
+            log.trace("DEBUG: Repository.execute(main=\(Thread.isMainThread), sql:) \(sql)")
             try db.execute(sql)
             log.info("INFO: Repository.execute(sql:)")
             return true
@@ -96,7 +96,7 @@ extension Repository {
             log.error("ERROR: Repository.execute(url:): cannot read \(url)")
             return false
         }
-        log.trace("DEBUG: Repository.execute(url: \(url))")
+        log.trace("DEBUG: Repository.execute(main=\(Thread.isMainThread), url:) \(url))")
 
         // split contents into paragraphs and execute each paragraph
         var paragraph = ""
@@ -121,6 +121,7 @@ extension Repository {
 
 extension Repository {
     func insertSampleData() -> Bool {
+        log.trace("DEBUG: Repository.insertSampleData(main=\(Thread.isMainThread))")
 
         var infotableMap: [DataId: DataId] = [:]
         do {

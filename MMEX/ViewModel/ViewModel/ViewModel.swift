@@ -51,46 +51,45 @@ class ViewModel: ObservableObject {
 }
 
 extension ViewModel {
-    /*
     func load<RepositoryLoadType: LoadFetchProtocol>(
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
-    ) -> Bool {
-        if self[keyPath: keyPath].state.loading() {
-            let loadName = self[keyPath: keyPath].loadName
-            log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
-            
-            let value = Task(priority: .background) { return await self[keyPath: keyPath].fetchValue(env: self.env) }.value
-                await MainActor.run {
-                    if let value {
-                        self[keyPath: keyPath].value = value
-                    }
-                    self[keyPath: keyPath].state.loaded(ok: value != nil)
-                }
-            }
+    ) async -> Bool {
+        guard self[keyPath: keyPath].state.loading() else {
+            return self[keyPath: keyPath].state == .ready
         }
-        return self[keyPath: keyPath].state == .ready
-    }*/
+        let loadName = self[keyPath: keyPath].loadName
+        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        let value = await self[keyPath: keyPath].fetchValue(env: self.env)
+        if let value {
+            self[keyPath: keyPath].value = value
+        }
+        self[keyPath: keyPath].state.loaded(ok: value != nil)
+        return value != nil
+    }
 
     func load<RepositoryLoadType: LoadEvalProtocol>(
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
     ) async -> Bool {
-        if self[keyPath: keyPath].state.loading() {
-            let loadName = self[keyPath: keyPath].loadName
-            log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
-            let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
-            if let value {
-                self[keyPath: keyPath].value = value
-            }
-            self[keyPath: keyPath].state.loaded(ok: value != nil)
+        guard self[keyPath: keyPath].state.loading() else {
+            return self[keyPath: keyPath].state == .ready
         }
-        return self[keyPath: keyPath].state == .ready
+        let loadName = self[keyPath: keyPath].loadName
+        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
+        if let value {
+            self[keyPath: keyPath].value = value
+        }
+        self[keyPath: keyPath].state.loaded(ok: value != nil)
+        return value != nil
     }
 
     func load<RepositoryLoadType: LoadFetchProtocol>(
         _ taskGroup: inout TaskGroup<Bool>,
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
-    ) {
-        guard self[keyPath: keyPath].state.loading() else { return }
+    ) -> Bool {
+        guard self[keyPath: keyPath].state.loading() else {
+            return self[keyPath: keyPath].state == .ready
+        }
         let loadName = self[keyPath: keyPath].loadName
         log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
@@ -103,13 +102,16 @@ extension ViewModel {
             }
             return value != nil
         }
+        return true
     }
 
     func load<RepositoryLoadType: LoadEvalProtocol>(
         _ taskGroup: inout TaskGroup<Bool>,
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
-    ) {
-        guard self[keyPath: keyPath].state.loading() else { return }
+    ) -> Bool {
+        guard self[keyPath: keyPath].state.loading() else {
+            return self[keyPath: keyPath].state == .ready
+        }
         let loadName = self[keyPath: keyPath].loadName
         log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
@@ -122,14 +124,15 @@ extension ViewModel {
             }
             return value != nil
         }
+        return true
     }
 
-    func taskGroupOk(_ taskGroup: TaskGroup<Bool>) async -> Bool {
-        var allOk = true
-        for await ok in taskGroup {
-            if !ok { allOk = false }
+    func taskGroupOk(_ taskGroup: TaskGroup<Bool>, _ ok: Bool = true) async -> Bool {
+        var ok = ok
+        for await taskOk in taskGroup {
+            if !taskOk { ok = false }
         }
-        return allOk
+        return ok
     }
 }
 

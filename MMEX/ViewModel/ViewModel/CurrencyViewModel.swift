@@ -12,14 +12,16 @@ extension ViewModel {
     func loadCurrencyList() async {
         guard currencyList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadCurrencyList(main=\(Thread.isMainThread))")
-        let allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
-            load(&taskGroup, keyPath: \Self.currencyList.data)
-            load(&taskGroup, keyPath: \Self.currencyList.used)
-            load(&taskGroup, keyPath: \Self.currencyList.order)
-            return await taskGroupOk(taskGroup)
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.currencyList.data),
+                load(&taskGroup, keyPath: \Self.currencyList.used),
+                load(&taskGroup, keyPath: \Self.currencyList.order),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-        currencyList.state.loaded(ok: allOk)
-        if allOk {
+        currencyList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: CurrencyList.load(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: CurrencyList.load(main=\(Thread.isMainThread)): Error.")

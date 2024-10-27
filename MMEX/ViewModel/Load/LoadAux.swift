@@ -27,7 +27,7 @@ struct LoadAuxData<
         self.value = idleValue
     }
 
-    func fetchValue(env: EnvironmentManager) -> ValueType? {
+    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
         AuxRepository(env)?.selectBy(property: mainId, from: self.auxTable)
     }
 }
@@ -83,7 +83,7 @@ struct LoadAuxValue<
         self.value = idleValue
     }
 
-    func fetchValue(env: EnvironmentManager) -> ValueType? {
+    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
         AuxRepository(env)?.selectBy(property: mainId, from: self.auxTable, with: auxValue)
     }
 }

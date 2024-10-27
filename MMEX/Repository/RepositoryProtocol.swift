@@ -90,7 +90,7 @@ extension RepositoryProtocol {
     ) -> Int? {
         do {
             let query = table.count
-            log.trace("DEBUG: RepositoryProtocol.count(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.count(main=\(Thread.isMainThread)): \(query.expression.description)")
             let count: Int = try db.scalar(query)
             log.info("INFO: RepositoryProtocol.count(\(Self.repositoryName)): \(count)")
             return count
@@ -107,7 +107,7 @@ extension RepositoryProtocol {
     ) -> RepositoryPluckResult<DataValue> {
         do {
             let query = Self.selectData(from: table)
-            log.trace("DEBUG: RepositoryProtocol.pluck(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.pluck(main=\(Thread.isMainThread)): \(query.expression.description)")
             if let row = try db.pluck(query) {
                 let dataValue = value(row)
                 log.info("INFO: RepositoryProtocol.pluck(\(Self.repositoryName), \(key)): found")
@@ -140,7 +140,7 @@ extension RepositoryProtocol {
         do {
             var data: [DataValue] = []
             let query = Self.selectData(from: table)
-            log.trace("DEBUG: RepositoryProtocol.select(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.select(main=\(Thread.isMainThread)): \(query.expression.description)")
             for row in try db.prepare(query) {
                 data.append(value(row))
             }
@@ -158,7 +158,7 @@ extension RepositoryProtocol {
         do {
             var dataId: [DataId] = []
             let query = Self.selectId(from: table)
-            log.trace("DEBUG: RepositoryProtocol.selectId(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.selectId(main=\(Thread.isMainThread)): \(query.expression.description)")
             for row in try db.prepare(query) {
                 dataId.append(Self.fetchId(row))
             }
@@ -177,7 +177,7 @@ extension RepositoryProtocol {
         do {
             var dict: [DataId: DataValue] = [:]
             let query = Self.selectData(from: table)
-            log.trace("DEBUG: RepositoryProtocol.selectById(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.selectById(main=\(Thread.isMainThread)): \(query.expression.description)")
             for row in try db.prepare(query) {
                 let id = Self.fetchId(row)
                 dict[id] = value(row)
@@ -198,7 +198,7 @@ extension RepositoryProtocol {
         do {
             var dataByProperty: [DataProperty: [DataValue]] = [:]
             let query = Self.selectData(from: table)
-            log.trace("DEBUG: RepositoryProtocol.selectBy(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.selectBy(main=\(Thread.isMainThread)): \(query.expression.description)")
             for row in try db.prepare(query) {
                 let i = property(row)
                 if dataByProperty[i] == nil { dataByProperty[i] = [] }
@@ -216,7 +216,7 @@ extension RepositoryProtocol {
         do {
             let query = Self.table
                 .insert(Self.itemSetters(data))
-            log.trace("DEBUG: RepositoryProtocol.insert(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.insert(main=\(Thread.isMainThread)): \(query.expression.description)")
             let rowid = try db.run(query)
             data.id = DataId(rowid)
             let desc = data.shortDesc()
@@ -234,7 +234,7 @@ extension RepositoryProtocol {
             let query = Self.table
                 .filter(Self.col_id == Int64(data.id))
                 .update(Self.itemSetters(data))
-            log.trace("DEBUG: RepositoryProtocol.update(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.update(main=\(Thread.isMainThread)): \(query.expression.description)")
             try db.run(query)
             log.info("INFO: RepositoryProtocol.update(\(Self.repositoryName)): \(data.shortDesc())")
             return true
@@ -250,7 +250,7 @@ extension RepositoryProtocol {
             let query = Self.table
                 .filter(Self.col_id == Int64(data.id))
                 .delete()
-            log.trace("DEBUG: RepositoryProtocol.delete(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.delete(main=\(Thread.isMainThread)): \(query.expression.description)")
             try db.run(query)
             log.info("INFO: RepositoryProtocol.delete(\(Self.repositoryName)): \(data.shortDesc())")
             return true
@@ -263,7 +263,7 @@ extension RepositoryProtocol {
     func deleteAll() -> Bool {
         do {
             let query = Self.table.delete()
-            log.trace("DEBUG: RepositoryProtocol.deleteAll(): \(query.expression.description)")
+            log.trace("DEBUG: RepositoryProtocol.deleteAll(main=\(Thread.isMainThread)): \(query.expression.description)")
             try db.run(query)
             log.info("INFO: RepositoryProtocol.deleteAll(\(Self.repositoryName))")
             return true
@@ -293,7 +293,7 @@ extension RepositoryProtocol {
             comma = true
         }
         query.append(")")
-        log.trace("DEBUG: RepositoryProtocol.create(): \(query)")
+        log.trace("DEBUG: RepositoryProtocol.create(main=\(Thread.isMainThread)): \(query)")
         do {
             try db.execute(query)
         } catch {

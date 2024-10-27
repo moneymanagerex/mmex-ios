@@ -12,18 +12,20 @@ extension ViewModel {
     func loadAssetList() async {
         guard assetList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadAssetList(main=\(Thread.isMainThread))")
-        let allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
-            load(&taskGroup, keyPath: \Self.assetList.data)
-            load(&taskGroup, keyPath: \Self.assetList.used)
-            load(&taskGroup, keyPath: \Self.assetList.order)
-            load(&taskGroup, keyPath: \Self.assetList.att)
-            // used in EditView
-            load(&taskGroup, keyPath: \Self.currencyList.name)
-            load(&taskGroup, keyPath: \Self.currencyList.order)
-            return await taskGroupOk(taskGroup)
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.assetList.data),
+                load(&taskGroup, keyPath: \Self.assetList.used),
+                load(&taskGroup, keyPath: \Self.assetList.order),
+                load(&taskGroup, keyPath: \Self.assetList.att),
+                // used in EditView
+                load(&taskGroup, keyPath: \Self.currencyList.name),
+            load(&taskGroup, keyPath: \Self.currencyList.order),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-        assetList.state.loaded(ok: allOk)
-        if allOk {
+        assetList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: ViewModel.loadAssetList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadAssetList(main=\(Thread.isMainThread)): Error.")
