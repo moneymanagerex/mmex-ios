@@ -12,18 +12,18 @@ extension ViewModel {
     func loadStockList() async {
         guard stockList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadStockList(main=\(Thread.isMainThread))")
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.stockList.data)
-            load(queue: &queue, keyPath: \Self.stockList.used)
-            load(queue: &queue, keyPath: \Self.stockList.order)
-            load(queue: &queue, keyPath: \Self.stockList.att)
+        let allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            load(&taskGroup, keyPath: \Self.stockList.data)
+            load(&taskGroup, keyPath: \Self.stockList.used)
+            load(&taskGroup, keyPath: \Self.stockList.order)
+            load(&taskGroup, keyPath: \Self.stockList.att)
             // used in EditView
-            load(queue: &queue, keyPath: \Self.accountList.name)
-            load(queue: &queue, keyPath: \Self.accountList.order)
-            return await allOk(queue: queue)
+            load(&taskGroup, keyPath: \Self.accountList.name)
+            load(&taskGroup, keyPath: \Self.accountList.order)
+            return await taskGroupOk(taskGroup)
         }
-        stockList.state.loaded(ok: queueOk)
-        if queueOk {
+        stockList.state.loaded(ok: allOk)
+        if allOk {
             log.info("INFO: ViewModel.loadStockList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadStockList(main=\(Thread.isMainThread)): Error.")
@@ -109,7 +109,7 @@ extension ViewModel {
             default: true
             }
         }
-        return groupData[g].dataId.first(where: { search.match(listData[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
     func searchStockGroup(search: StockSearch, expand: Bool = false ) {

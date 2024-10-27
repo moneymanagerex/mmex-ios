@@ -188,7 +188,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 switch vmList.data.state {
                 case .ready:
                     ForEach(vmGroup.value[g].dataId, id: \.self) { id in
-                        if let data = vmList.data.value[id], search.match(data) {
+                        if let data = vmList.data.value[id], search.match(vm, data) {
                             itemView(data)
                         }
                         

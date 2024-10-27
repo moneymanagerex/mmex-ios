@@ -20,12 +20,17 @@ extension SearchProtocol {
 
     var isEmpty: Bool { key.isEmpty }
 
-    func match(_ data: MainData) -> Bool {
+    func match(_ vm: ViewModel, _ data: MainData) -> Bool {
         if key.isEmpty { return true }
         for i in 0 ..< area.count {
             guard area[i].isSelected else { continue }
-            if area[i].values.first(
+            if area[i].mainValues.first(
                 where: { $0(data).localizedCaseInsensitiveContains(key) }
+            ) != nil {
+                return true
+            }
+            if area[i].auxValues.first(
+                where: { $0(vm, data).localizedCaseInsensitiveContains(key) }
             ) != nil {
                 return true
             }

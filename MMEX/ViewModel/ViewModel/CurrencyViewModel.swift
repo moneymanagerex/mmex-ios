@@ -12,14 +12,14 @@ extension ViewModel {
     func loadCurrencyList() async {
         guard currencyList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadCurrencyList(main=\(Thread.isMainThread))")
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.currencyList.data)
-            load(queue: &queue, keyPath: \Self.currencyList.used)
-            load(queue: &queue, keyPath: \Self.currencyList.order)
-            return await allOk(queue: queue)
+        let allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            load(&taskGroup, keyPath: \Self.currencyList.data)
+            load(&taskGroup, keyPath: \Self.currencyList.used)
+            load(&taskGroup, keyPath: \Self.currencyList.order)
+            return await taskGroupOk(taskGroup)
         }
-        currencyList.state.loaded(ok: queueOk)
-        if queueOk {
+        currencyList.state.loaded(ok: allOk)
+        if allOk {
             log.info("INFO: CurrencyList.load(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: CurrencyList.load(main=\(Thread.isMainThread)): Error.")
@@ -92,7 +92,7 @@ extension ViewModel {
             default: true
             }
         }
-        return groupData[g].dataId.first(where: { search.match(listData[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
     func searchCurrencyGroup(search: CurrencySearch, expand: Bool = false ) {

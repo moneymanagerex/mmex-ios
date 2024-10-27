@@ -12,22 +12,20 @@ extension ViewModel {
     func loadCategoryList() async {
         guard categoryList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadCategoryList(main=\(Thread.isMainThread))")
-        var queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.categoryList.data)
-            load(queue: &queue, keyPath: \Self.categoryList.used)
-            return await allOk(queue: queue)
+
+        var allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            load(&taskGroup, keyPath: \Self.categoryList.data)
+            load(&taskGroup, keyPath: \Self.categoryList.used)
+            load(&taskGroup, keyPath: \Self.categoryList.order)
+            return await taskGroupOk(taskGroup)
         }
 
-        if queueOk { queueOk = await load(
-            eval: { self.evalCategoryPath() }, keyPath: \Self.categoryList.path
+        if allOk { allOk = await load(
+            keyPath: \Self.categoryList.path
         ) }
 
-        if queueOk { queueOk = await load(
-            eval: { self.evalCategoryOrder() }, keyPath: \Self.categoryList.order
-        ) }
-
-        categoryList.state.loaded(ok: queueOk)
-        if queueOk {
+        categoryList.state.loaded(ok: allOk)
+        if allOk {
             log.info("INFO: ViewModel.loadCategoryList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadCategoryList(main=\(Thread.isMainThread)): Error.")
@@ -100,7 +98,7 @@ extension ViewModel {
             default: true
             }
         }
-        return groupData[g].dataId.first(where: { search.match(listData[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
     func searchCategoryGroup(search: CategorySearch, expand: Bool = false ) {

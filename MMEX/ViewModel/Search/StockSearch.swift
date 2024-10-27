@@ -7,9 +7,9 @@
 
 struct StockSearch: SearchProtocol {
     var area: [SearchArea<StockData>] = [
-        ("Name",   true,  [ {$0.name} ]),
-        ("Symbol", false, [ {$0.symbol} ]),
-        ("Notes",  false, [ {$0.notes} ]),
+        ("Name",   true,  [ {$0.name} ], []),
+        ("Symbol", false, [ {$0.symbol} ], []),
+        ("Notes",  false, [ {$0.notes} ], []),
     ]
     var key: String = ""
 }

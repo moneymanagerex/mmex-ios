@@ -7,8 +7,8 @@
 
 struct AssetSearch: SearchProtocol {
     var area: [SearchArea<AssetData>] = [
-        ("Name",  true,  [ {$0.name} ]),
-        ("Notes", false, [ {$0.notes} ]),
+        ("Name",  true,  [ {$0.name} ], []),
+        ("Notes", false, [ {$0.notes} ], []),
     ]
     var key: String = ""
 }

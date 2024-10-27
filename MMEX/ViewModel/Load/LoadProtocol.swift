@@ -34,3 +34,7 @@ extension LoadProtocol {
 protocol LoadFetchProtocol: LoadProtocol {
     func fetchValue(env: EnvironmentManager) -> ValueType?
 }
+
+protocol LoadEvalProtocol: LoadProtocol {
+    nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType?
+}

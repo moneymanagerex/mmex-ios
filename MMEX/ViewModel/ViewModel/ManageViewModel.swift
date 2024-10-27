@@ -11,19 +11,19 @@ extension ViewModel {
     func loadManage() async {
         guard manageList.loading() else { return }
         log.trace("DEBUG: ViewModel.loadManage(main=\(Thread.isMainThread))")
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.currencyList.count)
-            load(queue: &queue, keyPath: \Self.accountList.count)
-            load(queue: &queue, keyPath: \Self.assetList.count)
-            load(queue: &queue, keyPath: \Self.stockList.count)
-            load(queue: &queue, keyPath: \Self.categoryList.count)
-            load(queue: &queue, keyPath: \Self.payeeList.count)
-            load(queue: &queue, keyPath: \Self.transactionCount)
-            load(queue: &queue, keyPath: \Self.scheduledCount)
-            return await allOk(queue: queue)
+        let allOk = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            load(&taskGroup, keyPath: \Self.currencyList.count)
+            load(&taskGroup, keyPath: \Self.accountList.count)
+            load(&taskGroup, keyPath: \Self.assetList.count)
+            load(&taskGroup, keyPath: \Self.stockList.count)
+            load(&taskGroup, keyPath: \Self.categoryList.count)
+            load(&taskGroup, keyPath: \Self.payeeList.count)
+            load(&taskGroup, keyPath: \Self.transactionCount)
+            load(&taskGroup, keyPath: \Self.scheduledCount)
+            return await taskGroupOk(taskGroup)
         }
-        manageList.loaded(ok: queueOk)
-        if queueOk {
+        manageList.loaded(ok: allOk)
+        if allOk {
             log.info("INFO: ViewModel.loadManage(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadManage(main=\(Thread.isMainThread)): Cannot load.")
