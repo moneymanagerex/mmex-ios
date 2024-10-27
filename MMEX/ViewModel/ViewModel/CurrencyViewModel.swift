@@ -14,8 +14,8 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadCurrencyList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.currencyList.data)
-            load(queue: &queue, keyPath: \Self.currencyList.order)
             load(queue: &queue, keyPath: \Self.currencyList.used)
+            load(queue: &queue, keyPath: \Self.currencyList.order)
             return await allOk(queue: queue)
         }
         currencyList.state.loaded(ok: queueOk)
@@ -31,15 +31,42 @@ extension ViewModel {
         guard currencyList.state.unloading() else { return }
         log.trace("DEBUG: ViewModel.unloadCurrencyList(main=\(Thread.isMainThread))")
         currencyList.data.unload()
-        currencyList.order.unload()
         currencyList.used.unload()
+        currencyList.order.unload()
         currencyList.state.unloaded()
     }
 }
 
 extension ViewModel {
     func loadCurrencyGroup(choice: CurrencyGroupChoice) {
-        // TODO
+        guard
+            let listData  = currencyList.data.readyValue,
+            let listUsed  = currencyList.used.readyValue,
+            let listOrder = currencyList.order.readyValue
+        else { return }
+
+        guard currencyGroup.state.loading() else { return }
+        log.trace("DEBUG: ViewModel.loadCurrencyGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
+        
+        currencyGroup.choice = choice
+
+        switch choice {
+        case .all:
+            currencyGroup.append("All", listOrder, true, true)
+        case .used:
+            let dict = Dictionary(grouping: listOrder) { listUsed.contains($0) }
+            for g in CurrencyGroup.groupUsed {
+                let name = g ? "Used" : "Other"
+                currencyGroup.append(name, dict[g] ?? [], true, g)
+            }
+        case .type:
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.type }
+            for g in CurrencyGroup.groupType {
+                currencyGroup.append(g.rawValue, dict[g] ?? [], dict[g] != nil, true)
+            }
+        }
+
+        currencyGroup.state.loaded()
     }
 
     func unloadCurrencyGroup() {
@@ -56,19 +83,16 @@ extension ViewModel {
     func currencyGroupIsVisible(_ g: Int, search: CurrencySearch
     ) -> Bool? {
         guard
-            currencyList.data.state  == .ready,
-            currencyGroup.state == .ready
+            let listData  = currencyList.data.readyValue,
+            let groupData = currencyGroup.readyValue
         else { return nil }
-
-        let dataDict  = currencyList.data.value
-        let groupData = currencyGroup.value
 
         if search.isEmpty {
             return switch currencyGroup.choice {
             default: true
             }
         }
-        return groupData[g].dataId.first(where: { search.match(dataDict[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(listData[$0]!) }) != nil
     }
 
     func searchCurrencyGroup(search: CurrencySearch, expand: Bool = false ) {

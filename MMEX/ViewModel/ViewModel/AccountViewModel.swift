@@ -14,8 +14,8 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadAccountList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.accountList.data)
-            load(queue: &queue, keyPath: \Self.accountList.order)
             load(queue: &queue, keyPath: \Self.accountList.used)
+            load(queue: &queue, keyPath: \Self.accountList.order)
             load(queue: &queue, keyPath: \Self.accountList.att)
             // used in EditView
             load(queue: &queue, keyPath: \Self.currencyList.name)
@@ -26,7 +26,7 @@ extension ViewModel {
         if queueOk {
             log.info("INFO: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Cannot load.")
+            log.debug("ERROR: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Error.")
             return
         }
     }
@@ -35,8 +35,8 @@ extension ViewModel {
         guard accountList.state.unloading() else { return }
         log.trace("DEBUG: ViewModel.unloadAccountList(main=\(Thread.isMainThread))")
         accountList.data.unload()
-        accountList.order.unload()
         accountList.used.unload()
+        accountList.order.unload()
         accountList.att.unload()
         accountList.state.unloaded()
     }
@@ -45,11 +45,11 @@ extension ViewModel {
 extension ViewModel {
     func loadAccountGroup(choice: AccountGroupChoice) {
         guard
-            accountList.state       == .ready,
-            accountList.data.state  == .ready,
-            accountList.order.state == .ready,
-            accountList.used.state  == .ready,
-            accountList.att.state   == .ready
+            let listData     = accountList.data.readyValue,
+            let listUsed     = accountList.used.readyValue,
+            let listOrder    = accountList.order.readyValue,
+            let listAtt      = accountList.att.readyValue,
+            let currencyName = currencyList.name.readyValue
         else { return }
 
         guard accountGroup.state.loading() else { return }
@@ -57,48 +57,43 @@ extension ViewModel {
         
         accountGroup.choice = choice
         accountGroup.groupCurrency = []
-        
-        let dataDict  = accountList.data.value
-        let dataOrder = accountList.order.value
-        let dataUsed  = accountList.used.value
-        let dataAtt   = accountList.att.value
 
         switch choice {
         case .all:
-            accountGroup.append("All", dataOrder, true, true)
+            accountGroup.append("All", listOrder, true, true)
         case .used:
-            let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
+            let dict = Dictionary(grouping: listOrder) { listUsed.contains($0) }
             for g in AccountGroup.groupUsed {
                 let name = g ? "Used" : "Other"
                 accountGroup.append(name, dict[g] ?? [], true, g)
             }
         case .favorite:
-            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.favoriteAcct }
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.favoriteAcct }
             for g in AccountGroup.groupFavorite {
                 let name = g == .boolTrue ? "Favorite" : "Other"
                 accountGroup.append(name, dict[g] ?? [], true, g == .boolTrue)
             }
         case .status:
-            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.status }
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.status }
             for g in AccountGroup.groupStatus {
-                accountGroup.append(g.rawValue, dict[g] ?? [], true, g == .open)
+                accountGroup.append(g.rawValue, dict[g] ?? [], true, true)
             }
         case .type:
-            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.type }
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.type }
             for g in AccountGroup.groupType {
                 accountGroup.append(g.rawValue, dict[g] ?? [], dict[g] != nil, true)
             }
         case .currency:
-            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.currencyId }
-            accountGroup.groupCurrency = env.currencyCache.compactMap {
-                dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.currencyId }
+            accountGroup.groupCurrency = currencyName.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in accountGroup.groupCurrency {
-                let name = env.currencyCache[g]?.name
+                let name = currencyName[g]
                 accountGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .attachment:
-            let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
+            let dict = Dictionary(grouping: listOrder) { listAtt[$0]?.count ?? 0 > 0 }
             for g in AccountGroup.groupAttachment {
                 let name = g ? "With Attachment" : "Other"
                 accountGroup.append(name, dict[g] ?? [], true, g)
@@ -184,12 +179,9 @@ extension ViewModel {
     func accountGroupIsVisible(_ g: Int, search: AccountSearch
     ) -> Bool? {
         guard
-            accountList.data.state == .ready,
-            accountGroup.state     == .ready
+            let listData  = accountList.data.readyValue,
+            let groupData = accountGroup.readyValue
         else { return nil }
-
-        let listData  = accountList.data.value
-        let groupData = accountGroup.value
 
         if search.isEmpty {
             return switch accountGroup.choice {

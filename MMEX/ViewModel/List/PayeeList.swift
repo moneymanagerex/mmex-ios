@@ -13,8 +13,8 @@ struct PayeeList: ListProtocol {
     var state : LoadState                     = .init()
     var count : LoadMainCount<MainRepository> = .init()
     var data  : LoadMainData<MainRepository>  = .init()
-    var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
     var used  : LoadMainUsed<MainRepository>  = .init()
+    var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
     var att   : LoadAuxAtt<MainRepository>    = .init()
 
     var name  : LoadMainName<MainRepository>  = .init { $0[MainRepository.col_name] }

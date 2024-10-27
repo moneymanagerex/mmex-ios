@@ -18,10 +18,16 @@ enum PayeeGroupChoice: String, GroupChoiceProtocol {
 struct PayeeGroup: GroupProtocol {
     typealias MainRepository = PayeeRepository
     typealias GroupChoice    = PayeeGroupChoice
+    let loadName: String = "Group\(MainRepository.repositoryName)"
+    let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
-    var value: [GroupData] = []
+    var value: ValueType
+
+    init() {
+        self.value = idleValue
+    }
 
     static let groupUsed: [Bool] = [
         true, false

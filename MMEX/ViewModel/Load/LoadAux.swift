@@ -10,29 +10,25 @@ import SQLite
 
 struct LoadAuxData<
     MainRepository: RepositoryProtocol, AuxRepository: RepositoryProtocol
->: LoadProtocol {
+>: LoadFetchProtocol {
     typealias AuxData = AuxRepository.RepositoryData
     typealias ValueType = [DataId: [AuxData]]
+    let loadName: String = "AuxData(\(MainRepository.repositoryName), \(AuxRepository.repositoryName))"
+    let idleValue: ValueType = [:]
 
     let mainId: (SQLite.Row) -> DataId
     let auxTable: SQLite.Table
     var state: LoadState = .init()
-    var value: ValueType = [:]
+    var value: ValueType
 
     init(mainId: @escaping (SQLite.Row) -> DataId, auxTable: SQLite.Table = AuxRepository.table) {
         self.mainId = mainId
         self.auxTable = auxTable
+        self.value = idleValue
     }
 
-    func fetch(env: EnvironmentManager) -> ValueType? {
+    func fetchValue(env: EnvironmentManager) -> ValueType? {
         AuxRepository(env)?.selectBy(property: mainId, from: self.auxTable)
-    }
-
-    mutating func unload() {
-        guard state.unloading() else { return }
-        log.trace("DEBUG: LoadAuxData.unload(\(MainRepository.repositoryName), \(AuxRepository.repositoryName), main=\(Thread.isMainThread))")
-        value = [:]
-        state.unloaded()
     }
 }
 
@@ -55,22 +51,26 @@ extension LoadAuxAtt {
         var table = AX.table
         if let refType { table = table.filter(AX.col_refType == refType.rawValue) }
         
-        self.mainId = { DataId($0[AX.col_refId]) }
-        self.auxTable = table.order(order)
+        self.init(
+            mainId: { DataId($0[AX.col_refId]) },
+            auxTable: table.order(order)
+        )
     }
 }
 
 struct LoadAuxValue<
     MainRepository: RepositoryProtocol, AuxRepository: RepositoryProtocol, AuxValue
->: LoadProtocol {
+>: LoadFetchProtocol {
     typealias AuxData = AuxRepository.RepositoryData
     typealias ValueType = [DataId: [AuxValue]]
+    let loadName: String = "AuxValue(\(MainRepository.repositoryName), \(AuxRepository.repositoryName))"
+    let idleValue: ValueType = [:]
 
     let mainId: (SQLite.Row) -> DataId
     let auxTable: SQLite.Table
     let auxValue: (SQLite.Row) -> AuxValue
     var state: LoadState = .init()
-    var value: ValueType = [:]
+    var value: ValueType
 
     init(
         mainId: @escaping (SQLite.Row) -> DataId,
@@ -80,16 +80,10 @@ struct LoadAuxValue<
         self.mainId = mainId
         self.auxTable = auxTable
         self.auxValue = auxValue
+        self.value = idleValue
     }
 
-    func fetch(env: EnvironmentManager) -> ValueType? {
+    func fetchValue(env: EnvironmentManager) -> ValueType? {
         AuxRepository(env)?.selectBy(property: mainId, from: self.auxTable, with: auxValue)
-    }
-
-    mutating func unload() {
-        guard state.unloading() else { return }
-        log.trace("DEBUG: LoadAuxValue.unload(\(MainRepository.repositoryName), \(AuxRepository.repositoryName), main=\(Thread.isMainThread))")
-        value = [:]
-        state.unloaded()
     }
 }

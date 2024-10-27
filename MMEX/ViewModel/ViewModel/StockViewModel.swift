@@ -14,16 +14,19 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadStockList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.stockList.data)
-            load(queue: &queue, keyPath: \Self.stockList.order)
             load(queue: &queue, keyPath: \Self.stockList.used)
+            load(queue: &queue, keyPath: \Self.stockList.order)
             load(queue: &queue, keyPath: \Self.stockList.att)
+            // used in EditView
+            load(queue: &queue, keyPath: \Self.accountList.name)
+            load(queue: &queue, keyPath: \Self.accountList.order)
             return await allOk(queue: queue)
         }
         stockList.state.loaded(ok: queueOk)
         if queueOk {
             log.info("INFO: ViewModel.loadStockList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: ViewModel.loadStockList(main=\(Thread.isMainThread)): Cannot load.")
+            log.debug("ERROR: ViewModel.loadStockList(main=\(Thread.isMainThread)): Error.")
             return
         }
     }
@@ -32,8 +35,8 @@ extension ViewModel {
         guard stockList.state.unloading() else { return }
         log.trace("DEBUG: ViewModel.unloadStockList(main=\(Thread.isMainThread))")
         stockList.data.unload()
-        stockList.order.unload()
         stockList.used.unload()
+        stockList.order.unload()
         stockList.state.unloaded()
     }
 }
@@ -41,11 +44,11 @@ extension ViewModel {
 extension ViewModel {
     func loadStockGroup(choice: StockGroupChoice) {
         guard
-            stockList.state       == .ready,
-            stockList.data.state  == .ready,
-            stockList.order.state == .ready,
-            stockList.used.state  == .ready,
-            stockList.att.state   == .ready
+            let listData    = stockList.data.readyValue,
+            let listUsed    = stockList.used.readyValue,
+            let listOrder   = stockList.order.readyValue,
+            let listAtt     = stockList.att.readyValue,
+            let accountName = accountList.name.readyValue
         else { return }
 
         guard stockGroup.state.loading() else { return }
@@ -54,31 +57,26 @@ extension ViewModel {
         stockGroup.choice = choice
         stockGroup.groupAccount = []
 
-        let dataDict  = stockList.data.value
-        let dataOrder = stockList.order.value
-        let dataUsed  = stockList.used.value
-        let dataAtt   = stockList.att.value
-
         switch choice {
         case .all:
-            stockGroup.append("All", dataOrder, true, true)
+            stockGroup.append("All", listOrder, true, true)
         case .used:
-            let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
+            let dict = Dictionary(grouping: listOrder) { listUsed.contains($0) }
             for g in StockGroup.groupUsed {
                 let name = g ? "Used" : "Other"
                 stockGroup.append(name, dict[g] ?? [], true, g)
             }
         case .account:
-            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.accountId }
-            stockGroup.groupAccount = env.accountCache.compactMap {
-                dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.accountId }
+            stockGroup.groupAccount = accountName.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in stockGroup.groupAccount {
-                let name = env.accountCache[g]?.name
+                let name = accountName[g]
                 stockGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .attachment:
-            let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
+            let dict = Dictionary(grouping: listOrder) { listAtt[$0]?.count ?? 0 > 0 }
             for g in StockGroup.groupAttachment {
                 let name = g ? "With Attachment" : "Other"
                 stockGroup.append(name, dict[g] ?? [], true, g)
@@ -102,12 +100,9 @@ extension ViewModel {
     func stockGroupIsVisible(_ g: Int, search: StockSearch
     ) -> Bool? {
         guard
-            stockList.data.state == .ready,
-            stockGroup.state     == .ready
+            let listData  = stockList.data.readyValue,
+            let groupData = stockGroup.readyValue
         else { return nil }
-
-        let listData  = stockList.data.value
-        let groupData = stockGroup.value
 
         if search.isEmpty {
             return switch stockGroup.choice {

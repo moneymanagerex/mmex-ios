@@ -19,10 +19,16 @@ enum AssetGroupChoice: String, GroupChoiceProtocol {
 struct AssetGroup: GroupProtocol {
     typealias MainRepository = AssetRepository
     typealias GroupChoice    = AssetGroupChoice
+    let loadName: String = "Group\(MainRepository.repositoryName)"
+    let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
-    var value: [GroupData] = []
+    var value: ValueType
+    
+    init() {
+        self.value = idleValue
+    }
 
     static let groupUsed: [Bool] = [
         true, false

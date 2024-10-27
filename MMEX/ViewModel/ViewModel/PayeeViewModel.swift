@@ -14,8 +14,8 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadPayeeList(main=\(Thread.isMainThread))")
         let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
             load(queue: &queue, keyPath: \Self.payeeList.data)
-            load(queue: &queue, keyPath: \Self.payeeList.order)
             load(queue: &queue, keyPath: \Self.payeeList.used)
+            load(queue: &queue, keyPath: \Self.payeeList.order)
             load(queue: &queue, keyPath: \Self.payeeList.att)
             return await allOk(queue: queue)
         }
@@ -23,7 +23,7 @@ extension ViewModel {
         if queueOk {
             log.info("INFO: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Ready.")
         } else {
-            log.debug("ERROR: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Cannot load.")
+            log.debug("ERROR: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Error.")
             return
         }
     }
@@ -32,8 +32,8 @@ extension ViewModel {
         guard payeeList.state.unloading() else { return }
         log.trace("DEBUG: ViewModel.unloadPayeeList(main=\(Thread.isMainThread))")
         payeeList.data.unload()
-        payeeList.order.unload()
         payeeList.used.unload()
+        payeeList.order.unload()
         payeeList.state.loaded()
     }
 }
@@ -41,11 +41,11 @@ extension ViewModel {
 extension ViewModel {
     func loadPayeeGroup(choice: PayeeGroupChoice) {
         guard
-            payeeList.state       == .ready,
-            payeeList.data.state  == .ready,
-            payeeList.order.state == .ready,
-            payeeList.used.state  == .ready,
-            payeeList.att.state   == .ready
+            let listData     = payeeList.data.readyValue,
+            let listUsed     = payeeList.used.readyValue,
+            let listOrder    = payeeList.order.readyValue,
+            let listAtt      = payeeList.att.readyValue,
+            let categoryPath = categoryList.path.readyValue
         else { return }
 
         guard payeeGroup.state.loading() else { return }
@@ -54,39 +54,32 @@ extension ViewModel {
         payeeGroup.choice = choice
         payeeGroup.groupCategory = []
 
-        let dataDict  = payeeList.data.value
-        let dataOrder = payeeList.order.value
-        let dataUsed  = payeeList.used.value
-        let dataAtt   = payeeList.att.value
-        // TODO
-        let categoryData: [DataId: CategoryData] = [:]
-
         switch choice {
         case .all:
-            payeeGroup.append("All", dataOrder, true, true)
+            payeeGroup.append("All", listOrder, true, true)
         case .used:
-            let dict = Dictionary(grouping: dataOrder) { dataUsed.contains($0) }
+            let dict = Dictionary(grouping: listOrder) { listUsed.contains($0) }
             for g in PayeeGroup.groupUsed {
                 let name = g ? "Used" : "Other"
                 payeeGroup.append(name, dict[g] ?? [], true, g)
             }
         case .active:
-            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.active }
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.active }
             for g in PayeeGroup.groupActive {
                 let name = g ? "Active" : "Other"
                 payeeGroup.append(name, dict[g] ?? [], true, g)
             }
         case .category:
-            let dict = Dictionary(grouping: dataOrder) { dataDict[$0]!.categoryId }
-            payeeGroup.groupCategory = categoryData.compactMap {
-                dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.categoryId }
+            payeeGroup.groupCategory = categoryPath.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in payeeGroup.groupCategory {
-                let name = categoryData[g]?.name
+                let name = categoryPath[g]
                 payeeGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .attachment:
-            let dict = Dictionary(grouping: dataOrder) { dataAtt[$0]?.count ?? 0 > 0 }
+            let dict = Dictionary(grouping: listOrder) { listAtt[$0]?.count ?? 0 > 0 }
             for g in PayeeGroup.groupAttachment {
                 let name = g ? "With Attachment" : "Other"
                 payeeGroup.append(name, dict[g] ?? [], true, g)
@@ -110,12 +103,9 @@ extension ViewModel {
     func payeeGroupIsVisible(_ g: Int, search: PayeeSearch
     ) -> Bool? {
         guard
-            payeeList.data.state == .ready,
-            payeeGroup.state     == .ready
+            let listData  = payeeList.data.readyValue,
+            let groupData = payeeGroup.readyValue
         else { return nil }
-
-        let listData  = payeeList.data.value
-        let groupData = payeeGroup.value
 
         if search.isEmpty {
             return switch payeeGroup.choice {
