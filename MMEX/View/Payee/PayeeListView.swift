@@ -30,7 +30,7 @@ struct PayeeListView: View {
                     HStack {
                         Text(payee.name)
                         Spacer()
-                        Text(payee.active ? "ACTIVE" : "INACTIVE")
+                        Text(payee.active ? "Active" : "Inactive")
                     }
                 }
             }

@@ -33,7 +33,7 @@ struct PayeeEditView: View {
                 env.theme.field.toggle(edit, "Active") {
                     Toggle(isOn: $payee.active) { }
                 } show: {
-                    Text(payee.active ? "YES" : "NO")
+                    Text(payee.active ? "Yes" : "No")
                 }
             }
 
