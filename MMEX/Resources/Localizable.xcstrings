@@ -781,6 +781,9 @@
         }
       }
     },
+    "No" : {
+
+    },
     "NO" : {
       "localizations" : {
         "it" : {
@@ -1209,6 +1212,9 @@
           }
         }
       }
+    },
+    "Yes" : {
+
     },
     "YES" : {
       "localizations" : {
