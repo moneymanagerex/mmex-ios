@@ -113,7 +113,7 @@ struct ManageView: View {
         }
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .task {
-            await vm.loadManage()
+            await vm.loadManageList()
         }
     }
 }

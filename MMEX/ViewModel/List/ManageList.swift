@@ -1,5 +1,5 @@
 //
-//  ManageViewModel.swift
+//  ManageList.swift
 //  MMEX
 //
 //  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
@@ -8,9 +8,9 @@
 import SwiftUI
 
 extension ViewModel {
-    func loadManage() async {
+    func loadManageList() async {
         guard manageList.loading() else { return }
-        log.trace("DEBUG: ViewModel.loadManage(main=\(Thread.isMainThread))")
+        log.trace("DEBUG: ViewModel.loadManageList(main=\(Thread.isMainThread))")
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.currencyList.count),
@@ -33,9 +33,9 @@ extension ViewModel {
         }
     }
 
-    func unloadManege() {
+    func unloadManegeList() {
         guard manageList.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadManage(main=\(Thread.isMainThread))")
+        log.trace("DEBUG: ViewModel.unloadManageList(main=\(Thread.isMainThread))")
         currencyList.count.unload()
         accountList.count.unload()
         assetList.count.unload()
