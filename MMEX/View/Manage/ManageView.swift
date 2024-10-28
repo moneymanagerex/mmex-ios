@@ -18,7 +18,7 @@ struct ManageView: View {
     var body: some View {
         List {
             Section(header: Text("Data")) {
-                NavigationLink(destination: CurrencyListView()) {
+                NavigationLink(destination: CurrencyListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(CurrencyData.dataName.1) },
                         count: vm.currencyList.count

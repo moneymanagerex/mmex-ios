@@ -78,7 +78,56 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadCurrencyList(_ oldData: CurrencyData?, _ newData: CurrencyData?) async {
-        // not implemented
+        log.trace("DEBUG: ViewModel.reloadCurrencyList(main=\(Thread.isMainThread))")
+
+        // env.currencyCache contains only used currencies
+        if let _ = oldData, let newData {
+            if env.currencyCache[newData.id] != nil {
+                env.loadCurrency()
+            }
+        }
+
+        // save isExpanded
+        let groupIsExpanded: [Bool]? = currencyGroup.readyValue?.map { $0.isExpanded }
+
+        unloadCurrencyGroup()
+        currencyList.state.unload()
+
+        if (oldData != nil) != (newData != nil) {
+            manageList.unload()
+            currencyList.count.unload()
+        }
+
+        if currencyList.data.state.unloading() {
+            if let newData {
+                currencyList.data.value[newData.id] = newData
+            } else if let oldData {
+                currencyList.data.value[oldData.id] = nil
+            }
+            currencyList.data.state.loaded()
+        }
+
+        if currencyList.name.state.unloading() {
+            if let newData {
+                currencyList.name.value[newData.id] = newData.name
+            } else if let oldData {
+                currencyList.name.value[oldData.id] = nil
+            }
+            currencyList.name.state.loaded()
+        }
+
+        accountList.state.unload()
+        currencyList.order.unload()
+
+        await loadCurrencyList()
+        loadCurrencyGroup(choice: currencyGroup.choice)
+
+        // restore isExpanded
+        if let groupIsExpanded, currencyGroup.value.count == groupIsExpanded.count {
+            for g in 0 ..< groupIsExpanded.count {
+                currencyGroup.value[g].isExpanded = groupIsExpanded[g]
+            }
+        }
     }
 }
 
@@ -112,10 +161,58 @@ extension ViewModel {
 
 extension ViewModel {
     func updateCurrency(_ data: inout CurrencyData) -> String? {
-        return "* not implemented"
+        if data.name.isEmpty {
+            return "Name is empty"
+        }
+        if data.symbol.isEmpty {
+            return "Symbol is empty"
+        }
+
+        guard let u = U(env) else {
+            return "* Database is not available"
+        }
+
+        guard let dataName = u.selectId(from: U.table.filter(
+            U.table[U.col_id] == Int64(data.id) ||
+            U.table[U.col_name] == data.name ||
+            U.table[U.col_symbol] == data.symbol
+        ) ) else {
+            return "* Cannot fetch from database"
+        }
+        guard dataName.count == (data.id <= 0 ? 0 : 1) else {
+            return "Currency \(data.name) already exists"
+        }
+
+        if data.id <= 0 {
+            guard u.insert(&data) else {
+                return "* Cannot create new currency"
+            }
+        } else {
+            guard u.update(data) else {
+                return "* Cannot update currency #\(data.id)"
+            }
+        }
+
+        return nil
     }
 
     func deleteCurrency(_ data: CurrencyData) -> String? {
-        return "* not implemented"
+        guard let currencyUsed = currencyList.used.readyValue else {
+            return "* currencyUsed is not loaded"
+        }
+        if currencyUsed.contains(data.id) {
+            return "* Currency #\(data.id) is used"
+        }
+        // TODO: check base currency
+
+        guard let u = U(env) else {
+            return "* Database is not available"
+        }
+
+        guard u.delete(data) else {
+            return "* Cannot delete currency #\(data.id)"
+        }
+
+        return nil
     }
 }
