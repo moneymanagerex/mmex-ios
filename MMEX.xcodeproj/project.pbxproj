@@ -89,6 +89,13 @@
 		925EAB9D2CCDD67C003CEAB3 /* CategoryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAB9C2CCDD67C003CEAB3 /* CategoryGroup.swift */; };
 		925EAB9F2CCDDD77003CEAB3 /* CategorySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAB9E2CCDDD77003CEAB3 /* CategorySearch.swift */; };
 		925EABA12CCDDFFE003CEAB3 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABA02CCDDFFE003CEAB3 /* CategoryViewModel.swift */; };
+		925EABA32CCF8146003CEAB3 /* CurrencyValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABA22CCF8146003CEAB3 /* CurrencyValidation.swift */; };
+		925EABA62CCF81C9003CEAB3 /* AccountValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABA52CCF81C9003CEAB3 /* AccountValidation.swift */; };
+		925EABA82CCF81FF003CEAB3 /* AssetValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABA72CCF81FF003CEAB3 /* AssetValidation.swift */; };
+		925EABAA2CCF8236003CEAB3 /* StockValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABA92CCF8236003CEAB3 /* StockValidation.swift */; };
+		925EABAC2CCF826F003CEAB3 /* CategoryValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABAB2CCF826F003CEAB3 /* CategoryValidation.swift */; };
+		925EABAE2CCF8293003CEAB3 /* PayeeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABAD2CCF8293003CEAB3 /* PayeeValidation.swift */; };
+		925EABB02CCF82E4003CEAB3 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABAF2CCF82E4003CEAB3 /* Validation.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -243,6 +250,13 @@
 		925EAB9C2CCDD67C003CEAB3 /* CategoryGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryGroup.swift; sourceTree = "<group>"; };
 		925EAB9E2CCDDD77003CEAB3 /* CategorySearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategorySearch.swift; sourceTree = "<group>"; };
 		925EABA02CCDDFFE003CEAB3 /* CategoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
+		925EABA22CCF8146003CEAB3 /* CurrencyValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyValidation.swift; sourceTree = "<group>"; };
+		925EABA52CCF81C9003CEAB3 /* AccountValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountValidation.swift; sourceTree = "<group>"; };
+		925EABA72CCF81FF003CEAB3 /* AssetValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetValidation.swift; sourceTree = "<group>"; };
+		925EABA92CCF8236003CEAB3 /* StockValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockValidation.swift; sourceTree = "<group>"; };
+		925EABAB2CCF826F003CEAB3 /* CategoryValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryValidation.swift; sourceTree = "<group>"; };
+		925EABAD2CCF8293003CEAB3 /* PayeeValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayeeValidation.swift; sourceTree = "<group>"; };
+		925EABAF2CCF82E4003CEAB3 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -477,6 +491,20 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		925EABA42CCF8178003CEAB3 /* Validation */ = {
+			isa = PBXGroup;
+			children = (
+				925EABAF2CCF82E4003CEAB3 /* Validation.swift */,
+				925EABA22CCF8146003CEAB3 /* CurrencyValidation.swift */,
+				925EABA52CCF81C9003CEAB3 /* AccountValidation.swift */,
+				925EABA72CCF81FF003CEAB3 /* AssetValidation.swift */,
+				925EABA92CCF8236003CEAB3 /* StockValidation.swift */,
+				925EABAB2CCF826F003CEAB3 /* CategoryValidation.swift */,
+				925EABAD2CCF8293003CEAB3 /* PayeeValidation.swift */,
+			);
+			path = Validation;
+			sourceTree = "<group>";
+		};
 		A30061742CA3B57700011B1A /* Asset */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +532,7 @@
 				924353522CCD3C440052E4BC /* List */,
 				9243532A2CCD27BC0052E4BC /* Group */,
 				9243532B2CCD27CE0052E4BC /* Search */,
+				925EABA42CCF8178003CEAB3 /* Validation */,
 				925EAB912CCD5691003CEAB3 /* ViewModel */,
 				A350BDC02CA26415006669D5 /* TransactionViewModel.swift */,
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
@@ -839,6 +868,7 @@
 				A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */,
 				920824042CA4ADC100388AB2 /* ScheduledSplitData.swift in Sources */,
+				925EABA62CCF81C9003CEAB3 /* AccountValidation.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
 				A3C142AC2C909C1C00D3CEC0 /* TransactionEditView.swift in Sources */,
 				A3C142962C8FE15E00D3CEC0 /* TransactionRepository.swift in Sources */,
@@ -875,10 +905,12 @@
 				A3C142442C89C8FA00D3CEC0 /* AccountData.swift in Sources */,
 				A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */,
 				925EAB9B2CCDB60B003CEAB3 /* CategoryList.swift in Sources */,
+				925EABA32CCF8146003CEAB3 /* CurrencyValidation.swift in Sources */,
 				A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */,
 				924353372CCD2DDA0052E4BC /* PayeeGroup.swift in Sources */,
 				924353492CCD36890052E4BC /* CurrencyList.swift in Sources */,
 				924352FA2CB355CF0052E4BC /* SettingsThemeView.swift in Sources */,
+				925EABAC2CCF826F003CEAB3 /* CategoryValidation.swift in Sources */,
 				9208240A2CA4C2AD00388AB2 /* BudgetYearData.swift in Sources */,
 				924353392CCD2F310052E4BC /* CurrencySearch.swift in Sources */,
 				9243533B2CCD2F610052E4BC /* AccountSearch.swift in Sources */,
@@ -887,9 +919,11 @@
 				924353192CC51FA00052E4BC /* PayeeViewModel.swift in Sources */,
 				9243530F2CC516B70052E4BC /* LoadMain.swift in Sources */,
 				924353102CC516B70052E4BC /* LoadProtocol.swift in Sources */,
+				925EABAE2CCF8293003CEAB3 /* PayeeValidation.swift in Sources */,
 				9208242E2CA617FB00388AB2 /* FieldContentRepository.swift in Sources */,
 				9208241E2CA4E1C500388AB2 /* TransactionLinkRepository.swift in Sources */,
 				9208241A2CA4D35700388AB2 /* AttachmentRepository.swift in Sources */,
+				925EABA82CCF81FF003CEAB3 /* AssetValidation.swift in Sources */,
 				925EAB932CCD7386003CEAB3 /* RepositoryCreateView.swift in Sources */,
 				A37E7D882C9AC2E600B4ECFC /* VersionInfoView.swift in Sources */,
 				920823F62CA498A200388AB2 /* CurrencyHistoryData.swift in Sources */,
@@ -921,6 +955,7 @@
 				924353512CCD39850052E4BC /* PayeeList.swift in Sources */,
 				929EF6712CA3676B0051A3E6 /* MMEXDocument.swift in Sources */,
 				929EF6692CA034770051A3E6 /* Repository.swift in Sources */,
+				925EABAA2CCF8236003CEAB3 /* StockValidation.swift in Sources */,
 				9208241C2CA4DFFC00388AB2 /* TransactionLinkData.swift in Sources */,
 				9243531D2CC5201C0052E4BC /* ManageViewModel.swift in Sources */,
 				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
@@ -935,6 +970,7 @@
 				A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */,
 				929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */,
 				920824182CA4CF4300388AB2 /* AttachmentData.swift in Sources */,
+				925EABB02CCF82E4003CEAB3 /* Validation.swift in Sources */,
 				A37E7D842C9AC14800B4ECFC /* ManageView.swift in Sources */,
 				924352EE2CB060D80052E4BC /* Theme.swift in Sources */,
 				924353032CBB2AB90052E4BC /* ItemTheme.swift in Sources */,

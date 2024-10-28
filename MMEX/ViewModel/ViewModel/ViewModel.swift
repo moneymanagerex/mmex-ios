@@ -14,7 +14,10 @@ class ViewModel: ObservableObject {
 
     @Published var manageList: LoadState = .init()
 
+    typealias I = InfotableRepository
+
     typealias U = CurrencyRepository
+    typealias UH = CurrencyHistoryRepository
     @Published var currencyList  : CurrencyList  = .init()
     @Published var currencyGroup : CurrencyGroup = .init()
 
@@ -27,6 +30,7 @@ class ViewModel: ObservableObject {
     @Published var assetGroup : AssetGroup = .init()
 
     typealias S = StockRepository
+    typealias SH = StockHistoryRepository
     @Published var stockList  : StockList  = .init()
     @Published var stockGroup : StockGroup = .init()
 
@@ -39,13 +43,24 @@ class ViewModel: ObservableObject {
     @Published var payeeGroup : PayeeGroup = .init()
 
     typealias T = TransactionRepository
+    typealias TS = TransactionSplitRepository
+    typealias TL = TransactionLinkRepository
+    typealias TH = TransactionShareRepository
     static let T_table: SQLite.Table = T.table.filter(T.col_deletedTime == "")
     @Published var transactionCount : LoadMainCount<T> = .init(table: T_table)
 
     typealias R = ScheduledRepository
+    typealias RS = ScheduledSplitRepository
     @Published var scheduledCount : LoadMainCount<R> = .init()
 
+    typealias G = TagRepository
+    typealias GL = TagLinkRepository
+    typealias F = FieldRepository
+    typealias FD = FieldContentRepository
     typealias AX = AttachmentRepository
+    typealias Y = BudgetYearRepository
+    typealias B = BudgetTableRepository
+    typealias O = ReportRepository
 
     init(env: EnvironmentManager) {
         self.env = env
@@ -256,59 +271,6 @@ extension ViewModel {
         } else if GroupType.MainRepository.self == P.self {
             searchPayeeGroup(search: search as! PayeeSearch, expand: expand)
         }
-    }
-}
-
-extension ViewModel {
-    func isUsed<DataType: DataProtocol>(_ data: DataType) -> Bool? {
-        if DataType.self == U.RepositoryData.self {
-            return currencyList.used.readyValue?.contains(data.id)
-        } else if DataType.self == A.RepositoryData.self {
-            return accountList.used.readyValue?.contains(data.id)
-        } else if DataType.self == E.RepositoryData.self {
-            return assetList.used.readyValue?.contains(data.id)
-        } else if DataType.self == S.RepositoryData.self {
-            return stockList.used.readyValue?.contains(data.id)
-        } else if DataType.self == C.RepositoryData.self {
-            return categoryList.used.readyValue?.contains(data.id)
-        } else if DataType.self == P.RepositoryData.self {
-            return payeeList.used.readyValue?.contains(data.id)
-        }
-        return nil
-    }
-
-    func update<DataType: DataProtocol>(_ data: inout DataType) -> String? {
-        if var data = data as? CurrencyData {
-            return updateCurrency(&data)
-        } else if var data = data as? AccountData {
-            return updateAccount(&data)
-        } else if var data = data as? AssetData {
-            return updateAsset(&data)
-        } else if var data = data as? StockData {
-            return updateStock(&data)
-        } else if var data = data as? CategoryData {
-            return updateCategory(&data)
-        } else if var data = data as? PayeeData {
-            return updatePayee(&data)
-        }
-        return "* unknown data type"
-    }
-
-    func delete<DataType: DataProtocol>(_ data: DataType) -> String? {
-        if let data = data as? CurrencyData {
-            return deleteCurrency(data)
-        } else if let data = data as? AccountData {
-            return deleteAccount(data)
-        } else if let data = data as? AssetData {
-            return deleteAsset(data)
-        } else if let data = data as? StockData {
-            return deleteStock(data)
-        } else if let data = data as? CategoryData {
-            return deleteCategory(data)
-        } else if let data = data as? PayeeData {
-            return deletePayee(data)
-        }
-        return "* unknown data type"
     }
 }
 
