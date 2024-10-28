@@ -12,15 +12,17 @@ extension ViewModel {
     func loadPayeeList() async {
         guard payeeList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadPayeeList(main=\(Thread.isMainThread))")
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.payeeList.data)
-            load(queue: &queue, keyPath: \Self.payeeList.used)
-            load(queue: &queue, keyPath: \Self.payeeList.order)
-            load(queue: &queue, keyPath: \Self.payeeList.att)
-            return await allOk(queue: queue)
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.payeeList.data),
+                load(&taskGroup, keyPath: \Self.payeeList.used),
+                load(&taskGroup, keyPath: \Self.payeeList.order),
+                load(&taskGroup, keyPath: \Self.payeeList.att),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-        payeeList.state.loaded(ok: queueOk)
-        if queueOk {
+        payeeList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Error.")
@@ -71,11 +73,11 @@ extension ViewModel {
             }
         case .category:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.categoryId }
-            payeeGroup.groupCategory = categoryPath.compactMap {
+            payeeGroup.groupCategory = categoryPath.path.compactMap {
                 dict[$0.key] != nil ? ($0.key, $0.value) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in payeeGroup.groupCategory {
-                let name = categoryPath[g]
+                let name = categoryPath.path[g]
                 payeeGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .attachment:
@@ -96,6 +98,7 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadPayeeList(_ oldData: PayeeData?, _ newData: PayeeData?) async {
+        // not implemented
     }
 }
 
@@ -112,7 +115,7 @@ extension ViewModel {
             default: true
             }
         }
-        return groupData[g].dataId.first(where: { search.match(listData[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
     func searchPayeeGroup(search: PayeeSearch, expand: Bool = false ) {

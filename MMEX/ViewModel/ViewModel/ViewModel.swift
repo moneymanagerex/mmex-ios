@@ -51,33 +51,48 @@ class ViewModel: ObservableObject {
 }
 
 extension ViewModel {
-    func load<RepositoryLoadType: LoadProtocol>(
-        eval: @escaping () -> RepositoryLoadType.ValueType?,
+    func load<RepositoryLoadType: LoadFetchProtocol>(
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
     ) async -> Bool {
-        guard self[keyPath: keyPath].state.loading() else { return true }
+        guard self[keyPath: keyPath].state.loading() else {
+            return self[keyPath: keyPath].state == .ready
+        }
         let loadName = self[keyPath: keyPath].loadName
         log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
-        return await Task(priority: .background) {
-            let value = eval()
-            await MainActor.run {
-                if let value {
-                    self[keyPath: keyPath].value = value
-                }
-                self[keyPath: keyPath].state.loaded(ok: value != nil)
-            }
-            return value != nil
-        }.value
+        let value = await self[keyPath: keyPath].fetchValue(env: self.env)
+        if let value {
+            self[keyPath: keyPath].value = value
+        }
+        self[keyPath: keyPath].state.loaded(ok: value != nil)
+        return value != nil
     }
 
-    func load<RepositoryLoadType>(
-        queue: inout TaskGroup<Bool>,
+    func load<RepositoryLoadType: LoadEvalProtocol>(
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
-    ) where RepositoryLoadType: LoadFetchProtocol {
-        guard self[keyPath: keyPath].state.loading() else { return }
+    ) async -> Bool {
+        guard self[keyPath: keyPath].state.loading() else {
+            return self[keyPath: keyPath].state == .ready
+        }
         let loadName = self[keyPath: keyPath].loadName
         log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
-        queue.addTask(priority: .background) {
+        let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
+        if let value {
+            self[keyPath: keyPath].value = value
+        }
+        self[keyPath: keyPath].state.loaded(ok: value != nil)
+        return value != nil
+    }
+
+    func load<RepositoryLoadType: LoadFetchProtocol>(
+        _ taskGroup: inout TaskGroup<Bool>,
+        keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
+    ) -> Bool {
+        guard self[keyPath: keyPath].state.loading() else {
+            return self[keyPath: keyPath].state == .ready
+        }
+        let loadName = self[keyPath: keyPath].loadName
+        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        taskGroup.addTask(priority: .background) {
             let value = await self[keyPath: keyPath].fetchValue(env: self.env)
             await MainActor.run {
                 if let value {
@@ -87,14 +102,37 @@ extension ViewModel {
             }
             return value != nil
         }
+        return true
     }
 
-    func allOk(queue: TaskGroup<Bool>) async -> Bool {
-        var allOk = true
-        for await ok in queue {
-            if !ok { allOk = false }
+    func load<RepositoryLoadType: LoadEvalProtocol>(
+        _ taskGroup: inout TaskGroup<Bool>,
+        keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
+    ) -> Bool {
+        guard self[keyPath: keyPath].state.loading() else {
+            return self[keyPath: keyPath].state == .ready
         }
-        return allOk
+        let loadName = self[keyPath: keyPath].loadName
+        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        taskGroup.addTask(priority: .background) {
+            let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
+            await MainActor.run {
+                if let value {
+                    self[keyPath: keyPath].value = value
+                }
+                self[keyPath: keyPath].state.loaded(ok: value != nil)
+            }
+            return value != nil
+        }
+        return true
+    }
+
+    func taskGroupOk(_ taskGroup: TaskGroup<Bool>, _ ok: Bool = true) async -> Bool {
+        var ok = ok
+        for await taskOk in taskGroup {
+            if !taskOk { ok = false }
+        }
+        return ok
     }
 }
 
@@ -222,17 +260,17 @@ extension ViewModel {
 extension ViewModel {
     func isUsed<DataType: DataProtocol>(_ data: DataType) -> Bool? {
         if DataType.self == U.RepositoryData.self {
-            return currencyList.used.state == .ready ? currencyList.used.value.contains(data.id) : nil
+            return currencyList.used.readyValue?.contains(data.id)
         } else if DataType.self == A.RepositoryData.self {
-            return accountList.used.state == .ready ? accountList.used.value.contains(data.id) : nil
+            return accountList.used.readyValue?.contains(data.id)
         } else if DataType.self == E.RepositoryData.self {
-            return assetList.used.state == .ready ? assetList.used.value.contains(data.id) : nil
+            return assetList.used.readyValue?.contains(data.id)
         } else if DataType.self == S.RepositoryData.self {
-            return stockList.used.state == .ready ? stockList.used.value.contains(data.id) : nil
+            return stockList.used.readyValue?.contains(data.id)
         } else if DataType.self == C.RepositoryData.self {
-            return categoryList.used.state == .ready ? categoryList.used.value.contains(data.id) : nil
+            return categoryList.used.readyValue?.contains(data.id)
         } else if DataType.self == P.RepositoryData.self {
-            return payeeList.used.state == .ready ? payeeList.used.value.contains(data.id) : nil
+            return payeeList.used.readyValue?.contains(data.id)
         }
         return nil
     }

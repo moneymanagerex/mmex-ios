@@ -12,18 +12,20 @@ extension ViewModel {
     func loadAccountList() async {
         guard accountList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadAccountList(main=\(Thread.isMainThread))")
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.accountList.data)
-            load(queue: &queue, keyPath: \Self.accountList.used)
-            load(queue: &queue, keyPath: \Self.accountList.order)
-            load(queue: &queue, keyPath: \Self.accountList.att)
-            // used in EditView
-            load(queue: &queue, keyPath: \Self.currencyList.name)
-            load(queue: &queue, keyPath: \Self.currencyList.order)
-            return await allOk(queue: queue)
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.accountList.data),
+                load(&taskGroup, keyPath: \Self.accountList.used),
+                load(&taskGroup, keyPath: \Self.accountList.order),
+                load(&taskGroup, keyPath: \Self.accountList.att),
+                // used in EditView
+                load(&taskGroup, keyPath: \Self.currencyList.name),
+                load(&taskGroup, keyPath: \Self.currencyList.order),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-        accountList.state.loaded(ok: queueOk)
-        if queueOk {
+        accountList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Error.")
@@ -189,7 +191,7 @@ extension ViewModel {
             default: true
             }
         }
-        return groupData[g].dataId.first(where: { search.match(listData[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
     func searchAccountGroup(search: AccountSearch, expand: Bool = false ) {
@@ -215,10 +217,10 @@ extension ViewModel {
         guard data.currencyId > 0 else {
             return "No currency is selected"
         }
-        guard currencyList.name.state == .ready else {
+        guard let currencyName = currencyList.name.readyValue else {
             return "* currencyName is not loaded"
         }
-        if currencyList.name.value[data.currencyId] == nil {
+        if currencyName[data.currencyId] == nil {
             return "* Unknown currency #\(data.currencyId)"
         }
 
@@ -250,10 +252,10 @@ extension ViewModel {
     }
 
     func deleteAccount(_ data: AccountData) -> String? {
-        guard accountList.used.state == .ready else {
+        guard let accountUsed = accountList.used.readyValue else {
             return "* accountUsed is not loaded"
         }
-        if accountList.used.value.contains(data.id) {
+        if accountUsed.contains(data.id) {
             return "* Account #\(data.id) is used"
         }
 
@@ -264,10 +266,10 @@ extension ViewModel {
             return "* Database is not available"
         }
 
-        guard accountList.att.state == .ready else {
+        guard let accountAtt = accountList.att.readyValue else {
             return "* accountAtt is not loaded"
         }
-        if accountList.att.value[data.id] != nil {
+        if accountAtt[data.id] != nil {
             guard ax.delete(refType: .account, refId: data.id) else {
                 return "* Cannot delete attachments for account #\(data.id)"
             }

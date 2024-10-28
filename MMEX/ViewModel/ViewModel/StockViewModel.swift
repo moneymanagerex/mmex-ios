@@ -12,18 +12,20 @@ extension ViewModel {
     func loadStockList() async {
         guard stockList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadStockList(main=\(Thread.isMainThread))")
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.stockList.data)
-            load(queue: &queue, keyPath: \Self.stockList.used)
-            load(queue: &queue, keyPath: \Self.stockList.order)
-            load(queue: &queue, keyPath: \Self.stockList.att)
-            // used in EditView
-            load(queue: &queue, keyPath: \Self.accountList.name)
-            load(queue: &queue, keyPath: \Self.accountList.order)
-            return await allOk(queue: queue)
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.stockList.data),
+                load(&taskGroup, keyPath: \Self.stockList.used),
+                load(&taskGroup, keyPath: \Self.stockList.order),
+                load(&taskGroup, keyPath: \Self.stockList.att),
+                // used in EditView
+                load(&taskGroup, keyPath: \Self.accountList.name),
+                load(&taskGroup, keyPath: \Self.accountList.order),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-        stockList.state.loaded(ok: queueOk)
-        if queueOk {
+        stockList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: ViewModel.loadStockList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadStockList(main=\(Thread.isMainThread)): Error.")
@@ -93,6 +95,7 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadStockList(_ oldData: StockData?, _ newData: StockData?) async {
+        // not implemented
     }
 }
 
@@ -109,7 +112,7 @@ extension ViewModel {
             default: true
             }
         }
-        return groupData[g].dataId.first(where: { search.match(listData[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
     func searchStockGroup(search: StockSearch, expand: Bool = false ) {

@@ -7,7 +7,7 @@
 
 struct CategorySearch: SearchProtocol {
     var area: [SearchArea<CategoryData>] = [
-        ("Name", true,  [ {$0.name} ]),
+        ("Name", true,  [ {$0.name} ], []),
         //("Path", false, [ {$0.path} ]),
     ]
     var key: String = ""

@@ -12,18 +12,20 @@ extension ViewModel {
     func loadAssetList() async {
         guard assetList.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadAssetList(main=\(Thread.isMainThread))")
-        let queueOk = await withTaskGroup(of: Bool.self) { queue -> Bool in
-            load(queue: &queue, keyPath: \Self.assetList.data)
-            load(queue: &queue, keyPath: \Self.assetList.used)
-            load(queue: &queue, keyPath: \Self.assetList.order)
-            load(queue: &queue, keyPath: \Self.assetList.att)
-            // used in EditView
-            load(queue: &queue, keyPath: \Self.currencyList.name)
-            load(queue: &queue, keyPath: \Self.currencyList.order)
-            return await allOk(queue: queue)
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.assetList.data),
+                load(&taskGroup, keyPath: \Self.assetList.used),
+                load(&taskGroup, keyPath: \Self.assetList.order),
+                load(&taskGroup, keyPath: \Self.assetList.att),
+                // used in EditView
+                load(&taskGroup, keyPath: \Self.currencyList.name),
+            load(&taskGroup, keyPath: \Self.currencyList.order),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
         }
-        assetList.state.loaded(ok: queueOk)
-        if queueOk {
+        assetList.state.loaded(ok: ok)
+        if ok {
             log.info("INFO: ViewModel.loadAssetList(main=\(Thread.isMainThread)): Ready.")
         } else {
             log.debug("ERROR: ViewModel.loadAssetList(main=\(Thread.isMainThread)): Error.")
@@ -103,6 +105,7 @@ extension ViewModel {
 
 extension ViewModel {
     func reloadAssetList(_ oldData: AssetData?, _ newData: AssetData?) async {
+        // not implemented
     }
 }
 
@@ -119,7 +122,7 @@ extension ViewModel {
             default: true
             }
         }
-        return groupData[g].dataId.first(where: { search.match(listData[$0]!) }) != nil
+        return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
     func searchAssetGroup(search: AssetSearch, expand: Bool = false ) {

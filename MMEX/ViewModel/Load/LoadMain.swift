@@ -22,7 +22,7 @@ struct LoadMainCount<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    func fetchValue(env: EnvironmentManager) -> ValueType? {
+    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
         MainRepository(env)?.count(from: self.table)
     }
 }
@@ -42,7 +42,7 @@ struct LoadMainData<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    func fetchValue(env: EnvironmentManager) -> ValueType? {
+    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
         MainRepository(env)?.selectById(from: self.table)
     }
 }
@@ -63,7 +63,7 @@ struct LoadMainValue<MainRepository: RepositoryProtocol, MainValue>: LoadFetchPr
         self.value = idleValue
     }
 
-    func fetchValue(env: EnvironmentManager) -> ValueType? {
+    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
         MainRepository(env)?.selectById(from: self.table, with: rowValue)
     }
 }
@@ -85,7 +85,7 @@ struct LoadMainUsed<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    func fetchValue(env: EnvironmentManager) -> ValueType? {
+    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
         MainRepository(env)?.selectId(from: self.table).map { Set($0) }
     }
 }
@@ -108,7 +108,7 @@ struct LoadMainOrder<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.init(table: MainRepository.table.order(order))
     }
 
-    func fetchValue(env: EnvironmentManager) -> ValueType? {
+    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
         MainRepository(env)?.selectId(from: self.table)
     }
 }
