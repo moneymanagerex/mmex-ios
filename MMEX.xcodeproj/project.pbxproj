@@ -63,7 +63,6 @@
 		9243531D2CC5201C0052E4BC /* ManageList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243531C2CC5201C0052E4BC /* ManageList.swift */; };
 		924353212CC6EFA70052E4BC /* LoadAux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353202CC6EFA70052E4BC /* LoadAux.swift */; };
 		924353272CCAD2780052E4BC /* LoadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353262CCAD2780052E4BC /* LoadState.swift */; };
-		9243532D2CCD2AA90052E4BC /* GroupData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243532C2CCD2AA90052E4BC /* GroupData.swift */; };
 		9243532F2CCD2C140052E4BC /* CurrencyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243532E2CCD2C140052E4BC /* CurrencyGroup.swift */; };
 		924353312CCD2CF40052E4BC /* AccountGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353302CCD2CF40052E4BC /* AccountGroup.swift */; };
 		924353332CCD2D580052E4BC /* AssetGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353322CCD2D580052E4BC /* AssetGroup.swift */; };
@@ -74,7 +73,6 @@
 		9243533D2CCD2F990052E4BC /* AssetSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243533C2CCD2F990052E4BC /* AssetSearch.swift */; };
 		9243533F2CCD2FC90052E4BC /* StockSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243533E2CCD2FC90052E4BC /* StockSearch.swift */; };
 		924353412CCD2FFA0052E4BC /* PayeeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353402CCD2FFA0052E4BC /* PayeeSearch.swift */; };
-		924353432CCD32090052E4BC /* GroupChoiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353422CCD32090052E4BC /* GroupChoiceProtocol.swift */; };
 		924353472CCD353A0052E4BC /* ListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353462CCD353A0052E4BC /* ListProtocol.swift */; };
 		924353492CCD36890052E4BC /* CurrencyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924353482CCD36890052E4BC /* CurrencyList.swift */; };
 		9243534B2CCD37AE0052E4BC /* AccountList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243534A2CCD37AE0052E4BC /* AccountList.swift */; };
@@ -224,7 +222,6 @@
 		9243531C2CC5201C0052E4BC /* ManageList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageList.swift; sourceTree = "<group>"; };
 		924353202CC6EFA70052E4BC /* LoadAux.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadAux.swift; sourceTree = "<group>"; };
 		924353262CCAD2780052E4BC /* LoadState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadState.swift; sourceTree = "<group>"; };
-		9243532C2CCD2AA90052E4BC /* GroupData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupData.swift; sourceTree = "<group>"; };
 		9243532E2CCD2C140052E4BC /* CurrencyGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyGroup.swift; sourceTree = "<group>"; };
 		924353302CCD2CF40052E4BC /* AccountGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountGroup.swift; sourceTree = "<group>"; };
 		924353322CCD2D580052E4BC /* AssetGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetGroup.swift; sourceTree = "<group>"; };
@@ -235,7 +232,6 @@
 		9243533C2CCD2F990052E4BC /* AssetSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetSearch.swift; sourceTree = "<group>"; };
 		9243533E2CCD2FC90052E4BC /* StockSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockSearch.swift; sourceTree = "<group>"; };
 		924353402CCD2FFA0052E4BC /* PayeeSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayeeSearch.swift; sourceTree = "<group>"; };
-		924353422CCD32090052E4BC /* GroupChoiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupChoiceProtocol.swift; sourceTree = "<group>"; };
 		924353462CCD353A0052E4BC /* ListProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListProtocol.swift; sourceTree = "<group>"; };
 		924353482CCD36890052E4BC /* CurrencyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyList.swift; sourceTree = "<group>"; };
 		9243534A2CCD37AE0052E4BC /* AccountList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountList.swift; sourceTree = "<group>"; };
@@ -434,8 +430,6 @@
 		9243532A2CCD27BC0052E4BC /* Group */ = {
 			isa = PBXGroup;
 			children = (
-				924353422CCD32090052E4BC /* GroupChoiceProtocol.swift */,
-				9243532C2CCD2AA90052E4BC /* GroupData.swift */,
 				924353082CC4A2590052E4BC /* GroupProtocol.swift */,
 				9243532E2CCD2C140052E4BC /* CurrencyGroup.swift */,
 				924353302CCD2CF40052E4BC /* AccountGroup.swift */,
@@ -838,7 +832,6 @@
 				9243531B2CC51FB10052E4BC /* CurrencyReload.swift in Sources */,
 				920823FA2CA49A4B00388AB2 /* StockHistoryData.swift in Sources */,
 				A37E7D8E2C9AC4C900B4ECFC /* PrivacyPolicyView.swift in Sources */,
-				924353432CCD32090052E4BC /* GroupChoiceProtocol.swift in Sources */,
 				A3C142612C8E9DBF00D3CEC0 /* PayeeAddView.swift in Sources */,
 				9208242C2CA615B400388AB2 /* FieldRepository.swift in Sources */,
 				924352F22CB0A93E0052E4BC /* TabTheme.swift in Sources */,
@@ -848,7 +841,6 @@
 				A30061762CA3B58700011B1A /* AssetDetailView.swift in Sources */,
 				929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */,
 				A350BDC12CA26415006669D5 /* TransactionViewModel.swift in Sources */,
-				9243532D2CCD2AA90052E4BC /* GroupData.swift in Sources */,
 				A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */,
 				925EAB972CCD846C003CEAB3 /* RepositoryUpdateView.swift in Sources */,
 				A30061782CA3B68300011B1A /* AssetEditView.swift in Sources */,

@@ -2,7 +2,7 @@
 //  AccountReload.swift
 //  MMEX
 //
-//  2024-10-11: Created by George Ef (george.a.ef@gmail.com)
+//  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
@@ -68,10 +68,10 @@ extension ViewModel {
 
         accountList.order.unload()
 
-        if accountList.att.state.unloading() {
-            if let _ = newData {
-                accountList.att.state.unloaded()
-            } else if let oldData {
+        if let _ = newData {
+            accountList.att.state.unload()
+        } else if let oldData {
+            if accountList.att.state.unloading() {
                 accountList.att.value[oldData.id] = nil
                 accountList.att.state.loaded()
             }

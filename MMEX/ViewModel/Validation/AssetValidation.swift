@@ -10,7 +10,38 @@ import SQLite
 
 extension ViewModel {
     func updateAsset(_ data: inout AssetData) -> String? {
-        return "* not implemented"
+        if data.name.isEmpty {
+            return "Name is empty"
+        }
+
+        guard data.currencyId > 0 else {
+            return "No currency is selected"
+        }
+        guard let currencyName = currencyList.name.readyValue else {
+            return "* currencyName is not loaded"
+        }
+        if currencyName[data.currencyId] == nil {
+            return "* Unknown currency #\(data.currencyId)"
+        }
+
+        guard let e = E(env) else {
+            return "* Database is not available"
+        }
+
+        // DB schema does not enforce unique name.
+        // E.g., two Assets may have the same name and different type.
+
+        if data.id <= 0 {
+            guard e.insert(&data) else {
+                return "* Cannot create new asset"
+            }
+        } else {
+            guard e.update(data) else {
+                return "* Cannot update asset #\(data.id)"
+            }
+        }
+
+        return nil
     }
 
     func deleteAsset(_ data: AssetData) -> String? {

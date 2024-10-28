@@ -10,7 +10,44 @@ import SQLite
 
 extension ViewModel {
     func updatePayee(_ data: inout PayeeData) -> String? {
-        return "* not implemented"
+        if data.name.isEmpty {
+            return "Name is empty"
+        }
+
+        if data.categoryId > 0 {
+            guard let categoryPath = categoryList.path.readyValue else {
+                return "* categoryPath is not loaded"
+            }
+            if categoryPath.path[data.categoryId] == nil {
+                return "* Unknown category #\(data.categoryId)"
+            }
+        }
+
+        guard let p = P(env) else {
+            return "* Database is not available"
+        }
+
+        guard let dataName = p.selectId(from: P.table.filter(
+            P.table[P.col_id] == Int64(data.id) ||
+            P.table[P.col_name] == data.name
+        ) ) else {
+            return "* Cannot fetch from database"
+        }
+        guard dataName.count == (data.id <= 0 ? 0 : 1) else {
+            return "Payee \(data.name) already exists"
+        }
+
+        if data.id <= 0 {
+            guard p.insert(&data) else {
+                return "* Cannot create new payee"
+            }
+        } else {
+            guard p.update(data) else {
+                return "* Cannot update payee #\(data.id)"
+            }
+        }
+
+        return nil
     }
 
     func deletePayee(_ data: PayeeData) -> String? {

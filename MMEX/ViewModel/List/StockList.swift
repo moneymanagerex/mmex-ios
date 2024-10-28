@@ -50,6 +50,7 @@ extension ViewModel {
         stockList.data.unload()
         stockList.used.unload()
         stockList.order.unload()
+        stockList.att.unload()
         stockList.state.unloaded()
     }
 }

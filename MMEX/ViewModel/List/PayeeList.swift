@@ -30,6 +30,8 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.payeeList.used),
                 load(&taskGroup, keyPath: \Self.payeeList.order),
                 load(&taskGroup, keyPath: \Self.payeeList.att),
+                // used in EditView
+                load(&taskGroup, keyPath: \Self.categoryList.path),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         }
@@ -48,6 +50,7 @@ extension ViewModel {
         payeeList.data.unload()
         payeeList.used.unload()
         payeeList.order.unload()
+        payeeList.att.unload()
         payeeList.state.loaded()
     }
 }

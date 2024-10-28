@@ -54,11 +54,18 @@ extension ViewModel {
         }
         // TODO: check base currency
 
-        guard let u = U(env) else {
+        guard let u = U(env), let uh = UH(env) else {
             return "* Database is not available"
         }
 
-        // TODO: cleanup UH (Currency History)
+        guard let currencyHistory = currencyList.history.readyValue else {
+            return "* currencyHistory is not loaded"
+        }
+        if currencyHistory[data.id] != nil {
+            guard uh.delete(currencyId: data.id) else {
+                return "* Cannot delete history for currency #\(data.id)"
+            }
+        }
 
         guard u.delete(data) else {
             return "* Cannot delete currency #\(data.id)"
