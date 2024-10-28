@@ -122,7 +122,20 @@ extension ViewModel {
         } else if let oldData {
             env.accountCache[oldData.id] = nil
         }
-        
+
+        if let currencyUsed = currencyList.used.readyValue {
+            let oldCurrency = oldData?.currencyId
+            let newCurrency = newData?.currencyId
+            if let oldCurrency, newCurrency != oldCurrency {
+                currencyList.used.unload()
+            } else if let newCurrency, !currencyUsed.contains(newCurrency) {
+                if currencyList.used.state.unloading() {
+                    currencyList.used.value.insert(newCurrency)
+                    currencyList.used.state.loaded()
+                }
+            }
+        }
+
         // save isExpanded
         let groupIsExpanded: [Bool]? = accountGroup.readyValue?.map { $0.isExpanded }
         let currencyIndex: [DataId: Int] = Dictionary(
@@ -267,10 +280,7 @@ extension ViewModel {
             return "* Account #\(data.id) is used"
         }
 
-        guard
-            let a = AccountRepository(env),
-            let ax = AttachmentRepository(env)
-        else {
+        guard let a = A(env), let ax = AX(env) else {
             return "* Database is not available"
         }
 

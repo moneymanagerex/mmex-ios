@@ -136,6 +136,30 @@ extension ViewModel {
     }
 
     func deletePayee(_ data: PayeeData) -> String? {
-        return "* not implemented"
+        guard let payeeUsed = payeeList.used.readyValue else {
+            return "* payeeUsed is not loaded"
+        }
+        if payeeUsed.contains(data.id) {
+            return "* Payee #\(data.id) is used"
+        }
+
+        guard let p = P(env), let ax = AX(env) else {
+            return "* Database is not available"
+        }
+
+        guard let payeeAtt = payeeList.att.readyValue else {
+            return "* payeeAtt is not loaded"
+        }
+        if payeeAtt[data.id] != nil {
+            guard ax.delete(refType: .payee, refId: data.id) else {
+                return "* Cannot delete attachments for payee #\(data.id)"
+            }
+        }
+
+        guard p.delete(data) else {
+            return "* Cannot delete payee #\(data.id)"
+        }
+
+        return nil
     }
 }

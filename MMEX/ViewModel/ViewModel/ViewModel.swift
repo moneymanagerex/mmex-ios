@@ -45,6 +45,8 @@ class ViewModel: ObservableObject {
     typealias R = ScheduledRepository
     @Published var scheduledCount : LoadMainCount<R> = .init()
 
+    typealias AX = AttachmentRepository
+
     init(env: EnvironmentManager) {
         self.env = env
     }
