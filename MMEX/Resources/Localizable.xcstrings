@@ -437,6 +437,7 @@
       }
     },
     "Delete Stock" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -759,6 +760,7 @@
       }
     },
     "New Stock" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1058,9 +1060,6 @@
           }
         }
       }
-    },
-    "Stocks" : {
-
     },
     "Support and Help" : {
 

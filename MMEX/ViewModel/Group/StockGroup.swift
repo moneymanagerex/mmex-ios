@@ -48,7 +48,7 @@ extension ViewModel {
             let listUsed    = stockList.used.readyValue,
             let listOrder   = stockList.order.readyValue,
             let listAtt     = stockList.att.readyValue,
-            let accountName = accountList.name.readyValue
+            let accountData = accountList.data.readyValue
         else { return }
 
         guard stockGroup.state.loading() else { return }
@@ -68,11 +68,11 @@ extension ViewModel {
             }
         case .account:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.accountId }
-            stockGroup.groupAccount = accountName.compactMap {
-                dict[$0.key] != nil ? ($0.key, $0.value) : nil
+            stockGroup.groupAccount = accountData.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value.name) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in stockGroup.groupAccount {
-                let name = accountName[g]
+                let name = accountData[g]?.name
                 stockGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .attachment:

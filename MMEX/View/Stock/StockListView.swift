@@ -8,158 +8,71 @@
 import SwiftUI
 
 struct StockListView: View {
+    typealias MainData = StockData
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
 
-    @State private var allAccountName: [(DataId, String)] = [] // sorted by name
-    @State private var allStockDataByAccount: [DataId: [StockData]] = [:] // sorted by name
-    @State private var isTypeVisible:  [DataId: Bool] = [:]
-    @State private var isTypeExpanded: [DataId: Bool] = [:]
-    @State private var search: String = ""
-    @State private var isPresentingAddView = false
-    @State private var newStock = emptyStock
+    @State var search: StockSearch = .init()
 
-    static let emptyStock = StockData(
+    static let initData = StockData(
     )
 
     var body: some View {
-        Group {
-            List {
-                let accountIds = Array(allStockDataByAccount.keys)
-                ForEach(accountIds, id: \.self) { accountId in
-                    if isTypeVisible[accountId] == true {
-                        Section(
-                            header: HStack {
-                                Button(action: {
-                                    isTypeExpanded[accountId]?.toggle()
-                                }) {
-                                    env.theme.group.view(
-                                        name: { Text(env.accountCache[accountId]?.name ?? "(No Account)") },
-                                        isExpanded: isTypeExpanded[accountId] == true
-                                    )
-                                }
-                            }
-                        ) {
-                            // Show stock list based on expanded state
-                            if isTypeExpanded[accountId] == true,
-                               let stocks = allStockDataByAccount[accountId]
-                            {
-                                ForEach(stocks) { stock in
-                                    // TODO: update View after change in stock
-                                    if search.isEmpty || match(stock, search) {
-                                        itemView(stock)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            .toolbar {
-                Button(
-                    action: { isPresentingAddView = true },
-                    label: { Image(systemName: "plus") }
-                )
-                .accessibilityLabel("New Stock")
-            }
-            .searchable(text: $search, prompt: "Search by name")
-            .textInputAutocapitalization(.never)
-            .onChange(of: search) { _, value in
-                filterType(by: value)
-            }
-        }
-        .navigationTitle("Stocks")
+        RepositoryListView(
+            vm: vm,
+            vmList: vm.stockList,
+            groupChoice: vm.stockGroup.choice,
+            vmGroup: $vm.stockGroup,
+            search: $search,
+            initData: Self.initData,
+            groupName: groupName,
+            itemName: itemName,
+            itemInfo: itemInfo,
+            editView: editView
+        )
         .onAppear {
-            loadAccountName()
-            loadStockData()
+            let _ = log.debug("DEBUG: StockListView.onAppear()")
         }
-        .sheet(isPresented: $isPresentingAddView) {
-            StockAddView(
-                allAccountName: $allAccountName,
-                newStock: $newStock,
-                isPresentingAddView: $isPresentingAddView
-            ) { newStock in
-                addStock(stock: &newStock)
-                newStock = Self.emptyStock
+    }
+    
+    func groupName(_ g: Int, _ name: String?) -> some View {
+        Text(name ?? "(unknown group name)")
+    }
+    
+    func itemName(_ data: StockData) -> some View {
+        Text(data.name)
+    }
+
+    func itemInfo(_ data: StockData) -> some View {
+        Group {
+            if vm.stockGroup.choice == .account {
+                Text(data.symbol)
+            } else {
+                Text(vm.accountList.data.readyValue?[data.accountId]?.name ?? "")
             }
-        }
-    }
-
-    func itemView(_ stock: StockData) -> some View {
-        NavigationLink(destination: StockDetailView(
-            allAccountName: $allAccountName,
-            stock: stock
-        ) ) {
-            HStack {
-                Text(stock.name)
-                    .font(.subheadline)
-                
-                Spacer()
-
-                if let account = env.accountCache[stock.accountId],
-                   let formatter = env.currencyCache[account.currencyId]?.formatter
-                {
-                    Text(stock.purchaseValue.formatted(by: formatter))
-                        .font(.subheadline)
-                }
-           }
-            .padding(.horizontal)
-        }
-    }
-
-    // Initialize the expanded state for each account
-    private func initializeAccount() {
-        for accountId in allStockDataByAccount.keys {
-            isTypeVisible[accountId] = true
-            isTypeExpanded[accountId] = true // Default to expanded
-        }
-    }
-
-    func filterType(by search: String) {
-        for accountId in allStockDataByAccount.keys {
-            let matched = search.isEmpty || allStockDataByAccount[accountId]?.first(where: { match($0, search) }) != nil
-            isTypeVisible[accountId] = matched
-            if matched { isTypeExpanded[accountId] = true }
-        }
-    }
-
-    func match(_ stock: StockData, _ search: String) -> Bool {
-        stock.name.localizedCaseInsensitiveContains(search)
-    }
-
-    func loadAccountName() {
-        let repository = AccountRepository(env)
-        DispatchQueue.global(qos: .background).async {
-            let id_name = repository?.loadName() ?? []
-            DispatchQueue.main.async {
-                self.allAccountName = id_name
+            /*
+            if let account = env.accountCache[data.accountId],
+               let formatter = env.currencyCache[account.currencyId]?.formatter
+            {
+                Text(data.purchaseValue.formatted(by: formatter))
             }
+            */
         }
     }
 
-    func loadStockData() {
-        let repository = StockRepository(env)
-        DispatchQueue.global(qos: .background).async {
-            typealias S = StockRepository
-            let dataByAccount = repository?.loadByAccount(
-                from: S.table.order(S.col_name)
-            ) ?? [:]
-            DispatchQueue.main.async {
-                self.allStockDataByAccount = dataByAccount
-                self.initializeAccount()
-            }
-        }
-    }
-
-    func addStock(stock: inout StockData) {
-        guard let repository = StockRepository(env) else { return }
-        if repository.insert(&stock) {
-            self.loadStockData()
-        }
+    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        StockEditView(
+            vm: vm,
+            data: data,
+            edit: edit
+        )
     }
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     StockListView(
+        vm: ViewModel(env: env)
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

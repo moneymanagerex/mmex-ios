@@ -30,7 +30,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.stockList.order),
                 load(&taskGroup, keyPath: \Self.stockList.att),
                 // used in EditView
-                load(&taskGroup, keyPath: \Self.accountList.name),
+                load(&taskGroup, keyPath: \Self.accountList.data),
                 load(&taskGroup, keyPath: \Self.accountList.order),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)

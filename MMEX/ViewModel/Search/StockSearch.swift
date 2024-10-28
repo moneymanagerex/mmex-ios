@@ -26,6 +26,7 @@ extension ViewModel {
 
         if search.isEmpty {
             return switch stockGroup.choice {
+            case .account: !groupData[g].dataId.isEmpty
             default: true
             }
         }

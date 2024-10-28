@@ -36,7 +36,7 @@ struct ManageView: View {
                         count: vm.assetList.count
                     )
                 }
-                NavigationLink(destination: StockListView()) {
+                NavigationLink(destination: StockListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(StockData.dataName.1) },
                         count: vm.stockList.count
