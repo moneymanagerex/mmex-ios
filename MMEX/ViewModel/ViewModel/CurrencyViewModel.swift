@@ -209,6 +209,8 @@ extension ViewModel {
             return "* Database is not available"
         }
 
+        // TODO: cleanup UH (Currency History)
+
         guard u.delete(data) else {
             return "* Cannot delete currency #\(data.id)"
         }
