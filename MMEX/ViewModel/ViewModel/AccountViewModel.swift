@@ -113,6 +113,7 @@ extension ViewModel {
 extension ViewModel {
     func reloadAccountList(_ oldData: AccountData?, _ newData: AccountData?) async {
         log.trace("DEBUG: ViewModel.reloadAccountList(main=\(Thread.isMainThread))")
+
         if let newData {
             if env.currencyCache[newData.currencyId] == nil {
                 env.loadCurrency()
@@ -123,40 +124,48 @@ extension ViewModel {
         }
         
         // save isExpanded
-        let groupIsExpanded: [Bool]? = switch accountGroup.state {
-        case .ready: accountGroup.value.map { $0.isExpanded }
-        default: nil
-        }
+        let groupIsExpanded: [Bool]? = accountGroup.readyValue?.map { $0.isExpanded }
         let currencyIndex: [DataId: Int] = Dictionary(
             uniqueKeysWithValues: accountGroup.groupCurrency.enumerated().map { ($0.1, $0.0) }
         )
-        
-        // TODO: improve performance
+
         unloadAccountGroup()
-        if accountList.state.unloading() {
-            if accountList.data.state.unloading() {
-                if let newData {
-                    accountList.data.value[newData.id] = newData
-                } else if let oldData {
-                    accountList.data.value[oldData.id] = nil
-                }
-                accountList.data.state.loaded()
+        accountList.state.unload()
+
+        if (oldData != nil) != (newData != nil) {
+            manageList.unload()
+            accountList.count.unload()
+        }
+
+        if accountList.data.state.unloading() {
+            if let newData {
+                accountList.data.value[newData.id] = newData
+            } else if let oldData {
+                accountList.data.value[oldData.id] = nil
             }
+            accountList.data.state.loaded()
+        }
 
-            //accountData.unload()
-            accountList.order.unload()
+        if accountList.name.state.unloading() {
+            if let newData {
+                accountList.name.value[newData.id] = newData.name
+            } else if let oldData {
+                accountList.name.value[oldData.id] = nil
+            }
+            accountList.name.state.loaded()
+        }
 
-            if accountList.att.state.unloading() {
-                if let _ = newData {
-                    // TODO
-                } else if let oldData {
-                    accountList.att.value[oldData.id] = nil
-                }
+        accountList.order.unload()
+
+        if accountList.att.state.unloading() {
+            if let _ = newData {
+                accountList.att.state.unloaded()
+            } else if let oldData {
+                accountList.att.value[oldData.id] = nil
                 accountList.att.state.loaded()
             }
-
-            accountList.state.unloaded()
         }
+
         await loadAccountList()
         loadAccountGroup(choice: accountGroup.choice)
 
@@ -224,7 +233,6 @@ extension ViewModel {
             return "* Unknown currency #\(data.currencyId)"
         }
 
-        typealias A = AccountRepository
         guard let a = A(env) else {
             return "* Database is not available"
         }

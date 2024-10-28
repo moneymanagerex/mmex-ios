@@ -264,6 +264,7 @@
       }
     },
     "Currencies" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -393,7 +394,11 @@
         }
       }
     },
+    "Delete %@" : {
+
+    },
     "Delete Account" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -417,6 +422,7 @@
       }
     },
     "Delete Currency" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -803,9 +809,6 @@
     "None" : {
 
     },
-    "Not Used" : {
-
-    },
     "Notes" : {
       "localizations" : {
         "it" : {
@@ -1184,9 +1187,6 @@
           }
         }
       }
-    },
-    "Used" : {
-
     },
     "User Forum" : {
 

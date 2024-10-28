@@ -2,12 +2,75 @@
 //  CurrencyListView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/17.
+//  2024-09-17: Created by Lisheng Guan
+//  2024-10-28: Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct CurrencyListView: View {
+    typealias MainData = CurrencyData
+    @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
+
+    @State var search: CurrencySearch = .init()
+
+    static let initData = CurrencyData(
+        decimalPoint   : ".",
+        groupSeparator : ",",
+        scale          : 100,
+        baseConvRate   : 1.0
+    )
+
+    var body: some View {
+        RepositoryListView(
+            vm: vm,
+            vmList: vm.currencyList,
+            groupChoice: vm.currencyGroup.choice,
+            vmGroup: $vm.currencyGroup,
+            search: $search,
+            initData: Self.initData,
+            groupName: groupName,
+            itemName: itemName,
+            itemInfo: itemInfo,
+            editView: editView
+        )
+        .onAppear {
+            let _ = log.debug("DEBUG: CurrencyListView.onAppear()")
+        }
+    }
+    
+    func groupName(_ g: Int, _ name: String?) -> some View {
+        Text(name ?? "(unknown group name)")
+    }
+    
+    func itemName(_ data: CurrencyData) -> some View {
+        Text(data.name)
+    }
+    
+    func itemInfo(_ data: CurrencyData) -> some View {
+        Text(data.symbol)
+    }
+
+    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        CurrencyEditView(
+            vm: vm,
+            data: data,
+            edit: edit
+        )
+    }
+}
+
+#Preview {
+    let env = EnvironmentManager.sampleData
+    CurrencyListView(
+        vm: ViewModel(env: env)
+    )
+    .environmentObject(env)
+}
+
+/*
+struct OldCurrencyListView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
 
     @State private var allCurrencyData: [CurrencyData] = [] // sorted by name
@@ -96,7 +159,8 @@ struct CurrencyListView: View {
 }
 
 #Preview {
-    CurrencyListView(
+    OldCurrencyListView(
     )
     .environmentObject(EnvironmentManager.sampleData)
 }
+*/

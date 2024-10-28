@@ -30,7 +30,7 @@ struct RepositoryReadView<
         Form {
             editView($data, false)
             if vm.isUsed(data) == false {
-                Button("Delete Account") {
+                Button("Delete \(MainData.dataName.0)") {
                     let deleteError = vm.delete(data)
                     if deleteError != nil {
                         alertMessage = deleteError
