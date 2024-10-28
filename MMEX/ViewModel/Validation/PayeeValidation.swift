@@ -15,10 +15,10 @@ extension ViewModel {
         }
 
         if data.categoryId > 0 {
-            guard let categoryPath = categoryList.path.readyValue else {
-                return "* categoryPath is not loaded"
+            guard let categoryData = categoryList.data.readyValue else {
+                return "* categoryData is not loaded"
             }
-            if categoryPath.path[data.categoryId] == nil {
+            if categoryData[data.categoryId] == nil {
                 return "* Unknown category #\(data.categoryId)"
             }
         }

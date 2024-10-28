@@ -26,6 +26,7 @@ extension ViewModel {
 
         if search.isEmpty {
             return switch payeeGroup.choice {
+            case .category: !groupData[g].dataId.isEmpty
             default: true
             }
         }

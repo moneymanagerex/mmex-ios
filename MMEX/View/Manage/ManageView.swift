@@ -48,7 +48,7 @@ struct ManageView: View {
                         count: vm.categoryList.count
                     )
                 }
-                NavigationLink(destination: PayeeListView()) {
+                NavigationLink(destination: PayeeListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(PayeeData.dataName.1) },
                         count: vm.payeeList.count

@@ -2,7 +2,7 @@
 //  StockListView.swift
 //  MMEX
 //
-//  Created 2024-10-03 by George Ef (george.a.ef@gmail.com)
+//  2024-10-03: Created by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
@@ -52,7 +52,7 @@ struct StockListView: View {
             }
             /*
             if let account = env.accountCache[data.accountId],
-               let formatter = env.currencyCache[account.currencyId]?.formatter
+               let formatter = env.currencyCache[data.currencyId]?.formatter
             {
                 Text(data.purchaseValue.formatted(by: formatter))
             }
