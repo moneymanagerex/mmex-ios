@@ -30,7 +30,7 @@ struct ManageView: View {
                         count: vm.accountList.count
                     )
                 }
-                NavigationLink(destination: AssetListView()) {
+                NavigationLink(destination: AssetListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(AssetData.dataName.1) },
                         count: vm.assetList.count

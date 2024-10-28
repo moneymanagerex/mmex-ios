@@ -64,8 +64,8 @@ struct AccountListView: View {
     func itemInfo(_ data: AccountData) -> some View {
         Group {
             if vm.accountGroup.choice == .type {
-                if let currency = env.currencyCache[data.currencyId] {
-                    Text(currency.name)
+                if let currencyName = vm.currencyList.name.readyValue {
+                    Text(currencyName[data.currencyId] ?? "")
                 }
             } else {
                 Text(data.type.rawValue)

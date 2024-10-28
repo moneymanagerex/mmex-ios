@@ -167,9 +167,6 @@
     "Asset" : {
       "extractionState" : "manual"
     },
-    "Assets" : {
-
-    },
     "Base Currency" : {
 
     },
@@ -407,9 +404,6 @@
           }
         }
       }
-    },
-    "Delete Asset" : {
-
     },
     "Delete Category" : {
       "localizations" : {
@@ -733,9 +727,6 @@
           }
         }
       }
-    },
-    "New Asset" : {
-
     },
     "New Category" : {
       "localizations" : {

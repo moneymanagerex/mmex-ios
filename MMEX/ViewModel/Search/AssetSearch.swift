@@ -25,6 +25,7 @@ extension ViewModel {
 
         if search.isEmpty {
             return switch assetGroup.choice {
+            case .type, .currency: !groupData[g].dataId.isEmpty
             default: true
             }
         }

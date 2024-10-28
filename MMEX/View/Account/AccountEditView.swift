@@ -35,7 +35,7 @@ struct AccountEditView: View {
             } show: {
                 Text(data.type.rawValue)
             }
-            
+
             if
                 let currencyOrder = vm.currencyList.order.readyValue,
                 let currencyName  = vm.currencyList.name.readyValue
