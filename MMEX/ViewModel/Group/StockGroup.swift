@@ -5,6 +5,8 @@
 //  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
 //
 
+import SwiftUI
+
 enum StockGroupChoice: String, GroupChoiceProtocol {
     case all        = "All"
     case used       = "Used"
@@ -37,4 +39,54 @@ struct StockGroup: GroupProtocol {
     static let groupAttachment: [Bool] = [
         true, false
     ]
+}
+
+extension ViewModel {
+    func loadStockGroup(choice: StockGroupChoice) {
+        guard
+            let listData    = stockList.data.readyValue,
+            let listUsed    = stockList.used.readyValue,
+            let listOrder   = stockList.order.readyValue,
+            let listAtt     = stockList.att.readyValue,
+            let accountName = accountList.name.readyValue
+        else { return }
+
+        guard stockGroup.state.loading() else { return }
+        log.trace("DEBUG: ViewModel.loadStockGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
+        
+        stockGroup.choice = choice
+        stockGroup.groupAccount = []
+
+        switch choice {
+        case .all:
+            stockGroup.append("All", listOrder, true, true)
+        case .used:
+            let dict = Dictionary(grouping: listOrder) { listUsed.contains($0) }
+            for g in StockGroup.groupUsed {
+                let name = g ? "Used" : "Other"
+                stockGroup.append(name, dict[g] ?? [], true, g)
+            }
+        case .account:
+            let dict = Dictionary(grouping: listOrder) { listData[$0]!.accountId }
+            stockGroup.groupAccount = accountName.compactMap {
+                dict[$0.key] != nil ? ($0.key, $0.value) : nil
+            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            for g in stockGroup.groupAccount {
+                let name = accountName[g]
+                stockGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
+            }
+        case .attachment:
+            let dict = Dictionary(grouping: listOrder) { listAtt[$0]?.count ?? 0 > 0 }
+            for g in StockGroup.groupAttachment {
+                let name = g ? "With Attachment" : "Other"
+                stockGroup.append(name, dict[g] ?? [], true, g)
+            }
+        }
+
+        stockGroup.state.loaded()
+    }
+
+    func unloadStockGroup() {
+        stockGroup.unload()
+    }
 }

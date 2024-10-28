@@ -25,3 +25,42 @@ extension GroupProtocol {
         ) )
     }
 }
+
+extension ViewModel {
+    func loadGroup<GroupType: GroupProtocol>(
+        _ group: GroupType,
+        choice: GroupType.GroupChoice
+    ) {
+        typealias MainRepository = GroupType.MainRepository
+        /**/ if MainRepository.self == U.self { loadCurrencyGroup(choice: choice as! CurrencyGroupChoice) }
+        else if MainRepository.self == A.self { loadAccountGroup(choice: choice as! AccountGroupChoice) }
+        else if MainRepository.self == E.self { loadAssetGroup(choice: choice as! AssetGroupChoice) }
+        else if MainRepository.self == S.self { loadStockGroup(choice: choice as! StockGroupChoice) }
+        else if MainRepository.self == C.self { loadCategoryGroup(choice: choice as! CategoryGroupChoice) }
+        else if MainRepository.self == P.self { loadPayeeGroup(choice: choice as! PayeeGroupChoice) }
+    }
+    
+    func unloadGroup<GroupType: GroupProtocol>(_ group: GroupType) {
+        typealias MainRepository = GroupType.MainRepository
+        /**/ if MainRepository.self == U.self { unloadCurrencyGroup() }
+        else if MainRepository.self == A.self { unloadAccountGroup() }
+        else if MainRepository.self == E.self { unloadAssetGroup() }
+        else if MainRepository.self == S.self { unloadStockGroup() }
+        else if MainRepository.self == C.self { unloadCategoryGroup() }
+        else if MainRepository.self == P.self { unloadPayeeGroup() }
+    }
+
+    func unloadGroup() {
+        unloadCurrencyGroup()
+        unloadAccountGroup()
+        unloadAssetGroup()
+        unloadStockGroup()
+        unloadCategoryGroup()
+        unloadPayeeGroup()
+    }
+
+    func unloadAll() {
+        unloadGroup()
+        unloadList()
+    }
+}

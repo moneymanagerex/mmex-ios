@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+typealias SearchArea<MainData: DataProtocol> = (
+    name: String,
+    isSelected: Bool,
+    mainValues: [(MainData) -> String],
+    auxValues: [(ViewModel, MainData) -> String]
+)
+
 protocol SearchProtocol: Copyable {
     associatedtype MainData: DataProtocol
     var area: [SearchArea<MainData>] { get set }
@@ -36,5 +43,27 @@ extension SearchProtocol {
             }
         }
         return false
+    }
+}
+
+extension ViewModel {
+    func searchGroup<GroupType: GroupProtocol, SearchType: SearchProtocol>(
+        _ group: GroupType,
+        search: SearchType,
+        expand: Bool = false
+    ) where GroupType.MainRepository.RepositoryData == SearchType.MainData {
+        if GroupType.MainRepository.self == U.self {
+            searchCurrencyGroup(search: search as! CurrencySearch)
+        } else if GroupType.MainRepository.self == A.self {
+            searchAccountGroup(search: search as! AccountSearch, expand: expand)
+        } else if GroupType.MainRepository.self == E.self {
+            searchAssetGroup(search: search as! AssetSearch, expand: expand)
+        } else if GroupType.MainRepository.self == S.self {
+            searchStockGroup(search: search as! StockSearch, expand: expand)
+        } else if GroupType.MainRepository.self == C.self {
+            searchCategoryGroup(search: search as! CategorySearch, expand: expand)
+        } else if GroupType.MainRepository.self == P.self {
+            searchPayeeGroup(search: search as! PayeeSearch, expand: expand)
+        }
     }
 }

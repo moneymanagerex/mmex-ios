@@ -5,6 +5,7 @@
 //  2024-10-26: Created by George Ef (george.a.ef@gmail.com)
 //
 
+import SwiftUI
 import SQLite
 
 struct AccountList: ListProtocol {
@@ -17,4 +18,40 @@ struct AccountList: ListProtocol {
     var used  : LoadMainUsed<MainRepository>  = .init()
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
     var att   : LoadAuxAtt<MainRepository>    = .init()
+}
+
+extension ViewModel {
+    func loadAccountList() async {
+        guard accountList.state.loading() else { return }
+        log.trace("DEBUG: ViewModel.loadAccountList(main=\(Thread.isMainThread))")
+        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.accountList.data),
+                load(&taskGroup, keyPath: \Self.accountList.used),
+                load(&taskGroup, keyPath: \Self.accountList.order),
+                load(&taskGroup, keyPath: \Self.accountList.att),
+                // used in EditView
+                load(&taskGroup, keyPath: \Self.currencyList.name),
+                load(&taskGroup, keyPath: \Self.currencyList.order),
+            ].allSatisfy({$0})
+            return await taskGroupOk(taskGroup, ok)
+        }
+        accountList.state.loaded(ok: ok)
+        if ok {
+            log.info("INFO: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Ready.")
+        } else {
+            log.debug("ERROR: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Error.")
+            return
+        }
+    }
+
+    func unloadAccountList() {
+        guard accountList.state.unloading() else { return }
+        log.trace("DEBUG: ViewModel.unloadAccountList(main=\(Thread.isMainThread))")
+        accountList.data.unload()
+        accountList.used.unload()
+        accountList.order.unload()
+        accountList.att.unload()
+        accountList.state.unloaded()
+    }
 }
