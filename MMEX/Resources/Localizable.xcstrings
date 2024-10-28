@@ -427,6 +427,7 @@
       }
     },
     "Delete Payee" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -750,6 +751,7 @@
       }
     },
     "New Payee" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -846,6 +848,7 @@
       }
     },
     "Payees" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1179,9 +1182,6 @@
       }
     },
     "User Forum" : {
-
-    },
-    "Validation Error" : {
 
     },
     "Version" : {

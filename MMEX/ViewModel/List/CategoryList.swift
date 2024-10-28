@@ -127,7 +127,7 @@ extension ViewModel {
             let data  = await categoryList.data.readyValue,
             let order = await categoryList.order.readyValue
         else { return nil }
-        
+
         let tree = Dictionary(grouping: order) {
             { id in id > 0 ? id : -1 }(data[$0]?.parentId ?? -1)
         }

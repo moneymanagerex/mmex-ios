@@ -2,130 +2,105 @@
 //  PayeeEditView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/6.
-//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
+//  2024-09-06: Created by Lisheng Guan
+//  2024-10-28: Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct PayeeEditView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @Binding var categories: [CategoryData]
-    @Binding var payee: PayeeData
+    var vm: ViewModel
+    @Binding var data: PayeeData
     @State var edit: Bool
-    var onDelete: () -> Void = { }
 
-    var category: CategoryData? {
-        payee.categoryId >= categories.startIndex && payee.categoryId < categories.endIndex ?
-        categories[Int(payee.categoryId)] : nil
-    }
+    var category: String? { vm.categoryList.path.readyValue?.path[data.categoryId] }
 
     var body: some View {
-        Form {
-            Section {
-                env.theme.field.text(edit, "Name") {
-                    TextField("Cannot be empty!", text: $payee.name)
-                        .textInputAutocapitalization(.words)
-                } show: {
-                    env.theme.field.valueOrError("Cannot be empty!", text: payee.name)
-                }
-
-                env.theme.field.toggle(edit, "Active") {
-                    Toggle(isOn: $payee.active) { }
-                } show: {
-                    Text(payee.active ? "Yes" : "No")
-                }
+        Section {
+            env.theme.field.text(edit, "Name") {
+                TextField("Cannot be empty!", text: $data.name)
+                    .textInputAutocapitalization(.words)
+            } show: {
+                env.theme.field.valueOrError("Cannot be empty!", text: data.name)
             }
-
-            Section {
+            
+            env.theme.field.toggle(edit, "Active") {
+                Toggle(isOn: $data.active) { }
+            } show: {
+                Text(data.active ? "Yes" : "No")
+            }
+        }
+        
+        Section {
+            if
+                let categoryOrder = vm.categoryList.path.readyValue?.order,
+                let categoryPath  = vm.categoryList.path.readyValue?.path
+            {
+                // TODO: category tree
                 env.theme.field.picker(edit, "Category") {
-                    Picker("", selection: $payee.categoryId) {
-                        if (payee.categoryId <= 0) {
+                    Picker("", selection: $data.categoryId) {
+                        if (data.categoryId <= 0) {
                             Text("Select Category").tag(0 as DataId) // not set
                         }
-                        ForEach(categories.indices, id: \.self) { i in
-                            Text(categories[i].name).tag(categories[i].id)
+                        ForEach(categoryOrder, id: \.self) { id in
+                            Text(categoryPath[id] ?? "").tag(id)
                         }
                     }
                 } show: {
-                    env.theme.field.valueOrHint("N/A", text: category?.name)
-                }
-
-                if edit || !payee.number.isEmpty {
-                    env.theme.field.text(edit, "Payment Number") {
-                        TextField("N/A", text: $payee.number)
-                            .textInputAutocapitalization(.never)
-                    }
-                }
-
-                if edit || !payee.website.isEmpty {
-                    env.theme.field.text(edit, "Website") {
-                        TextField("N/A", text: $payee.website)
-                            .textInputAutocapitalization(.never)
-                    }
-                }
-
-                if edit || !payee.pattern.isEmpty {
-                    env.theme.field.text(edit, "Pattern") {
-                        TextField("N/A", text: $payee.pattern)
-                            .textInputAutocapitalization(.never)
-                    }
+                    env.theme.field.valueOrHint("N/A", text: category)
                 }
             }
             
-            Section {
-                env.theme.field.editor(edit, "Notes") {
-                    TextEditor(text: $payee.notes)
+            if edit || !data.number.isEmpty {
+                env.theme.field.text(edit, "Payment Number") {
+                    TextField("N/A", text: $data.number)
                         .textInputAutocapitalization(.never)
-                } show: {
-                    env.theme.field.valueOrHint("N/A", text: payee.notes)
                 }
             }
-
-            // TODO: delete payee if not in use
-            if true {
-                Button("Delete Payee") {
-                    onDelete()
+            
+            if edit || !data.website.isEmpty {
+                env.theme.field.text(edit, "Website") {
+                    TextField("N/A", text: $data.website)
+                        .textInputAutocapitalization(.never)
                 }
-                .foregroundColor(.red)
+            }
+            
+            if edit || !data.pattern.isEmpty {
+                env.theme.field.text(edit, "Pattern") {
+                    TextField("N/A", text: $data.pattern)
+                        .textInputAutocapitalization(.never)
+                }
             }
         }
-        .textSelection(.enabled)
+        
+        Section {
+            env.theme.field.editor(edit, "Notes") {
+                TextEditor(text: $data.notes)
+                    .textInputAutocapitalization(.never)
+            } show: {
+                env.theme.field.valueOrHint("N/A", text: data.notes)
+            }
+        }
     }
 }
 
 #Preview("\(PayeeData.sampleData[0].name) (show)") {
-    PayeeEditView(
-        categories: .constant(CategoryData.sampleData),
-        payee: .constant(PayeeData.sampleData[0]),
+    let env = EnvironmentManager.sampleData
+    Form { PayeeEditView(
+        vm: ViewModel(env: env),
+        data: .constant(PayeeData.sampleData[0]),
         edit: false
-    )
-    .environmentObject(EnvironmentManager.sampleData)
+    ) }
+    .environmentObject(env)
 }
 
 #Preview("\(PayeeData.sampleData[0].name) (edit)") {
-    PayeeEditView(
-        categories: .constant(CategoryData.sampleData),
-        payee: .constant(PayeeData.sampleData[0]),
+    let env = EnvironmentManager.sampleData
+    Form { PayeeEditView(
+        vm: ViewModel(env: env),
+        data: .constant(PayeeData.sampleData[0]),
         edit: true
-    )
-    .environmentObject(EnvironmentManager.sampleData)
-}
-
-#Preview("\(PayeeData.sampleData[1].name) (show)") {
-    PayeeEditView(
-        categories: .constant(CategoryData.sampleData),
-        payee: .constant(PayeeData.sampleData[1]),
-        edit: false
-    )
-    .environmentObject(EnvironmentManager.sampleData)
-}
-
-#Preview("\(PayeeData.sampleData[1].name) (edit)") {
-    PayeeEditView(
-        categories: .constant(CategoryData.sampleData),
-        payee: .constant(PayeeData.sampleData[1]),
-        edit: true
-    )
-    .environmentObject(EnvironmentManager.sampleData)
+    ) }
+    .environmentObject(env)
 }

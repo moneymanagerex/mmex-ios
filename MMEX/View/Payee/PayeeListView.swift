@@ -2,110 +2,74 @@
 //  PayeeListView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/6.
+//  2024-09-06: Created by Lisheng Guan
+//  2024-10-28: Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct PayeeListView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @State private var payees: [PayeeData] = []
-    @State private var filteredPayees: [PayeeData] = [] // New: Filtered payees for search results
-    @State private var categories: [CategoryData] = []
-    @State private var newPayee = PayeeData()
-    @State private var isPresentingAddView = false
-    @State private var searchQuery: String = "" // New: Search query
-    static let emptyPayee = PayeeData(
+    typealias MainData = PayeeData
+    @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
+    
+    @State var search: PayeeSearch = .init()
+    
+    static let initData = PayeeData(
         categoryId : -1,
         active     : true
     )
-
+    
     var body: some View {
-        Group {
-            List($filteredPayees) { $payee in // Use filteredPayees instead of payees
-                NavigationLink(destination: PayeeDetailView(
-                    categories: $categories,
-                    payee: $payee
-                ) ) {
-                    HStack {
-                        Text(payee.name)
-                        Spacer()
-                        Text(payee.active ? "Active" : "Inactive")
-                    }
-                }
-            }
-            .toolbar {
-                Button(action: {
-                    isPresentingAddView = true
-                }, label: {
-                    Image(systemName: "plus")
-                })
-                .accessibilityLabel("New Payee")
-            }
-            .searchable(text: $searchQuery, prompt: "Search by name") // New: Search bar
-            .onChange(of: searchQuery) { _, query in
-                filterPayees(by: query)
-            }
-        }
-        .navigationTitle("Payees")
+        RepositoryListView(
+            vm: vm,
+            vmList: vm.payeeList,
+            groupChoice: vm.payeeGroup.choice,
+            vmGroup: $vm.payeeGroup,
+            search: $search,
+            initData: Self.initData,
+            groupName: groupName,
+            itemName: itemName,
+            itemInfo: itemInfo,
+            editView: editView
+        )
         .onAppear {
-            loadPayees()
-            loadCategories()
+            let _ = log.debug("DEBUG: PayeeListView.onAppear()")
         }
-        .sheet(isPresented: $isPresentingAddView) {
-            PayeeAddView(
-                categories: $categories,
-                newPayee: $newPayee,
-                isPresentingAddView: $isPresentingAddView
-            ) { newPayee in
-                addPayee(payee: &newPayee)
-                newPayee = Self.emptyPayee
+    }
+    
+    func groupName(_ g: Int, _ name: String?) -> some View {
+        Text(name ?? "(unknown group name)")
+    }
+    
+    func itemName(_ data: PayeeData) -> some View {
+        Text(data.name)
+    }
+    
+    func itemInfo(_ data: PayeeData) -> some View {
+        Group {
+            if vm.payeeGroup.choice == .category {
+                Text(data.active ? "Active" : "Inactive")
+            } else {
+                //Text(vm.categoryList.data.readyValue?[data.categoryId]?.name ?? "")
+                Text(vm.categoryList.path.readyValue?.path[data.categoryId] ?? "")
             }
         }
     }
     
-    func loadPayees() {
-        // Fetch accounts using repository and update the view
-        DispatchQueue.global(qos: .background).async {
-            let loadedPayees = PayeeRepository(self.env)?.load() ?? []
-            // Update UI on the main thread
-            DispatchQueue.main.async {
-                self.payees = loadedPayees
-                self.filteredPayees = loadedPayees // Ensure filteredPayees is initialized with all payees
-            }
-        }
-    }
-
-    func loadCategories() {
-        DispatchQueue.global(qos: .background).async {
-            let loadedCategories = CategoryRepository(self.env)?.load() ?? []
-            DispatchQueue.main.async {
-                self.categories = loadedCategories
-            }
-        }
-    }
-
-    func addPayee(payee: inout PayeeData) {
-        guard let repository = PayeeRepository(env) else { return }
-        if repository.insert(&payee) {
-            self.payees.append(payee) // id is ready after repo call
-            // loadPayees()
-        } else {
-            // TODO
-        }
-    }
-
-    // New: Filter payees based on the search query
-    func filterPayees(by query: String) {
-        if query.isEmpty {
-            filteredPayees = payees
-        } else {
-            filteredPayees = payees.filter { $0.name.localizedCaseInsensitiveContains(query) }
-        }
+    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        PayeeEditView(
+            vm: vm,
+            data: data,
+            edit: edit
+        )
     }
 }
 
 #Preview {
-    PayeeListView()
-        .environmentObject(EnvironmentManager.sampleData)
+    let env = EnvironmentManager.sampleData
+    PayeeListView(
+        vm: ViewModel(env: env)
+    )
+    .environmentObject(env)
 }

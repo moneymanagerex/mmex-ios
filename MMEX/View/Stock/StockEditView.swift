@@ -32,6 +32,7 @@ struct StockEditView: View {
             } show: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.symbol)
             }
+
             if
                 let accountOrder = vm.accountList.order.readyValue,
                 let accountData  = vm.accountList.data.readyValue
@@ -96,4 +97,24 @@ struct StockEditView: View {
             }
         }
     }
+}
+
+#Preview("\(StockData.sampleData[0].name) (show)") {
+    let env = EnvironmentManager.sampleData
+    Form { StockEditView(
+        vm: ViewModel(env: env),
+        data: .constant(StockData.sampleData[0]),
+        edit: false
+    ) }
+    .environmentObject(env)
+}
+
+#Preview("\(StockData.sampleData[0].name) (edit)") {
+    let env = EnvironmentManager.sampleData
+    Form { StockEditView(
+        vm: ViewModel(env: env),
+        data: .constant(StockData.sampleData[0]),
+        edit: true
+    ) }
+    .environmentObject(env)
 }
