@@ -20,10 +20,10 @@ extension ViewModel {
         guard data.accountId > 0 else {
             return "No account is selected"
         }
-        guard let accountName = accountList.name.readyValue else {
-            return "* accountName is not loaded"
+        guard let accountData = accountList.data.readyValue else {
+            return "* accountData is not loaded"
         }
-        if accountName[data.accountId] == nil {
+        if accountData[data.accountId] == nil {
             return "* Unknown account #\(data.accountId)"
         }
 
