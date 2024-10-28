@@ -116,13 +116,3 @@ extension ViewModel {
         }
     }
 }
-
-extension ViewModel {
-    func updateCategory(_ data: inout CategoryData) -> String? {
-        return "* not implemented"
-    }
-
-    func deleteCategory(_ data: CategoryData) -> String? {
-        return "* not implemented"
-    }
-}
