@@ -17,6 +17,12 @@ struct CurrencyList: ListProtocol {
     var name  : LoadMainName<MainRepository>  = .init { $0[MainRepository.col_name] }
     var used  : LoadMainUsed<MainRepository>  = .init()
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
+
+    typealias UH = CurrencyHistoryRepository
+    var history : LoadAuxData<MainRepository, UH> = .init(
+        mainId: { DataId($0[UH.col_currencyId]) },
+        auxTable: UH.table.order(UH.col_currDate)
+    )
 }
 
 extension ViewModel {
@@ -28,6 +34,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.currencyList.data),
                 load(&taskGroup, keyPath: \Self.currencyList.used),
                 load(&taskGroup, keyPath: \Self.currencyList.order),
+                load(&taskGroup, keyPath: \Self.currencyList.history),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         }
@@ -46,6 +53,7 @@ extension ViewModel {
         currencyList.data.unload()
         currencyList.used.unload()
         currencyList.order.unload()
+        currencyList.history.unload()
         currencyList.state.unloaded()
     }
 }

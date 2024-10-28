@@ -7,6 +7,23 @@
 
 import SwiftUI
 
+protocol GroupChoiceProtocol: EnumCollateNoCase, Hashable
+where Self.AllCases: RandomAccessCollection {
+    static var isSingleton: Set<Self> { get }
+    var fullName: String { get }
+}
+
+extension GroupChoiceProtocol {
+    var fullName: String { self.rawValue }
+}
+
+struct GroupData {
+    var name       : String?
+    var dataId     : [DataId]
+    var isVisible  : Bool
+    var isExpanded : Bool
+}
+
 protocol GroupProtocol: LoadProtocol where ValueType == [GroupData] {
     associatedtype MainRepository: RepositoryProtocol
     associatedtype GroupChoice: GroupChoiceProtocol

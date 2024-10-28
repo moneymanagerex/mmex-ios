@@ -14,6 +14,7 @@ struct AssetList: ListProtocol {
     var state : LoadState                     = .init()
     var count : LoadMainCount<MainRepository> = .init()
     var data  : LoadMainData<MainRepository>  = .init()
+    var name  : LoadMainName<MainRepository>  = .init { $0[MainRepository.col_name] }
     var used  : LoadMainUsed<MainRepository>  = .init()
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
     var att   : LoadAuxAtt<MainRepository>    = .init()
@@ -31,7 +32,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.assetList.att),
                 // used in EditView
                 load(&taskGroup, keyPath: \Self.currencyList.name),
-            load(&taskGroup, keyPath: \Self.currencyList.order),
+                load(&taskGroup, keyPath: \Self.currencyList.order),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         }
@@ -50,6 +51,7 @@ extension ViewModel {
         assetList.data.unload()
         assetList.used.unload()
         assetList.order.unload()
+        assetList.att.unload()
         assetList.state.unloaded()
     }
 }

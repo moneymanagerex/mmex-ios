@@ -72,4 +72,19 @@ extension CurrencyHistoryRepository {
             .order(Self.col_currencyId, Self.col_currDate)
         )
     }
+
+    func delete(currencyId: DataId) -> Bool {
+        do {
+            let query = Self.table
+                .filter(Self.col_currencyId == Int64(currencyId))
+                .delete()
+            log.trace("DEBUG: CurrencyHistoryRepository.delete(main=\(Thread.isMainThread)): \(query.expression.description)")
+            try db.run(query)
+            log.info("INFO: CurrencyHistoryRepository.delete(\(Self.repositoryName))")
+            return true
+        } catch {
+            log.error("ERROR: CurrencyHistoryRepository.delete(\(Self.repositoryName)): \(error)")
+            return false
+        }
+    }
 }
