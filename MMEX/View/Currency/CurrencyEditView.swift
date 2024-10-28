@@ -102,7 +102,7 @@ struct CurrencyEditView: View {
         data: .constant(CurrencyData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (edit)") {
@@ -112,5 +112,5 @@ struct CurrencyEditView: View {
         data: .constant(CurrencyData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

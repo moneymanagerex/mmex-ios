@@ -74,7 +74,7 @@ extension ViewModel {
             let dict = Dictionary(grouping: listOrder) { listUsed.contains($0) }
             for g in AssetGroup.groupUsed {
                 let name = g ? "Used" : "Other"
-                assetGroup.append(name, dict[g] ?? [], true, g)
+                assetGroup.append(name, dict[g] ?? [], true, true)
             }
         case .status:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.status }

@@ -2,166 +2,80 @@
 //  AssetListView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/25.
+//  2024-09-25: Created by Lisheng Guan
+//  2024-10-28: Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct AssetListView: View {
+    typealias MainData = AssetData
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
 
-    @State private var allCurrencyName: [(DataId, String)] = [] // sorted by name
-    @State private var allAssetDataByType: [AssetType: [AssetData]] = [:] // sorted by name
-    @State private var isTypeVisible:  [AssetType: Bool] = [:]
-    @State private var isTypeExpanded: [AssetType: Bool] = [:]
-    @State private var search: String = ""
-    @State private var isPresentingAddView = false
-    @State private var newAsset = emptyAsset
+    @State var search: AssetSearch = .init()
 
-    static let emptyAsset = AssetData(
-        status: AssetStatus.open
+    static let initData = AssetData(
+        status       : .open
     )
 
     var body: some View {
-        Group {
-            List {
-                ForEach(AssetType.allCases, id: \.self) { assetType in
-                    if isTypeVisible[assetType] == true {
-                        Section(
-                            header: HStack {
-                                Button(action: {
-                                    isTypeExpanded[assetType]?.toggle()
-                                }) {
-                                    env.theme.group.view(
-                                        name: { Text(assetType.rawValue) },
-                                        isExpanded: isTypeExpanded[assetType] == true
-                                    )
-                                }
-                            }
-                        ) {
-                            // Show asset list based on expanded state
-                            if isTypeExpanded[assetType] == true,
-                               let assets = allAssetDataByType[assetType]
-                            {
-                                ForEach(assets) { asset in
-                                    // TODO: update View after change in asset
-                                    if search.isEmpty || match(asset, search) {
-                                        itemView(asset)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            .toolbar {
-                Button(
-                    action: { isPresentingAddView = true },
-                    label: { Image(systemName: "plus") }
-                )
-                .accessibilityLabel("New Asset")
-            }
-            .searchable(text: $search, prompt: "Search by name")
-            .textInputAutocapitalization(.never)
-            .onChange(of: search) { _, value in
-                filterType(by: value)
-            }
-        }
-        .navigationTitle("Assets")
+        RepositoryListView(
+            vm: vm,
+            vmList: vm.assetList,
+            groupChoice: vm.assetGroup.choice,
+            vmGroup: $vm.assetGroup,
+            search: $search,
+            initData: Self.initData,
+            groupName: groupName,
+            itemName: itemName,
+            itemInfo: itemInfo,
+            editView: editView
+        )
         .onAppear {
-            loadCurrencyName()
-            loadAssetData()
-        }
-        .sheet(isPresented: $isPresentingAddView) {
-            AssetAddView(
-                allCurrencyName: $allCurrencyName,
-                newAsset: $newAsset,
-                isPresentingAddView: $isPresentingAddView
-            ) { newAsset in
-                addAsset(asset: &newAsset)
-                newAsset = Self.emptyAsset
-            }
+            let _ = log.debug("DEBUG: AssetListView.onAppear()")
         }
     }
+    
+    func groupName(_ g: Int, _ name: String?) -> some View {
+        Text(name ?? "(unknown group name)")
+    }
+    
+    func itemName(_ data: AssetData) -> some View {
+        Text(data.name)
+    }
 
-    func itemView(_ asset: AssetData) -> some View {
-        NavigationLink(destination: AssetDetailView(
-            allCurrencyName: $allCurrencyName,
-            asset: asset
-        ) ) {
-            HStack {
-                Text(asset.name)
-                    .font(.subheadline)
-                
-                Spacer()
-                
-                if let formatter = env.currencyCache[asset.currencyId]?.formatter
-                {
-                    Text(asset.value.formatted(by: formatter))
-                        .font(.subheadline)
+    func itemInfo(_ data: AssetData) -> some View {
+        Group {
+            if vm.assetGroup.choice == .type {
+                if let currencyName = vm.currencyList.name.readyValue {
+                    Text(currencyName[data.currencyId] ?? "")
                 }
+            } else {
+                Text(data.type.rawValue)
             }
-            .padding(.horizontal)
-        }
-    }
-
-    // Initialize the expanded state for each account type
-    private func initializeType() {
-        for assetType in allAssetDataByType.keys {
-            isTypeVisible[assetType] = true
-            isTypeExpanded[assetType] = true // Default to expanded
-        }
-    }
-
-    func filterType(by search: String) {
-        for assetType in allAssetDataByType.keys {
-            let matched = search.isEmpty || allAssetDataByType[assetType]?.first(where: { match($0, search) }) != nil
-            isTypeVisible[assetType] = matched
-            if matched { isTypeExpanded[assetType] = true }
-        }
-    }
-
-    func match(_ asset: AssetData, _ search: String) -> Bool {
-        asset.name.localizedCaseInsensitiveContains(search)
-    }
-
-    func loadCurrencyName() {
-        let repository = CurrencyRepository(env)
-        DispatchQueue.global(qos: .background).async {
-            let id_name = repository?.loadName() ?? []
-            DispatchQueue.main.async {
-                self.allCurrencyName = id_name
+            /*
+            if let formatter = env.currencyCache[asset.currencyId]?.formatter
+            {
+                Text(asset.value.formatted(by: formatter))
             }
+            */
         }
     }
 
-    func loadAssetData() {
-        let repository = AssetRepository(env)
-        DispatchQueue.global(qos: .background).async {
-            typealias E = AssetRepository
-            let dataByType = repository?.loadByType(
-                from: E.table.order(E.col_name)
-            ) ?? [:]
-            DispatchQueue.main.async {
-                self.allAssetDataByType = dataByType
-                self.initializeType()
-            }
-        }
-    }
-
-    func addAsset(asset: inout AssetData) {
-        guard let repository = AssetRepository(env) else { return }
-        if repository.insert(&asset) {
-            if env.currencyCache[asset.currencyId] == nil {
-                env.loadCurrency()
-            }
-            self.loadAssetData()
-        }
+    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        AssetEditView(
+            vm: vm,
+            data: data,
+            edit: edit
+        )
     }
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     AssetListView(
+        vm: ViewModel(env: env)
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

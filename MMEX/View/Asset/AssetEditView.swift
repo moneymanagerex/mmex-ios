@@ -2,155 +2,132 @@
 //  AssetEditView.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/25.
-//  Edited 2024-10-05 by George Ef (george.a.ef@gmail.com)
+//  2024-09-25: Created by Lisheng Guan
+//  2024-10-28: Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
 struct AssetEditView: View {
     @EnvironmentObject var env: EnvironmentManager
-    @Binding var allCurrencyName: [(DataId, String)] // sorted by name
-    @Binding var asset: AssetData
+    var vm: ViewModel
+    @Binding var data: AssetData
     @State var edit: Bool
-    var onDelete: () -> Void = { }
 
-    var currency: CurrencyInfo? { env.currencyCache[asset.currencyId] }
+    var currency: CurrencyInfo? { env.currencyCache[data.currencyId] }
     var formatter: CurrencyFormatter? { currency?.formatter }
 
     var body: some View {
-        Form {
-            Section {
-                env.theme.field.text(edit, "Name") {
-                    TextField("Cannot be empty!", text: $asset.name)
-                        .textInputAutocapitalization(.words)
-                } show: {
-                    env.theme.field.valueOrError("Cannot be empty!", text: asset.name)
-                }
-
-                env.theme.field.picker(edit, "Type") {
-                    Picker("", selection: $asset.type) {
-                        ForEach(AssetType.allCases) { type in
-                            Text(type.rawValue).tag(type)
-                        }
+        Section {
+            env.theme.field.text(edit, "Name") {
+                TextField("Cannot be empty!", text: $data.name)
+                    .textInputAutocapitalization(.words)
+            } show: {
+                env.theme.field.valueOrError("Cannot be empty!", text: data.name)
+            }
+            
+            env.theme.field.picker(edit, "Type") {
+                Picker("", selection: $data.type) {
+                    ForEach(AssetType.allCases) { type in
+                        Text(type.rawValue).tag(type)
                     }
-                } show: {
-                    Text(asset.type.rawValue)
                 }
-
-                env.theme.field.toggle(edit, "Status") {
-                    Toggle(isOn: $asset.status.isOpen) { }
-                } show: {
-                    Text(asset.status.rawValue)
-                }
-
-                env.theme.field.date(edit, "Start Date") {
-                    DatePicker("", selection: $asset.startDate.date, displayedComponents: [.date])
-                } show: {
-                    env.theme.field.valueOrError("Should not be empty!", text: asset.startDate.string)
-                }
-
+            } show: {
+                Text(data.type.rawValue)
+            }
+            
+            env.theme.field.toggle(edit, "Status") {
+                Toggle(isOn: $data.status.isOpen) { }
+            } show: {
+                Text(data.status.rawValue)
+            }
+            
+            env.theme.field.date(edit, "Start Date") {
+                DatePicker("", selection: $data.startDate.date, displayedComponents: [.date])
+            } show: {
+                env.theme.field.valueOrError("Should not be empty!", text: data.startDate.string)
+            }
+            
+            if
+                let currencyOrder = vm.currencyList.order.readyValue,
+                let currencyName  = vm.currencyList.name.readyValue
+            {
                 env.theme.field.picker(edit, "Currency") {
-                    Picker("", selection: $asset.currencyId) {
-                        if (asset.currencyId <= 0) {
+                    Picker("", selection: $data.currencyId) {
+                        if (data.currencyId <= 0) {
                             Text("Select Currency").tag(0 as DataId) // not set
                         }
-                        ForEach(allCurrencyName, id: \.0) { id, name in
-                            Text(name).tag(id)
+                        ForEach(currencyOrder, id: \.self) { id in
+                            Text(currencyName[id] ?? "").tag(id)
                         }
                     }
                 } show: {
                     env.theme.field.valueOrError("Cannot be empty!", text: currency?.name)
                 }
-
-                env.theme.field.text(edit, "Value") {
-                    TextField("Default is 0", value: $asset.value, format: .number)
-                        .keyboardType(.decimalPad)
-                } show: {
-                    Text(asset.value.formatted(by: formatter))
-                }
-            }
-
-            Section {
-                env.theme.field.picker(edit, "Change") {
-                    Picker("", selection: $asset.change) {
-                        ForEach(AssetChange.allCases) { change in
-                            Text(change.rawValue).tag(change)
-                        }
-                    }
-                } show: {
-                    Text(asset.change.rawValue)
-                }
-
-                env.theme.field.picker(edit, "Change Mode") {
-                    Picker("", selection: $asset.changeMode) {
-                        ForEach(AssetChangeMode.allCases) { mode in
-                            Text(mode.rawValue).tag(mode)
-                        }
-                    }
-                } show: {
-                    Text(asset.changeMode.rawValue)
-                }
-
-                env.theme.field.text(edit, "Change Rate") {
-                    TextField("Default is 0", value: $asset.changeRate, format: .number)
-                        .keyboardType(.decimalPad)
-                }
             }
             
-            Section{
-                env.theme.field.editor(edit, "Notes") {
-                    TextEditor(text: $asset.notes)
-                        .textInputAutocapitalization(.never)
-                } show: {
-                    env.theme.field.valueOrHint("N/A", text: asset.notes)
-                }
-            }
-
-            // TODO: delete account if not in use
-            if true {
-                Button("Delete Asset") {
-                    onDelete()
-                }
-                .foregroundColor(.red)
+            env.theme.field.text(edit, "Value") {
+                TextField("Default is 0", value: $data.value, format: .number)
+                    .keyboardType(.decimalPad)
+            } show: {
+                Text(data.value.formatted(by: formatter))
             }
         }
-        .textSelection(.enabled)
+        
+        Section {
+            env.theme.field.picker(edit, "Change") {
+                Picker("", selection: $data.change) {
+                    ForEach(AssetChange.allCases) { change in
+                        Text(change.rawValue).tag(change)
+                    }
+                }
+            } show: {
+                Text(data.change.rawValue)
+            }
+            
+            env.theme.field.picker(edit, "Change Mode") {
+                Picker("", selection: $data.changeMode) {
+                    ForEach(AssetChangeMode.allCases) { mode in
+                        Text(mode.rawValue).tag(mode)
+                    }
+                }
+            } show: {
+                Text(data.changeMode.rawValue)
+            }
+            
+            env.theme.field.text(edit, "Change Rate") {
+                TextField("Default is 0", value: $data.changeRate, format: .number)
+                    .keyboardType(.decimalPad)
+            }
+        }
+        
+        Section{
+            env.theme.field.editor(edit, "Notes") {
+                TextEditor(text: $data.notes)
+                    .textInputAutocapitalization(.never)
+            } show: {
+                env.theme.field.valueOrHint("N/A", text: data.notes)
+            }
+        }
     }
 }
 
 #Preview("\(AssetData.sampleData[0].name) (show)") {
-    AssetEditView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        asset: .constant(AssetData.sampleData[0]),
+    let env = EnvironmentManager.sampleData
+    Form { AssetEditView(
+        vm: ViewModel(env: env),
+        data: .constant(AssetData.sampleData[0]),
         edit: false
-    )
-    .environmentObject(EnvironmentManager.sampleData)
+    ) }
+    .environmentObject(env)
 }
 
 #Preview("\(AssetData.sampleData[0].name) (edit)") {
-    AssetEditView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        asset: .constant(AssetData.sampleData[0]),
+    let env = EnvironmentManager.sampleData
+    Form { AssetEditView(
+        vm: ViewModel(env: env),
+        data: .constant(AssetData.sampleData[0]),
         edit: true
-    )
-    .environmentObject(EnvironmentManager.sampleData)
-}
-
-#Preview("\(AssetData.sampleData[1].name) (show)") {
-    AssetEditView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        asset: .constant(AssetData.sampleData[1]),
-        edit: false
-    )
-    .environmentObject(EnvironmentManager.sampleData)
-}
-
-#Preview("\(AssetData.sampleData[1].name) (edit)") {
-    AssetEditView(
-        allCurrencyName: .constant(CurrencyData.sampleDataName),
-        asset: .constant(AssetData.sampleData[1]),
-        edit: true
-    )
-    .environmentObject(EnvironmentManager.sampleData)
+    ) }
+    .environmentObject(env)
 }
