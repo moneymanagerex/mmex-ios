@@ -14,7 +14,7 @@ extension ViewModel {
             return "Name is empty"
         }
 
-        guard data.currencyId > 0 else {
+        guard !data.currencyId.isVoid else {
             return "No currency is selected"
         }
         guard let currencyName = currencyList.name.readyValue else {
@@ -33,11 +33,11 @@ extension ViewModel {
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id <= 0 ? 0 : 1) else {
+        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
             return "Account \(data.name) already exists"
         }
 
-        if data.id <= 0 {
+        if data.id.isVoid {
             guard a.insert(&data) else {
                 return "* Cannot create new account"
             }

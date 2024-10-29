@@ -67,16 +67,16 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
 }
 
 struct ScheduledData: ExportableEntity {
-    var id                : DataId            = 0
-    var accountId         : DataId            = 0
-    var toAccountId       : DataId            = 0
-    var payeeId           : DataId            = 0
+    var id                : DataId            = .void
+    var accountId         : DataId            = .void
+    var toAccountId       : DataId            = .void
+    var payeeId           : DataId            = .void
     var transCode         : TransactionType   = TransactionType.defaultValue
     var transAmount       : Double            = 0.0
     var status            : TransactionStatus = TransactionStatus.defaultValue
     var transactionNumber : String            = ""
     var notes             : String            = ""
-    var categId           : DataId            = 0
+    var categId           : DataId            = .void
     var transDate         : DateTimeString    = DateTimeString("")
     var followUpId        : Int64             = 0
     var toTransAmount     : Double            = 0.0
@@ -94,20 +94,6 @@ extension ScheduledData: DataProtocol {
         "\(self.id)"
     }
 }
-
-/* TODO: move to ViewModels
-struct ScheduledFull: FullProtocol {
-    var data: ScheduledData
-    var accountName       : String?
-    var accountCurrency   : CurrencyData?
-    var toAccountName     : String?
-    var toAccountCurrency : String?
-    var categoryName      : String?
-    var payeeName         : String?
-  //var tags              : [TagData]
-  //var fields            : [(FieldData, String?)]
-}
-*/
 
 extension ScheduledData {
     static let sampleData : [ScheduledData] = [

@@ -82,7 +82,7 @@ struct TransactionRepository: RepositoryProtocol {
         return TransactionData(
           id                : DataId(row[col_id]),
           accountId         : DataId(row[col_accountId]),
-          toAccountId       : DataId(row[col_toAccountId] ?? 0),
+          toAccountId       : DataId(row[col_toAccountId] ?? -1),
           payeeId           : DataId(row[col_payeeId]),
           transCode         : TransactionType(collateNoCase: row[col_transCode]),
           transAmount       : row[cast_transAmount],
@@ -90,7 +90,7 @@ struct TransactionRepository: RepositoryProtocol {
           status            : TransactionStatus(collateNoCase: row[col_status]),
           transactionNumber : row[col_transactionNumber] ?? "",
           notes             : row[col_notes] ?? "",
-          categId           : DataId(row[col_categId] ?? 0),
+          categId           : DataId(row[col_categId] ?? -1),
           transDate         : DateTimeString(row[col_transDate] ?? ""),
           lastUpdatedTime   : DateTimeString(row[col_lastUpdatedTime] ?? ""),
           deletedTime       : DateTimeString(row[col_deletedTime] ?? ""),
@@ -107,7 +107,7 @@ struct TransactionRepository: RepositoryProtocol {
             col_payeeId           <- Int64(data.payeeId),
             col_transCode         <- data.transCode.id,
             col_transAmount       <- data.transAmount,
-            col_status            <- data.status.id,  // TODO: MMEX Desktop writes '' for .none
+            col_status            <- data.status.id,
             col_transactionNumber <- data.transactionNumber,
             col_notes             <- data.notes,
             col_categId           <- Int64(data.categId),

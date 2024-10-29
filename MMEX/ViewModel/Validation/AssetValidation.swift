@@ -14,7 +14,7 @@ extension ViewModel {
             return "Name is empty"
         }
 
-        guard data.currencyId > 0 else {
+        guard !data.currencyId.isVoid else {
             return "No currency is selected"
         }
         guard let currencyName = currencyList.name.readyValue else {
@@ -31,7 +31,7 @@ extension ViewModel {
         // DB schema does not enforce unique name.
         // E.g., two Assets may have the same name and different type.
 
-        if data.id <= 0 {
+        if data.id.isVoid {
             guard e.insert(&data) else {
                 return "* Cannot create new asset"
             }

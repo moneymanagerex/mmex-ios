@@ -15,7 +15,7 @@ enum CurrencyType: String, EnumCollateNoCase {
 }
 
 struct CurrencyData: ExportableEntity {
-    var id             : DataId       = 0
+    var id             : DataId       = .void
     var name           : String       = ""
     var prefixSymbol   : String       = ""
     var suffixSymbol   : String       = ""

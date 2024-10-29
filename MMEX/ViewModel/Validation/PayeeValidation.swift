@@ -14,7 +14,7 @@ extension ViewModel {
             return "Name is empty"
         }
 
-        if data.categoryId > 0 {
+        if !data.categoryId.isVoid {
             guard let categoryData = categoryList.data.readyValue else {
                 return "* categoryData is not loaded"
             }
@@ -33,11 +33,11 @@ extension ViewModel {
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id <= 0 ? 0 : 1) else {
+        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
             return "Payee \(data.name) already exists"
         }
 
-        if data.id <= 0 {
+        if data.id.isVoid {
             guard p.insert(&data) else {
                 return "* Cannot create new payee"
             }

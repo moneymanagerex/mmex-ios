@@ -23,7 +23,7 @@ enum UpdateType: Int, CaseIterable, Identifiable, Codable {
 }
 
 struct StockHistoryData: ExportableEntity {
-    var id         : DataId      = 0
+    var id         : DataId      = .void
     var symbol     : String      = ""
     var date       : DateString  = DateString("")
     var price      : Double      = 0.0

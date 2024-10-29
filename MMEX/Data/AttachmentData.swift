@@ -21,9 +21,9 @@ enum RefType: String, EnumCollateNoCase {
 }
 
 struct AttachmentData: ExportableEntity {
-    var id          : DataId  = 0
+    var id          : DataId  = .void
     var refType     : RefType = RefType.defaultValue
-    var refId       : DataId  = 0
+    var refId       : DataId  = .void
     var description : String  = ""
     var filename    : String  = ""
 }

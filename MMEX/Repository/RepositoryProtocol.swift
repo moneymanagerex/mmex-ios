@@ -229,7 +229,7 @@ extension RepositoryProtocol {
     }
 
     func update(_ data: RepositoryData) -> Bool {
-        guard data.id > 0 else { return false }
+        if data.id.isVoid { return false }
         do {
             let query = Self.table
                 .filter(Self.col_id == Int64(data.id))
@@ -245,7 +245,7 @@ extension RepositoryProtocol {
     }
 
     func delete(_ data: RepositoryData) -> Bool {
-        guard data.id > 0 else { return false }
+        if data.id.isVoid { return false }
         do {
             let query = Self.table
                 .filter(Self.col_id == Int64(data.id))

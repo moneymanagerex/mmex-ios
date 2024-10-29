@@ -59,6 +59,6 @@ extension ViewModel {
         payeeList.used.unload()
         payeeList.order.unload()
         payeeList.att.unload()
-        payeeList.state.loaded()
+        payeeList.state.unloaded()
     }
 }

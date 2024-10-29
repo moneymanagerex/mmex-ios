@@ -21,7 +21,7 @@ enum InfoKey: String {
 }
 
 struct InfotableData: ExportableEntity {
-    var id    : DataId = 0
+    var id    : DataId = .void
     var name  : String = ""
     var value : String = ""
 }

@@ -28,11 +28,11 @@ extension ViewModel {
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id <= 0 ? 0 : 1) else {
+        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
             return "Currency \(data.name) already exists"
         }
 
-        if data.id <= 0 {
+        if data.id.isVoid {
             guard u.insert(&data) else {
                 return "* Cannot create new currency"
             }

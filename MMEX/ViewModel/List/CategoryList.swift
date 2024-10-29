@@ -97,16 +97,16 @@ extension ViewModel {
     nonisolated func evalCategoryPath(sep: String = ":") async -> LoadCategoryPath.ValueType? {
         guard let data = await categoryList.data.readyValue else { return nil }
 
-        var path: [DataId: String] = [:]
+        var path: [DataId: String] = [.void: ""]
         for id in data.keys {
             var stack: [DataId] = []
             var id1 = id
-            while id1 > 0, path[id1] == nil, let pid1 = data[id1]?.parentId {
+            while !id1.isVoid, path[id1] == nil, let pid1 = data[id1]?.parentId {
                 stack.append(id1)
                 id1 = pid1
             }
             while let id1 = stack.popLast(), let name = data[id1]?.name {
-                if let pid1 = data[id1]?.parentId, pid1 > 0, let path1 = path[pid1] {
+                if let pid1 = data[id1]?.parentId, !pid1.isVoid, let path1 = path[pid1] {
                     path[id1] = path1 + sep + name
                 } else {
                     path[id1] = name
@@ -129,11 +129,11 @@ extension ViewModel {
         else { return nil }
 
         let tree = Dictionary(grouping: order) {
-            { id in id > 0 ? id : -1 }(data[$0]?.parentId ?? -1)
+            data[$0]?.parentId ?? .void
         }
 
         var treeOrder: [(Int, DataId)] = []  // level, id
-        var stack: [(Int, [DataId])] = [(0, tree[-1] ?? [])]  // index into list, list of items
+        var stack: [(Int, [DataId])] = [(0, tree[.void] ?? [])]  // index into list, list of items
         while !stack.isEmpty {
             let level = stack.endIndex - 1
             let (list_i, list) = stack[level]

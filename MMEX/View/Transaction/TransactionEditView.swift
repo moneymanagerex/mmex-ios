@@ -42,8 +42,8 @@ struct TransactionEditView: View {
                 Spacer()
 
                 Picker("Select account", selection: $txn.accountId) {
-                    if (txn.accountId == 0) {
-                        Text("Account").tag(0 as DataId) // not set
+                    if (txn.accountId.isVoid) {
+                        Text("Account").tag(DataId.void)
                     }
                     ForEach(accountId, id: \.self) { id in
                         if let account = env.accountCache[id] {
@@ -117,8 +117,8 @@ struct TransactionEditView: View {
                 if txn.transCode == .transfer {
                     // to Account picker
                     Picker("Select To Account", selection: $txn.toAccountId) {
-                        if (txn.toAccountId == 0) {
-                            Text("Account").tag(0 as DataId) // not set
+                        if (txn.toAccountId.isVoid) {
+                            Text("Account").tag(DataId.void)
                         }
                         ForEach(accountId, id: \.self) { id in
                             if let account = env.accountCache[id],
@@ -132,8 +132,8 @@ struct TransactionEditView: View {
                 else {
                     // Payee picker
                     Picker("Select Payee", selection: $txn.payeeId) {
-                        if (txn.payeeId == 0) {
-                            Text("Payee").tag(0 as DataId) // not set
+                        if (txn.payeeId.isVoid) {
+                            Text("Payee").tag(DataId.void)
                         }
                         ForEach(payees) { payee in
                             Text(payee.name).tag(payee.id)
@@ -148,8 +148,8 @@ struct TransactionEditView: View {
                     get: { txn.categId }, // Safely unwrap the optional notes field
                     set: { txn.categId = $0 } // Set
                 )) {
-                    if (txn.categId == 0 ) {
-                        Text("Category").tag(0 as DataId) // not set
+                    if (txn.categId.isVoid) {
+                        Text("Category").tag(DataId.void) // not set
                     }
                     ForEach(categories) { category in
                         Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
@@ -179,7 +179,7 @@ struct TransactionEditView: View {
                                 Text(getCategoryName(for: split.categId))
                                     .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                                 Text(split.amount.formatted(
-                                    by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
+                                    by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? .void]?.formatter
                                 ))
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
                                 Text(split.notes)
@@ -194,8 +194,8 @@ struct TransactionEditView: View {
                         HStack {
                             // Split Category picker
                             Picker("Select Category", selection: $newSplit.categId) {
-                                if (newSplit.categId == 0 ) {
-                                    Text("Category").tag(0 as DataId) // not set
+                                if (newSplit.categId.isVoid) {
+                                    Text("Category").tag(DataId.void)
                                 }
                                 ForEach(categories) { category in
                                     Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
@@ -203,7 +203,7 @@ struct TransactionEditView: View {
                             }
                             .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
                             .labelsHidden()
-                            .disabled(txn.categId > 0)
+                            .disabled(!txn.categId.isVoid)
                             .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Spacer()
                             // Split amount
@@ -226,7 +226,7 @@ struct TransactionEditView: View {
                                     .font(.title2)
                                     .accessibilityLabel("Add split")
                             }
-                            .disabled(newSplit.categId <= 0 || txn.categId > 0)
+                            .disabled(newSplit.categId.isVoid || !txn.categId.isVoid)
                         }
                         .labelsHidden()
                     }
@@ -258,7 +258,7 @@ struct TransactionEditView: View {
                 txn.categId = self.categories.first!.id
             }
 
-            if (txn.id == 0) {
+            if (txn.id.isVoid) {
                 txn.status = defaultStatus
             }
         }
@@ -273,7 +273,7 @@ struct TransactionEditView: View {
         if let latestTxn = repository?.latest(accountID: txn.accountId).toOptional() ?? repository?.latest().toOptional() {
             // Update UI on the main thread
             DispatchQueue.main.async {
-                if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId == 0) {
+                if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId.isVoid) {
                     txn.payeeId = latestTxn.payeeId
                     // txn.categId = latestTxn.categId
                 }

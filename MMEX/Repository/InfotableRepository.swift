@@ -83,10 +83,10 @@ extension InfotableRepository {
         guard let info else { return nil }
         if type == String.self {
             return info.value as? T
-        } else if type == DataId.self {
-            return DataId(info.value) as? T
         } else if type == Int64.self {
             return Int64(info.value) as? T
+        } else if type == DataId.self {
+            return Int64(info.value).map { DataId($0) } as? T
         } else {
             return nil
         }
@@ -98,10 +98,10 @@ extension InfotableRepository {
         var stringValue: String
         if let stringVal = value as? String {
             stringValue = stringVal
-        } else if let dataIdVal = value as? DataId {
-            stringValue = String(dataIdVal)
         } else if let intVal = value as? Int64 {
             stringValue = String(intVal)
+        } else if let dataIdVal = value as? DataId {
+            stringValue = String(dataIdVal.value)
         } else {
             log.warning("WARNING: InfotableRepository.setValue(for: \(key)): Unsupported type for value")
             return false

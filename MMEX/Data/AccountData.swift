@@ -65,7 +65,7 @@ enum AccountType: String, EnumCollateNoCase {
 }
 
 struct AccountData: ExportableEntity {
-    var id              : DataId          = 0
+    var id              : DataId          = .void
     var name            : String          = ""
     var type            : AccountType     = AccountType.defaultValue
     var num             : String          = ""
@@ -78,7 +78,7 @@ struct AccountData: ExportableEntity {
     var initialDate     : DateString      = DateString("")
     var initialBal      : Double          = 0.0
     var favoriteAcct    : AccountFavorite = AccountFavorite.defaultValue
-    var currencyId      : DataId          = 0
+    var currencyId      : DataId          = .void
     var statementLocked : Bool            = false
     var statementDate   : DateString      = DateString("")
     var minimumBalance  : Double          = 0.0

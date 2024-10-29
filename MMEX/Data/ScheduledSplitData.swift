@@ -9,9 +9,9 @@ import Foundation
 import SQLite
 
 struct ScheduledSplitData: ExportableEntity {
-    var id      : DataId = 0
-    var schedId : DataId = 0
-    var categId : DataId = 0
+    var id      : DataId = .void
+    var schedId : DataId = .void
+    var categId : DataId = .void
     var amount  : Double = 0.0
     var notes   : String = ""
 }

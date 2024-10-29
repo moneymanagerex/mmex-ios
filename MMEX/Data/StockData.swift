@@ -9,8 +9,8 @@ import Foundation
 import SQLite
 
 struct StockData: ExportableEntity {
-    var id            : DataId     = 0
-    var accountId     : DataId     = 0
+    var id            : DataId     = .void
+    var accountId     : DataId     = .void
     var name          : String     = ""
     var symbol        : String     = ""
     var numShares     : Double     = 0.0

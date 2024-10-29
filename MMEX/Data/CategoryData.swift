@@ -9,17 +9,17 @@ import Foundation
 import SQLite
 
 struct CategoryData: ExportableEntity {
-    var id       : DataId = 0
+    var id       : DataId = .void
     var name     : String = ""
     var active   : Bool   = false
-    var parentId : DataId = 0
+    var parentId : DataId = .void
 
     var parentCategories: [CategoryData] = []
 }
 
 extension CategoryData {
     var isRoot: Bool {
-        return parentId <= 0
+        return parentId.isVoid
     }
 
     func fullName(with delimiter: String = ":") -> String {
@@ -99,7 +99,7 @@ extension CategoryData {
 
 extension CategoryData {
     static let sampleData: [CategoryData] = [
-        CategoryData(id: 1, name: "Bills",     active: true, parentId: -1),
+        CategoryData(id: 1, name: "Bills",     active: true, parentId: .void),
         CategoryData(id: 2, name: "Telephone", active: true, parentId: 1),
     ]
 }

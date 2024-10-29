@@ -9,8 +9,8 @@ import Foundation
 import SQLite
 
 struct CurrencyHistoryData: ExportableEntity {
-    var id           : DataId      = 0
-    var currencyId   : DataId      = 0
+    var id           : DataId      = .void
+    var currencyId   : DataId      = .void
     var date         : DateString  = DateString("")
     var baseConvRate : Double      = 0.0
     var updateType   : UpdateType? = nil

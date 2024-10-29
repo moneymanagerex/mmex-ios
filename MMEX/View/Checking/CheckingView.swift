@@ -12,7 +12,7 @@ struct CheckingView: View {
     @ObservedObject var viewModel: TransactionViewModel
 
     @State private var searchQuery: String = "" // New: Search query
-    @State private var accountId: DataId = 0 //
+    @State private var accountId: DataId = .void
 
     var body: some View {
         NavigationStack {

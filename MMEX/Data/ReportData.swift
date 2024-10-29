@@ -9,7 +9,7 @@ import Foundation
 import SQLite
 
 struct ReportData: ExportableEntity {
-    var id              : DataId = 0
+    var id              : DataId = .void
     var name            : String = ""
     var groupName       : String = ""
     var active          : Bool   = false

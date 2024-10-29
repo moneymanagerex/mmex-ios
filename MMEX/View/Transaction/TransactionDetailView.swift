@@ -82,7 +82,7 @@ struct TransactionDetailView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
 
                             Text(split.amount.formatted(
-                                by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
+                                by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? .void]?.formatter
                             ))
                             .frame(width: 80, alignment: .center) // Centered with fixed width
 
@@ -160,7 +160,7 @@ struct TransactionDetailView: View {
             isPresented: $isExporting,
             document: ExportableEntityDocument(entity: txn),
             contentType: .json,
-            defaultFilename: String(format: "%d_Transaction", txn.id)
+            defaultFilename: String(format: "%d_Transaction", txn.id.value)
         ) { result in
             switch result {
             case .success(let url):

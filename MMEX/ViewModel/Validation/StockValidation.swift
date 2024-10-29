@@ -17,7 +17,7 @@ extension ViewModel {
             return "Symbol is empty"
         }
 
-        guard data.accountId > 0 else {
+        guard !data.accountId.isVoid else {
             return "No account is selected"
         }
         guard let accountData = accountList.data.readyValue else {
@@ -34,7 +34,7 @@ extension ViewModel {
         // DB schema does not enforce unique name or symbol.
         // E.g., the same stock may have been purchased more than once.
 
-        if data.id <= 0 {
+        if data.id.isVoid {
             guard s.insert(&data) else {
                 return "* Cannot create new stock"
             }

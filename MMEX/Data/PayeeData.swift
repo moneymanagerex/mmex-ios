@@ -9,9 +9,9 @@ import Foundation
 import SQLite
 
 struct PayeeData: ExportableEntity {
-    var id         : DataId  = 0
+    var id         : DataId  = .void
     var name       : String  = ""
-    var categoryId : DataId  = 0
+    var categoryId : DataId  = .void
     var number     : String  = ""
     var website    : String  = ""
     var notes      : String  = ""
