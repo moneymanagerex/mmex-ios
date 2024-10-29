@@ -9,7 +9,7 @@ import Foundation
 import SQLite
 
 struct TagData: ExportableEntity {
-    var id     : DataId = 0
+    var id     : DataId = .void
     var name   : String = ""
     var active : Bool   = false
 }

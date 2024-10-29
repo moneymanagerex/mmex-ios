@@ -22,7 +22,7 @@ enum FieldType: String, EnumCollateNoCase {
 }
 
 struct FieldData: ExportableEntity {
-    var id          : DataId    = 0
+    var id          : DataId    = .void
     var refType     : RefType   = RefType.defaultValue
     var description : String    = ""
     var type        : FieldType = FieldType.defaultValue

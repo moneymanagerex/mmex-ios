@@ -40,8 +40,8 @@ struct PayeeEditView: View {
                 // TODO: category tree
                 env.theme.field.picker(edit, "Category") {
                     Picker("", selection: $data.categoryId) {
-                        if (data.categoryId <= 0) {
-                            Text("Select Category").tag(0 as DataId) // not set
+                        if (data.categoryId.isVoid) {
+                            Text("Select Category").tag(DataId.void) // not set
                         }
                         ForEach(categoryOrder, id: \.self) { id in
                             Text(categoryPath[id] ?? "").tag(id)

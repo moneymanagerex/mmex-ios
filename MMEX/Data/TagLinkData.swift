@@ -9,10 +9,10 @@ import Foundation
 import SQLite
 
 struct TagLinkData: ExportableEntity {
-    var id      : DataId  = 0
-    var tagId   : DataId  = 0
+    var id      : DataId  = .void
+    var tagId   : DataId  = .void
     var refType : RefType = RefType.transaction
-    var refId   : DataId  = 0
+    var refId   : DataId  = .void
     static let refTypes: Set<RefType> = [
         .transaction, .transactionSplit,
         .scheduled, .scheduledSplit,

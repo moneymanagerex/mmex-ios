@@ -12,8 +12,8 @@ import Combine
 
 class TransactionViewModel: ObservableObject {
     // for the view to observe
-    @Published var baseCurrencyId: DataId = 0
-    @Published var defaultAccountId: DataId = 0
+    @Published var baseCurrencyId: DataId = .void
+    @Published var defaultAccountId: DataId = .void
     @Published var baseCurrency: CurrencyData?
     @Published var defaultAccount: AccountData?
     @Published var categDelimiter: String = ":"
@@ -135,7 +135,7 @@ class TransactionViewModel: ObservableObject {
         var parents: [CategoryData] = []
 
         var currentCategory = category
-        while let parentCategory = categoryDict[currentCategory.parentId], parentCategory.id != 0 {
+        while let parentCategory = categoryDict[currentCategory.parentId], !parentCategory.id.isVoid {
             parents.insert(parentCategory, at: 0) // Insert at the beginning to maintain the correct order
             currentCategory = parentCategory
         }
@@ -228,7 +228,7 @@ class TransactionViewModel: ObservableObject {
             var loadedTransactions = transactionRepository?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
             for i in loadedTransactions.indices {
                 // TODO other better indicator
-                if loadedTransactions[i].categId <= 0 {
+                if loadedTransactions[i].categId.isVoid {
                     loadedTransactions[i].splits = transactionSplitRepository?.load(for: loadedTransactions[i]) ?? []
                 }
             }

@@ -5,6 +5,7 @@
 //  2024-10-20: Created by George Ef (george.a.ef@gmail.com)
 //
 
+// store associated values outside of this enum, in order to simplify their update
 enum LoadState: Int, Copyable, Equatable {
     case idle
     case loading

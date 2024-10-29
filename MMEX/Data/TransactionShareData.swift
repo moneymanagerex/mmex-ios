@@ -9,8 +9,8 @@ import Foundation
 import SQLite
 
 struct TransactionShareData: ExportableEntity {
-    var id         : DataId = 0
-    var transId    : DataId = 0
+    var id         : DataId = .void
+    var transId    : DataId = .void
     var number     : Double = 0.0
     var price      : Double = 0.0
     var commission : Double = 0.0

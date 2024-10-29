@@ -9,10 +9,10 @@ import Foundation
 import SQLite
 
 struct FieldContentData: ExportableEntity {
-    var id      : DataId  = 0
-    var fieldId : DataId  = 0
+    var id      : DataId  = .void
+    var fieldId : DataId  = .void
     var refType : RefType = RefType.transaction
-    var refId   : DataId  = 0
+    var refId   : DataId  = .void
     var content : String  = ""
     static let refTypes: Set<RefType> = [ .transaction, .scheduled ]
 }

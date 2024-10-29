@@ -54,7 +54,7 @@ struct PayeeRepository: RepositoryProtocol {
         return PayeeData(
             id         : DataId(row[col_id]),
             name       : row[col_name],
-            categoryId : DataId(row[col_categoryId] ?? 0),
+            categoryId : DataId(row[col_categoryId] ?? -1),
             number     : row[col_number] ?? "",
             website    : row[col_website] ?? "",
             notes      : row[col_notes] ?? "",

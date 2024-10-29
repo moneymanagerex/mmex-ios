@@ -1,5 +1,5 @@
 //
-//  ModelProtocal.swift
+//  Data.swift
 //  MMEX
 //
 //  Created 2024-09-22 by George Ef (george.a.ef@gmail.com)
@@ -7,7 +7,38 @@
 
 import Foundation
 
-typealias DataId = Int
+struct DataId: Equatable, Hashable, Copyable, Sendable, Codable {
+    private(set) var value: Int = -1
+
+    init() {
+    }
+
+    init(_ value: Int) {
+        if value > 0 { self.value = value }
+    }
+
+    static let void: Self = .init()
+
+    var isVoid:Bool { value <= 0 }
+}
+
+extension DataId: ExpressibleByIntegerLiteral {
+    typealias IntegerLiteralType = Int
+    
+    init(integerLiteral value: Int) {
+        self.init(value)
+    }
+    
+    init(_ value: Int64) {
+        self.init(Int(value))
+    }
+}
+
+extension Int64 {
+    init(_ dataId: DataId) {
+        self = Int64(dataId.value)
+    }
+}
 
 protocol DataProtocol: ExportableEntity {
     static var dataName: (String, String) { get }

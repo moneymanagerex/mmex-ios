@@ -43,7 +43,7 @@ struct FieldContentRepository: RepositoryProtocol {
         return FieldContentData(
             id      : DataId(row[col_id]),
             fieldId : DataId(row[col_fieldId]),
-            refType : DataId(row[col_refId]) < 0 ? RefType.scheduled : RefType.transaction,
+            refType : row[col_refId] < 0 ? RefType.scheduled : RefType.transaction,
             refId   : DataId({ x in x < 0 ? -x : x }(row[col_refId])),
             content : row[col_content] ?? ""
         )

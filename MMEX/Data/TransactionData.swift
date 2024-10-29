@@ -56,16 +56,16 @@ enum TransactionStatus: String, EnumCollateNoCase {
 }
 
 struct TransactionData: ExportableEntity {
-    var id                : DataId            = 0
-    var accountId         : DataId            = 0
-    var toAccountId       : DataId            = 0
-    var payeeId           : DataId            = 0
+    var id                : DataId            = .void
+    var accountId         : DataId            = .void
+    var toAccountId       : DataId            = .void
+    var payeeId           : DataId            = .void
     var transCode         : TransactionType   = TransactionType.defaultValue
     var transAmount       : Double            = 0.0
     var status            : TransactionStatus = TransactionStatus.defaultValue
     var transactionNumber : String            = ""
     var notes             : String            = ""
-    var categId           : DataId            = 0
+    var categId           : DataId            = .void
     var transDate         : DateTimeString    = DateTimeString("")
     var lastUpdatedTime   : DateTimeString    = DateTimeString("")
     var deletedTime       : DateTimeString    = DateTimeString("")
@@ -83,22 +83,6 @@ extension TransactionData: DataProtocol {
         "\(self.id)"
     }
 }
-
-/* TODO: move to ViewModels
-struct TransactionFull: FullProtocol {
-    var data: TransactionData
-    var accountName       : String?
-    var accountCurrency   : CurrencyData?
-    var toAccountName     : String?
-    var toAccountCurrency : String?
-    var assets            : [AssetData] = []
-    var stocks            : [StockData] = []
-    var categoryName      : String?
-    var payeeName         : String?
-  //var tags              : [TagData]
-  //var fields            : [(FieldData, String?)]
-}
-*/
 
 extension TransactionData {
     var day: String {
@@ -146,13 +130,16 @@ extension TransactionData {
     }
 
     var isForeign: Bool {
-        return toAccountId > 0 && transCode == .transfer
+        return !toAccountId.isVoid && transCode == .transfer
     }
     var isForeignTransfer: Bool {
         return isForeign && toAccountId == CHECKING_TYPE.AS_TRANSFER.rawValue
     }
     var isValid: Bool {
-        return ((payeeId > 0 && [.withdrawal, .deposit].contains(transCode)) || (toAccountId > 0 && transCode == .transfer)) && (categId > 0 || splits.count >= 2)
+        return (
+            (!payeeId.isVoid && [.withdrawal, .deposit].contains(transCode)) ||
+            (!toAccountId.isVoid && transCode == .transfer)
+        ) && (!categId.isVoid || splits.count >= 2)
     }
 }
 

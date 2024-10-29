@@ -39,8 +39,8 @@ struct StockEditView: View {
             {
                 env.theme.field.picker(edit, "Account") {
                     Picker("", selection: $data.accountId) {
-                        if (data.accountId <= 0) {
-                            Text("Select Account").tag(0 as DataId) // not set
+                        if (data.accountId.isVoid) {
+                            Text("Select Account").tag(DataId.void) // not set
                         }
                         ForEach(accountOrder, id: \.self) { id in
                             Text(accountData[id]?.name ?? "").tag(id)

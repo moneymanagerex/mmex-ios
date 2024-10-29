@@ -9,9 +9,9 @@ import Foundation
 import SQLite
 
 struct TransactionSplitData: ExportableEntity {
-    var id      : DataId = 0
-    var transId : DataId = 0
-    var categId : DataId = 0
+    var id      : DataId = .void
+    var transId : DataId = .void
+    var categId : DataId = .void
     var amount  : Double = 0.0
     var notes   : String = ""
 }

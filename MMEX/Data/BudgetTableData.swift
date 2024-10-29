@@ -22,9 +22,9 @@ enum BudgetPeriod: String, EnumCollateNoCase {
 }
 
 struct BudgetTableData: ExportableEntity {
-    var id      : DataId       = 0
-    var yearId  : DataId       = 0
-    var categId : DataId       = 0
+    var id      : DataId       = .void
+    var yearId  : DataId       = .void
+    var categId : DataId       = .void
     var period  : BudgetPeriod = BudgetPeriod.defaultValue
     var amount  : Double       = 0.0
     var notes   : String       = ""

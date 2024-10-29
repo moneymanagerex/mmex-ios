@@ -8,18 +8,17 @@
 import Foundation
 import SQLite
 
-
-/// copy from MMEX4Desktop
+// copy from MMEX4Desktop
 enum CHECKING_TYPE: DataId {
     case AS_INCOME_EXPENSE = 32701
     case AS_TRANSFER
 }
 
 struct TransactionLinkData: ExportableEntity {
-    var id      : DataId  = 0
-    var transId : DataId  = 0
+    var id      : DataId  = .void
+    var transId : DataId  = .void
     var refType : RefType = RefType.asset
-    var refId   : DataId  = 0
+    var refId   : DataId  = .void
     static let refTypes: Set<RefType> = [ .asset, .stock ]
 }
 
