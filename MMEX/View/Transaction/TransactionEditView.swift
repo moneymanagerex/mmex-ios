@@ -18,7 +18,6 @@ struct TransactionEditView: View {
     @State private var selectedDate = Date()
 
     @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
-    @State private var categoryUsed: Set<DataId> = []
 
     // app level setting
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
@@ -175,7 +174,8 @@ struct TransactionEditView: View {
                         }
                         .padding(.horizontal, 0)
 
-                        ForEach(txn.splits, id: \.self.categId) { split in
+                        ForEach(txn.splits.indices, id: \.self) { index in
+                            let split = txn.splits[index]
                             HStack {
                                 Text(getCategoryName(for: split.categId))
                                     .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
@@ -189,10 +189,6 @@ struct TransactionEditView: View {
                         }
                         .onDelete { indices in
                             txn.splits.remove(atOffsets: indices)
-                            categoryUsed = []
-                            for split in txn.splits {
-                                categoryUsed.insert(split.categId)
-                            }
                             txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
                         }
 
@@ -203,9 +199,7 @@ struct TransactionEditView: View {
                                     Text("Category").tag(DataId.void)
                                 }
                                 ForEach(categories) { category in
-                                    if !categoryUsed.contains(category.id) {
-                                        Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
-                                    }
+                                    Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
                                 }
                             }
                             .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
@@ -225,7 +219,6 @@ struct TransactionEditView: View {
                             Button(action: {
                                 withAnimation {
                                     txn.splits.append(newSplit)
-                                    categoryUsed.insert(newSplit.categId)
                                     txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
                                     newSplit = TransactionSplitData()
                                 }
@@ -268,11 +261,6 @@ struct TransactionEditView: View {
 
             if (txn.id.isVoid) {
                 txn.status = defaultStatus
-            }
-
-            categoryUsed = []
-            for split in txn.splits {
-                categoryUsed.insert(split.categId)
             }
         }
         .onDisappear {
