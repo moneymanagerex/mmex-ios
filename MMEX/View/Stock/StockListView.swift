@@ -51,8 +51,8 @@ struct StockListView: View {
                 Text(vm.accountList.data.readyValue?[data.accountId]?.name ?? "")
             }
             /*
-            if let account = env.accountCache[data.accountId],
-               let formatter = env.currencyCache[data.currencyId]?.formatter
+            if let account = vm.accountList.data.readyValue?[data.accountId],
+               let formatter = vm.currencyList.info.readyValue?[account.currencyId]?.formatter
             {
                 Text(data.purchaseValue.formatted(by: formatter))
             }

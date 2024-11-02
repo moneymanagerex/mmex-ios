@@ -55,7 +55,7 @@ struct AssetListView: View {
                 Text(data.type.rawValue)
             }
             /*
-            if let formatter = env.currencyCache[asset.currencyId]?.formatter
+            if let formatter = vm.currencyList.info.readyValue?[asset.currencyId]?.formatter
             {
                 Text(asset.value.formatted(by: formatter))
             }

@@ -12,10 +12,13 @@ extension ViewModel {
     func reloadCurrencyList(_ oldData: CurrencyData?, _ newData: CurrencyData?) async {
         log.trace("DEBUG: ViewModel.reloadCurrencyList(main=\(Thread.isMainThread))")
 
-        // env.currencyCache contains only used currencies
+        // vm.currencyList.info contains only used currencies
         if let _ = oldData, let newData {
-            if env.currencyCache[newData.id] != nil {
-                env.loadCurrency()
+            if currencyList.info.readyValue?[newData.id] != nil {
+                if currencyList.info.state.unloading() {
+                    currencyList.info.value[newData.id] = CurrencyInfo(newData)
+                    currencyList.info.state.loaded()
+                }
             }
         }
 

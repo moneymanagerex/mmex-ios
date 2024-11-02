@@ -209,35 +209,6 @@ extension RepositoryProtocol {
     }
 }
 
-/*
-extension EnvironmentManager {
-    var repository                 : Repository?                 { Repository(db) }
-    var infotableRepository        : InfotableRepository?        { InfotableRepository(db) }
-    var currencyRepository         : CurrencyRepository?         { CurrencyRepository(db) }
-    var currencyHistoryRepository  : CurrencyRepository?         { CurrencyRepository(db) }
-    var accountRepository          : AccountRepository?          { AccountRepository(db) }
-    var assetRepository            : AssetRepository?            { AssetRepository(db) }
-    var stockRepository            : StockRepository?            { StockRepository(db) }
-    var stockHistoryRepository     : StockRepository?            { StockRepository(db) }
-    var categoryRepository         : CategoryRepository?         { CategoryRepository(db) }
-    var payeeRepository            : PayeeRepository?            { PayeeRepository(db) }
-    var transactionRepository      : TransactionRepository?      { TransactionRepository(db) }
-    var transactionSplitRepository : TransactionSplitRepository? { TransactionSplitRepository(db) }
-    var transactionLinkRepository  : TransactionLinkRepository?  { TransactionLinkRepository(db) }
-    var transactionShareRepository : TransactionShareRepository? { TransactionShareRepository(db) }
-    var scheduledRepository        : ScheduledRepository?        { ScheduledRepository(db) }
-    var scheduledSplitRepository   : ScheduledSplitRepository?   { ScheduledSplitRepository(db) }
-    var tagRepository              : TagRepository?              { TagRepository(db) }
-    var tagLinkRepository          : TagLinkRepository?          { TagLinkRepository(db) }
-    var fieldRepository            : FieldRepository?            { FieldRepository(db) }
-    var fieldContentRepository     : FieldContentRepository?     { FieldContentRepository(db) }
-    var attachmentRepository       : AttachmentRepository?       { AttachmentRepository(db) }
-    var budgetYearRepository       : BudgetYearRepository?       { BudgetYearRepository(db) }
-    var budgetTableRepository      : BudgetTableRepository?      { BudgetTableRepository(db) }
-    var reportRepository           : ReportRepository?           { ReportRepository(db) }
-}
-*/
-
 extension EnvironmentManager {
     static var sampleData: EnvironmentManager {
         EnvironmentManager(withSampleDatabaseInMemory: ())

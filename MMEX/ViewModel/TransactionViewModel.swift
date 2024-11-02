@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import Combine
 import SwiftUI
 import SQLite
-import Combine
 
 class TransactionViewModel: ObservableObject {
     // for the view to observe

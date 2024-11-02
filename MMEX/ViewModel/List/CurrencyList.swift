@@ -17,6 +17,10 @@ struct CurrencyList: ListProtocol {
     var name  : LoadMainName<MainRepository>  = .init { $0[MainRepository.col_name] }
     var used  : LoadMainUsed<MainRepository>  = .init()
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
+    var info  : LoadMainValue<MainRepository, CurrencyInfo> = .init(
+        table : MainRepository.filterUsed(MainRepository.table),
+        with  : { row in CurrencyInfo(MainRepository.fetchData(row)) }
+    )
 
     typealias UH = CurrencyHistoryRepository
     var history : LoadAuxData<MainRepository, UH> = .init(

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var viewModel: TransactionViewModel
 
     @AppStorage("appearance") private var appearance: Int = UIUserInterfaceStyle.unspecified.rawValue
@@ -83,11 +83,8 @@ struct SettingsView: View {
  
                 Picker("Default Account", selection: $viewModel.defaultAccountId) {
                     ForEach(viewModel.accounts) { account in
-                        //let currency = env.currencyCache[account.currencyId]
                         HStack {
                             Text(account.name)
-                            //Spacer()
-                            //Text(currency?.name ?? "")
                         }
                         .tag(account.id)
                     }

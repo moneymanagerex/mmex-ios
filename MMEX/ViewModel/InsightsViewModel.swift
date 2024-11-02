@@ -27,7 +27,7 @@ class InsightsViewModel: ObservableObject {
     @Published var startDate: Date
     @Published var endDate: Date
     @Published var accountInfo = InsightsAccountInfo()
-    
+
     private var cancellables = Set<AnyCancellable>()
 
     init(env: EnvironmentManager) {

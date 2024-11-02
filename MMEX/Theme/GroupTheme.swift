@@ -82,37 +82,4 @@ extension GroupTheme {
             } }
         }
     }
-
-    /*
-    func section<NameView: View>(
-        _ isExpanded: @autoclosure () -> Bool?,
-        @ViewBuilder name nameView: @escaping () -> NameView
-    ) -> some View {
-        Section(header: HStack {
-            Button(action: {
-                isExpanded[inUse]?.toggle()
-            }) {
-                env.theme.group.layout(
-                    isExpanded[inUse] == true
-                ) {
-                    Text(inUse ? "Used" : "Not Used")
-                }
-            }
-        }) {
-            if isExpanded[inUse] == true {
-                ForEach($allCurrencyData) { $currency in
-                    if (env.currencyCache[currency.id] != nil) == inUse {
-                        NavigationLink(destination: CurrencyDetailView(
-                            currency: $currency
-                        ) ) { HStack {
-                            Text(currency.name)
-                            Spacer()
-                            Text(currency.symbol)
-                        } }
-                    }
-                }
-            }
-        }.listSectionSpacing(10)
-    }
-     */
 }
