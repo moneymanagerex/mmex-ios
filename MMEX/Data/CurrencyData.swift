@@ -97,6 +97,18 @@ extension CurrencyData {
     }
 }
 
+struct CurrencyInfo {
+    let name         : String
+    let baseConvRate : Double
+    let formatter    : CurrencyFormatter
+
+    init(_ data: CurrencyData) {
+        self.name         = data.name
+        self.baseConvRate = data.baseConvRate
+        self.formatter    = data.formatter
+    }
+}
+
 extension CurrencyData {
     static let sampleData: [CurrencyData] = [
         CurrencyData(

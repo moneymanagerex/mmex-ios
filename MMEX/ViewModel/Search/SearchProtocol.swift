@@ -11,7 +11,7 @@ typealias SearchArea<MainData: DataProtocol> = (
     name: String,
     isSelected: Bool,
     mainValues: [(MainData) -> String],
-    auxValues: [(ViewModel, MainData) -> String]
+    auxValues: [@MainActor (ViewModel, MainData) -> String]
 )
 
 protocol SearchProtocol: Copyable {
@@ -27,6 +27,7 @@ extension SearchProtocol {
 
     var isEmpty: Bool { key.isEmpty }
 
+    @MainActor
     func match(_ vm: ViewModel, _ data: MainData) -> Bool {
         if key.isEmpty { return true }
         for i in 0 ..< area.count {

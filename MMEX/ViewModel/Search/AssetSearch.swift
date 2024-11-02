@@ -9,8 +9,9 @@ import SwiftUI
 
 struct AssetSearch: SearchProtocol {
     var area: [SearchArea<AssetData>] = [
-        ("Name",  true,  [ {$0.name} ], []),
-        ("Notes", false, [ {$0.notes} ], []),
+        ("Name",     true,  [ {$0.name} ], []),
+        ("Currency", false, [], [ { vm, data in vm.currencyList.name.readyValue?[data.currencyId] ?? "" } ]),
+        ("Notes",    false, [ {$0.notes} ], []),
     ]
     var key: String = ""
 }

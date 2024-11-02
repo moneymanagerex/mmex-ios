@@ -9,9 +9,10 @@ import SwiftUI
 
 struct PayeeSearch: SearchProtocol {
     var area: [SearchArea<PayeeData>] = [
-        ("Name",  true,  [ {$0.name} ], []),
-        ("Notes", false, [ {$0.notes} ], []),
-        ("Other", false, [ {$0.number}, {$0.website}, {$0.pattern} ], []),
+        ("Name",     true,  [ {$0.name} ], []),
+        ("Category", false, [], [ {vm, data in vm.categoryList.path.readyValue?.path[data.categoryId] ?? "" } ]),
+        ("Notes",    false, [ {$0.notes} ], []),
+        ("Other",    false, [ {$0.number}, {$0.website}, {$0.pattern} ], []),
     ]
     var key: String = ""
 }
