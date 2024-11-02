@@ -12,13 +12,22 @@ extension ViewModel {
     func reloadAccountList(_ oldData: AccountData?, _ newData: AccountData?) async {
         log.trace("DEBUG: ViewModel.reloadAccountList(main=\(Thread.isMainThread))")
 
-        if let newData {
-            if env.currencyCache[newData.currencyId] == nil {
-                env.loadCurrency()
+        if
+            let newCurrency = newData?.currencyId,
+            let currencyInfo = currencyList.info.readyValue,
+            currencyInfo[newCurrency] == nil
+        {
+            if
+                let currencyData = currencyList.data.readyValue,
+                let newCurrencyData = currencyData[newCurrency]
+            {
+                if currencyList.info.state.unloading() {
+                    currencyList.info.value[newCurrency] = CurrencyInfo(newCurrencyData)
+                    currencyList.info.state.loaded()
+                }
+            } else {
+                currencyList.info.unload()
             }
-            env.accountCache.update(id: newData.id, data: newData)
-        } else if let oldData {
-            env.accountCache[oldData.id] = nil
         }
 
         if let currencyUsed = currencyList.used.readyValue {

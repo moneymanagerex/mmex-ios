@@ -12,9 +12,21 @@ extension ViewModel {
     func reloadAssetList(_ oldData: AssetData?, _ newData: AssetData?) async {
         log.trace("DEBUG: ViewModel.reloadAssetList(main=\(Thread.isMainThread))")
 
-        if let newData {
-            if env.currencyCache[newData.currencyId] == nil {
-                env.loadCurrency()
+        if
+            let newCurrency = newData?.currencyId,
+            let currencyInfo = currencyList.info.readyValue,
+            currencyInfo[newCurrency] == nil
+        {
+            if
+                let currencyData = currencyList.data.readyValue,
+                let newCurrencyData = currencyData[newCurrency]
+            {
+                if currencyList.info.state.unloading() {
+                    currencyList.info.value[newCurrency] = CurrencyInfo(newCurrencyData)
+                    currencyList.info.state.loaded()
+                }
+            } else {
+                currencyList.info.unload()
             }
         }
 

@@ -14,7 +14,7 @@ struct StockEditView: View {
     @State var edit: Bool
 
     var account: AccountData? { vm.accountList.data.readyValue?[data.accountId] }
-    var currency: CurrencyInfo? { account != nil ? env.currencyCache[account!.currencyId] : nil }
+    var currency: CurrencyInfo? { account != nil ? vm.currencyList.info.readyValue?[account!.currencyId] : nil }
     var formatter: CurrencyFormatter? { currency?.formatter }
 
     var body: some View {

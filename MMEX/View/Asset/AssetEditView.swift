@@ -14,7 +14,7 @@ struct AssetEditView: View {
     @Binding var data: AssetData
     @State var edit: Bool
 
-    var currency: CurrencyInfo? { env.currencyCache[data.currencyId] }
+    var currency: CurrencyInfo? { vm.currencyList.info.readyValue?[data.currencyId] }
     var formatter: CurrencyFormatter? { currency?.formatter }
 
     var body: some View {

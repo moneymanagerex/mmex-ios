@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SQLite
-import Combine
 
 struct PayeeList: ListProtocol {
     typealias MainRepository = PayeeRepository

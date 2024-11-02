@@ -30,6 +30,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.accountList.order),
                 load(&taskGroup, keyPath: \Self.accountList.att),
                 // used in EditView
+                load(&taskGroup, keyPath: \Self.currencyList.info),
                 load(&taskGroup, keyPath: \Self.currencyList.name),
                 load(&taskGroup, keyPath: \Self.currencyList.order),
             ].allSatisfy { $0 }
