@@ -130,20 +130,20 @@ struct ScheduledRepository: RepositoryProtocol {
     }
 
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
-        typealias RS = ScheduledSplitRepository
+        typealias RP = ScheduledSplitRepository
         typealias GL = TagLinkRepository
-        typealias FR = FieldContentRepository
-        typealias AR = AttachmentRepository
-        let cond = "EXISTS (" + (RS.table.select(1).where(
-            RS.table[RS.col_transId] == Self.table[Self.col_id]
+        typealias FD = FieldContentRepository
+        typealias AX = AttachmentRepository
+        let cond = "EXISTS (" + (RP.table.select(1).where(
+            RP.table[RP.col_transId] == Self.table[Self.col_id]
         ) ).union(GL.table.select(1).where(
             GL.table[GL.col_refType] == RefType.scheduled.rawValue &&
             GL.table[GL.col_refId] == Self.table[Self.col_id]
-        ) ).union(FR.table.select(1).where(
-            FR.table[FR.col_refId] == -Self.table[Self.col_id]
-        ) ).union(AR.table.select(1).where(
-            AR.table[AR.col_refType] == RefType.scheduled.rawValue &&
-            AR.table[AR.col_refId] == Self.table[Self.col_id]
+        ) ).union(FD.table.select(1).where(
+            FD.table[FD.col_refId] == -Self.table[Self.col_id]
+        ) ).union(AX.table.select(1).where(
+            AX.table[AX.col_refType] == RefType.scheduled.rawValue &&
+            AX.table[AX.col_refId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
