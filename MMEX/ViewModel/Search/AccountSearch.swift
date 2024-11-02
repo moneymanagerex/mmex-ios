@@ -9,9 +9,16 @@ import SwiftUI
 
 struct AccountSearch: SearchProtocol {
     var area: [SearchArea<AccountData>] = [
-        ("Name",  true,  [ {$0.name} ], []),
-        ("Notes", false, [ {$0.notes} ], []),
-        ("Other", false, [ {$0.num}, {$0.heldAt}, {$0.website}, {$0.contactInfo}, {$0.accessInfo} ], []),
+        ("Name",       true,  {[ $0.name ]}, nil),
+        ("Currency",   false, nil, { vm, data in [
+            vm.currencyList.name.readyValue?[data.currencyId] ?? ""
+        ] } ),
+        ("Notes",      false, {[ $0.notes ]}, nil),
+        ("Attachment", false, nil, { vm, data in
+            (vm.accountList.att.readyValue?[data.id]?.map { $0.description } ?? []) +
+            (vm.accountList.att.readyValue?[data.id]?.map { $0.filename } ?? [])
+        } ),
+        ("Other",      false, {[ $0.num, $0.heldAt, $0.website, $0.contactInfo, $0.accessInfo ]}, nil),
     ]
     var key: String = ""
 }

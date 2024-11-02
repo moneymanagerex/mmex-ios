@@ -8,18 +8,6 @@
 import Foundation
 import SQLite
 
-struct CurrencyInfo {
-    let name         : String
-    let baseConvRate : Double
-    let formatter    : CurrencyFormatter
-
-    init(_ data: CurrencyData) {
-        self.name         = data.name
-        self.baseConvRate = data.baseConvRate
-        self.formatter    = data.formatter
-    }
-}
-
 typealias CurrencyCache = [DataId: CurrencyInfo]
 
 extension CurrencyCache {
@@ -28,7 +16,7 @@ extension CurrencyCache {
     }
 
     mutating func load(_ dict: [DataId: CurrencyData]) {
-        self = dict.mapValues { data in CurrencyInfo(data) }
+        self = dict.mapValues(CurrencyInfo.init)
     }
 
     mutating func update(id: DataId, data: CurrencyData) {

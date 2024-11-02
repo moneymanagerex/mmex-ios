@@ -82,7 +82,8 @@ extension ViewModel {
                 dict[$0.key] != nil ? ($0.key, $0.value) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in payeeGroup.groupCategory {
-                let name = categoryPath.path[g]
+                var name = categoryPath.path[g]
+                if name != nil, name!.isEmpty { name = "(none)" }
                 payeeGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .attachment:

@@ -10,8 +10,8 @@ import SwiftUI
 typealias SearchArea<MainData: DataProtocol> = (
     name: String,
     isSelected: Bool,
-    mainValues: [(MainData) -> String],
-    auxValues: [(ViewModel, MainData) -> String]
+    mainValues: ((MainData) -> [String])?,
+    auxValues: (@MainActor (ViewModel, MainData) -> [String])?
 )
 
 protocol SearchProtocol: Copyable {
@@ -27,19 +27,24 @@ extension SearchProtocol {
 
     var isEmpty: Bool { key.isEmpty }
 
+    @MainActor
     func match(_ vm: ViewModel, _ data: MainData) -> Bool {
         if key.isEmpty { return true }
         for i in 0 ..< area.count {
             guard area[i].isSelected else { continue }
-            if area[i].mainValues.first(
-                where: { $0(data).localizedCaseInsensitiveContains(key) }
-            ) != nil {
-                return true
+            if let mainValues = area[i].mainValues {
+                for value in mainValues(data) {
+                    if value.localizedCaseInsensitiveContains(key) {
+                        return true
+                    }
+                }
             }
-            if area[i].auxValues.first(
-                where: { $0(vm, data).localizedCaseInsensitiveContains(key) }
-            ) != nil {
-                return true
+            if let auxValues = area[i].auxValues {
+                for value in auxValues(vm, data) {
+                    if value.localizedCaseInsensitiveContains(key) {
+                        return true
+                    }
+                }
             }
         }
         return false

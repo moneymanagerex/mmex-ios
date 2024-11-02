@@ -9,11 +9,11 @@ import SwiftUI
 
 struct CurrencySearch: SearchProtocol {
     var area: [SearchArea<CurrencyData>] = [
-        ("Name",            true,  [ {$0.name} ], []),
-        ("Symbol",          false, [ {$0.symbol} ], []),
-        ("Decimal point",   false, [ {$0.decimalPoint} ], []),
-        ("Group separator", false, [ {$0.groupSeparator} ], []),
-        ("Other",           false, [ {$0.unitName}, {$0.centName} ], []),
+        ("Name",            true,  {[ $0.name ]}, nil),
+        ("Symbol",          false, {[ $0.symbol ]}, nil),
+        ("Decimal point",   false, {[ $0.decimalPoint ]}, nil),
+        ("Group separator", false, {[ $0.groupSeparator ]}, nil),
+        ("Other",           false, {[ $0.unitName, $0.centName ]}, nil),
     ]
     var key: String = ""
 }

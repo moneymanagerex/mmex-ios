@@ -86,7 +86,7 @@ struct LoadMainUsed<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
     }
 
     nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
-        MainRepository(env)?.selectId(from: self.table).map { Set($0) }
+        MainRepository(env)?.selectId(from: self.table).map(Set.init)
     }
 }
 

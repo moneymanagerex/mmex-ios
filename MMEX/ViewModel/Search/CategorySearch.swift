@@ -9,8 +9,10 @@ import SwiftUI
 
 struct CategorySearch: SearchProtocol {
     var area: [SearchArea<CategoryData>] = [
-        ("Name", true,  [ {$0.name} ], []),
-        //("Path", false, [ {$0.path} ]),
+        ("Name", true,  {[ $0.name ]}, nil),
+        ("Path", false, nil, { vm, data in [
+            vm.categoryList.path.readyValue?.path[data.id] ?? ""
+        ] } ),
     ]
     var key: String = ""
 }
