@@ -27,33 +27,25 @@ struct CurrencyList: ListProtocol {
 
 extension ViewModel {
     func loadCurrencyList() async {
-        guard currencyList.state.loading() else { return }
-        log.trace("DEBUG: ViewModel.loadCurrencyList(main=\(Thread.isMainThread))")
+        guard currencyList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.currencyList.data),
                 load(&taskGroup, keyPath: \Self.currencyList.used),
                 load(&taskGroup, keyPath: \Self.currencyList.order),
                 load(&taskGroup, keyPath: \Self.currencyList.history),
-            ].allSatisfy({$0})
+            ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
-        currencyList.state.loaded(ok: ok)
-        if ok {
-            log.info("INFO: CurrencyList.load(main=\(Thread.isMainThread)): Ready.")
-        } else {
-            log.debug("ERROR: CurrencyList.load(main=\(Thread.isMainThread)): Error.")
-            return
-        }
+        currencyList.loaded(ok: ok)
     }
 
     func unloadCurrencyList() {
-        guard currencyList.state.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadCurrencyList(main=\(Thread.isMainThread))")
+        guard currencyList.unloading() else { return }
         currencyList.data.unload()
         currencyList.used.unload()
         currencyList.order.unload()
         currencyList.history.unload()
-        currencyList.state.unloaded()
+        currencyList.unloaded()
     }
 }

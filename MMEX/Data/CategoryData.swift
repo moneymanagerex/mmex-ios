@@ -33,7 +33,7 @@ extension CategoryData: DataProtocol {
     static let dataName = ("Category", "Categories")
 
     func shortDesc() -> String {
-        "\(self.name), \(self.id)"
+        "#\(self.id.value): \(self.name)"
     }
 }
 

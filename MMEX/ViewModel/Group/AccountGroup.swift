@@ -22,7 +22,6 @@ enum AccountGroupChoice: String, GroupChoiceProtocol {
 struct AccountGroup: GroupProtocol {
     typealias MainRepository = AccountRepository
     typealias GroupChoice    = AccountGroupChoice
-    let loadName: String = "Group\(MainRepository.repositoryName)"
     let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
@@ -113,8 +112,9 @@ extension ViewModel {
                 accountGroup.append(name, dict[g] ?? [], true, g)
             }
         }
-        
+
         accountGroup.state.loaded()
+        log.info("INFO: ViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
 
     func unloadAccountGroup() {

@@ -21,7 +21,7 @@ extension TransactionShareData: DataProtocol {
     static let dataName = ("Transaction Share", "Transaction Shares")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

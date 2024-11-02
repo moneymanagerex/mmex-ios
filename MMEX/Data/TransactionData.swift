@@ -80,7 +80,7 @@ extension TransactionData: DataProtocol {
     static let dataName = ("Transaction", "Transactions")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

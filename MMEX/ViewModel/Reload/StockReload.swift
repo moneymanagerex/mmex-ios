@@ -32,10 +32,9 @@ extension ViewModel {
         )
 
         unloadStockGroup()
-        stockList.state.unload()
+        stockList.unload()
 
         if (oldData != nil) != (newData != nil) {
-            manageList.unload()
             stockList.count.unload()
         }
 
@@ -51,7 +50,7 @@ extension ViewModel {
         stockList.order.unload()
 
         if let _ = newData {
-            stockList.att.state.unload()
+            stockList.att.unload()
         } else if let oldData {
             if stockList.att.state.unloading() {
                 stockList.att.value[oldData.id] = nil
@@ -76,5 +75,7 @@ extension ViewModel {
                 }
             }
         } }
+
+        log.info("INFO: ViewModel.reloadStockList(main=\(Thread.isMainThread))")
     }
 }

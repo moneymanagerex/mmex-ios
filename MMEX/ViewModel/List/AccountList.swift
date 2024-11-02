@@ -22,8 +22,7 @@ struct AccountList: ListProtocol {
 
 extension ViewModel {
     func loadAccountList() async {
-        guard accountList.state.loading() else { return }
-        log.trace("DEBUG: ViewModel.loadAccountList(main=\(Thread.isMainThread))")
+        guard accountList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.accountList.data),
@@ -33,25 +32,18 @@ extension ViewModel {
                 // used in EditView
                 load(&taskGroup, keyPath: \Self.currencyList.name),
                 load(&taskGroup, keyPath: \Self.currencyList.order),
-            ].allSatisfy({$0})
+            ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
-        accountList.state.loaded(ok: ok)
-        if ok {
-            log.info("INFO: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Ready.")
-        } else {
-            log.debug("ERROR: ViewModel.loadAccountList(main=\(Thread.isMainThread)): Error.")
-            return
-        }
+        accountList.loaded(ok: ok)
     }
 
     func unloadAccountList() {
-        guard accountList.state.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadAccountList(main=\(Thread.isMainThread))")
+        guard accountList.unloading() else { return }
         accountList.data.unload()
         accountList.used.unload()
         accountList.order.unload()
         accountList.att.unload()
-        accountList.state.unloaded()
+        accountList.unloaded()
     }
 }

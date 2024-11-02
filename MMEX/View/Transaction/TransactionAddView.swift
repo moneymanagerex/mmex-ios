@@ -54,7 +54,7 @@ struct TransactionAddView: View {
     )
     { newTxn in
         // Handle saving in preview
-        log.info("New transaction: \(newTxn.id)")
+        log.info("New transaction: #\(newTxn.id.value)")
     }
     .environmentObject(EnvironmentManager())
 }

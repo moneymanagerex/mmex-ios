@@ -132,12 +132,15 @@ where GroupType.MainRepository == ListType.MainRepository,
             vm.searchGroup(vmGroup, search: search, expand: true)
         }
         .navigationTitle(MainData.dataName.1)
-        .onAppear { Task {
-            let _ = log.debug("DEBUG: RepositoryListView.onAppear()")
+        .onAppear {
+            if deleteData || newData != nil { return }
+            log.debug("DEBUG: RepositoryListView.onAppear()")
             groupChoice = vmGroup.choice
-            await load()
-        } }
+            Task { await load() }
+        }
         .refreshable {
+            if deleteData || newData != nil { return }
+            log.debug("DEBUG: RepositoryListView.refreshable()")
             vm.unloadGroup(vmGroup)
             vm.unloadList(vmList)
             await load()
@@ -151,11 +154,13 @@ where GroupType.MainRepository == ListType.MainRepository,
                 editView: editView
             )
             .onDisappear {
-                if newData != nil { Task {
+                guard newData != nil else { return }
+                log.debug("DEBUG: RepositoryListView.RepositoryCreateView.onDisappear()")
+                Task {
                     await vm.reloadList(nil as MainData?, newData)
-                    newData = nil
                     vm.searchGroup(vmGroup, search: search)
-                } }
+                    newData = nil
+                }
             }
         }
     }
@@ -234,13 +239,14 @@ where GroupType.MainRepository == ListType.MainRepository,
             //    deleteData = false
             //}
                 .onDisappear {
-                    log.debug("DEBUG: RepositoryListView.itemView.onDisappear")
-                    if deleteData || newData != nil { Task {
+                    guard deleteData || newData != nil else { return }
+                    log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
+                    Task {
                         await vm.reloadList(data, newData)
+                        vm.searchGroup(vmGroup, search: search)
                         newData = nil
                         deleteData = false
-                        vm.searchGroup(vmGroup, search: search)
-                    } }
+                    }
                 }
         ) {
             env.theme.item.view(

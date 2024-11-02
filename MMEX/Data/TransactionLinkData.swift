@@ -26,7 +26,7 @@ extension TransactionLinkData: DataProtocol {
     static let dataName = ("Transaction Link", "Transaction Links")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

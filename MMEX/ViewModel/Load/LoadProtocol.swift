@@ -28,6 +28,7 @@ extension LoadProtocol {
         log.trace("DEBUG: LoadProtocol.unload(\(loadName), main=\(Thread.isMainThread))")
         value = idleValue
         state.unloaded()
+        log.info("INFO: LoadProtocol.unload(\(loadName), main=\(Thread.isMainThread))")
     }
 }
 

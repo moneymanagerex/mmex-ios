@@ -21,7 +21,7 @@ extension ViewModel {
             return "* currencyName is not loaded"
         }
         if currencyName[data.currencyId] == nil {
-            return "* Unknown currency #\(data.currencyId)"
+            return "* Unknown currency #\(data.currencyId.value)"
         }
 
         guard let a = A(env) else {
@@ -43,7 +43,7 @@ extension ViewModel {
             }
         } else {
             guard a.update(data) else {
-                return "* Cannot update account #\(data.id)"
+                return "* Cannot update account #\(data.id.value)"
             }
         }
 
@@ -55,7 +55,7 @@ extension ViewModel {
             return "* accountUsed is not loaded"
         }
         if accountUsed.contains(data.id) {
-            return "* Account #\(data.id) is used"
+            return "* Account #\(data.id.value) is used"
         }
 
         guard let a = A(env), let ax = AX(env) else {
@@ -67,12 +67,12 @@ extension ViewModel {
         }
         if accountAtt[data.id] != nil {
             guard ax.delete(refType: .account, refId: data.id) else {
-                return "* Cannot delete attachments for account #\(data.id)"
+                return "* Cannot delete attachments for account #\(data.id.value)"
             }
         }
 
         guard a.delete(data) else {
-            return "* Cannot delete account #\(data.id)"
+            return "* Cannot delete account #\(data.id.value)"
         }
 
         return nil

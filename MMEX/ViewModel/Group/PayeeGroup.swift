@@ -20,7 +20,6 @@ enum PayeeGroupChoice: String, GroupChoiceProtocol {
 struct PayeeGroup: GroupProtocol {
     typealias MainRepository = PayeeRepository
     typealias GroupChoice    = PayeeGroupChoice
-    let loadName: String = "Group\(MainRepository.repositoryName)"
     let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
@@ -95,6 +94,7 @@ extension ViewModel {
         }
 
         payeeGroup.state.loaded()
+        log.info("INFO: ViewModel.loadPayeeGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
 
     func unloadPayeeGroup() {

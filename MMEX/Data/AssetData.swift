@@ -61,7 +61,7 @@ extension AssetData: DataProtocol {
     static let dataName = ("Asset", "Assets")
 
     func shortDesc() -> String {
-        "\(self.name), \(self.id)"
+        "#\(self.id.value): \(self.name)"
     }
 }
 

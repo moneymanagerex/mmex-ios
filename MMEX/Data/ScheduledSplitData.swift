@@ -20,7 +20,7 @@ extension ScheduledSplitData: DataProtocol {
     static let dataName = ("Scheduled Transaction Split", "Scheduled Transaction Splits")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

@@ -42,7 +42,7 @@ struct TransactionListView: View {
                             Text(getPayeeName(for: txn))
                                 .font(.system(size: 16))
                                 .lineLimit(1) // Prevent wrapping
-                            Text("\(txn.transCode.id)") // Replace with transcode name if available
+                            Text("\(txn.transCode.rawValue)") // Replace with transcode name if available
                                 .font(.system(size: 14))
                                 .foregroundColor(.gray)
                         }

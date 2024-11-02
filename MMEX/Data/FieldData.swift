@@ -34,7 +34,7 @@ extension FieldData: DataProtocol {
     static let dataName = ("Field", "Fields")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

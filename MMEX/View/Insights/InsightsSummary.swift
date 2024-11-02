@@ -16,7 +16,7 @@ struct InsightsSummaryView: View {
         Chart(stats) {
             BarMark(
                 x: .value("Amount", $0.income),
-                y: .value("Account", env.accountCache[$0.accountId]?.name ?? "#\($0.accountId)")
+                y: .value("Account", env.accountCache[$0.accountId]?.name ?? "#\($0.accountId.value)")
             )
             .foregroundStyle(by: .value("Status", $0.status.fullName))
         }

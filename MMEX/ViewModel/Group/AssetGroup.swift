@@ -21,7 +21,6 @@ enum AssetGroupChoice: String, GroupChoiceProtocol {
 struct AssetGroup: GroupProtocol {
     typealias MainRepository = AssetRepository
     typealias GroupChoice    = AssetGroupChoice
-    let loadName: String = "Group\(MainRepository.repositoryName)"
     let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
@@ -104,6 +103,7 @@ extension ViewModel {
         }
 
         assetGroup.state.loaded()
+        log.info("INFO: ViewModel.loadAssetGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
 
     func unloadAssetGroup() {

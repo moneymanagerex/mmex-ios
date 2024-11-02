@@ -38,10 +38,9 @@ extension ViewModel {
         )
 
         unloadAssetGroup()
-        assetList.state.unload()
+        assetList.unload()
 
         if (oldData != nil) != (newData != nil) {
-            manageList.unload()
             assetList.count.unload()
         }
 
@@ -66,7 +65,7 @@ extension ViewModel {
         assetList.order.unload()
 
         if let _ = newData {
-            assetList.att.state.unload()
+            assetList.att.unload()
         } else if let oldData {
             if assetList.att.state.unloading() {
                 assetList.att.value[oldData.id] = nil
@@ -91,5 +90,7 @@ extension ViewModel {
                 }
             }
         } }
+
+        log.info("INFO: ViewModel.reloadAssetList(main=\(Thread.isMainThread))")
     }
 }

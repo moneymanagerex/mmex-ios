@@ -27,20 +27,29 @@ extension ViewModel {
     }
 
     func update<DataType: DataProtocol>(_ data: inout DataType) -> String? {
-        if var data = data as? CurrencyData {
-            return updateCurrency(&data)
-        } else if var data = data as? AccountData {
-            return updateAccount(&data)
-        } else if var data = data as? AssetData {
-            return updateAsset(&data)
-        } else if var data = data as? StockData {
-            return updateStock(&data)
-        } else if var data = data as? CategoryData {
-            return updateCategory(&data)
-        } else if var data = data as? PayeeData {
-            return updatePayee(&data)
+        var error: String?
+        if var data1 = data as? CurrencyData {
+            error = updateCurrency(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? AccountData {
+            error = updateAccount(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? AssetData {
+            error = updateAsset(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? StockData {
+            error = updateStock(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? CategoryData {
+            error = updateCategory(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? PayeeData {
+            error = updatePayee(&data1)
+            data = data1 as! DataType
+        } else {
+            error = "* unknown data type"
         }
-        return "* unknown data type"
+        return error
     }
 
     func delete<DataType: DataProtocol>(_ data: DataType) -> String? {

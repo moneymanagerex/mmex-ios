@@ -19,7 +19,7 @@ extension ViewModel {
                 return "* categoryData is not loaded"
             }
             if categoryData[data.categoryId] == nil {
-                return "* Unknown category #\(data.categoryId)"
+                return "* Unknown category #\(data.categoryId.value)"
             }
         }
 
@@ -43,7 +43,7 @@ extension ViewModel {
             }
         } else {
             guard p.update(data) else {
-                return "* Cannot update payee #\(data.id)"
+                return "* Cannot update payee #\(data.id.value)"
             }
         }
 
@@ -55,7 +55,7 @@ extension ViewModel {
             return "* payeeUsed is not loaded"
         }
         if payeeUsed.contains(data.id) {
-            return "* Payee #\(data.id) is used"
+            return "* Payee #\(data.id.value) is used"
         }
 
         guard let p = P(env), let ax = AX(env) else {
@@ -67,12 +67,12 @@ extension ViewModel {
         }
         if payeeAtt[data.id] != nil {
             guard ax.delete(refType: .payee, refId: data.id) else {
-                return "* Cannot delete attachments for payee #\(data.id)"
+                return "* Cannot delete attachments for payee #\(data.id.value)"
             }
         }
 
         guard p.delete(data) else {
-            return "* Cannot delete payee #\(data.id)"
+            return "* Cannot delete payee #\(data.id.value)"
         }
 
         return nil

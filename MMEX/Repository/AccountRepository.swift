@@ -308,7 +308,7 @@ extension AccountRepository {
     // load account of a stock
     func pluck(for stock: StockData) -> RepositoryPluckResult<AccountData> {
         return pluck(
-            key: "\(stock.accountId)",
+            key: "\(stock.accountId.value)",
             from: Self.table.filter(Self.col_id == Int64(stock.accountId))
         )
     }
