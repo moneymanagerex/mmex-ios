@@ -43,14 +43,14 @@ class ViewModel: ObservableObject {
     @Published var payeeGroup : PayeeGroup = .init()
 
     typealias T = TransactionRepository
-    typealias TS = TransactionSplitRepository
+    typealias TP = TransactionSplitRepository
     typealias TL = TransactionLinkRepository
     typealias TH = TransactionShareRepository
     static let T_table: SQLite.Table = T.table.filter(T.col_deletedTime == "")
     @Published var transactionCount : LoadMainCount<T> = .init(table: T_table)
 
     typealias R = ScheduledRepository
-    typealias RS = ScheduledSplitRepository
+    typealias RP = ScheduledSplitRepository
     @Published var scheduledCount : LoadMainCount<R> = .init()
 
     typealias G = TagRepository

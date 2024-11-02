@@ -104,10 +104,10 @@ struct AssetRepository: RepositoryProtocol {
     }
 
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
-        typealias AE = AttachmentRepository
-        let cond = "EXISTS (" + (AE.table.select(1).where(
-            AE.table[AE.col_refType] == RefType.account.rawValue &&
-            AE.table[AE.col_refId] == Self.table[Self.col_id]
+        typealias AX = AttachmentRepository
+        let cond = "EXISTS (" + (AX.table.select(1).where(
+            AX.table[AX.col_refType] == RefType.account.rawValue &&
+            AX.table[AX.col_refId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
