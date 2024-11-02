@@ -23,7 +23,7 @@ extension TagLinkData: DataProtocol {
     static let dataName = ("Tag Link", "Tag Links")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

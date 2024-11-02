@@ -18,7 +18,6 @@ enum CurrencyGroupChoice: String, GroupChoiceProtocol {
 struct CurrencyGroup: GroupProtocol {
     typealias MainRepository = CurrencyRepository
     typealias GroupChoice    = CurrencyGroupChoice
-    let loadName: String = "Group\(MainRepository.repositoryName)"
     let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
@@ -68,6 +67,7 @@ extension ViewModel {
         }
 
         currencyGroup.state.loaded()
+        log.info("INFO: ViewModel.loadCurrencyGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
 
     func unloadCurrencyGroup() {

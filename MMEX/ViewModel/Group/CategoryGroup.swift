@@ -18,7 +18,6 @@ enum CategoryGroupChoice: String, GroupChoiceProtocol {
 struct CategoryGroup: GroupProtocol {
     typealias MainRepository = CategoryRepository
     typealias GroupChoice    = CategoryGroupChoice
-    let loadName: String = "Group\(MainRepository.repositoryName)"
     let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
@@ -69,6 +68,7 @@ extension ViewModel {
         }
 
         categoryGroup.state.loaded()
+        log.info("INFO: ViewModel.loadCategoryGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
 
     func unloadCategoryGroup() {

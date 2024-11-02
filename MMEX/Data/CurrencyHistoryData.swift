@@ -20,7 +20,7 @@ extension CurrencyHistoryData: DataProtocol {
     static let dataName = ("Currency History", "Currency History")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

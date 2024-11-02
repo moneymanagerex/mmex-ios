@@ -166,7 +166,7 @@ extension CurrencyRepository {
     func pluck(for account: AccountData) -> RepositoryPluckResult<CurrencyData> {
         log.trace("DEBUG: CurrencyRepository.pluck(account: \(account.name)")
         return pluck(
-            key: "\(account.currencyId)",
+            key: "\(account.currencyId.value)",
             from: Self.table.filter(Self.col_id == Int64(account.currencyId))
         )
     }
@@ -175,7 +175,7 @@ extension CurrencyRepository {
     func pluck(for asset: AssetData) -> RepositoryPluckResult<CurrencyData> {
         log.trace("DEBUG: CurrencyRepository.pluck(asset: \(asset.name)")
         return pluck(
-            key: "\(asset.currencyId)",
+            key: "\(asset.currencyId.value)",
             from: Self.table.filter(Self.col_id == Int64(asset.currencyId))
         )
     }

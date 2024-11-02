@@ -26,7 +26,7 @@ extension StockData: DataProtocol {
     static let dataName = ("Stock", "Stocks")
 
     func shortDesc() -> String {
-        "\(self.name), \(self.id)"
+        "#\(self.id.value): \(self.name)"
     }
 }
 

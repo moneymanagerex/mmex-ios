@@ -21,7 +21,7 @@ extension ViewModel {
             return "* currencyName is not loaded"
         }
         if currencyName[data.currencyId] == nil {
-            return "* Unknown currency #\(data.currencyId)"
+            return "* Unknown currency #\(data.currencyId.value)"
         }
 
         guard let e = E(env) else {
@@ -37,7 +37,7 @@ extension ViewModel {
             }
         } else {
             guard e.update(data) else {
-                return "* Cannot update asset #\(data.id)"
+                return "* Cannot update asset #\(data.id.value)"
             }
         }
 
@@ -49,7 +49,7 @@ extension ViewModel {
             return "* assetUsed is not loaded"
         }
         if assetUsed.contains(data.id) {
-            return "* Asset #\(data.id) is used"
+            return "* Asset #\(data.id.value) is used"
         }
 
         guard let e = E(env), let ax = AX(env) else {
@@ -61,12 +61,12 @@ extension ViewModel {
         }
         if assetAtt[data.id] != nil {
             guard ax.delete(refType: .asset, refId: data.id) else {
-                return "* Cannot delete attachments for asset #\(data.id)"
+                return "* Cannot delete attachments for asset #\(data.id.value)"
             }
         }
 
         guard e.delete(data) else {
-            return "* Cannot delete asset #\(data.id)"
+            return "* Cannot delete asset #\(data.id.value)"
         }
 
         return nil

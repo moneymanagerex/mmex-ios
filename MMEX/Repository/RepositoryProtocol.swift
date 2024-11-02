@@ -219,7 +219,7 @@ extension RepositoryProtocol {
             log.trace("DEBUG: RepositoryProtocol.insert(main=\(Thread.isMainThread)): \(query.expression.description)")
             let rowid = try db.run(query)
             data.id = DataId(rowid)
-            let desc = data.shortDesc()
+            let desc = "#\(data.id.value): \(data.shortDesc())"
             log.info("INFO: RepositoryProtocol.insert(\(Self.repositoryName)): \(desc)")
             return true
         } catch {

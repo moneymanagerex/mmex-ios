@@ -21,7 +21,7 @@ extension FieldContentData: DataProtocol {
     static let dataName = ("Field Content", "Field Contents")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

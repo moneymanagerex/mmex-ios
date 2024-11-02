@@ -32,7 +32,7 @@ extension AttachmentData: DataProtocol {
     static let dataName = ("Attachment", "Attachments")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

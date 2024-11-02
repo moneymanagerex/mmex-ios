@@ -29,7 +29,7 @@ struct CategoryDetailView: View {
             
             // TODO show name and link to its partent
             Section(header: Text("Parent ID")) {
-                Text("\(category.parentId)")
+                Text("\(category.parentId.value)")
             }
             
             Button("Delete Category") {

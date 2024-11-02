@@ -38,7 +38,7 @@ extension ViewModel {
             }
         } else {
             guard u.update(data) else {
-                return "* Cannot update currency #\(data.id)"
+                return "* Cannot update currency #\(data.id.value)"
             }
         }
 
@@ -50,7 +50,7 @@ extension ViewModel {
             return "* currencyUsed is not loaded"
         }
         if currencyUsed.contains(data.id) {
-            return "* Currency #\(data.id) is used"
+            return "* Currency #\(data.id.value) is used"
         }
         // TODO: check base currency
 
@@ -63,12 +63,12 @@ extension ViewModel {
         }
         if currencyHistory[data.id] != nil {
             guard uh.delete(currencyId: data.id) else {
-                return "* Cannot delete history for currency #\(data.id)"
+                return "* Cannot delete history for currency #\(data.id.value)"
             }
         }
 
         guard u.delete(data) else {
-            return "* Cannot delete currency #\(data.id)"
+            return "* Cannot delete currency #\(data.id.value)"
         }
 
         return nil

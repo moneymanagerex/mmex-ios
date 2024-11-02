@@ -32,6 +32,8 @@ protocol GroupProtocol: LoadProtocol where ValueType == [GroupData] {
 }
 
 extension GroupProtocol {
+    var loadName: String { "Group(\(MainRepository.repositoryName))" }
+
     mutating func append(_ name: String?, _ dataId: [DataId], _ isVisible: Bool, _ isExpanded: Bool) {
         guard state == .loading else {
             log.error("ERROR: GroupProtocol.append(): state != loading.")

@@ -24,7 +24,7 @@ extension ViewModel {
             return "* accountData is not loaded"
         }
         if accountData[data.accountId] == nil {
-            return "* Unknown account #\(data.accountId)"
+            return "* Unknown account #\(data.accountId.value)"
         }
 
         guard let s = S(env) else {
@@ -40,7 +40,7 @@ extension ViewModel {
             }
         } else {
             guard s.update(data) else {
-                return "* Cannot update stock #\(data.id)"
+                return "* Cannot update stock #\(data.id.value)"
             }
         }
 
@@ -52,7 +52,7 @@ extension ViewModel {
             return "* stockUsed is not loaded"
         }
         if stockUsed.contains(data.id) {
-            return "* Stock #\(data.id) is used"
+            return "* Stock #\(data.id.value) is used"
         }
 
         guard let s = S(env), let ax = AX(env) else {
@@ -67,12 +67,12 @@ extension ViewModel {
         }
         if stockAtt[data.id] != nil {
             guard ax.delete(refType: .stock, refId: data.id) else {
-                return "* Cannot delete attachments for stock #\(data.id)"
+                return "* Cannot delete attachments for stock #\(data.id.value)"
             }
         }
 
         guard s.delete(data) else {
-            return "* Cannot delete stock #\(data.id)"
+            return "* Cannot delete stock #\(data.id.value)"
         }
 
         return nil

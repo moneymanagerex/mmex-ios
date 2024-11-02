@@ -19,7 +19,6 @@ enum StockGroupChoice: String, GroupChoiceProtocol {
 struct StockGroup: GroupProtocol {
     typealias MainRepository = StockRepository
     typealias GroupChoice    = StockGroupChoice
-    let loadName: String = "Group\(MainRepository.repositoryName)"
     let idleValue: ValueType = []
 
     var choice: GroupChoice = .defaultValue
@@ -84,6 +83,7 @@ extension ViewModel {
         }
 
         stockGroup.state.loaded()
+        log.info("INFO: ViewModel.loadStockGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
 
     func unloadStockGroup() {

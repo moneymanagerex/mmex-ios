@@ -35,7 +35,7 @@ extension BudgetTableData: DataProtocol {
     static let dataName = ("Budget Table", "Budget Tables")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

@@ -41,10 +41,9 @@ extension ViewModel {
         )
 
         unloadAccountGroup()
-        accountList.state.unload()
+        accountList.unload()
 
         if (oldData != nil) != (newData != nil) {
-            manageList.unload()
             accountList.count.unload()
         }
 
@@ -69,7 +68,7 @@ extension ViewModel {
         accountList.order.unload()
 
         if let _ = newData {
-            accountList.att.state.unload()
+            accountList.att.unload()
         } else if let oldData {
             if accountList.att.state.unloading() {
                 accountList.att.value[oldData.id] = nil
@@ -94,5 +93,7 @@ extension ViewModel {
                 }
             }
         } }
+
+        log.info("INFO: ViewModel.reloadAccountList(main=\(Thread.isMainThread))")
     }
 }

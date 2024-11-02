@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SQLite
+import Combine
 
 struct PayeeList: ListProtocol {
     typealias MainRepository = PayeeRepository
@@ -21,9 +22,25 @@ struct PayeeList: ListProtocol {
 }
 
 extension ViewModel {
+    /*
+    func initPayeeList() {
+        let payeePath: [KeyPath<PayeeList, LoadState>]
+        = [ \.data.state, \.used.state, \.order.state, \.att.state ]
+        for path in payeePath {
+            $payeeList.map(path)
+                .sink { [weak self] (state: LoadState) in
+                    guard let self else { return }
+                    if state == .idle {
+                        self.payeeList.state.unload()
+                    }
+                }
+                .store(in: &self.subscriptions)
+        }
+    }
+    */
+
     func loadPayeeList() async {
-        guard payeeList.state.loading() else { return }
-        log.trace("DEBUG: ViewModel.loadPayeeList(main=\(Thread.isMainThread))")
+        guard payeeList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.payeeList.data),
@@ -40,25 +57,18 @@ extension ViewModel {
             let ok = [
                 load(&taskGroup, keyPath: \Self.categoryList.path),
                 load(&taskGroup, keyPath: \Self.categoryList.tree),
-            ].allSatisfy({$0})
+            ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         } }
-        payeeList.state.loaded(ok: ok)
-        if ok {
-            log.info("INFO: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Ready.")
-        } else {
-            log.debug("ERROR: ViewModel.loadPayeeList(main=\(Thread.isMainThread)): Error.")
-            return
-        }
+        payeeList.loaded(ok: ok)
     }
 
     func unloadPayeeList() {
-        guard payeeList.state.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadPayeeList(main=\(Thread.isMainThread))")
+        guard payeeList.unloading() else { return }
         payeeList.data.unload()
         payeeList.used.unload()
         payeeList.order.unload()
         payeeList.att.unload()
-        payeeList.state.unloaded()
+        payeeList.unloaded()
     }
 }

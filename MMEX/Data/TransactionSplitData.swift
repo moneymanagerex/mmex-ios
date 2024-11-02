@@ -20,7 +20,7 @@ extension TransactionSplitData: DataProtocol {
     static let dataName = ("Transaction Split", "Transaction Splits")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

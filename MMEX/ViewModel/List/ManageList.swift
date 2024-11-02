@@ -8,8 +8,32 @@
 import SwiftUI
 
 extension ViewModel {
+    /*
+    func initManageList() {
+        for publisher in [
+            $currencyList.map(\.count.state).eraseToAnyPublisher(),
+            $accountList.map(\.count.state).eraseToAnyPublisher(),
+            $assetList.map(\.count.state).eraseToAnyPublisher(),
+            $stockList.map(\.count.state).eraseToAnyPublisher(),
+            $categoryList.map(\.count.state).eraseToAnyPublisher(),
+            $payeeList.map(\.count.state).eraseToAnyPublisher(),
+            //$transactionList.map(\.count.state),
+            //$scheduledList.map(\.count.state),
+        ] {
+            publisher
+                .sink { [weak self] (state: LoadState) in
+                    guard let self else { return }
+                    if state == .idle {
+                        self.manageList.unload()
+                    }
+                }
+                .store(in: &self.subscriptions)
+        }
+    }
+    */
+
     func loadManageList() async {
-        guard manageList.loading() else { return }
+        guard manageList.reloading() else { return }
         log.trace("DEBUG: ViewModel.loadManageList(main=\(Thread.isMainThread))")
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -21,7 +45,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.payeeList.count),
                 load(&taskGroup, keyPath: \Self.transactionCount),
                 load(&taskGroup, keyPath: \Self.scheduledCount),
-            ].allSatisfy({$0})
+            ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
         manageList.loaded(ok: ok)

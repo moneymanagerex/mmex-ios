@@ -32,10 +32,9 @@ extension ViewModel {
         )
 
         unloadPayeeGroup()
-        payeeList.state.unload()
+        payeeList.unload()
 
         if (oldData != nil) != (newData != nil) {
-            manageList.unload()
             payeeList.count.unload()
         }
 
@@ -60,7 +59,7 @@ extension ViewModel {
         payeeList.order.unload()
 
         if let _ = newData {
-            payeeList.att.state.unload()
+            payeeList.att.unload()
         } else if let oldData {
             if payeeList.att.state.unloading() {
                 payeeList.att.value[oldData.id] = nil
@@ -85,5 +84,7 @@ extension ViewModel {
                 }
             }
         } }
+
+        log.info("INFO: ViewModel.reloadPayeeList(main=\(Thread.isMainThread))")
     }
 }

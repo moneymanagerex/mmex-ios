@@ -24,14 +24,13 @@ struct CategoryList: ListProtocol {
 
 extension ViewModel {
     func loadCategoryList() async {
-        guard categoryList.state.loading() else { return }
-        log.trace("DEBUG: ViewModel.loadCategoryList(main=\(Thread.isMainThread))")
+        guard categoryList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.categoryList.data),
                 load(&taskGroup, keyPath: \Self.categoryList.used),
                 load(&taskGroup, keyPath: \Self.categoryList.order),
-            ].allSatisfy({$0})
+            ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
         if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
@@ -41,21 +40,14 @@ extension ViewModel {
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         } }
-        categoryList.state.loaded(ok: ok)
-        if ok {
-            log.info("INFO: ViewModel.loadCategoryList(main=\(Thread.isMainThread)): Ready.")
-        } else {
-            log.debug("ERROR: ViewModel.loadCategoryList(main=\(Thread.isMainThread)): Error.")
-            return
-        }
+        categoryList.loaded(ok: ok)
     }
 
     func unloadCategoryList() {
-        guard categoryList.state.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadCategoryList(main=\(Thread.isMainThread))")
+        guard categoryList.unloading() else { return }
         categoryList.data.unload()
         categoryList.used.unload()
-        categoryList.state.unloaded()
+        categoryList.unloaded()
     }
 }
 

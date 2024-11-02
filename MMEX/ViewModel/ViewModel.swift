@@ -7,12 +7,12 @@
 
 import SwiftUI
 import SQLite
+import Combine
 
 @MainActor
 class ViewModel: ObservableObject {
     let env: EnvironmentManager
-
-    @Published var manageList: LoadState = .init()
+    //var subscriptions = Set<AnyCancellable>()
 
     typealias I = InfotableRepository
 
@@ -62,6 +62,8 @@ class ViewModel: ObservableObject {
     typealias B = BudgetTableRepository
     typealias O = ReportRepository
 
+    @Published var manageList: LoadState = .init()
+
     init(env: EnvironmentManager) {
         self.env = env
     }
@@ -80,8 +82,14 @@ extension ViewModel {
         if let value {
             self[keyPath: keyPath].value = value
         }
-        self[keyPath: keyPath].state.loaded(ok: value != nil)
-        return value != nil
+        let ok = value != nil
+        self[keyPath: keyPath].state.loaded(ok: ok)
+        if ok {
+            log.info("INFO: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        } else {
+            log.debug("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        }
+        return ok
     }
 
     func load<RepositoryLoadType: LoadEvalProtocol>(
@@ -96,8 +104,14 @@ extension ViewModel {
         if let value {
             self[keyPath: keyPath].value = value
         }
-        self[keyPath: keyPath].state.loaded(ok: value != nil)
-        return value != nil
+        let ok = value != nil
+        self[keyPath: keyPath].state.loaded(ok: ok)
+        if ok {
+            log.info("INFO: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        } else {
+            log.debug("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        }
+        return ok
     }
 
     func load<RepositoryLoadType: LoadFetchProtocol>(
@@ -111,13 +125,19 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
             let value = await self[keyPath: keyPath].fetchValue(env: self.env)
+            let ok = value != nil
             await MainActor.run {
                 if let value {
                     self[keyPath: keyPath].value = value
                 }
-                self[keyPath: keyPath].state.loaded(ok: value != nil)
+                self[keyPath: keyPath].state.loaded(ok: ok)
             }
-            return value != nil
+            if ok {
+                log.info("INFO: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+            } else {
+                log.debug("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+            }
+            return ok
         }
         return true
     }
@@ -133,13 +153,19 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
             let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
+            let ok = value != nil
             await MainActor.run {
                 if let value {
                     self[keyPath: keyPath].value = value
                 }
-                self[keyPath: keyPath].state.loaded(ok: value != nil)
+                self[keyPath: keyPath].state.loaded(ok: ok)
             }
-            return value != nil
+            if ok {
+                log.info("INFO: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+            } else {
+                log.debug("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+            }
+            return ok
         }
         return true
     }

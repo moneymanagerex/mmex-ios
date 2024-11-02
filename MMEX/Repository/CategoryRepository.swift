@@ -99,7 +99,7 @@ extension CategoryRepository {
     // load category of a payee
     func pluck(for payee: PayeeData) -> RepositoryPluckResult<CategoryData> {
         return pluck(
-            key: "\(payee.categoryId)",
+            key: "\(payee.categoryId.value)",
             from: Self.table.filter(Self.col_id == Int64(payee.categoryId))
         )
     }

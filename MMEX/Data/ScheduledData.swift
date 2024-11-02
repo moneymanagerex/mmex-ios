@@ -91,7 +91,7 @@ extension ScheduledData: DataProtocol {
     static let dataName = ("Scheduled Transaction", "Scheduled Transactions")
 
     func shortDesc() -> String {
-        "\(self.id)"
+        "#\(self.id.value)"
     }
 }
 

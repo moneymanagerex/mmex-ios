@@ -34,8 +34,8 @@ extension ViewModel {
     }
 
     func searchAccountGroup(search: AccountSearch, expand: Bool = false ) {
-        //log.trace("DEBUG: ViewModel.searchAccountGroup()")
         guard accountGroup.state == .ready else { return }
+        log.trace("DEBUG: ViewModel.searchAccountGroup()")
         for g in 0 ..< accountGroup.value.count {
             guard let isVisible = accountGroupIsVisible(g, search: search) else { return }
             //log.debug("DEBUG: ViewModel.searchAccountGroup(): \(g) = \(isVisible)")

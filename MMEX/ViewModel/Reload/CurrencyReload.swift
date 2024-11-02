@@ -23,10 +23,9 @@ extension ViewModel {
         let groupIsExpanded: [Bool]? = currencyGroup.readyValue?.map { $0.isExpanded }
 
         unloadCurrencyGroup()
-        currencyList.state.unload()
+        currencyList.unload()
 
         if (oldData != nil) != (newData != nil) {
-            manageList.unload()
             currencyList.count.unload()
         }
 
@@ -48,7 +47,6 @@ extension ViewModel {
             currencyList.name.state.loaded()
         }
 
-        accountList.state.unload()
         currencyList.order.unload()
 
         await loadCurrencyList()
@@ -60,5 +58,7 @@ extension ViewModel {
                 currencyGroup.value[g].isExpanded = groupIsExpanded[g]
             }
         }
+
+        log.info("INFO: ViewModel.reloadCurrencyList(main=\(Thread.isMainThread))")
     }
 }
