@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DataId: Equatable, Hashable, Copyable, Sendable, Codable {
+struct DataId: Identifiable, Equatable, Hashable, Copyable, Sendable, Codable {
     private(set) var value: Int = -1
 
     init() {
@@ -19,7 +19,8 @@ struct DataId: Equatable, Hashable, Copyable, Sendable, Codable {
 
     static let void: Self = .init()
 
-    var isVoid:Bool { value <= 0 }
+    var isVoid: Bool { value <= 0 }
+    var id: Int { value }
 }
 
 extension DataId: ExpressibleByIntegerLiteral {

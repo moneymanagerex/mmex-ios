@@ -36,21 +36,28 @@ struct CheckingView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Picker("Select Account", selection: $accountId) {
-                        //Text("Select Account").tag(0)
-                        ForEach(viewModel.accounts) { account in
-                            HStack{
-                                Image(systemName: account.type.symbolName)
-                                    .frame(width: 5, alignment: .leading) // Adjust width as needed
-                                    .font(.system(size: 16, weight: .bold)) // Customize size and weight
-                                    .foregroundColor(.blue) // Customize icon style
-                                Text(account.name)
-                            }.tag(account.id)
+                    if
+                        let accountOrder = vm.accountList.order.readyValue,
+                        let accountData  = vm.accountList.data.readyValue
+                    {
+                        Picker("Select Account", selection: $accountId) {
+                            //Text("Select Account").tag(0)
+                            ForEach(accountOrder) { id in
+                                if let account = accountData[id] {
+                                    HStack{
+                                        Image(systemName: account.type.symbolName)
+                                            .frame(width: 5, alignment: .leading) // Adjust width as needed
+                                            .font(.system(size: 16, weight: .bold)) // Customize size and weight
+                                            .foregroundColor(.blue) // Customize icon style
+                                        Text(account.name)
+                                    }.tag(account.id)
+                                }
+                            }
                         }
-                    }
-                    .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
-                    .onChange(of: accountId) {
-                        viewModel.loadTransactions(for: accountId)
+                        .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
+                        .onChange(of: accountId) {
+                            viewModel.loadTransactions(for: accountId)
+                        }
                     }
                 }
             }
@@ -60,7 +67,8 @@ struct CheckingView: View {
             }
         }
         .onAppear {
-            accountId = viewModel.defaultAccountId //
+            Task { await vm.loadTransactionList() }
+            accountId = viewModel.defaultAccountId
             viewModel.loadTransactions(for: accountId)
             viewModel.loadAccounts()
             viewModel.loadCategories()
@@ -113,23 +121,23 @@ struct CheckingView: View {
 
                 Spacer() // To push the amount to the right side
 
-                if let currencyId = viewModel.accountDict[txn.accountId]?.currencyId,
-                   let currencyFormatter = env.currencyCache[currencyId]?.formatter
+                if
+                    let currencyId   = vm.accountList.data.readyValue?[txn.accountId]?.currencyId,
+                    let currencyInfo = vm.currencyList.info.readyValue?[currencyId]
                 {
                     // Right column (Transaction Amount)
                     VStack {
                         // amount in account currency
-                        Text(txn.transAmount.formatted(by: currencyFormatter))
+                        Text(txn.transAmount.formatted(by: currencyInfo.formatter))
                         .frame(alignment: .trailing) // Ensure it's aligned to the right
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
                         // amount in base currency
-                        if let baseCurrencyId = viewModel.baseCurrency?.id,
-                           baseCurrencyId != currencyId,
-                           let baseConvRate = env.currencyCache[currencyId]?.baseConvRate
+                        if let baseCurrencyId = vm.infotableList.baseCurrencyId.readyValue ?? nil,
+                           baseCurrencyId != currencyId
                         {
-                            Text((txn.transAmount * baseConvRate)
-                                .formatted(by: env.currencyCache[baseCurrencyId]?.formatter)
+                            Text((txn.transAmount * currencyInfo.baseConvRate)
+                                .formatted(by: vm.currencyList.info.readyValue?[baseCurrencyId]?.formatter)
                             )
                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                             .font(.system(size: 14, weight: .medium))
@@ -151,24 +159,26 @@ struct CheckingView: View {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
             if self.accountId == txn.accountId {
-                if let toAccount = viewModel.accountDict[txn.toAccountId] {
+                if let toAccount = vm.accountList.data.readyValue?[txn.toAccountId] {
                     return String(format: "> \(toAccount.name)")
                 }
             } else {
-                if let fromAccount = viewModel.accountDict[txn.accountId] {
+                if let fromAccount = vm.accountList.data.readyValue?[txn.accountId] {
                     return String(format: "< \(fromAccount.name)")
                 }
             }
+        } else if let payee = vm.payeeList.data.readyValue?[txn.payeeId] {
+            return payee.name
         }
-
-        return viewModel.getPayeeName(for: txn.payeeId)
+        return "(uknown)"
     }
 
     func calculateTotal(for day: String) -> String {
         let transactions = viewModel.txns_per_day[day] ?? []
         let totalAmount = transactions.reduce(0.0) { $0 + $1.actual }
-        let account = viewModel.accountDict[accountId]
-        return totalAmount.formatted(by: env.currencyCache[account?.currencyId ?? 0]?.formatter)
+        let account = vm.accountList.data.readyValue?[accountId]
+        let formatter = vm.currencyList.info.readyValue?[account?.currencyId ?? .void]?.formatter
+        return totalAmount.formatted(by: formatter)
     }
 
     func humanReadableDate(_ dateString: String) -> String {
