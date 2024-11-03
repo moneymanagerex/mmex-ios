@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TransactionAddView: View {
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
     @Binding var accountId: [DataId]
     @Binding var categories: [CategoryData]
@@ -20,6 +21,7 @@ struct TransactionAddView: View {
     var body: some View {
         NavigationStack {
             TransactionEditView(
+                vm: vm,
                 viewModel: viewModel,
                 accountId: $accountId,
                 categories: $categories,

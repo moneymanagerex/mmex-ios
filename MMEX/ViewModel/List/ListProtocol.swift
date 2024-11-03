@@ -68,7 +68,8 @@ extension ListProtocol {
 extension ViewModel {
     func loadList<ListType: ListProtocol>(_ list: ListType) async {
         typealias MainRepository = ListType.MainRepository
-        /**/ if MainRepository.self == U.self { await loadCurrencyList() }
+        /**/ if MainRepository.self == I.self { await loadInfotableList() }
+        else if MainRepository.self == U.self { await loadCurrencyList() }
         else if MainRepository.self == A.self { await loadAccountList() }
         else if MainRepository.self == E.self { await loadAssetList() }
         else if MainRepository.self == S.self { await loadStockList() }
@@ -78,7 +79,8 @@ extension ViewModel {
 
     func unloadList<ListType: ListProtocol>(_ list: ListType) {
         typealias MainRepository = ListType.MainRepository
-        /**/ if MainRepository.self == U.self { unloadCurrencyList() }
+        /**/ if MainRepository.self == I.self { unloadInfotableList() }
+        else if MainRepository.self == U.self { unloadCurrencyList() }
         else if MainRepository.self == A.self { unloadAccountList() }
         else if MainRepository.self == E.self { unloadAssetList() }
         else if MainRepository.self == S.self { unloadStockList() }
@@ -87,22 +89,24 @@ extension ViewModel {
     }
 
     func loadList() async {
-        await loadManageList()
+        await loadInfotableList()
         await loadCurrencyList()
         await loadAccountList()
         await loadAssetList()
         await loadStockList()
         await loadCategoryList()
         await loadPayeeList()
+        await loadManageList()
     }
 
     func unloadList() {
-        unloadManegeList()
+        unloadInfotableList()
         unloadCurrencyList()
         unloadAccountList()
         unloadAssetList()
         unloadStockList()
         unloadCategoryList()
         unloadPayeeList()
+        unloadManegeList()
     }
 }

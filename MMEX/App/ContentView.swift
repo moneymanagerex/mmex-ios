@@ -53,6 +53,7 @@ struct ContentView: View {
                     SidebarView(selectedTab: $selectedTab)
                 } detail: {
                     TabContentView(
+                        vm: vm,
                         selectedTab: $selectedTab,
                         isDocumentPickerPresented: $isDocumentPickerPresented,
                         isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
@@ -66,11 +67,11 @@ struct ContentView: View {
                 let insightsViewModel = InsightsViewModel(env: env)
                 let infotableViewModel = TransactionViewModel(env: env)
                 TabView(selection: $selectedTab) {
-                    checkingTab(viewModel: infotableViewModel)
-                    insightsTab(viewModel: insightsViewModel)
-                    enterTab(viewModel: infotableViewModel)
-                    managementTab(viewModel: infotableViewModel, vm: vm)
-                    settingsTab(viewModel: infotableViewModel)
+                    checkingTab(vm: vm, viewModel: infotableViewModel)
+                    insightsTab(vm: vm, viewModel: insightsViewModel)
+                    enterTab(vm: vm, viewModel: infotableViewModel)
+                    managementTab(vm: vm, viewModel: infotableViewModel)
+                    settingsTab(vm: vm, viewModel: infotableViewModel)
                 }
                 .onChange(of: selectedTab) { _, tab in
                     if tab == 2 { isPresentingTransactionAddView = true }
@@ -132,9 +133,9 @@ struct ContentView: View {
     }
 
     // Transaction tab
-    private func checkingTab(viewModel: TransactionViewModel) -> some View {
+    private func checkingTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            CheckingView(viewModel: viewModel)
+            CheckingView(vm: vm, viewModel: viewModel)
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
         }
         .tabItem {
@@ -144,9 +145,9 @@ struct ContentView: View {
     }
 
     // Insights tab
-    private func insightsTab(viewModel: InsightsViewModel) -> some View {
+    private func insightsTab(vm: ViewModel, viewModel: InsightsViewModel) -> some View {
         NavigationView {
-            InsightsView(viewModel: viewModel)
+            InsightsView(vm: vm, viewModel: viewModel)
                 //.navigationBarTitle("Reports and Insights", displayMode: .inline)
         }
         .tabItem {
@@ -156,9 +157,9 @@ struct ContentView: View {
     }
 
     // Add transaction tab
-    private func enterTab(viewModel: TransactionViewModel) -> some View {
+    private func enterTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            EnterView(viewModel: viewModel, selectedTab: $selectedTab)
+            EnterView(vm: vm, viewModel: viewModel, selectedTab: $selectedTab)
                 // .navigationBarTitle("Enter Transaction", displayMode: .inline)
         }
         .tabItem {
@@ -169,13 +170,13 @@ struct ContentView: View {
 
     // Management tab
     private func managementTab(
-        viewModel: TransactionViewModel,
-        vm: ViewModel
+        vm: ViewModel,
+        viewModel: TransactionViewModel
     ) -> some View {
         NavigationView {
             ManageView(
-                viewModel: viewModel,
                 vm: vm,
+                viewModel: viewModel,
                 isDocumentPickerPresented: $isDocumentPickerPresented,
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
@@ -189,9 +190,9 @@ struct ContentView: View {
     }
 
     // Settings tab
-    private func settingsTab(viewModel: TransactionViewModel) -> some View {
+    private func settingsTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            SettingsView(viewModel: viewModel)
+            SettingsView(vm: vm, viewModel: viewModel)
                 //.navigationBarTitle("Settings", displayMode: .inline)
         }
         .tabItem {
@@ -261,41 +262,41 @@ struct SidebarView: View {
 }
 
 struct TabContentView: View {
+    @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @Binding var selectedTab: Int
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
 
     var body: some View {
         log.trace("TabContentView.body")
         // Use @StateObject to manage the lifecycle of TransactionViewModel
         let insightsViewModel = InsightsViewModel(env: env)
         let infotableViewModel = TransactionViewModel(env: env)
-        let expViewModel = ViewModel(env: env)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {
             case 0:
-                CheckingView(viewModel: infotableViewModel) // Summary and Edit feature
+                CheckingView(vm: vm, viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
-                InsightsView(viewModel: insightsViewModel)
+                InsightsView(vm: vm, viewModel: insightsViewModel)
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
-                EnterView(viewModel: infotableViewModel, selectedTab: $selectedTab)
+                EnterView(vm: vm, viewModel: infotableViewModel, selectedTab: $selectedTab)
                     .navigationBarTitle("Enter Transaction", displayMode: .inline)
             case 3:
                 ManageView(
+                    vm: vm,
                     viewModel:infotableViewModel,
-                    vm: expViewModel,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
                 )
                 .navigationBarTitle("Manage", displayMode: .inline)
             case 4:
-                SettingsView(viewModel: infotableViewModel)
+                SettingsView(vm: vm, viewModel: infotableViewModel)
                     .navigationBarTitle("Settings", displayMode: .inline)
             default:
                 EmptyView()

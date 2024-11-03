@@ -37,14 +37,15 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadManageList(main=\(Thread.isMainThread))")
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
+                load(&taskGroup, keyPath: \Self.infotableList.count),
                 load(&taskGroup, keyPath: \Self.currencyList.count),
                 load(&taskGroup, keyPath: \Self.accountList.count),
                 load(&taskGroup, keyPath: \Self.assetList.count),
                 load(&taskGroup, keyPath: \Self.stockList.count),
                 load(&taskGroup, keyPath: \Self.categoryList.count),
                 load(&taskGroup, keyPath: \Self.payeeList.count),
-                load(&taskGroup, keyPath: \Self.transactionCount),
-                load(&taskGroup, keyPath: \Self.scheduledCount),
+                load(&taskGroup, keyPath: \Self.transactionList.count),
+                load(&taskGroup, keyPath: \Self.scheduledList.count),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
@@ -60,14 +61,15 @@ extension ViewModel {
     func unloadManegeList() {
         guard manageList.unloading() else { return }
         log.trace("DEBUG: ViewModel.unloadManageList(main=\(Thread.isMainThread))")
+        infotableList.count.unload()
         currencyList.count.unload()
         accountList.count.unload()
         assetList.count.unload()
         stockList.count.unload()
         categoryList.count.unload()
         payeeList.count.unload()
-        transactionCount.unload()
-        scheduledCount.unload()
+        transactionList.count.unload()
+        scheduledList.count.unload()
         manageList.unloaded()
     }
 }

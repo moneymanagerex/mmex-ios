@@ -27,6 +27,29 @@ struct LoadMainCount<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
     }
 }
 
+struct LoadMainPluck<MainRepository: RepositoryProtocol, MainValue>: LoadFetchProtocol {
+    typealias ValueType = MainValue?
+    let loadName: String = "Pluck(\(MainRepository.repositoryName))"
+    let idleValue: ValueType = nil
+
+    let key: String
+    let table: SQLite.Table
+    let rowValue: (SQLite.Row) -> MainValue
+    var state: LoadState = .init()
+    var value: ValueType = nil
+
+    init(key: String, table: SQLite.Table = MainRepository.table, with rowValue: @escaping (SQLite.Row) -> MainValue) {
+        self.key = key
+        self.table = table
+        self.rowValue = rowValue
+        self.value = idleValue
+    }
+
+    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
+        MainRepository(env)?.pluck(key: key, from: self.table, with: rowValue).toOptional()
+    }
+}
+
 struct LoadMainData<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
     typealias MainData = MainRepository.RepositoryData
     typealias ValueType = [DataId: MainData]

@@ -15,6 +15,7 @@ class ViewModel: ObservableObject {
     //var subscriptions = Set<AnyCancellable>()
 
     typealias I = InfotableRepository
+    @Published var infotableList : InfotableList  = .init()
 
     typealias U = CurrencyRepository
     typealias UH = CurrencyHistoryRepository
@@ -47,11 +48,13 @@ class ViewModel: ObservableObject {
     typealias TL = TransactionLinkRepository
     typealias TH = TransactionShareRepository
     static let T_table: SQLite.Table = T.table.filter(T.col_deletedTime == "")
-    @Published var transactionCount : LoadMainCount<T> = .init(table: T_table)
+    @Published var transactionList  : TransactionList  = .init()
+    //@Published var transactionGroup : TransactionGroup = .init()
 
     typealias R = ScheduledRepository
     typealias RP = ScheduledSplitRepository
-    @Published var scheduledCount : LoadMainCount<R> = .init()
+    @Published var scheduledList  : ScheduledList  = .init()
+    //@Published var scheduledGroup : ScheduledGroup = .init()
 
     typealias G = TagRepository
     typealias GL = TagLinkRepository
@@ -181,7 +184,9 @@ extension ViewModel {
 
 extension ViewModel {
     func name<DataType: DataProtocol>(_ data: DataType) -> String {
-        if let data = data as? CurrencyData {
+        if let data = data as? InfotableData {
+            return data.name
+        } else if let data = data as? CurrencyData {
             return data.name
         } else if let data = data as? AccountData {
             return data.name

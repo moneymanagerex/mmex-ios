@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
 
     @AppStorage("appearance") private var appearance: Int = UIUserInterfaceStyle.unspecified.rawValue
@@ -139,8 +140,10 @@ enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     SettingsView(
-        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env)
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

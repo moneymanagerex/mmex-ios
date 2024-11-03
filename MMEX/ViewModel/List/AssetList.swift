@@ -29,7 +29,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.assetList.used),
                 load(&taskGroup, keyPath: \Self.assetList.order),
                 load(&taskGroup, keyPath: \Self.assetList.att),
-                // used in EditView
+                // auxiliary
                 load(&taskGroup, keyPath: \Self.currencyList.info),
                 load(&taskGroup, keyPath: \Self.currencyList.name),
                 load(&taskGroup, keyPath: \Self.currencyList.order),

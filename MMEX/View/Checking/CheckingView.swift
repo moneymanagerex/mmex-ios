@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CheckingView: View {
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
 
     @State private var searchQuery: String = "" // New: Search query
@@ -69,6 +70,7 @@ struct CheckingView: View {
 
     func transactionView(_ txn: TransactionData, for day: String) -> some View {
         NavigationLink(destination: TransactionDetailView(
+            vm: vm,
             viewModel: viewModel,
             accountId: $viewModel.accountId,
             categories: $viewModel.categories,
@@ -197,8 +199,10 @@ struct CheckingView: View {
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     CheckingView(
-        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env)
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
