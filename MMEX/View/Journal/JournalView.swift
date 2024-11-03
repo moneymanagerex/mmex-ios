@@ -69,8 +69,10 @@ struct JournalView: View {
             }
         }
         .onAppear {
-            Task { await vm.loadTransactionList() }
-            accountId = (vm.infotableList.defaultAccountId.readyValue ?? nil) ?? DataId.void
+            Task {
+                await vm.loadTransactionList()
+                accountId = (vm.infotableList.defaultAccountId.readyValue ?? nil) ?? DataId.void
+            }
             viewModel.loadTransactions(for: accountId)
             viewModel.loadAccounts()
             viewModel.loadCategories()
