@@ -1,5 +1,5 @@
 //
-//  TransactionEditView2.swift
+//  EnterEditView2.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TransactionEditView: View {
+struct EnterEditView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
@@ -290,7 +290,7 @@ struct TransactionEditView: View {
 
 #Preview("txn 0") {
     let env = EnvironmentManager.sampleData
-    TransactionEditView(
+    EnterEditView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env),
         accountId: .constant(AccountData.sampleDataIds),
@@ -303,7 +303,7 @@ struct TransactionEditView: View {
 
 #Preview("txn 3") {
     let env = EnvironmentManager.sampleData
-    TransactionEditView(
+    EnterEditView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env),
         accountId: .constant(AccountData.sampleDataIds),

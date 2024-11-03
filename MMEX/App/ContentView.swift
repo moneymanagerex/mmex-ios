@@ -67,7 +67,7 @@ struct ContentView: View {
                 let insightsViewModel = InsightsViewModel(env: env)
                 let infotableViewModel = TransactionViewModel(env: env)
                 TabView(selection: $selectedTab) {
-                    checkingTab(vm: vm, viewModel: infotableViewModel)
+                    journalTab(vm: vm, viewModel: infotableViewModel)
                     insightsTab(vm: vm, viewModel: insightsViewModel)
                     enterTab(vm: vm, viewModel: infotableViewModel)
                     managementTab(vm: vm, viewModel: infotableViewModel)
@@ -133,13 +133,13 @@ struct ContentView: View {
     }
 
     // Transaction tab
-    private func checkingTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
+    private func journalTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            CheckingView(vm: vm, viewModel: viewModel)
+            JournalView(vm: vm, viewModel: viewModel)
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
         }
         .tabItem {
-            env.theme.tab.iconText(icon: "list.bullet", text: "Checking")
+            env.theme.tab.iconText(icon: "list.bullet", text: "Journal")
         }
         .tag(0)
     }
@@ -278,7 +278,7 @@ struct TabContentView: View {
         return Group {
             switch selectedTab {
             case 0:
-                CheckingView(vm: vm, viewModel: infotableViewModel) // Summary and Edit feature
+                JournalView(vm: vm, viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
                 InsightsView(vm: vm, viewModel: insightsViewModel)

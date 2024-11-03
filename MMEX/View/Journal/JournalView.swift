@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CheckingView: View {
+struct JournalView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
@@ -41,7 +41,9 @@ struct CheckingView: View {
                         let accountData  = vm.accountList.data.readyValue
                     {
                         Picker("Select Account", selection: $accountId) {
-                            //Text("Select Account").tag(0)
+                            if accountId.isVoid {
+                                Text("Select Account").tag(DataId.void)
+                            }
                             ForEach(accountOrder) { id in
                                 if let account = accountData[id] {
                                     HStack{
@@ -68,7 +70,7 @@ struct CheckingView: View {
         }
         .onAppear {
             Task { await vm.loadTransactionList() }
-            accountId = viewModel.defaultAccountId
+            accountId = (vm.infotableList.defaultAccountId.readyValue ?? nil) ?? DataId.void
             viewModel.loadTransactions(for: accountId)
             viewModel.loadAccounts()
             viewModel.loadCategories()
@@ -210,7 +212,7 @@ struct CheckingView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    CheckingView(
+    JournalView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env)
     )

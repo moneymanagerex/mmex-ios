@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "(none)" : {
+
+    },
     "%@" : {
       "localizations" : {
         "it" : {
@@ -316,6 +319,9 @@
           }
         }
       }
+    },
+    "Database Maintenance" : {
+
     },
     "Database Settings" : {
       "localizations" : {
