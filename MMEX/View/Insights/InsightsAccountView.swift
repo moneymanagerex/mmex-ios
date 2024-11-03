@@ -9,6 +9,7 @@ import SwiftUI
 
 struct InsightsAccountView: View {
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: InsightsViewModel
     @Binding var statusChoice: Int
     @State private var expandedSections: [AccountType: Bool] = [:]
@@ -145,14 +146,16 @@ struct InsightsAccountView: View {
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     NavigationStack {
         ScrollView {
             InsightsAccountView(
-                viewModel: InsightsViewModel(env: EnvironmentManager.sampleData),
+                vm: ViewModel(env: env),
+                viewModel: InsightsViewModel(env: env),
                 statusChoice: .constant(0)
             )
         }
         .navigationBarTitleDisplayMode(.inline)
     }
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

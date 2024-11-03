@@ -10,6 +10,7 @@ import Charts
 
 struct InsightsView: View {
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: InsightsViewModel
     @State var statusChoice: Int = 0
     @State var accountBalanceIsExpanded = true
@@ -29,6 +30,7 @@ struct InsightsView: View {
                         }
                     } ) { if accountBalanceIsExpanded {
                         InsightsAccountView(
+                            vm: vm,
                             viewModel: viewModel,
                             statusChoice: $statusChoice
                         )
@@ -101,8 +103,10 @@ struct InsightsView: View {
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     InsightsView(
-        viewModel: InsightsViewModel(env: EnvironmentManager.sampleData)
+        vm: ViewModel(env: env),
+        viewModel: InsightsViewModel(env: env)
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
     @Binding var accountId: [DataId]  // sorted by name
     @Binding var categories: [CategoryData]
@@ -131,6 +132,7 @@ struct TransactionDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 TransactionEditView(
+                    vm: vm,
                     viewModel: viewModel,
                     accountId: $accountId,
                     categories: $categories,
@@ -181,34 +183,40 @@ struct TransactionDetailView: View {
 }
 
 #Preview("txn 0") {
+    let env = EnvironmentManager.sampleData
     TransactionDetailView(
-        viewModel: TransactionViewModel(env: EnvironmentManager()),
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[0])
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
 
 #Preview("txn 2") {
+    let env = EnvironmentManager.sampleData
     TransactionDetailView(
-        viewModel: TransactionViewModel(env: EnvironmentManager()),
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[2])
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
 
 #Preview("txn 3") {
+    let env = EnvironmentManager.sampleData
     TransactionDetailView(
-        viewModel: TransactionViewModel(env: EnvironmentManager()),
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[3])
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

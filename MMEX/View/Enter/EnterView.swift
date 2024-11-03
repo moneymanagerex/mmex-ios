@@ -9,7 +9,8 @@ import SwiftUI
 
 struct EnterView: View {
     @State var newTxn: TransactionData = TransactionData()
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
     @Binding var selectedTab: Int // Bind to the selected tab
 
@@ -21,6 +22,7 @@ struct EnterView: View {
     var body: some View {
         NavigationStack {
             TransactionEditView(
+                vm: vm,
                 viewModel: viewModel,
                 accountId: $accountId,
                 categories: $viewModel.categories,

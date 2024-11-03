@@ -28,7 +28,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.stockList.used),
                 load(&taskGroup, keyPath: \Self.stockList.order),
                 load(&taskGroup, keyPath: \Self.stockList.att),
-                // used in EditView
+                // auxiliary
                 load(&taskGroup, keyPath: \Self.currencyList.info),
                 load(&taskGroup, keyPath: \Self.accountList.data),
                 load(&taskGroup, keyPath: \Self.accountList.order),

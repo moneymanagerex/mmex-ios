@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct TransactionListView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
@@ -21,6 +22,7 @@ struct TransactionListView: View {
         Group {
             List($viewModel.txns) { $txn in
                 NavigationLink(destination: TransactionDetailView(
+                    vm: vm,
                     viewModel: viewModel,
                     accountId: $viewModel.accountId,
                     categories: $viewModel.categories,
@@ -97,6 +99,7 @@ struct TransactionListView: View {
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(
+                vm: vm,
                 viewModel: viewModel,
                 accountId: $viewModel.accountId,
                 categories: $viewModel.categories,
@@ -146,8 +149,10 @@ struct TransactionListView: View {
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     TransactionListView(
-        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData)
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env)
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

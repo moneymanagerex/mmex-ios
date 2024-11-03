@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct CategoryListView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
-    
+
     @State private var isPresentingAddView = false
     @State private var newCategory = CategoryData()
     @State private var searchQuery: String = "" // New: Search query
@@ -55,6 +56,10 @@ struct CategoryListView: View {
 }
 
 #Preview {
-    CategoryListView(viewModel: TransactionViewModel(env: EnvironmentManager.sampleData))
-        .environmentObject(EnvironmentManager.sampleData)
+    let env = EnvironmentManager.sampleData
+    CategoryListView(
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env)
+    )
+    .environmentObject(env)
 }

@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ManageView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    @ObservedObject var viewModel: TransactionViewModel
+    @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
+    @ObservedObject var viewModel: TransactionViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
@@ -42,7 +42,7 @@ struct ManageView: View {
                         count: vm.stockList.count
                     )
                 }
-                NavigationLink(destination: CategoryListView(viewModel: viewModel)) {
+                NavigationLink(destination: CategoryListView(vm: vm, viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(CategoryData.dataName.1) },
                         count: vm.categoryList.count
@@ -54,12 +54,15 @@ struct ManageView: View {
                         count: vm.payeeList.count
                     )
                 }
-                NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
+                NavigationLink(destination: TransactionListView(vm: vm, viewModel: viewModel)) {
                     env.theme.group.manageItem(
                         name: { Text(TransactionData.dataName.1) },
-                        count: vm.transactionCount
+                        count: vm.transactionList.count
                     )
                 }
+            }
+            
+            Section(header: Text("Auxiliary Data")) {
             }
             
             Section(header: Text("Database")) {
@@ -119,12 +122,13 @@ struct ManageView: View {
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     ManageView(
-        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
-        vm: ViewModel(env: EnvironmentManager.sampleData),
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env),
         isDocumentPickerPresented: .constant(false),
         isNewDocumentPickerPresented: .constant(false),
         isSampleDocument: .constant(false)
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

@@ -58,7 +58,7 @@ extension ViewModel {
         else if MainRepository.self == C.self { loadCategoryGroup(choice: choice as! CategoryGroupChoice) }
         else if MainRepository.self == P.self { loadPayeeGroup(choice: choice as! PayeeGroupChoice) }
     }
-    
+
     func unloadGroup<GroupType: GroupProtocol>(_ group: GroupType) {
         typealias MainRepository = GroupType.MainRepository
         /**/ if MainRepository.self == U.self { unloadCurrencyGroup() }

@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct TransactionEditView: View {
-    @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
+    @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
     @Binding var accountId: [DataId] // sorted by name
     @Binding var categories: [CategoryData]
@@ -288,23 +289,27 @@ struct TransactionEditView: View {
 }
 
 #Preview("txn 0") {
+    let env = EnvironmentManager.sampleData
     TransactionEditView(
-        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[0])
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }
 
 #Preview("txn 3") {
+    let env = EnvironmentManager.sampleData
     TransactionEditView(
-        viewModel: TransactionViewModel(env: EnvironmentManager.sampleData),
+        vm: ViewModel(env: env),
+        viewModel: TransactionViewModel(env: env),
         accountId: .constant(AccountData.sampleDataIds),
         categories: .constant(CategoryData.sampleData),
         payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[3])
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

@@ -30,6 +30,8 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.categoryList.data),
                 load(&taskGroup, keyPath: \Self.categoryList.used),
                 load(&taskGroup, keyPath: \Self.categoryList.order),
+                // auxiliary
+                load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
@@ -64,7 +66,7 @@ struct LoadCategoryPath: LoadEvalProtocol {
     }
 
     nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
-        await vm.evalCategoryPath()
+        await vm.evalCategoryPath(sep: (vm.infotableList.categoryDelimiter.readyValue ?? nil) ?? ":")
     }
 }
 
