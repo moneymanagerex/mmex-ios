@@ -83,11 +83,13 @@ struct SettingsView: View {
                 .pickerStyle(NavigationLinkPickerStyle())
  
                 Picker("Default Account", selection: $viewModel.defaultAccountId) {
+                    if viewModel.defaultAccountId.isVoid {
+                        HStack { Text("(none)") }
+                            .tag(DataId.void)
+                    }
                     ForEach(viewModel.accounts) { account in
-                        HStack {
-                            Text(account.name)
-                        }
-                        .tag(account.id)
+                        HStack { Text(account.name) }
+                            .tag(account.id)
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())

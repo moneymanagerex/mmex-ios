@@ -131,7 +131,7 @@ struct TransactionDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                TransactionEditView(
+                EnterEditView(
                     vm: vm,
                     viewModel: viewModel,
                     accountId: $accountId,

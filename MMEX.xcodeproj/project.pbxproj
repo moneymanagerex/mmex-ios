@@ -157,8 +157,8 @@
 		A3C142A42C9033E300D3CEC0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A32C9033E300D3CEC0 /* SettingsView.swift */; };
 		A3C142A62C90417700D3CEC0 /* EnterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A52C90417700D3CEC0 /* EnterView.swift */; };
 		A3C142A82C906E0A00D3CEC0 /* CustomNumberPadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */; };
-		A3C142AA2C90721800D3CEC0 /* CheckingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A92C90721800D3CEC0 /* CheckingView.swift */; };
-		A3C142AC2C909C1C00D3CEC0 /* TransactionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */; };
+		A3C142AA2C90721800D3CEC0 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A92C90721800D3CEC0 /* JournalView.swift */; };
+		A3C142AC2C909C1C00D3CEC0 /* EnterEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AB2C909C1C00D3CEC0 /* EnterEditView.swift */; };
 		A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -312,8 +312,8 @@
 		A3C142A32C9033E300D3CEC0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A3C142A52C90417700D3CEC0 /* EnterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterView.swift; sourceTree = "<group>"; };
 		A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNumberPadView.swift; sourceTree = "<group>"; };
-		A3C142A92C90721800D3CEC0 /* CheckingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckingView.swift; sourceTree = "<group>"; };
-		A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionEditView.swift; sourceTree = "<group>"; };
+		A3C142A92C90721800D3CEC0 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
+		A3C142AB2C909C1C00D3CEC0 /* EnterEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterEditView.swift; sourceTree = "<group>"; };
 		A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -381,18 +381,19 @@
 			path = Manage;
 			sourceTree = "<group>";
 		};
-		924352F72CB2EA5C0052E4BC /* Checking */ = {
+		924352F72CB2EA5C0052E4BC /* Journal */ = {
 			isa = PBXGroup;
 			children = (
-				A3C142A92C90721800D3CEC0 /* CheckingView.swift */,
+				A3C142A92C90721800D3CEC0 /* JournalView.swift */,
 			);
-			path = Checking;
+			path = Journal;
 			sourceTree = "<group>";
 		};
 		924352F82CB2EAD40052E4BC /* Enter */ = {
 			isa = PBXGroup;
 			children = (
 				A3C142A52C90417700D3CEC0 /* EnterView.swift */,
+				A3C142AB2C909C1C00D3CEC0 /* EnterEditView.swift */,
 			);
 			path = Enter;
 			sourceTree = "<group>";
@@ -551,7 +552,6 @@
 				A3C142972C8FE62200D3CEC0 /* TransactionListView.swift */,
 				A3C142992C8FF77D00D3CEC0 /* TransactionDetailView.swift */,
 				A3C1429D2C8FFCF100D3CEC0 /* TransactionAddView.swift */,
-				A3C142AB2C909C1C00D3CEC0 /* TransactionEditView.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -711,7 +711,7 @@
 		A3C142452C89CB1600D3CEC0 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				924352F72CB2EA5C0052E4BC /* Checking */,
+				924352F72CB2EA5C0052E4BC /* Journal */,
 				A3B51C072CA8E03100BB0681 /* Insights */,
 				924352F82CB2EAD40052E4BC /* Enter */,
 				924352F62CB2EA3D0052E4BC /* Manage */,
@@ -853,7 +853,7 @@
 				920824042CA4ADC100388AB2 /* ScheduledSplitData.swift in Sources */,
 				925EABA62CCF81C9003CEAB3 /* AccountValidation.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
-				A3C142AC2C909C1C00D3CEC0 /* TransactionEditView.swift in Sources */,
+				A3C142AC2C909C1C00D3CEC0 /* EnterEditView.swift in Sources */,
 				A3C142962C8FE15E00D3CEC0 /* TransactionRepository.swift in Sources */,
 				A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */,
 				924352E02CA9CC5A0052E4BC /* InsightsAccountView.swift in Sources */,
@@ -863,7 +863,7 @@
 				920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */,
 				920824242CA5078900388AB2 /* TransactionShareData.swift in Sources */,
 				920824062CA4AE0A00388AB2 /* TransactionSplitRepository.swift in Sources */,
-				A3C142AA2C90721800D3CEC0 /* CheckingView.swift in Sources */,
+				A3C142AA2C90721800D3CEC0 /* JournalView.swift in Sources */,
 				A3C142A62C90417700D3CEC0 /* EnterView.swift in Sources */,
 				920824262CA5082D00388AB2 /* TransactionShareRepository.swift in Sources */,
 				A3C1429A2C8FF77D00D3CEC0 /* TransactionDetailView.swift in Sources */,

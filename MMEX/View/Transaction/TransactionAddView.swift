@@ -20,7 +20,7 @@ struct TransactionAddView: View {
     
     var body: some View {
         NavigationStack {
-            TransactionEditView(
+            EnterEditView(
                 vm: vm,
                 viewModel: viewModel,
                 accountId: $accountId,
