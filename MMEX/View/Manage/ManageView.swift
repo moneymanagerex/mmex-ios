@@ -15,6 +15,8 @@ struct ManageView: View {
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
 
+    @State var auxDataIsExpanded = false
+
     var body: some View {
         List {
             Section(header: Text("Data")) {
@@ -62,9 +64,19 @@ struct ManageView: View {
                 }
             }
             
-            Section(header: Text("Auxiliary Data")) {
-            }
-            
+            Section(header: HStack {
+                Button(action: { auxDataIsExpanded.toggle() }) {
+                    env.theme.group.view(
+                        name: { Text("Auxiliary Data") },
+                        isExpanded: auxDataIsExpanded
+                    )
+                }
+            } ) { if auxDataIsExpanded {
+                Text("Coming soon ...")
+                    .foregroundColor(.accentColor)
+                    .opacity(0.6)
+            } }
+
             Section(header: Text("Database")) {
                 Button(action: {
                     isDocumentPickerPresented = true
@@ -76,6 +88,7 @@ struct ManageView: View {
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(10)
+                .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
 
                 Button(action: {
                     isNewDocumentPickerPresented = true
@@ -88,18 +101,22 @@ struct ManageView: View {
                 .background(Color.green)
                 .foregroundColor(.white)
                 .cornerRadius(10)
+                .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
 
-                Button(action: {
-                    isNewDocumentPickerPresented = true
-                    isSampleDocument = true
-                }) {
-                    Text("Sample Database")
-                        .frame(maxWidth: .infinity, alignment: .center)
+                if false {
+                    Button(action: {
+                        isNewDocumentPickerPresented = true
+                        isSampleDocument = true
+                    }) {
+                        Text("Sample Database")
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                    .padding()
+                    .background(Color.orange)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
                 }
-                .padding()
-                .background(Color.orange)
-                .foregroundColor(.white)
-                .cornerRadius(10)
 
                 // Close Database Button
                 Button(action: {
@@ -112,7 +129,15 @@ struct ManageView: View {
                 .background(Color.red)
                 .foregroundColor(.white)
                 .cornerRadius(10)
+                .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
             }
+
+            Section(header: Text("Database Maintenance")) {
+                Text("Coming soon ...")
+                    .foregroundColor(.accentColor)
+                    .opacity(0.6)
+            }
+
         }
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .task {
