@@ -25,11 +25,15 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.scheduledList.data),
                 load(&taskGroup, keyPath: \Self.scheduledList.used),
                 // auxiliary
+                load(&taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
                 load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                load(&taskGroup, keyPath: \Self.currencyList.info),
                 load(&taskGroup, keyPath: \Self.accountList.data),
                 load(&taskGroup, keyPath: \Self.accountList.order),
                 load(&taskGroup, keyPath: \Self.categoryList.data),
                 load(&taskGroup, keyPath: \Self.categoryList.order),
+                load(&taskGroup, keyPath: \Self.payeeList.data),
+                load(&taskGroup, keyPath: \Self.payeeList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
