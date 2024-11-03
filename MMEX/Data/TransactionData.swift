@@ -1,12 +1,12 @@
 //
-//  Transaction.swift
+//  TransactionData.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/9.
 //
 
-import SQLite
 import Foundation
+import SQLite
 
 enum TransactionType: String, EnumCollateNoCase {
     case withdrawal = "Withdrawal"

@@ -68,11 +68,10 @@ struct JournalView: View {
                 viewModel.filterTransactions(by: query)
             }
         }
-        .onAppear {
-            Task {
-                await vm.loadTransactionList()
-                accountId = (vm.infotableList.defaultAccountId.readyValue ?? nil) ?? DataId.void
-            }
+        .task {
+            log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
+            await vm.loadTransactionList()
+            accountId = (vm.infotableList.defaultAccountId.readyValue ?? nil) ?? DataId.void
             viewModel.loadTransactions(for: accountId)
             viewModel.loadAccounts()
             viewModel.loadCategories()

@@ -1,5 +1,5 @@
 //
-//  CurrencyHistory.swift
+//  CurrencyHistoryData.swift
 //  MMEX
 //
 //  Created 2024-09-25 by George Ef (george.a.ef@gmail.com)

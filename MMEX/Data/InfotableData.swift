@@ -1,5 +1,5 @@
 //
-//  Infotable.swift
+//  InfotableData.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/18.
