@@ -1,19 +1,19 @@
 //
-//  BudgetYear.swift
+//  YearData.swift
 //  MMEX
 //
-//  Created 2024-09-26 by George Ef (george.a.ef@gmail.com)
+//  2024-09-26: Created by George Ef (george.a.ef@gmail.com)
 //
 
 import Foundation
 import SQLite
 
-struct BudgetYearData: ExportableEntity {
+struct YearData: ExportableEntity {
     var id   : DataId = .void
     var name : String = ""
 }
 
-extension BudgetYearData: DataProtocol {
+extension YearData: DataProtocol {
     static let dataName = ("Budget Year", "Budget Years")
 
     func shortDesc() -> String {
@@ -21,7 +21,7 @@ extension BudgetYearData: DataProtocol {
     }
 }
 
-extension BudgetYearData {
-    static let sampleData: [BudgetYearData] = [
+extension YearData {
+    static let sampleData: [YearData] = [
     ]
 }

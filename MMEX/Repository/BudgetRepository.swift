@@ -1,15 +1,15 @@
 //
-//  BudgetTableRepository.swift
+//  BudgetRepository.swift
 //  MMEX
 //
-//  Created 2024-09-26 by George Ef (george.a.ef@gmail.com)
+//  2024-09-26: Created by George Ef (george.a.ef@gmail.com)
 //
 
 import Foundation
 import SQLite
 
-struct BudgetTableRepository: RepositoryProtocol {
-    typealias RepositoryData = BudgetTableData
+struct BudgetRepository: RepositoryProtocol {
+    typealias RepositoryData = BudgetData
 
     let db: Connection
 
@@ -50,8 +50,8 @@ struct BudgetTableRepository: RepositoryProtocol {
         )
     }
 
-    static func fetchData(_ row: SQLite.Row) -> BudgetTableData {
-        return BudgetTableData(
+    static func fetchData(_ row: SQLite.Row) -> BudgetData {
+        return BudgetData(
             id      : DataId(row[col_id]),
             yearId  : DataId(row[col_yearId] ?? -1),
             categId : DataId(row[col_categId] ?? -1),
@@ -62,7 +62,7 @@ struct BudgetTableRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ data: BudgetTableData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: BudgetData) -> [SQLite.Setter] {
         return [
             col_yearId  <- Int64(data.yearId),
             col_categId <- Int64(data.categId),
@@ -74,9 +74,9 @@ struct BudgetTableRepository: RepositoryProtocol {
     }
 }
 
-extension BudgetTableRepository {
+extension BudgetRepository {
     // load all budget tables
-    func load() -> [BudgetTableData]? {
+    func load() -> [BudgetData]? {
         return select(from: Self.table
             .order(Self.col_id)
         )

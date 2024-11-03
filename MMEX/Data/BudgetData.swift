@@ -1,8 +1,8 @@
 //
-//  BudgetTable.swift
+//  BudgetData.swift
 //  MMEX
 //
-//  Created 2024-09-26 by George Ef (george.a.ef@gmail.com)
+//  2024-09-26: Created by George Ef (george.a.ef@gmail.com)
 //
 
 import Foundation
@@ -21,7 +21,7 @@ enum BudgetPeriod: String, EnumCollateNoCase {
     static let defaultValue = Self.none
 }
 
-struct BudgetTableData: ExportableEntity {
+struct BudgetData: ExportableEntity {
     var id      : DataId       = .void
     var yearId  : DataId       = .void
     var categId : DataId       = .void
@@ -31,15 +31,15 @@ struct BudgetTableData: ExportableEntity {
     var active  : Bool         = false
 }
 
-extension BudgetTableData: DataProtocol {
-    static let dataName = ("Budget Table", "Budget Tables")
+extension BudgetData: DataProtocol {
+    static let dataName = ("Budget", "Budget")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
     }
 }
 
-extension BudgetTableData {
-    static let sampleData: [BudgetTableData] = [
+extension BudgetData {
+    static let sampleData: [BudgetData] = [
     ]
 }

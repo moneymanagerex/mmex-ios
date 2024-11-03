@@ -392,9 +392,9 @@ extension Repository {
 
         var budgetYearMap: [DataId: DataId] = [:]
         do {
-            let repo = BudgetYearRepository(db)
+            let repo = YearRepository(db)
             guard repo.deleteAll() else { return false }
-            for var data in BudgetYearData.sampleData {
+            for var data in YearData.sampleData {
                 let id = data.id
                 guard repo.insert(&data) else { return false }
                 budgetYearMap[id] = data.id
@@ -403,9 +403,9 @@ extension Repository {
 
         var budgetTableMap: [DataId: DataId] = [:]
         do {
-            let repo = BudgetTableRepository(db)
+            let repo = BudgetRepository(db)
             guard repo.deleteAll() else { return false }
-            for var data in BudgetTableData.sampleData {
+            for var data in BudgetData.sampleData {
                 let id = data.id
                 data.yearId  = budgetYearMap[data.yearId] ?? data.yearId
                 data.categId = categoryMap[data.categId]  ?? data.categId

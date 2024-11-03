@@ -1,12 +1,12 @@
 //
-//  Scheduled.swift
+//  ScheduledData.swift
 //  MMEX
 //
 //  Created 2024-09-22 by George Ef (george.a.ef@gmail.com)
 //
 
-import SQLite
 import Foundation
+import SQLite
 
 enum RepeatAuto: Int, CaseIterable, Identifiable, Codable {
     case none = 0

@@ -62,7 +62,7 @@ struct CategoryRepository: RepositoryProtocol {
         typealias TP = TransactionSplitRepository
         typealias R = ScheduledRepository
         typealias RP = ScheduledSplitRepository
-        typealias B = BudgetTableRepository
+        typealias B = BudgetRepository
         let CP_table: SQLite.Table = C.table.alias("Parent")
 
         // problem: compiler cannot determine the type with too many union terms

@@ -61,8 +61,8 @@ class ViewModel: ObservableObject {
     typealias F = FieldRepository
     typealias FD = FieldContentRepository
     typealias AX = AttachmentRepository
-    typealias Y = BudgetYearRepository
-    typealias B = BudgetTableRepository
+    typealias Y = YearRepository
+    typealias B = BudgetRepository
     typealias O = ReportRepository
 
     @Published var manageList: LoadState = .init()
