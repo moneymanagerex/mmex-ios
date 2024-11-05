@@ -57,6 +57,7 @@ extension ViewModel {
         else if MainRepository.self == S.self { loadStockGroup(choice: choice as! StockGroupChoice) }
         else if MainRepository.self == C.self { loadCategoryGroup(choice: choice as! CategoryGroupChoice) }
         else if MainRepository.self == P.self { loadPayeeGroup(choice: choice as! PayeeGroupChoice) }
+        else if MainRepository.self == G.self { loadTagGroup(choice: choice as! TagGroupChoice) }
     }
 
     func unloadGroup<GroupType: GroupProtocol>(_ group: GroupType) {
@@ -67,6 +68,7 @@ extension ViewModel {
         else if MainRepository.self == S.self { unloadStockGroup() }
         else if MainRepository.self == C.self { unloadCategoryGroup() }
         else if MainRepository.self == P.self { unloadPayeeGroup() }
+        else if MainRepository.self == G.self { unloadTagGroup() }
     }
 
     func unloadGroup() {
@@ -76,6 +78,7 @@ extension ViewModel {
         unloadStockGroup()
         unloadCategoryGroup()
         unloadPayeeGroup()
+        unloadTagGroup()
     }
 
     func unloadAll() {
