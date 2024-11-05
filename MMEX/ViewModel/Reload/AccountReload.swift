@@ -65,15 +65,6 @@ extension ViewModel {
             accountList.data.state.loaded()
         }
 
-        if accountList.name.state.unloading() {
-            if let newData {
-                accountList.name.value[newData.id] = newData.name
-            } else if let oldData {
-                accountList.name.value[oldData.id] = nil
-            }
-            accountList.name.state.loaded()
-        }
-
         accountList.order.unload()
 
         if let _ = newData {

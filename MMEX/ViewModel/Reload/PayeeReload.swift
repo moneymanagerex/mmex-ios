@@ -47,15 +47,6 @@ extension ViewModel {
             payeeList.data.state.loaded()
         }
 
-        if payeeList.name.state.unloading() {
-            if let newData {
-                payeeList.name.value[newData.id] = newData.name
-            } else if let oldData {
-                payeeList.name.value[oldData.id] = nil
-            }
-            payeeList.name.state.loaded()
-        }
-
         payeeList.order.unload()
 
         if let _ = newData {
