@@ -354,9 +354,9 @@ extension Repository {
 
         var fieldContentMap: [DataId: DataId] = [:]
         do {
-            let repo = FieldContentRepository(db)
+            let repo = FieldValueRepository(db)
             guard repo.deleteAll() else { return false }
-            for var data in FieldContentData.sampleData {
+            for var data in FieldValueData.sampleData {
                 let id = data.id
                 data.refId = switch data.refType {
                 case .transaction : transactionMap[data.refId] ?? data.refId

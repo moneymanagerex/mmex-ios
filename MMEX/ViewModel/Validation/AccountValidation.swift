@@ -58,7 +58,7 @@ extension ViewModel {
             return "* Account #\(data.id.value) is used"
         }
 
-        guard let a = A(env), let ax = AX(env) else {
+        guard let a = A(env), let d = D(env) else {
             return "* Database is not available"
         }
 
@@ -66,7 +66,7 @@ extension ViewModel {
             return "* accountAtt is not loaded"
         }
         if accountAtt[data.id] != nil {
-            guard ax.delete(refType: .account, refId: data.id) else {
+            guard d.delete(refType: .account, refId: data.id) else {
                 return "* Cannot delete attachments for account #\(data.id.value)"
             }
         }

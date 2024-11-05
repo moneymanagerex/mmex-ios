@@ -55,7 +55,7 @@ extension ViewModel {
             return "* Stock #\(data.id.value) is used"
         }
 
-        guard let s = S(env), let ax = AX(env) else {
+        guard let s = S(env), let d = D(env) else {
             return "* Database is not available"
         }
 
@@ -66,7 +66,7 @@ extension ViewModel {
             return "* stockAtt is not loaded"
         }
         if stockAtt[data.id] != nil {
-            guard ax.delete(refType: .stock, refId: data.id) else {
+            guard d.delete(refType: .stock, refId: data.id) else {
                 return "* Cannot delete attachments for stock #\(data.id.value)"
             }
         }

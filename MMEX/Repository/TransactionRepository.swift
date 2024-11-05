@@ -123,24 +123,24 @@ struct TransactionRepository: RepositoryProtocol {
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
         typealias TP = TransactionSplitRepository
         typealias TL = TransactionLinkRepository
-        typealias TH = TransactionShareRepository
+        typealias TS = TransactionShareRepository
         typealias GL = TagLinkRepository
-        typealias FD = FieldContentRepository
-        typealias AX = AttachmentRepository
+        typealias V = FieldValueRepository
+        typealias D = AttachmentRepository
         let cond = "EXISTS (" + (TP.table.select(1).where(
             TP.table[TP.col_transId] == Self.table[Self.col_id]
         ) ).union(TL.table.select(1).where(
             TL.table[TL.col_transId] == Self.table[Self.col_id]
-        ) ).union(TH.table.select(1).where(
-            TH.table[TH.col_transId] == Self.table[Self.col_id]
+        ) ).union(TS.table.select(1).where(
+            TS.table[TS.col_transId] == Self.table[Self.col_id]
         ) ).union(GL.table.select(1).where(
             GL.table[GL.col_refType] == RefType.transaction.rawValue &&
             GL.table[GL.col_refId] == Self.table[Self.col_id]
-        ) ).union(FD.table.select(1).where(
-            FD.table[FD.col_refId] == Self.table[Self.col_id]
-        ) ).union(AX.table.select(1).where(
-            AX.table[AX.col_refType] == RefType.transaction.rawValue &&
-            AX.table[AX.col_refId] == Self.table[Self.col_id]
+        ) ).union(V.table.select(1).where(
+            V.table[V.col_refId] == Self.table[Self.col_id]
+        ) ).union(D.table.select(1).where(
+            D.table[D.col_refType] == RefType.transaction.rawValue &&
+            D.table[D.col_refId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
