@@ -110,6 +110,9 @@
 		925EAC222CDAB03B003CEAB3 /* AttachmentReload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC212CDAB03B003CEAB3 /* AttachmentReload.swift */; };
 		925EAC242CDAB100003CEAB3 /* AttachmentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC232CDAB100003CEAB3 /* AttachmentListView.swift */; };
 		925EAC272CDAB134003CEAB3 /* AttachmentEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC262CDAB134003CEAB3 /* AttachmentEditView.swift */; };
+		925EAC292CDABF9F003CEAB3 /* FieldList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC282CDABF9F003CEAB3 /* FieldList.swift */; };
+		925EAC2B2CDAC10D003CEAB3 /* FieldGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC2A2CDAC10D003CEAB3 /* FieldGroup.swift */; };
+		925EAC2D2CDAC36F003CEAB3 /* FieldSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC2C2CDAC36F003CEAB3 /* FieldSearch.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -281,6 +284,9 @@
 		925EAC212CDAB03B003CEAB3 /* AttachmentReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentReload.swift; sourceTree = "<group>"; };
 		925EAC232CDAB100003CEAB3 /* AttachmentListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentListView.swift; sourceTree = "<group>"; };
 		925EAC262CDAB134003CEAB3 /* AttachmentEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentEditView.swift; sourceTree = "<group>"; };
+		925EAC282CDABF9F003CEAB3 /* FieldList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldList.swift; sourceTree = "<group>"; };
+		925EAC2A2CDAC10D003CEAB3 /* FieldGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGroup.swift; sourceTree = "<group>"; };
+		925EAC2C2CDAC36F003CEAB3 /* FieldSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldSearch.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -461,6 +467,7 @@
 				925EAB9C2CCDD67C003CEAB3 /* CategoryGroup.swift */,
 				924353362CCD2DDA0052E4BC /* PayeeGroup.swift */,
 				925EAC0C2CDA89BD003CEAB3 /* TagGroup.swift */,
+				925EAC2A2CDAC10D003CEAB3 /* FieldGroup.swift */,
 				925EAC1B2CDAA900003CEAB3 /* AttachmentGroup.swift */,
 			);
 			path = Group;
@@ -477,6 +484,7 @@
 				925EAB9E2CCDDD77003CEAB3 /* CategorySearch.swift */,
 				924353402CCD2FFA0052E4BC /* PayeeSearch.swift */,
 				925EAC0E2CDA8B1A003CEAB3 /* TagSearch.swift */,
+				925EAC2C2CDAC36F003CEAB3 /* FieldSearch.swift */,
 				925EAC1D2CDAAD3F003CEAB3 /* AttachmentSearch.swift */,
 			);
 			path = Search;
@@ -496,6 +504,7 @@
 				925EABB72CD6FAC7003CEAB3 /* TransactionList.swift */,
 				925EABB92CD6FBF7003CEAB3 /* ScheduledList.swift */,
 				925EAC0A2CDA8903003CEAB3 /* TagList.swift */,
+				925EAC282CDABF9F003CEAB3 /* FieldList.swift */,
 				925EAC192CDAA813003CEAB3 /* AttachmentList.swift */,
 				9243531C2CC5201C0052E4BC /* ManageList.swift */,
 			);
@@ -904,6 +913,7 @@
 				929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */,
 				9243534D2CCD38830052E4BC /* AssetList.swift in Sources */,
 				925EAB9D2CCDD67C003CEAB3 /* CategoryGroup.swift in Sources */,
+				925EAC2B2CDAC10D003CEAB3 /* FieldGroup.swift in Sources */,
 				925EAC272CDAB134003CEAB3 /* AttachmentEditView.swift in Sources */,
 				925EAC1A2CDAA813003CEAB3 /* AttachmentList.swift in Sources */,
 				A37E7D922C9AC60000B4ECFC /* ContactSupportView.swift in Sources */,
@@ -913,6 +923,7 @@
 				925EABB82CD6FAC7003CEAB3 /* TransactionList.swift in Sources */,
 				A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */,
 				925EABBA2CD6FBF7003CEAB3 /* ScheduledList.swift in Sources */,
+				925EAC2D2CDAC36F003CEAB3 /* FieldSearch.swift in Sources */,
 				925EABB22CCFFC2E003CEAB3 /* Reload.swift in Sources */,
 				A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */,
@@ -962,6 +973,7 @@
 				924353492CCD36890052E4BC /* CurrencyList.swift in Sources */,
 				924352FA2CB355CF0052E4BC /* SettingsThemeView.swift in Sources */,
 				925EABAC2CCF826F003CEAB3 /* CategoryValidation.swift in Sources */,
+				925EAC292CDABF9F003CEAB3 /* FieldList.swift in Sources */,
 				9208240A2CA4C2AD00388AB2 /* YearData.swift in Sources */,
 				924353392CCD2F310052E4BC /* CurrencySearch.swift in Sources */,
 				925EAC152CDA8EEA003CEAB3 /* TagListView.swift in Sources */,
