@@ -63,6 +63,8 @@ class ViewModel: ObservableObject {
 
     typealias F = FieldRepository
     typealias FV = FieldValueRepository
+    @Published var fieldList  : FieldList  = .init()
+    @Published var fieldGroup : FieldGroup = .init()
 
     typealias D = AttachmentRepository
     @Published var attachmentList  : AttachmentList  = .init()
