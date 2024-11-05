@@ -76,6 +76,7 @@ extension ViewModel {
         else if MainRepository.self == C.self { await loadCategoryList() }
         else if MainRepository.self == P.self { await loadPayeeList() }
         else if MainRepository.self == G.self { await loadTagList() }
+        else if MainRepository.self == D.self { await loadAttachmentList() }
     }
 
     func unloadList<ListType: ListProtocol>(_ list: ListType) {
@@ -88,6 +89,7 @@ extension ViewModel {
         else if MainRepository.self == C.self { unloadCategoryList() }
         else if MainRepository.self == P.self { unloadPayeeList() }
         else if MainRepository.self == G.self { unloadTagList() }
+        else if MainRepository.self == D.self { unloadAttachmentList() }
     }
 
     func loadList() async {
@@ -99,6 +101,7 @@ extension ViewModel {
         await loadCategoryList()
         await loadPayeeList()
         await loadTagList()
+        await loadAttachmentList()
         await loadManageList()
     }
 
@@ -111,6 +114,7 @@ extension ViewModel {
         unloadCategoryList()
         unloadPayeeList()
         unloadTagList()
+        unloadAttachmentList()
         unloadManegeList()
     }
 }

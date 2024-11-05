@@ -18,6 +18,16 @@ enum RefType: String, EnumCollateNoCase {
     case transactionSplit = "TransactionSplit"
     case scheduledSplit   = "RecurringTransactionSplit"
     static let defaultValue = Self.transaction
+
+    var name: String {
+        switch self {
+        case .account          : "Account"
+        case .transactionSplit : "Transaction Split"
+        case .scheduled        : "Scheduled Transaction"
+        case .scheduledSplit   : "Scheduled Split"
+        default: rawValue
+        }
+    }
 }
 
 struct AttachmentData: ExportableEntity {
@@ -38,5 +48,13 @@ extension AttachmentData: DataProtocol {
 
 extension AttachmentData {
     static let sampleData: [AttachmentData] = [
+        AttachmentData(
+            id: 1, refType: .account, refId: 1,
+            description: "Document A", filename: "info_A.txt"
+        ),
+        AttachmentData(
+            id: 2, refType: .transaction, refId: 1,
+            description: "Invoice", filename: "invoice_A.pdf"
+        ),
     ]
 }

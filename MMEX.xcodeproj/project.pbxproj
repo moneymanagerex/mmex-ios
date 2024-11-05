@@ -103,6 +103,13 @@
 		925EAC132CDA8DC1003CEAB3 /* TagReload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC122CDA8DC1003CEAB3 /* TagReload.swift */; };
 		925EAC152CDA8EEA003CEAB3 /* TagListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC142CDA8EEA003CEAB3 /* TagListView.swift */; };
 		925EAC172CDA8EF5003CEAB3 /* TagEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC162CDA8EF5003CEAB3 /* TagEditView.swift */; };
+		925EAC1A2CDAA813003CEAB3 /* AttachmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC192CDAA813003CEAB3 /* AttachmentList.swift */; };
+		925EAC1C2CDAA900003CEAB3 /* AttachmentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC1B2CDAA900003CEAB3 /* AttachmentGroup.swift */; };
+		925EAC1E2CDAAD3F003CEAB3 /* AttachmentSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC1D2CDAAD3F003CEAB3 /* AttachmentSearch.swift */; };
+		925EAC202CDAADFB003CEAB3 /* AttachmentValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC1F2CDAADFB003CEAB3 /* AttachmentValidation.swift */; };
+		925EAC222CDAB03B003CEAB3 /* AttachmentReload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC212CDAB03B003CEAB3 /* AttachmentReload.swift */; };
+		925EAC242CDAB100003CEAB3 /* AttachmentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC232CDAB100003CEAB3 /* AttachmentListView.swift */; };
+		925EAC272CDAB134003CEAB3 /* AttachmentEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC262CDAB134003CEAB3 /* AttachmentEditView.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -267,6 +274,13 @@
 		925EAC122CDA8DC1003CEAB3 /* TagReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagReload.swift; sourceTree = "<group>"; };
 		925EAC142CDA8EEA003CEAB3 /* TagListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListView.swift; sourceTree = "<group>"; };
 		925EAC162CDA8EF5003CEAB3 /* TagEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagEditView.swift; sourceTree = "<group>"; };
+		925EAC192CDAA813003CEAB3 /* AttachmentList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentList.swift; sourceTree = "<group>"; };
+		925EAC1B2CDAA900003CEAB3 /* AttachmentGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentGroup.swift; sourceTree = "<group>"; };
+		925EAC1D2CDAAD3F003CEAB3 /* AttachmentSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSearch.swift; sourceTree = "<group>"; };
+		925EAC1F2CDAADFB003CEAB3 /* AttachmentValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentValidation.swift; sourceTree = "<group>"; };
+		925EAC212CDAB03B003CEAB3 /* AttachmentReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentReload.swift; sourceTree = "<group>"; };
+		925EAC232CDAB100003CEAB3 /* AttachmentListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentListView.swift; sourceTree = "<group>"; };
+		925EAC262CDAB134003CEAB3 /* AttachmentEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentEditView.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -447,6 +461,7 @@
 				925EAB9C2CCDD67C003CEAB3 /* CategoryGroup.swift */,
 				924353362CCD2DDA0052E4BC /* PayeeGroup.swift */,
 				925EAC0C2CDA89BD003CEAB3 /* TagGroup.swift */,
+				925EAC1B2CDAA900003CEAB3 /* AttachmentGroup.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -462,6 +477,7 @@
 				925EAB9E2CCDDD77003CEAB3 /* CategorySearch.swift */,
 				924353402CCD2FFA0052E4BC /* PayeeSearch.swift */,
 				925EAC0E2CDA8B1A003CEAB3 /* TagSearch.swift */,
+				925EAC1D2CDAAD3F003CEAB3 /* AttachmentSearch.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -480,6 +496,7 @@
 				925EABB72CD6FAC7003CEAB3 /* TransactionList.swift */,
 				925EABB92CD6FBF7003CEAB3 /* ScheduledList.swift */,
 				925EAC0A2CDA8903003CEAB3 /* TagList.swift */,
+				925EAC192CDAA813003CEAB3 /* AttachmentList.swift */,
 				9243531C2CC5201C0052E4BC /* ManageList.swift */,
 			);
 			path = List;
@@ -496,6 +513,7 @@
 				925EABA02CCDDFFE003CEAB3 /* CategoryReload.swift */,
 				924353182CC51FA00052E4BC /* PayeeReload.swift */,
 				925EAC122CDA8DC1003CEAB3 /* TagReload.swift */,
+				925EAC212CDAB03B003CEAB3 /* AttachmentReload.swift */,
 			);
 			path = Reload;
 			sourceTree = "<group>";
@@ -511,6 +529,7 @@
 				925EABAB2CCF826F003CEAB3 /* CategoryValidation.swift */,
 				925EABAD2CCF8293003CEAB3 /* PayeeValidation.swift */,
 				925EAC102CDA8BCE003CEAB3 /* TagValidation.swift */,
+				925EAC1F2CDAADFB003CEAB3 /* AttachmentValidation.swift */,
 			);
 			path = Validation;
 			sourceTree = "<group>";
@@ -522,6 +541,15 @@
 				925EAC162CDA8EF5003CEAB3 /* TagEditView.swift */,
 			);
 			path = Tag;
+			sourceTree = "<group>";
+		};
+		925EAC252CDAB11C003CEAB3 /* Attachment */ = {
+			isa = PBXGroup;
+			children = (
+				925EAC232CDAB100003CEAB3 /* AttachmentListView.swift */,
+				925EAC262CDAB134003CEAB3 /* AttachmentEditView.swift */,
+			);
+			path = Attachment;
 			sourceTree = "<group>";
 		};
 		A30061742CA3B57700011B1A /* Asset */ = {
@@ -756,6 +784,7 @@
 				A39B1B3A2C9A66B8003E5562 /* Payee */,
 				A39B1B3B2C9A66CB003E5562 /* Transaction */,
 				925EAC182CDA8F0C003CEAB3 /* Tag */,
+				925EAC252CDAB11C003CEAB3 /* Attachment */,
 				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
 			);
 			path = View;
@@ -870,10 +899,13 @@
 				A37E7D8C2C9AC36800B4ECFC /* LegalView.swift in Sources */,
 				A3C1425F2C8DE70300D3CEC0 /* EnvironmentManager.swift in Sources */,
 				924353012CBA06210052E4BC /* AccountReload.swift in Sources */,
+				925EAC242CDAB100003CEAB3 /* AttachmentListView.swift in Sources */,
 				A3C1424E2C8B335900D3CEC0 /* PayeeData.swift in Sources */,
 				929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */,
 				9243534D2CCD38830052E4BC /* AssetList.swift in Sources */,
 				925EAB9D2CCDD67C003CEAB3 /* CategoryGroup.swift in Sources */,
+				925EAC272CDAB134003CEAB3 /* AttachmentEditView.swift in Sources */,
+				925EAC1A2CDAA813003CEAB3 /* AttachmentList.swift in Sources */,
 				A37E7D922C9AC60000B4ECFC /* ContactSupportView.swift in Sources */,
 				9208240E2CA4C4FA00388AB2 /* ReportData.swift in Sources */,
 				925EAB952CCD8341003CEAB3 /* RepositoryReadView.swift in Sources */,
@@ -885,9 +917,11 @@
 				A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */,
 				925EAC0F2CDA8B1A003CEAB3 /* TagSearch.swift in Sources */,
+				925EAC202CDAADFB003CEAB3 /* AttachmentValidation.swift in Sources */,
 				920824042CA4ADC100388AB2 /* ScheduledSplitData.swift in Sources */,
 				925EABA62CCF81C9003CEAB3 /* AccountValidation.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
+				925EAC1C2CDAA900003CEAB3 /* AttachmentGroup.swift in Sources */,
 				A3C142AC2C909C1C00D3CEC0 /* EnterEditView.swift in Sources */,
 				A3C142962C8FE15E00D3CEC0 /* TransactionRepository.swift in Sources */,
 				A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */,
@@ -996,6 +1030,8 @@
 				A37E7D842C9AC14800B4ECFC /* ManageView.swift in Sources */,
 				924352EE2CB060D80052E4BC /* Theme.swift in Sources */,
 				924353032CBB2AB90052E4BC /* ItemTheme.swift in Sources */,
+				925EAC222CDAB03B003CEAB3 /* AttachmentReload.swift in Sources */,
+				925EAC1E2CDAAD3F003CEAB3 /* AttachmentSearch.swift in Sources */,
 				925EAB9F2CCDDD77003CEAB3 /* CategorySearch.swift in Sources */,
 				924352EA2CAE1E480052E4BC /* StockEditView.swift in Sources */,
 				924352EB2CAE1E480052E4BC /* StockListView.swift in Sources */,
