@@ -20,23 +20,6 @@ struct PayeeList: ListProtocol {
 }
 
 extension ViewModel {
-    /*
-    func initPayeeList() {
-        let payeePath: [KeyPath<PayeeList, LoadState>]
-        = [ \.data.state, \.used.state, \.order.state, \.att.state ]
-        for path in payeePath {
-            $payeeList.map(path)
-                .sink { [weak self] (state: LoadState) in
-                    guard let self else { return }
-                    if state == .idle {
-                        self.payeeList.state.unload()
-                    }
-                }
-                .store(in: &self.subscriptions)
-        }
-    }
-    */
-
     func loadPayeeList() async {
         guard payeeList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in

@@ -71,6 +71,8 @@ extension ViewModel {
             searchPayeeGroup(search: search as! PayeeSearch, expand: expand)
         } else if GroupType.MainRepository.self == G.self {
             searchTagGroup(search: search as! TagSearch, expand: expand)
+        } else if GroupType.MainRepository.self == D.self {
+            searchAttachmentGroup(search: search as! AttachmentSearch, expand: expand)
         }
     }
 }

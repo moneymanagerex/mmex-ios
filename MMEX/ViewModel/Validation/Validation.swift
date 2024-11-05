@@ -24,6 +24,8 @@ extension ViewModel {
             return payeeList.used.readyValue?.contains(data.id)
         } else if DataType.self == G.RepositoryData.self {
             return tagList.used.readyValue?.contains(data.id)
+        } else if DataType.self == D.RepositoryData.self {
+            return false
         }
         return nil
     }
@@ -51,6 +53,9 @@ extension ViewModel {
         } else if var data1 = data as? TagData {
             error = updateTag(&data1)
             data = data1 as! DataType
+        } else if var data1 = data as? AttachmentData {
+            error = updateAttachment(&data1)
+            data = data1 as! DataType
         } else {
             error = "* unknown data type"
         }
@@ -72,6 +77,8 @@ extension ViewModel {
             return deletePayee(data)
         } else if let data = data as? TagData {
             return deleteTag(data)
+        } else if let data = data as? AttachmentData {
+            return deleteAttachment(data)
         }
         return "* unknown data type"
     }

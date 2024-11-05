@@ -87,6 +87,12 @@ struct ManageView: View {
                         count: vm.tagList.count
                     )
                 }
+                NavigationLink(destination: AttachmentListView(vm: vm)) {
+                    env.theme.group.manageItem(
+                        name: { Text(AttachmentData.dataName.1) },
+                        count: vm.attachmentList.count
+                    )
+                }
                 Text("More coming soon ...")
                     .foregroundColor(.accentColor)
                     .opacity(0.6)

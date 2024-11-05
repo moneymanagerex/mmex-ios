@@ -73,7 +73,7 @@ struct PayeeEditView: View {
                 }
             }
         }
-        
+
         Section {
             env.theme.field.editor(edit, "Notes") {
                 TextEditor(text: $data.notes)
