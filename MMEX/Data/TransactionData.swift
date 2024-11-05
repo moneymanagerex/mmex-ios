@@ -60,9 +60,9 @@ struct TransactionData: ExportableEntity {
     var accountId         : DataId            = .void
     var toAccountId       : DataId            = .void
     var payeeId           : DataId            = .void
-    var transCode         : TransactionType   = TransactionType.defaultValue
+    var transCode         : TransactionType   = .defaultValue
     var transAmount       : Double            = 0.0
-    var status            : TransactionStatus = TransactionStatus.defaultValue
+    var status            : TransactionStatus = .defaultValue
     var transactionNumber : String            = ""
     var notes             : String            = ""
     var categId           : DataId            = .void

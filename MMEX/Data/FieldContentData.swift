@@ -11,7 +11,7 @@ import SQLite
 struct FieldContentData: ExportableEntity {
     var id      : DataId  = .void
     var fieldId : DataId  = .void
-    var refType : RefType = RefType.transaction
+    var refType : RefType = .transaction
     var refId   : DataId  = .void
     var content : String  = ""
     static let refTypes: Set<RefType> = [ .transaction, .scheduled ]

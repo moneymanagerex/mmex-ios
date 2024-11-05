@@ -26,7 +26,7 @@ struct CurrencyData: ExportableEntity {
     var scale          : Int          = 0
     var baseConvRate   : Double       = 0.0
     var symbol         : String       = ""
-    var type           : CurrencyType = CurrencyType.defaultValue
+    var type           : CurrencyType = .defaultValue
 }
 
 extension CurrencyData: DataProtocol {

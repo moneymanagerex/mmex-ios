@@ -17,7 +17,7 @@ enum CHECKING_TYPE: DataId {
 struct TransactionLinkData: ExportableEntity {
     var id      : DataId  = .void
     var transId : DataId  = .void
-    var refType : RefType = RefType.asset
+    var refType : RefType = .asset
     var refId   : DataId  = .void
     static let refTypes: Set<RefType> = [ .asset, .stock ]
 }
