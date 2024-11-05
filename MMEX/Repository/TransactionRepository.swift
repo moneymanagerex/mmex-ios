@@ -125,7 +125,7 @@ struct TransactionRepository: RepositoryProtocol {
         typealias TL = TransactionLinkRepository
         typealias TS = TransactionShareRepository
         typealias GL = TagLinkRepository
-        typealias V = FieldValueRepository
+        typealias FV = FieldValueRepository
         typealias D = AttachmentRepository
         let cond = "EXISTS (" + (TP.table.select(1).where(
             TP.table[TP.col_transId] == Self.table[Self.col_id]
@@ -136,8 +136,8 @@ struct TransactionRepository: RepositoryProtocol {
         ) ).union(GL.table.select(1).where(
             GL.table[GL.col_refType] == RefType.transaction.rawValue &&
             GL.table[GL.col_refId] == Self.table[Self.col_id]
-        ) ).union(V.table.select(1).where(
-            V.table[V.col_refId] == Self.table[Self.col_id]
+        ) ).union(FV.table.select(1).where(
+            FV.table[FV.col_refId] == Self.table[Self.col_id]
         ) ).union(D.table.select(1).where(
             D.table[D.col_refType] == RefType.transaction.rawValue &&
             D.table[D.col_refId] == Self.table[Self.col_id]

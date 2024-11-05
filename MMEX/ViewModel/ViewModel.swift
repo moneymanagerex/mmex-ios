@@ -62,7 +62,7 @@ class ViewModel: ObservableObject {
     @Published var tagGroup : TagGroup = .init()
 
     typealias F = FieldRepository
-    typealias V = FieldValueRepository
+    typealias FV = FieldValueRepository
 
     typealias D = AttachmentRepository
     @Published var attachmentList  : AttachmentList  = .init()
