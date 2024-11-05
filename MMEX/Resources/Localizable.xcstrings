@@ -238,9 +238,6 @@
     "Checking" : {
 
     },
-    "Close Database" : {
-
-    },
     "Coming soon ..." : {
 
     },
@@ -719,6 +716,9 @@
     "Manage" : {
 
     },
+    "More coming soon ..." : {
+
+    },
     "More Insights Coming Soon..." : {
 
     },
@@ -753,6 +753,7 @@
       }
     },
     "New Database" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -914,9 +915,6 @@
       }
     },
     "Root" : {
-
-    },
-    "Sample Database" : {
 
     },
     "Sample Database in Memory" : {

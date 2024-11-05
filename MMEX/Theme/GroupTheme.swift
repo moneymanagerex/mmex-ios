@@ -28,17 +28,19 @@ extension GroupTheme {
     func view<NameView: View>(
         @ViewBuilder name nameView: @escaping () -> NameView,
         count: Int? = nil,
-        isExpanded: Bool
+        isExpanded: Bool? = nil
     ) -> some View {
         return Group {
             switch layout {
             case .foldName:
                 HStack {
-                    fold(isExpanded)
+                    if let isExpanded {
+                        fold(isExpanded)
+                    }
                     nameView()
                         .font(.headline.smallCaps())
-                        .foregroundColor(.blue)
-                        .padding(.leading)
+                        .foregroundColor(.accentColor)
+                        //.padding(.leading)
                     
                     Spacer()
                     if showCount, let count {
@@ -49,17 +51,45 @@ extension GroupTheme {
                 HStack {
                     nameView()
                         .font(.headline.smallCaps())
-                        .foregroundColor(.blue)
-                        .padding(.leading)
+                        .foregroundColor(.accentColor)
+                        //.padding(.leading)
                     
                     Spacer()
                     if showCount, let count {
                         BadgeCount(count: count)
                     }
-                    fold(isExpanded)
+                    if let isExpanded {
+                        fold(isExpanded)
+                    }
                 }
             }
         }
+    }
+
+    func section<NameView: View, Content: View>(
+        @ViewBuilder name nameView: @escaping () -> NameView,
+        count: Int? = nil,
+        isExpanded: Binding<Bool>? = nil,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        Section(header: HStack {
+            if let isExpanded {
+                Button(action: { isExpanded.wrappedValue.toggle() }) {
+                    self.view(
+                        name: nameView,
+                        count: count,
+                        isExpanded: isExpanded.wrappedValue
+                    )
+                }
+            } else {
+                self.view(
+                    name: nameView,
+                    count: count
+                )
+            }
+        } ) { if isExpanded == nil || isExpanded!.wrappedValue {
+            content()
+        } }
     }
 
     func manageItem<NameView: View, MainRepository: RepositoryProtocol>(

@@ -16,16 +16,21 @@ struct ManageView: View {
     @Binding var isSampleDocument: Bool
 
     @State var auxDataIsExpanded = false
+    let group = GroupTheme(layout: .nameFold)
+    var auxCount: [Int?] {[
+        vm.currencyList.count.readyValue
+    ]}
+    var auxSum: Int? {
+        auxCount.reduce(0 as Int?, { sum, next in
+            if let sum, let next { sum + next } else { nil }
+        } )
+    }
 
     var body: some View {
         List {
-            Section(header: Text("Data")) {
-                NavigationLink(destination: CurrencyListView(vm: vm)) {
-                    env.theme.group.manageItem(
-                        name: { Text(CurrencyData.dataName.1) },
-                        count: vm.currencyList.count
-                    )
-                }
+            group.section(
+                name: { Text("Data") }
+            ) {
                 NavigationLink(destination: AccountListView(vm: vm)) {
                     env.theme.group.manageItem(
                         name: { Text(AccountData.dataName.1) },
@@ -63,86 +68,73 @@ struct ManageView: View {
                     )
                 }
             }
-            
-            Section(header: HStack {
-                Button(action: { auxDataIsExpanded.toggle() }) {
-                    env.theme.group.view(
-                        name: { Text("Auxiliary Data") },
-                        isExpanded: auxDataIsExpanded
+
+            group.section(
+                name: { Text("Auxiliary Data") },
+                count: auxSum,
+                isExpanded: $auxDataIsExpanded
+            ) {
+                NavigationLink(destination: CurrencyListView(vm: vm)) {
+                    env.theme.group.manageItem(
+                        name: { Text(CurrencyData.dataName.1) },
+                        count: vm.currencyList.count
                     )
                 }
-            } ) { if auxDataIsExpanded {
-                Text("Coming soon ...")
+                Text("More coming soon ...")
                     .foregroundColor(.accentColor)
                     .opacity(0.6)
-            } }
+            }
 
-            Section(header: Text("Database")) {
-                Button(action: {
+            group.section(
+                name: { Text("Database") }
+            ) {
+                databaseButton("Open Database", fg: .white, bg: .blue) {
                     isDocumentPickerPresented = true
-                }) {
-                    Text("Open Database")
-                        .frame(maxWidth: .infinity, alignment: .center)
                 }
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
-
-                Button(action: {
+                databaseButton("New Database", fg: .white, bg: .green) {
                     isNewDocumentPickerPresented = true
                     isSampleDocument = false
-                }) {
-                    Text("New Database")
-                        .frame(maxWidth: .infinity, alignment: .center)
                 }
-                .padding()
-                .background(Color.green)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
-
+                
                 if false {
-                    Button(action: {
+                    databaseButton("Sample Database", fg: .white, bg: .orange) {
                         isNewDocumentPickerPresented = true
                         isSampleDocument = true
-                    }) {
-                        Text("Sample Database")
-                            .frame(maxWidth: .infinity, alignment: .center)
                     }
-                    .padding()
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
                 }
-
-                // Close Database Button
-                Button(action: {
-                    env.closeDatabase() // Calls method to handle closing the database
-                }) {
-                    Text("Close Database")
-                        .frame(maxWidth: .infinity, alignment: .center)
+                databaseButton("Close Database", fg: .white, bg: .red) {
+                    env.closeDatabase()
                 }
-                .padding()
-                .background(Color.red)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
             }
 
-            Section(header: Text("Database Maintenance")) {
+            group.section(
+                name: { Text("Database Maintenance") }
+            ) {
                 Text("Coming soon ...")
                     .foregroundColor(.accentColor)
                     .opacity(0.6)
             }
-
         }
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
+        .listSectionSpacing(5)
         .task {
             await vm.loadManageList()
         }
+    }
+    
+    func databaseButton(
+        _ label: String, fg: Color, bg: Color,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            Text(label)
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .padding()
+        .background(bg)
+        .foregroundColor(fg)
+        .cornerRadius(10)
+        .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
     }
 }
 
