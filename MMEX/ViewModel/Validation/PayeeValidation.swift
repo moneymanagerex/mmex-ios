@@ -58,7 +58,7 @@ extension ViewModel {
             return "* Payee #\(data.id.value) is used"
         }
 
-        guard let p = P(env), let ax = AX(env) else {
+        guard let p = P(env), let d = D(env) else {
             return "* Database is not available"
         }
 
@@ -66,7 +66,7 @@ extension ViewModel {
             return "* payeeAtt is not loaded"
         }
         if payeeAtt[data.id] != nil {
-            guard ax.delete(refType: .payee, refId: data.id) else {
+            guard d.delete(refType: .payee, refId: data.id) else {
                 return "* Cannot delete attachments for payee #\(data.id.value)"
             }
         }

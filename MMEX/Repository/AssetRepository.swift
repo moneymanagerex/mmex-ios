@@ -95,19 +95,19 @@ struct AssetRepository: RepositoryProtocol {
     }
     
     static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
-        typealias TE = TransactionLinkRepository
-        let cond = "EXISTS (" + (TE.table.select(1).where(
-            TE.table[TE.col_refType] == RefType.asset.rawValue &&
-            TE.table[TE.col_refId] == Self.table[Self.col_id]
+        typealias TL = TransactionLinkRepository
+        let cond = "EXISTS (" + (TL.table.select(1).where(
+            TL.table[TL.col_refType] == RefType.asset.rawValue &&
+            TL.table[TL.col_refId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
 
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
-        typealias AX = AttachmentRepository
-        let cond = "EXISTS (" + (AX.table.select(1).where(
-            AX.table[AX.col_refType] == RefType.account.rawValue &&
-            AX.table[AX.col_refId] == Self.table[Self.col_id]
+        typealias D = AttachmentRepository
+        let cond = "EXISTS (" + (D.table.select(1).where(
+            D.table[D.col_refType] == RefType.account.rawValue &&
+            D.table[D.col_refId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }

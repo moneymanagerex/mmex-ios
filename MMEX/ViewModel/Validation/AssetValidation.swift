@@ -52,7 +52,7 @@ extension ViewModel {
             return "* Asset #\(data.id.value) is used"
         }
 
-        guard let e = E(env), let ax = AX(env) else {
+        guard let e = E(env), let d = D(env) else {
             return "* Database is not available"
         }
 
@@ -60,7 +60,7 @@ extension ViewModel {
             return "* assetAtt is not loaded"
         }
         if assetAtt[data.id] != nil {
-            guard ax.delete(refType: .asset, refId: data.id) else {
+            guard d.delete(refType: .asset, refId: data.id) else {
                 return "* Cannot delete attachments for asset #\(data.id.value)"
             }
         }

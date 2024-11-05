@@ -46,7 +46,7 @@ class ViewModel: ObservableObject {
     typealias T = TransactionRepository
     typealias TP = TransactionSplitRepository
     typealias TL = TransactionLinkRepository
-    typealias TH = TransactionShareRepository
+    typealias TS = TransactionShareRepository
     static let T_table: SQLite.Table = T.table.filter(T.col_deletedTime == "")
     @Published var transactionList  : TransactionList  = .init()
     //@Published var transactionGroup : TransactionGroup = .init()
@@ -62,8 +62,10 @@ class ViewModel: ObservableObject {
     @Published var tagGroup : TagGroup = .init()
 
     typealias F = FieldRepository
-    typealias FD = FieldContentRepository
-    typealias AX = AttachmentRepository
+    typealias V = FieldValueRepository
+
+    typealias D = AttachmentRepository
+
     typealias Y = YearRepository
     typealias B = BudgetRepository
     typealias O = ReportRepository

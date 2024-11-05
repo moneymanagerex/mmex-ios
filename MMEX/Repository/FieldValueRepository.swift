@@ -1,5 +1,5 @@
 //
-//  FieldContentRepository.swift
+//  FieldValueRepository.swift
 //  MMEX
 //
 //  Created 2024-09-27 by George Ef (george.a.ef@gmail.com)
@@ -8,8 +8,8 @@
 import Foundation
 import SQLite
 
-struct FieldContentRepository: RepositoryProtocol {
-    typealias RepositoryData = FieldContentData
+struct FieldValueRepository: RepositoryProtocol {
+    typealias RepositoryData = FieldValueData
 
     let db: Connection
 
@@ -39,8 +39,8 @@ struct FieldContentRepository: RepositoryProtocol {
         )
     }
 
-    static func fetchData(_ row: SQLite.Row) -> FieldContentData {
-        return FieldContentData(
+    static func fetchData(_ row: SQLite.Row) -> FieldValueData {
+        return FieldValueData(
             id      : DataId(row[col_id]),
             fieldId : DataId(row[col_fieldId]),
             refType : row[col_refId] < 0 ? RefType.scheduled : RefType.transaction,
@@ -49,7 +49,7 @@ struct FieldContentRepository: RepositoryProtocol {
         )
     }
 
-    static func itemSetters(_ data: FieldContentData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: FieldValueData) -> [SQLite.Setter] {
         return [
             col_refId   <- data.refType == RefType.scheduled ? -Int64(data.refId) : Int64(data.refId),
             col_fieldId <- Int64(data.fieldId),
@@ -58,9 +58,9 @@ struct FieldContentRepository: RepositoryProtocol {
     }
 }
 
-extension FieldContentRepository {
+extension FieldValueRepository {
     // load all field content
-    func load() -> [FieldContentData]? {
+    func load() -> [FieldValueData]? {
         return select(from: Self.table
             .order(Self.col_id)
         )

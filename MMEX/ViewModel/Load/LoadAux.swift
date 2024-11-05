@@ -36,9 +36,9 @@ typealias LoadAuxAtt<MainRepository: RepositoryProtocol>
 = LoadAuxData<MainRepository, AttachmentRepository>
 
 extension LoadAuxAtt {
-    typealias AX = AttachmentRepository
+    typealias D = AttachmentRepository
 
-    init(order: [SQLite.Expressible] = [AX.col_id]) {
+    init(order: [SQLite.Expressible] = [D.col_id]) {
         let refType: RefType? =
         MainRepository.self == AccountRepository.self     ? RefType.account     :
         MainRepository.self == AssetRepository.self       ? RefType.asset       :
@@ -48,11 +48,11 @@ extension LoadAuxAtt {
         MainRepository.self == ScheduledRepository.self   ? RefType.scheduled   :
         nil
 
-        var table = AX.table
-        if let refType { table = table.filter(AX.col_refType == refType.rawValue) }
+        var table = D.table
+        if let refType { table = table.filter(D.col_refType == refType.rawValue) }
         
         self.init(
-            mainId: { DataId($0[AX.col_refId]) },
+            mainId: { DataId($0[D.col_refId]) },
             auxTable: table.order(order)
         )
     }
