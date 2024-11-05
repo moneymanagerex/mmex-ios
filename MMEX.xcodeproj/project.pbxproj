@@ -96,6 +96,13 @@
 		925EABB82CD6FAC7003CEAB3 /* TransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABB72CD6FAC7003CEAB3 /* TransactionList.swift */; };
 		925EABBA2CD6FBF7003CEAB3 /* ScheduledList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABB92CD6FBF7003CEAB3 /* ScheduledList.swift */; };
 		925EABBC2CD78A65003CEAB3 /* JournalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EABBB2CD78A65003CEAB3 /* JournalData.swift */; };
+		925EAC0B2CDA8903003CEAB3 /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC0A2CDA8903003CEAB3 /* TagList.swift */; };
+		925EAC0D2CDA89BD003CEAB3 /* TagGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC0C2CDA89BD003CEAB3 /* TagGroup.swift */; };
+		925EAC0F2CDA8B1A003CEAB3 /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC0E2CDA8B1A003CEAB3 /* TagSearch.swift */; };
+		925EAC112CDA8BCE003CEAB3 /* TagValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC102CDA8BCE003CEAB3 /* TagValidation.swift */; };
+		925EAC132CDA8DC1003CEAB3 /* TagReload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC122CDA8DC1003CEAB3 /* TagReload.swift */; };
+		925EAC152CDA8EEA003CEAB3 /* TagListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC142CDA8EEA003CEAB3 /* TagListView.swift */; };
+		925EAC172CDA8EF5003CEAB3 /* TagEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC162CDA8EF5003CEAB3 /* TagEditView.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -253,6 +260,13 @@
 		925EABB72CD6FAC7003CEAB3 /* TransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionList.swift; sourceTree = "<group>"; };
 		925EABB92CD6FBF7003CEAB3 /* ScheduledList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledList.swift; sourceTree = "<group>"; };
 		925EABBB2CD78A65003CEAB3 /* JournalData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalData.swift; sourceTree = "<group>"; };
+		925EAC0A2CDA8903003CEAB3 /* TagList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagList.swift; sourceTree = "<group>"; };
+		925EAC0C2CDA89BD003CEAB3 /* TagGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagGroup.swift; sourceTree = "<group>"; };
+		925EAC0E2CDA8B1A003CEAB3 /* TagSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagSearch.swift; sourceTree = "<group>"; };
+		925EAC102CDA8BCE003CEAB3 /* TagValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagValidation.swift; sourceTree = "<group>"; };
+		925EAC122CDA8DC1003CEAB3 /* TagReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagReload.swift; sourceTree = "<group>"; };
+		925EAC142CDA8EEA003CEAB3 /* TagListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListView.swift; sourceTree = "<group>"; };
+		925EAC162CDA8EF5003CEAB3 /* TagEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagEditView.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -432,6 +446,7 @@
 				924353342CCD2DA90052E4BC /* StockGroup.swift */,
 				925EAB9C2CCDD67C003CEAB3 /* CategoryGroup.swift */,
 				924353362CCD2DDA0052E4BC /* PayeeGroup.swift */,
+				925EAC0C2CDA89BD003CEAB3 /* TagGroup.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -446,6 +461,7 @@
 				9243533E2CCD2FC90052E4BC /* StockSearch.swift */,
 				925EAB9E2CCDDD77003CEAB3 /* CategorySearch.swift */,
 				924353402CCD2FFA0052E4BC /* PayeeSearch.swift */,
+				925EAC0E2CDA8B1A003CEAB3 /* TagSearch.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -463,6 +479,7 @@
 				924353502CCD39850052E4BC /* PayeeList.swift */,
 				925EABB72CD6FAC7003CEAB3 /* TransactionList.swift */,
 				925EABB92CD6FBF7003CEAB3 /* ScheduledList.swift */,
+				925EAC0A2CDA8903003CEAB3 /* TagList.swift */,
 				9243531C2CC5201C0052E4BC /* ManageList.swift */,
 			);
 			path = List;
@@ -478,6 +495,7 @@
 				924353162CC51F8E0052E4BC /* StockReload.swift */,
 				925EABA02CCDDFFE003CEAB3 /* CategoryReload.swift */,
 				924353182CC51FA00052E4BC /* PayeeReload.swift */,
+				925EAC122CDA8DC1003CEAB3 /* TagReload.swift */,
 			);
 			path = Reload;
 			sourceTree = "<group>";
@@ -492,8 +510,18 @@
 				925EABA92CCF8236003CEAB3 /* StockValidation.swift */,
 				925EABAB2CCF826F003CEAB3 /* CategoryValidation.swift */,
 				925EABAD2CCF8293003CEAB3 /* PayeeValidation.swift */,
+				925EAC102CDA8BCE003CEAB3 /* TagValidation.swift */,
 			);
 			path = Validation;
+			sourceTree = "<group>";
+		};
+		925EAC182CDA8F0C003CEAB3 /* Tag */ = {
+			isa = PBXGroup;
+			children = (
+				925EAC142CDA8EEA003CEAB3 /* TagListView.swift */,
+				925EAC162CDA8EF5003CEAB3 /* TagEditView.swift */,
+			);
+			path = Tag;
 			sourceTree = "<group>";
 		};
 		A30061742CA3B57700011B1A /* Asset */ = {
@@ -727,6 +755,7 @@
 				A39B1B3C2C9A66E6003E5562 /* Category */,
 				A39B1B3A2C9A66B8003E5562 /* Payee */,
 				A39B1B3B2C9A66CB003E5562 /* Transaction */,
+				925EAC182CDA8F0C003CEAB3 /* Tag */,
 				A3C142A72C906E0A00D3CEC0 /* CustomNumberPadView.swift */,
 			);
 			path = View;
@@ -822,6 +851,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				925EAC0B2CDA8903003CEAB3 /* TagList.swift in Sources */,
 				A3C1424C2C8AB52600D3CEC0 /* CurrencyData.swift in Sources */,
 				9243531B2CC51FB10052E4BC /* CurrencyReload.swift in Sources */,
 				920823FA2CA49A4B00388AB2 /* StockHistoryData.swift in Sources */,
@@ -829,6 +859,7 @@
 				9208242C2CA615B400388AB2 /* FieldRepository.swift in Sources */,
 				924352F22CB0A93E0052E4BC /* TabTheme.swift in Sources */,
 				924352FC2CB6F5D40052E4BC /* RepositoryListView.swift in Sources */,
+				925EAC112CDA8BCE003CEAB3 /* TagValidation.swift in Sources */,
 				A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */,
 				920824082CA4B05700388AB2 /* ScheduledSplitRepository.swift in Sources */,
 				929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */,
@@ -853,6 +884,7 @@
 				925EABB22CCFFC2E003CEAB3 /* Reload.swift in Sources */,
 				A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */,
+				925EAC0F2CDA8B1A003CEAB3 /* TagSearch.swift in Sources */,
 				920824042CA4ADC100388AB2 /* ScheduledSplitData.swift in Sources */,
 				925EABA62CCF81C9003CEAB3 /* AccountValidation.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
@@ -864,6 +896,7 @@
 				920823FE2CA4A3F700388AB2 /* TagData.swift in Sources */,
 				A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */,
 				920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */,
+				925EAC132CDA8DC1003CEAB3 /* TagReload.swift in Sources */,
 				920824242CA5078900388AB2 /* TransactionShareData.swift in Sources */,
 				920824062CA4AE0A00388AB2 /* TransactionSplitRepository.swift in Sources */,
 				A3C142AA2C90721800D3CEC0 /* JournalView.swift in Sources */,
@@ -897,6 +930,7 @@
 				925EABAC2CCF826F003CEAB3 /* CategoryValidation.swift in Sources */,
 				9208240A2CA4C2AD00388AB2 /* YearData.swift in Sources */,
 				924353392CCD2F310052E4BC /* CurrencySearch.swift in Sources */,
+				925EAC152CDA8EEA003CEAB3 /* TagListView.swift in Sources */,
 				9243533B2CCD2F610052E4BC /* AccountSearch.swift in Sources */,
 				A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */,
 				A37E7D942C9B217500B4ECFC /* InfotableData.swift in Sources */,
@@ -932,6 +966,7 @@
 				924352FF2CB99F1D0052E4BC /* SearchProtocol.swift in Sources */,
 				929EF66D2CA0BA5E0051A3E6 /* ScheduledData.swift in Sources */,
 				920824022CA4AD0C00388AB2 /* TransactionSplitData.swift in Sources */,
+				925EAC172CDA8EF5003CEAB3 /* TagEditView.swift in Sources */,
 				924353172CC51F8E0052E4BC /* StockReload.swift in Sources */,
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
 				920824102CA4C5CD00388AB2 /* YearRepository.swift in Sources */,
@@ -955,6 +990,7 @@
 				920824322CA6E32800388AB2 /* RepositoryProtocol.swift in Sources */,
 				A3363EE52C9323D2004696C7 /* CategoryDetailView.swift in Sources */,
 				929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */,
+				925EAC0D2CDA89BD003CEAB3 /* TagGroup.swift in Sources */,
 				920824182CA4CF4300388AB2 /* AttachmentData.swift in Sources */,
 				925EABB02CCF82E4003CEAB3 /* Validation.swift in Sources */,
 				A37E7D842C9AC14800B4ECFC /* ManageView.swift in Sources */,

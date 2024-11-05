@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum CategoryGroupChoice: String, GroupChoiceProtocol {
-    case all        = "All"
-    case used       = "Used"
-    case active     = "Active"
+    case all    = "All"
+    case used   = "Used"
+    case active = "Active"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
 }

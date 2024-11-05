@@ -58,6 +58,9 @@ class ViewModel: ObservableObject {
 
     typealias G = TagRepository
     typealias GL = TagLinkRepository
+    @Published var tagList  : TagList  = .init()
+    @Published var tagGroup : TagGroup = .init()
+
     typealias F = FieldRepository
     typealias FD = FieldContentRepository
     typealias AX = AttachmentRepository

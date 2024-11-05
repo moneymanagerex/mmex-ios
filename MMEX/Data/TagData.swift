@@ -24,5 +24,11 @@ extension TagData: DataProtocol {
 
 extension TagData {
     static let sampleData: [TagData] = [
+        TagData(
+            id: 1, name: "waiting", active: true
+        ),
+        TagData(
+            id: 2, name: "missing", active: true
+        ),
     ]
 }

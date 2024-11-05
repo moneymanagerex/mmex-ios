@@ -18,7 +18,8 @@ struct ManageView: View {
     @State var auxDataIsExpanded = false
     let group = GroupTheme(layout: .nameFold)
     var auxCount: [Int?] {[
-        vm.currencyList.count.readyValue
+        vm.currencyList.count.readyValue,
+        vm.tagList.count.readyValue,
     ]}
     var auxSum: Int? {
         auxCount.reduce(0 as Int?, { sum, next in
@@ -78,6 +79,12 @@ struct ManageView: View {
                     env.theme.group.manageItem(
                         name: { Text(CurrencyData.dataName.1) },
                         count: vm.currencyList.count
+                    )
+                }
+                NavigationLink(destination: TagListView(vm: vm)) {
+                    env.theme.group.manageItem(
+                        name: { Text(TagData.dataName.1) },
+                        count: vm.tagList.count
                     )
                 }
                 Text("More coming soon ...")

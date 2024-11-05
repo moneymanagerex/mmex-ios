@@ -22,6 +22,8 @@ extension ViewModel {
             await reloadCategoryList(oldData as! CategoryData?, newData as! CategoryData?)
         } else if MainData.self == P.RepositoryData.self {
             await reloadPayeeList(oldData as! PayeeData?, newData as! PayeeData?)
+        } else if MainData.self == G.RepositoryData.self {
+            await reloadTagList(oldData as! TagData?, newData as! TagData?)
         }
     }
 }

@@ -69,6 +69,8 @@ extension ViewModel {
             searchCategoryGroup(search: search as! CategorySearch, expand: expand)
         } else if GroupType.MainRepository.self == P.self {
             searchPayeeGroup(search: search as! PayeeSearch, expand: expand)
+        } else if GroupType.MainRepository.self == G.self {
+            searchTagGroup(search: search as! TagSearch, expand: expand)
         }
     }
 }

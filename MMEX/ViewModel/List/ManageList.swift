@@ -46,6 +46,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.payeeList.count),
                 load(&taskGroup, keyPath: \Self.transactionList.count),
                 load(&taskGroup, keyPath: \Self.scheduledList.count),
+                load(&taskGroup, keyPath: \Self.tagList.count),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
@@ -70,6 +71,7 @@ extension ViewModel {
         payeeList.count.unload()
         transactionList.count.unload()
         scheduledList.count.unload()
+        tagList.count.unload()
         manageList.unloaded()
     }
 }
