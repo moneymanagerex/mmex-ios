@@ -52,9 +52,9 @@ struct JournalData {
     var accountId         : DataId            = .void
     var toAccountId       : DataId            = .void
     var payeeId           : DataId            = .void
-    var transCode         : TransactionType   = TransactionType.defaultValue
+    var transCode         : TransactionType   = .defaultValue
     var transAmount       : Double            = 0.0
-    var status            : TransactionStatus = TransactionStatus.defaultValue
+    var status            : TransactionStatus = .defaultValue
     var transactionNumber : String            = ""
     var notes             : String            = ""
     var categId           : DataId            = .void
@@ -69,8 +69,8 @@ struct JournalData {
 
     // applicable for type == .scheduled
     var dueDate           : DateString        = DateString("")
-    var repeatAuto        : RepeatAuto        = RepeatAuto.defaultValue
-    var repeatType        : RepeatType        = RepeatType.defaultValue
+    var repeatAuto        : RepeatAuto        = .defaultValue
+    var repeatType        : RepeatType        = .defaultValue
     var repeatNum         : Int               = 0
 }
 

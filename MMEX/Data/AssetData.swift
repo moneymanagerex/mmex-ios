@@ -45,14 +45,14 @@ enum AssetChangeMode: String, EnumCollateNoCase {
 
 struct AssetData: ExportableEntity {
     var id         : DataId           = .void
-    var type       : AssetType        = AssetType.defaultValue
-    var status     : AssetStatus      = AssetStatus.defaultValue
+    var type       : AssetType        = .defaultValue
+    var status     : AssetStatus      = .defaultValue
     var name       : String           = ""
     var startDate  : DateString       = DateString("")
     var currencyId : DataId           = .void
     var value      : Double           = 0.0
-    var change     : AssetChange      = AssetChange.defaultValue
-    var changeMode : AssetChangeMode  = AssetChangeMode.defaultValue
+    var change     : AssetChange      = .defaultValue
+    var changeMode : AssetChangeMode  = .defaultValue
     var changeRate : Double           = 0.0
     var notes      : String           = ""
 }

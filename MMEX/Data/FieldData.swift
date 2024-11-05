@@ -23,10 +23,10 @@ enum FieldType: String, EnumCollateNoCase {
 
 struct FieldData: ExportableEntity {
     var id          : DataId    = .void
-    var refType     : RefType   = RefType.defaultValue
+    var refType     : RefType   = .defaultValue
     var description : String    = ""
-    var type        : FieldType = FieldType.defaultValue
-    var properties  : String  = ""
+    var type        : FieldType = .defaultValue
+    var properties  : String    = ""
     static let refTypes: Set<RefType> = [ .transaction, .scheduled ]
 }
 

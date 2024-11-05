@@ -25,7 +25,7 @@ struct BudgetData: ExportableEntity {
     var id      : DataId       = .void
     var yearId  : DataId       = .void
     var categId : DataId       = .void
-    var period  : BudgetPeriod = BudgetPeriod.defaultValue
+    var period  : BudgetPeriod = .defaultValue
     var amount  : Double       = 0.0
     var notes   : String       = ""
     var active  : Bool         = false

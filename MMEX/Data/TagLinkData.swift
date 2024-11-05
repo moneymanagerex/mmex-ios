@@ -11,7 +11,7 @@ import SQLite
 struct TagLinkData: ExportableEntity {
     var id      : DataId  = .void
     var tagId   : DataId  = .void
-    var refType : RefType = RefType.transaction
+    var refType : RefType = .transaction
     var refId   : DataId  = .void
     static let refTypes: Set<RefType> = [
         .transaction, .transactionSplit,
