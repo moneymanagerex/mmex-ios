@@ -148,7 +148,7 @@ struct ContentView: View {
     private func insightsTab(vm: ViewModel, viewModel: InsightsViewModel) -> some View {
         NavigationView {
             InsightsView(vm: vm, viewModel: viewModel)
-                //.navigationBarTitle("Reports and Insights", displayMode: .inline)
+                .navigationBarTitle("Insights", displayMode: .inline)
         }
         .tabItem {
             env.theme.tab.iconText(icon: "arrow.up.right", text: "Insights")
@@ -181,7 +181,7 @@ struct ContentView: View {
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
             )
-            //.navigationBarTitle("Manage", displayMode: .inline)
+            .navigationBarTitle("Manage", displayMode: .inline)
         }
         .tabItem {
             env.theme.tab.iconText(icon: "folder", text: "Manage")
@@ -193,7 +193,7 @@ struct ContentView: View {
     private func settingsTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
         NavigationView {
             SettingsView(vm: vm, viewModel: viewModel)
-                //.navigationBarTitle("Settings", displayMode: .inline)
+                .navigationBarTitle("Settings", displayMode: .inline)
         }
         .tabItem {
             env.theme.tab.iconText(icon: "gearshape", text: "Settings")

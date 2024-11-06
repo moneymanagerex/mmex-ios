@@ -10,6 +10,8 @@ import SwiftUI
 struct SettingsThemeView: View {
     @EnvironmentObject var env: EnvironmentManager
 
+    @AppStorage("appearance") private var appearance: Int = UIUserInterfaceStyle.unspecified.rawValue
+
     @State private var isExpanded: [String: Bool] = [
         "Tab Icons"    : true,
         "Group Layout" : true,
@@ -22,6 +24,16 @@ struct SettingsThemeView: View {
     var body: some View {
         List {
             Section() {
+                Picker("Appearance", selection: $appearance) {
+                    Text("System").tag(UIUserInterfaceStyle.unspecified.rawValue)
+                    Text("Light").tag(UIUserInterfaceStyle.light.rawValue)
+                    Text("Dark").tag(UIUserInterfaceStyle.dark.rawValue)
+                }
+                .pickerStyle(NavigationLinkPickerStyle())
+                .onChange(of: appearance) {
+                    Appearance.apply(appearance)
+                }
+
                 HStack {
                     Text("Tab Icons")
                     Spacer()
@@ -34,9 +46,6 @@ struct SettingsThemeView: View {
 //                        env.theme.tab.layout = newChoice
 //                    }
                 }
-            }
-
-            Section() {
                 HStack {
                     Text("Show Count")
                     Spacer()
@@ -154,6 +163,19 @@ struct SettingsThemeView: View {
             }
         }
         .navigationTitle("Theme")
+        .listSectionSpacing(10)
+    }
+}
+
+enum Appearance {
+    static func apply(_ appearance: Int) {
+        //log.debug("DEBUG: appearance: \(appearance)")
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            windowScene.windows.forEach { window in
+                window.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: appearance) ?? .unspecified
+                window.reloadInputViews()
+            }
+        }
     }
 }
 
