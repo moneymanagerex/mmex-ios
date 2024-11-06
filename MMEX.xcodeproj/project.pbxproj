@@ -1301,7 +1301,7 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		A39A52FF2CDB1C9A0027E79E /* XCRemoteSwiftPackageReference "Amplitude-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:amplitude/Amplitude-iOS.git";
+			repositoryURL = "https://github.com/amplitude/Amplitude-iOS.git";
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 8.21.0;
@@ -1309,7 +1309,7 @@
 		};
 		A39A53002CDB1EA30027E79E /* XCRemoteSwiftPackageReference "analytics-connector-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:amplitude/analytics-connector-ios.git";
+			repositoryURL = "https://github.com/amplitude/analytics-connector-ios.git";
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 1.0.0;
