@@ -276,17 +276,6 @@
         }
       }
     },
-    "Currencies" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valute"
-          }
-        }
-      }
-    },
     "Dark" : {
       "localizations" : {
         "it" : {
@@ -413,56 +402,12 @@
     "Delete %@" : {
 
     },
-    "Delete Account" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina Conto"
-          }
-        }
-      }
-    },
     "Delete Category" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elimina Categoria"
-          }
-        }
-      }
-    },
-    "Delete Currency" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina Valuta"
-          }
-        }
-      }
-    },
-    "Delete Payee" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina Beneficiario"
-          }
-        }
-      }
-    },
-    "Delete Stock" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina Azioni"
           }
         }
       }
@@ -765,39 +710,6 @@
         }
       }
     },
-    "New Database" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuovo Database"
-          }
-        }
-      }
-    },
-    "New Payee" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuovo Beneficiario"
-          }
-        }
-      }
-    },
-    "New Stock" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuova Azione"
-          }
-        }
-      }
-    },
     "New Transaction" : {
       "localizations" : {
         "it" : {
@@ -840,6 +752,9 @@
         }
       }
     },
+    "Off" : {
+
+    },
     "OK" : {
       "localizations" : {
         "it" : {
@@ -849,6 +764,9 @@
           }
         }
       }
+    },
+    "On" : {
+
     },
     "Open Database" : {
       "localizations" : {
@@ -869,17 +787,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beneficiario"
-          }
-        }
-      }
-    },
-    "Payees" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beneficiari"
           }
         }
       }
@@ -1010,6 +917,9 @@
       }
     },
     "Select To Account" : {
+
+    },
+    "Send Anonymous Usage Data" : {
 
     },
     "Settings" : {

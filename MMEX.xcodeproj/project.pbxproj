@@ -146,6 +146,8 @@
 		A37E7D922C9AC60000B4ECFC /* ContactSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D912C9AC60000B4ECFC /* ContactSupportView.swift */; };
 		A37E7D942C9B217500B4ECFC /* InfotableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D932C9B217500B4ECFC /* InfotableData.swift */; };
 		A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */; };
+		A386B2AB2CDB22DA004AD9E3 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = A386B2AA2CDB22DA004AD9E3 /* Amplitude */; };
+		A39A53022CDB1EA30027E79E /* AnalyticsConnector in Frameworks */ = {isa = PBXBuildFile; productRef = A39A53012CDB1EA30027E79E /* AnalyticsConnector */; };
 		A39B1B362C99A0C2003E5562 /* CurrencyEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B352C99A0C2003E5562 /* CurrencyEditView.swift */; };
 		A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */; };
 		A3B374C52C96A23E00943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C42C96A23E00943FDB /* SQLite */; };
@@ -359,7 +361,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3B374C72C96A27800943FDB /* SQLite in Frameworks */,
+				A39A53022CDB1EA30027E79E /* AnalyticsConnector in Frameworks */,
 				A3B374C52C96A23E00943FDB /* SQLite in Frameworks */,
+				A386B2AB2CDB22DA004AD9E3 /* Amplitude in Frameworks */,
 				A3C1423A2C89754C00D3CEC0 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,6 +599,13 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		A386B2A92CDB22DA004AD9E3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A39B1B392C9A668F003E5562 /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -706,6 +717,7 @@
 			isa = PBXGroup;
 			children = (
 				A3C142292C89751500D3CEC0 /* MMEX */,
+				A386B2A92CDB22DA004AD9E3 /* Frameworks */,
 				A3C142282C89751500D3CEC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -819,6 +831,8 @@
 				A3C142392C89754C00D3CEC0 /* SQLite */,
 				A3B374C42C96A23E00943FDB /* SQLite */,
 				A3B374C62C96A27800943FDB /* SQLite */,
+				A39A53012CDB1EA30027E79E /* AnalyticsConnector */,
+				A386B2AA2CDB22DA004AD9E3 /* Amplitude */,
 			);
 			productName = MMEX;
 			productReference = A3C142272C89751500D3CEC0 /* MMEX.app */;
@@ -860,6 +874,8 @@
 			mainGroup = A3C1421E2C89751500D3CEC0;
 			packageReferences = (
 				A3C142382C89754C00D3CEC0 /* XCLocalSwiftPackageReference "../SQLite.swift" */,
+				A39A52FF2CDB1C9A0027E79E /* XCRemoteSwiftPackageReference "Amplitude-iOS" */,
+				A39A53002CDB1EA30027E79E /* XCRemoteSwiftPackageReference "analytics-connector-ios" */,
 			);
 			productRefGroup = A3C142282C89751500D3CEC0 /* Products */;
 			projectDirPath = "";
@@ -1282,7 +1298,36 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		A39A52FF2CDB1C9A0027E79E /* XCRemoteSwiftPackageReference "Amplitude-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:amplitude/Amplitude-iOS.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 8.21.0;
+			};
+		};
+		A39A53002CDB1EA30027E79E /* XCRemoteSwiftPackageReference "analytics-connector-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:amplitude/analytics-connector-ios.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		A386B2AA2CDB22DA004AD9E3 /* Amplitude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A39A52FF2CDB1C9A0027E79E /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
+			productName = Amplitude;
+		};
+		A39A53012CDB1EA30027E79E /* AnalyticsConnector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A39A53002CDB1EA30027E79E /* XCRemoteSwiftPackageReference "analytics-connector-ios" */;
+			productName = AnalyticsConnector;
+		};
 		A3B374C42C96A23E00943FDB /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SQLite;

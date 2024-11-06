@@ -15,6 +15,7 @@ struct SettingsView: View {
     @AppStorage("appearance") private var appearance: Int = UIUserInterfaceStyle.unspecified.rawValue
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
+    @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = false // Default is tracking disabled
 
     @State private var dateFormat: String = "%Y-%m-%d"
 
@@ -33,6 +34,16 @@ struct SettingsView: View {
 
                 NavigationLink(destination: SettingsThemeView()) {
                     Text("Theme")
+                }
+
+                Picker("Send Anonymous Usage Data", selection: $isTrackingEnabled) {
+                    Text("On").tag(true)
+                    Text("Off").tag(false)
+                }
+                .pickerStyle(NavigationLinkPickerStyle())
+                .padding()
+                .onChange(of: isTrackingEnabled) {
+                    // TODO
                 }
 
                 Picker("Default Payee", selection: $defaultPayeeSetting) {
