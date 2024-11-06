@@ -20,6 +20,12 @@ jobs:
       - name: Clone SQLite.swift from GitHub
         run: |
           git clone --branch 0.15.3 --single-branch https://github.com/stephencelis/SQLite.swift.git ../SQLite.swift
+      - name: Clone Amplitude-iOS from GitHub
+        run: |
+          git clone --branch v8.21.0 --single-branch https://github.com/amplitude/Amplitude-iOS.git ../Amplitude-iOS
+      - name: Clone analytics-connector-ios from GitHub
+        run: |
+          git clone --branch v1.0.3 --single-branch https://github.com/amplitude/analytics-connector-ios.git ../analytics-connector-ios
       - name: Reset SDK Cache
         run: |
           echo "Resetting SDK cache..."
