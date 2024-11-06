@@ -147,7 +147,6 @@
 		A37E7D942C9B217500B4ECFC /* InfotableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D932C9B217500B4ECFC /* InfotableData.swift */; };
 		A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */; };
 		A386B2B62CDB41AA004AD9E3 /* AnalyticsConnector in Frameworks */ = {isa = PBXBuildFile; productRef = A386B2B52CDB41AA004AD9E3 /* AnalyticsConnector */; };
-		A386B2B82CDB41AA004AD9E3 /* AnalyticsConnectorFramework in Frameworks */ = {isa = PBXBuildFile; productRef = A386B2B72CDB41AA004AD9E3 /* AnalyticsConnectorFramework */; };
 		A386B2BA2CDB41DC004AD9E3 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = A386B2B92CDB41DC004AD9E3 /* Amplitude */; };
 		A386B2BC2CDB437E004AD9E3 /* AnalyticsConnector in Frameworks */ = {isa = PBXBuildFile; productRef = A386B2BB2CDB437E004AD9E3 /* AnalyticsConnector */; };
 		A386B2BF2CDB43B4004AD9E3 /* AnalyticsConnector in Frameworks */ = {isa = PBXBuildFile; productRef = A386B2BE2CDB43B4004AD9E3 /* AnalyticsConnector */; };
@@ -364,7 +363,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A386B2BA2CDB41DC004AD9E3 /* Amplitude in Frameworks */,
-				A386B2B82CDB41AA004AD9E3 /* AnalyticsConnectorFramework in Frameworks */,
 				A3B374C72C96A27800943FDB /* SQLite in Frameworks */,
 				A386B2BC2CDB437E004AD9E3 /* AnalyticsConnector in Frameworks */,
 				A386B2B62CDB41AA004AD9E3 /* AnalyticsConnector in Frameworks */,
@@ -838,7 +836,6 @@
 				A3B374C42C96A23E00943FDB /* SQLite */,
 				A3B374C62C96A27800943FDB /* SQLite */,
 				A386B2B52CDB41AA004AD9E3 /* AnalyticsConnector */,
-				A386B2B72CDB41AA004AD9E3 /* AnalyticsConnectorFramework */,
 				A386B2B92CDB41DC004AD9E3 /* Amplitude */,
 				A386B2BB2CDB437E004AD9E3 /* AnalyticsConnector */,
 				A386B2BE2CDB43B4004AD9E3 /* AnalyticsConnector */,
@@ -1319,10 +1316,6 @@
 		A386B2B52CDB41AA004AD9E3 /* AnalyticsConnector */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AnalyticsConnector;
-		};
-		A386B2B72CDB41AA004AD9E3 /* AnalyticsConnectorFramework */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AnalyticsConnectorFramework;
 		};
 		A386B2B92CDB41DC004AD9E3 /* Amplitude */ = {
 			isa = XCSwiftPackageProductDependency;
