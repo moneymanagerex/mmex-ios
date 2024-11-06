@@ -41,7 +41,6 @@ struct SettingsView: View {
                     Text("Off").tag(false)
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
-                .padding()
                 .onChange(of: isTrackingEnabled) {
                     // TODO
                 }
