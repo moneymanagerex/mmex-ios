@@ -18,87 +18,85 @@ struct InsightsView: View {
     @State var incomeExpenseIsExpanded = true
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 20) {
-                    Section(header: HStack {
-                        Button(action: { accountBalanceIsExpanded.toggle() }) {
-                            env.theme.group.view(
-                                name: { Text(InsightsAccountView.statusChoices[statusChoice].0) },
-                                isExpanded: accountBalanceIsExpanded
-                            )
-                        }
-                    } ) { if accountBalanceIsExpanded {
-                        InsightsAccountView(
-                            vm: vm,
-                            viewModel: viewModel,
-                            statusChoice: $statusChoice
+        ScrollView {
+            VStack(spacing: 20) {
+                Section(header: HStack {
+                    Button(action: { accountBalanceIsExpanded.toggle() }) {
+                        env.theme.group.view(
+                            name: { Text(InsightsAccountView.statusChoices[statusChoice].0) },
+                            isExpanded: accountBalanceIsExpanded
                         )
-                    } }
-
-                    Section(header: HStack {
-                        Button(action: { accountIncomeIsExpanded.toggle() }) {
-                            env.theme.group.view(
-                                name: { Text("Account Income Summary") },
-                                isExpanded: accountIncomeIsExpanded
-                            )
-                        }
-                    } ) { if accountIncomeIsExpanded {
-                        InsightsSummaryView(stats: $viewModel.stats)
-                    } }
-
-                    Section(header: HStack {
-                        Button(action: { incomeExpenseIsExpanded.toggle() }) {
-                            env.theme.group.view(
-                                name: { Text("Income vs Expense Over Time") },
-                                isExpanded: incomeExpenseIsExpanded
-                            )
-                        }
-                    } ) { if incomeExpenseIsExpanded {
-                        // Date Range Filters
-                        HStack {
-                            DatePicker("Start Date", selection: $viewModel.startDate, displayedComponents: .date)
-                                .labelsHidden()
-                                .datePickerStyle(.compact)
-
-                            Spacer()
-
-                            DatePicker("End Date", selection: $viewModel.endDate, displayedComponents: .date)
-                                .labelsHidden()
-                                .datePickerStyle(.compact)
-                        }
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(radius: 2)
-
-                        IncomeExpenseView(stats: $viewModel.recentStats)
-                    } }
-
-                    // Placeholder for Future Sections
-                    Section {
-                        VStack {
-                            Text("More Insights Coming Soon...")
-                                .foregroundColor(.gray)
-                                .padding()
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(radius: 2)
-                    } header: {
-                        Text("Upcoming Features")
-                            .font(.headline)
-                            .padding(.horizontal)
                     }
-
+                } ) { if accountBalanceIsExpanded {
+                    InsightsAccountView(
+                        vm: vm,
+                        viewModel: viewModel,
+                        statusChoice: $statusChoice
+                    )
+                } }
+                
+                Section(header: HStack {
+                    Button(action: { accountIncomeIsExpanded.toggle() }) {
+                        env.theme.group.view(
+                            name: { Text("Account Income Summary") },
+                            isExpanded: accountIncomeIsExpanded
+                        )
+                    }
+                } ) { if accountIncomeIsExpanded {
+                    InsightsSummaryView(stats: $viewModel.stats)
+                } }
+                
+                Section(header: HStack {
+                    Button(action: { incomeExpenseIsExpanded.toggle() }) {
+                        env.theme.group.view(
+                            name: { Text("Income vs Expense Over Time") },
+                            isExpanded: incomeExpenseIsExpanded
+                        )
+                    }
+                } ) { if incomeExpenseIsExpanded {
+                    // Date Range Filters
+                    HStack {
+                        DatePicker("Start Date", selection: $viewModel.startDate, displayedComponents: .date)
+                            .labelsHidden()
+                            .datePickerStyle(.compact)
+                        
+                        Spacer()
+                        
+                        DatePicker("End Date", selection: $viewModel.endDate, displayedComponents: .date)
+                            .labelsHidden()
+                            .datePickerStyle(.compact)
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .shadow(radius: 2)
+                    
+                    IncomeExpenseView(stats: $viewModel.recentStats)
+                } }
+                
+                // Placeholder for Future Sections
+                Section {
+                    VStack {
+                        Text("More Insights Coming Soon...")
+                            .foregroundColor(.gray)
+                            .padding()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .shadow(radius: 2)
+                } header: {
+                    Text("Upcoming Features")
+                        .font(.headline)
+                        .padding(.horizontal)
                 }
-                .padding(.horizontal)
-                .padding(.top, 10) // Reduce the top padding for less space at the top
+                
             }
-            .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
+            .padding(.horizontal)
+            .padding(.top, 10) // Reduce the top padding for less space at the top
         }
+        .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
     }
 }
 

@@ -12,7 +12,6 @@ struct SettingsView: View {
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
 
-    @AppStorage("appearance") private var appearance: Int = UIUserInterfaceStyle.unspecified.rawValue
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
     @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = false // Default is tracking disabled
@@ -22,16 +21,6 @@ struct SettingsView: View {
     var body: some View {
         List {
             Section(header: Text("App Settings")) {
-                Picker("Appearance", selection: $appearance) {
-                    Text("System").tag(UIUserInterfaceStyle.unspecified.rawValue)
-                    Text("Light").tag(UIUserInterfaceStyle.light.rawValue)
-                    Text("Dark").tag(UIUserInterfaceStyle.dark.rawValue)
-                }
-                .pickerStyle(NavigationLinkPickerStyle())
-                .onChange(of: appearance) {
-                    Appearance.apply(appearance)
-                }
-
                 NavigationLink(destination: SettingsThemeView()) {
                     Text("Theme")
                 }
@@ -128,18 +117,6 @@ struct SettingsView: View {
         }
         .onAppear() {
             // TODO
-        }
-    }
-}
-
-enum Appearance {
-    static func apply(_ appearance: Int) {
-        //log.debug("DEBUG: appearance: \(appearance)")
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            windowScene.windows.forEach { window in
-                window.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: appearance) ?? .unspecified
-                window.reloadInputViews()
-            }
         }
     }
 }
