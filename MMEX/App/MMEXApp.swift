@@ -23,7 +23,7 @@ struct MMEXApp: App {
 
     init() {
         if userID.isEmpty {
-            userID = String(format: "ios_%@", TimestampString(Date()).string) 
+            userID = String(format: "ios_%@", TimestampString(Date()).string)
         }
         if isTrackingEnabled {
             Amplitude.instance().defaultTracking = AMPDefaultTrackingOptions.initWithSessions(true, appLifecycles: true, deepLinks: false, screenViews: false);
