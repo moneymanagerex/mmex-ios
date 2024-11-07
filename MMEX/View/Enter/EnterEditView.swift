@@ -239,6 +239,9 @@ struct EnterEditView: View {
             Spacer() // Push the contents to the top
         }
         .padding(.horizontal)
+        .onTapGesture {
+            hideKeyboard()
+        }
         .onAppear {
             // Initialize state variables from the txn object when the view appears
             let dateFormatter = DateFormatter()
