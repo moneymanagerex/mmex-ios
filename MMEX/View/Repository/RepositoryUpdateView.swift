@@ -30,6 +30,7 @@ struct RepositoryUpdateView<
                 editView($data, true)
             }
             .textSelection(.enabled)
+            .scrollDismissesKeyboard(.immediately)
             .navigationTitle(title)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
