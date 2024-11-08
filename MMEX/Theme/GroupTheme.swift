@@ -26,7 +26,7 @@ extension GroupTheme {
     }
 
     func view<NameView: View>(
-        @ViewBuilder name nameView: @escaping () -> NameView,
+        @ViewBuilder nameView: @escaping () -> NameView,
         count: Int? = nil,
         isExpanded: Bool? = nil
     ) -> some View {
@@ -67,7 +67,7 @@ extension GroupTheme {
     }
 
     func section<NameView: View, Content: View>(
-        @ViewBuilder name nameView: @escaping () -> NameView,
+        @ViewBuilder nameView: @escaping () -> NameView,
         count: Int? = nil,
         isExpanded: Binding<Bool>? = nil,
         @ViewBuilder content: @escaping () -> Content
@@ -76,14 +76,14 @@ extension GroupTheme {
             if let isExpanded {
                 Button(action: { isExpanded.wrappedValue.toggle() }) {
                     self.view(
-                        name: nameView,
+                        nameView: nameView,
                         count: count,
                         isExpanded: isExpanded.wrappedValue
                     )
                 }
             } else {
                 self.view(
-                    name: nameView,
+                    nameView: nameView,
                     count: count
                 )
             }
@@ -93,7 +93,7 @@ extension GroupTheme {
     }
 
     func manageItem<NameView: View, MainRepository: RepositoryProtocol>(
-        @ViewBuilder name nameView: @escaping () -> NameView,
+        @ViewBuilder nameView: @escaping () -> NameView,
         count: LoadMainCount<MainRepository>
     ) -> some View {
         HStack {
