@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct EnterView: View {
-    @State var newTxn: TransactionData = TransactionData()
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
@@ -16,17 +15,17 @@ struct EnterView: View {
 
     // Dismiss environment action
     @Environment(\.dismiss) var dismiss
-    
-    @State private var accountId: [DataId] = []
+
+    // app level setting
+    @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
+    @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
+
+    @State var newTxn: TransactionData = TransactionData()
     
     var body: some View {
         NavigationStack {
             EnterEditView(
                 vm: vm,
-                viewModel: viewModel,
-                accountId: $accountId,
-                categories: $viewModel.categories,
-                payees: $viewModel.payees,
                 txn: $newTxn
             )
                 .toolbar {
@@ -50,26 +49,51 @@ struct EnterView: View {
         }
         .padding()
         // .navigationBarTitle("Add Transaction", displayMode: .inline)
-        .onAppear() {
-            loadAccounts()
-            viewModel.loadCategories()
-            viewModel.loadPayees()
-            
-            // database level setting
-            let repository = InfotableRepository(env)
-            if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
-                newTxn.accountId = storedDefaultAccount
-            }
+        .task {
+            await load()
         }
     }
 
-    func loadAccounts() {
-        let repository = AccountRepository(env)
-        DispatchQueue.global(qos: .background).async {
-            typealias A = AccountRepository
-            let id = repository?.loadId(from: A.table.order(A.col_name)) ?? []
+    private func load() async {
+        log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
+        await vm.loadEnterList()
+
+        if newTxn.accountId.isVoid {
+            if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue ?? nil {
+                newTxn.accountId = defaultAccountId
+            } else if let accountOrder = vm.accountList.order.readyValue, accountOrder.count == 1 {
+                newTxn.accountId = accountOrder[0]
+            }
+        }
+
+        if newTxn.categId.isVoid {
+            if let categoryOrder = vm.categoryList.order.readyValue, categoryOrder.count == 1 {
+                newTxn.categId = categoryOrder[0]
+            }
+        }
+
+        if newTxn.payeeId.isVoid {
+            if let payeeOrder = vm.payeeList.order.readyValue, payeeOrder.count == 1 {
+                newTxn.payeeId = payeeOrder[0]
+            } else if defaultPayeeSetting == DefaultPayeeSetting.lastUsed, !newTxn.accountId.isVoid {
+                loadLatestTxn(for: newTxn.accountId)
+            }
+        }
+
+        if newTxn.id.isVoid {
+            newTxn.status = defaultStatus
+        }
+    }
+
+    func loadLatestTxn(for accountId: DataId) {
+        let repository = TransactionRepository(env)
+        if let latestTxn = repository?.latest(accountID: accountId).toOptional() ?? repository?.latest().toOptional() {
+            // Update UI on the main thread
             DispatchQueue.main.async {
-                self.accountId = id
+                if newTxn.payeeId.isVoid {
+                    newTxn.payeeId = latestTxn.payeeId
+                    // txn.categId = latestTxn.categId
+                }
             }
         }
     }

@@ -28,9 +28,9 @@ struct AccountListView: View {
             vmGroup: $vm.accountGroup,
             search: $search,
             initData: Self.initData,
-            groupName: groupName,
-            itemName: itemName,
-            itemInfo: itemInfo,
+            groupNameView: groupNameView,
+            itemNameView: itemNameView,
+            itemInfoView: itemInfoView,
             editView: editView
         )
         .onAppear {
@@ -38,7 +38,7 @@ struct AccountListView: View {
         }
     }
     
-    func groupName(_ g: Int, _ name: String?) -> some View {
+    func groupNameView(_ g: Int, _ name: String?) -> some View {
         Group {
             switch vm.accountGroup.choice {
             case .type:
@@ -57,11 +57,11 @@ struct AccountListView: View {
         }
     }
     
-    func itemName(_ data: AccountData) -> some View {
+    func itemNameView(_ data: AccountData) -> some View {
         Text(data.name)
     }
     
-    func itemInfo(_ data: AccountData) -> some View {
+    func itemInfoView(_ data: AccountData) -> some View {
         Group {
             if vm.accountGroup.choice == .type {
                 if let currencyName = vm.currencyList.name.readyValue {

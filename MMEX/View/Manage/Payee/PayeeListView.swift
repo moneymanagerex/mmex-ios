@@ -28,9 +28,9 @@ struct PayeeListView: View {
             vmGroup: $vm.payeeGroup,
             search: $search,
             initData: Self.initData,
-            groupName: groupName,
-            itemName: itemName,
-            itemInfo: itemInfo,
+            groupNameView: groupNameView,
+            itemNameView: itemNameView,
+            itemInfoView: itemInfoView,
             editView: editView
         )
         .onAppear {
@@ -38,15 +38,15 @@ struct PayeeListView: View {
         }
     }
     
-    func groupName(_ g: Int, _ name: String?) -> some View {
+    func groupNameView(_ g: Int, _ name: String?) -> some View {
         Text(name ?? "(unknown group name)")
     }
     
-    func itemName(_ data: PayeeData) -> some View {
+    func itemNameView(_ data: PayeeData) -> some View {
         Text(data.name)
     }
     
-    func itemInfo(_ data: PayeeData) -> some View {
+    func itemInfoView(_ data: PayeeData) -> some View {
         Group {
             if vm.payeeGroup.choice == .category {
                 Text(data.active ? "Active" : "Inactive")

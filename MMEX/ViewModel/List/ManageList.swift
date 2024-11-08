@@ -30,9 +30,9 @@ extension ViewModel {
         }
         manageList.loaded(ok: ok)
         if ok {
-            log.info("INFO: ViewModel.loadManage(main=\(Thread.isMainThread)): Ready.")
+            log.info("INFO: ViewModel.loadManageList(main=\(Thread.isMainThread))")
         } else {
-            log.debug("ERROR: ViewModel.loadManage(main=\(Thread.isMainThread)): Cannot load.")
+            log.debug("ERROR: ViewModel.loadManageList(main=\(Thread.isMainThread))")
             return
         }
     }

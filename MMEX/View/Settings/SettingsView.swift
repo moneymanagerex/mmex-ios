@@ -106,7 +106,7 @@ struct SettingsView: View {
                 }
             }
             
-            Section(header: Text("Support and Help")) {
+            Section(header: Text("Support")) {
                 NavigationLink(destination: HelpFAQView()) {
                     Text("Help / FAQ")
                 }

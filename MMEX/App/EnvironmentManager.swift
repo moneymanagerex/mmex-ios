@@ -15,10 +15,6 @@ class EnvironmentManager: ObservableObject {
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
 
-    // cache
-    var currencyCache = CurrencyCache()
-    var accountCache  = AccountCache()
-
     @Published var theme = Theme()
 
     init(withStoredDatabase: Void) {
@@ -61,9 +57,6 @@ extension EnvironmentManager {
             isDatabaseConnected = true
             databaseURL = url
             _ = Repository(db).setPragma(name: "journal_mode", value: "MEMORY")
-            if !isNew {
-                loadCache()
-            }
         } else {
             isDatabaseConnected = false
             databaseURL = nil
@@ -105,8 +98,6 @@ extension EnvironmentManager {
                 return
             }
         }
-
-        loadCache()
     }
 
     /// Closes the current database connection and resets related states.
@@ -137,7 +128,6 @@ extension EnvironmentManager {
             }
         }
         // Nullify the connection and reset the state
-        unloadCache()
         isDatabaseConnected = false
         db = nil
         databaseURL = nil
@@ -160,40 +150,6 @@ extension EnvironmentManager {
         if let cacheDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first?.path {
             _ = Repository(db).setPragma(name: "temp_store_directory", value: "'\(cacheDir)'")
         }
-    }
-}
-
-extension EnvironmentManager {
-    func loadCache() {
-        loadCurrency()
-        loadAccount()
-    }
-
-    func unloadCache() {
-        currencyCache.unload()
-        accountCache.unload()
-    }
-
-    func loadCurrency() {
-        let repository = CurrencyRepository(db)
-        //log.trace("DEBUG: loading currencyCache")
-//        DispatchQueue.global(qos: .background).async {
-            let data: [DataId: CurrencyData] = repository?.dictUsed() ?? [:]
-//            DispatchQueue.main.async {
-                self.currencyCache.load(data)
-                //log.trace("DEBUG: loaded currencyCache")
-//            }
-//        }
-    }
-
-    func loadAccount() {
-        let repository = AccountRepository(db)
-//        DispatchQueue.global(qos: .background).async {
-            let data: [DataId: AccountData] = repository?.selectById() ?? [:]
-//            DispatchQueue.main.async {
-                self.accountCache.load(data)
-//            }
-//        }
     }
 }
 

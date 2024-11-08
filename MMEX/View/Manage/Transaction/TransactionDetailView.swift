@@ -11,9 +11,6 @@ struct TransactionDetailView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
-    @Binding var accountId: [DataId]  // sorted by name
-    @Binding var categories: [CategoryData]
-    @Binding var payees: [PayeeData]
     @Binding var txn: TransactionData
 
     @State private var editingTxn = TransactionData()
@@ -34,38 +31,35 @@ struct TransactionDetailView: View {
 
             Section(header: Text("Transaction Amount")) {
                 Text(txn.transAmount.formatted(
-                    by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? 0]?.formatter
+                    by: vm.currencyList.info.readyValue?[
+                        vm.accountList.data.readyValue?[txn.accountId]?.currencyId ?? .void
+                    ]?.formatter
                 ))
             }
 
             Section(header: Text("Transaction Date")) {
-                Text(txn.transDate.string) // Display the transaction date
+                Text(txn.transDate.string)
             }
 
             Section(header: Text("Account Name")) {
-                if let account = env.accountCache[txn.accountId] {
-                    Text("\(account.name)")
-                } else {
-                    Text("n/a")
-                }
+                Text(vm.accountList.data.readyValue?[txn.accountId]?.name ?? "(unknown)")
             }
 
             if txn.transCode == .transfer {
                 Section(header: Text("To Account")) {
-                    if let toAccount = env.accountCache[txn.toAccountId] {
-                        Text("\(toAccount.name)")
-                    } else {
-                        Text("n/a")
-                    }
+                    Text(vm.accountList.data.readyValue?[txn.toAccountId]?.name ?? "(unknown)")
                 }
             } else {
                 Section(header: Text("Payee")) {
-                    // Text(getPayeeName(txn.payeeID)) // Retrieve payee name
-                    Text(getPayeeName(for: txn.payeeId))
+                    Text(vm.payeeList.data.readyValue?[txn.payeeId]?.name ?? "(unknown)")
                 }
             }
 
-            if !txn.splits.isEmpty {
+            if txn.splits.isEmpty {
+                Section(header: Text("Category")) {
+                    Text(vm.categoryList.path.readyValue?.path[txn.categId] ?? "(unknown)")
+                }
+            } else {
                 Section(header: Text("Splits")) {
                     // header
                     HStack {
@@ -79,11 +73,13 @@ struct TransactionDetailView: View {
                     // rows
                     ForEach(txn.splits) { split in
                         HStack {
-                            Text(getCategoryName(for: split.categId))
+                            Text(vm.categoryList.path.readyValue?.path[split.categId] ?? "(unknown)")
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
 
                             Text(split.amount.formatted(
-                                by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? .void]?.formatter
+                                by: vm.currencyList.info.readyValue?[
+                                    vm.accountList.data.readyValue?[txn.accountId]?.currencyId ?? .void
+                                ]?.formatter
                             ))
                             .frame(width: 80, alignment: .center) // Centered with fixed width
 
@@ -92,16 +88,12 @@ struct TransactionDetailView: View {
                         }
                     }
                 }
-            } else {
-                Section(header: Text("Category")) {
-                    Text(getCategoryName(for:txn.categId))
-                }
             }
 
             Section(header: Text("Notes")) {
                 Text(txn.notes)
             }
-            // Section for actions like delete
+
             Section {
                 Button("Delete Transaction") {
                     if viewModel.deleteTransaction(txn) {
@@ -133,10 +125,6 @@ struct TransactionDetailView: View {
             NavigationStack {
                 EnterEditView(
                     vm: vm,
-                    viewModel: viewModel,
-                    accountId: $accountId,
-                    categories: $categories,
-                    payees: $payees,
                     txn: $editingTxn
                 )
                     .toolbar {
@@ -172,50 +160,33 @@ struct TransactionDetailView: View {
             }
         }
     }
-    
-    func getCategoryName(for categoryID: DataId) -> String {
-        return categories.first {$0.id == categoryID}?.name ?? "Unknown"
-    }
-
-    func getPayeeName(for payeeID: DataId) -> String {
-        return payees.first {$0.id == payeeID}?.name ?? "Unknown"
-    }
 }
 
-#Preview("txn 0") {
+#Preview("txn #0") {
     let env = EnvironmentManager.sampleData
     TransactionDetailView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env),
-        accountId: .constant(AccountData.sampleDataIds),
-        categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[0])
     )
     .environmentObject(env)
 }
 
-#Preview("txn 2") {
+#Preview("txn #2") {
     let env = EnvironmentManager.sampleData
     TransactionDetailView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env),
-        accountId: .constant(AccountData.sampleDataIds),
-        categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[2])
     )
     .environmentObject(env)
 }
 
-#Preview("txn 3") {
+#Preview("txn #3") {
     let env = EnvironmentManager.sampleData
     TransactionDetailView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env),
-        accountId: .constant(AccountData.sampleDataIds),
-        categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[3])
     )
     .environmentObject(env)

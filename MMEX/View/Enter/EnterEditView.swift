@@ -10,19 +10,11 @@ import SwiftUI
 struct EnterEditView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-    @ObservedObject var viewModel: TransactionViewModel
-    @Binding var accountId: [DataId] // sorted by name
-    @Binding var categories: [CategoryData]
-    @Binding var payees: [PayeeData]
     @Binding var txn: TransactionData
 
     @State private var selectedDate = Date()
 
     @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
-
-    // app level setting
-    @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
-    @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
 
     // Focus state for the Amount input to control keyboard focus
     @FocusState private var isAmountFocused: Bool
@@ -44,10 +36,10 @@ struct EnterEditView: View {
 
                 Picker("Select account", selection: $txn.accountId) {
                     if (txn.accountId.isVoid) {
-                        Text("Account").tag(DataId.void)
+                        Text("Account:").tag(DataId.void)
                     }
-                    ForEach(accountId, id: \.self) { id in
-                        if let account = env.accountCache[id] {
+                    ForEach(vm.accountList.order.readyValue ?? [], id: \.self) { id in
+                        if let account = vm.accountList.data.readyValue?[id] {
                             Text(account.name).tag(id)
                         }
                     }
@@ -119,25 +111,26 @@ struct EnterEditView: View {
                     // to Account picker
                     Picker("Select To Account", selection: $txn.toAccountId) {
                         if (txn.toAccountId.isVoid) {
-                            Text("Account").tag(DataId.void)
+                            Text("Account:").tag(DataId.void)
                         }
-                        ForEach(accountId, id: \.self) { id in
-                            if let account = env.accountCache[id],
+                        ForEach(vm.accountList.order.readyValue ?? [], id: \.self) { id in
+                            if let account = vm.accountList.data.readyValue?[id],
                                id != txn.accountId
                             {
                                 Text(account.name).tag(id)
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     // Payee picker
                     Picker("Select Payee", selection: $txn.payeeId) {
                         if (txn.payeeId.isVoid) {
-                            Text("Payee").tag(DataId.void)
+                            Text("Payee:").tag(DataId.void)
                         }
-                        ForEach(payees) { payee in
-                            Text(payee.name).tag(payee.id)
+                        ForEach(vm.payeeList.order.readyValue ?? []) { id in
+                            if let payee = vm.payeeList.data.readyValue?[id] {
+                                Text(payee.name).tag(payee.id)
+                            }
                         }
                     }
                     .pickerStyle(MenuPickerStyle()) // Show a menu for the payee picker
@@ -145,15 +138,14 @@ struct EnterEditView: View {
                 Spacer()
 
                 // Category picker
-                Picker("Select Category", selection: Binding(
-                    get: { txn.categId }, // Safely unwrap the optional notes field
-                    set: { txn.categId = $0 } // Set
-                )) {
+                Picker("Select Category", selection: $txn.categId) {
                     if (txn.categId.isVoid) {
-                        Text("Category").tag(DataId.void) // not set
+                        Text("Category:").tag(DataId.void)
                     }
-                    ForEach(categories) { category in
-                        Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
+                    ForEach(vm.categoryList.path.readyValue?.order ?? [], id: \.self) { id in
+                        if let path = vm.categoryList.path.readyValue?.path[id] {
+                            Text(path).tag(id)
+                        }
                     }
                 }
                 .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
@@ -162,7 +154,7 @@ struct EnterEditView: View {
             .padding(.horizontal, 0)
             
             // 6. Splits Section
-            if txn.transCode != TransactionType.transfer {
+            if txn.transCode != .transfer {
                 Form {
                     Section(header: Text("Splits")) {
                         HStack {
@@ -178,10 +170,12 @@ struct EnterEditView: View {
                         ForEach(txn.splits.indices, id: \.self) { index in
                             let split = txn.splits[index]
                             HStack {
-                                Text(getCategoryName(for: split.categId))
+                                Text(vm.categoryList.path.readyValue?.path[split.categId] ?? "")
                                     .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                                 Text(split.amount.formatted(
-                                    by: env.currencyCache[env.accountCache[txn.accountId]?.currencyId ?? .void]?.formatter
+                                    by: vm.currencyList.info.readyValue?[
+                                        vm.accountList.data.readyValue?[txn.accountId]?.currencyId ?? .void
+                                    ]?.formatter
                                 ))
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
                                 Text(split.notes)
@@ -197,10 +191,12 @@ struct EnterEditView: View {
                             // Split Category picker
                             Picker("Select Category", selection: $newSplit.categId) {
                                 if (newSplit.categId.isVoid) {
-                                    Text("Category").tag(DataId.void)
+                                    Text("Category:").tag(DataId.void)
                                 }
-                                ForEach(categories) { category in
-                                    Text(category.fullName(with: viewModel.categDelimiter)).tag(category.id)
+                                ForEach(vm.categoryList.path.readyValue?.order ?? [], id: \.self) { id in
+                                    if let path = vm.categoryList.path.readyValue?.path[id] {
+                                        Text(path).tag(id)
+                                    }
                                 }
                             }
                             .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
@@ -247,71 +243,27 @@ struct EnterEditView: View {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             selectedDate = dateFormatter.date(from: txn.transDate.string) ?? Date()
-
-            // Automatically set if there's only one item in the list
-            if self.payees.count == 1 {
-                txn.payeeId = self.payees.first!.id
-            } else if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed) {
-                loadLatestTxn()
-            }
-
-            if accountId.count == 1 {
-                txn.accountId = accountId.first!
-            }
-
-            if self.categories.count == 1 {
-                txn.categId = self.categories.first!.id
-            }
-
-            if (txn.id.isVoid) {
-                txn.status = defaultStatus
-            }
         }
         .onDisappear {
             // Resign the focus when the view disappears, hiding the keyboard
             isAmountFocused = false
         }
     }
-
-    func loadLatestTxn() {
-        let repository = TransactionRepository(env)
-        if let latestTxn = repository?.latest(accountID: txn.accountId).toOptional() ?? repository?.latest().toOptional() {
-            // Update UI on the main thread
-            DispatchQueue.main.async {
-                if (defaultPayeeSetting == DefaultPayeeSetting.lastUsed && txn.payeeId.isVoid) {
-                    txn.payeeId = latestTxn.payeeId
-                    // txn.categId = latestTxn.categId
-                }
-            }
-        }
-    }
-
-    func getCategoryName(for categoryID: DataId) -> String {
-        return categories.first {$0.id == categoryID}?.fullName(with: viewModel.categDelimiter) ?? "Unknown"
-    }
 }
 
-#Preview("txn 0") {
+#Preview("txn #0") {
     let env = EnvironmentManager.sampleData
     EnterEditView(
         vm: ViewModel(env: env),
-        viewModel: TransactionViewModel(env: env),
-        accountId: .constant(AccountData.sampleDataIds),
-        categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[0])
     )
     .environmentObject(env)
 }
 
-#Preview("txn 3") {
+#Preview("txn #3") {
     let env = EnvironmentManager.sampleData
     EnterEditView(
         vm: ViewModel(env: env),
-        viewModel: TransactionViewModel(env: env),
-        accountId: .constant(AccountData.sampleDataIds),
-        categories: .constant(CategoryData.sampleData),
-        payees: .constant(PayeeData.sampleData),
         txn: .constant(TransactionData.sampleData[3])
     )
     .environmentObject(env)

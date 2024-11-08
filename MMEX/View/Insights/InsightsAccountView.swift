@@ -11,6 +11,7 @@ struct InsightsAccountView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: InsightsViewModel
+
     @Binding var statusChoice: Int
     @State private var expandedSections: [AccountType: Bool] = [:]
 
@@ -55,7 +56,7 @@ struct InsightsAccountView: View {
                                 case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
                                 default: 0.0
                                 }
-                                let baseConvRate = env.currencyCache[account.currencyId]?.baseConvRate ?? 1.0
+                                let baseConvRate = vm.currencyList.info.readyValue?[account.currencyId]?.baseConvRate ?? 1.0
                                 total = total + value * baseConvRate
                             }
                         }
@@ -63,7 +64,7 @@ struct InsightsAccountView: View {
                     } ()
 
                     Text(totalBalance.formatted(
-                        by: env.currencyCache[viewModel.baseCurrency?.id ?? 0]?.formatter
+                        by: vm.currencyList.info.readyValue?[viewModel.baseCurrency?.id ?? .void]?.formatter
                     ))
                     .font(.subheadline)
                 }
@@ -120,7 +121,7 @@ struct InsightsAccountView: View {
                                         }
                                         if let value {
                                             Text(value.formatted(
-                                                by: env.currencyCache[account.currencyId]?.formatter
+                                                by: vm.currencyList.info.readyValue?[account.currencyId]?.formatter
                                             ))
                                             .font(.subheadline)
                                         }

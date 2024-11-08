@@ -26,9 +26,9 @@ struct TagListView: View {
             vmGroup: $vm.tagGroup,
             search: $search,
             initData: Self.initData,
-            groupName: groupName,
-            itemName: itemName,
-            itemInfo: itemInfo,
+            groupNameView: groupNameView,
+            itemNameView: itemNameView,
+            itemInfoView: itemInfoView,
             editView: editView
         )
         .onAppear {
@@ -36,15 +36,15 @@ struct TagListView: View {
         }
     }
     
-    func groupName(_ g: Int, _ name: String?) -> some View {
+    func groupNameView(_ g: Int, _ name: String?) -> some View {
         Text(name ?? "(unknown group name)")
     }
     
-    func itemName(_ data: TagData) -> some View {
+    func itemNameView(_ data: TagData) -> some View {
         Text(data.name)
     }
     
-    func itemInfo(_ data: TagData) -> some View {
+    func itemInfoView(_ data: TagData) -> some View {
         Group {
             if vm.tagGroup.choice == .active {
                 EmptyView()
