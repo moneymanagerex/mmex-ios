@@ -21,75 +21,78 @@ struct CurrencyEditView: View {
 
     var body: some View {
         Section {
-            env.theme.field.text(edit, "Name") {
+            env.theme.field.view(edit, "Name", editView: {
                 TextField("Cannot be empty!", text: $data.name)
                     .textInputAutocapitalization(.sentences)
-            } show: {
+            }, showView: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.name)
-            }
+            } )
             
-            env.theme.field.text(edit, "Symbol") {
+            env.theme.field.view(edit, "Symbol", editView: {
                 TextField("Cannot be empty!", text: $data.symbol)
                     .textInputAutocapitalization(.characters)
-            } show: {
+            }, showView: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.symbol)
-            }
-            
-            env.theme.field.picker(edit, "Type") {
+            } )
+
+            env.theme.field.view(edit, false, "Type", editView: {
                 Picker("", selection: $data.type) {
                     ForEach(CurrencyType.allCases) { type in
                         Text(type.rawValue).tag(type)
                     }
                 }
-            } show: {
+            }, showView: {
                 Text(data.type.rawValue)
-            }
-            
-            if edit || !data.unitName.isEmpty {
-                env.theme.field.text(edit, "Unit Name") {
+            } )
+
+            if edit || !data.unitName.isEmpty || !data.centName.isEmpty {
+                env.theme.field.view(edit, "Unit Name", valueView: {
                     TextField("N/A", text: $data.unitName)
                         .textInputAutocapitalization(.sentences)
-                }
-                
-                if edit || !data.centName.isEmpty {
-                    env.theme.field.text(edit, "Cent Name") {
-                        TextField("N/A", text: $data.centName)
-                            .textInputAutocapitalization(.sentences)
-                    }
-                }
+                } )
+
+                env.theme.field.view(edit, "Cent Name", valueView: {
+                    TextField("N/A", text: $data.centName)
+                        .textInputAutocapitalization(.sentences)
+                } )
             }
-            
-            env.theme.field.text(edit, "Conversion Rate") {
-                TextField("Default is 0", value: $data.baseConvRate, format: .number)
+
+            env.theme.field.view(edit, true, "Conversion Rate", editView: {
+                TextField("Default is 1", value: $data.baseConvRate.defaultOne, format: .number)
                     .keyboardType(.decimalPad)
-            }
+            }, showView: {
+                Text("\(data.baseConvRate)")
+            } )
         }
         
         Section {
-            env.theme.field.text(edit, "Format") {
+            env.theme.field.view(false, "Format", valueView: {
                 Text(format)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .foregroundColor(.gray)
-            }
+            } )
+
             if edit {
-                env.theme.field.text(edit, "Prefix Symbol") {
+                env.theme.field.view(edit, "Prefix Symbol") {
                     TextField("N/A", text: $data.prefixSymbol)
                         .textInputAutocapitalization(.characters)
                 }
-                env.theme.field.text(edit, "Suffix Symbol") {
+                env.theme.field.view(edit, "Suffix Symbol") {
                     TextField("N/A", text: $data.suffixSymbol)
                         .textInputAutocapitalization(.characters)
                 }
-                env.theme.field.text(edit, "Decimal Point") {
+                env.theme.field.view(edit, "Decimal Point") {
                     TextField("N/A", text: $data.decimalPoint)
                 }
-                env.theme.field.text(edit, "Thousands Separator") {
+                env.theme.field.view(edit, "Thousands Separator") {
                     TextField("N/A", text: $data.groupSeparator)
                 }
-                env.theme.field.text(edit, "Scale") {
-                    TextField("Default is 0", value: $data.scale, format: .number)
+                env.theme.field.view(edit, true, "Scale", editView: {
+                    TextField("Default is 1", value: $data.scale.defaultOne, format: .number)
                         .keyboardType(.decimalPad)
-                }
+                }, showView: {
+                    Text("\(data.scale)")
+                } )
             }
         }
     }

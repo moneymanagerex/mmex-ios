@@ -379,6 +379,9 @@
         }
       }
     },
+    "Default is 1" : {
+
+    },
     "Default Payee" : {
       "localizations" : {
         "it" : {
@@ -897,6 +900,7 @@
       }
     },
     "Select Currency" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

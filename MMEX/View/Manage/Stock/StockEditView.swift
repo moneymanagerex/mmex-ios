@@ -19,82 +19,91 @@ struct StockEditView: View {
 
     var body: some View {
         Section {
-            env.theme.field.text(edit, "Name") {
+            env.theme.field.view(edit, "Name", editView: {
                 TextField("Cannot be empty!", text: $data.name)
                     .textInputAutocapitalization(.words)
-            } show: {
+            }, showView: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.name)
-            }
+            } )
             
-            env.theme.field.text(edit, "Symbol") {
+            env.theme.field.view(edit, "Symbol", editView: {
                 TextField("Cannot be empty!", text: $data.symbol)
                     .textInputAutocapitalization(.characters)
-            } show: {
+            }, showView: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.symbol)
-            }
+            } )
 
             if
                 let accountOrder = vm.accountList.order.readyValue,
                 let accountData  = vm.accountList.data.readyValue
             {
-                env.theme.field.picker(edit, "Account") {
+                env.theme.field.view(edit, false, "Account", editView: {
                     Picker("", selection: $data.accountId) {
                         if (data.accountId.isVoid) {
-                            Text("Select Account").tag(DataId.void) // not set
+                            Text("(none)").tag(DataId.void)
                         }
                         ForEach(accountOrder, id: \.self) { id in
                             Text(accountData[id]?.name ?? "").tag(id)
                         }
                     }
-                } show: {
+                }, showView: {
                     env.theme.field.valueOrError("Cannot be empty!", text: account?.name)
-                }
+                } )
             }
         }
-        
+
         Section {
-            env.theme.field.text(edit, "Number of Shares") {
-                TextField("Default is 0", value: $data.numShares, format: .number)
+            env.theme.field.view(edit, true, "Number of Shares", editView: {
+                TextField("Default is 0", value: $data.numShares.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            }
+            }, showView: {
+                Text("\(data.numShares)")
+            } )
             
-            env.theme.field.date(edit, "Purchase Date") {
+            env.theme.field.view(edit, true, "Purchase Date", editView: {
                 DatePicker("", selection: $data.purchaseDate.date, displayedComponents: [.date])
-            } show: {
+                    .labelsHidden()
+            }, showView: {
                 env.theme.field.valueOrError("Should not be empty!", text: data.purchaseDate.string)
-            }
+            } )
             
-            env.theme.field.text(edit, "Purchase Price") {
-                TextField("Default is 0", value: $data.purchasePrice, format: .number)
+            env.theme.field.view(edit, true, "Purchase Price", editView: {
+                TextField("Default is 0", value: $data.purchasePrice.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            }
+            }, showView: {
+                Text("\(data.purchasePrice)")
+            } )
             
-            env.theme.field.text(edit, "Current Price") {
-                TextField("Default is 0", value: $data.currentPrice, format: .number)
+            env.theme.field.view(edit, true, "Current Price", editView: {
+                TextField("Default is 0", value: $data.currentPrice.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            }
+            }, showView: {
+                Text("\(data.currentPrice)")
+            } )
             
-            env.theme.field.text(edit, "Purchase Value") {
-                TextField("Default is 0", value: $data.purchaseValue, format: .number)
+            env.theme.field.view(edit, true, "Purchase Value", editView: {
+                TextField("Default is 0", value: $data.purchaseValue.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            } show: {
+            }, showView: {
                 Text(data.purchaseValue.formatted(by: formatter))
-            }
+            } )
             
-            env.theme.field.text(edit, "Commisison") {
-                TextField("Default is 0", value: $data.commisison, format: .number)
+            env.theme.field.view(edit, true, "Commisison", editView: {
+                TextField("Default is 0", value: $data.commisison.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            } show: {
+            }, showView: {
                 Text(data.commisison.formatted(by: formatter))
-            }
+            } )
         }
+
         Section {
-            env.theme.field.editor(edit, "Notes") {
+            env.theme.field.view(edit, "Notes", editView: {
                 TextEditor(text: $data.notes)
                     .textInputAutocapitalization(.never)
-            } show: {
+                    .frame(minHeight: 20)
+            }, showView: {
                 env.theme.field.valueOrHint("N/A", text: data.notes)
-            }
+            } )
         }
     }
 }

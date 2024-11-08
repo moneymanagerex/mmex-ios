@@ -15,18 +15,18 @@ struct TagEditView: View {
 
     var body: some View {
         Section {
-            env.theme.field.text(edit, "Name") {
+            env.theme.field.view(edit, "Name", editView: {
                 TextField("Cannot be empty!", text: $data.name)
                     .textInputAutocapitalization(.words)
-            } show: {
+            }, showView: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.name)
-            }
-            
-            env.theme.field.toggle(edit, "Active") {
+            } )
+
+            env.theme.field.view(edit, true, "Active", editView: {
                 Toggle(isOn: $data.active) { }
-            } show: {
+            }, showView: {
                 Text(data.active ? "Yes" : "No")
-            }
+            } )
         }
     }
 }

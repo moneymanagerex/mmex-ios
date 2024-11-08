@@ -16,23 +16,23 @@ struct AttachmentEditView: View {
     var body: some View {
         if !data.id.isVoid, !data.refId.isVoid {
             Section {
-                env.theme.field.text(false, "Reference") {
+                env.theme.field.view(false, "Reference") {
                     Text("\(data.refType.name) #\(data.refId.value)")
                         .opacity(0.5)
                 }
 
-                env.theme.field.text(edit, "Description") {
+                env.theme.field.view(edit, "Description") {
                     TextField("N/A", text: $data.description)
                         .textInputAutocapitalization(.sentences)
                 }
 
                 // TODO: select file
-                env.theme.field.text(edit, "Filename") {
+                env.theme.field.view(edit, "Filename", editView: {
                     TextField("Cannot be empty!", text: $data.filename)
                         .textInputAutocapitalization(.words)
-                } show: {
+                }, showView: {
                     env.theme.field.valueOrError("Cannot be empty!", text: data.filename)
-                }
+                } )
             }
         } else {
             Text("New attachments can be created from the items that contain them.")

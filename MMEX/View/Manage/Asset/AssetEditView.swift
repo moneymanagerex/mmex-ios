@@ -19,95 +19,99 @@ struct AssetEditView: View {
 
     var body: some View {
         Section {
-            env.theme.field.text(edit, "Name") {
+            env.theme.field.view(edit, "Name", editView: {
                 TextField("Cannot be empty!", text: $data.name)
                     .textInputAutocapitalization(.words)
-            } show: {
+            }, showView: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.name)
-            }
+            } )
             
-            env.theme.field.picker(edit, "Type") {
+            env.theme.field.view(edit, false, "Type", editView: {
                 Picker("", selection: $data.type) {
                     ForEach(AssetType.allCases) { type in
                         Text(type.rawValue).tag(type)
                     }
                 }
-            } show: {
+            }, showView: {
                 Text(data.type.rawValue)
-            }
+            } )
             
-            env.theme.field.toggle(edit, "Status") {
+            env.theme.field.view(edit, false, "Status", editView: {
                 Toggle(isOn: $data.status.isOpen) { }
-            } show: {
+            }, showView: {
                 Text(data.status.rawValue)
-            }
+            } )
             
-            env.theme.field.date(edit, "Start Date") {
+            env.theme.field.view(edit, true, "Start Date", editView: {
                 DatePicker("", selection: $data.startDate.date, displayedComponents: [.date])
-            } show: {
+                    .labelsHidden()
+            }, showView: {
                 env.theme.field.valueOrError("Should not be empty!", text: data.startDate.string)
-            }
+            } )
             
             if
                 let currencyOrder = vm.currencyList.order.readyValue,
                 let currencyName  = vm.currencyList.name.readyValue
             {
-                env.theme.field.picker(edit, "Currency") {
+                env.theme.field.view(edit, false, "Currency", editView: {
                     Picker("", selection: $data.currencyId) {
                         if (data.currencyId.isVoid) {
-                            Text("Select Currency").tag(DataId.void)
+                            Text("(none)").tag(DataId.void)
                         }
                         ForEach(currencyOrder, id: \.self) { id in
                             Text(currencyName[id] ?? "").tag(id)
                         }
                     }
-                } show: {
+                }, showView: {
                     env.theme.field.valueOrError("Cannot be empty!", text: currency?.name)
-                }
+                } )
             }
-            
-            env.theme.field.text(edit, "Value") {
-                TextField("Default is 0", value: $data.value, format: .number)
+
+            env.theme.field.view(edit, true, "Value", editView: {
+                TextField("Default is 0", value: $data.value.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            } show: {
+            }, showView: {
                 Text(data.value.formatted(by: formatter))
-            }
+            } )
         }
         
         Section {
-            env.theme.field.picker(edit, "Change") {
+            env.theme.field.view(edit, false, "Change", editView: {
                 Picker("", selection: $data.change) {
                     ForEach(AssetChange.allCases) { change in
                         Text(change.rawValue).tag(change)
                     }
                 }
-            } show: {
+            }, showView: {
                 Text(data.change.rawValue)
-            }
+            } )
             
-            env.theme.field.picker(edit, "Change Mode") {
+            env.theme.field.view(edit, false, "Change Mode", editView: {
                 Picker("", selection: $data.changeMode) {
                     ForEach(AssetChangeMode.allCases) { mode in
                         Text(mode.rawValue).tag(mode)
                     }
                 }
-            } show: {
+            }, showView: {
                 Text(data.changeMode.rawValue)
-            }
+            } )
             
-            env.theme.field.text(edit, "Change Rate") {
-                TextField("Default is 0", value: $data.changeRate, format: .number)
+            env.theme.field.view(edit, true, "Change Rate", editView: {
+                TextField("Default is 0", value: $data.changeRate.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            }
+            }, showView: {
+                Text("\(data.changeRate)")
+            } )
         }
-        
+
         Section{
-            env.theme.field.editor(edit, "Notes") {
+            env.theme.field.view(edit, "Notes", editView: {
                 TextEditor(text: $data.notes)
                     .textInputAutocapitalization(.never)
-            } show: {
+                    .frame(minHeight: 20)
+            }, showView: {
                 env.theme.field.valueOrHint("N/A", text: data.notes)
-            }
+            } )
         }
     }
 }

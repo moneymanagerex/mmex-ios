@@ -19,157 +19,163 @@ struct AccountEditView: View {
 
     var body: some View {
         Section {
-            env.theme.field.text(edit, "Name") {
+            env.theme.field.view(edit, "Name", editView: {
                 TextField("Cannot be empty!", text: $data.name)
                     .textInputAutocapitalization(.words)
-            } show: {
+            }, showView: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.name)
-            }
+            } )
             
-            env.theme.field.picker(edit, "Type") {
+            env.theme.field.view(edit, false, "Type", editView: {
                 Picker("", selection: $data.type) {
                     ForEach(AccountType.allCases) { type in
                         Text(type.rawValue).tag(type)
                     }
                 }
-            } show: {
+            }, showView: {
                 Text(data.type.rawValue)
-            }
+            } )
 
             if
                 let currencyOrder = vm.currencyList.order.readyValue,
                 let currencyName  = vm.currencyList.name.readyValue
             {
-                env.theme.field.picker(edit, "Currency") {
+                env.theme.field.view(edit, false, "Currency", editView: {
                     Picker("", selection: $data.currencyId) {
                         if (data.currencyId.isVoid) {
-                            Text("Select Currency").tag(DataId.void)
+                            Text("(none)").tag(DataId.void)
                         }
                         ForEach(currencyOrder, id: \.self) { id in
                             Text(currencyName[id] ?? "").tag(id)
                         }
                     }
-                } show: {
+                }, showView: {
                     env.theme.field.valueOrError("Cannot be empty!", text: currency?.name)
-                }
+                } )
             }
-            
-            env.theme.field.toggle(edit, "Status") {
+
+            env.theme.field.view(edit, true, "Status", editView: {
                 Toggle(isOn: $data.status.isOpen) { }
-            } show: {
+            }, showView: {
                 Text(data.status.rawValue)
-            }
+            } )
             
-            env.theme.field.toggle(edit, "Favorite") {
+            env.theme.field.view(edit, true, "Favorite", editView: {
                 Toggle(isOn: $data.favoriteAcct.asBool) { }
-            } show: {
+            }, showView: {
                 Text(data.favoriteAcct.rawValue)
-            }
+            } )
             
-            env.theme.field.date(edit, "Initial Date") {
+            env.theme.field.view(edit, true, "Initial Date", editView: {
                 DatePicker("", selection: $data.initialDate.date, displayedComponents: [.date])
-            } show: {
+                    .labelsHidden()
+            }, showView: {
                 env.theme.field.valueOrError("Should not be empty!", text: data.initialDate.string)
-            }
+            } )
             
-            env.theme.field.text(edit, "Initial Balance") {
-                TextField("Default is 0", value: $data.initialBal, format: .number)
+            env.theme.field.view(edit, true, "Initial Balance", editView: {
+                TextField("Default is 0", value: $data.initialBal.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            } show: {
+            }, showView: {
                 Text(data.initialBal.formatted(by: formatter))
-            }
+            } )
         }
         
         Section() {
-            env.theme.field.toggle(edit, "Statement Locked") {
+            env.theme.field.view(edit, true, "Statement Locked", editView: {
                 Toggle(isOn: $data.statementLocked) { }
-            } show: {
+            }, showView: {
                 Text(data.statementLocked ? "YES" : "NO")
-            }
+            } )
             
-            env.theme.field.date(edit, "Statement Date") {
+            env.theme.field.view(edit, true, "Statement Date", editView: {
                 DatePicker("", selection: $data.statementDate.date, displayedComponents: [.date])
-            } show: {
+                    .labelsHidden()
+            }, showView: {
                 env.theme.field.valueOrHint("N/A", text: data.statementDate.string)
-            }
+            } )
             
-            env.theme.field.text(edit, "Minimum Balance") {
-                TextField("Default is 0", value: $data.minimumBalance, format: .number)
+            env.theme.field.view(edit, true, "Minimum Balance", editView: {
+                TextField("Default is 0", value: $data.minimumBalance.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            } show: {
+            }, showView: {
                 Text(data.minimumBalance.formatted(by: formatter))
-            }
+            } )
             
-            env.theme.field.text(edit, "Credit Limit") {
-                TextField("Default is 0", value: $data.creditLimit, format: .number)
+            env.theme.field.view(edit, true, "Credit Limit", editView: {
+                TextField("Default is 0", value: $data.creditLimit.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            } show: {
+            }, showView: {
                 Text(data.creditLimit.formatted(by: formatter))
-            }
+            } )
             
-            env.theme.field.text(edit, "Interest Rate") {
-                TextField("Default is 0", value: $data.interestRate, format: .number)
+            env.theme.field.view(edit, true, "Interest Rate", editView: {
+                TextField("Default is 0", value: $data.interestRate.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            }
+            }, showView: {
+                Text("\(data.interestRate)")
+            } )
             
-            env.theme.field.date(edit, "Payment Due Date") {
+            env.theme.field.view(edit, true, "Payment Due Date", editView: {
                 DatePicker("", selection: $data.paymentDueDate.date, displayedComponents: [.date])
-            } show: {
+                    .labelsHidden()
+            }, showView: {
                 env.theme.field.valueOrHint("N/A", text: data.paymentDueDate.string)
-            }
+            } )
             
-            env.theme.field.text(edit, "Minimum Payment") {
-                TextField("Default is 0", value: $data.minimumPayment, format: .number)
+            env.theme.field.view(edit, true, "Minimum Payment", editView: {
+                TextField("Default is 0", value: $data.minimumPayment.defaultZero, format: .number)
                     .keyboardType(.decimalPad)
-            } show: {
+            }, showView: {
                 Text(data.minimumPayment.formatted(by: formatter))
-            }
+            } )
         }
         
         Section() {
             if edit || !data.num.isEmpty {
-                env.theme.field.text(edit, "Number") {
+                env.theme.field.view(edit, "Number") {
                     TextField("N/A", text: $data.num)
                         .textInputAutocapitalization(.never)
                 }
             }
             
             if edit || !data.heldAt.isEmpty {
-                env.theme.field.text(edit, "Held at") {
+                env.theme.field.view(edit, "Held at") {
                     TextField("N/A", text: $data.heldAt)
                         .textInputAutocapitalization(.sentences)
                 }
             }
             
             if edit || !data.website.isEmpty {
-                env.theme.field.text(edit, "Website") {
+                env.theme.field.view(edit, "Website") {
                     TextField("N/A", text: $data.website)
                         .textInputAutocapitalization(.never)
                 }
             }
             
             if edit || !data.contactInfo.isEmpty {
-                env.theme.field.text(edit, "Contact Info") {
+                env.theme.field.view(edit, "Contact Info") {
                     TextField("N/A", text: $data.contactInfo)
                         .textInputAutocapitalization(.sentences)
                 }
             }
             
             if edit || !data.accessInfo.isEmpty {
-                env.theme.field.text(edit, "Access Info") {
+                env.theme.field.view(edit, "Access Info") {
                     TextField("N/A", text: $data.accessInfo)
                         .textInputAutocapitalization(.sentences)
                 }
             }
         }
-        
+
         Section() {
-            env.theme.field.editor(edit, "Notes") {
+            env.theme.field.view(edit, "Notes", editView: {
                 TextEditor(text: $data.notes)
                     .textInputAutocapitalization(.never)
-            } show: {
+                    .frame(minHeight: 20)
+            }, showView: {
                 env.theme.field.valueOrHint("N/A", text: data.notes)
-            }
+            } )
         }
     }
 }

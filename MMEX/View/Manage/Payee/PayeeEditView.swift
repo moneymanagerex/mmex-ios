@@ -18,18 +18,18 @@ struct PayeeEditView: View {
 
     var body: some View {
         Section {
-            env.theme.field.text(edit, "Name") {
+            env.theme.field.view(edit, "Name", editView: {
                 TextField("Cannot be empty!", text: $data.name)
                     .textInputAutocapitalization(.words)
-            } show: {
+            }, showView: {
                 env.theme.field.valueOrError("Cannot be empty!", text: data.name)
-            }
+            } )
             
-            env.theme.field.toggle(edit, "Active") {
+            env.theme.field.view(edit, true, "Active", editView: {
                 Toggle(isOn: $data.active) { }
-            } show: {
+            }, showView: {
                 Text(data.active ? "Yes" : "No")
-            }
+            } )
         }
         
         Section {
@@ -38,36 +38,36 @@ struct PayeeEditView: View {
                 let categoryPath  = vm.categoryList.path.readyValue?.path
             {
                 // TODO: category tree
-                env.theme.field.picker(edit, "Category") {
+                env.theme.field.view(edit, false, "Category", editView: {
                     Picker("", selection: $data.categoryId) {
                         if (data.categoryId.isVoid) {
-                            Text("Select Category").tag(DataId.void) // not set
+                            Text("(none)").tag(DataId.void)
                         }
                         ForEach(categoryOrder, id: \.self) { id in
                             Text(categoryPath[id] ?? "").tag(id)
                         }
                     }
-                } show: {
+                }, showView: {
                     env.theme.field.valueOrHint("N/A", text: category)
-                }
+                } )
             }
             
             if edit || !data.number.isEmpty {
-                env.theme.field.text(edit, "Payment Number") {
+                env.theme.field.view(edit, "Payment Number") {
                     TextField("N/A", text: $data.number)
                         .textInputAutocapitalization(.never)
                 }
             }
             
             if edit || !data.website.isEmpty {
-                env.theme.field.text(edit, "Website") {
+                env.theme.field.view(edit, "Website") {
                     TextField("N/A", text: $data.website)
                         .textInputAutocapitalization(.never)
                 }
             }
             
             if edit || !data.pattern.isEmpty {
-                env.theme.field.text(edit, "Pattern") {
+                env.theme.field.view(edit, "Pattern") {
                     TextField("N/A", text: $data.pattern)
                         .textInputAutocapitalization(.never)
                 }
@@ -75,12 +75,13 @@ struct PayeeEditView: View {
         }
 
         Section {
-            env.theme.field.editor(edit, "Notes") {
+            env.theme.field.view(edit, "Notes", editView: {
                 TextEditor(text: $data.notes)
                     .textInputAutocapitalization(.never)
-            } show: {
+                    .frame(minHeight: 20)
+            }, showView: {
                 env.theme.field.valueOrHint("N/A", text: data.notes)
-            }
+            } )
         }
     }
 }

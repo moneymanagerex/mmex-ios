@@ -16,7 +16,7 @@ struct ManageView: View {
     @Binding var isSampleDocument: Bool
 
     @State var auxDataIsExpanded = false
-    let group = GroupTheme(layout: .nameFold)
+    let groupTheme = GroupTheme(layout: .nameFold)
     var auxCount: [Int?] {[
         vm.currencyList.count.readyValue,
         vm.tagList.count.readyValue,
@@ -29,67 +29,67 @@ struct ManageView: View {
 
     var body: some View {
         List {
-            group.section(
-                name: { Text("Data") }
+            groupTheme.section(
+                nameView: { Text("Data") }
             ) {
                 NavigationLink(destination: AccountListView(vm: vm)) {
                     env.theme.group.manageItem(
-                        name: { Text(AccountData.dataName.1) },
+                        nameView: { Text(AccountData.dataName.1) },
                         count: vm.accountList.count
                     )
                 }
                 NavigationLink(destination: AssetListView(vm: vm)) {
                     env.theme.group.manageItem(
-                        name: { Text(AssetData.dataName.1) },
+                        nameView: { Text(AssetData.dataName.1) },
                         count: vm.assetList.count
                     )
                 }
                 NavigationLink(destination: StockListView(vm: vm)) {
                     env.theme.group.manageItem(
-                        name: { Text(StockData.dataName.1) },
+                        nameView: { Text(StockData.dataName.1) },
                         count: vm.stockList.count
                     )
                 }
                 NavigationLink(destination: CategoryListView(vm: vm, viewModel: viewModel)) {
                     env.theme.group.manageItem(
-                        name: { Text(CategoryData.dataName.1) },
+                        nameView: { Text(CategoryData.dataName.1) },
                         count: vm.categoryList.count
                     )
                 }
                 NavigationLink(destination: PayeeListView(vm: vm)) {
                     env.theme.group.manageItem(
-                        name: { Text(PayeeData.dataName.1) },
+                        nameView: { Text(PayeeData.dataName.1) },
                         count: vm.payeeList.count
                     )
                 }
                 NavigationLink(destination: TransactionListView(vm: vm, viewModel: viewModel)) {
                     env.theme.group.manageItem(
-                        name: { Text(TransactionData.dataName.1) },
+                        nameView: { Text(TransactionData.dataName.1) },
                         count: vm.transactionList.count
                     )
                 }
             }
 
-            group.section(
-                name: { Text("Auxiliary Data") },
+            groupTheme.section(
+                nameView: { Text("Auxiliary Data") },
                 count: auxSum,
                 isExpanded: $auxDataIsExpanded
             ) {
                 NavigationLink(destination: CurrencyListView(vm: vm)) {
                     env.theme.group.manageItem(
-                        name: { Text(CurrencyData.dataName.1) },
+                        nameView: { Text(CurrencyData.dataName.1) },
                         count: vm.currencyList.count
                     )
                 }
                 NavigationLink(destination: TagListView(vm: vm)) {
                     env.theme.group.manageItem(
-                        name: { Text(TagData.dataName.1) },
+                        nameView: { Text(TagData.dataName.1) },
                         count: vm.tagList.count
                     )
                 }
                 NavigationLink(destination: AttachmentListView(vm: vm)) {
                     env.theme.group.manageItem(
-                        name: { Text(AttachmentData.dataName.1) },
+                        nameView: { Text(AttachmentData.dataName.1) },
                         count: vm.attachmentList.count
                     )
                 }
@@ -98,8 +98,8 @@ struct ManageView: View {
                     .opacity(0.6)
             }
 
-            group.section(
-                name: { Text("Database") }
+            groupTheme.section(
+                nameView: { Text("Database") }
             ) {
                 databaseButton("Open Database", fg: .white, bg: .blue) {
                     isDocumentPickerPresented = true
@@ -120,8 +120,8 @@ struct ManageView: View {
                 }
             }
 
-            group.section(
-                name: { Text("Database Maintenance") }
+            groupTheme.section(
+                nameView: { Text("Database Maintenance") }
             ) {
                 Text("Coming soon ...")
                     .foregroundColor(.accentColor)

@@ -180,7 +180,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                         action: { vmGroup.value[g].isExpanded.toggle() }
                     ) {
                         env.theme.group.view(
-                            name: { groupName(g, vmGroup.value[g].name) },
+                            nameView: { groupName(g, vmGroup.value[g].name) },
                             count: vmGroup.value[g].dataId.count,
                             isExpanded: vmGroup.value[g].isExpanded
                         )
@@ -250,8 +250,8 @@ where GroupType.MainRepository == ListType.MainRepository,
                 }
         ) {
             env.theme.item.view(
-                name: { itemName(data) },
-                info: { itemInfo(data) }
+                nameView: { itemName(data) },
+                infoView: { itemInfo(data) }
             )
         }
     }

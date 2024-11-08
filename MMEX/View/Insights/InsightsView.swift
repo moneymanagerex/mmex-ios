@@ -23,7 +23,7 @@ struct InsightsView: View {
                 Section(header: HStack {
                     Button(action: { accountBalanceIsExpanded.toggle() }) {
                         env.theme.group.view(
-                            name: { Text(InsightsAccountView.statusChoices[statusChoice].0) },
+                            nameView: { Text(InsightsAccountView.statusChoices[statusChoice].0) },
                             isExpanded: accountBalanceIsExpanded
                         )
                     }
@@ -38,7 +38,7 @@ struct InsightsView: View {
                 Section(header: HStack {
                     Button(action: { accountIncomeIsExpanded.toggle() }) {
                         env.theme.group.view(
-                            name: { Text("Account Income Summary") },
+                            nameView: { Text("Account Income Summary") },
                             isExpanded: accountIncomeIsExpanded
                         )
                     }
@@ -49,7 +49,7 @@ struct InsightsView: View {
                 Section(header: HStack {
                     Button(action: { incomeExpenseIsExpanded.toggle() }) {
                         env.theme.group.view(
-                            name: { Text("Income vs Expense Over Time") },
+                            nameView: { Text("Income vs Expense Over Time") },
                             isExpanded: incomeExpenseIsExpanded
                         )
                     }

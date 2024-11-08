@@ -20,8 +20,8 @@ struct ItemTheme: ThemeProtocol {
 
 extension ItemTheme {
     func view<NameView: View, InfoView: View>(
-        @ViewBuilder name nameView: @escaping () -> NameView,
-        @ViewBuilder info infoView: @escaping () -> InfoView
+        @ViewBuilder nameView: @escaping () -> NameView,
+        @ViewBuilder infoView: @escaping () -> InfoView
     ) -> some View {
         return Group {
             switch layout {

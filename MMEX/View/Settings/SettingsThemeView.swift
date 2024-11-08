@@ -58,7 +58,7 @@ struct SettingsThemeView: View {
                     isExpanded["Group Layout"]?.toggle()
                 }) {
                     env.theme.group.view(
-                        name: { Text("Group Layout") },
+                        nameView: { Text("Group Layout") },
                         isExpanded: isExpanded["Group Layout"] == true
                     )
                 }
@@ -70,7 +70,7 @@ struct SettingsThemeView: View {
                                 env.theme.group.layout = layout
                             }) {
                                 GroupTheme(layout: layout, showCount: env.theme.group.showCount).view(
-                                    name: { Text("Group Name") },
+                                    nameView: { Text("Group Name") },
                                     count: 10,
                                     isExpanded: false
                                 )
@@ -94,7 +94,7 @@ struct SettingsThemeView: View {
                     isExpanded["Item Layout"]?.toggle()
                 }) {
                     env.theme.group.view(
-                        name: { Text("Item Layout") },
+                        nameView: { Text("Item Layout") },
                         isExpanded: isExpanded["Item Layout"] == true
                     )
                 }
@@ -106,8 +106,8 @@ struct SettingsThemeView: View {
                                 env.theme.item.layout = layout
                             }) {
                                 ItemTheme(layout: layout).view(
-                                    name: { Text("Item Name") },
-                                    info: { Text("Item Info") }
+                                    nameView: { Text("Item Name") },
+                                    infoView: { Text("Item Info") }
                                 )
                                 .foregroundColor(.primary)
                             }
@@ -130,7 +130,7 @@ struct SettingsThemeView: View {
                     isExpanded["Field Layout"]?.toggle()
                 }) {
                     env.theme.group.view(
-                        name: { Text("Field Layout") },
+                        nameView: { Text("Field Layout") },
                         isExpanded: isExpanded["Field Layout"] == true
                     )
                 }
@@ -141,12 +141,10 @@ struct SettingsThemeView: View {
                             Button(action: {
                                 env.theme.field.layout = layout
                             }) {
-                                FieldTheme(layout: layout).text(false, "Field Name") {
-                                    Text("N/A")
-                                } show: {
+                                FieldTheme(layout: layout).view(false, "Field Name") {
                                     Text("Field Value")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                                 .foregroundColor(.primary)
                             }
                             .buttonStyle(BorderlessButtonStyle())
