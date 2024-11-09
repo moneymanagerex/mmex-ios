@@ -36,19 +36,12 @@ extension InfotableData: DataProtocol {
 
 extension InfotableData {
     // Helper method to get value as a specific type
-    func getValue<T: LosslessStringConvertible>(_ type: T.Type) -> T? {
+    func getValue<T: LosslessStringConvertible>(as type: T.Type) -> T? {
         return T(value)
     }
 
-    mutating func setValue<T>(_ newValue: T) {
-        // Convert the new value to a string before saving
-        if let intValue = newValue as? Int {
-            self.value = String(intValue)
-        } else if let stringValue = newValue as? String {
-            self.value = stringValue
-        } else {
-            log.warning("WARNING: InfotableData.setValue(): Unsupported type")
-        }
+    mutating func setValue<T: LosslessStringConvertible>(_ newValue: T) {
+        self.value = newValue.description
     }
 }
 

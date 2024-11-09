@@ -8,24 +8,24 @@
 import SwiftUI
 import SQLite
 
-struct LoadInfotableValue<MainValue>: LoadFetchProtocol {
+struct LoadInfotableValue<MainValue: LosslessStringConvertible>: LoadFetchProtocol {
     typealias MainRepository = InfotableRepository
-    typealias ValueType = MainValue?
+    typealias ValueType = MainValue
     let loadName: String = "Value(\(MainRepository.repositoryName))"
-    let idleValue: ValueType = nil
+    let idleValue: ValueType
 
     let key: String
-    let table: SQLite.Table = MainRepository.table
     var state: LoadState = .init()
-    var value: ValueType = nil
+    var value: ValueType
 
-    init(key: String) {
+    init(key: String, default idleValue: ValueType) {
         self.key = key
+        self.idleValue = idleValue
         self.value = idleValue
     }
 
     nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
-        MainRepository(env)?.getValue(for: key, as: MainValue.self)
+        InfotableRepository(env)?.getValue(for: key, default: idleValue)
     }
 }
 
@@ -39,9 +39,18 @@ struct InfotableList: ListProtocol {
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
     var used  : LoadMainUsed<MainRepository>  = .init()
 
-    var baseCurrencyId    : LoadInfotableValue<DataId> = .init(key: InfoKey.baseCurrencyID.rawValue)
-    var defaultAccountId  : LoadInfotableValue<DataId> = .init(key: InfoKey.defaultAccountID.rawValue)
-    var categoryDelimiter : LoadInfotableValue<String> = .init(key: InfoKey.categDelimiter.rawValue)
+    var baseCurrencyId    : LoadInfotableValue<DataId> = .init(
+        key: InfoKey.baseCurrencyID.rawValue,
+        default: DataId.void
+    )
+    var defaultAccountId  : LoadInfotableValue<DataId> = .init(
+        key: InfoKey.defaultAccountID.rawValue,
+        default: DataId.void
+    )
+    var categoryDelimiter : LoadInfotableValue<String> = .init(
+        key: InfoKey.categDelimiter.rawValue,
+        default: ":"
+    )
 }
 
 extension ViewModel {

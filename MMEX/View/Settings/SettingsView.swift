@@ -67,7 +67,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Category Delimiter")
                     Spacer()
-                    Text("\((vm.infotableList.categoryDelimiter.readyValue ?? nil) ?? ":")")
+                    Text("\(vm.infotableList.categoryDelimiter.readyValue ?? ":")")
                 }
 
                 // TODO: add search

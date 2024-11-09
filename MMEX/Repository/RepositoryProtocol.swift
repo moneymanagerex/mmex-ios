@@ -22,17 +22,17 @@ extension RepositoryPluckResult: Copyable where Wrapped: Copyable {
 }
 
 extension RepositoryPluckResult {
-    init(_ optValue: Optional<Wrapped>) {
+    init(_ optValue: Wrapped?) {
        self = switch optValue {
        case .some(let value): .some(value)
-       default: .none
+       case .none: .none
        }
     }
 
-    func toOptional() -> Optional<Wrapped> {
+    func toOptional(default defaultValue: Wrapped? = nil) -> Wrapped? {
         return switch self {
-        case .some(let value): .some(value)
-        default: .none
+        case .some(let value): value
+        default: defaultValue
         }
     }
 }

@@ -71,7 +71,7 @@ struct JournalView: View {
         .task {
             log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
             await vm.loadTransactionList()
-            accountId = (vm.infotableList.defaultAccountId.readyValue ?? nil) ?? DataId.void
+            accountId = vm.infotableList.defaultAccountId.readyValue ?? DataId.void
             viewModel.loadTransactions(for: accountId)
             viewModel.loadAccounts()
             viewModel.loadCategories()
@@ -133,7 +133,7 @@ struct JournalView: View {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
                         // amount in base currency
-                        if let baseCurrencyId = vm.infotableList.baseCurrencyId.readyValue ?? nil,
+                        if let baseCurrencyId = vm.infotableList.baseCurrencyId.readyValue,
                            baseCurrencyId != currencyId
                         {
                             Text((txn.transAmount * currencyInfo.baseConvRate)
