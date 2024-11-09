@@ -10,7 +10,6 @@ import SwiftUI
 extension ViewModel {
     func loadManageList() async {
         guard manageList.reloading() else { return }
-        log.trace("DEBUG: ViewModel.loadManageList(main=\(Thread.isMainThread))")
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.infotableList.count),
@@ -29,17 +28,10 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         manageList.loaded(ok: ok)
-        if ok {
-            log.info("INFO: ViewModel.loadManage(main=\(Thread.isMainThread)): Ready.")
-        } else {
-            log.debug("ERROR: ViewModel.loadManage(main=\(Thread.isMainThread)): Cannot load.")
-            return
-        }
     }
 
     func unloadManegeList() {
         guard manageList.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadManageList(main=\(Thread.isMainThread))")
         infotableList.count.unload()
         currencyList.count.unload()
         accountList.count.unload()

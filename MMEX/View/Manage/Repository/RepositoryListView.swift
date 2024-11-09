@@ -26,9 +26,9 @@ where GroupType.MainRepository == ListType.MainRepository,
     @Binding var vmGroup: GroupType
     @Binding var search: SearchType
     let initData: MainData
-    @ViewBuilder var groupName: (_ g: Int, _ name: String?) -> GroupNameView
-    @ViewBuilder var itemName: (_ data: MainData) -> ItemNameView
-    @ViewBuilder var itemInfo: (_ data: MainData) -> ItemInfoView
+    @ViewBuilder var groupNameView: (_ g: Int, _ name: String?) -> GroupNameView
+    @ViewBuilder var itemNameView: (_ data: MainData) -> ItemNameView
+    @ViewBuilder var itemInfoView: (_ data: MainData) -> ItemInfoView
     @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
 
     @State var newData: MainData? = nil
@@ -180,7 +180,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                         action: { vmGroup.value[g].isExpanded.toggle() }
                     ) {
                         env.theme.group.view(
-                            nameView: { groupName(g, vmGroup.value[g].name) },
+                            nameView: { groupNameView(g, vmGroup.value[g].name) },
                             count: vmGroup.value[g].dataId.count,
                             isExpanded: vmGroup.value[g].isExpanded
                         )
@@ -250,8 +250,8 @@ where GroupType.MainRepository == ListType.MainRepository,
                 }
         ) {
             env.theme.item.view(
-                nameView: { itemName(data) },
-                infoView: { itemInfo(data) }
+                nameView: { itemNameView(data) },
+                infoView: { itemInfoView(data) }
             )
         }
     }

@@ -10,13 +10,14 @@ import Charts
 
 struct InsightsSummaryView: View {
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
     @Binding var stats: [TransactionData]
 
     var body: some View {
         Chart(stats) {
             BarMark(
                 x: .value("Amount", $0.income),
-                y: .value("Account", env.accountCache[$0.accountId]?.name ?? "#\($0.accountId.value)")
+                y: .value("Account", vm.accountList.data.readyValue?[$0.accountId]?.name ?? "#\($0.accountId.value)")
             )
             .foregroundStyle(by: .value("Status", $0.status.fullName))
         }
@@ -28,5 +29,15 @@ struct InsightsSummaryView: View {
 }
 
 #Preview {
-    InsightsSummaryView(stats: .constant(TransactionData.sampleData))
+    let env = EnvironmentManager.sampleData
+    NavigationStack {
+        ScrollView {
+            InsightsSummaryView(
+                vm: ViewModel(env: env),
+                stats: .constant(TransactionData.sampleData)
+            )
+        }
+        .navigationBarTitleDisplayMode(.inline)
+    }
+    .environmentObject(env)
 }

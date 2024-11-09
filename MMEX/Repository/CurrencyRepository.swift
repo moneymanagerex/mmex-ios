@@ -99,9 +99,13 @@ struct CurrencyRepository: RepositoryProtocol {
     }
 
     static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias I = InfotableRepository
         typealias A = AccountRepository
         typealias E = AssetRepository
-        let cond = "EXISTS (" + (A.table.select(1).where(
+        let cond = "EXISTS (" + (I.table.select(1).where(
+            I.table[I.col_name] == InfoKey.baseCurrencyID.rawValue &&
+            I.table[I.col_value] == cast(Self.table[Self.col_id]) as SQLite.Expression<String>
+        ) ).union(A.table.select(1).where(
             A.table[A.col_currencyId] == Self.table[Self.col_id]
         ) ).union(E.table.select(1).where(
             E.table[E.col_currencyId] == Self.table[Self.col_id]

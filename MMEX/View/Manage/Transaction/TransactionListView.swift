@@ -11,11 +11,10 @@ struct TransactionListView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
+
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
     @State private var isPresentingTransactionAddView = false
-
-    // State variables for date filtering
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
 
     var body: some View {
@@ -24,9 +23,6 @@ struct TransactionListView: View {
                 NavigationLink(destination: TransactionDetailView(
                     vm: vm,
                     viewModel: viewModel,
-                    accountId: $viewModel.accountId,
-                    categories: $viewModel.categories,
-                    payees: $viewModel.payees,
                     txn: $txn
                 ) ) {
                     HStack {
@@ -71,7 +67,7 @@ struct TransactionListView: View {
                     }
                     .pickerStyle(MenuPickerStyle()) // Show as a menu
                     .onChange(of: selectedYear) {
-                        filterTransactions()
+                        loadSelectedTransactions()
                     }
                 }
 
@@ -86,24 +82,18 @@ struct TransactionListView: View {
             }
         }
         .onAppear {
-            viewModel.loadAccounts()
-            viewModel.loadCategories()
-            viewModel.loadPayees()
-            filterTransactions()
-
-            // database level setting
-            let repository = InfotableRepository(env)
-            if let storedDefaultAccount = repository?.getValue(for: InfoKey.defaultAccountID.id, as: DataId.self) {
-                newTxn.accountId = storedDefaultAccount
+            log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
+            Task {
+                await vm.loadEnterList()
+                if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue ?? nil {
+                    newTxn.accountId = defaultAccountId
+                }
             }
+            loadSelectedTransactions()
         }
         .sheet(isPresented: $isPresentingTransactionAddView) {
             TransactionAddView(
                 vm: vm,
-                viewModel: viewModel,
-                accountId: $viewModel.accountId,
-                categories: $viewModel.categories,
-                payees: $viewModel.payees,
                 newTxn: $newTxn,
                 isPresentingTransactionAddView: $isPresentingTransactionAddView
             ) { newTxn in
@@ -113,16 +103,16 @@ struct TransactionListView: View {
         }
     }
 
-    // TODO pre-join via SQL?
     func getPayeeName(for txn: TransactionData) -> String {
-        // Find the payee with the given ID
         if txn.transCode == .transfer {
-            if let toAccount = env.accountCache[txn.toAccountId] {
-                return String(format: "> \(toAccount.name)")
+            if let toAccount = vm.accountList.data.readyValue?[txn.toAccountId] {
+                String(format: "> \(toAccount.name)")
+            } else {
+                "> (unknown)"
             }
+        } else {
+            vm.payeeList.data.readyValue?[txn.payeeId]?.name ?? "(unknown)"
         }
-
-        return viewModel.getPayeeName(for: txn.payeeId)
     }
 
     // Helper function to format the date, truncating to day
@@ -140,7 +130,7 @@ struct TransactionListView: View {
     }
 
     // Filter transactions based on selected year
-    func filterTransactions() {
+    func loadSelectedTransactions() {
         let startDate = Calendar.current.date(from: DateComponents(year: selectedYear, month: 1, day: 1)) ?? Date()
         let endDate = Calendar.current.date(from: DateComponents(year: selectedYear + 1, month: 1, day: 1))?.addingTimeInterval(-1) ?? Date()
 

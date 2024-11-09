@@ -49,6 +49,9 @@ extension ViewModel {
         guard categoryList.unloading() else { return }
         categoryList.data.unload()
         categoryList.used.unload()
+        categoryList.order.unload()
+        categoryList.path.unload()
+        categoryList.tree.unload()
         categoryList.unloaded()
     }
 }
@@ -91,7 +94,7 @@ extension ViewModel {
     nonisolated func evalCategoryPath(sep: String = ":") async -> LoadCategoryPath.ValueType? {
         guard let data = await categoryList.data.readyValue else { return nil }
 
-        var path: [DataId: String] = [.void: ""]
+        var path: [DataId: String] = [:]
         for id in data.keys {
             var stack: [DataId] = []
             var id1 = id

@@ -113,6 +113,9 @@
         }
       }
     },
+    "Account:" : {
+
+    },
     "Active" : {
 
     },
@@ -244,6 +247,9 @@
           }
         }
       }
+    },
+    "Category:" : {
+
     },
     "Checking" : {
 
@@ -681,6 +687,7 @@
 
     },
     "n/a" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -793,6 +800,9 @@
           }
         }
       }
+    },
+    "Payee:" : {
+
     },
     "Please open or create a database to get started." : {
 
@@ -1001,7 +1011,7 @@
         }
       }
     },
-    "Support and Help" : {
+    "Support" : {
 
     },
     "System" : {

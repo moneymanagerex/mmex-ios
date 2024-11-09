@@ -78,12 +78,11 @@ extension ViewModel {
             }
         case .category:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.categoryId }
-            payeeGroup.groupCategory = categoryPath.path.compactMap {
+            payeeGroup.groupCategory = [.void] + categoryPath.path.compactMap {
                 dict[$0.key] != nil ? ($0.key, $0.value) : nil
             }.sorted { $0.1 < $1.1 }.map { $0.0 }
             for g in payeeGroup.groupCategory {
-                var name = categoryPath.path[g]
-                if name != nil, name!.isEmpty { name = "(none)" }
+                let name = g == .void ? "(none)" : categoryPath.path[g] ?? "(unknown)"
                 payeeGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .attachment:

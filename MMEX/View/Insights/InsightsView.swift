@@ -12,6 +12,7 @@ struct InsightsView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: InsightsViewModel
+
     @State var statusChoice: Int = 0
     @State var accountBalanceIsExpanded = true
     @State var accountIncomeIsExpanded = true
@@ -43,7 +44,10 @@ struct InsightsView: View {
                         )
                     }
                 } ) { if accountIncomeIsExpanded {
-                    InsightsSummaryView(stats: $viewModel.stats)
+                    InsightsSummaryView(
+                        vm: vm,
+                        stats: $viewModel.stats
+                    )
                 } }
                 
                 Section(header: HStack {
@@ -97,6 +101,10 @@ struct InsightsView: View {
             .padding(.top, 10) // Reduce the top padding for less space at the top
         }
         .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
+        .task {
+            log.debug("DEBUG: InsightsView.onAppear(main=\(Thread.isMainThread))")
+            await vm.loadInsightsList()
+        }
     }
 }
 

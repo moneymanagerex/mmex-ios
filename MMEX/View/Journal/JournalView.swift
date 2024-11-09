@@ -83,9 +83,6 @@ struct JournalView: View {
         NavigationLink(destination: TransactionDetailView(
             vm: vm,
             viewModel: viewModel,
-            accountId: $viewModel.accountId,
-            categories: $viewModel.categories,
-            payees: $viewModel.payees,
             txn: Binding(
                 get: {
                     self.viewModel.txns_per_day[day]?.first(where: { $0.id == txn.id }) ?? txn

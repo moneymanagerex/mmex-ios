@@ -30,9 +30,9 @@ struct CurrencyListView: View {
             vmGroup: $vm.currencyGroup,
             search: $search,
             initData: Self.initData,
-            groupName: groupName,
-            itemName: itemName,
-            itemInfo: itemInfo,
+            groupNameView: groupNameView,
+            itemNameView: itemNameView,
+            itemInfoView: itemInfoView,
             editView: editView
         )
         .onAppear {
@@ -40,15 +40,15 @@ struct CurrencyListView: View {
         }
     }
     
-    func groupName(_ g: Int, _ name: String?) -> some View {
+    func groupNameView(_ g: Int, _ name: String?) -> some View {
         Text(name ?? "(unknown group name)")
     }
     
-    func itemName(_ data: CurrencyData) -> some View {
+    func itemNameView(_ data: CurrencyData) -> some View {
         Text(data.name)
     }
     
-    func itemInfo(_ data: CurrencyData) -> some View {
+    func itemInfoView(_ data: CurrencyData) -> some View {
         Text(data.symbol)
     }
 

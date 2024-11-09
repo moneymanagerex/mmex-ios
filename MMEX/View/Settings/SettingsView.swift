@@ -67,28 +67,33 @@ struct SettingsView: View {
                 HStack {
                     Text("Category Delimiter")
                     Spacer()
-                    Text("\(viewModel.categDelimiter)")
+                    Text("\((vm.infotableList.categoryDelimiter.readyValue ?? nil) ?? ":")")
                 }
+
+                // TODO: add search
+                // TODO: reload Infotable
                 Picker("Base Currency", selection: $viewModel.baseCurrencyId) {
-                    ForEach(viewModel.currencies) { currency in
-                        HStack {
-                            Text(currency.name)
-                            //Spacer()
-                            //Text(currency.symbol)
+                    if viewModel.baseCurrencyId.isVoid {
+                        Text("(none)").tag(DataId.void)
+                    }
+                    ForEach(vm.currencyList.order.readyValue ?? []) { id in
+                        if let currencyName = vm.currencyList.name.readyValue?[id] {
+                            Text(currencyName).tag(id)
                         }
-                        .tag(currency.id) // Use currency.name to display and tag by id
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
  
+                // TODO: add search
+                // TODO: reload Infotable
                 Picker("Default Account", selection: $viewModel.defaultAccountId) {
                     if viewModel.defaultAccountId.isVoid {
-                        HStack { Text("(none)") }
-                            .tag(DataId.void)
+                        Text("(none)").tag(DataId.void)
                     }
-                    ForEach(viewModel.accounts) { account in
-                        HStack { Text(account.name) }
-                            .tag(account.id)
+                    ForEach(vm.accountList.order.readyValue ?? []) { id in
+                        if let account = vm.accountList.data.readyValue?[id] {
+                            Text(account.name).tag(id)
+                        }
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
@@ -106,7 +111,7 @@ struct SettingsView: View {
                 }
             }
             
-            Section(header: Text("Support and Help")) {
+            Section(header: Text("Support")) {
                 NavigationLink(destination: HelpFAQView()) {
                     Text("Help / FAQ")
                 }
@@ -115,8 +120,9 @@ struct SettingsView: View {
                 }
             }
         }
-        .onAppear() {
-            // TODO
+        .task {
+            log.trace("DEBUG: SettingsView.load(main=\(Thread.isMainThread))")
+            await vm.loadSettingsList()
         }
     }
 }

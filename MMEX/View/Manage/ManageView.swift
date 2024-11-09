@@ -20,6 +20,7 @@ struct ManageView: View {
     var auxCount: [Int?] {[
         vm.currencyList.count.readyValue,
         vm.tagList.count.readyValue,
+        vm.attachmentList.count.readyValue,
     ]}
     var auxSum: Int? {
         auxCount.reduce(0 as Int?, { sum, next in
