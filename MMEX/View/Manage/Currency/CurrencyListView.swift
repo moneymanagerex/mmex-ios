@@ -12,6 +12,7 @@ struct CurrencyListView: View {
     typealias MainData = CurrencyData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
+    let features = RepositoryFeatures()
 
     @State var search: CurrencySearch = .init()
 
@@ -25,6 +26,7 @@ struct CurrencyListView: View {
     var body: some View {
         RepositoryListView(
             vm: vm,
+            features: features,
             vmList: vm.currencyList,
             groupChoice: vm.currencyGroup.choice,
             vmGroup: $vm.currencyGroup,

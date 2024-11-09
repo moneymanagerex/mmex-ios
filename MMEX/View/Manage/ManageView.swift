@@ -131,6 +131,8 @@ struct ManageView: View {
         }
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .listSectionSpacing(5)
+        .padding(.top, -20)
+        //.border(.red)
         .task {
             await vm.loadManageList()
         }

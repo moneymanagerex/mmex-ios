@@ -14,6 +14,7 @@ struct RepositoryUpdateView<
 >: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
+    var features: RepositoryFeatures
     var title: String
     @State var data: MainData
     @Binding var newData: MainData?
@@ -69,6 +70,7 @@ struct RepositoryUpdateView<
     let data = AccountData.sampleData[0]
     RepositoryUpdateView(
         vm: vm,
+        features: RepositoryFeatures(),
         title: vm.name(data),
         data: data,
         newData: .constant(nil),

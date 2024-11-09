@@ -14,6 +14,7 @@ struct RepositoryCreateView<
 >: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
+    var features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
     @Binding var isPresented: Bool
@@ -62,6 +63,7 @@ struct RepositoryCreateView<
     let vm = ViewModel(env: env)
     RepositoryCreateView(
         vm: vm,
+        features: RepositoryFeatures(),
         data: AccountListView.initData,
         newData: .constant(nil),
         isPresented: .constant(true),

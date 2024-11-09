@@ -120,6 +120,8 @@ struct SettingsView: View {
                 }
             }
         }
+        .listSectionSpacing(5)
+        .padding(.top, -20)
         .task {
             log.trace("DEBUG: SettingsView.load(main=\(Thread.isMainThread))")
             await vm.loadSettingsList()
