@@ -59,7 +59,7 @@ struct EnterView: View {
         await vm.loadEnterList()
 
         if newTxn.accountId.isVoid {
-            if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue ?? nil {
+            if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                 newTxn.accountId = defaultAccountId
             } else if let accountOrder = vm.accountList.order.readyValue, accountOrder.count == 1 {
                 newTxn.accountId = accountOrder[0]

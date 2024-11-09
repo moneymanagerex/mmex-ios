@@ -35,6 +35,20 @@ extension DataId: ExpressibleByIntegerLiteral {
     }
 }
 
+extension DataId: LosslessStringConvertible {
+    var description: String {
+        self.value.description
+    }
+
+    init?(_ valueDescription: String) {
+        if let value = Int(valueDescription) {
+            self.init(value)
+        } else {
+            return nil
+        }
+    }
+}
+
 extension Int64 {
     init(_ dataId: DataId) {
         self = Int64(dataId.value)

@@ -85,7 +85,7 @@ struct TransactionListView: View {
             log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
             Task {
                 await vm.loadEnterList()
-                if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue ?? nil {
+                if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                     newTxn.accountId = defaultAccountId
                 }
             }
