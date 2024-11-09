@@ -21,6 +21,7 @@ where GroupType.MainRepository == ListType.MainRepository,
 
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
+    var features: RepositoryFeatures
     var vmList: ListType
     @State var groupChoice: GroupChoice
     @Binding var vmGroup: GroupType
@@ -69,17 +70,19 @@ where GroupType.MainRepository == ListType.MainRepository,
                 .buttonStyle(BorderlessButtonStyle())
                 //.border(.red)
 
-                HStack {
-                    NavigationLink(
-                        destination: RepositorySearchAreaView(area: $search.area)
-                    ) {
-                        Text("Search area")
-                            .font(.subheadline)
-                            .foregroundColor(.accentColor)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
+                if features.canSearch {
+                    HStack {
+                        NavigationLink(
+                            destination: RepositorySearchAreaView(area: $search.area)
+                        ) {
+                            Text("Search area")
+                                .font(.subheadline)
+                                .foregroundColor(.accentColor)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                            //.border(.red)
+                        }
                         //.border(.red)
                     }
-                    //.border(.red)
                 }
             }
             .listRowInsets(.init())
@@ -119,13 +122,19 @@ where GroupType.MainRepository == ListType.MainRepository,
         }
         //.listStyle(.plain)
         .listSectionSpacing(.compact)
+        //.border(.red)
         .toolbar {
-            Button(
-                action: { createIsPresented = true },
-                label: { Image(systemName: "plus") }
-            )
-            .accessibilityLabel("New " + MainData.dataName.0)
+            if features.canCreate {
+                Button(
+                    action: { createIsPresented = true },
+                    label: { Image(systemName: "plus") }
+                )
+                .accessibilityLabel("New " + MainData.dataName.0)
+            }
         }
+        //.modifier(RepositorySearchModifier(
+        //    canSearch: features.canSearch, text: $search.key, prompt: search.prompt
+        //) )
         .searchable(text: $search.key, prompt: search.prompt)
         .textInputAutocapitalization(.never)
         .onChange(of: search.key) { _, newValue in
@@ -148,6 +157,7 @@ where GroupType.MainRepository == ListType.MainRepository,
         .sheet(isPresented: $createIsPresented) {
             RepositoryCreateView(
                 vm: vm,
+                features: features,
                 data: initData,
                 newData: $newData,
                 isPresented: $createIsPresented,
@@ -225,34 +235,61 @@ where GroupType.MainRepository == ListType.MainRepository,
         }
     } } }
 
+    @ViewBuilder
     func itemView(_ data: MainData) -> some View {
-        NavigationLink(
-            destination: RepositoryReadView(
-                vm: vm,
-                data: data,
-                newData: $newData,
-                deleteData: $deleteData,
-                editView: editView
-            )
-            //.onAppear {
-            //    newData = nil
-            //    deleteData = false
-            //}
-                .onDisappear {
-                    guard deleteData || newData != nil else { return }
-                    log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
-                    Task {
-                        await vm.reloadList(data, newData)
-                        vm.searchGroup(vmGroup, search: search)
-                        newData = nil
-                        deleteData = false
+        if features.canRead {
+            NavigationLink(
+                destination: RepositoryReadView(
+                    vm: vm,
+                    features: features,
+                    data: data,
+                    newData: $newData,
+                    deleteData: $deleteData,
+                    editView: editView
+                )
+                //.onAppear {
+                //    newData = nil
+                //    deleteData = false
+                //}
+                    .onDisappear {
+                        guard deleteData || newData != nil else { return }
+                        log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
+                        Task {
+                            await vm.reloadList(data, newData)
+                            vm.searchGroup(vmGroup, search: search)
+                            newData = nil
+                            deleteData = false
+                        }
                     }
-                }
-        ) {
+            ) {
+                env.theme.item.view(
+                    nameView: { itemNameView(data) },
+                    infoView: { itemInfoView(data) }
+                )
+            }
+        } else {
             env.theme.item.view(
                 nameView: { itemNameView(data) },
                 infoView: { itemInfoView(data) }
             )
+        }
+    }
+}
+
+struct RepositorySearchModifier: ViewModifier {
+    let canSearch: Bool
+    @Binding var text: String
+    var prompt: String
+
+    // problem: double copy of content
+    // problem: if canSearch == false, an empty area is shown in place of search
+    func body(content: Content) -> some View {
+        if canSearch {
+            content
+                .searchable(text: $text, prompt: prompt)
+                .textInputAutocapitalization(.never)
+        } else {
+            content
         }
     }
 }

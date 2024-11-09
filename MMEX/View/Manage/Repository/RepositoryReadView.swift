@@ -15,6 +15,7 @@ struct RepositoryReadView<
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
+    var features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
     @Binding var deleteData: Bool
@@ -45,8 +46,10 @@ struct RepositoryReadView<
         }
         .textSelection(.enabled)
         .toolbar {
-            Button("Edit") {
-                updateViewIsPresented = true
+            if features.canUpdate {
+                Button("Edit") {
+                    updateViewIsPresented = true
+                }
             }
             // Export button for pasteboard and external storage
             Menu {
@@ -70,6 +73,7 @@ struct RepositoryReadView<
         .sheet(isPresented: $updateViewIsPresented) {
             RepositoryUpdateView(
                 vm: vm,
+                features: features,
                 title: vm.name(data),
                 data: data,
                 newData: $newData,
@@ -99,6 +103,7 @@ struct RepositoryReadView<
     let vm = ViewModel(env: env)
     RepositoryReadView(
         vm: vm,
+        features: RepositoryFeatures(),
         data: AccountData.sampleData[0],
         newData: .constant(nil),
         deleteData: .constant(false),

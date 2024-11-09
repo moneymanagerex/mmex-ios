@@ -11,7 +11,8 @@ struct TagListView: View {
     typealias MainData = TagData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-    
+    let features = RepositoryFeatures()
+
     @State var search: TagSearch = .init()
     
     static let initData = TagData(
@@ -21,6 +22,7 @@ struct TagListView: View {
     var body: some View {
         RepositoryListView(
             vm: vm,
+            features: features,
             vmList: vm.tagList,
             groupChoice: vm.tagGroup.choice,
             vmGroup: $vm.tagGroup,
