@@ -260,6 +260,9 @@
     "Contact Support" : {
 
     },
+    "Copy" : {
+
+    },
     "Copy to Clipboard" : {
 
     },
@@ -407,6 +410,9 @@
           }
         }
       }
+    },
+    "Delete" : {
+
     },
     "Delete %@" : {
 

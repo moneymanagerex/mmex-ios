@@ -19,6 +19,9 @@ where GroupType.MainRepository == ListType.MainRepository,
     typealias MainData = MainRepository.RepositoryData
     typealias GroupChoice = GroupType.GroupChoice
 
+    @State private var alertIsPresented = false
+    @State private var alertMessage: String?
+
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     var features: RepositoryFeatures
@@ -237,41 +240,55 @@ where GroupType.MainRepository == ListType.MainRepository,
 
     @ViewBuilder
     func itemView(_ data: MainData) -> some View {
-        if features.canRead {
-            NavigationLink(
-                destination: RepositoryReadView(
-                    vm: vm,
-                    features: features,
-                    data: data,
-                    newData: $newData,
-                    deleteData: $deleteData,
-                    editView: editView
-                )
-                //.onAppear {
-                //    newData = nil
-                //    deleteData = false
-                //}
-                    .onDisappear {
-                        guard deleteData || newData != nil else { return }
-                        log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
-                        Task {
-                            await vm.reloadList(data, newData)
-                            vm.searchGroup(vmGroup, search: search)
-                            newData = nil
-                            deleteData = false
-                        }
+        NavigationLink(
+            destination: RepositoryReadView(
+                vm: vm,
+                features: features,
+                data: data,
+                newData: $newData,
+                deleteData: $deleteData,
+                editView: editView
+            )
+            //.onAppear {
+            //    newData = nil
+            //    deleteData = false
+            //}
+                .onDisappear {
+                    guard deleteData || newData != nil else { return }
+                    log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
+                    Task {
+                        await vm.reloadList(data, newData)
+                        vm.searchGroup(vmGroup, search: search)
+                        newData = nil
+                        deleteData = false
                     }
-            ) {
-                env.theme.item.view(
-                    nameView: { itemNameView(data) },
-                    infoView: { itemInfoView(data) }
-                )
-            }
-        } else {
+                }
+        ) {
             env.theme.item.view(
                 nameView: { itemNameView(data) },
                 infoView: { itemInfoView(data) }
             )
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            if features.canDelete { Button {
+                let deleteError = vm.delete(data)
+                if deleteError != nil {
+                    alertMessage = deleteError
+                    alertIsPresented = true
+                } else {
+                    Task {
+                        await vm.reloadList(data, nil)
+                        vm.searchGroup(vmGroup, search: search)
+                    }
+                }
+            } label: {
+                Label("Delete", systemImage: vm.isUsed(data) == false ? "trash.fill" : "trash.slash.fill")
+            }.tint(vm.isUsed(data) == false ? .red : .gray) }
+            if features.canCopy { Button {
+                // TODO
+            } label: {
+                Label("Copy", systemImage: "doc.on.doc")
+            }.tint(.indigo) }
         }
     }
 }
