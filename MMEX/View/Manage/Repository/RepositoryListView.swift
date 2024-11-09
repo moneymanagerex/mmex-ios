@@ -284,6 +284,7 @@ where GroupType.MainRepository == ListType.MainRepository,
             } label: {
                 Label("Delete", systemImage: vm.isUsed(data) == false ? "trash.fill" : "trash.slash.fill")
             }.tint(vm.isUsed(data) == false ? .red : .gray) }
+
             if features.canCopy { Button {
                 // TODO
             } label: {
