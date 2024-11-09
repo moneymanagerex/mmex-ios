@@ -148,10 +148,14 @@ struct AccountRepository: RepositoryProtocol {
     }
 
     static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
+        typealias I = InfotableRepository
         typealias S = StockRepository
         typealias T = TransactionRepository
         typealias R = ScheduledRepository
-        let cond = "EXISTS (" + (S.table.select(1).where(
+        let cond = "EXISTS (" + (I.table.select(1).where(
+            I.table[I.col_name] == InfoKey.defaultAccountID.rawValue &&
+            I.table[I.col_value] == cast(Self.table[Self.col_id]) as SQLite.Expression<String>
+        ) ).union(S.table.select(1).where(
             S.table[S.col_accountId] == Self.table[Self.col_id]
         ) ).union(T.table.select(1).where(
             T.table[T.col_accountId] == Self.table[Self.col_id]

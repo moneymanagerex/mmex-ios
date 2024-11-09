@@ -10,7 +10,6 @@ import SwiftUI
 extension ViewModel {
     func loadEnterList() async {
         guard enterList.reloading() else { return }
-        log.trace("DEBUG: ViewModel.loadEnterList(main=\(Thread.isMainThread))")
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.infotableList.defaultAccountId),
@@ -33,17 +32,10 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         } }
         enterList.loaded(ok: ok)
-        if ok {
-            log.info("INFO: ViewModel.loadEnterList(main=\(Thread.isMainThread))")
-        } else {
-            log.debug("ERROR: ViewModel.loadEnterList(main=\(Thread.isMainThread))")
-            return
-        }
     }
 
     func unloadEnterList() {
         guard enterList.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadEnterList(main=\(Thread.isMainThread))")
         enterList.unloaded()
     }
 }

@@ -10,7 +10,6 @@ import SwiftUI
 extension ViewModel {
     func loadInsightsList() async {
         guard insightsList.reloading() else { return }
-        log.trace("DEBUG: ViewModel.loadInsightsList(main=\(Thread.isMainThread))")
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.currencyList.info),
@@ -19,17 +18,10 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         insightsList.loaded(ok: ok)
-        if ok {
-            log.info("INFO: ViewModel.loadInsightsList(main=\(Thread.isMainThread))")
-        } else {
-            log.debug("ERROR: ViewModel.loadInsightsList(main=\(Thread.isMainThread))")
-            return
-        }
     }
 
     func unloadInsightsList() {
         guard insightsList.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadInsightsList(main=\(Thread.isMainThread))")
         insightsList.unloaded()
     }
 }

@@ -10,24 +10,23 @@ import SwiftUI
 extension ViewModel {
     func loadSettingsList() async {
         guard settingsList.reloading() else { return }
-        log.trace("DEBUG: ViewModel.loadSettingsList(main=\(Thread.isMainThread))")
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
+                load(&taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
+                load(&taskGroup, keyPath: \Self.infotableList.defaultAccountId),
+                load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                load(&taskGroup, keyPath: \Self.currencyList.name),
+                load(&taskGroup, keyPath: \Self.currencyList.order),
+                load(&taskGroup, keyPath: \Self.accountList.data),
+                load(&taskGroup, keyPath: \Self.accountList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
         settingsList.loaded(ok: ok)
-        if ok {
-            log.info("INFO: ViewModel.loadSettingsList(main=\(Thread.isMainThread))")
-        } else {
-            log.debug("ERROR: ViewModel.loadSettingsList(main=\(Thread.isMainThread))")
-            return
-        }
     }
 
     func unloadSettingsList() {
         guard settingsList.unloading() else { return }
-        log.trace("DEBUG: ViewModel.unloadSettingsList(main=\(Thread.isMainThread))")
         settingsList.unloaded()
     }
 }
