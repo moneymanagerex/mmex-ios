@@ -112,6 +112,7 @@ struct SettingsView: View {
                         }
                     } label: {
                         Image(systemName: "chevron.up.chevron.down")
+                            .font(.footnote)
                     }
                 }
             }

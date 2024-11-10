@@ -75,9 +75,7 @@ struct JournalView: View {
                 accountId = defaultAccountId
             }
             viewModel.loadTransactions(for: accountId)
-            viewModel.loadAccounts()
             viewModel.loadCategories()
-            viewModel.loadPayees()
         }
     }
 

@@ -21,7 +21,7 @@ struct CategoryListView: View {
             List($viewModel.filteredCategories) { $category in
                  NavigationLink(destination: CategoryDetailView(category: $category)) {
                      HStack {
-                         Text(category.fullName(with: viewModel.categDelimiter))
+                         Text(category.fullName(with: vm.infotableList.categoryDelimiter.value))
                          Spacer()
                          Text(category.isRoot ? String(localized: "Root") : String(localized: "Non Root"))
                     }
