@@ -15,8 +15,8 @@ struct ManageView: View {
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
 
-    @State var auxDataIsExpanded = false
     let groupTheme = GroupTheme(layout: .nameFold)
+    @State var auxDataIsExpanded = false
     var auxCount: [Int?] {[
         vm.currencyList.count.readyValue,
         vm.tagList.count.readyValue,

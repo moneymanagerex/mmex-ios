@@ -17,12 +17,12 @@ struct VersionInfoView: View {
             Text("Version")
                 .font(.title)
                 .fontWeight(.bold)
-            Text(appVersion)
+            Text(Self.appVersion ?? "N/A")
             
             Text("Build")
                 .font(.title)
                 .fontWeight(.bold)
-            Text(appBuild)
+            Text(Self.appBuild ?? "N/A")
             
             Text("Release Notes")
                 .font(.headline)
@@ -58,36 +58,49 @@ struct VersionInfoView: View {
         }
     }
 
-    var appVersion: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A"
+    static var appVersion: String? {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
 
-    var appBuild: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "N/A"
+    static var appBuild: String? {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+    }
+    
+    static var appVersionBuild: String? {
+        if let appVersion = Self.appVersion, let appBuild = Self.appBuild {
+            "\(appVersion) (\(appBuild))"
+        } else {
+            nil
+        }
     }
 
     private func fetchReleaseNotes() async {
-        let urlString = "https://api.github.com/repos/moneymanagerex/mmex-ios/releases/tags/\(appVersion)"
-        guard let url = URL(string: urlString) else {
-            errorMessage = "Invalid URL"
-            isLoading = false
-            return
-        }
-
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-               let body = json["body"] as? String {
-                DispatchQueue.main.async {
-                    self.releaseNotes = body
-                    self.isLoading = false
+        if let appVersion = Self.appVersion {
+            let urlString = "https://api.github.com/repos/moneymanagerex/mmex-ios/releases/tags/\(appVersion)"
+            guard let url = URL(string: urlString) else {
+                errorMessage = "Invalid URL"
+                isLoading = false
+                return
+            }
+            
+            do {
+                let (data, _) = try await URLSession.shared.data(from: url)
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let body = json["body"] as? String {
+                    DispatchQueue.main.async {
+                        self.releaseNotes = body
+                        self.isLoading = false
+                    }
+                } else {
+                    errorMessage = "Invalid response format"
+                    isLoading = false
                 }
-            } else {
-                errorMessage = "Invalid response format"
+            } catch {
+                errorMessage = "Error fetching release notes: \(error.localizedDescription)"
                 isLoading = false
             }
-        } catch {
-            errorMessage = "Error fetching release notes: \(error.localizedDescription)"
+        } else {
+            errorMessage = "Unknown version"
             isLoading = false
         }
     }

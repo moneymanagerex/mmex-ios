@@ -11,7 +11,10 @@ struct SettingsView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
-    
+
+    let groupTheme = GroupTheme(layout: .nameFold)
+    @State var dbSettingsIsExpanded = false
+
     @State var baseCurrencyId    : DataId = .void
     @State var defaultAccountId  : DataId = .void
     @State var categoryDelimiter : String = ":"
@@ -27,24 +30,26 @@ struct SettingsView: View {
 
     var body: some View {
         List {
-            Section(header: Text("App Settings")) {
+            groupTheme.section(
+                nameView: { Text("App Settings") }
+            ) {
                 NavigationLink(destination: SettingsThemeView()) {
                     Text("Theme")
                 }
-
+                
                 Picker("Default Payee", selection: $defaultPayeeSetting) {
                     Text("None").tag(DefaultPayeeSetting.none)
                     Text("Last Used").tag(DefaultPayeeSetting.lastUsed)
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
- 
+                
                 Picker("Default Transaction Status", selection: $defaultStatus) {
                     ForEach(TransactionStatus.allCases) { status in
                         Text(status.fullName).tag(status)
                     }
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
-
+                
                 Picker("Send Anonymous Usage Data", selection: $isTrackingEnabled) {
                     Text("On").tag(true)
                     Text("Off").tag(false)
@@ -54,24 +59,11 @@ struct SettingsView: View {
                     // TODO
                 }
             }
-
-            Section(header: Text("Database Settings")) {
-                HStack {
-                    Text("Database File")
-                    Spacer()
-                    Text(env.getDatabaseFileName() ?? "")
-                }
-                HStack {
-                    Text("Schema Version")
-                    Spacer()
-                    Text(String(env.getDatabaseUserVersion() ?? 0))
-                }
-                HStack {
-                    Text("Date Format")
-                    Spacer()
-                    Text("\(dateFormat)")
-                }
-
+            
+            groupTheme.section(
+                nameView: { Text("Database Settings") }
+                //isExpanded: $dbSettingsIsExpanded
+            ) {
                 Picker("Base Currency", selection: $baseCurrencyId) {
                     ForEach(baseCurrencyOffer(baseCurrencyId)) { id in
                         if id.isVoid {
@@ -95,7 +87,7 @@ struct SettingsView: View {
                         }
                     }
                 }
- 
+                
                 // TODO: add search
                 Picker("Default Account", selection: $defaultAccountId) {
                     if defaultAccountId.isVoid {
@@ -111,7 +103,7 @@ struct SettingsView: View {
                 .onChange(of: defaultAccountId) {
                     // TODO: reload Infotable
                 }
-
+                
                 HStack {
                     Text("Category Delimiter")
                     Spacer()
@@ -123,30 +115,57 @@ struct SettingsView: View {
                         }
                 }
             }
-
-            Section(header: Text("Information")) {
+            
+            groupTheme.section(
+                nameView: { Text("App Info") }
+            ) {
                 NavigationLink(destination: AboutView()) {
                     Text("About")
                 }
                 NavigationLink(destination: VersionInfoView()) {
-                    Text("Version")
+                    HStack {
+                        Text("Version")
+                        if let version = VersionInfoView.appVersionBuild {
+                            Spacer()
+                            Text(version)
+                        }
+                    }
                 }
                 NavigationLink(destination: LegalView()) {
-                    Text("Legal (Terms & Privacy)")
+                    Text("Legal")
                 }
-            }
-            
-            Section(header: Text("Support")) {
                 NavigationLink(destination: HelpFAQView()) {
-                    Text("Help / FAQ")
+                    Text("Help")
                 }
                 NavigationLink(destination: ContactSupportView()) {
-                    Text("Contact Support")
+                    Text("Contact")
+                }
+            }
+
+            groupTheme.section(
+                nameView: { Text("Database Info") }
+            ) {
+                HStack {
+                    Text("Database File")
+                    Spacer()
+                    Text(env.getDatabaseFileName() ?? "")
+                }
+                HStack {
+                    Text("Schema Version")
+                    Spacer()
+                    Text(String(env.getDatabaseUserVersion() ?? 0))
+                }
+                HStack {
+                    Text("Date Format")
+                    Spacer()
+                    Text("\(dateFormat)")
                 }
             }
         }
+        .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .listSectionSpacing(5)
         .padding(.top, -20)
+        //.border(.red)
         .task {
             log.trace("DEBUG: SettingsView.load(main=\(Thread.isMainThread))")
             await vm.loadSettingsList()
