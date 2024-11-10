@@ -57,9 +57,9 @@ extension ViewModel {
 }
 
 struct LoadCategoryPath: LoadEvalProtocol {
-    typealias ValueType = (path: [DataId: String], order: [DataId])
+    typealias ValueType = [DataId: String]
     let loadName: String = "Path(\(CategoryRepository.repositoryName))"
-    let idleValue: ValueType = (path: [:], order: [])
+    let idleValue: ValueType = [:]
 
     var state: LoadState = .init()
     var value: ValueType
@@ -74,10 +74,13 @@ struct LoadCategoryPath: LoadEvalProtocol {
 }
 
 struct LoadCategoryTree: LoadEvalProtocol {
-    // parent id (or -1) -> children ids (preserving order)
-    typealias ValueType = (tree: [DataId: [DataId]], order: [(Int, DataId)])
+    typealias ValueType = (
+        tree: [DataId: [DataId]],   // parent id or -1 -> children ids (preserving order)
+        path: [DataId: [DataId]],   // id -> [ids in path] (starting from root)
+        treeOrder: [(Int, DataId)]  // (level, id)
+    )
     let loadName: String = "Tree(\(CategoryRepository.repositoryName))"
-    let idleValue: ValueType = (tree: [:], order: [])
+    let idleValue: ValueType = (tree: [:], path: [:], treeOrder: [])
     var state: LoadState = .init()
     var value: ValueType
 
@@ -93,7 +96,7 @@ struct LoadCategoryTree: LoadEvalProtocol {
 extension ViewModel {
     nonisolated func evalCategoryPath(sep: String = ":") async -> LoadCategoryPath.ValueType? {
         guard let data = await categoryList.data.readyValue else { return nil }
-
+        
         var path: [DataId: String] = [:]
         for id in data.keys {
             var stack: [DataId] = []
@@ -110,15 +113,9 @@ extension ViewModel {
                 }
             }
         }
-
-        let pathOrder = path
-            .map { ($0.key, $0.value) }
-            .sorted { ($0.1).localizedStandardCompare($1.1) == .orderedAscending }
-            .map { $0.0 }
-
-        return (path: path, order: pathOrder)
+        return path
     }
-
+    
     nonisolated func evalCategoryTree() async -> LoadCategoryTree.ValueType? {
         guard
             let data  = await categoryList.data.readyValue,
@@ -128,6 +125,10 @@ extension ViewModel {
         let tree = Dictionary(grouping: order) {
             data[$0]?.parentId ?? .void
         }
+
+        let path = Dictionary(uniqueKeysWithValues: order.map { id in
+            (id, findPath(for: id, in: data))
+        } )
 
         var treeOrder: [(Int, DataId)] = []  // level, id
         var stack: [(Int, [DataId])] = [(0, tree[.void] ?? [])]  // index into list, list of items
@@ -140,7 +141,19 @@ extension ViewModel {
             stack[level].0 += 1
             if let children = tree[id] { stack.append((0, children)) }
         }
+        
+        return (tree: tree, path: path, treeOrder: treeOrder)
+    }
 
-        return (tree: tree, order: treeOrder)
+    // moved from TransactionViewModel.swift
+    nonisolated
+    private func findPath(for id: DataId, in data: [DataId: CategoryData]) -> [DataId] {
+        var path: [DataId] = []
+        var id = id
+        while !id.isVoid, let parentId = data[id]?.parentId {
+            path.insert(id, at: 0) // Insert at the beginning to maintain the correct order
+            id = parentId
+        }
+        return path
     }
 }

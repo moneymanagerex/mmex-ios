@@ -75,9 +75,6 @@ struct JournalView: View {
                 accountId = defaultAccountId
             }
             viewModel.loadTransactions(for: accountId)
-            viewModel.loadAccounts()
-            viewModel.loadCategories()
-            viewModel.loadPayees()
         }
     }
 
@@ -97,14 +94,15 @@ struct JournalView: View {
             )
         ) ) {
             HStack {
+                let categoryName = vm.categoryList.data.readyValue?[txn.categId]?.name
                 // Left column (Category Icon or Category Name)
-                if let categorySymbol = CategoryData.categoryToSFSymbol[viewModel.getCategoryName(for: txn.categId)] {
+                if let categoryName, let categorySymbol = CategoryData.categoryToSFSymbol[categoryName] {
                     Image(systemName: categorySymbol)
                         .frame(width: 50, alignment: .leading) // Adjust width as needed
                         .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
                         .foregroundColor(.blue) // Customize icon style
                 } else {
-                    Text(viewModel.getCategoryName(for: txn.categId)) // Fallback to category name if symbol is not found
+                    Text(categoryName ?? "(unknown)") // Fallback to category name if symbol is not found
                         .frame(width: 50, alignment: .leading)
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(.blue)

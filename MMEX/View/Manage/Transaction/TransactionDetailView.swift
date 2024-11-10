@@ -57,7 +57,7 @@ struct TransactionDetailView: View {
 
             if txn.splits.isEmpty {
                 Section(header: Text("Category")) {
-                    Text(vm.categoryList.path.readyValue?.path[txn.categId] ?? "(unknown)")
+                    Text(vm.categoryList.path.readyValue?[txn.categId] ?? "(unknown)")
                 }
             } else {
                 Section(header: Text("Splits")) {
@@ -73,7 +73,7 @@ struct TransactionDetailView: View {
                     // rows
                     ForEach(txn.splits) { split in
                         HStack {
-                            Text(vm.categoryList.path.readyValue?.path[split.categId] ?? "(unknown)")
+                            Text(vm.categoryList.path.readyValue?[split.categId] ?? "(unknown)")
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
 
                             Text(split.amount.formatted(

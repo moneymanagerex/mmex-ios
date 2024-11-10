@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "'%@'" : {
+
+    },
     "(none)" : {
 
     },
@@ -765,9 +768,6 @@
     "No Database Connected" : {
 
     },
-    "Non Root" : {
-
-    },
     "None" : {
 
     },
@@ -865,9 +865,6 @@
           }
         }
       }
-    },
-    "Root" : {
-
     },
     "Sample Database in Memory" : {
 

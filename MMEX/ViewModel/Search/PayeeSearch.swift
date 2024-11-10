@@ -11,7 +11,7 @@ struct PayeeSearch: SearchProtocol {
     var area: [SearchArea<PayeeData>] = [
         ("Name",       true,  {[ $0.name ]}, nil),
         ("Category",   false, nil, { vm, data in [
-            vm.categoryList.path.readyValue?.path[data.categoryId] ?? ""
+            vm.categoryList.path.readyValue?[data.categoryId] ?? ""
         ] } ),
         ("Notes",      false, {[ $0.notes ]}, nil),
         ("Attachment", false, nil, { vm, data in

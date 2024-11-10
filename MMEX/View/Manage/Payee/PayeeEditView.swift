@@ -14,7 +14,7 @@ struct PayeeEditView: View {
     @Binding var data: PayeeData
     @State var edit: Bool
 
-    var category: String? { vm.categoryList.path.readyValue?.path[data.categoryId] }
+    var category: String? { vm.categoryList.path.readyValue?[data.categoryId] }
 
     var body: some View {
         Section {
@@ -34,14 +34,14 @@ struct PayeeEditView: View {
         
         Section {
             if
-                let categoryOrder = vm.categoryList.path.readyValue?.order,
-                let categoryPath  = vm.categoryList.path.readyValue?.path
+                let categoryOrder = vm.categoryList.tree.readyValue?.treeOrder,
+                let categoryPath  = vm.categoryList.path.readyValue
             {
                 // TODO: category tree
                 env.theme.field.view(edit, false, "Category", editView: {
                     Picker("", selection: $data.categoryId) {
                         Text("(none)").tag(DataId.void)
-                        ForEach(categoryOrder, id: \.self) { id in
+                        ForEach(categoryOrder, id: \.1) { (_, id) in
                             Text(categoryPath[id] ?? "").tag(id)
                         }
                     }

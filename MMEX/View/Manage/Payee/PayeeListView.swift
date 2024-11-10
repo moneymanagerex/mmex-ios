@@ -54,7 +54,7 @@ struct PayeeListView: View {
                 Text(data.active ? "Active" : "Inactive")
             } else {
                 //Text(vm.categoryList.data.readyValue?[data.categoryId]?.name ?? "")
-                Text(vm.categoryList.path.readyValue?.path[data.categoryId] ?? "")
+                Text(vm.categoryList.path.readyValue?[data.categoryId] ?? "")
             }
         }
     }

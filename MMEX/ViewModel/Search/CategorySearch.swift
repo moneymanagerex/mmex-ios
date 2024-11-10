@@ -11,7 +11,7 @@ struct CategorySearch: SearchProtocol {
     var area: [SearchArea<CategoryData>] = [
         ("Name", true,  {[ $0.name ]}, nil),
         ("Path", false, nil, { vm, data in [
-            vm.categoryList.path.readyValue?.path[data.id] ?? ""
+            vm.categoryList.path.readyValue?[data.id] ?? ""
         ] } ),
     ]
     var key: String = ""
