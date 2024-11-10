@@ -42,6 +42,9 @@ struct CategoryListView: View {
         }
         .navigationTitle(String(localized: "Categories"))
         .onAppear {
+            Task {
+                await vm.loadCategoryList()
+            }
             viewModel.loadCategories()
         }
         .sheet(isPresented: $isPresentingAddView) {

@@ -14,6 +14,12 @@ class ViewModel: ObservableObject {
     let env: EnvironmentManager
     //var subscriptions = Set<AnyCancellable>()
 
+    @Published var journalList  : LoadState = .init()
+    @Published var insightsList : LoadState = .init()
+    @Published var enterList    : LoadState = .init()
+    @Published var manageList   : LoadState = .init()
+    @Published var settingsList : LoadState = .init()
+
     typealias I = InfotableRepository
     @Published var infotableList : InfotableList  = .init()
 
@@ -73,12 +79,6 @@ class ViewModel: ObservableObject {
     typealias Y = YearRepository
     typealias B = BudgetRepository
     typealias O = ReportRepository
-
-    @Published var journalList  : LoadState = .init()
-    @Published var insightsList : LoadState = .init()
-    @Published var enterList    : LoadState = .init()
-    @Published var manageList   : LoadState = .init()
-    @Published var settingsList : LoadState = .init()
 
     init(env: EnvironmentManager) {
         self.env = env

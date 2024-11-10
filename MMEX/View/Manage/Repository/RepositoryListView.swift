@@ -157,6 +157,13 @@ where GroupType.MainRepository == ListType.MainRepository,
             vm.unloadList(vmList)
             await load()
         }
+        .alert(isPresented: $alertIsPresented) {
+            Alert(
+                title: Text("Error"),
+                message: Text(alertMessage!),
+                dismissButton: .default(Text("OK"))
+            )
+        }
         .sheet(isPresented: $createIsPresented) {
             RepositoryCreateView(
                 vm: vm,

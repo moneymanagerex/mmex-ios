@@ -35,7 +35,6 @@ struct InfotableList: ListProtocol {
     var state : LoadState                     = .init()
     var count : LoadMainCount<MainRepository> = .init()
     var data  : LoadMainData<MainRepository>  = .init()
-    var name  : LoadMainName<MainRepository>  = .init { $0[MainRepository.col_name] }
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
     var used  : LoadMainUsed<MainRepository>  = .init()
 

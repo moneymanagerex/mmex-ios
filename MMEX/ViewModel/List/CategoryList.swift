@@ -69,7 +69,7 @@ struct LoadCategoryPath: LoadEvalProtocol {
     }
 
     nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
-        await vm.evalCategoryPath(sep: vm.infotableList.categoryDelimiter.readyValue ?? ":")
+        await vm.evalCategoryPath(sep: vm.infotableList.categoryDelimiter.value)
     }
 }
 
