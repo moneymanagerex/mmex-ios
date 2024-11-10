@@ -142,8 +142,8 @@ struct EnterEditView: View {
                     if (txn.categId.isVoid) {
                         Text("Category:").tag(DataId.void)
                     }
-                    ForEach(vm.categoryList.path.readyValue?.order ?? [], id: \.self) { id in
-                        if let path = vm.categoryList.path.readyValue?.path[id] {
+                    ForEach(vm.categoryList.tree.readyValue?.treeOrder ?? [], id: \.1) { (_, id) in
+                        if let path = vm.categoryList.path.readyValue?[id] {
                             Text(path).tag(id)
                         }
                     }
@@ -170,7 +170,7 @@ struct EnterEditView: View {
                         ForEach(txn.splits.indices, id: \.self) { index in
                             let split = txn.splits[index]
                             HStack {
-                                Text(vm.categoryList.path.readyValue?.path[split.categId] ?? "")
+                                Text(vm.categoryList.path.readyValue?[split.categId] ?? "")
                                     .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                                 Text(split.amount.formatted(
                                     by: vm.currencyList.info.readyValue?[
@@ -193,8 +193,8 @@ struct EnterEditView: View {
                                 if (newSplit.categId.isVoid) {
                                     Text("Category:").tag(DataId.void)
                                 }
-                                ForEach(vm.categoryList.path.readyValue?.order ?? [], id: \.self) { id in
-                                    if let path = vm.categoryList.path.readyValue?.path[id] {
+                                ForEach(vm.categoryList.tree.readyValue?.treeOrder ?? [], id: \.1) { (_, id) in
+                                    if let path = vm.categoryList.path.readyValue?[id] {
                                         Text(path).tag(id)
                                     }
                                 }

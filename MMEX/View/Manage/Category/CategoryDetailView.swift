@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct CategoryDetailView: View {
-    @Binding var category: CategoryData
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
-    
+    @State var category: CategoryData
+
     @State private var editingCategory = CategoryData()
     @State private var isPresentingEditView = false
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
@@ -111,12 +111,12 @@ struct CategoryDetailView: View {
 
 #Preview(CategoryData.sampleData[0].name) {
     CategoryDetailView(
-        category: .constant(CategoryData.sampleData[0])
+        category: CategoryData.sampleData[0]
     )
 }
 
 #Preview(CategoryData.sampleData[1].name) {
     CategoryDetailView(
-        category: .constant(CategoryData.sampleData[1])
+        category: CategoryData.sampleData[1]
     )
 }

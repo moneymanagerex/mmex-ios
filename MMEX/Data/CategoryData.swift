@@ -13,20 +13,10 @@ struct CategoryData: ExportableEntity {
     var name     : String = ""
     var active   : Bool   = false
     var parentId : DataId = .void
-
-    var parentCategories: [CategoryData] = []
 }
 
 extension CategoryData {
-    var isRoot: Bool {
-        return parentId.isVoid
-    }
-
-    func fullName(with delimiter: String = ":") -> String {
-        // Join all parent category names followed by the current category's name
-        let parentNames = parentCategories.map { $0.name }
-        return (parentNames + [name]).joined(separator: delimiter)
-    }
+    var isRoot: Bool { parentId.isVoid }
 }
 
 extension CategoryData: DataProtocol {
