@@ -71,7 +71,9 @@ struct JournalView: View {
         .task {
             log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
             await vm.loadTransactionList()
-            accountId = vm.infotableList.defaultAccountId.readyValue ?? DataId.void
+            if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
+                accountId = defaultAccountId
+            }
             viewModel.loadTransactions(for: accountId)
             viewModel.loadAccounts()
             viewModel.loadCategories()

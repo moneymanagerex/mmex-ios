@@ -402,6 +402,7 @@
       }
     },
     "Default Status" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -410,6 +411,9 @@
           }
         }
       }
+    },
+    "Default Transaction Status" : {
+
     },
     "Delete" : {
 

@@ -16,6 +16,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.infotableList.defaultAccountId),
                 load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
                 load(&taskGroup, keyPath: \Self.currencyList.name),
+                load(&taskGroup, keyPath: \Self.currencyList.used),
                 load(&taskGroup, keyPath: \Self.currencyList.order),
                 load(&taskGroup, keyPath: \Self.accountList.data),
                 load(&taskGroup, keyPath: \Self.accountList.order),

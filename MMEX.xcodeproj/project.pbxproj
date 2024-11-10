@@ -117,6 +117,8 @@
 		927B12332CDE852900AEA52F /* JournalList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12322CDE852900AEA52F /* JournalList.swift */; };
 		927B12352CDE855600AEA52F /* SettingsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12342CDE855500AEA52F /* SettingsList.swift */; };
 		927B12372CDF6FE100AEA52F /* RepositoryFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12362CDF6FE100AEA52F /* RepositoryFeatures.swift */; };
+		927B12392CE0B20300AEA52F /* InfotableValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12382CE0B20300AEA52F /* InfotableValidation.swift */; };
+		927B123B2CE0B41D00AEA52F /* InfotableReload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B123A2CE0B41D00AEA52F /* InfotableReload.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -299,6 +301,8 @@
 		927B12322CDE852900AEA52F /* JournalList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalList.swift; sourceTree = "<group>"; };
 		927B12342CDE855500AEA52F /* SettingsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsList.swift; sourceTree = "<group>"; };
 		927B12362CDF6FE100AEA52F /* RepositoryFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryFeatures.swift; sourceTree = "<group>"; };
+		927B12382CE0B20300AEA52F /* InfotableValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfotableValidation.swift; sourceTree = "<group>"; };
+		927B123A2CE0B41D00AEA52F /* InfotableReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfotableReload.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -545,6 +549,7 @@
 			isa = PBXGroup;
 			children = (
 				925EABB12CCFFC2E003CEAB3 /* Reload.swift */,
+				927B123A2CE0B41D00AEA52F /* InfotableReload.swift */,
 				9243531A2CC51FB10052E4BC /* CurrencyReload.swift */,
 				924353002CBA06210052E4BC /* AccountReload.swift */,
 				924353142CC51F590052E4BC /* AssetReload.swift */,
@@ -561,6 +566,7 @@
 			isa = PBXGroup;
 			children = (
 				925EABAF2CCF82E4003CEAB3 /* Validation.swift */,
+				927B12382CE0B20300AEA52F /* InfotableValidation.swift */,
 				925EABA22CCF8146003CEAB3 /* CurrencyValidation.swift */,
 				925EABA52CCF81C9003CEAB3 /* AccountValidation.swift */,
 				925EABA72CCF81FF003CEAB3 /* AssetValidation.swift */,
@@ -966,6 +972,7 @@
 				925EAC0F2CDA8B1A003CEAB3 /* TagSearch.swift in Sources */,
 				925EAC202CDAADFB003CEAB3 /* AttachmentValidation.swift in Sources */,
 				920824042CA4ADC100388AB2 /* ScheduledSplitData.swift in Sources */,
+				927B12392CE0B20300AEA52F /* InfotableValidation.swift in Sources */,
 				925EABA62CCF81C9003CEAB3 /* AccountValidation.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
 				925EAC1C2CDAA900003CEAB3 /* AttachmentGroup.swift in Sources */,
@@ -1049,6 +1056,7 @@
 				924352FF2CB99F1D0052E4BC /* SearchProtocol.swift in Sources */,
 				929EF66D2CA0BA5E0051A3E6 /* ScheduledData.swift in Sources */,
 				920824022CA4AD0C00388AB2 /* TransactionSplitData.swift in Sources */,
+				927B123B2CE0B41D00AEA52F /* InfotableReload.swift in Sources */,
 				925EAC172CDA8EF5003CEAB3 /* TagEditView.swift in Sources */,
 				924353172CC51F8E0052E4BC /* StockReload.swift in Sources */,
 				A3363EE32C9323A5004696C7 /* CategoryEditView.swift in Sources */,
