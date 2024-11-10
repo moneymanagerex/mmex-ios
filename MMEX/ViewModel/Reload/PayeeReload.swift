@@ -12,17 +12,24 @@ extension ViewModel {
     func reloadPayeeList(_ oldData: PayeeData?, _ newData: PayeeData?) async {
         log.trace("DEBUG: ViewModel.reloadPayeeList(main=\(Thread.isMainThread))")
 
+        var categoryChanged = false
         if let categoryUsed = categoryList.used.readyValue {
-            let oldCategory = oldData?.categoryId
-            let newCategory = newData?.categoryId
-            if let oldCategory, newCategory != oldCategory {
+            let oldCategoryId = oldData?.categoryId
+            let newCategoryId = newData?.categoryId
+            if let oldCategoryId, newCategoryId != oldCategoryId {
                 categoryList.used.unload()
-            } else if let newCategory, !categoryUsed.contains(newCategory) {
+                categoryChanged = true
+            } else if let newCategoryId, !categoryUsed.contains(newCategoryId) {
                 if categoryList.used.state.unloading() {
-                    categoryList.used.value.insert(newCategory)
+                    categoryList.used.value.insert(newCategoryId)
                     categoryList.used.state.loaded()
+                    categoryChanged = true
                 }
             }
+        }
+        if categoryChanged {
+            unloadCategoryGroup()
+            categoryList.unload()
         }
 
         // save isExpanded

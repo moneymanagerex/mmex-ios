@@ -65,7 +65,7 @@ struct SettingsView: View {
                 //isExpanded: $dbSettingsIsExpanded
             ) {
                 Picker("Base Currency", selection: $baseCurrencyId) {
-                    ForEach(baseCurrencyOffer(baseCurrencyId)) { id in
+                    ForEach(baseCurrencyOffer) { id in
                         if id.isVoid {
                             Text("(none)").tag(id)
                         } else if let name = vm.currencyList.name.readyValue?[id] {
@@ -76,34 +76,42 @@ struct SettingsView: View {
                 //.pickerStyle(NavigationLinkPickerStyle())
                 .onChange(of: baseCurrencyId) {
                     guard baseCurrencyId != vm.infotableList.baseCurrencyId.value else { return }
-                    let updateError = vm.updateInfotable(baseCurrencyId: baseCurrencyId)
+                    let updateError = vm.updateSettings(baseCurrencyId: baseCurrencyId)
                     if updateError != nil {
                         baseCurrencyId = vm.infotableList.baseCurrencyId.value
                         alertMessage = updateError
                         alertIsPresented = true
                     } else {
                         Task {
-                            await vm.reloadInfotable(baseCurrencyId: baseCurrencyId)
+                            await vm.reloadSettings(baseCurrencyId: baseCurrencyId)
                         }
                     }
                 }
                 
-                // TODO: add search
                 Picker("Default Account", selection: $defaultAccountId) {
-                    if defaultAccountId.isVoid {
-                        Text("(none)").tag(DataId.void)
-                    }
-                    ForEach(vm.accountList.order.readyValue ?? []) { id in
-                        if let account = vm.accountList.data.readyValue?[id] {
-                            Text(account.name).tag(id)
+                    ForEach(defaultAccountOffer) { id in
+                        if id.isVoid {
+                            Text("(none)").tag(id)
+                        } else if let name = vm.accountList.data.readyValue?[id]?.name {
+                            Text(name).tag(id)
                         }
                     }
                 }
-                .pickerStyle(NavigationLinkPickerStyle())
+                //.pickerStyle(NavigationLinkPickerStyle())
                 .onChange(of: defaultAccountId) {
-                    // TODO: reload Infotable
+                    guard defaultAccountId != vm.infotableList.defaultAccountId.value else { return }
+                    let updateError = vm.updateSettings(defaultAccountId: defaultAccountId)
+                    if updateError != nil {
+                        defaultAccountId = vm.infotableList.defaultAccountId.value
+                        alertMessage = updateError
+                        alertIsPresented = true
+                    } else {
+                        Task {
+                            await vm.reloadSettings(defaultAccountId: defaultAccountId)
+                        }
+                    }
                 }
-                
+
                 HStack {
                     Text("Category Delimiter")
                     Spacer()
@@ -181,23 +189,42 @@ struct SettingsView: View {
             )
         }
     }
-    
-    func baseCurrencyOffer(_ currentId: DataId) -> [DataId] {
+
+    var baseCurrencyOffer: [DataId] {
         var offer: [DataId] = []
-        var isAppended = currentId.isVoid
+        var isAppended = baseCurrencyId.isVoid
         // always offer .void
-        if true || currentId.isVoid {
+        if true || baseCurrencyId.isVoid {
             offer.append(.void)
         }
         for id in vm.currencyList.order.readyValue ?? [] {
             // offer used currencies
-            if id == currentId || vm.currencyList.used.readyValue?.contains(id) == true {
+            if id == baseCurrencyId || vm.currencyList.used.readyValue?.contains(id) == true {
                 offer.append(id)
-                if id == currentId { isAppended = true }
+                if id == baseCurrencyId { isAppended = true }
             }
         }
         // offer currentId
-        if !isAppended { offer.append(currentId) }
+        if !isAppended { offer.append(baseCurrencyId) }
+        return offer
+    }
+
+    var defaultAccountOffer: [DataId] {
+        var offer: [DataId] = []
+        var isAppended = defaultAccountId.isVoid
+        // always offer .void
+        if true || defaultAccountId.isVoid {
+            offer.append(.void)
+        }
+        for id in vm.accountList.order.readyValue ?? [] {
+            // offer open accounts
+            if id == defaultAccountId || vm.accountList.data.readyValue?[id]?.status == .open {
+                offer.append(id)
+                if id == defaultAccountId { isAppended = true }
+            }
+        }
+        // offer defaultAccountId
+        if !isAppended { offer.append(defaultAccountId) }
         return offer
     }
 }

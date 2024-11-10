@@ -12,17 +12,24 @@ extension ViewModel {
     func reloadStockList(_ oldData: StockData?, _ newData: StockData?) async {
         log.trace("DEBUG: ViewModel.reloadStockList(main=\(Thread.isMainThread))")
 
+        var accountChanged = false
         if let accountUsed = accountList.used.readyValue {
-            let oldAccount = oldData?.accountId
-            let newAccount = newData?.accountId
-            if let oldAccount, newAccount != oldAccount {
+            let oldAccountId = oldData?.accountId
+            let newAccountId = newData?.accountId
+            if let oldAccountId, newAccountId != oldAccountId {
                 accountList.used.unload()
-            } else if let newAccount, !accountUsed.contains(newAccount) {
+                accountChanged = true
+            } else if let newAccountId, !accountUsed.contains(newAccountId) {
                 if accountList.used.state.unloading() {
-                    accountList.used.value.insert(newAccount)
+                    accountList.used.value.insert(newAccountId)
                     accountList.used.state.loaded()
+                    accountChanged = true
                 }
             }
+        }
+        if accountChanged {
+            unloadAccountGroup()
+            accountList.unload()
         }
 
         // save isExpanded

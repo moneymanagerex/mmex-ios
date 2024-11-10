@@ -13,16 +13,16 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadAssetList(main=\(Thread.isMainThread))")
 
         if
-            let newCurrency = newData?.currencyId,
+            let newCurrencyId = newData?.currencyId,
             let currencyInfo = currencyList.info.readyValue,
-            currencyInfo[newCurrency] == nil
+            currencyInfo[newCurrencyId] == nil
         {
             if
                 let currencyData = currencyList.data.readyValue,
-                let newCurrencyData = currencyData[newCurrency]
+                let newCurrencyData = currencyData[newCurrencyId]
             {
                 if currencyList.info.state.unloading() {
-                    currencyList.info.value[newCurrency] = CurrencyInfo(newCurrencyData)
+                    currencyList.info.value[newCurrencyId] = CurrencyInfo(newCurrencyData)
                     currencyList.info.state.loaded()
                 }
             } else {
@@ -30,17 +30,24 @@ extension ViewModel {
             }
         }
 
+        var currencyChanged = false
         if let currencyUsed = currencyList.used.readyValue {
-            let oldCurrency = oldData?.currencyId
-            let newCurrency = newData?.currencyId
-            if let oldCurrency, newCurrency != oldCurrency {
+            let oldCurrencyId = oldData?.currencyId
+            let newCurrencyId = newData?.currencyId
+            if let oldCurrencyId, newCurrencyId != oldCurrencyId {
                 currencyList.used.unload()
-            } else if let newCurrency, !currencyUsed.contains(newCurrency) {
+                currencyChanged = true
+            } else if let newCurrencyId, !currencyUsed.contains(newCurrencyId) {
                 if currencyList.used.state.unloading() {
-                    currencyList.used.value.insert(newCurrency)
+                    currencyList.used.value.insert(newCurrencyId)
                     currencyList.used.state.loaded()
+                    currencyChanged = true
                 }
             }
+        }
+        if currencyChanged {
+            unloadCurrencyGroup()
+            currencyList.unload()
         }
 
         // save isExpanded

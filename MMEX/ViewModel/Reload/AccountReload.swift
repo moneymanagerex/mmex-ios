@@ -30,17 +30,24 @@ extension ViewModel {
             }
         }
 
+        var currencyChanged = false
         if let currencyUsed = currencyList.used.readyValue {
             let oldCurrencyId = oldData?.currencyId
             let newCurrencyId = newData?.currencyId
             if let oldCurrencyId, newCurrencyId != oldCurrencyId {
                 currencyList.used.unload()
+                currencyChanged = true
             } else if let newCurrencyId, !currencyUsed.contains(newCurrencyId) {
                 if currencyList.used.state.unloading() {
                     currencyList.used.value.insert(newCurrencyId)
                     currencyList.used.state.loaded()
+                    currencyChanged = true
                 }
             }
+        }
+        if currencyChanged {
+            unloadCurrencyGroup()
+            currencyList.unload()
         }
 
         // save isExpanded
