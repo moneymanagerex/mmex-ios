@@ -11,23 +11,24 @@ struct SettingsView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
-
+    
     let groupTheme = GroupTheme(layout: .nameFold)
     @State var dbSettingsIsExpanded = false
-
+    @FocusState private var categoryDelimiterFocus: Bool
+    
     @State var baseCurrencyId    : DataId = .void
     @State var defaultAccountId  : DataId = .void
     @State var categoryDelimiter : String = ":"
     
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
-
+    
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
     @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = false // Default is tracking disabled
-
+    
     @State private var dateFormat: String = "%Y-%m-%d"
-
+    
     var body: some View {
         List {
             groupTheme.section(
@@ -73,19 +74,8 @@ struct SettingsView: View {
                         }
                     }
                 }
-                //.pickerStyle(NavigationLinkPickerStyle())
                 .onChange(of: baseCurrencyId) {
-                    guard baseCurrencyId != vm.infotableList.baseCurrencyId.value else { return }
-                    let updateError = vm.updateSettings(baseCurrencyId: baseCurrencyId)
-                    if updateError != nil {
-                        baseCurrencyId = vm.infotableList.baseCurrencyId.value
-                        alertMessage = updateError
-                        alertIsPresented = true
-                    } else {
-                        Task {
-                            await vm.reloadSettings(baseCurrencyId: baseCurrencyId)
-                        }
-                    }
+                    baseCurrencyUpdate()
                 }
                 
                 Picker("Default Account", selection: $defaultAccountId) {
@@ -97,30 +87,32 @@ struct SettingsView: View {
                         }
                     }
                 }
-                //.pickerStyle(NavigationLinkPickerStyle())
                 .onChange(of: defaultAccountId) {
-                    guard defaultAccountId != vm.infotableList.defaultAccountId.value else { return }
-                    let updateError = vm.updateSettings(defaultAccountId: defaultAccountId)
-                    if updateError != nil {
-                        defaultAccountId = vm.infotableList.defaultAccountId.value
-                        alertMessage = updateError
-                        alertIsPresented = true
-                    } else {
-                        Task {
-                            await vm.reloadSettings(defaultAccountId: defaultAccountId)
-                        }
-                    }
+                    defaultAccountUpdate()
                 }
 
                 HStack {
                     Text("Category Delimiter")
                     Spacer()
-                    TextField("N/A", text: $categoryDelimiter)
-                        .textInputAutocapitalization(.sentences)
-                        .multilineTextAlignment(.trailing)
-                        .onChange(of: categoryDelimiter) {
-                            // TODO: update infotable
+                    TextField("Default is ':'", text: $categoryDelimiter)
+                        .focused($categoryDelimiterFocus)
+                        .onChange(of: categoryDelimiterFocus) {
+                            if !categoryDelimiterFocus { currencyDelimiterUpdate() }
                         }
+                        .textInputAutocapitalization(.never)
+                        // problem: trailing space is not visible
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: 100)
+                    Menu {
+                        ForEach(categoryDelimiterSuggestion, id: \.self) { s in
+                            Button("'\(s)'") {
+                                categoryDelimiter = s
+                                currencyDelimiterUpdate()
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "chevron.up.chevron.down")
+                    }
                 }
             }
             
@@ -149,7 +141,7 @@ struct SettingsView: View {
                     Text("Contact")
                 }
             }
-
+            
             groupTheme.section(
                 nameView: { Text("Database Info") }
             ) {
@@ -189,7 +181,7 @@ struct SettingsView: View {
             )
         }
     }
-
+    
     var baseCurrencyOffer: [DataId] {
         var offer: [DataId] = []
         var isAppended = baseCurrencyId.isVoid
@@ -209,6 +201,20 @@ struct SettingsView: View {
         return offer
     }
 
+    func baseCurrencyUpdate() {
+        guard baseCurrencyId != vm.infotableList.baseCurrencyId.value else { return }
+        let updateError = vm.updateSettings(baseCurrencyId: baseCurrencyId)
+        if updateError != nil {
+            baseCurrencyId = vm.infotableList.baseCurrencyId.value
+            alertMessage = updateError
+            alertIsPresented = true
+        } else {
+            Task {
+                await vm.reloadSettings(baseCurrencyId: baseCurrencyId)
+            }
+        }
+    }
+    
     var defaultAccountOffer: [DataId] {
         var offer: [DataId] = []
         var isAppended = defaultAccountId.isVoid
@@ -226,6 +232,42 @@ struct SettingsView: View {
         // offer defaultAccountId
         if !isAppended { offer.append(defaultAccountId) }
         return offer
+    }
+
+    func defaultAccountUpdate() {
+        guard defaultAccountId != vm.infotableList.defaultAccountId.value else { return }
+        let updateError = vm.updateSettings(defaultAccountId: defaultAccountId)
+        if updateError != nil {
+            defaultAccountId = vm.infotableList.defaultAccountId.value
+            alertMessage = updateError
+            alertIsPresented = true
+        } else {
+            Task {
+                await vm.reloadSettings(defaultAccountId: defaultAccountId)
+            }
+        }
+    }
+
+    var categoryDelimiterSuggestion: [String] { [
+        ".",
+        ":", " : ",
+        "/", " / ",
+        " ▶ ", " ❯ ",
+    ] }
+    
+    func currencyDelimiterUpdate() {
+        if categoryDelimiter.isEmpty { categoryDelimiter = ":" }
+        guard categoryDelimiter != vm.infotableList.categoryDelimiter.value else { return }
+        let updateError = vm.updateSettings(categoryDelimiter: categoryDelimiter)
+        if updateError != nil {
+            categoryDelimiter = vm.infotableList.categoryDelimiter.value
+            alertMessage = updateError
+            alertIsPresented = true
+        } else {
+            Task {
+                await vm.reloadSettings(categoryDelimiter: categoryDelimiter)
+            }
+        }
     }
 }
 

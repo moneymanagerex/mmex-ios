@@ -50,4 +50,20 @@ extension ViewModel {
 
         return nil
     }
+
+    func updateSettings(categoryDelimiter: String) -> String? {
+        if categoryDelimiter.isEmpty {
+            return "Delimiter is empty"
+        }
+
+        guard let i = I(env) else {
+            return "* Database is not available"
+        }
+
+        guard i.setValue(categoryDelimiter, for: InfoKey.categDelimiter.rawValue) else {
+            return "* Cannot set category delimiter to \"\(categoryDelimiter)\""
+        }
+
+        return nil
+    }
 }
