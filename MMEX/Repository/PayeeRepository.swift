@@ -65,6 +65,7 @@ struct PayeeRepository: RepositoryProtocol {
 
     static func itemSetters(_ data: PayeeData) -> [SQLite.Setter] {
         return [
+            col_id         <- generateInstanceIdWithSuffix(),
             col_name       <- data.name,
             col_categoryId <- Int64(data.categoryId),
             col_number     <- data.number,

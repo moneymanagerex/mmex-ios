@@ -82,6 +82,11 @@ extension RepositoryProtocol {
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
         return table.filter(SQLite.Expression<Bool>(value: false))
     }
+    static func generateInstanceIdWithSuffix() -> Int64 {
+        let ticks = Int64(Date().timeIntervalSince1970 * 1_000)
+        let randomSuffix = Int64.random(in: 1_000...9_999)
+        return (ticks * 10_000) + randomSuffix
+    }
 }
 
 extension RepositoryProtocol {
