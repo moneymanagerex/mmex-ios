@@ -84,8 +84,8 @@ extension RepositoryProtocol {
     }
     static func generateInstanceIdWithSuffix() -> Int64 {
         let ticks = Int64(Date().timeIntervalSince1970 * 1_000)
-        let randomSuffix = Int64.random(in: 1_000...9_999)
-        return (ticks * 10_000) + randomSuffix
+        let randomSuffix = Int64.random(in: 0...999)
+        return (ticks * 1_000) + randomSuffix
     }
 }
 
@@ -220,7 +220,7 @@ extension RepositoryProtocol {
     func insert(_ data: inout RepositoryData) -> Bool {
         do {
             let query = Self.table
-                .insert(Self.itemSetters(data))
+                .insert(Self.itemSetters(data) + [Self.col_id <- Self.generateInstanceIdWithSuffix()])
             log.trace("DEBUG: RepositoryProtocol.insert(main=\(Thread.isMainThread)): \(query.expression.description)")
             let rowid = try db.run(query)
             data.id = DataId(rowid)
