@@ -82,7 +82,8 @@ extension RepositoryProtocol {
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
         return table.filter(SQLite.Expression<Bool>(value: false))
     }
-    static func generateInstanceIdWithSuffix() -> Int64 {
+
+    static func newId() -> Int64 {
         let ticks = Int64(Date().timeIntervalSince1970 * 1_000)
         let randomSuffix = Int64.random(in: 0...999)
         return (ticks * 1_000) + randomSuffix
@@ -219,7 +220,7 @@ extension RepositoryProtocol {
 
     func insert(_ data: inout RepositoryData) -> Bool {
         do {
-            let suid = data.id.isVoid ? Self.generateInstanceIdWithSuffix() : Int64(data.id.value)
+            let suid = data.id.isVoid ? Self.newId() : Int64(data.id)
             let query = Self.table
                 .insert(Self.itemSetters(data) + [Self.col_id <- suid])
             log.trace("DEBUG: RepositoryProtocol.insert(main=\(Thread.isMainThread)): \(query.expression.description)")

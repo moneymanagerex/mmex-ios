@@ -163,6 +163,7 @@ struct SettingsView: View {
                 }
             }
         }
+        .scrollDismissesKeyboard(.immediately)
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .listSectionSpacing(5)
         .padding(.top, -20)
