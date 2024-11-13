@@ -122,16 +122,19 @@ extension AccountData {
         AccountData(
             id: 1, name: "Account A", type: AccountType.cash,
             status: AccountStatus.open, notes: "line 1\nline 2",
+            initialDate: DateString(Date()),
             initialBal: 100.0, favoriteAcct: .boolTrue, currencyId: 1
         ),
         AccountData(
             id: 2, name: "Account B", type: AccountType.cash,
             status: AccountStatus.open, notes: "note",
+            initialDate: DateString(Date()),
             initialBal: 200.0, favoriteAcct: .boolTrue, currencyId: 2
         ),
         AccountData(
             id: 3, name: "Investment Account", type: AccountType.investment,
             status: AccountStatus.open, notes: "",
+            initialDate: DateString(Date()),
             initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
         ),
     ]
