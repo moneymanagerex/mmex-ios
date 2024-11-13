@@ -219,8 +219,9 @@ extension RepositoryProtocol {
 
     func insert(_ data: inout RepositoryData) -> Bool {
         do {
+            let suid = data.id.isVoid ? Self.generateInstanceIdWithSuffix() : Int64(data.id.value)
             let query = Self.table
-                .insert(Self.itemSetters(data) + [Self.col_id <- Self.generateInstanceIdWithSuffix()])
+                .insert(Self.itemSetters(data) + [Self.col_id <- suid])
             log.trace("DEBUG: RepositoryProtocol.insert(main=\(Thread.isMainThread)): \(query.expression.description)")
             let rowid = try db.run(query)
             data.id = DataId(rowid)
