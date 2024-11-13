@@ -18,7 +18,7 @@ let log = Logger(
 struct MMEXApp: App {
     @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
 
-    @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = false // Default is tracking disabled
+    @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = true // Default is tracking enabled
     @AppStorage("userID") private var userID: String = "" // Store user ID in AppStorage
 
     init() {
