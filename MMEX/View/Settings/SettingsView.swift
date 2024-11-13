@@ -25,7 +25,7 @@ struct SettingsView: View {
     
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
-    @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = false // Default is tracking disabled
+    @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = true // Default is tracking enabled
     
     @State private var dateFormat: String = "%Y-%m-%d"
     
