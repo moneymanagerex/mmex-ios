@@ -22,12 +22,13 @@ struct PayeeGroup: GroupProtocol {
     typealias GroupChoice    = PayeeGroupChoice
     let idleValue: ValueType = []
 
-    var choice: GroupChoice = .defaultValue
+    @Preference var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: ValueType
 
     init() {
         self.value = idleValue
+        self.$choice = "manage.group.payee"
     }
 
     static let groupUsed: [Bool] = [

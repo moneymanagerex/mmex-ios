@@ -47,12 +47,12 @@ struct Preference<ValueType: LosslessStringConvertible> {
 
     static func load(key: String) -> String? {
         let value = UserDefaults.standard.string(forKey: key)
-        log.debug("DEBUG: Preference.load(\(key)): \(value ?? "(nil)"))")
+        log.debug("DEBUG: Preference.load(\(key)): '\(value ?? "(nil)")')")
         return value
     }
 
     static func save(key: String, value: String) {
-        log.debug("DEBUG: Preference.save(\(key), \(value))")
+        log.debug("DEBUG: Preference.save(\(key), '\(value)')")
         UserDefaults.standard.set(value, forKey: key)
     }
 }

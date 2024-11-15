@@ -24,12 +24,13 @@ struct AccountGroup: GroupProtocol {
     typealias GroupChoice    = AccountGroupChoice
     let idleValue: ValueType = []
 
-    var choice: GroupChoice = .defaultValue
+    @Preference var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: ValueType
     
     init() {
         self.value = idleValue
+        self.$choice = "manage.group.account"
     }
 
     static let groupUsed: [Bool] = [

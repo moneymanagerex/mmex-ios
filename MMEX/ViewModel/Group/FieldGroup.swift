@@ -21,12 +21,13 @@ struct FieldGroup: GroupProtocol {
     typealias GroupChoice    = FieldGroupChoice
     let idleValue: ValueType = []
 
-    var choice: GroupChoice = .defaultValue
+    @Preference var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: ValueType
     
     init() {
         self.value = idleValue
+        self.$choice = "manage.group.field"
     }
 
     static let groupUsed: [Bool] = [
