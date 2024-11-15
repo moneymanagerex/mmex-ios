@@ -119,6 +119,7 @@
 		927B12372CDF6FE100AEA52F /* RepositoryFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12362CDF6FE100AEA52F /* RepositoryFeatures.swift */; };
 		927B12392CE0B20300AEA52F /* SettingsValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12382CE0B20300AEA52F /* SettingsValidation.swift */; };
 		927B123B2CE0B41D00AEA52F /* SettingsReload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B123A2CE0B41D00AEA52F /* SettingsReload.swift */; };
+		927B12472CE6C26E00AEA52F /* PreferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12462CE6C26E00AEA52F /* PreferenceProtocol.swift */; };
 		929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */; };
 		929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6602C9FF2FD0051A3E6 /* StockData.swift */; };
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
@@ -303,6 +304,7 @@
 		927B12362CDF6FE100AEA52F /* RepositoryFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryFeatures.swift; sourceTree = "<group>"; };
 		927B12382CE0B20300AEA52F /* SettingsValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsValidation.swift; sourceTree = "<group>"; };
 		927B123A2CE0B41D00AEA52F /* SettingsReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsReload.swift; sourceTree = "<group>"; };
+		927B12462CE6C26E00AEA52F /* PreferenceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceProtocol.swift; sourceTree = "<group>"; };
 		929EF65E2C9FF2DE0051A3E6 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
 		929EF6602C9FF2FD0051A3E6 /* StockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
@@ -422,8 +424,9 @@
 			children = (
 				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
 				929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */,
-				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
+				927B12462CE6C26E00AEA52F /* PreferenceProtocol.swift */,
 				A3C1425E2C8DE70300D3CEC0 /* EnvironmentManager.swift */,
+				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -1011,6 +1014,7 @@
 				925EAB9B2CCDB60B003CEAB3 /* CategoryList.swift in Sources */,
 				925EABA32CCF8146003CEAB3 /* CurrencyValidation.swift in Sources */,
 				A3C142A82C906E0A00D3CEC0 /* Keyboard.swift in Sources */,
+				927B12472CE6C26E00AEA52F /* PreferenceProtocol.swift in Sources */,
 				924353372CCD2DDA0052E4BC /* PayeeGroup.swift in Sources */,
 				924353492CCD36890052E4BC /* CurrencyList.swift in Sources */,
 				927B12312CDE84B500AEA52F /* InsightsList.swift in Sources */,

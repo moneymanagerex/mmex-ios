@@ -42,14 +42,18 @@ struct SettingsThemeView: View {
                             Text(layout.rawValue).tag(layout)
                         }
                     }
-//                    .onChange(of: tabChoice) { _, newChoice in
-//                        env.theme.tab.layout = newChoice
-//                    }
+                    .onChange(of: env.theme.tab.layout) { _, _ in
+                        env.theme.tab.layout.savePreference()
+                    }
                 }
                 HStack {
                     Text("Show Count")
                     Spacer()
-                    Toggle(isOn: $env.theme.group.showCount) { }
+                    Toggle(isOn: $env.theme.group.showCount.asBool) {
+                    }
+                    .onChange(of: env.theme.group.showCount) {
+                        env.theme.group.showCount.savePreference()
+                    }
                 }
             }
 
@@ -68,6 +72,7 @@ struct SettingsThemeView: View {
                         ForEach(GroupTheme.Layout.allCases) { layout in
                             Button(action: {
                                 env.theme.group.layout = layout
+                                env.theme.group.layout.savePreference()
                             }) {
                                 GroupTheme(layout: layout, showCount: env.theme.group.showCount).view(
                                     nameView: { Text("Group Name") },
@@ -104,6 +109,7 @@ struct SettingsThemeView: View {
                         ForEach(ItemTheme.Layout.allCases) { layout in
                             Button(action: {
                                 env.theme.item.layout = layout
+                                env.theme.item.layout.savePreference()
                             }) {
                                 ItemTheme(layout: layout).view(
                                     nameView: { Text("Item Name") },
@@ -140,6 +146,7 @@ struct SettingsThemeView: View {
                         ForEach(FieldTheme.Layout.allCases) { layout in
                             Button(action: {
                                 env.theme.field.layout = layout
+                                env.theme.field.layout.savePreference()
                             }) {
                                 FieldTheme(layout: layout).view(false, "Field Name") {
                                     Text("Field Value")

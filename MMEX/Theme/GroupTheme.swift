@@ -9,14 +9,34 @@ import Foundation
 import SwiftUI
 
 struct GroupTheme: ThemeProtocol {
-    enum Layout: String, EnumCollateNoCase {
+    enum Layout: String, PreferenceProtocol {
         case foldName = "Fold Name space Count"
         case nameFold = "Name space Count Fold"
+        static let preferenceKey = "theme.group.layout"
         static let defaultValue = Self.foldName
+    }
+    
+    enum ShowCount: String, PreferenceProtocol {
+        case boolFalse = "FALSE"
+        case boolTrue  = "TRUE"
+        static let preferenceKey = "theme.group.showCount"
+        static let defaultValue = Self.boolTrue
+        
+        var asBool: Bool {
+            get { self == .boolTrue }
+            set { self = newValue ? .boolTrue : .boolFalse }
+        }
     }
 
     var layout = Self.Layout.defaultValue
-    var showCount: Bool = true
+    var showCount = Self.ShowCount.defaultValue
+}
+
+extension GroupTheme {
+    init(fromPreferences: Void) {
+        self.layout = Layout.loadPreference()
+        self.showCount = ShowCount.loadPreference()
+    }
 }
 
 extension GroupTheme {
@@ -43,7 +63,7 @@ extension GroupTheme {
                         //.padding(.leading)
                     
                     Spacer()
-                    if showCount, let count {
+                    if showCount == .boolTrue, let count {
                         BadgeCount(count: count)
                     }
                 }
@@ -55,7 +75,7 @@ extension GroupTheme {
                         //.padding(.leading)
                     
                     Spacer()
-                    if showCount, let count {
+                    if showCount == .boolTrue, let count {
                         BadgeCount(count: count)
                     }
                     if let isExpanded {
@@ -100,7 +120,7 @@ extension GroupTheme {
             nameView()
                 .font(.headline)
             Spacer()
-            if showCount { switch count.state {
+            if showCount == .boolTrue { switch count.state {
             case .ready:
                 BadgeCount(count: count.value)
             case .loading:

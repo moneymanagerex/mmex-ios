@@ -11,7 +11,7 @@ struct SettingsView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
-    
+
     let groupTheme = GroupTheme(layout: .nameFold)
     @State var dbSettingsIsExpanded = false
     @FocusState private var categoryDelimiterFocus: Bool
@@ -19,10 +19,10 @@ struct SettingsView: View {
     @State var baseCurrencyId    : DataId = .void
     @State var defaultAccountId  : DataId = .void
     @State var categoryDelimiter : String = ":"
-    
+
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
-    
+
     @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
     @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
     @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = true // Default is tracking enabled
@@ -51,13 +51,10 @@ struct SettingsView: View {
                 }
                 .pickerStyle(NavigationLinkPickerStyle())
                 
-                Picker("Send Anonymous Usage Data", selection: $isTrackingEnabled) {
-                    Text("On").tag(true)
-                    Text("Off").tag(false)
-                }
-                .pickerStyle(NavigationLinkPickerStyle())
-                .onChange(of: isTrackingEnabled) {
-                    // TODO
+                HStack {
+                    Text("Send Anonymous Usage Data")
+                    Spacer()
+                    Toggle(isOn: $isTrackingEnabled) { }
                 }
             }
             
@@ -65,30 +62,34 @@ struct SettingsView: View {
                 nameView: { Text("Database Settings") }
                 //isExpanded: $dbSettingsIsExpanded
             ) {
-                Picker("Base Currency", selection: $baseCurrencyId) {
-                    ForEach(baseCurrencyOffer) { id in
-                        if id.isVoid {
-                            Text("(none)").tag(id)
-                        } else if let name = vm.currencyList.name.readyValue?[id] {
-                            Text(name).tag(id)
+                if let currencyName = vm.currencyList.name.readyValue {
+                    Picker("Base Currency", selection: $baseCurrencyId) {
+                        ForEach(baseCurrencyOffer) { id in
+                            if id.isVoid {
+                                Text("(none)").tag(id)
+                            } else if let name = currencyName[id] {
+                                Text(name).tag(id)
+                            }
                         }
                     }
-                }
-                .onChange(of: baseCurrencyId) {
-                    baseCurrencyUpdate()
-                }
-                
-                Picker("Default Account", selection: $defaultAccountId) {
-                    ForEach(defaultAccountOffer) { id in
-                        if id.isVoid {
-                            Text("(none)").tag(id)
-                        } else if let name = vm.accountList.data.readyValue?[id]?.name {
-                            Text(name).tag(id)
-                        }
+                    .onChange(of: baseCurrencyId) {
+                        baseCurrencyUpdate()
                     }
                 }
-                .onChange(of: defaultAccountId) {
-                    defaultAccountUpdate()
+
+                if let accountData = vm.accountList.data.readyValue {
+                    Picker("Default Account", selection: $defaultAccountId) {
+                        ForEach(defaultAccountOffer) { id in
+                            if id.isVoid {
+                                Text("(none)").tag(id)
+                            } else if let name = accountData[id]?.name {
+                                Text(name).tag(id)
+                            }
+                        }
+                    }
+                    .onChange(of: defaultAccountId) {
+                        defaultAccountUpdate()
+                    }
                 }
 
                 HStack {

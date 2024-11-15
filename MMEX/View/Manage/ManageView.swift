@@ -73,7 +73,7 @@ struct ManageView: View {
 
             groupTheme.section(
                 nameView: { Text("Auxiliary Data") },
-                count: auxSum,
+                count: (env.theme.group.showCount.asBool ? auxSum : nil),
                 isExpanded: $auxDataIsExpanded
             ) {
                 NavigationLink(destination: CurrencyListView(vm: vm)) {
