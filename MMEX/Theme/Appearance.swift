@@ -14,7 +14,7 @@ enum Appearance: String, PreferenceProtocol {
     case dark   = "Dark"
     static let preferenceKey = "theme.appearance"
     static let defaultValue = Self.system
-    
+
     var asUIStyle: UIUserInterfaceStyle {
         return switch self {
         case .system : UIUserInterfaceStyle.unspecified
