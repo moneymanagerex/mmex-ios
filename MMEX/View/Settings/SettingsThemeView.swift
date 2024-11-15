@@ -9,6 +9,10 @@ import SwiftUI
 
 struct SettingsThemeView: View {
     @EnvironmentObject var env: EnvironmentManager
+    @ObservedObject var vm: ViewModel
+
+    @State var dateFormat: String = "%Y-%m-%d"
+    @State var categoryDelimiter : String = ":"
 
     @State private var isExpanded: [String: Bool] = [
         "Tab Icons"    : true,
@@ -16,6 +20,7 @@ struct SettingsThemeView: View {
         "Item Layout"  : true,
         "Field Layout" : true,
     ]
+    @FocusState private var categoryDelimiterFocus: Bool
 
     let accentColor = Color.green
 
@@ -36,6 +41,37 @@ struct SettingsThemeView: View {
                 }
 
                 HStack {
+                    Text("Date Format")
+                    Spacer()
+                    Text("\(dateFormat)")
+                }
+
+                HStack {
+                    Text("Category Delimiter")
+                    Spacer()
+                    TextField("Default is ':'", text: $categoryDelimiter)
+                        .focused($categoryDelimiterFocus)
+                        .onChange(of: categoryDelimiterFocus) {
+                            if !categoryDelimiterFocus { currencyDelimiterUpdate() }
+                        }
+                        .textInputAutocapitalization(.never)
+                        // problem: trailing space is not visible
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: 100)
+                    Menu {
+                        ForEach(categoryDelimiterSuggestion, id: \.self) { s in
+                            Button("'\(s)'") {
+                                categoryDelimiter = s
+                                currencyDelimiterUpdate()
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "chevron.up.chevron.down")
+                            .font(.footnote)
+                    }
+                }
+
+                HStack {
                     Text("Tab Icons")
                     Spacer()
                     Picker("", selection: $env.theme.tab.layout) {
@@ -44,8 +80,9 @@ struct SettingsThemeView: View {
                         }
                     }
                 }
+
                 HStack {
-                    Text("Show Count")
+                    Text("Group Count")
                     Spacer()
                     Toggle(isOn: $env.theme.group.showCount.asBool) { }
                 }
@@ -160,11 +197,31 @@ struct SettingsThemeView: View {
         }
         .navigationTitle("Theme")
         .listSectionSpacing(10)
+        .scrollDismissesKeyboard(.immediately)
+        .onAppear {
+            categoryDelimiter = env.theme.categoryDelimiter
+        }
+    }
+
+    var categoryDelimiterSuggestion: [String] { [
+        ".",
+        ":", " : ",
+        "/", " / ",
+        " ▶ ", " ❯ ",
+    ] }
+
+    func currencyDelimiterUpdate() {
+        if categoryDelimiter.isEmpty { categoryDelimiter = ":" }
+        guard categoryDelimiter != env.theme.categoryDelimiter else { return }
+        env.theme.categoryDelimiter = categoryDelimiter
+        vm.categoryList.path.unload()
     }
 }
 
 #Preview {
+    let env = EnvironmentManager.sampleData
     SettingsThemeView(
+        vm: ViewModel(env: env)
     )
-    .environmentObject(EnvironmentManager.sampleData)
+    .environmentObject(env)
 }

@@ -18,7 +18,8 @@ let log = Logger(
 struct MMEXApp: App {
     @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
 
-    init() {
+    func track(env: EnvironmentManager) {
+        log.debug("DEBUG: MMEXApp.track()")
         var userId = env.track.userId
         if userId.isEmpty {
             userId = String(format: "ios_%@", TimestampString(Date()).string)
@@ -36,10 +37,11 @@ struct MMEXApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(env: env)
-                .environmentObject(env)
                 .onAppear {
                     env.theme.appearance.apply()
+                    track(env: env)
                 }
+                .environmentObject(env)
         }
     }
 }

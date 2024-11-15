@@ -27,7 +27,7 @@ extension ViewModel {
                 // auxiliary
                 load(&taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
                 load(&taskGroup, keyPath: \Self.infotableList.defaultAccountId),
-                load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                //load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
                 load(&taskGroup, keyPath: \Self.currencyList.info),
                 load(&taskGroup, keyPath: \Self.accountList.data),
                 load(&taskGroup, keyPath: \Self.accountList.order),

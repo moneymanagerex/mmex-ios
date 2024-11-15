@@ -585,6 +585,9 @@
         }
       }
     },
+    "Group Count" : {
+
+    },
     "Group Layout" : {
 
     },
@@ -954,9 +957,6 @@
     },
     "Shares" : {
       "extractionState" : "manual"
-    },
-    "Show Count" : {
-
     },
     "Social Media" : {
       "localizations" : {

@@ -76,6 +76,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadSettings(defaultAccountId:, main=\(Thread.isMainThread))")
     }
 
+    /*
     func reloadSettings(categoryDelimiter newDelimiter: String) async {
         log.trace("DEBUG: ViewModel.reloadSettings(categoryDelimiter:, main=\(Thread.isMainThread))")
         let oldDelimiter = infotableList.categoryDelimiter.value
@@ -90,4 +91,5 @@ extension ViewModel {
 
         log.info("INFO: ViewModel.reloadSettings(categoryDelimiter:, main=\(Thread.isMainThread))")
     }
+     */
 }

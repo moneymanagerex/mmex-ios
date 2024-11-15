@@ -14,10 +14,6 @@ struct SettingsView: View {
 
     let groupTheme = GroupTheme(layout: .nameFold)
     @State var dbSettingsIsExpanded = false
-    @FocusState private var categoryDelimiterFocus: Bool
-
-    @State var categoryDelimiter : String = ":"
-    @State var dateFormat: String = "%Y-%m-%d"
 
     @State var baseCurrencyId    : DataId = .void
     @State var defaultAccountId  : DataId = .void
@@ -30,7 +26,7 @@ struct SettingsView: View {
             groupTheme.section(
                 nameView: { Text("App Settings") }
             ) {
-                NavigationLink(destination: SettingsThemeView()) {
+                NavigationLink(destination: SettingsThemeView(vm: vm)) {
                     Text("Theme")
                 }
                 
@@ -100,31 +96,6 @@ struct SettingsView: View {
                         defaultAccountUpdate()
                     }
                 }
-
-                HStack {
-                    Text("Category Delimiter")
-                    Spacer()
-                    TextField("Default is ':'", text: $categoryDelimiter)
-                        .focused($categoryDelimiterFocus)
-                        .onChange(of: categoryDelimiterFocus) {
-                            if !categoryDelimiterFocus { currencyDelimiterUpdate() }
-                        }
-                        .textInputAutocapitalization(.never)
-                        // problem: trailing space is not visible
-                        .multilineTextAlignment(.trailing)
-                        .frame(maxWidth: 100)
-                    Menu {
-                        ForEach(categoryDelimiterSuggestion, id: \.self) { s in
-                            Button("'\(s)'") {
-                                categoryDelimiter = s
-                                currencyDelimiterUpdate()
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "chevron.up.chevron.down")
-                            .font(.footnote)
-                    }
-                }
             }
             
             groupTheme.section(
@@ -161,19 +132,14 @@ struct SettingsView: View {
                     Spacer()
                     Text(env.getDatabaseFileName() ?? "")
                 }
+
                 HStack {
                     Text("Schema Version")
                     Spacer()
                     Text(String(env.getDatabaseUserVersion() ?? 0))
                 }
-                HStack {
-                    Text("Date Format")
-                    Spacer()
-                    Text("\(dateFormat)")
-                }
             }
         }
-        .scrollDismissesKeyboard(.immediately)
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .listSectionSpacing(5)
         .padding(.top, -20)
@@ -183,7 +149,6 @@ struct SettingsView: View {
             await vm.loadSettingsList()
             baseCurrencyId    = vm.infotableList.baseCurrencyId.value
             defaultAccountId  = vm.infotableList.defaultAccountId.value
-            categoryDelimiter = vm.infotableList.categoryDelimiter.value
         }
         .alert(isPresented: $alertIsPresented) {
             Alert(
@@ -256,28 +221,6 @@ struct SettingsView: View {
         } else {
             Task {
                 await vm.reloadSettings(defaultAccountId: defaultAccountId)
-            }
-        }
-    }
-
-    var categoryDelimiterSuggestion: [String] { [
-        ".",
-        ":", " : ",
-        "/", " / ",
-        " ▶ ", " ❯ ",
-    ] }
-    
-    func currencyDelimiterUpdate() {
-        if categoryDelimiter.isEmpty { categoryDelimiter = ":" }
-        guard categoryDelimiter != vm.infotableList.categoryDelimiter.value else { return }
-        let updateError = vm.updateSettings(categoryDelimiter: categoryDelimiter)
-        if updateError != nil {
-            categoryDelimiter = vm.infotableList.categoryDelimiter.value
-            alertMessage = updateError
-            alertIsPresented = true
-        } else {
-            Task {
-                await vm.reloadSettings(categoryDelimiter: categoryDelimiter)
             }
         }
     }

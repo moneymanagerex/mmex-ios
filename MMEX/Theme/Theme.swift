@@ -13,6 +13,7 @@ protocol ThemeProtocol {
 
 struct Theme: ThemeProtocol {
     @Preference var appearance: Appearance = .defaultValue
+    @Preference var categoryDelimiter: String = ":"
 
     var tab   : TabTheme   = .init()
     var group : GroupTheme = .init()
@@ -22,7 +23,8 @@ struct Theme: ThemeProtocol {
 
 extension Theme {
     init(prefix: String?) {
-        self.$appearance = prefix?.appending("appearance")
+        self.$appearance        = prefix?.appending("appearance")
+        self.$categoryDelimiter = prefix?.appending("categoryDelimiter")
 
         self.tab   = .init(prefix: prefix?.appending("tab."))
         self.group = .init(prefix: prefix?.appending("group."))
