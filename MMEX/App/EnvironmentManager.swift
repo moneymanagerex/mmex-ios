@@ -15,7 +15,7 @@ class EnvironmentManager: ObservableObject {
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
 
-    @Published var theme = Theme()
+    @Published var theme = Theme(fromPreferences: ())
 
     init(withStoredDatabase: Void) {
         connectToStoredDatabase()
