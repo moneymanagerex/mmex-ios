@@ -46,10 +46,12 @@ struct InfotableList: ListProtocol {
         key: InfoKey.defaultAccountID.rawValue,
         default: DataId.void
     )
+    /*
     var categoryDelimiter : LoadInfotableValue<String> = .init(
         key: InfoKey.categDelimiter.rawValue,
         default: ":"
     )
+     */
 }
 
 extension ViewModel {

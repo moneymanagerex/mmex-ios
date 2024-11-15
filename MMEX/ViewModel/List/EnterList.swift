@@ -13,7 +13,7 @@ extension ViewModel {
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.infotableList.defaultAccountId),
-                load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                //load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
                 load(&taskGroup, keyPath: \Self.currencyList.info),
                 load(&taskGroup, keyPath: \Self.accountList.data),
                 load(&taskGroup, keyPath: \Self.accountList.order),

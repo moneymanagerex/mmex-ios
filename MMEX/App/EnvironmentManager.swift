@@ -9,9 +9,9 @@ import Foundation
 import SQLite
 
 class EnvironmentManager: ObservableObject {
-    @Published var theme = Theme(prefix: "theme.")
-    @Published var pref  = Preferences(prefix: "pref.")
-    @Published var track = Tracking(prefix: "track.")
+    @Published var theme : Theme       = .init(prefix: "theme.")
+    @Published var pref  : Preferences = .init(prefix: "pref.")
+    @Published var track : Tracking    = .init(prefix: "track.")
 
     // for file database: db != nil && databaseURL != nil
     // for in-memmory database: db != nil && databaseURL == nil

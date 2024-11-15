@@ -29,7 +29,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.payeeList.order),
                 load(&taskGroup, keyPath: \Self.payeeList.att),
                 // auxiliary
-                load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                //load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
                 load(&taskGroup, keyPath: \Self.categoryList.data),
                 load(&taskGroup, keyPath: \Self.categoryList.order),
             ].allSatisfy({$0})
