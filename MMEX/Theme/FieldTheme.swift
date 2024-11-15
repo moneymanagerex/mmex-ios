@@ -9,12 +9,19 @@ import Foundation
 import SwiftUI
 
 struct FieldTheme: ThemeProtocol {
-    enum Layout: String, EnumCollateNoCase {
+    enum Layout: String, PreferenceProtocol {
         case vstack = "VStack"
+        static let preferenceKey = "theme.field.layout"
         static let defaultValue = Self.vstack
     }
 
     var layout = Self.Layout.defaultValue
+}
+
+extension FieldTheme {
+    init(fromPreferences: Void) {
+        self.layout = Layout.loadPreference()
+    }
 }
 
 extension FieldTheme {

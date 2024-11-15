@@ -295,6 +295,7 @@
       }
     },
     "Dark" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -684,9 +685,6 @@
     "Legal Documents" : {
 
     },
-    "Light" : {
-
-    },
     "Load data" : {
 
     },
@@ -781,9 +779,6 @@
         }
       }
     },
-    "Off" : {
-
-    },
     "OK" : {
       "localizations" : {
         "it" : {
@@ -793,9 +788,6 @@
           }
         }
       }
-    },
-    "On" : {
-
     },
     "Open Database" : {
       "localizations" : {
@@ -1028,6 +1020,7 @@
       }
     },
     "System" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

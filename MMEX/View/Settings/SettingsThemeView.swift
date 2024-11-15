@@ -10,8 +10,6 @@ import SwiftUI
 struct SettingsThemeView: View {
     @EnvironmentObject var env: EnvironmentManager
 
-    @AppStorage("appearance") private var appearance: Int = UIUserInterfaceStyle.unspecified.rawValue
-
     @State private var isExpanded: [String: Bool] = [
         "Tab Icons"    : true,
         "Group Layout" : true,
@@ -24,14 +22,18 @@ struct SettingsThemeView: View {
     var body: some View {
         List {
             Section() {
-                Picker("Appearance", selection: $appearance) {
-                    Text("System").tag(UIUserInterfaceStyle.unspecified.rawValue)
-                    Text("Light").tag(UIUserInterfaceStyle.light.rawValue)
-                    Text("Dark").tag(UIUserInterfaceStyle.dark.rawValue)
-                }
-                .pickerStyle(NavigationLinkPickerStyle())
-                .onChange(of: appearance) {
-                    Appearance.apply(appearance)
+                HStack {
+                    Text("Appearance")
+                    Spacer()
+                    Picker("", selection: $env.theme.appearance) {
+                        ForEach(Appearance.allCases) { choice in
+                            Text(choice.rawValue).tag(choice)
+                        }
+                    }
+                    .onChange(of: env.theme.appearance) {
+                        env.theme.appearance.savePreference()
+                        env.theme.appearance.apply()
+                    }
                 }
 
                 HStack {
@@ -42,14 +44,18 @@ struct SettingsThemeView: View {
                             Text(layout.rawValue).tag(layout)
                         }
                     }
-//                    .onChange(of: tabChoice) { _, newChoice in
-//                        env.theme.tab.layout = newChoice
-//                    }
+                    .onChange(of: env.theme.tab.layout) { _, _ in
+                        env.theme.tab.layout.savePreference()
+                    }
                 }
                 HStack {
                     Text("Show Count")
                     Spacer()
-                    Toggle(isOn: $env.theme.group.showCount) { }
+                    Toggle(isOn: $env.theme.group.showCount.asBool) {
+                    }
+                    .onChange(of: env.theme.group.showCount) {
+                        env.theme.group.showCount.savePreference()
+                    }
                 }
             }
 
@@ -68,6 +74,7 @@ struct SettingsThemeView: View {
                         ForEach(GroupTheme.Layout.allCases) { layout in
                             Button(action: {
                                 env.theme.group.layout = layout
+                                env.theme.group.layout.savePreference()
                             }) {
                                 GroupTheme(layout: layout, showCount: env.theme.group.showCount).view(
                                     nameView: { Text("Group Name") },
@@ -104,6 +111,7 @@ struct SettingsThemeView: View {
                         ForEach(ItemTheme.Layout.allCases) { layout in
                             Button(action: {
                                 env.theme.item.layout = layout
+                                env.theme.item.layout.savePreference()
                             }) {
                                 ItemTheme(layout: layout).view(
                                     nameView: { Text("Item Name") },
@@ -140,6 +148,7 @@ struct SettingsThemeView: View {
                         ForEach(FieldTheme.Layout.allCases) { layout in
                             Button(action: {
                                 env.theme.field.layout = layout
+                                env.theme.field.layout.savePreference()
                             }) {
                                 FieldTheme(layout: layout).view(false, "Field Name") {
                                     Text("Field Value")
@@ -162,18 +171,6 @@ struct SettingsThemeView: View {
         }
         .navigationTitle("Theme")
         .listSectionSpacing(10)
-    }
-}
-
-enum Appearance {
-    static func apply(_ appearance: Int) {
-        //log.debug("DEBUG: appearance: \(appearance)")
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            windowScene.windows.forEach { window in
-                window.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: appearance) ?? .unspecified
-                window.reloadInputViews()
-            }
-        }
     }
 }
 
