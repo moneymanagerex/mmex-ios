@@ -23,12 +23,13 @@ struct AssetGroup: GroupProtocol {
     typealias GroupChoice    = AssetGroupChoice
     let idleValue: ValueType = []
 
-    var choice: GroupChoice = .defaultValue
+    @Preference var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: ValueType
     
     init() {
         self.value = idleValue
+        self.$choice = "manage.group.asset"
     }
 
     static let groupUsed: [Bool] = [

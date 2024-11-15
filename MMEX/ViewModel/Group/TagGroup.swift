@@ -20,12 +20,13 @@ struct TagGroup: GroupProtocol {
     typealias GroupChoice    = TagGroupChoice
     let idleValue: ValueType = []
 
-    var choice: GroupChoice = .defaultValue
+    @Preference var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: ValueType
     
     init() {
         self.value = idleValue
+        self.$choice = "manage.group.tag"
     }
 
     static let groupUsed: [Bool] = [

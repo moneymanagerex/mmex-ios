@@ -19,12 +19,13 @@ struct AttachmentGroup: GroupProtocol {
     typealias GroupChoice    = AttachmentGroupChoice
     let idleValue: ValueType = []
 
-    var choice: GroupChoice = .defaultValue
+    @Preference var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
     var value: ValueType
     
     init() {
         self.value = idleValue
+        self.$choice = "manage.group.attachment"
     }
 
     static let groupRefType: [RefType] = [
