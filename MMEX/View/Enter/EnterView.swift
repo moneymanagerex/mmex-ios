@@ -9,16 +9,10 @@ import SwiftUI
 
 struct EnterView: View {
     @EnvironmentObject var env: EnvironmentManager
+    @Environment(\.dismiss) var dismiss
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
-    @Binding var selectedTab: Int // Bind to the selected tab
-
-    // Dismiss environment action
-    @Environment(\.dismiss) var dismiss
-
-    // app level setting
-    @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
-    @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
+    @Binding var selectedTab: Int
 
     @State var newTxn: TransactionData = TransactionData()
     
@@ -75,13 +69,13 @@ struct EnterView: View {
         if newTxn.payeeId.isVoid {
             if let payeeOrder = vm.payeeList.order.readyValue, payeeOrder.count == 1 {
                 newTxn.payeeId = payeeOrder[0]
-            } else if defaultPayeeSetting == DefaultPayeeSetting.lastUsed, !newTxn.accountId.isVoid {
+            } else if env.pref.reuseLastPayee == .boolTrue, !newTxn.accountId.isVoid {
                 loadLatestTxn(for: newTxn.accountId)
             }
         }
 
         if newTxn.id.isVoid {
-            newTxn.status = defaultStatus
+            newTxn.status = env.pref.defaultStatus
         }
     }
 

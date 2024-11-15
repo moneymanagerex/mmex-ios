@@ -8,11 +8,10 @@
 import Foundation
 import SwiftUI
 
-enum Appearance: String, PreferenceProtocol {
+enum Appearance: String, EnumCollateNoCase {
     case system = "System"
     case light  = "Light"
     case dark   = "Dark"
-    static let preferenceKey = "theme.appearance"
     static let defaultValue = Self.system
 
     var asUIStyle: UIUserInterfaceStyle {
@@ -25,10 +24,6 @@ enum Appearance: String, PreferenceProtocol {
 }
 
 extension Appearance {
-    init(fromPreferences: Void) {
-        self = Appearance.loadPreference()
-    }
-
     func apply() {
         log.debug("DEBUG: Appearance.apply(\(self.rawValue))")
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {

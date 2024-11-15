@@ -9,20 +9,21 @@ import Foundation
 import SwiftUI
 
 struct FieldTheme: ThemeProtocol {
-    enum Layout: String, PreferenceProtocol {
+    enum Layout: String, EnumCollateNoCase {
         case vstack = "VStack"
-        static let preferenceKey = "theme.field.layout"
         static let defaultValue = Self.vstack
     }
 
-    var layout = Self.Layout.defaultValue
-    var notesLineLimit = 4
-    var codeLineLimit  = 4
+    @Preference var layout    : Layout = .defaultValue
+    @Preference var noteLines : Int    = 4
+    @Preference var codeLines : Int    = 8
 }
 
 extension FieldTheme {
-    init(fromPreferences: Void) {
-        self.layout = Layout.loadPreference()
+    init(prefix: String? = nil) {
+        self.$layout    = prefix?.appending("layout")
+        self.$noteLines = prefix?.appending("noteLines")
+        self.$codeLines = prefix?.appending("codeLines")
     }
 }
 
@@ -135,7 +136,7 @@ extension FieldTheme {
                 .frame(minHeight: 100, maxHeight: 400)
         }, showView: {
             self.valueOrHint("N/A", text: text.wrappedValue)
-                .lineLimit(self.notesLineLimit)
+                .lineLimit(self.noteLines)
         } )
     }
 }

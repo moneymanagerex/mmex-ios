@@ -8,24 +8,26 @@
 import Foundation
 import SwiftUI
 
-protocol ThemeProtocol: Equatable {
+protocol ThemeProtocol {
 }
 
 struct Theme: ThemeProtocol {
-    var appearance : Appearance = .defaultValue
-    var tab        : TabTheme   = .init()
-    var group      : GroupTheme = .init()
-    var item       : ItemTheme  = .init()
-    var field      : FieldTheme = .init()
+    @Preference var appearance: Appearance = .defaultValue
+
+    var tab   : TabTheme   = .init()
+    var group : GroupTheme = .init()
+    var item  : ItemTheme  = .init()
+    var field : FieldTheme = .init()
 }
 
 extension Theme {
-    init(fromPreferences: Void) {
-        self.appearance = .init(fromPreferences: ())
-        self.tab        = .init(fromPreferences: ())
-        self.group      = .init(fromPreferences: ())
-        self.item       = .init(fromPreferences: ())
-        self.field      = .init(fromPreferences: ())
+    init(prefix: String?) {
+        self.$appearance = prefix?.appending("appearance")
+
+        self.tab   = .init(prefix: prefix?.appending("tab."))
+        self.group = .init(prefix: prefix?.appending("group."))
+        self.item  = .init(prefix: prefix?.appending("item."))
+        self.field = .init(prefix: prefix?.appending("field."))
     }
 }
 

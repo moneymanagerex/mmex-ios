@@ -18,17 +18,18 @@ let log = Logger(
 struct MMEXApp: App {
     @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
 
-    @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = true // Default is tracking enabled
-    @AppStorage("userID") private var userID: String = "" // Store user ID in AppStorage
-
     init() {
-        if userID.isEmpty {
-            userID = String(format: "ios_%@", TimestampString(Date()).string)
+        var userId = env.track.userId
+        if userId.isEmpty {
+            userId = String(format: "ios_%@", TimestampString(Date()).string)
         }
-        if isTrackingEnabled {
-            Amplitude.instance().defaultTracking = AMPDefaultTrackingOptions.initWithSessions(true, appLifecycles: true, deepLinks: false, screenViews: false);
+
+        if env.track.sendUsage == .boolTrue {
+            Amplitude.instance().defaultTracking = AMPDefaultTrackingOptions.initWithSessions(
+                true, appLifecycles: true, deepLinks: false, screenViews: false
+            )
             Amplitude.instance().initializeApiKey("1e1fbc10354400d9c3392a89558d693d")
-            Amplitude.instance().setUserId(userID) // copy from/to Infotable.UID
+            Amplitude.instance().setUserId(userId) // copy from/to Infotable.UID
         }
     }
 
