@@ -9,13 +9,15 @@ import Foundation
 import SQLite
 
 class EnvironmentManager: ObservableObject {
+    @Published var theme = Theme(prefix: "theme.")
+    @Published var pref  = Preferences(prefix: "pref.")
+    @Published var track = Tracking(prefix: "track.")
+
     // for file database: db != nil && databaseURL != nil
     // for in-memmory database: db != nil && databaseURL == nil
     @Published var isDatabaseConnected = false
     private(set) var db: Connection?
     private(set) var databaseURL: URL?
-
-    @Published var theme = Theme(fromPreferences: ())
 
     init(withStoredDatabase: Void) {
         connectToStoredDatabase()

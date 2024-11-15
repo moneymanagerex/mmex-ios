@@ -62,7 +62,7 @@ protocol DataProtocol: ExportableEntity {
     func shortDesc() -> String
 }
 
-protocol EnumCollateNoCase: RawRepresentable, CaseIterable, Identifiable, Codable
+protocol EnumCollateNoCase: RawRepresentable, CaseIterable, Identifiable, Codable, LosslessStringConvertible
     where RawValue == String
 {
     static var defaultValue: Self { get }
@@ -81,6 +81,27 @@ extension EnumCollateNoCase {
 
     var id: String { self.rawValue }
     var name: String { rawValue.capitalized }
+}
+
+extension EnumCollateNoCase {
+    var description: String {
+        self.rawValue
+    }
+
+    init(_ valueDescription: String) {
+        self = Self(collateNoCase: valueDescription)
+    }
+}
+
+enum BoolEnum: String, EnumCollateNoCase {
+    case boolFalse = "FALSE"
+    case boolTrue  = "TRUE"
+    static let defaultValue = Self.boolFalse
+    
+    var asBool: Bool {
+        get { self == .boolTrue }
+        set { self = newValue ? .boolTrue : .boolFalse }
+    }
 }
 
 extension Int {

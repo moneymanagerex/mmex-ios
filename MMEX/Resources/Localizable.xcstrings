@@ -408,6 +408,7 @@
 
     },
     "Default Payee" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -673,9 +674,6 @@
     "Last updated: September 18, 2024" : {
 
     },
-    "Last Used" : {
-
-    },
     "Latest Transactions" : {
 
     },
@@ -766,9 +764,6 @@
     "No Database Connected" : {
 
     },
-    "None" : {
-
-    },
     "Notes" : {
       "localizations" : {
         "it" : {
@@ -857,6 +852,9 @@
           }
         }
       }
+    },
+    "Reuse Last Payee" : {
+
     },
     "Sample Database in Memory" : {
 

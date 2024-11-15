@@ -9,19 +9,18 @@ import Foundation
 import SwiftUI
 
 struct ItemTheme: ThemeProtocol {
-    enum Layout: String, PreferenceProtocol {
+    enum Layout: String, EnumCollateNoCase {
         case hstack = "HStack"
         case vstack = "VStack"
-        static let preferenceKey = "theme.item.layout"
         static let defaultValue = Self.hstack
     }
 
-    var layout = Self.Layout.defaultValue
+    @Preference var layout: Layout = .defaultValue
 }
 
 extension ItemTheme {
-    init(fromPreferences: Void) {
-        self.layout = Layout.loadPreference()
+    init(prefix: String? = nil) {
+        self.$layout = prefix?.appending("layout")
     }
 }
 

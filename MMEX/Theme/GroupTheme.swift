@@ -9,33 +9,20 @@ import Foundation
 import SwiftUI
 
 struct GroupTheme: ThemeProtocol {
-    enum Layout: String, PreferenceProtocol {
+    enum Layout: String, EnumCollateNoCase {
         case foldName = "Fold Name space Count"
         case nameFold = "Name space Count Fold"
-        static let preferenceKey = "theme.group.layout"
         static let defaultValue = Self.foldName
     }
     
-    enum ShowCount: String, PreferenceProtocol {
-        case boolFalse = "FALSE"
-        case boolTrue  = "TRUE"
-        static let preferenceKey = "theme.group.showCount"
-        static let defaultValue = Self.boolTrue
-        
-        var asBool: Bool {
-            get { self == .boolTrue }
-            set { self = newValue ? .boolTrue : .boolFalse }
-        }
-    }
-
-    var layout = Self.Layout.defaultValue
-    var showCount = Self.ShowCount.defaultValue
+    @Preference var layout    : Layout   = .defaultValue
+    @Preference var showCount : BoolEnum = .boolTrue
 }
 
 extension GroupTheme {
-    init(fromPreferences: Void) {
-        self.layout = Layout.loadPreference()
-        self.showCount = ShowCount.loadPreference()
+    init(prefix: String? = nil) {
+        self.$layout    = prefix?.appending("layout")
+        self.$showCount = prefix?.appending("showCount")
     }
 }
 

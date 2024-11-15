@@ -15,19 +15,15 @@ struct SettingsView: View {
     let groupTheme = GroupTheme(layout: .nameFold)
     @State var dbSettingsIsExpanded = false
     @FocusState private var categoryDelimiterFocus: Bool
-    
+
+    @State var categoryDelimiter : String = ":"
+    @State var dateFormat: String = "%Y-%m-%d"
+
     @State var baseCurrencyId    : DataId = .void
     @State var defaultAccountId  : DataId = .void
-    @State var categoryDelimiter : String = ":"
 
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
-
-    @AppStorage("defaultPayeeSetting") private var defaultPayeeSetting: DefaultPayeeSetting = .none
-    @AppStorage("defaultStatus") private var defaultStatus = TransactionStatus.defaultValue
-    @AppStorage("isTrackingEnabled") private var isTrackingEnabled: Bool = true // Default is tracking enabled
-    
-    @State private var dateFormat: String = "%Y-%m-%d"
     
     var body: some View {
         List {
@@ -38,23 +34,36 @@ struct SettingsView: View {
                     Text("Theme")
                 }
                 
-                Picker("Default Payee", selection: $defaultPayeeSetting) {
-                    Text("None").tag(DefaultPayeeSetting.none)
-                    Text("Last Used").tag(DefaultPayeeSetting.lastUsed)
-                }
-                .pickerStyle(NavigationLinkPickerStyle())
-                
-                Picker("Default Transaction Status", selection: $defaultStatus) {
+                Picker("Default Transaction Status", selection: $env.pref.defaultStatus) {
                     ForEach(TransactionStatus.allCases) { status in
                         Text(status.fullName).tag(status)
                     }
                 }
-                .pickerStyle(NavigationLinkPickerStyle())
+
+                /*
+                HStack {
+                    Text("Reuse Last Account")
+                    Spacer()
+                    Toggle(isOn: $env.pref.reuseLastAccount.asBool) { }
+                }
+
+                HStack {
+                    Text("Reuse Last Category")
+                    Spacer()
+                    Toggle(isOn: $env.pref.reuseLastCategory.asBool) { }
+                }
+                 */
+
+                HStack {
+                    Text("Reuse Last Payee")
+                    Spacer()
+                    Toggle(isOn: $env.pref.reuseLastPayee.asBool) { }
+                }
                 
                 HStack {
                     Text("Send Anonymous Usage Data")
                     Spacer()
-                    Toggle(isOn: $isTrackingEnabled) { }
+                    Toggle(isOn: $env.track.sendUsage.asBool) { }
                 }
             }
             
@@ -272,13 +281,6 @@ struct SettingsView: View {
             }
         }
     }
-}
-
-enum DefaultPayeeSetting: String, CaseIterable, Identifiable {
-    case none = "None"
-    case lastUsed = "Last Used"
-
-    var id: String { rawValue }
 }
 
 #Preview {

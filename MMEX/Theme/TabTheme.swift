@@ -9,19 +9,18 @@ import Foundation
 import SwiftUI
 
 struct TabTheme: ThemeProtocol {
-    enum Layout: String, PreferenceProtocol {
+    enum Layout: String, EnumCollateNoCase {
         case icon     = "Icon"
         case iconText = "Icon and Text"
-        static let preferenceKey = "theme.tab.layout"
         static let defaultValue = Self.iconText
     }
-    
-    var layout = Layout.defaultValue
+
+    @Preference var layout: Layout = .defaultValue
 }
 
 extension TabTheme {
-    init(fromPreferences: Void) {
-        self.layout = Layout.loadPreference()
+    init(prefix: String?) {
+        self.$layout = prefix?.appending("layout")
     }
 }
 
