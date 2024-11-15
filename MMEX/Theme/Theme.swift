@@ -12,11 +12,21 @@ protocol ThemeProtocol: Equatable {
 }
 
 struct Theme: ThemeProtocol {
-    var appearance = Appearance(fromPreferences: ())
-    var tab        = TabTheme(fromPreferences: ())
-    var group      = GroupTheme(fromPreferences: ())
-    var item       = ItemTheme(fromPreferences: ())
-    var field      = FieldTheme(fromPreferences: ())
+    var appearance : Appearance = .defaultValue
+    var tab        : TabTheme   = .init()
+    var group      : GroupTheme = .init()
+    var item       : ItemTheme  = .init()
+    var field      : FieldTheme = .init()
+}
+
+extension Theme {
+    init(fromPreferences: Void) {
+        self.appearance = .init(fromPreferences: ())
+        self.tab        = .init(fromPreferences: ())
+        self.group      = .init(fromPreferences: ())
+        self.item       = .init(fromPreferences: ())
+        self.field      = .init(fromPreferences: ())
+    }
 }
 
 struct BadgeCount: View {

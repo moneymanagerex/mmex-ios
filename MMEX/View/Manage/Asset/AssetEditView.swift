@@ -105,13 +105,7 @@ struct AssetEditView: View {
         }
 
         Section{
-            env.theme.field.view(edit, "Notes", editView: {
-                TextEditor(text: $data.notes)
-                    .textInputAutocapitalization(.never)
-                    .frame(minHeight: 20)
-            }, showView: {
-                env.theme.field.valueOrHint("N/A", text: data.notes)
-            } )
+            env.theme.field.notes(edit, "Notes", $data.notes)
         }
     }
 }

@@ -16,6 +16,8 @@ struct FieldTheme: ThemeProtocol {
     }
 
     var layout = Self.Layout.defaultValue
+    var notesLineLimit = 4
+    var codeLineLimit  = 4
 }
 
 extension FieldTheme {
@@ -74,7 +76,7 @@ extension FieldTheme {
         //    }
         //)
     }
-
+    
     @ViewBuilder
     func view<EditView: View, ShowView: View>(
         _ edit: Bool, _ name: String,
@@ -94,7 +96,7 @@ extension FieldTheme {
             .padding(0)
         }
     }
-
+    
     @ViewBuilder
     func view<EditView: View, ShowView: View>(
         _ edit: Bool, _ showOnEdit: Bool, _ name: String,
@@ -119,5 +121,21 @@ extension FieldTheme {
             }
             .padding(0)
         }
+    }
+}
+
+extension FieldTheme {
+    @ViewBuilder
+    func notes(
+        _ edit: Bool, _ name: String, _ text: Binding<String>
+    ) -> some View {
+        self.view(edit, name, editView: {
+            TextEditor(text: text)
+                .textInputAutocapitalization(.never)
+                .frame(minHeight: 100, maxHeight: 400)
+        }, showView: {
+            self.valueOrHint("N/A", text: text.wrappedValue)
+                .lineLimit(self.notesLineLimit)
+        } )
     }
 }
