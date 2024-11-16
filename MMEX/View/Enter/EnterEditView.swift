@@ -253,18 +253,26 @@ struct EnterEditView: View {
 
 #Preview("txn #0") {
     let env = EnvironmentManager.sampleData
-    EnterEditView(
-        vm: ViewModel(env: env),
-        txn: .constant(TransactionData.sampleData[0])
-    )
+    let vm = ViewModel(env: env)
+    NavigationView { NavigationStack {
+        EnterEditView(
+            vm: vm,
+            txn: .constant(TransactionData.sampleData[0])
+        )
+    }.padding() }
+    .task { await vm.loadEnterList() }
     .environmentObject(env)
 }
 
 #Preview("txn #3") {
     let env = EnvironmentManager.sampleData
-    EnterEditView(
-        vm: ViewModel(env: env),
-        txn: .constant(TransactionData.sampleData[3])
-    )
+    let vm = ViewModel(env: env)
+    NavigationView { NavigationStack {
+        EnterEditView(
+            vm: vm,
+            txn: .constant(TransactionData.sampleData[3])
+        )
+    }.padding() }
+    .task { await vm.loadEnterList() }
     .environmentObject(env)
 }

@@ -210,9 +210,14 @@ struct JournalView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    JournalView(
-        vm: ViewModel(env: env),
-        viewModel: TransactionViewModel(env: env)
-    )
+    let vm = ViewModel(env: env)
+    let viewModel = TransactionViewModel(env: env)
+    NavigationView {
+        JournalView(
+            vm: vm,
+            viewModel: viewModel
+        )
+        .navigationBarTitle("Latest Transactions", displayMode: .inline)
+    }
     .environmentObject(env)
 }

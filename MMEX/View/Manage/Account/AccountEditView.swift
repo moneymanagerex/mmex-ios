@@ -186,8 +186,9 @@ struct AccountEditView: View {
 
 #Preview("\(AccountData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { AccountEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(AccountData.sampleData[0]),
         edit: true
     ) }

@@ -156,12 +156,17 @@ struct ManageView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    ManageView(
-        vm: ViewModel(env: env),
-        viewModel: TransactionViewModel(env: env),
-        isDocumentPickerPresented: .constant(false),
-        isNewDocumentPickerPresented: .constant(false),
-        isSampleDocument: .constant(false)
-    )
+    let vm = ViewModel(env: env)
+    let viewModel = TransactionViewModel(env: env)
+    NavigationView {
+        ManageView(
+            vm: vm,
+            viewModel: viewModel,
+            isDocumentPickerPresented: .constant(false),
+            isNewDocumentPickerPresented: .constant(false),
+            isSampleDocument: .constant(false)
+        )
+        .navigationBarTitle("Manage", displayMode: .inline)
+    }
     .environmentObject(env)
 }

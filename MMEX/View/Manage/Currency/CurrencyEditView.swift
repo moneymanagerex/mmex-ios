@@ -100,8 +100,9 @@ struct CurrencyEditView: View {
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (show)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { CurrencyEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(CurrencyData.sampleData[0]),
         edit: false
     ) }
@@ -110,8 +111,9 @@ struct CurrencyEditView: View {
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (edit)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { CurrencyEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(CurrencyData.sampleData[0]),
         edit: true
     ) }

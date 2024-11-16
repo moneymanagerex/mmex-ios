@@ -110,9 +110,14 @@ struct InsightsView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    InsightsView(
-        vm: ViewModel(env: env),
-        viewModel: InsightsViewModel(env: env)
-    )
+    let vm = ViewModel(env: env)
+    let viewModel = InsightsViewModel(env: env)
+    NavigationView {
+        InsightsView(
+            vm: vm,
+            viewModel: viewModel
+        )
+        .navigationBarTitle("Insights", displayMode: .inline)
+    }
     .environmentObject(env)
 }

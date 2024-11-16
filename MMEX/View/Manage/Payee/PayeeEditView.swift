@@ -80,8 +80,9 @@ struct PayeeEditView: View {
 
 #Preview("\(PayeeData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { PayeeEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(PayeeData.sampleData[0]),
         edit: false
     ) }
@@ -90,8 +91,9 @@ struct PayeeEditView: View {
 
 #Preview("\(PayeeData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { PayeeEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(PayeeData.sampleData[0]),
         edit: true
     ) }

@@ -228,9 +228,14 @@ struct SettingsView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    SettingsView(
-        vm: ViewModel(env: env),
-        viewModel: TransactionViewModel(env: env)
-    )
+    let vm = ViewModel(env: env)
+    let viewModel = TransactionViewModel(env: env)
+    NavigationView {
+        SettingsView(
+            vm: vm,
+            viewModel: viewModel
+        )
+        .navigationBarTitle("Settings", displayMode: .inline)
+    }
     .environmentObject(env)
 }

@@ -307,6 +307,9 @@ struct TabContentView: View {
 }
 
 #Preview(){
-    ContentView(env: EnvironmentManager.sampleData)
-        .environmentObject(EnvironmentManager.sampleData) // Inject EnvironmentManager
+    let env = EnvironmentManager.sampleData
+    ContentView(
+        env: env
+    )
+    .environmentObject(env)
 }
