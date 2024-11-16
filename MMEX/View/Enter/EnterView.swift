@@ -22,24 +22,24 @@ struct EnterView: View {
                 vm: vm,
                 txn: $newTxn
             )
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Dismiss") {
-                            dismiss()
-                            selectedTab = 0
-                            newTxn = TransactionData()
-                        }
-                    }
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Add") {
-                            viewModel.addTransaction(txn: &newTxn)
-                            dismiss()
-                            selectedTab = 0
-                            newTxn = TransactionData()
-                        }
-                        .disabled(!newTxn.isValid)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Dismiss") {
+                        dismiss()
+                        selectedTab = 0
+                        newTxn = TransactionData()
                     }
                 }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add") {
+                        viewModel.addTransaction(txn: &newTxn)
+                        dismiss()
+                        selectedTab = 0
+                        newTxn = TransactionData()
+                    }
+                    .disabled(!newTxn.isValid)
+                }
+            }
         }
         .padding()
         // .navigationBarTitle("Add Transaction", displayMode: .inline)
@@ -91,4 +91,18 @@ struct EnterView: View {
             }
         }
     }
+}
+
+#Preview {
+    let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
+    let viewModel = TransactionViewModel(env: env)
+    NavigationView {
+        EnterView(
+            vm: vm,
+            viewModel: viewModel,
+            selectedTab: .constant(0)
+        )
+    }
+    .environmentObject(env)
 }

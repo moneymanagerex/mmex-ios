@@ -112,8 +112,9 @@ struct AssetEditView: View {
 
 #Preview("\(AssetData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { AssetEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(AssetData.sampleData[0]),
         edit: false
     ) }
@@ -122,8 +123,9 @@ struct AssetEditView: View {
 
 #Preview("\(AssetData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { AssetEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(AssetData.sampleData[0]),
         edit: true
     ) }

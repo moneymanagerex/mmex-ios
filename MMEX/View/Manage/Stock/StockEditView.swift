@@ -104,8 +104,9 @@ struct StockEditView: View {
 
 #Preview("\(StockData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { StockEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(StockData.sampleData[0]),
         edit: false
     ) }
@@ -114,8 +115,9 @@ struct StockEditView: View {
 
 #Preview("\(StockData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { StockEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(StockData.sampleData[0]),
         edit: true
     ) }

@@ -65,17 +65,18 @@ struct RepositoryCreateView<
 #Preview("Account") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
+    let editView = { $data, edit in AccountEditView(
+        vm: vm,
+        data: $data,
+        edit: edit
+    ) }
     RepositoryCreateView(
         vm: vm,
         features: RepositoryFeatures(),
         data: AccountListView.initData,
         newData: .constant(nil),
         isPresented: .constant(true),
-        editView: { $data, edit in AccountEditView(
-            vm: vm,
-            data: $data,
-            edit: edit
-        ) }
+        editView: editView
     )
     .environmentObject(env)
 }

@@ -68,19 +68,19 @@ struct RepositoryCopyView<
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let data = AccountData.sampleData[0]
-    RepositoryUpdateView(
+    let editView = { $data, edit in AccountEditView(
+        vm: vm,
+        data: $data,
+        edit: edit
+    ) }
+    RepositoryCopyView(
         vm: vm,
         features: RepositoryFeatures(),
-        title: vm.name(data),
         data: data,
         newData: .constant(nil),
         isPresented: .constant(true),
         dismiss: nil,
-        editView: { $data, edit in AccountEditView(
-            vm: vm,
-            data: $data,
-            edit: edit
-        ) }
+        editView: editView
     )
     .environmentObject(env)
 }

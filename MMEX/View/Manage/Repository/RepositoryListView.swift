@@ -19,9 +19,6 @@ where GroupType.MainRepository == ListType.MainRepository,
     typealias MainData = MainRepository.RepositoryData
     typealias GroupChoice = GroupType.GroupChoice
 
-    @State private var alertIsPresented = false
-    @State private var alertMessage: String?
-
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     var features: RepositoryFeatures
@@ -37,7 +34,10 @@ where GroupType.MainRepository == ListType.MainRepository,
 
     @State var newData: MainData? = nil
     @State var deleteData: Bool = false
-    @State var createIsPresented = false
+
+    @State private var createSheetIsPresented = false
+    @State private var alertIsPresented = false
+    @State private var alertMessage: String?
 
     var body: some View {
         return List {
@@ -126,15 +126,18 @@ where GroupType.MainRepository == ListType.MainRepository,
         //.listStyle(.plain)
         .listSectionSpacing(.compact)
         //.border(.red)
+        .navigationTitle(MainData.dataName.1)
+
         .toolbar {
             if features.canCreate {
                 Button(
-                    action: { createIsPresented = true },
+                    action: { createSheetIsPresented = true },
                     label: { Image(systemName: "plus") }
                 )
                 .accessibilityLabel("New " + MainData.dataName.0)
             }
         }
+
         //.modifier(RepositorySearchModifier(
         //    canSearch: features.canSearch, text: $search.key, prompt: search.prompt
         //) )
@@ -143,13 +146,14 @@ where GroupType.MainRepository == ListType.MainRepository,
         .onChange(of: search.key) { _, newValue in
             vm.searchGroup(vmGroup, search: search, expand: true)
         }
-        .navigationTitle(MainData.dataName.1)
+
         .onAppear {
             if deleteData || newData != nil { return }
             log.debug("DEBUG: RepositoryListView.onAppear()")
             groupChoice = vmGroup.choice
             Task { await load() }
         }
+
         .refreshable {
             if deleteData || newData != nil { return }
             log.debug("DEBUG: RepositoryListView.refreshable()")
@@ -157,20 +161,14 @@ where GroupType.MainRepository == ListType.MainRepository,
             vm.unloadList(vmList)
             await load()
         }
-        .alert(isPresented: $alertIsPresented) {
-            Alert(
-                title: Text("Error"),
-                message: Text(alertMessage!),
-                dismissButton: .default(Text("OK"))
-            )
-        }
-        .sheet(isPresented: $createIsPresented) {
+
+        .sheet(isPresented: $createSheetIsPresented) {
             RepositoryCreateView(
                 vm: vm,
                 features: features,
                 data: initData,
                 newData: $newData,
-                isPresented: $createIsPresented,
+                isPresented: $createSheetIsPresented,
                 editView: editView
             )
             .onDisappear {
@@ -182,6 +180,14 @@ where GroupType.MainRepository == ListType.MainRepository,
                     newData = nil
                 }
             }
+        }
+
+        .alert(isPresented: $alertIsPresented) {
+            Alert(
+                title: Text("Error"),
+                message: Text(alertMessage!),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 
@@ -255,20 +261,16 @@ where GroupType.MainRepository == ListType.MainRepository,
                 deleteData: $deleteData,
                 editView: editView
             )
-            //.onAppear {
-            //    newData = nil
-            //    deleteData = false
-            //}
-                .onDisappear {
-                    guard deleteData || newData != nil else { return }
-                    log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
-                    Task {
-                        await vm.reloadList(data, newData)
-                        vm.searchGroup(vmGroup, search: search)
-                        newData = nil
-                        deleteData = false
-                    }
+            .onDisappear {
+                guard deleteData || newData != nil else { return }
+                log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
+                Task {
+                    await vm.reloadList(data, newData)
+                    vm.searchGroup(vmGroup, search: search)
+                    newData = nil
+                    deleteData = false
                 }
+            }
         ) {
             env.theme.item.view(
                 nameView: { itemNameView(data) },
@@ -277,8 +279,7 @@ where GroupType.MainRepository == ListType.MainRepository,
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if features.canDelete { Button {
-                let deleteError = vm.delete(data)
-                if deleteError != nil {
+                if let deleteError = vm.delete(data) {
                     alertMessage = deleteError
                     alertIsPresented = true
                 } else {
@@ -291,7 +292,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 Label("Delete", systemImage: vm.isUsed(data) == false ? "trash.fill" : "trash.slash.fill")
             }.tint(vm.isUsed(data) == false ? .red : .gray) }
 
-            if features.canUpdate { Button {
+            if features.canEdit { Button {
                 // TODO
             } label: {
                 Label("Edit", systemImage: "square.and.pencil")
@@ -352,8 +353,12 @@ struct RepositorySearchAreaView<RepositoryData: DataProtocol>: View {
 
 #Preview("Account") {
     let env = EnvironmentManager.sampleData
-    AccountListView(
-        vm: ViewModel(env: env)
-    )
+    let vm = ViewModel(env: env)
+    NavigationView {
+        AccountListView(
+            vm: vm
+        )
+        .navigationBarTitle("Manage", displayMode: .inline)
+    }
     .environmentObject(env)
 }

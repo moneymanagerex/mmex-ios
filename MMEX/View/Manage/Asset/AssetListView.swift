@@ -76,8 +76,12 @@ struct AssetListView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    AssetListView(
-        vm: ViewModel(env: env)
-    )
+    let vm = ViewModel(env: env)
+    NavigationView {
+        AssetListView(
+            vm: vm
+        )
+        .navigationBarTitle("Manage", displayMode: .inline)
+    }
     .environmentObject(env)
 }

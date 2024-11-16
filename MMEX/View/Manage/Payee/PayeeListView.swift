@@ -70,8 +70,12 @@ struct PayeeListView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    PayeeListView(
-        vm: ViewModel(env: env)
-    )
+    let vm = ViewModel(env: env)
+    NavigationView {
+        PayeeListView(
+            vm: vm
+        )
+        .navigationBarTitle("Manage", displayMode: .inline)
+    }
     .environmentObject(env)
 }

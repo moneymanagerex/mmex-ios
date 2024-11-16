@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct RepositoryUpdateView<
+struct RepositoryEditView<
     MainData: DataProtocol,
     EditView: View
 >: View {
@@ -67,7 +67,12 @@ struct RepositoryUpdateView<
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let data = AccountData.sampleData[0]
-    RepositoryUpdateView(
+    let editView = { $data, edit in AccountEditView(
+        vm: vm,
+        data: $data,
+        edit: edit
+    ) }
+    RepositoryEditView(
         vm: vm,
         features: RepositoryFeatures(),
         title: vm.name(data),
@@ -75,11 +80,7 @@ struct RepositoryUpdateView<
         newData: .constant(nil),
         isPresented: .constant(true),
         dismiss: nil,
-        editView: { $data, edit in AccountEditView(
-            vm: vm,
-            data: $data,
-            edit: edit
-        ) }
+        editView: editView
     )
     .environmentObject(env)
 }
