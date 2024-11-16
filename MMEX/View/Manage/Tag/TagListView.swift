@@ -67,8 +67,12 @@ struct TagListView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    TagListView(
-        vm: ViewModel(env: env)
-    )
+    let vm = ViewModel(env: env)
+    NavigationView {
+        TagListView(
+            vm: vm
+        )
+        .navigationBarTitle("Manage", displayMode: .inline)
+    }
     .environmentObject(env)
 }
