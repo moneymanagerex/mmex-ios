@@ -32,6 +32,7 @@ where GroupType.MainRepository == ListType.MainRepository,
     @ViewBuilder var itemInfoView: (_ data: MainData) -> ItemInfoView
     @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
 
+    @StateObject var debounce = RepositorySearchDebounce()
     @State var newData: MainData? = nil
     @State var deleteData: Bool = false
 
@@ -145,9 +146,10 @@ where GroupType.MainRepository == ListType.MainRepository,
         //.modifier(RepositorySearchModifier(
         //    canSearch: features.canSearch, text: $search.key, prompt: search.prompt
         //) )
-        .searchable(text: $search.key, prompt: search.prompt)
+        .searchable(text: $debounce.input, prompt: search.prompt)
         .textInputAutocapitalization(.never)
-        .onChange(of: search.key) { _, newValue in
+        .onChange(of: debounce.output) { _, newValue in
+            search.key = newValue
             vm.searchGroup(vmGroup, search: search, expand: true)
         }
 
@@ -323,6 +325,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 infoView: { itemInfoView(data) }
             )
         }
+
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if features.canDelete { Button {
                 if let deleteError = vm.delete(data) {
@@ -377,25 +380,35 @@ struct RepositorySearchAreaView<RepositoryData: DataProtocol>: View {
     @Binding var area: [SearchArea<RepositoryData>]
 
     var body: some View {
-        List{
-            Section(header: Text("Search area")) {
-                ForEach(0 ..< area.count, id: \.self) { i in
-                    Button(action: {
-                        area[i].isSelected.toggle()
-                        if area.first(where: { $0.isSelected }) == nil { area[0].isSelected = true }
-                    } ) {
-                        HStack {
-                            Text(area[i].name)
-                            Spacer()
-                            if area[i].isSelected {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.accentColor)
-                            }
+        List{ Section(header: Text("Search area")) {
+            ForEach(0 ..< area.count, id: \.self) { i in
+                Button(action: {
+                    area[i].isSelected.toggle()
+                    if area.first(where: { $0.isSelected }) == nil { area[0].isSelected = true }
+                } ) {
+                    HStack {
+                        Text(area[i].name)
+                        Spacer()
+                        if area[i].isSelected {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.accentColor)
                         }
                     }
                 }
             }
-        }
+        } }
+    }
+}
+
+class RepositorySearchDebounce: ObservableObject {
+    @Published var input = ""
+    @Published var output = ""
+
+    init() {
+        $input
+            .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .assign(to: &$output)
     }
 }
 
