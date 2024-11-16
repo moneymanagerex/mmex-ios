@@ -1,19 +1,18 @@
 //
-//  RepositoryCreateView.swift
+//  RepositoryCopyView.swift
 //  MMEX
 //
-//  2024-09-09: (AccountAddView) Created by Lisheng Guan
-//  2024-10-26: (RepositoryCreateView) Edited by George Ef (george.a.ef@gmail.com)
+//  2024-11-16: Created by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
-struct RepositoryCreateView<
+struct RepositoryCopyView<
     MainData: DataProtocol,
     EditView: View
 >: View {
     @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    var vm: ViewModel
     var features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
@@ -23,7 +22,7 @@ struct RepositoryCreateView<
 
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
-    
+
     var body: some View {
         NavigationStack {
             Form {
@@ -59,18 +58,24 @@ struct RepositoryCreateView<
                 )
             }
         }
+        .onAppear {
+            vm.copy(&data)
+        }
     }
 }
 
-#Preview("Account") {
+#Preview(AccountData.sampleData[0].name) {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    RepositoryCreateView(
+    let data = AccountData.sampleData[0]
+    RepositoryUpdateView(
         vm: vm,
         features: RepositoryFeatures(),
-        data: AccountListView.initData,
+        title: vm.name(data),
+        data: data,
         newData: .constant(nil),
         isPresented: .constant(true),
+        dismiss: nil,
         editView: { $data, edit in AccountEditView(
             vm: vm,
             data: $data,

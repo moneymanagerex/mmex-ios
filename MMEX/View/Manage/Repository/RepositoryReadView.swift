@@ -21,7 +21,8 @@ struct RepositoryReadView<
     @Binding var deleteData: Bool
     @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
 
-    @State private var updateViewIsPresented = false
+    @State private var updateSheetIsPresented = false
+    @State private var copySheetIsPresented = false
     @State private var exporterIsPresented = false
 
     @State private var alertIsPresented = false
@@ -46,21 +47,34 @@ struct RepositoryReadView<
         }
         .textSelection(.enabled)
         .toolbar {
-            if features.canUpdate {
-                Button("Edit") {
-                    updateViewIsPresented = true
+            // Export button for pasteboard and external storage
+            if features.canExport {
+                Menu {
+                    Button("Copy to Clipboard") {
+                        data.copyToPasteboard()
+                    }
+                    Button("Export as JSON File") {
+                        exporterIsPresented = true
+                    }
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
                 }
             }
-            // Export button for pasteboard and external storage
-            Menu {
-                Button("Copy to Clipboard") {
-                    data.copyToPasteboard()
+
+            if features.canCopy {
+                Button {
+                    copySheetIsPresented = true
+                } label: {
+                    Label("Copy", systemImage: "doc.on.doc")
                 }
-                Button("Export as JSON File") {
-                    exporterIsPresented = true
+            }
+
+            if features.canUpdate {
+                Button {
+                    updateSheetIsPresented = true
+                } label: {
+                    Label("Edit", systemImage: "square.and.pencil")
                 }
-            } label: {
-                Image(systemName: "square.and.arrow.up")
             }
         }
         .alert(isPresented: $alertIsPresented) {
@@ -70,14 +84,25 @@ struct RepositoryReadView<
                 dismissButton: .default(Text("OK"))
             )
         }
-        .sheet(isPresented: $updateViewIsPresented) {
+        .sheet(isPresented: $updateSheetIsPresented) {
             RepositoryUpdateView(
                 vm: vm,
                 features: features,
                 title: vm.name(data),
                 data: data,
                 newData: $newData,
-                isPresented: $updateViewIsPresented,
+                isPresented: $updateSheetIsPresented,
+                dismiss: dismiss,
+                editView: editView
+            )
+        }
+        .sheet(isPresented: $copySheetIsPresented) {
+            RepositoryCopyView(
+                vm: vm,
+                features: features,
+                data: data,
+                newData: $newData,
+                isPresented: $copySheetIsPresented,
                 dismiss: dismiss,
                 editView: editView
             )

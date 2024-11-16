@@ -9,6 +9,11 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
+    func copyCurrency(_ data: inout CurrencyData) {
+        data.name.append(" (Copy)")
+        data.symbol.append(" (Copy)")
+    }
+
     func updateCurrency(_ data: inout CurrencyData) -> String? {
         if data.name.isEmpty {
             return "Name is empty"

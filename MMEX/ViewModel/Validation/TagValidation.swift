@@ -9,6 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
+    func copyTag(_ data: inout TagData) {
+        data.name.append(" (Copy)")
+    }
+
     func updateTag(_ data: inout TagData) -> String? {
         if data.name.isEmpty {
             return "Name is empty"

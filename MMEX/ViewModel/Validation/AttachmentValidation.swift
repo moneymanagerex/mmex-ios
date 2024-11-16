@@ -9,6 +9,9 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
+    func copyAttachment(_ data: inout AttachmentData) {
+    }
+
     func updateAttachment(_ data: inout AttachmentData) -> String? {
         if data.filename.isEmpty {
             return "Filename is empty"

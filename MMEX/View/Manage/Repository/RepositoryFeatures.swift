@@ -7,8 +7,9 @@
 
 struct RepositoryFeatures {
     var canCreate : Bool = true
-    var canCopy   : Bool = false
     var canUpdate : Bool = true
     var canDelete : Bool = true
+    var canCopy   : Bool = true
+    var canExport : Bool = true
     var canSearch : Bool = true
 }

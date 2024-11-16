@@ -40,9 +40,8 @@ struct RepositoryUpdateView<
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        let updateError = vm.update(&data)
-                        if updateError != nil {
+                    Button("Update") {
+                        if let updateError = vm.update(&data) {
                             alertMessage = updateError
                             alertIsPresented = true
                         } else {
