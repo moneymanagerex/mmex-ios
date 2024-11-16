@@ -36,6 +36,10 @@ where GroupType.MainRepository == ListType.MainRepository,
     @State var deleteData: Bool = false
 
     @State private var createSheetIsPresented = false
+    @State private var editSheetIsPresented = false
+    @State private var editDataId: DataId = .void
+    @State private var copySheetIsPresented = false
+    @State private var copyDataId: DataId = .void
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
 
@@ -182,6 +186,48 @@ where GroupType.MainRepository == ListType.MainRepository,
             }
         }
 
+        .sheet(isPresented: $editSheetIsPresented) {
+            let data = vmList.data.value[editDataId] ?? initData
+            RepositoryEditView(
+                vm: vm,
+                features: features,
+                data: data,
+                newData: $newData,
+                isPresented: $editSheetIsPresented,
+                editView: editView
+            )
+            .onDisappear {
+                guard newData != nil else { return }
+                log.debug("DEBUG: RepositoryListView.RepositoryEditView.onDisappear")
+                Task {
+                    await vm.reloadList(data, newData)
+                    vm.searchGroup(vmGroup, search: search)
+                    newData = nil
+                }
+            }
+        }
+
+        .sheet(isPresented: $copySheetIsPresented) {
+            let data = vmList.data.value[copyDataId] ?? initData
+            RepositoryCopyView(
+                vm: vm,
+                features: features,
+                data: data,
+                newData: $newData,
+                isPresented: $copySheetIsPresented,
+                editView: editView
+            )
+            .onDisappear {
+                guard newData != nil else { return }
+                log.debug("DEBUG: RepositoryListView.RepositoryCopyView.onDisappear")
+                Task {
+                    await vm.reloadList(nil as MainData?, newData)
+                    vm.searchGroup(vmGroup, search: search)
+                    newData = nil
+                }
+            }
+        }
+
         .alert(isPresented: $alertIsPresented) {
             Alert(
                 title: Text("Error"),
@@ -293,13 +339,15 @@ where GroupType.MainRepository == ListType.MainRepository,
             }.tint(vm.isUsed(data) == false ? .red : .gray) }
 
             if features.canEdit { Button {
-                // TODO
+                editDataId = data.id
+                editSheetIsPresented = true
             } label: {
                 Label("Edit", systemImage: "square.and.pencil")
             }.tint(.blue) }
 
             if features.canCopy { Button {
-                // TODO
+                copyDataId = data.id
+                copySheetIsPresented = true
             } label: {
                 Label("Copy", systemImage: "doc.on.doc")
             }.tint(.indigo) }

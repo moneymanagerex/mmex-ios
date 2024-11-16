@@ -275,6 +275,9 @@
     "Copy to Clipboard" : {
 
     },
+    "Create" : {
+
+    },
     "Create New Database" : {
 
     },
@@ -1131,9 +1134,6 @@
           }
         }
       }
-    },
-    "Update" : {
-
     },
     "User Forum" : {
 

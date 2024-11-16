@@ -30,7 +30,7 @@ struct RepositoryCopyView<
             }
             .textSelection(.enabled)
             .scrollDismissesKeyboard(.immediately)
-            .navigationTitle("")
+            .navigationTitle("Copy")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -38,7 +38,7 @@ struct RepositoryCopyView<
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
+                    Button("Done") {
                         if let updateError = vm.update(&data) {
                             alertMessage = updateError
                             alertIsPresented = true
