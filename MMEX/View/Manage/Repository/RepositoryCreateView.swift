@@ -31,7 +31,7 @@ struct RepositoryCreateView<
             }
             .textSelection(.enabled)
             .scrollDismissesKeyboard(.immediately)
-            .navigationTitle("")
+            .navigationTitle("Create")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -39,7 +39,7 @@ struct RepositoryCreateView<
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
+                    Button("Done") {
                         if let updateError = vm.update(&data) {
                             alertMessage = updateError
                             alertIsPresented = true

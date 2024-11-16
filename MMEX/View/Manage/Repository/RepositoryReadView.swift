@@ -21,8 +21,8 @@ struct RepositoryReadView<
     @Binding var deleteData: Bool
     @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
 
-    @State private var copySheetIsPresented = false
     @State private var editSheetIsPresented = false
+    @State private var copySheetIsPresented = false
     @State private var exporterIsPresented = false
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
@@ -76,18 +76,16 @@ struct RepositoryReadView<
             }
         }
 
-        .fileExporter(
-            isPresented: $exporterIsPresented,
-            document: ExportableEntityDocument(entity: data),
-            contentType: .json,
-            defaultFilename: vm.filename(data)
-        ) { result in
-            switch result {
-            case .success(let url):
-                log.info("File saved to: \(url)")
-            case .failure(let error):
-                log.error("Error exporting file: \(error)")
-            }
+        .sheet(isPresented: $editSheetIsPresented) {
+            RepositoryEditView(
+                vm: vm,
+                features: features,
+                data: data,
+                newData: $newData,
+                isPresented: $editSheetIsPresented,
+                dismiss: dismiss,
+                editView: editView
+            )
         }
 
         .sheet(isPresented: $copySheetIsPresented) {
@@ -102,17 +100,18 @@ struct RepositoryReadView<
             )
         }
 
-        .sheet(isPresented: $editSheetIsPresented) {
-            RepositoryEditView(
-                vm: vm,
-                features: features,
-                title: vm.name(data),
-                data: data,
-                newData: $newData,
-                isPresented: $editSheetIsPresented,
-                dismiss: dismiss,
-                editView: editView
-            )
+        .fileExporter(
+            isPresented: $exporterIsPresented,
+            document: ExportableEntityDocument(entity: data),
+            contentType: .json,
+            defaultFilename: vm.filename(data)
+        ) { result in
+            switch result {
+            case .success(let url):
+                log.info("File saved to: \(url)")
+            case .failure(let error):
+                log.error("Error exporting file: \(error)")
+            }
         }
 
         .alert(isPresented: $alertIsPresented) {

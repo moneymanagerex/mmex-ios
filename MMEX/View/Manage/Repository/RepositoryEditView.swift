@@ -15,7 +15,6 @@ struct RepositoryEditView<
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     var features: RepositoryFeatures
-    var title: String
     @State var data: MainData
     @Binding var newData: MainData?
     @Binding var isPresented: Bool
@@ -32,7 +31,7 @@ struct RepositoryEditView<
             }
             .textSelection(.enabled)
             .scrollDismissesKeyboard(.immediately)
-            .navigationTitle(title)
+            .navigationTitle("Edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -40,7 +39,7 @@ struct RepositoryEditView<
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Update") {
+                    Button("Done") {
                         if let updateError = vm.update(&data) {
                             alertMessage = updateError
                             alertIsPresented = true
@@ -75,7 +74,6 @@ struct RepositoryEditView<
     RepositoryEditView(
         vm: vm,
         features: RepositoryFeatures(),
-        title: vm.name(data),
         data: data,
         newData: .constant(nil),
         isPresented: .constant(true),
