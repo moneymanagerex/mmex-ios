@@ -216,7 +216,6 @@ where GroupType.MainRepository == ListType.MainRepository,
                         if let data = vmList.data.value[id], search.match(vm, data) {
                             itemView(data)
                         }
-                        
                     }
                 case .loading:
                     HStack {
@@ -291,6 +290,12 @@ where GroupType.MainRepository == ListType.MainRepository,
             } label: {
                 Label("Delete", systemImage: vm.isUsed(data) == false ? "trash.fill" : "trash.slash.fill")
             }.tint(vm.isUsed(data) == false ? .red : .gray) }
+
+            if features.canUpdate { Button {
+                // TODO
+            } label: {
+                Label("Edit", systemImage: "square.and.pencil")
+            }.tint(.blue) }
 
             if features.canCopy { Button {
                 // TODO

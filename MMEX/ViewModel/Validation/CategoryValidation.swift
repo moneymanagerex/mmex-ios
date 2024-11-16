@@ -9,6 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
+    func copyCategory(_ data: inout CategoryData) {
+        data.name.append(" (Copy)")
+    }
+
     func updateCategory(_ data: inout CategoryData) -> String? {
         return "* not implemented"
     }

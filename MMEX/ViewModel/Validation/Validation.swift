@@ -30,6 +30,35 @@ extension ViewModel {
         return nil
     }
 
+    func copy<DataType: DataProtocol>(_ data: inout DataType) {
+        data.id = .void
+        if var data1 = data as? CurrencyData {
+            copyCurrency(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? AccountData {
+            copyAccount(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? AssetData {
+            copyAsset(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? StockData {
+            copyStock(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? CategoryData {
+            copyCategory(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? PayeeData {
+            copyPayee(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? TagData {
+            copyTag(&data1)
+            data = data1 as! DataType
+        } else if var data1 = data as? AttachmentData {
+            copyAttachment(&data1)
+            data = data1 as! DataType
+        }
+    }
+
     func update<DataType: DataProtocol>(_ data: inout DataType) -> String? {
         var error: String?
         if var data1 = data as? CurrencyData {
