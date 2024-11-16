@@ -71,8 +71,12 @@ struct AttachmentListView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    AttachmentListView(
-        vm: ViewModel(env: env)
-    )
+    let vm = ViewModel(env: env)
+    NavigationView {
+        AttachmentListView(
+            vm: vm
+        )
+        .navigationBarTitle("Manage", displayMode: .inline)
+    }
     .environmentObject(env)
 }

@@ -33,8 +33,9 @@ struct TagEditView: View {
 
 #Preview("\(TagData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { TagEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(TagData.sampleData[0]),
         edit: false
     ) }
@@ -43,8 +44,9 @@ struct TagEditView: View {
 
 #Preview("\(TagData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
+    let vm = ViewModel(env: env)
     Form { TagEditView(
-        vm: ViewModel(env: env),
+        vm: vm,
         data: .constant(TagData.sampleData[0]),
         edit: true
     ) }
