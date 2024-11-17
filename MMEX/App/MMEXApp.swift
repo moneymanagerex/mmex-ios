@@ -5,8 +5,8 @@
 //  Created by Lisheng Guan on 2024/9/5.
 //
 
-import SwiftUI
 import OSLog
+import SwiftUI
 import Amplitude
 
 let log = Logger(

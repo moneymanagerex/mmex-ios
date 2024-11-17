@@ -142,9 +142,9 @@ struct EnterEditView: View {
                     if (txn.categId.isVoid) {
                         Text("Category:").tag(DataId.void)
                     }
-                    ForEach(vm.categoryList.tree.readyValue?.treeOrder ?? [], id: \.1) { (_, id) in
-                        if let path = vm.categoryList.path.readyValue?[id] {
-                            Text(path).tag(id)
+                    ForEach(vm.categoryList.tree.readyValue?.node ?? [], id: \.dataId) { node in
+                        if let path = vm.categoryList.path.readyValue?[node.dataId] {
+                            Text(path).tag(node.dataId)
                         }
                     }
                 }
@@ -193,9 +193,9 @@ struct EnterEditView: View {
                                 if (newSplit.categId.isVoid) {
                                     Text("Category:").tag(DataId.void)
                                 }
-                                ForEach(vm.categoryList.tree.readyValue?.treeOrder ?? [], id: \.1) { (_, id) in
-                                    if let path = vm.categoryList.path.readyValue?[id] {
-                                        Text(path).tag(id)
+                                ForEach(vm.categoryList.tree.readyValue?.node ?? [], id: \.dataId) { node in
+                                    if let path = vm.categoryList.path.readyValue?[node.dataId] {
+                                        Text(path).tag(node.dataId)
                                     }
                                 }
                             }

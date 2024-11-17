@@ -42,7 +42,7 @@ struct CategoryListView: View {
         .navigationTitle(String(localized: "Categories"))
         .task {
             await vm.loadCategoryList()
-            filteredCategories = vm.categoryList.tree.readyValue?.treeOrder.map { $0.1 } ?? []
+            filteredCategories = vm.categoryList.tree.readyValue?.node.map { $0.dataId } ?? []
         }
         .sheet(isPresented: $isPresentingAddView) {
             CategoryAddView(
@@ -55,8 +55,8 @@ struct CategoryListView: View {
     }
 
     func filterCategories(by query: String) {
-        filteredCategories = vm.categoryList.tree.readyValue?.treeOrder.compactMap {
-            let id = $0.1
+        filteredCategories = vm.categoryList.tree.readyValue?.node.compactMap {
+            let id = $0.dataId
             let path = vm.categoryList.path.readyValue?[id]
             return path?.localizedCaseInsensitiveContains(query) == true ? id : nil
         } ?? []
