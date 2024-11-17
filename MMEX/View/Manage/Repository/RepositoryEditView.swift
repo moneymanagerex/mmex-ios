@@ -10,7 +10,7 @@ import SwiftUI
 
 struct RepositoryEditView<
     MainData: DataProtocol,
-    EditView: View
+    FormView: View
 >: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
@@ -19,7 +19,7 @@ struct RepositoryEditView<
     @Binding var newData: MainData?
     @Binding var isPresented: Bool
     var dismiss: DismissAction?
-    @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
+    @ViewBuilder var formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
 
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
@@ -27,7 +27,7 @@ struct RepositoryEditView<
     var body: some View {
         NavigationStack {
             Form {
-                editView($data, true)
+                formView($data, true)
             }
             .textSelection(.enabled)
             .scrollDismissesKeyboard(.immediately)
@@ -66,7 +66,7 @@ struct RepositoryEditView<
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let data = AccountData.sampleData[0]
-    let editView = { $data, edit in AccountEditView(
+    let formView = { $data, edit in AccountFormView(
         vm: vm,
         data: $data,
         edit: edit
@@ -78,7 +78,7 @@ struct RepositoryEditView<
         newData: .constant(nil),
         isPresented: .constant(true),
         dismiss: nil,
-        editView: editView
+        formView: formView
     )
     .environmentObject(env)
 }

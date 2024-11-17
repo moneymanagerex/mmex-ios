@@ -1,5 +1,5 @@
 //
-//  CurrencyEditView.swift
+//  CurrencyFormView.swift
 //  MMEX
 //
 //  2024-09-17: Created by Lisheng Guan
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct CurrencyEditView: View {
+struct CurrencyFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: CurrencyData
@@ -101,7 +101,7 @@ struct CurrencyEditView: View {
 #Preview("\(CurrencyData.sampleData[0].symbol) (show)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { CurrencyEditView(
+    Form { CurrencyFormView(
         vm: vm,
         data: .constant(CurrencyData.sampleData[0]),
         edit: false
@@ -112,7 +112,7 @@ struct CurrencyEditView: View {
 #Preview("\(CurrencyData.sampleData[0].symbol) (edit)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { CurrencyEditView(
+    Form { CurrencyFormView(
         vm: vm,
         data: .constant(CurrencyData.sampleData[0]),
         edit: true

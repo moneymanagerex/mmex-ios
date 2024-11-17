@@ -30,7 +30,7 @@ struct StockListView: View {
             groupNameView: groupNameView,
             itemNameView: itemNameView,
             itemInfoView: itemInfoView,
-            editView: editView
+            formView: formView
         )
         .onAppear {
             let _ = log.debug("DEBUG: StockListView.onAppear()")
@@ -62,8 +62,8 @@ struct StockListView: View {
         }
     }
 
-    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        StockEditView(
+    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        StockFormView(
             vm: vm,
             data: data,
             edit: edit

@@ -32,7 +32,7 @@ struct AssetListView: View {
             groupNameView: groupNameView,
             itemNameView: itemNameView,
             itemInfoView: itemInfoView,
-            editView: editView
+            formView: formView
         )
         .onAppear {
             let _ = log.debug("DEBUG: AssetListView.onAppear()")
@@ -65,8 +65,8 @@ struct AssetListView: View {
         }
     }
 
-    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        AssetEditView(
+    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        AssetFormView(
             vm: vm,
             data: data,
             edit: edit

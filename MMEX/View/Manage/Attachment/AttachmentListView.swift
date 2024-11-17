@@ -33,7 +33,7 @@ struct AttachmentListView: View {
             groupNameView: groupNameView,
             itemNameView: itemNameView,
             itemInfoView: itemInfoView,
-            editView: editView
+            formView: formView
         )
         .onAppear {
             let _ = log.debug("DEBUG: AttachmentListView.onAppear()")
@@ -60,8 +60,8 @@ struct AttachmentListView: View {
         EmptyView()
     }
     
-    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        AttachmentEditView(
+    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        AttachmentFormView(
             vm: vm,
             data: data,
             edit: edit

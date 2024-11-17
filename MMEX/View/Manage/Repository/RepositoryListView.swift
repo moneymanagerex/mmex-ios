@@ -10,7 +10,7 @@ import SwiftUI
 struct RepositoryListView<
     ListType: ListProtocol, GroupType: GroupProtocol, SearchType: SearchProtocol,
     GroupNameView: View, ItemNameView: View, ItemInfoView: View,
-    EditView: View
+    FormView: View
 >: View
 where GroupType.MainRepository == ListType.MainRepository,
       GroupType.ValueType == [GroupData],
@@ -31,7 +31,7 @@ where GroupType.MainRepository == ListType.MainRepository,
     @ViewBuilder var groupNameView: (_ g: Int, _ name: String?) -> GroupNameView
     @ViewBuilder var itemNameView: (_ data: MainData) -> ItemNameView
     @ViewBuilder var itemInfoView: (_ data: MainData) -> ItemInfoView
-    @ViewBuilder var editView: (_ data: Binding<MainData>, _ edit: Bool) -> EditView
+    @ViewBuilder var formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
 
     @StateObject var debounce = RepositorySearchDebounce()
     @State var newData: MainData? = nil
@@ -176,7 +176,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 data: initData,
                 newData: $newData,
                 isPresented: $createSheetIsPresented,
-                editView: editView
+                formView: formView
             )
             .onDisappear {
                 guard newData != nil else { return }
@@ -197,7 +197,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 data: data,
                 newData: $newData,
                 isPresented: $editSheetIsPresented,
-                editView: editView
+                formView: formView
             )
             .onDisappear {
                 guard newData != nil else { return }
@@ -218,7 +218,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 data: data,
                 newData: $newData,
                 isPresented: $copySheetIsPresented,
-                editView: editView
+                formView: formView
             )
             .onDisappear {
                 guard newData != nil else { return }
@@ -308,7 +308,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 data: data,
                 newData: $newData,
                 deleteData: $deleteData,
-                editView: editView
+                formView: formView
             )
             .onDisappear {
                 guard deleteData || newData != nil else { return }

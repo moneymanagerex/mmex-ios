@@ -31,7 +31,7 @@ struct TagListView: View {
             groupNameView: groupNameView,
             itemNameView: itemNameView,
             itemInfoView: itemInfoView,
-            editView: editView
+            formView: formView
         )
         .onAppear {
             let _ = log.debug("DEBUG: TagListView.onAppear()")
@@ -56,8 +56,8 @@ struct TagListView: View {
         }
     }
     
-    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        TagEditView(
+    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        TagFormView(
             vm: vm,
             data: data,
             edit: edit

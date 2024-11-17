@@ -35,7 +35,7 @@ struct CurrencyListView: View {
             groupNameView: groupNameView,
             itemNameView: itemNameView,
             itemInfoView: itemInfoView,
-            editView: editView
+            formView: formView
         )
         .onAppear {
             let _ = log.debug("DEBUG: CurrencyListView.onAppear()")
@@ -54,8 +54,8 @@ struct CurrencyListView: View {
         Text(data.symbol)
     }
 
-    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        CurrencyEditView(
+    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        CurrencyFormView(
             vm: vm,
             data: data,
             edit: edit

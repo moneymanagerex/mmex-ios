@@ -1,5 +1,5 @@
 //
-//  AccountEditView.swift
+//  AccountFormView.swift
 //  MMEX
 //
 //  2024-09-09: Created by Lisheng Guan
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct AccountEditView: View {
+struct AccountFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: AccountData
@@ -176,7 +176,7 @@ struct AccountEditView: View {
 
 #Preview("\(AccountData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
-    Form { AccountEditView(
+    Form { AccountFormView(
         vm: ViewModel(env: env),
         data: .constant(AccountData.sampleData[0]),
         edit: false
@@ -187,7 +187,7 @@ struct AccountEditView: View {
 #Preview("\(AccountData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { AccountEditView(
+    Form { AccountFormView(
         vm: vm,
         data: .constant(AccountData.sampleData[0]),
         edit: true
