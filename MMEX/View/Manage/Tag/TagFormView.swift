@@ -1,5 +1,5 @@
 //
-//  TagEditView.swift
+//  TagFormView.swift
 //  MMEX
 //
 //  2024-11-05: Edited by George Ef (george.a.ef@gmail.com)
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TagEditView: View {
+struct TagFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: TagData
@@ -34,7 +34,7 @@ struct TagEditView: View {
 #Preview("\(TagData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { TagEditView(
+    Form { TagFormView(
         vm: vm,
         data: .constant(TagData.sampleData[0]),
         edit: false
@@ -45,7 +45,7 @@ struct TagEditView: View {
 #Preview("\(TagData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { TagEditView(
+    Form { TagFormView(
         vm: vm,
         data: .constant(TagData.sampleData[0]),
         edit: true

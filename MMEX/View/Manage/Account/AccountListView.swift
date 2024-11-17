@@ -33,7 +33,7 @@ struct AccountListView: View {
             groupNameView: groupNameView,
             itemNameView: itemNameView,
             itemInfoView: itemInfoView,
-            editView: editView
+            formView: formView
         )
         .onAppear {
             let _ = log.debug("DEBUG: AccountListView.onAppear()")
@@ -75,8 +75,8 @@ struct AccountListView: View {
         }
     }
 
-    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        AccountEditView(
+    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        AccountFormView(
             vm: vm,
             data: data,
             edit: edit

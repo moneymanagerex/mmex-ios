@@ -1,5 +1,5 @@
 //
-//  PayeeEditView.swift
+//  PayeeFormView.swift
 //  MMEX
 //
 //  2024-09-06: Created by Lisheng Guan
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct PayeeEditView: View {
+struct PayeeFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: PayeeData
@@ -81,7 +81,7 @@ struct PayeeEditView: View {
 #Preview("\(PayeeData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { PayeeEditView(
+    Form { PayeeFormView(
         vm: vm,
         data: .constant(PayeeData.sampleData[0]),
         edit: false
@@ -92,7 +92,7 @@ struct PayeeEditView: View {
 #Preview("\(PayeeData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { PayeeEditView(
+    Form { PayeeFormView(
         vm: vm,
         data: .constant(PayeeData.sampleData[0]),
         edit: true

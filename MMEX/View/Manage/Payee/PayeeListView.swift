@@ -33,7 +33,7 @@ struct PayeeListView: View {
             groupNameView: groupNameView,
             itemNameView: itemNameView,
             itemInfoView: itemInfoView,
-            editView: editView
+            formView: formView
         )
         .onAppear {
             let _ = log.debug("DEBUG: PayeeListView.onAppear()")
@@ -59,8 +59,8 @@ struct PayeeListView: View {
         }
     }
     
-    func editView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        PayeeEditView(
+    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+        PayeeFormView(
             vm: vm,
             data: data,
             edit: edit

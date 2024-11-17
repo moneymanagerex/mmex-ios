@@ -1,5 +1,5 @@
 //
-//  StockEditView.swift
+//  StockFormView.swift
 //  MMEX
 //
 //  2024-10-03: Created by George Ef (george.a.ef@gmail.com)
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StockEditView: View {
+struct StockFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: StockData
@@ -105,7 +105,7 @@ struct StockEditView: View {
 #Preview("\(StockData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { StockEditView(
+    Form { StockFormView(
         vm: vm,
         data: .constant(StockData.sampleData[0]),
         edit: false
@@ -116,7 +116,7 @@ struct StockEditView: View {
 #Preview("\(StockData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { StockEditView(
+    Form { StockFormView(
         vm: vm,
         data: .constant(StockData.sampleData[0]),
         edit: true

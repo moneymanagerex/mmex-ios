@@ -1,5 +1,5 @@
 //
-//  AttachmentEditView.swift
+//  AttachmentFormView.swift
 //  MMEX
 //
 //  2024-11-05: Edited by George Ef (george.a.ef@gmail.com)
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AttachmentEditView: View {
+struct AttachmentFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: AttachmentData
@@ -42,7 +42,7 @@ struct AttachmentEditView: View {
 
 #Preview("\(AttachmentData.sampleData[0].filename) (show)") {
     let env = EnvironmentManager.sampleData
-    Form { AttachmentEditView(
+    Form { AttachmentFormView(
         vm: ViewModel(env: env),
         data: .constant(AttachmentData.sampleData[0]),
         edit: false
@@ -52,7 +52,7 @@ struct AttachmentEditView: View {
 
 #Preview("\(AttachmentData.sampleData[0].filename) (edit)") {
     let env = EnvironmentManager.sampleData
-    Form { AttachmentEditView(
+    Form { AttachmentFormView(
         vm: ViewModel(env: env),
         data: .constant(AttachmentData.sampleData[0]),
         edit: true

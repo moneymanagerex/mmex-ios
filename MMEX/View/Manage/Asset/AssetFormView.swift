@@ -1,5 +1,5 @@
 //
-//  AssetEditView.swift
+//  AssetFormView.swift
 //  MMEX
 //
 //  2024-09-25: Created by Lisheng Guan
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct AssetEditView: View {
+struct AssetFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: AssetData
@@ -113,7 +113,7 @@ struct AssetEditView: View {
 #Preview("\(AssetData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { AssetEditView(
+    Form { AssetFormView(
         vm: vm,
         data: .constant(AssetData.sampleData[0]),
         edit: false
@@ -124,7 +124,7 @@ struct AssetEditView: View {
 #Preview("\(AssetData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { AssetEditView(
+    Form { AssetFormView(
         vm: vm,
         data: .constant(AssetData.sampleData[0]),
         edit: true
