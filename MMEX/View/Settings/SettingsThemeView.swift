@@ -41,6 +41,12 @@ struct SettingsThemeView: View {
                 }
 
                 HStack {
+                    Text("Numeric Keypad")
+                    Spacer()
+                    Toggle(isOn: $env.theme.numericKeypad.asBool) { }
+                }
+
+                HStack {
                     Text("Date Format")
                     Spacer()
                     Text("\(dateFormat)")

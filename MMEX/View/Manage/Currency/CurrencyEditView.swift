@@ -59,7 +59,7 @@ struct CurrencyEditView: View {
 
             env.theme.field.view(edit, true, "Conversion Rate", editView: {
                 TextField("Default is 1", value: $data.baseConvRate.defaultOne, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text("\(data.baseConvRate)")
             } )
@@ -89,7 +89,7 @@ struct CurrencyEditView: View {
                 }
                 env.theme.field.view(edit, true, "Scale", editView: {
                     TextField("Default is 1", value: $data.scale.defaultOne, format: .number)
-                        .keyboardType(.decimalPad)
+                        .keyboardType(env.theme.decimalPad)
                 }, showView: {
                     Text("\(data.scale)")
                 } )

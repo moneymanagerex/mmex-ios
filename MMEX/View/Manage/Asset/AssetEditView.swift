@@ -69,7 +69,7 @@ struct AssetEditView: View {
 
             env.theme.field.view(edit, true, "Value", editView: {
                 TextField("Default is 0", value: $data.value.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text(data.value.formatted(by: formatter))
             } )
@@ -98,7 +98,7 @@ struct AssetEditView: View {
             
             env.theme.field.view(edit, true, "Change Rate", editView: {
                 TextField("Default is 0", value: $data.changeRate.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text("\(data.changeRate)")
             } )
