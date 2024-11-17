@@ -32,7 +32,7 @@ extension ViewModel {
         return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
-    func searchAttachmentGroup(search: AttachmentSearch, expand: Bool = false ) {
+    func searchAttachmentGroup(search: AttachmentSearch, expand: Bool = false) {
         guard attachmentGroup.state == .ready else { return }
         for g in 0 ..< attachmentGroup.value.count {
             guard let isVisible = attachmentGroupIsVisible(g, search: search) else { return }

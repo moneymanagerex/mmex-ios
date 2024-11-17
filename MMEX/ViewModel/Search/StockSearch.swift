@@ -40,7 +40,7 @@ extension ViewModel {
         return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
-    func searchStockGroup(search: StockSearch, expand: Bool = false ) {
+    func searchStockGroup(search: StockSearch, expand: Bool = false) {
         guard stockGroup.state == .ready else { return }
         for g in 0 ..< stockGroup.value.count {
             guard let isVisible = stockGroupIsVisible(g, search: search) else { return }

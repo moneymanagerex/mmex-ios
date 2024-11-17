@@ -41,7 +41,7 @@ extension CategoryGroupNode {
 struct CategoryGroup: GroupProtocol {
     typealias MainRepository = CategoryRepository
     typealias GroupChoice    = CategoryGroupChoice
-    typealias ValueType      = [CategoryGroupNode]  // same size as CategoryNode.order
+    typealias ValueType      = [CategoryGroupNode]  // same size as CategoryTree.order
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue

@@ -34,7 +34,7 @@ extension ViewModel {
         return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
-    func searchCurrencyGroup(search: CurrencySearch, expand: Bool = false ) {
+    func searchCurrencyGroup(search: CurrencySearch, expand: Bool = false) {
         guard currencyGroup.state == .ready else { return }
         for g in 0 ..< currencyGroup.value.count {
             guard let isVisible = currencyGroupIsVisible(g, search: search) else { return }
