@@ -11,13 +11,14 @@ struct CategorySearch: SearchProtocol {
     var area: [SearchArea<CategoryData>] = [
         ("Name", true,  {[ $0.name ]}, nil),
         ("Path", false, nil, { vm, data in [
-            vm.categoryList.path.readyValue?[data.id] ?? ""
+            vm.categoryList.evalPath.readyValue?[data.id] ?? ""
         ] } ),
     ]
     var key: String = ""
 }
 
 extension ViewModel {
+/*
     func categoryGroupIsVisible(_ g: Int, search: CategorySearch
     ) -> Bool? {
         guard
@@ -32,8 +33,9 @@ extension ViewModel {
         }
         return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
-
+*/
     func searchCategoryGroup(search: CategorySearch, expand: Bool = false ) {
+/*
         guard categoryGroup.state == .ready else { return }
         for g in 0 ..< categoryGroup.value.count {
             guard let isVisible = categoryGroupIsVisible(g, search: search) else { return }
@@ -42,5 +44,6 @@ extension ViewModel {
                 categoryGroup.value[g].isExpanded = true
             }
         }
+ */
     }
 }

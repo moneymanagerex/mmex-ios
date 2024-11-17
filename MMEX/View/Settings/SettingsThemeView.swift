@@ -214,7 +214,7 @@ struct SettingsThemeView: View {
         if categoryDelimiter.isEmpty { categoryDelimiter = ":" }
         guard categoryDelimiter != env.theme.categoryDelimiter else { return }
         env.theme.categoryDelimiter = categoryDelimiter
-        vm.categoryList.path.unload()
+        vm.categoryList.evalPath.unload()
     }
 }
 

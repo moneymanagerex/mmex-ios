@@ -17,14 +17,7 @@ extension GroupChoiceProtocol {
     var fullName: String { self.rawValue }
 }
 
-struct GroupData {
-    var name       : String?
-    var dataId     : [DataId]
-    var isVisible  : Bool
-    var isExpanded : Bool
-}
-
-protocol GroupProtocol: LoadProtocol where ValueType == [GroupData] {
+protocol GroupProtocol: LoadProtocol {
     associatedtype MainRepository: RepositoryProtocol
     associatedtype GroupChoice: GroupChoiceProtocol
 
@@ -33,7 +26,16 @@ protocol GroupProtocol: LoadProtocol where ValueType == [GroupData] {
 
 extension GroupProtocol {
     var loadName: String { "Group(\(MainRepository.repositoryName))" }
+}
 
+struct GroupData {
+    var name       : String?
+    var dataId     : [DataId]
+    var isVisible  : Bool
+    var isExpanded : Bool
+}
+
+extension GroupProtocol where ValueType == [GroupData] {
     mutating func append(_ name: String?, _ dataId: [DataId], _ isVisible: Bool, _ isExpanded: Bool) {
         guard state == .loading else {
             log.error("ERROR: GroupProtocol.append(): state != loading.")

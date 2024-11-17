@@ -18,6 +18,7 @@ enum CurrencyGroupChoice: String, GroupChoiceProtocol {
 struct CurrencyGroup: GroupProtocol {
     typealias MainRepository = CurrencyRepository
     typealias GroupChoice    = CurrencyGroupChoice
+    typealias ValueType      = [GroupData]
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue

@@ -18,6 +18,7 @@ enum TagGroupChoice: String, GroupChoiceProtocol {
 struct TagGroup: GroupProtocol {
     typealias MainRepository = TagRepository
     typealias GroupChoice    = TagGroupChoice
+    typealias ValueType      = [GroupData]
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue

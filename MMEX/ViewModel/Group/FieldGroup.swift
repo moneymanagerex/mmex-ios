@@ -19,6 +19,7 @@ enum FieldGroupChoice: String, GroupChoiceProtocol {
 struct FieldGroup: GroupProtocol {
     typealias MainRepository = FieldRepository
     typealias GroupChoice    = FieldGroupChoice
+    typealias ValueType      = [GroupData]
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue

@@ -20,6 +20,7 @@ enum PayeeGroupChoice: String, GroupChoiceProtocol {
 struct PayeeGroup: GroupProtocol {
     typealias MainRepository = PayeeRepository
     typealias GroupChoice    = PayeeGroupChoice
+    typealias ValueType      = [GroupData]
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue
@@ -53,7 +54,7 @@ extension ViewModel {
             let listUsed     = payeeList.used.readyValue,
             let listOrder    = payeeList.order.readyValue,
             let listAtt      = payeeList.att.readyValue,
-            let categoryPath = categoryList.path.readyValue
+            let categoryPath = categoryList.evalPath.readyValue
         else { return }
 
         guard payeeGroup.state.loading() else { return }

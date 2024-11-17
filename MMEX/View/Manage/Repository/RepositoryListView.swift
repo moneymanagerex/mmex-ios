@@ -13,6 +13,7 @@ struct RepositoryListView<
     EditView: View
 >: View
 where GroupType.MainRepository == ListType.MainRepository,
+      GroupType.ValueType == [GroupData],
       SearchType.MainData == ListType.MainRepository.RepositoryData
 {
     typealias MainRepository = ListType.MainRepository
