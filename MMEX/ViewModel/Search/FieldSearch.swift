@@ -32,7 +32,7 @@ extension ViewModel {
         return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
-    func searchFieldGroup(search: FieldSearch, expand: Bool = false ) {
+    func searchFieldGroup(search: FieldSearch, expand: Bool = false) {
         guard fieldGroup.state == .ready else { return }
         for g in 0 ..< fieldGroup.value.count {
             guard let isVisible = fieldGroupIsVisible(g, search: search) else { return }

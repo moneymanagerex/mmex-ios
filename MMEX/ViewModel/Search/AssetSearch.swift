@@ -39,7 +39,7 @@ extension ViewModel {
         return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
-    func searchAssetGroup(search: AssetSearch, expand: Bool = false ) {
+    func searchAssetGroup(search: AssetSearch, expand: Bool = false) {
         guard assetGroup.state == .ready else { return }
         for g in 0 ..< assetGroup.value.count {
             guard let isVisible = assetGroupIsVisible(g, search: search) else { return }

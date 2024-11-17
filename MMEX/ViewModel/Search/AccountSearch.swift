@@ -40,7 +40,7 @@ extension ViewModel {
         return groupData[g].dataId.first(where: { search.match(self, listData[$0]!) }) != nil
     }
 
-    func searchAccountGroup(search: AccountSearch, expand: Bool = false ) {
+    func searchAccountGroup(search: AccountSearch, expand: Bool = false) {
         guard accountGroup.state == .ready else { return }
         log.trace("DEBUG: ViewModel.searchAccountGroup()")
         for g in 0 ..< accountGroup.value.count {

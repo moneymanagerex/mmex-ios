@@ -11,8 +11,10 @@ struct CategoryListView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
+
+    @State var search: CategorySearch = .init()
     @State var filteredCategories: [DataId] = []
-    
+
     @State private var isPresentingAddView = false
     @State private var newCategory = CategoryData()
     @State private var searchQuery: String = "" // New: Search query
@@ -47,8 +49,11 @@ struct CategoryListView: View {
             // test
             if false {
                 vm.loadCategoryGroup(choice: .used)
-                vm.unloadCategoryGroup()
-                vm.loadCategoryGroup(choice: .notUsed)
+                vm.searchCategory(search: search)
+                search.key = "an"
+                vm.searchCategory(search: search)
+                //vm.unloadCategoryGroup()
+                //vm.loadCategoryGroup(choice: .notUsed)
             }
         }
         .sheet(isPresented: $isPresentingAddView) {
