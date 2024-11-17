@@ -1,5 +1,5 @@
 //
-//  CategoryEditView.swift
+//  OldCategoryEditView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/12.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryEditView: View {
+struct OldCategoryEditView: View {
     @Binding var category: CategoryData
     
     var body: some View {
@@ -29,7 +29,7 @@ struct CategoryEditView: View {
 }
 
 #Preview(CategoryData.sampleData[0].name) {
-    CategoryEditView(
+    OldCategoryEditView(
         category: .constant(CategoryData.sampleData[0])
     )
 }

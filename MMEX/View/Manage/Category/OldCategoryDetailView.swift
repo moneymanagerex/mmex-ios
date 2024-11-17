@@ -1,5 +1,5 @@
 //
-//  CategoryDetailView.swift
+//  OldCategoryDetailView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/12.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryDetailView: View {
+struct OldCategoryDetailView: View {
     @EnvironmentObject var env: EnvironmentManager // Access EnvironmentManager
     @State var category: CategoryData
 
@@ -56,7 +56,7 @@ struct CategoryDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                CategoryEditView(category: $editingCategory)
+                OldCategoryEditView(category: $editingCategory)
                     .navigationTitle(category.name)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -110,13 +110,13 @@ struct CategoryDetailView: View {
 }
 
 #Preview(CategoryData.sampleData[0].name) {
-    CategoryDetailView(
+    OldCategoryDetailView(
         category: CategoryData.sampleData[0]
     )
 }
 
 #Preview(CategoryData.sampleData[1].name) {
-    CategoryDetailView(
+    OldCategoryDetailView(
         category: CategoryData.sampleData[1]
     )
 }

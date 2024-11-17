@@ -1,5 +1,5 @@
 //
-//  CategoryAddView.swift
+//  OldCategoryAddView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/12.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryAddView: View {
+struct OldCategoryAddView: View {
     @Binding var newCategory: CategoryData
     @Binding var isPresentingAddView: Bool
 
@@ -15,7 +15,7 @@ struct CategoryAddView: View {
 
     var body: some View {
         NavigationStack {
-            CategoryEditView(category: $newCategory)
+            OldCategoryEditView(category: $newCategory)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Dismiss") {

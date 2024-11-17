@@ -1,5 +1,5 @@
 //
-//  CategoryListView.swift
+//  OldCategoryListView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/12.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryListView: View {
+struct OldCategoryListView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
@@ -23,7 +23,7 @@ struct CategoryListView: View {
         Group {
             List(filteredCategories) { id in
                 if let category = vm.categoryList.data.readyValue?[id] {
-                    NavigationLink(destination: CategoryDetailView(category: category)) {
+                    NavigationLink(destination: OldCategoryDetailView(category: category)) {
                         Text(vm.categoryList.evalPath.readyValue?[id] ?? "(unknown)")
                     }
                 }
@@ -57,7 +57,7 @@ struct CategoryListView: View {
             }
         }
         .sheet(isPresented: $isPresentingAddView) {
-            CategoryAddView(
+            OldCategoryAddView(
                 newCategory: $newCategory,
                 isPresentingAddView: $isPresentingAddView
             ) { newCategory in
@@ -77,7 +77,7 @@ struct CategoryListView: View {
 
 #Preview {
     let env = EnvironmentManager.sampleData
-    CategoryListView(
+    OldCategoryListView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env)
     )
