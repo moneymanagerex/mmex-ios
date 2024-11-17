@@ -40,8 +40,8 @@ extension ViewModel {
         }
         if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.categoryList.path),
-                load(&taskGroup, keyPath: \Self.categoryList.cache),
+                load(&taskGroup, keyPath: \Self.categoryList.evalPath),
+                load(&taskGroup, keyPath: \Self.categoryList.evalTree),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         } }

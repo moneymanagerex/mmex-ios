@@ -17,6 +17,7 @@ enum AttachmentGroupChoice: String, GroupChoiceProtocol {
 struct AttachmentGroup: GroupProtocol {
     typealias MainRepository = AttachmentRepository
     typealias GroupChoice    = AttachmentGroupChoice
+    typealias ValueType      = [GroupData]
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue

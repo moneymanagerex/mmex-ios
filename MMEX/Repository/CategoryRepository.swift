@@ -63,6 +63,32 @@ struct CategoryRepository: RepositoryProtocol {
         typealias R = ScheduledRepository
         typealias RP = ScheduledSplitRepository
         typealias B = BudgetRepository
+
+        let cond = "EXISTS (" + (P.table.select(1).where(
+            P.table[P.col_categoryId] == Self.table[Self.col_id]
+        ) ).union(T.table.select(1).where(
+            T.table[T.col_categId] == Self.table[Self.col_id]
+        ) ).union(TP.table.select(1).where(
+            TP.table[TP.col_categId] == Self.table[Self.col_id]
+        ) ).union(R.table.select(1).where(
+            R.table[R.col_categId] == Self.table[Self.col_id]
+        ) ).union(RP.table.select(1).where(
+            RP.table[RP.col_categId] == Self.table[Self.col_id]
+        ) ).union(B.table.select(1).where(
+            B.table[B.col_categId] == Self.table[Self.col_id]
+        ) ).expression.description + ")"
+
+        return table.filter(SQLite.Expression<Bool>(literal: cond))
+    }
+
+    static func filterUsedSelf(_ table: SQLite.Table) -> SQLite.Table {
+        typealias C = CategoryRepository
+        typealias P = PayeeRepository
+        typealias T = TransactionRepository
+        typealias TP = TransactionSplitRepository
+        typealias R = ScheduledRepository
+        typealias RP = ScheduledSplitRepository
+        typealias B = BudgetRepository
         let CP_table: SQLite.Table = C.table.alias("Parent")
 
         // problem: compiler cannot determine the type with too many union terms

@@ -22,7 +22,7 @@ struct CategoryListView: View {
             List(filteredCategories) { id in
                 if let category = vm.categoryList.data.readyValue?[id] {
                     NavigationLink(destination: CategoryDetailView(category: category)) {
-                        Text(vm.categoryList.path.readyValue?[id] ?? "(unknown)")
+                        Text(vm.categoryList.evalPath.readyValue?[id] ?? "(unknown)")
                     }
                 }
             }
@@ -42,7 +42,14 @@ struct CategoryListView: View {
         .navigationTitle(String(localized: "Categories"))
         .task {
             await vm.loadCategoryList()
-            filteredCategories = vm.categoryList.cache.readyValue?.order.map { $0.dataId } ?? []
+            filteredCategories = vm.categoryList.evalTree.readyValue?.order.map { $0.dataId } ?? []
+            
+            // test
+            if false {
+                vm.loadCategoryGroup(choice: .used)
+                vm.unloadCategoryGroup()
+                vm.loadCategoryGroup(choice: .notUsed)
+            }
         }
         .sheet(isPresented: $isPresentingAddView) {
             CategoryAddView(
@@ -55,9 +62,9 @@ struct CategoryListView: View {
     }
 
     func filterCategories(by query: String) {
-        filteredCategories = vm.categoryList.cache.readyValue?.order.compactMap {
+        filteredCategories = vm.categoryList.evalTree.readyValue?.order.compactMap {
             let id = $0.dataId
-            let path = vm.categoryList.path.readyValue?[id]
+            let path = vm.categoryList.evalPath.readyValue?[id]
             return path?.localizedCaseInsensitiveContains(query) == true ? id : nil
         } ?? []
     }

@@ -21,6 +21,7 @@ enum AssetGroupChoice: String, GroupChoiceProtocol {
 struct AssetGroup: GroupProtocol {
     typealias MainRepository = AssetRepository
     typealias GroupChoice    = AssetGroupChoice
+    typealias ValueType      = [GroupData]
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue

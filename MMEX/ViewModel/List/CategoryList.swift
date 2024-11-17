@@ -8,7 +8,7 @@
 import SwiftUI
 import SQLite
 
-struct CategoryCache {
+struct CategoryTree {
     var childrenById : [DataId: [DataId]] = [:]  // parentId or -1 -> [childId] (preserving order)
     var indexById    : [DataId: Int]      = [:]  // dataId -> index in order
     var order        : [CategoryNode]     = []   // pre-order of category tree (one node per dataId)
@@ -16,6 +16,7 @@ struct CategoryCache {
 
 struct CategoryNode {
     var level  : Int     // depth of this node in tree, starting from 0 for root nodes
+    var parent : Int     // index of the parent node in tree, or -1 if this is a root node
     var next   : Int     // next index for which order[next].level <= order[this].level
     var dataId : DataId  // the category id of this node
 }
@@ -30,8 +31,10 @@ struct CategoryList: ListProtocol {
     var order : LoadMainOrder<MainRepository> = .init(
         order: [MainRepository.col_parentId, MainRepository.col_name]
     )
-    var path  : LoadCategoryPath              = .init()
-    var cache : LoadCategoryCache             = .init()
+
+    var evalPath : LoadCategoryPath = .init()
+    var evalUsed : LoadCategoryUsed = .init()
+    var evalTree : LoadCategoryTree = .init()
 }
 
 extension ViewModel {
@@ -49,8 +52,9 @@ extension ViewModel {
         }
         if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.categoryList.path),
-                load(&taskGroup, keyPath: \Self.categoryList.cache),
+                load(&taskGroup, keyPath: \Self.categoryList.evalPath),
+                load(&taskGroup, keyPath: \Self.categoryList.evalUsed),
+                load(&taskGroup, keyPath: \Self.categoryList.evalTree),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         } }
@@ -59,11 +63,12 @@ extension ViewModel {
 
     func unloadCategoryList() {
         guard categoryList.unloading() else { return }
+        categoryList.evalPath.unload()
+        categoryList.evalUsed.unload()
+        categoryList.evalTree.unload()
         categoryList.data.unload()
         categoryList.used.unload()
         categoryList.order.unload()
-        categoryList.path.unload()
-        categoryList.cache.unload()
         categoryList.unloaded()
     }
 }
@@ -82,14 +87,34 @@ struct LoadCategoryPath: LoadEvalProtocol {
 
     nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
         guard let data = await vm.categoryList.data.readyValue else { return nil }
-        return await vm.evalCategoryPath(data: data, sep: env.theme.categoryDelimiter)
+        return vm.evalCategoryPath(data: data, sep: env.theme.categoryDelimiter)
     }
 }
 
-struct LoadCategoryCache: LoadEvalProtocol {
-    typealias ValueType = CategoryCache
-    let loadName: String = "Cache(\(CategoryRepository.repositoryName))"
-    let idleValue: ValueType = CategoryCache()
+struct LoadCategoryUsed: LoadEvalProtocol {
+    typealias ValueType = Set<DataId>
+    let loadName: String = "UsedClosure(\(CategoryRepository.repositoryName))"
+    let idleValue: ValueType = []
+    var state: LoadState = .init()
+    var value: ValueType
+
+    init() {
+        self.value = idleValue
+    }
+
+    nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
+        guard
+            let data = await vm.categoryList.data.readyValue,
+            let used = await vm.categoryList.used.readyValue
+        else { return nil }
+        return vm.evalCategoryUsedClosure(data: data, used: used)
+    }
+}
+
+struct LoadCategoryTree: LoadEvalProtocol {
+    typealias ValueType = CategoryTree
+    let loadName: String = "Tree(\(CategoryRepository.repositoryName))"
+    let idleValue: ValueType = CategoryTree()
     var state: LoadState = .init()
     var value: ValueType
 
@@ -102,7 +127,7 @@ struct LoadCategoryCache: LoadEvalProtocol {
             let data  = await vm.categoryList.data.readyValue,
             let order = await vm.categoryList.order.readyValue
         else { return nil }
-        return await vm.evalCategoryCache(data: data, order: order)
+        return vm.evalCategoryTree(data: data, order: order)
     }
 }
 
@@ -110,7 +135,7 @@ extension ViewModel {
     nonisolated func evalCategoryPath(
         data: [DataId: CategoryData],
         sep: String = ":"
-    ) async -> [DataId: String] {
+    ) -> [DataId: String] {
         var path: [DataId: String] = [:]
         for id in data.keys {
             var stack: [DataId] = []
@@ -130,69 +155,93 @@ extension ViewModel {
         return path
     }
 
-    nonisolated func evalCategoryCache(
+    nonisolated func evalCategoryUsedClosure(
+        data: [DataId: CategoryData],
+        used: Set<DataId>
+    ) -> Set<DataId> {
+        var usedClosure: Set<DataId> = []
+        for id in data.keys {
+            guard used.contains(id) else { continue }
+            var pid = id
+            while !pid.isVoid, !usedClosure.contains(pid) {
+                usedClosure.insert(pid)
+                pid = data[pid]?.parentId ?? .void
+            }
+        }
+        return usedClosure
+    }
+
+    nonisolated func evalCategoryTree(
         data: [DataId: CategoryData],
         order: [DataId]
-    ) async -> CategoryCache {
+    ) -> CategoryTree {
         let childrenById = Dictionary(grouping: order) {
             data[$0]?.parentId ?? .void
         }
-        var indexById: [DataId: Int] = [:]
-        var order: [CategoryNode] = []
 
-        var stack: [(DataId, Int)] = [(.void, 0)]  // parentId, index in childrenById[parentId]
+        var indexById: [DataId: Int] = [:]
+        var treeOrder: [CategoryNode] = []
+        var stack: [(Int, Int)] = [(-1, 0)]  // parent index, index in childrenById[parentId]
         var last: [Int] = []  // last index in order for each level
         while !stack.isEmpty {
             let level = stack.endIndex - 1
-            let (parentId, childIndex) = stack[level]
-            guard let children = childrenById[parentId], childIndex < children.count else {
+            let (parentIndex, childrenIndex) = stack[level]
+            let parentId = parentIndex != -1 ? treeOrder[parentIndex].dataId : .void
+            guard let children = childrenById[parentId], childrenIndex < children.count else {
                 _ = stack.popLast()
                 continue
             }
-            let dataId = children[childIndex]
-            order.append(CategoryNode(
-                level: level, next: -1, dataId: dataId
+            let childId = children[childrenIndex]
+            treeOrder.append(CategoryNode(
+                level: level, parent: parentIndex, next: -1, dataId: childId
             ) )
+            let childIndex = treeOrder.endIndex - 1
             stack[level].1 += 1
-            if childrenById[dataId] != nil {
-                stack.append((dataId, 0))
+            if childrenById[childId] != nil {
+                stack.append((childIndex, 0))
             }
-            let orderIndex = order.endIndex - 1
-            indexById[dataId] = orderIndex
+            indexById[childId] = childIndex
             while last.count > level {
                 let lastIndex = last.popLast()!
-                order[lastIndex].next = orderIndex
+                treeOrder[lastIndex].next = childIndex
             }
             // assertion: last.count == level
-            last.append(orderIndex)
+            last.append(childIndex)
         }
         
         for lastIndex in last {
-            order[lastIndex].next = order.endIndex
+            treeOrder[lastIndex].next = treeOrder.endIndex
         }
 
         if false { print(
-            "DEBUG: ViewModel.evalCategoryCache(): order:\n" +
-            order.enumerated().map {
-                let name = data[$1.dataId]!.name
-                return "  \($0): level=\($1.level), next=\($1.next), dataId=\($1.dataId) (\(name))\n"
+            "DEBUG: ViewModel.evalCategoryTree(): order:\n" +
+            treeOrder.enumerated().map { (i, node) in
+                let (l, p, n, id) = (node.level, node.parent, node.next, node.dataId)
+                let name = data[id]!.name
+                return "  \(i): l=\(l), p=\(p), n=\(n), id=\(id) (\(name))\n"
             }.joined(separator: "") + "\n" +
-            "DEBUG: ViewModel.evalCategoryCache(): indexById:\n" +
+            "DEBUG: ViewModel.evalCategoryTree(): indexById:\n" +
             indexById.keys.sorted(by: { $0.value < $1.value }).map {
                 "  \($0.value) -> \(indexById[$0]!)\n"
             }.joined(separator: ""),
             terminator: ""
         ) }
 
-        return CategoryCache(
-            childrenById: childrenById,
-            indexById: indexById,
-            order: order
+        return CategoryTree(
+            childrenById : childrenById,
+            indexById    : indexById,
+            order        : treeOrder
         )
     }
 }
 
-extension CategoryCache {
+extension CategoryTree {
+    func firstChild(underIndex index: Int) -> Int? {
+        guard index >= 0 && index < order.count else { return nil }
+        guard index + 1 < order.count else { return -1 }
+        return order[index + 1].level > order[index].level ? (index + 1) : -1
+    }
+
     func descendantsCount(underIndex index: Int) -> Int? {
         guard index >= 0 && index < order.count else { return nil }
         return order[index].next - index - 1
