@@ -13,6 +13,7 @@ protocol ThemeProtocol {
 
 struct Theme: ThemeProtocol {
     @Preference var appearance: Appearance = .defaultValue
+    @Preference var numericKeypad: BoolEnum = .boolTrue
     @Preference var categoryDelimiter: String = ":"
 
     var tab   : TabTheme   = .init()
@@ -24,12 +25,22 @@ struct Theme: ThemeProtocol {
 extension Theme {
     init(prefix: String?) {
         self.$appearance        = prefix?.appending("appearance")
+        self.$numericKeypad     = prefix?.appending("numericKeypad")
         self.$categoryDelimiter = prefix?.appending("categoryDelimiter")
 
         self.tab   = .init(prefix: prefix?.appending("tab."))
         self.group = .init(prefix: prefix?.appending("group."))
         self.item  = .init(prefix: prefix?.appending("item."))
         self.field = .init(prefix: prefix?.appending("field."))
+    }
+}
+
+extension Theme {
+    var decimalPad: UIKeyboardType {
+        switch numericKeypad {
+        case .boolTrue: .decimalPad
+        default: .default
+        }
     }
 }
 

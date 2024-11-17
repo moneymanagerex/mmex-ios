@@ -49,7 +49,7 @@ struct EnterEditView: View {
 
             // 2. Unified Numeric Input for the Amount with automatic keyboard focus
             TextField("", value: $txn.transAmount, format: .number)
-                .keyboardType(.decimalPad) // Show numeric keyboard with decimal support
+                .keyboardType(env.theme.decimalPad) // Show numeric keyboard with decimal support
                 .font(.system(size: 48, weight: .bold)) // Large, bold text for amount input
                 .multilineTextAlignment(.center) // Center the text for better UX
                 .padding()
@@ -206,7 +206,7 @@ struct EnterEditView: View {
                             Spacer()
                             // Split amount
                             TextField("split amount", value: $newSplit.amount, format: .number)
-                                .keyboardType(.decimalPad)
+                                .keyboardType(env.theme.decimalPad)
                                 .multilineTextAlignment(.center) // Center the text for better UX
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
                             Spacer()

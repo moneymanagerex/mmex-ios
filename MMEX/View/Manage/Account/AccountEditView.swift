@@ -75,7 +75,7 @@ struct AccountEditView: View {
             
             env.theme.field.view(edit, true, "Initial Balance", editView: {
                 TextField("Default is 0", value: $data.initialBal.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text(data.initialBal.formatted(by: formatter))
             } )
@@ -97,21 +97,21 @@ struct AccountEditView: View {
             
             env.theme.field.view(edit, true, "Minimum Balance", editView: {
                 TextField("Default is 0", value: $data.minimumBalance.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text(data.minimumBalance.formatted(by: formatter))
             } )
             
             env.theme.field.view(edit, true, "Credit Limit", editView: {
                 TextField("Default is 0", value: $data.creditLimit.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text(data.creditLimit.formatted(by: formatter))
             } )
             
             env.theme.field.view(edit, true, "Interest Rate", editView: {
                 TextField("Default is 0", value: $data.interestRate.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text("\(data.interestRate)")
             } )
@@ -125,7 +125,7 @@ struct AccountEditView: View {
             
             env.theme.field.view(edit, true, "Minimum Payment", editView: {
                 TextField("Default is 0", value: $data.minimumPayment.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text(data.minimumPayment.formatted(by: formatter))
             } )

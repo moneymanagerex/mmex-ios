@@ -55,7 +55,7 @@ struct StockEditView: View {
         Section {
             env.theme.field.view(edit, true, "Number of Shares", editView: {
                 TextField("Default is 0", value: $data.numShares.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text("\(data.numShares)")
             } )
@@ -69,28 +69,28 @@ struct StockEditView: View {
             
             env.theme.field.view(edit, true, "Purchase Price", editView: {
                 TextField("Default is 0", value: $data.purchasePrice.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text("\(data.purchasePrice)")
             } )
             
             env.theme.field.view(edit, true, "Current Price", editView: {
                 TextField("Default is 0", value: $data.currentPrice.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text("\(data.currentPrice)")
             } )
             
             env.theme.field.view(edit, true, "Purchase Value", editView: {
                 TextField("Default is 0", value: $data.purchaseValue.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text(data.purchaseValue.formatted(by: formatter))
             } )
             
             env.theme.field.view(edit, true, "Commisison", editView: {
                 TextField("Default is 0", value: $data.commisison.defaultZero, format: .number)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text(data.commisison.formatted(by: formatter))
             } )
