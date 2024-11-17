@@ -8,9 +8,15 @@
 import SwiftUI
 import SQLite
 
+struct CategoryCache {
+    var childrenById : [DataId: [DataId]] = [:]  // parentId or -1 -> [childId] (preserving order)
+    var indexById    : [DataId: Int]      = [:]  // dataId -> index in order
+    var order        : [CategoryNode]     = []   // pre-order of category tree (one node per dataId)
+}
+
 struct CategoryNode {
-    var level  : Int     // starting from 0 for root nodes
-    var next   : Int     // next index in tree for which next.level <= this.level, or -1
+    var level  : Int     // depth of this node in tree, starting from 0 for root nodes
+    var next   : Int     // next index for which order[next].level <= order[this].level
     var dataId : DataId  // the category id of this node
 }
 
@@ -25,7 +31,7 @@ struct CategoryList: ListProtocol {
         order: [MainRepository.col_parentId, MainRepository.col_name]
     )
     var path  : LoadCategoryPath              = .init()
-    var tree  : LoadCategoryTree              = .init()
+    var cache : LoadCategoryCache             = .init()
 }
 
 extension ViewModel {
@@ -44,7 +50,7 @@ extension ViewModel {
         if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.categoryList.path),
-                load(&taskGroup, keyPath: \Self.categoryList.tree),
+                load(&taskGroup, keyPath: \Self.categoryList.cache),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         } }
@@ -57,7 +63,7 @@ extension ViewModel {
         categoryList.used.unload()
         categoryList.order.unload()
         categoryList.path.unload()
-        categoryList.tree.unload()
+        categoryList.cache.unload()
         categoryList.unloaded()
     }
 }
@@ -80,10 +86,10 @@ struct LoadCategoryPath: LoadEvalProtocol {
     }
 }
 
-struct LoadCategoryTree: LoadEvalProtocol {
-    typealias ValueType = (node: [CategoryNode], index: [DataId: Int])
-    let loadName: String = "Tree(\(CategoryRepository.repositoryName))"
-    let idleValue: ValueType = (node: [], index: [:])
+struct LoadCategoryCache: LoadEvalProtocol {
+    typealias ValueType = CategoryCache
+    let loadName: String = "Cache(\(CategoryRepository.repositoryName))"
+    let idleValue: ValueType = CategoryCache()
     var state: LoadState = .init()
     var value: ValueType
 
@@ -96,7 +102,7 @@ struct LoadCategoryTree: LoadEvalProtocol {
             let data  = await vm.categoryList.data.readyValue,
             let order = await vm.categoryList.order.readyValue
         else { return nil }
-        return await vm.evalCategoryTree(data: data, order: order)
+        return await vm.evalCategoryCache(data: data, order: order)
     }
 }
 
@@ -124,17 +130,18 @@ extension ViewModel {
         return path
     }
 
-    nonisolated func evalCategoryTree(
+    nonisolated func evalCategoryCache(
         data: [DataId: CategoryData],
         order: [DataId]
-    ) async -> (node: [CategoryNode], index: [DataId: Int]) {
+    ) async -> CategoryCache {
         let childrenById = Dictionary(grouping: order) {
             data[$0]?.parentId ?? .void
         }
-        var node: [CategoryNode] = []
-        var index: [DataId: Int] = [:]
+        var indexById: [DataId: Int] = [:]
+        var order: [CategoryNode] = []
+
         var stack: [(DataId, Int)] = [(.void, 0)]  // parentId, index in childrenById[parentId]
-        var last: [Int] = []  // last index in tree for each level
+        var last: [Int] = []  // last index in order for each level
         while !stack.isEmpty {
             let level = stack.endIndex - 1
             let (parentId, childIndex) = stack[level]
@@ -143,34 +150,56 @@ extension ViewModel {
                 continue
             }
             let dataId = children[childIndex]
-            node.append(CategoryNode(
+            order.append(CategoryNode(
                 level: level, next: -1, dataId: dataId
             ) )
             stack[level].1 += 1
             if childrenById[dataId] != nil {
                 stack.append((dataId, 0))
             }
-            let nodeIndex = node.endIndex - 1
-            index[dataId] = nodeIndex
+            let orderIndex = order.endIndex - 1
+            indexById[dataId] = orderIndex
             while last.count > level {
                 let lastIndex = last.popLast()!
-                node[lastIndex].next = nodeIndex
+                order[lastIndex].next = orderIndex
             }
             // assertion: last.count == level
-            last.append(nodeIndex)
+            last.append(orderIndex)
         }
+        
+        for lastIndex in last {
+            order[lastIndex].next = order.endIndex
+        }
+
         if false { print(
-            "DEBUG: ViewModel.evalCategoryTree(): node:\n" +
-            node.enumerated().map {
+            "DEBUG: ViewModel.evalCategoryCache(): order:\n" +
+            order.enumerated().map {
                 let name = data[$1.dataId]!.name
                 return "  \($0): level=\($1.level), next=\($1.next), dataId=\($1.dataId) (\(name))\n"
             }.joined(separator: "") + "\n" +
-            "DEBUG: ViewModel.evalCategoryTree(): index:\n" +
-            index.keys.sorted(by: { $0.value < $1.value }).map {
-                "  \($0.value) -> \(index[$0]!)\n"
+            "DEBUG: ViewModel.evalCategoryCache(): indexById:\n" +
+            indexById.keys.sorted(by: { $0.value < $1.value }).map {
+                "  \($0.value) -> \(indexById[$0]!)\n"
             }.joined(separator: ""),
-            separator: ""
+            terminator: ""
         ) }
-        return (node: node, index: index)
+
+        return CategoryCache(
+            childrenById: childrenById,
+            indexById: indexById,
+            order: order
+        )
+    }
+}
+
+extension CategoryCache {
+    func descendantsCount(underIndex index: Int) -> Int? {
+        guard index >= 0 && index < order.count else { return nil }
+        return order[index].next - index - 1
+    }
+
+    func descendantsCount(underId dataId: DataId) -> Int? {
+        guard let index = indexById[dataId] else { return nil }
+        return descendantsCount(underIndex: index)
     }
 }

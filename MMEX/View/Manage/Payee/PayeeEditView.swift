@@ -34,14 +34,14 @@ struct PayeeEditView: View {
         
         Section {
             if
-                let categoryNode = vm.categoryList.tree.readyValue?.node,
+                let categoryOrder = vm.categoryList.cache.readyValue?.order,
                 let categoryPath  = vm.categoryList.path.readyValue
             {
                 // TODO: category tree
                 env.theme.field.view(edit, false, "Category", editView: {
                     Picker("", selection: $data.categoryId) {
                         Text("(none)").tag(DataId.void)
-                        ForEach(categoryNode, id: \.dataId) { node in
+                        ForEach(categoryOrder, id: \.dataId) { node in
                             Text(categoryPath[node.dataId] ?? "").tag(node.dataId)
                         }
                     }
