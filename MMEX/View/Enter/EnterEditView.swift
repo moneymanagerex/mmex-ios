@@ -64,6 +64,9 @@ struct EnterEditView: View {
                     }
                 }
                 .disabled(!txn.splits.isEmpty)
+                .onChange(of: txn.transAmount) {
+                    txn.toTransAmount = txn.transAmount
+                }
             
             // 3. Input field for notes
             TextField("Add Note", text: Binding(
