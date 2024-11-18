@@ -136,10 +136,6 @@
 		92F685F12CEA8D0E00171A6A /* CategoryFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F685F02CEA8D0E00171A6A /* CategoryFormView.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
-		A3363EE32C9323A5004696C7 /* OldCategoryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE22C9323A5004696C7 /* OldCategoryEditView.swift */; };
-		A3363EE52C9323D2004696C7 /* OldCategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE42C9323D2004696C7 /* OldCategoryDetailView.swift */; };
-		A3363EE72C93249D004696C7 /* OldCategoryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE62C93249D004696C7 /* OldCategoryAddView.swift */; };
-		A3363EE92C9326A1004696C7 /* OldCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE82C9326A1004696C7 /* OldCategoryListView.swift */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
 		A33742882CA8E55400698466 /* IncomeExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742872CA8E55400698466 /* IncomeExpenseView.swift */; };
 		A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742892CA8E72C00698466 /* InsightsSummary.swift */; };
@@ -326,10 +322,6 @@
 		92F685F02CEA8D0E00171A6A /* CategoryFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryFormView.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
-		A3363EE22C9323A5004696C7 /* OldCategoryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCategoryEditView.swift; sourceTree = "<group>"; };
-		A3363EE42C9323D2004696C7 /* OldCategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCategoryDetailView.swift; sourceTree = "<group>"; };
-		A3363EE62C93249D004696C7 /* OldCategoryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCategoryAddView.swift; sourceTree = "<group>"; };
-		A3363EE82C9326A1004696C7 /* OldCategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCategoryListView.swift; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
 		A33742872CA8E55400698466 /* IncomeExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeExpenseView.swift; sourceTree = "<group>"; };
 		A33742892CA8E72C00698466 /* InsightsSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsSummary.swift; sourceTree = "<group>"; };
@@ -687,10 +679,6 @@
 			children = (
 				92F685EE2CEA87B800171A6A /* CategoryListView.swift */,
 				92F685F02CEA8D0E00171A6A /* CategoryFormView.swift */,
-				A3363EE82C9326A1004696C7 /* OldCategoryListView.swift */,
-				A3363EE42C9323D2004696C7 /* OldCategoryDetailView.swift */,
-				A3363EE62C93249D004696C7 /* OldCategoryAddView.swift */,
-				A3363EE22C9323A5004696C7 /* OldCategoryEditView.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1025,7 +1013,6 @@
 				924353272CCAD2780052E4BC /* LoadState.swift in Sources */,
 				A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */,
 				A39B1B362C99A0C2003E5562 /* CurrencyFormView.swift in Sources */,
-				A3363EE72C93249D004696C7 /* OldCategoryAddView.swift in Sources */,
 				920824222CA4E67200388AB2 /* TagLinkRepository.swift in Sources */,
 				A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */,
 				A3C142442C89C8FA00D3CEC0 /* AccountData.swift in Sources */,
@@ -1082,7 +1069,6 @@
 				927B123B2CE0B41D00AEA52F /* SettingsReload.swift in Sources */,
 				925EAC172CDA8EF5003CEAB3 /* TagFormView.swift in Sources */,
 				924353172CC51F8E0052E4BC /* StockReload.swift in Sources */,
-				A3363EE32C9323A5004696C7 /* OldCategoryEditView.swift in Sources */,
 				920824102CA4C5CD00388AB2 /* YearRepository.swift in Sources */,
 				925EABB62CD6E6EF003CEAB3 /* InfotableList.swift in Sources */,
 				920824202CA4E5C200388AB2 /* TagLinkData.swift in Sources */,
@@ -1098,12 +1084,10 @@
 				A37E7D862C9AC2D000B4ECFC /* AboutView.swift in Sources */,
 				9208240C2CA4C31B00388AB2 /* BudgetData.swift in Sources */,
 				924353472CCD353A0052E4BC /* ListProtocol.swift in Sources */,
-				A3363EE92C9326A1004696C7 /* OldCategoryListView.swift in Sources */,
 				A3C142A02C9025D600D3CEC0 /* CategoryData.swift in Sources */,
 				A3C142A42C9033E300D3CEC0 /* SettingsView.swift in Sources */,
 				924352F52CB1C1400052E4BC /* GroupTheme.swift in Sources */,
 				920824322CA6E32800388AB2 /* RepositoryProtocol.swift in Sources */,
-				A3363EE52C9323D2004696C7 /* OldCategoryDetailView.swift in Sources */,
 				929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */,
 				925EAC0D2CDA89BD003CEAB3 /* TagGroup.swift in Sources */,
 				920824182CA4CF4300388AB2 /* AttachmentData.swift in Sources */,

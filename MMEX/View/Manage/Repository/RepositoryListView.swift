@@ -329,6 +329,7 @@ where GroupType.MainRepository == ListType.MainRepository,
 
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if features.canDelete { Button {
+                guard vm.isUsed(data) == false else { return }
                 if let deleteError = vm.delete(data) {
                     alertMessage = deleteError
                     alertIsPresented = true

@@ -176,6 +176,7 @@ struct CategoryListView: View {
 
         .sheet(isPresented: $editSheetIsPresented) {
             let data = listData?[editDataId] ?? Self.initData
+            //let _ = print("DEBUG: editSheetIsPresented: \(editDataId.value)")
             RepositoryEditView(
                 vm: vm,
                 features: Self.features,
@@ -275,8 +276,8 @@ struct CategoryListView: View {
                 let count  = groupTree.count(i)
                 let isExpanded = groupTree.order[i].isExpanded
                 HStack {
-                    let w1 = CGFloat(22 * level)
-                    let w2 = CGFloat(22)
+                    let w1 = CGFloat(28 * level)
+                    let w2 = CGFloat(20)
                     Button { if count > 0 {
                         vm.categoryGroup.value.order[i].isExpanded.toggle()
                         vm.expandCategory(i)
@@ -288,7 +289,7 @@ struct CategoryListView: View {
                                     .frame(minWidth: w2)
                                 //.border(.red)
                             } else {
-                                Text("").frame(width: w2)
+                                Spacer().frame(width: w2)
                             }
                         }
                     }
@@ -310,6 +311,7 @@ struct CategoryListView: View {
             
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 if Self.features.canDelete { Button {
+                    guard vm.isUsed(data) == false else { return }
                     if let deleteError = vm.delete(data) {
                         alertMessage = deleteError
                         alertIsPresented = true
@@ -325,6 +327,7 @@ struct CategoryListView: View {
                 
                 if Self.features.canEdit { Button {
                     editDataId = data.id
+                    //let _ = print("DEBUG: swipeActions: \(editDataId.value)")
                     editSheetIsPresented = true
                 } label: {
                     Label("Edit", systemImage: "square.and.pencil")

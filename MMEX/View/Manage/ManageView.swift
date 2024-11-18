@@ -51,12 +51,6 @@ struct ManageView: View {
                         count: vm.stockList.count
                     )
                 }
-                NavigationLink(destination: OldCategoryListView(vm: vm, viewModel: viewModel)) {
-                    env.theme.group.manageItem(
-                        nameView: { Text(CategoryData.dataName.1 + " (old)") },
-                        count: vm.categoryList.count
-                    )
-                }
                 NavigationLink(destination: CategoryListView(vm: vm)) {
                     env.theme.group.manageItem(
                         nameView: { Text(CategoryData.dataName.1) },

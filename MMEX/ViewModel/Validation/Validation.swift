@@ -19,7 +19,11 @@ extension ViewModel {
         } else if DataType.self == S.RepositoryData.self {
             return stockList.used.readyValue?.contains(data.id)
         } else if DataType.self == C.RepositoryData.self {
-            return categoryList.used.readyValue?.contains(data.id)
+            guard
+                let categoryUsed = categoryList.used.readyValue,
+                let categoryTree = categoryList.evalTree.readyValue
+            else { return nil }
+            return categoryUsed.contains(data.id) || categoryTree.childrenById[data.id] != nil
         } else if DataType.self == P.RepositoryData.self {
             return payeeList.used.readyValue?.contains(data.id)
         } else if DataType.self == G.RepositoryData.self {
