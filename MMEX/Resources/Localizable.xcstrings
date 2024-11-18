@@ -123,6 +123,7 @@
 
     },
     "ACTIVE" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -215,6 +216,7 @@
       "extractionState" : "manual"
     },
     "Categories" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -245,6 +247,7 @@
       }
     },
     "Category Name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -442,6 +445,7 @@
 
     },
     "Delete Category" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -658,9 +662,6 @@
     "Investment" : {
       "extractionState" : "manual"
     },
-    "Is Active" : {
-
-    },
     "Item Info" : {
       "localizations" : {
         "it" : {
@@ -735,6 +736,7 @@
 
     },
     "New Category" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -802,9 +804,6 @@
           }
         }
       }
-    },
-    "Parent ID" : {
-
     },
     "Payee" : {
       "localizations" : {
@@ -875,6 +874,7 @@
 
     },
     "Search by name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
