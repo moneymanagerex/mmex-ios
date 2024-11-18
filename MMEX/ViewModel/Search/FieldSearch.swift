@@ -16,8 +16,7 @@ struct FieldSearch: SearchProtocol {
 }
 
 extension ViewModel {
-    func fieldGroupIsVisible(_ g: Int, search: FieldSearch
-    ) -> Bool? {
+    func fieldGroupIsVisible(_ g: Int, search: FieldSearch) -> Bool? {
         guard
             let listData  = fieldList.data.readyValue,
             let groupData = fieldGroup.readyValue
@@ -33,7 +32,9 @@ extension ViewModel {
     }
 
     func searchFieldGroup(search: FieldSearch, expand: Bool = false) {
+        if fieldGroup.search { return }
         guard fieldGroup.state == .ready else { return }
+        log.trace("DEBUG: ViewModel.searchFieldGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< fieldGroup.value.count {
             guard let isVisible = fieldGroupIsVisible(g, search: search) else { return }
             fieldGroup.value[g].isVisible = isVisible
@@ -41,5 +42,6 @@ extension ViewModel {
                 fieldGroup.value[g].isExpanded = true
             }
         }
+        fieldGroup.search = true
     }
 }

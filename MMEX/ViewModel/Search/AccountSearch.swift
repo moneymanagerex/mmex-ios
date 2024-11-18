@@ -24,8 +24,7 @@ struct AccountSearch: SearchProtocol {
 }
 
 extension ViewModel {
-    func accountGroupIsVisible(_ g: Int, search: AccountSearch
-    ) -> Bool? {
+    func accountGroupIsVisible(_ g: Int, search: AccountSearch) -> Bool? {
         guard
             let listData  = accountList.data.readyValue,
             let groupData = accountGroup.readyValue
@@ -41,8 +40,9 @@ extension ViewModel {
     }
 
     func searchAccountGroup(search: AccountSearch, expand: Bool = false) {
+        if accountGroup.search { return }
         guard accountGroup.state == .ready else { return }
-        log.trace("DEBUG: ViewModel.searchAccountGroup()")
+        log.trace("DEBUG: ViewModel.searchAccountGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< accountGroup.value.count {
             guard let isVisible = accountGroupIsVisible(g, search: search) else { return }
             //log.debug("DEBUG: ViewModel.searchAccountGroup(): \(g) = \(isVisible)")
@@ -51,5 +51,6 @@ extension ViewModel {
                 accountGroup.value[g].isExpanded = true
             }
         }
+        accountGroup.search = true
     }
 }

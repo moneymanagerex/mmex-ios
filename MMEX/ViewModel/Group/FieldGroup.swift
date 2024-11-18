@@ -23,6 +23,7 @@ struct FieldGroup: GroupProtocol {
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue
+    var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType
     
@@ -57,6 +58,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadFieldGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         fieldGroup.choice = choice
+        fieldGroup.search = false
 
         switch choice {
         case .all:

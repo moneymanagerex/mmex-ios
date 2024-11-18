@@ -22,6 +22,7 @@ protocol GroupProtocol: LoadProtocol {
     associatedtype GroupChoice: GroupChoiceProtocol
 
     var choice: GroupChoice { get set }
+    var search: Bool { get set }
 }
 
 extension GroupProtocol {

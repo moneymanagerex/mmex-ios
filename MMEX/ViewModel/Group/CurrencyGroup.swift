@@ -22,6 +22,7 @@ struct CurrencyGroup: GroupProtocol {
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue
+    var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType
 
@@ -49,8 +50,9 @@ extension ViewModel {
 
         guard currencyGroup.state.loading() else { return }
         log.trace("DEBUG: ViewModel.loadCurrencyGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
-        
+
         currencyGroup.choice = choice
+        currencyGroup.search = false
 
         switch choice {
         case .all:

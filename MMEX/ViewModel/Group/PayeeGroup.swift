@@ -24,6 +24,7 @@ struct PayeeGroup: GroupProtocol {
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue
+    var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType
 
@@ -61,6 +62,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadPayeeGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         payeeGroup.choice = choice
+        stockGroup.search = false
         payeeGroup.groupCategory = []
 
         switch choice {

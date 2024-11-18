@@ -16,8 +16,7 @@ struct AttachmentSearch: SearchProtocol {
 }
 
 extension ViewModel {
-    func attachmentGroupIsVisible(_ g: Int, search: AttachmentSearch
-    ) -> Bool? {
+    func attachmentGroupIsVisible(_ g: Int, search: AttachmentSearch) -> Bool? {
         guard
             let listData  = attachmentList.data.readyValue,
             let groupData = attachmentGroup.readyValue
@@ -33,7 +32,9 @@ extension ViewModel {
     }
 
     func searchAttachmentGroup(search: AttachmentSearch, expand: Bool = false) {
+        if attachmentGroup.search { return }
         guard attachmentGroup.state == .ready else { return }
+        log.trace("DEBUG: ViewModel.searchAttachmentGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< attachmentGroup.value.count {
             guard let isVisible = attachmentGroupIsVisible(g, search: search) else { return }
             attachmentGroup.value[g].isVisible = isVisible
@@ -41,5 +42,6 @@ extension ViewModel {
                 attachmentGroup.value[g].isExpanded = true
             }
         }
+        attachmentGroup.search = true
     }
 }

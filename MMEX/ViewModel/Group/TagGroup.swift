@@ -22,6 +22,7 @@ struct TagGroup: GroupProtocol {
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue
+    var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType
     
@@ -51,6 +52,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadTagGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         tagGroup.choice = choice
+        tagGroup.search = false
 
         switch choice {
         case .all:

@@ -21,6 +21,7 @@ struct AttachmentGroup: GroupProtocol {
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue
+    var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType
     
@@ -47,6 +48,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadAttachmentGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         attachmentGroup.choice = choice
+        attachmentGroup.search = false
 
         switch choice {
         case .all:

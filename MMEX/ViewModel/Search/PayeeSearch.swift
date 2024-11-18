@@ -24,8 +24,7 @@ struct PayeeSearch: SearchProtocol {
 }
 
 extension ViewModel {
-    func payeeGroupIsVisible(_ g: Int, search: PayeeSearch
-    ) -> Bool? {
+    func payeeGroupIsVisible(_ g: Int, search: PayeeSearch) -> Bool? {
         guard
             let listData  = payeeList.data.readyValue,
             let groupData = payeeGroup.readyValue
@@ -41,7 +40,9 @@ extension ViewModel {
     }
 
     func searchPayeeGroup(search: PayeeSearch, expand: Bool = false) {
+        if payeeGroup.search { return }
         guard payeeGroup.state == .ready else { return }
+        log.trace("DEBUG: ViewModel.searchPayeeGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< payeeGroup.value.count {
             guard let isVisible = payeeGroupIsVisible(g, search: search) else { return }
             payeeGroup.value[g].isVisible = isVisible
@@ -49,5 +50,6 @@ extension ViewModel {
                 payeeGroup.value[g].isExpanded = true
             }
         }
+        payeeGroup.search = true
     }
 }

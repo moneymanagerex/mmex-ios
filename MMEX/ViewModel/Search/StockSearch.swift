@@ -24,8 +24,7 @@ struct StockSearch: SearchProtocol {
 }
 
 extension ViewModel {
-    func stockGroupIsVisible(_ g: Int, search: StockSearch
-    ) -> Bool? {
+    func stockGroupIsVisible(_ g: Int, search: StockSearch) -> Bool? {
         guard
             let listData  = stockList.data.readyValue,
             let groupData = stockGroup.readyValue
@@ -41,7 +40,9 @@ extension ViewModel {
     }
 
     func searchStockGroup(search: StockSearch, expand: Bool = false) {
+        if assetGroup.search { return }
         guard stockGroup.state == .ready else { return }
+        log.trace("DEBUG: ViewModel.searchStockGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< stockGroup.value.count {
             guard let isVisible = stockGroupIsVisible(g, search: search) else { return }
             stockGroup.value[g].isVisible = isVisible
@@ -49,5 +50,6 @@ extension ViewModel {
                 stockGroup.value[g].isExpanded = true
             }
         }
+        assetGroup.search = true
     }
 }

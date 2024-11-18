@@ -18,7 +18,7 @@ struct EnterView: View {
     
     var body: some View {
         NavigationStack {
-            EnterEditView(
+            EnterFormView(
                 vm: vm,
                 txn: $newTxn
             )

@@ -1,5 +1,5 @@
 //
-//  EnterEditView2.swift
+//  EnterFormView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EnterEditView: View {
+struct EnterFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @Binding var txn: TransactionData
@@ -258,7 +258,7 @@ struct EnterEditView: View {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView { NavigationStack {
-        EnterEditView(
+        EnterFormView(
             vm: vm,
             txn: .constant(TransactionData.sampleData[0])
         )
@@ -271,7 +271,7 @@ struct EnterEditView: View {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView { NavigationStack {
-        EnterEditView(
+        EnterFormView(
             vm: vm,
             txn: .constant(TransactionData.sampleData[3])
         )

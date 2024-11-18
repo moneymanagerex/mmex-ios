@@ -19,8 +19,7 @@ struct CurrencySearch: SearchProtocol {
 }
 
 extension ViewModel {
-    func currencyGroupIsVisible(_ g: Int, search: CurrencySearch
-    ) -> Bool? {
+    func currencyGroupIsVisible(_ g: Int, search: CurrencySearch) -> Bool? {
         guard
             let listData  = currencyList.data.readyValue,
             let groupData = currencyGroup.readyValue
@@ -35,7 +34,9 @@ extension ViewModel {
     }
 
     func searchCurrencyGroup(search: CurrencySearch, expand: Bool = false) {
+        if currencyGroup.search { return }
         guard currencyGroup.state == .ready else { return }
+        log.trace("DEBUG: ViewModel.searchCurrencyGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< currencyGroup.value.count {
             guard let isVisible = currencyGroupIsVisible(g, search: search) else { return }
             currencyGroup.value[g].isVisible = isVisible
@@ -43,5 +44,6 @@ extension ViewModel {
                 currencyGroup.value[g].isExpanded = true
             }
         }
+        currencyGroup.search = true
     }
 }
