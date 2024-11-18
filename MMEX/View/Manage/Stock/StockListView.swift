@@ -11,17 +11,17 @@ struct StockListView: View {
     typealias MainData = StockData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-    let features = RepositoryFeatures()
 
-    @State var search: StockSearch = .init()
-
+    static let features = RepositoryFeatures()
     static let initData = StockData(
     )
+
+    @State var search: StockSearch = .init()
 
     var body: some View {
         RepositoryListView(
             vm: vm,
-            features: features,
+            features: Self.features,
             vmList: vm.stockList,
             groupChoice: vm.stockGroup.choice,
             vmGroup: $vm.stockGroup,

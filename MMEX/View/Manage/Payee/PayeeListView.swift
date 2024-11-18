@@ -12,19 +12,19 @@ struct PayeeListView: View {
     typealias MainData = PayeeData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-    let features = RepositoryFeatures()
-
-    @State var search: PayeeSearch = .init()
     
+    static let features = RepositoryFeatures()
     static let initData = PayeeData(
         categoryId : -1,
         active     : true
     )
-    
+
+    @State var search: PayeeSearch = .init()
+
     var body: some View {
         RepositoryListView(
             vm: vm,
-            features: features,
+            features: Self.features,
             vmList: vm.payeeList,
             groupChoice: vm.payeeGroup.choice,
             vmGroup: $vm.payeeGroup,

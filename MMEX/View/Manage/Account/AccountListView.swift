@@ -12,19 +12,19 @@ struct AccountListView: View {
     typealias MainData = AccountData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-    let features = RepositoryFeatures()
 
-    @State var search: AccountSearch = .init()
-
+    static let features = RepositoryFeatures()
     static let initData = AccountData(
         status       : .open,
         favoriteAcct : .boolTrue
     )
 
+    @State var search: AccountSearch = .init()
+
     var body: some View {
         RepositoryListView(
             vm: vm,
-            features: features,
+            features: Self.features,
             vmList: vm.accountList,
             groupChoice: vm.accountGroup.choice,
             vmGroup: $vm.accountGroup,
