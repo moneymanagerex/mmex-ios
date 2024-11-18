@@ -12,18 +12,18 @@ struct AssetListView: View {
     typealias MainData = AssetData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-    let features = RepositoryFeatures()
 
-    @State var search: AssetSearch = .init()
-
+    static let features = RepositoryFeatures()
     static let initData = AssetData(
         status       : .open
     )
 
+    @State var search: AssetSearch = .init()
+
     var body: some View {
         RepositoryListView(
             vm: vm,
-            features: features,
+            features: Self.features,
             vmList: vm.assetList,
             groupChoice: vm.assetGroup.choice,
             vmGroup: $vm.assetGroup,

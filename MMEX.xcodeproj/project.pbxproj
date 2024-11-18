@@ -132,6 +132,8 @@
 		929EF66D2CA0BA5E0051A3E6 /* ScheduledData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */; };
 		929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */; };
 		929EF6712CA3676B0051A3E6 /* MMEXDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */; };
+		92F685EF2CEA87B800171A6A /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F685EE2CEA87B800171A6A /* CategoryListView.swift */; };
+		92F685F12CEA8D0E00171A6A /* CategoryFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F685F02CEA8D0E00171A6A /* CategoryFormView.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
 		A3363EE32C9323A5004696C7 /* OldCategoryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EE22C9323A5004696C7 /* OldCategoryEditView.swift */; };
@@ -320,6 +322,8 @@
 		929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledData.swift; sourceTree = "<group>"; };
 		929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledRepository.swift; sourceTree = "<group>"; };
 		929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MMEXDocument.swift; sourceTree = "<group>"; };
+		92F685EE2CEA87B800171A6A /* CategoryListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
+		92F685F02CEA8D0E00171A6A /* CategoryFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryFormView.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A3363EE22C9323A5004696C7 /* OldCategoryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCategoryEditView.swift; sourceTree = "<group>"; };
@@ -681,6 +685,8 @@
 		A39B1B3C2C9A66E6003E5562 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				92F685EE2CEA87B800171A6A /* CategoryListView.swift */,
+				92F685F02CEA8D0E00171A6A /* CategoryFormView.swift */,
 				A3363EE82C9326A1004696C7 /* OldCategoryListView.swift */,
 				A3363EE42C9323D2004696C7 /* OldCategoryDetailView.swift */,
 				A3363EE62C93249D004696C7 /* OldCategoryAddView.swift */,
@@ -987,6 +993,7 @@
 				920824042CA4ADC100388AB2 /* ScheduledSplitData.swift in Sources */,
 				927B12392CE0B20300AEA52F /* SettingsValidation.swift in Sources */,
 				925EABA62CCF81C9003CEAB3 /* AccountValidation.swift in Sources */,
+				92F685F12CEA8D0E00171A6A /* CategoryFormView.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
 				925EAC1C2CDAA900003CEAB3 /* AttachmentGroup.swift in Sources */,
 				A3C142AC2C909C1C00D3CEC0 /* EnterEditView.swift in Sources */,
@@ -1100,6 +1107,7 @@
 				929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */,
 				925EAC0D2CDA89BD003CEAB3 /* TagGroup.swift in Sources */,
 				920824182CA4CF4300388AB2 /* AttachmentData.swift in Sources */,
+				92F685EF2CEA87B800171A6A /* CategoryListView.swift in Sources */,
 				925EABB02CCF82E4003CEAB3 /* Validation.swift in Sources */,
 				A37E7D842C9AC14800B4ECFC /* ManageView.swift in Sources */,
 				924352EE2CB060D80052E4BC /* Theme.swift in Sources */,

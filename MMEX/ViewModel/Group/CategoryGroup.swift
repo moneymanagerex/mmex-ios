@@ -17,10 +17,9 @@ enum CategoryGroupChoice: String, GroupChoiceProtocol {
     static let isSingleton: Set<Self> = [.all, .used, .notUsed, .active, .notActive]
 }
 
-enum CategoryGroupMember: Int {
-    case boolFalse     // this node and all its descendants do not belong to group/search subtree
-    case boolTrue      // this node belongs to group/search subtree
-    case intermediate  // this node does not belong to group/search subtree, but some descendant does
+struct CategoryGroupTree {
+    var searchIsActive: Bool = false
+    var order: [CategoryGroupNode] = []  // same size as CategoryTree.order
 }
 
 struct CategoryGroupNode {
@@ -33,16 +32,27 @@ struct CategoryGroupNode {
     var isExpanded     = false     // applicable if count > 0
 }
 
-extension CategoryGroupNode {
-    func member(search: Bool) -> CategoryGroupMember { search ? memberInSearch : memberInGroup }
-    func count(search: Bool) -> Int { search ? countInSearch : countInGroup }
+enum CategoryGroupMember: Int {
+    case boolFalse     // this node and all its descendants do not belong to group/search subtree
+    case boolTrue      // this node belongs to group/search subtree
+    case intermediate  // this node does not belong to group/search subtree, but some descendant does
+}
+
+extension CategoryGroupTree {
+    func member(_ i: Int) -> CategoryGroupMember {
+        searchIsActive ? order[i].memberInSearch : order[i].memberInGroup
+    }
+
+    func count(_ i: Int) -> Int {
+        searchIsActive ? order[i].countInSearch : order[i].countInGroup
+    }
 }
 
 struct CategoryGroup: GroupProtocol {
     typealias MainRepository = CategoryRepository
     typealias GroupChoice    = CategoryGroupChoice
-    typealias ValueType      = [CategoryGroupNode]  // same size as CategoryTree.order
-    let idleValue: ValueType = []
+    typealias ValueType      = CategoryGroupTree
+    let idleValue: ValueType = CategoryGroupTree()
 
     @Preference var choice: GroupChoice = .defaultValue
     var state: LoadState = .init()
@@ -74,49 +84,49 @@ extension ViewModel {
         case .notActive : { listData[$0]?.active == false }
         }
 
-        var value = evalTree.order.map { node in CategoryGroupNode(
+        var order = evalTree.order.map { node in CategoryGroupNode(
             memberInGroup: isMember(node.dataId) ? .boolTrue : .boolFalse
         ) }
-        for i in 0 ..< value.count {
-            guard value[i].memberInGroup == .boolTrue else { continue }
+        for i in 0 ..< order.count {
+            guard order[i].memberInGroup == .boolTrue else { continue }
             var p = evalTree.order[i].parent
-            while p != -1, value[p].memberInGroup == .boolFalse {
-                value[p].memberInGroup = .intermediate
+            while p != -1, order[p].memberInGroup == .boolFalse {
+                order[p].memberInGroup = .intermediate
                 p = evalTree.order[p].parent
             }
         }
         
         var stack: [(Int, Int)] = []  // index, current count
         var i = 0
-        while i < value.count {
+        while i < order.count {
             let node = evalTree.order[i]
             while stack.count > node.level {
                 let (p, count) = stack.popLast()!
-                value[p].countInGroup = count
+                order[p].countInGroup = count
                 if !stack.isEmpty {
                     stack[stack.endIndex - 1].1 += count + 1
                 }
             }
             // assertion: stack.count == node.level
-            if value[i].memberInGroup == .boolFalse {
+            if order[i].memberInGroup == .boolFalse {
                 i = evalTree.order[i].next
             } else {
                 stack.append((i, 0))
-                value[i].isVisible = node.level == 0
+                order[i].isVisible = node.level == 0
                 i += 1
             }
         }
         while !stack.isEmpty {
             let (p, count) = stack.popLast()!
-            value[p].countInGroup = count
+            order[p].countInGroup = count
             if !stack.isEmpty {
                 stack[stack.endIndex - 1].1 += count + 1
             }
         }
 
         if false { print(
-            "DEBUG: ViewModel.loadCategoryGroup(\(choice.rawValue)): value:\n" +
-            value.enumerated().map { (i, groupNode) in
+            "DEBUG: ViewModel.loadCategoryGroup(\(choice.rawValue)): order:\n" +
+            order.enumerated().map { (i, groupNode) in
                 let treeNode = evalTree.order[i]
                 let (l, id) = (treeNode.level, treeNode.dataId)
                 let m = switch groupNode.memberInGroup {
@@ -131,7 +141,7 @@ extension ViewModel {
             terminator: ""
         ) }
 
-        categoryGroup.value = value
+        categoryGroup.value = CategoryGroupTree(searchIsActive: false, order: order)
         categoryGroup.state.loaded()
         log.info("INFO: ViewModel.loadCategoryGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }

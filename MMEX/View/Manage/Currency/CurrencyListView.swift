@@ -12,10 +12,8 @@ struct CurrencyListView: View {
     typealias MainData = CurrencyData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-    let features = RepositoryFeatures()
 
-    @State var search: CurrencySearch = .init()
-
+    static let features = RepositoryFeatures()
     static let initData = CurrencyData(
         decimalPoint   : ".",
         groupSeparator : ",",
@@ -23,10 +21,12 @@ struct CurrencyListView: View {
         baseConvRate   : 1.0
     )
 
+    @State var search: CurrencySearch = .init()
+
     var body: some View {
         RepositoryListView(
             vm: vm,
-            features: features,
+            features: Self.features,
             vmList: vm.currencyList,
             groupChoice: vm.currencyGroup.choice,
             vmGroup: $vm.currencyGroup,

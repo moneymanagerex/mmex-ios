@@ -11,20 +11,21 @@ struct AttachmentListView: View {
     typealias MainData = AttachmentData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-    let features = RepositoryFeatures(
+
+    // new attachments are created from the items that contain them
+    static let features = RepositoryFeatures(
         canCreate : false,
         canCopy   : false
     )
-    @State var search: AttachmentSearch = .init()
-
-    // new attachments are created from the items that contain them
     static let initData = AttachmentData(
     )
+
+    @State var search: AttachmentSearch = .init()
 
     var body: some View {
         RepositoryListView(
             vm: vm,
-            features: features,
+            features: Self.features,
             vmList: vm.attachmentList,
             groupChoice: vm.attachmentGroup.choice,
             vmGroup: $vm.attachmentGroup,

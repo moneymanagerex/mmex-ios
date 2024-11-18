@@ -27,7 +27,7 @@ extension GroupTheme {
 }
 
 extension GroupTheme {
-    func fold(_ isExpanded: Bool) -> some View {
+    static func fold(_ isExpanded: Bool) -> some View {
         Image(systemName: isExpanded ? "chevron.down.circle.fill" : "chevron.right.circle")
             .foregroundColor(.gray)
     }
@@ -42,7 +42,7 @@ extension GroupTheme {
             case .foldName:
                 HStack {
                     if let isExpanded {
-                        fold(isExpanded)
+                        Self.fold(isExpanded)
                     }
                     nameView()
                         .font(.headline.smallCaps())
@@ -66,7 +66,7 @@ extension GroupTheme {
                         BadgeCount(count: count)
                     }
                     if let isExpanded {
-                        fold(isExpanded)
+                        Self.fold(isExpanded)
                     }
                 }
             }

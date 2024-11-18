@@ -37,7 +37,7 @@ struct PayeeFormView: View {
                 let categoryOrder = vm.categoryList.evalTree.readyValue?.order,
                 let categoryPath  = vm.categoryList.evalPath.readyValue
             {
-                // TODO: category tree
+                // TODO: hierarchical picker
                 env.theme.field.view(edit, false, "Category", editView: {
                     Picker("", selection: $data.categoryId) {
                         Text("(none)").tag(DataId.void)
