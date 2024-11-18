@@ -15,8 +15,7 @@ struct TagSearch: SearchProtocol {
 }
 
 extension ViewModel {
-    func tagGroupIsVisible(_ g: Int, search: TagSearch
-    ) -> Bool? {
+    func tagGroupIsVisible(_ g: Int, search: TagSearch) -> Bool? {
         guard
             let listData  = tagList.data.readyValue,
             let groupData = tagGroup.readyValue
@@ -31,7 +30,9 @@ extension ViewModel {
     }
 
     func searchTagGroup(search: TagSearch, expand: Bool = false) {
+        if tagGroup.search { return }
         guard tagGroup.state == .ready else { return }
+        log.trace("DEBUG: ViewModel.searchTagGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< tagGroup.value.count {
             guard let isVisible = tagGroupIsVisible(g, search: search) else { return }
             tagGroup.value[g].isVisible = isVisible
@@ -39,5 +40,6 @@ extension ViewModel {
                 tagGroup.value[g].isExpanded = true
             }
         }
+        tagGroup.search = true
     }
 }

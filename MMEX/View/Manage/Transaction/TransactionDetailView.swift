@@ -123,7 +123,7 @@ struct TransactionDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                EnterEditView(
+                EnterFormView(
                     vm: vm,
                     txn: $editingTxn
                 )

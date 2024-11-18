@@ -55,6 +55,7 @@ struct CategoryGroup: GroupProtocol {
     let idleValue: ValueType = CategoryGroupTree()
 
     @Preference var choice: GroupChoice = .defaultValue
+    var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType
 
@@ -75,6 +76,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadCategoryGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         categoryGroup.choice = choice
+        categoryGroup.search = false
 
         let isMember: (DataId) -> Bool = switch choice {
         case .all       : { _ in true }
@@ -148,5 +150,23 @@ extension ViewModel {
 
     func unloadCategoryGroup() {
         categoryGroup.unload()
+    }
+}
+
+extension ViewModel {
+    func categoryGroupScanUnchecked(with f: @escaping (Int) -> Void) {
+        // assumption:
+        //   categoryList.evalTree.state == .ready
+        //   categoryGroup.state == .ready
+
+        var i = 0
+        while i < categoryGroup.value.order.count {
+            if categoryGroup.value.order[i].memberInGroup == .boolFalse {
+                i = categoryList.evalTree.value.order[i].next
+            } else {
+                f(i)
+                i += 1
+            }
+        }
     }
 }

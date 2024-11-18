@@ -19,84 +19,63 @@ struct CategorySearch: SearchProtocol {
 
 extension ViewModel {
     func searchCategory(search: CategorySearch) {
+        if categoryGroup.search { return }
         guard
             let listData = categoryList.data.readyValue,
             let evalTree = categoryList.evalTree.readyValue,
             categoryGroup.state == .ready
         else { return }
+        log.trace("DEBUG: ViewModel.searchCategory(\(search.key), main=\(Thread.isMainThread))")
 
         if search.isEmpty {
             categoryGroup.value.searchIsActive = false
-            var i = 0
-            while i < categoryGroup.value.order.count {
-                let node = evalTree.order[i]
-                if categoryGroup.value.order[i].memberInGroup == .boolFalse {
-                    i = evalTree.order[i].next
-                } else {
-                    categoryGroup.value.order[i].isVisible = node.level == 0
-                    categoryGroup.value.order[i].isExpanded = false
-                    i += 1
-                }
+            categoryGroupScanUnchecked { i in
+                let isVisible = evalTree.order[i].level == 0
+                self.categoryGroup.value.order[i].isVisible = isVisible
+                self.categoryGroup.value.order[i].isExpanded = false
             }
-            return
-        }
-
-        categoryGroup.value.searchIsActive = true
-        var i = 0
-        while i < categoryGroup.value.order.count {
-            let node = evalTree.order[i]
-            let memberInGroup = categoryGroup.value.order[i].memberInGroup
-            if memberInGroup == .boolFalse {
-                i = evalTree.order[i].next
-            } else {
+        } else {
+            categoryGroup.value.searchIsActive = true
+            categoryGroupScanUnchecked { i in
+                let id = evalTree.order[i].dataId
+                let memberInGroup = self.categoryGroup.value.order[i].memberInGroup
                 let memberInSearch: CategoryGroupMember =
-                if memberInGroup != .boolTrue { .boolFalse } else {
-                    search.match(self, listData[node.dataId]!) ? .boolTrue : .boolFalse
+                memberInGroup == .boolTrue && search.match(self, listData[id]!) ? .boolTrue : .boolFalse
+                self.categoryGroup.value.order[i].memberInSearch = memberInSearch
+                self.categoryGroup.value.order[i].isVisible      = memberInSearch == .boolTrue
+                self.categoryGroup.value.order[i].isExpanded     = false
+                guard memberInSearch == .boolTrue else { return }
+                var p = evalTree.order[i].parent
+                while p != -1, self.categoryGroup.value.order[p].memberInSearch == .boolFalse {
+                    self.categoryGroup.value.order[p].memberInSearch = .intermediate
+                    self.categoryGroup.value.order[p].isVisible      = true
+                    self.categoryGroup.value.order[p].isExpanded     = true
+                    p = evalTree.order[p].parent
                 }
-                categoryGroup.value.order[i].memberInSearch = memberInSearch
-                categoryGroup.value.order[i].isVisible = memberInSearch == .boolTrue
-                categoryGroup.value.order[i].isExpanded = false
-                i += 1
+                if p != -1 {
+                    self.categoryGroup.value.order[p].isExpanded = true
+                }
             }
-        }
-        for i in 0 ..< categoryGroup.value.order.count {
-            guard categoryGroup.value.order[i].memberInSearch == .boolTrue else { continue }
-            var p = evalTree.order[i].parent
-            while p != -1, categoryGroup.value.order[p].memberInSearch == .boolFalse {
-                categoryGroup.value.order[p].memberInSearch = .intermediate
-                categoryGroup.value.order[p].isVisible = true
-                categoryGroup.value.order[p].isExpanded = true
-                p = evalTree.order[p].parent
+            
+            var stack: [(Int, Int)] = []  // index, current count
+            categoryGroupScanUnchecked { i in
+                let level = evalTree.order[i].level
+                while stack.count > level {
+                    let (p, count) = stack.popLast()!
+                    self.categoryGroup.value.order[p].countInSearch = count
+                    if !stack.isEmpty {
+                        stack[stack.endIndex - 1].1 += count + 1
+                    }
+                }
+                // assertion: stack.count == node.level
+                stack.append((i, 0))
             }
-            if p != -1 {
-                categoryGroup.value.order[p].isExpanded = true
-            }
-        }
-
-        var stack: [(Int, Int)] = []  // index, current count
-        i = 0
-        while i < categoryGroup.value.order.count {
-            let node = evalTree.order[i]
-            while stack.count > node.level {
+            while !stack.isEmpty {
                 let (p, count) = stack.popLast()!
                 categoryGroup.value.order[p].countInSearch = count
                 if !stack.isEmpty {
                     stack[stack.endIndex - 1].1 += count + 1
                 }
-            }
-            // assertion: stack.count == node.level
-            if categoryGroup.value.order[i].memberInSearch == .boolFalse {
-                i = evalTree.order[i].next
-            } else {
-                stack.append((i, 0))
-                i += 1
-            }
-        }
-        while !stack.isEmpty {
-            let (p, count) = stack.popLast()!
-            categoryGroup.value.order[p].countInSearch = count
-            if !stack.isEmpty {
-                stack[stack.endIndex - 1].1 += count + 1
             }
         }
 
@@ -122,6 +101,8 @@ extension ViewModel {
             }.joined(separator: ""),
             terminator: ""
         ) }
+        
+        categoryGroup.search = true
     }
     
     func expandCategory(_ i: Int) {
@@ -130,7 +111,7 @@ extension ViewModel {
             categoryGroup.state == .ready
         else { return }
 
-        let next  = evalTree.order[i].next
+        let next = evalTree.order[i].next
         let isExpanded = categoryGroup.value.order[i].isExpanded
 
         var j = i + 1

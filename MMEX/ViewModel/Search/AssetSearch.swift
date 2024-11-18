@@ -23,8 +23,7 @@ struct AssetSearch: SearchProtocol {
 }
 
 extension ViewModel {
-    func assetGroupIsVisible(_ g: Int, search: AssetSearch
-    ) -> Bool? {
+    func assetGroupIsVisible(_ g: Int, search: AssetSearch) -> Bool? {
         guard
             let listData  = assetList.data.readyValue,
             let groupData = assetGroup.readyValue
@@ -40,7 +39,9 @@ extension ViewModel {
     }
 
     func searchAssetGroup(search: AssetSearch, expand: Bool = false) {
+        if assetGroup.search { return }
         guard assetGroup.state == .ready else { return }
+        log.trace("DEBUG: ViewModel.searchAssetGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< assetGroup.value.count {
             guard let isVisible = assetGroupIsVisible(g, search: search) else { return }
             assetGroup.value[g].isVisible = isVisible
@@ -48,5 +49,6 @@ extension ViewModel {
                 assetGroup.value[g].isExpanded = true
             }
         }
+        assetGroup.search = true
     }
 }

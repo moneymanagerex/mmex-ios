@@ -25,6 +25,7 @@ struct AssetGroup: GroupProtocol {
     let idleValue: ValueType = []
 
     @Preference var choice: GroupChoice = .defaultValue
+    var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType
     
@@ -66,6 +67,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadAssetGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
 
         assetGroup.choice = choice
+        assetGroup.search = false
         assetGroup.groupCurrency = []
 
         switch choice {

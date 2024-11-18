@@ -8,13 +8,13 @@
 import SwiftUI
 import SQLite
 
-struct CategoryTree {
+struct CategoryListTree {
     var childrenById : [DataId: [DataId]] = [:]  // parentId or -1 -> [childId] (preserving order)
     var indexById    : [DataId: Int]      = [:]  // dataId -> index in order
-    var order        : [CategoryNode]     = []   // pre-order of category tree (one node per dataId)
+    var order        : [CategoryListNode]     = []   // pre-order of category tree (one node per dataId)
 }
 
-struct CategoryNode {
+struct CategoryListNode {
     var level  : Int     // depth of this node in tree, starting from 0 for root nodes
     var parent : Int     // index of the parent node in tree, or -1 if this is a root node
     var next   : Int     // next index for which order[next].level <= order[this].level
@@ -112,9 +112,9 @@ struct LoadCategoryUsed: LoadEvalProtocol {
 }
 
 struct LoadCategoryTree: LoadEvalProtocol {
-    typealias ValueType = CategoryTree
+    typealias ValueType = CategoryListTree
     let loadName: String = "Tree(\(CategoryRepository.repositoryName))"
-    let idleValue: ValueType = CategoryTree()
+    let idleValue: ValueType = CategoryListTree()
     var state: LoadState = .init()
     var value: ValueType
 
@@ -174,13 +174,13 @@ extension ViewModel {
     nonisolated func evalCategoryTree(
         data: [DataId: CategoryData],
         order: [DataId]
-    ) -> CategoryTree {
+    ) -> CategoryListTree {
         let childrenById = Dictionary(grouping: order) {
             data[$0]?.parentId ?? .void
         }
 
         var indexById: [DataId: Int] = [:]
-        var treeOrder: [CategoryNode] = []
+        var treeOrder: [CategoryListNode] = []
         var stack: [(Int, Int)] = [(-1, 0)]  // parent index, index in childrenById[parentId]
         var last: [Int] = []  // last index in order for each level
         while !stack.isEmpty {
@@ -192,7 +192,7 @@ extension ViewModel {
                 continue
             }
             let childId = children[childrenIndex]
-            treeOrder.append(CategoryNode(
+            treeOrder.append(CategoryListNode(
                 level: level, parent: parentIndex, next: -1, dataId: childId
             ) )
             let childIndex = treeOrder.endIndex - 1
@@ -227,7 +227,7 @@ extension ViewModel {
             terminator: ""
         ) }
 
-        return CategoryTree(
+        return CategoryListTree(
             childrenById : childrenById,
             indexById    : indexById,
             order        : treeOrder
@@ -235,7 +235,7 @@ extension ViewModel {
     }
 }
 
-extension CategoryTree {
+extension CategoryListTree {
     func firstChild(underIndex index: Int) -> Int? {
         guard index >= 0 && index < order.count else { return nil }
         guard index + 1 < order.count else { return -1 }

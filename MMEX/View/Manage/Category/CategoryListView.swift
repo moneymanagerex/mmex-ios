@@ -31,7 +31,7 @@ struct CategoryListView: View {
 
     // short names
     var listData    : [DataId: CategoryData]? { vm.categoryList.data.readyValue }
-    var evalTree    : CategoryTree?           { vm.categoryList.evalTree.readyValue }
+    var evalTree    : CategoryListTree?       { vm.categoryList.evalTree.readyValue }
     var groupChoice : CategoryGroupChoice     { vm.categoryGroup.choice }
     var groupTree   : CategoryGroupTree?      { vm.categoryGroup.readyValue }
 
@@ -137,6 +137,7 @@ struct CategoryListView: View {
         .textInputAutocapitalization(.never)
         .onChange(of: debounce.output) { _, newValue in
             search.key = newValue
+            vm.categoryGroup.search = false
             vm.searchCategory(search: search)
         }
 

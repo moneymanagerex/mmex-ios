@@ -14,7 +14,7 @@ struct CategoryFormView: View {
     @State var edit: Bool
     
     var categoryPath : [DataId: String]? { vm.categoryList.evalPath.readyValue }
-    var categoryTree : CategoryTree?     { vm.categoryList.evalTree.readyValue }
+    var categoryTree : CategoryListTree?     { vm.categoryList.evalTree.readyValue }
     var dataIndex: Int? { categoryTree?.indexById[data.id] }
     
     func isDescendant(_ i: Int) -> Bool? {

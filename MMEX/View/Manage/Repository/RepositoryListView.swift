@@ -151,6 +151,7 @@ where GroupType.MainRepository == ListType.MainRepository,
         .textInputAutocapitalization(.never)
         .onChange(of: debounce.output) { _, newValue in
             search.key = newValue
+            vmGroup.search = false
             vm.searchGroup(vmGroup, search: search, expand: true)
         }
 
