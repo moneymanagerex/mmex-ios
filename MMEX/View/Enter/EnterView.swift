@@ -22,26 +22,32 @@ struct EnterView: View {
                 vm: vm,
                 txn: $newTxn
             )
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Dismiss") {
-                        dismiss()
-                        selectedTab = 0
-                        newTxn = TransactionData()
-                    }
+        }
+        .padding()
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Dismiss") {
+                    dismiss()
+                    selectedTab = 0
+                    newTxn = TransactionData()
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
-                        viewModel.addTransaction(txn: &newTxn)
-                        dismiss()
-                        selectedTab = 0
-                        newTxn = TransactionData()
-                    }
-                    .disabled(!newTxn.isValid)
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Add") {
+                    viewModel.addTransaction(txn: &newTxn)
+                    dismiss()
+                    selectedTab = 0
+                    newTxn = TransactionData()
+                }
+                .disabled(!newTxn.isValid)
+            }
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    hideKeyboard()
                 }
             }
         }
-        .padding()
         // .navigationBarTitle("Add Transaction", displayMode: .inline)
         .task {
             await load()
