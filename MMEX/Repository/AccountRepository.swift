@@ -151,7 +151,7 @@ struct AccountRepository: RepositoryProtocol {
         typealias I = InfotableRepository
         typealias S = StockRepository
         typealias T = TransactionRepository
-        typealias R = ScheduledRepository
+        typealias Q = ScheduledRepository
         let cond = "EXISTS (" + (I.table.select(1).where(
             I.table[I.col_name] == InfoKey.defaultAccountID.rawValue &&
             I.table[I.col_value] == cast(Self.table[Self.col_id]) as SQLite.Expression<String>
@@ -161,10 +161,10 @@ struct AccountRepository: RepositoryProtocol {
             T.table[T.col_accountId] == Self.table[Self.col_id]
         ) ).union(T.table.select(1).where(
             T.table[T.col_toAccountId] == Self.table[Self.col_id]
-        ) ).union(R.table.select(1).where(
-            R.table[T.col_accountId] == Self.table[Self.col_id]
-        ) ).union(R.table.select(1).where(
-            R.table[T.col_toAccountId] == Self.table[Self.col_id]
+        ) ).union(Q.table.select(1).where(
+            Q.table[T.col_accountId] == Self.table[Self.col_id]
+        ) ).union(Q.table.select(1).where(
+            Q.table[T.col_toAccountId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }

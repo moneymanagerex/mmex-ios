@@ -130,12 +130,12 @@ struct ScheduledRepository: RepositoryProtocol {
     }
 
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
-        typealias RP = ScheduledSplitRepository
+        typealias QP = ScheduledSplitRepository
         typealias GL = TagLinkRepository
         typealias FV = FieldValueRepository
         typealias D = AttachmentRepository
-        let cond = "EXISTS (" + (RP.table.select(1).where(
-            RP.table[RP.col_transId] == Self.table[Self.col_id]
+        let cond = "EXISTS (" + (QP.table.select(1).where(
+            QP.table[QP.col_transId] == Self.table[Self.col_id]
         ) ).union(GL.table.select(1).where(
             GL.table[GL.col_refType] == RefType.scheduled.rawValue &&
             GL.table[GL.col_refId] == Self.table[Self.col_id]
