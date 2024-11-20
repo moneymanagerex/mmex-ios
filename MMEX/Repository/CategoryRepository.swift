@@ -60,8 +60,8 @@ struct CategoryRepository: RepositoryProtocol {
         typealias P = PayeeRepository
         typealias T = TransactionRepository
         typealias TP = TransactionSplitRepository
-        typealias R = ScheduledRepository
-        typealias RP = ScheduledSplitRepository
+        typealias Q = ScheduledRepository
+        typealias QP = ScheduledSplitRepository
         typealias B = BudgetRepository
 
         let cond = "EXISTS (" + (P.table.select(1).where(
@@ -70,10 +70,10 @@ struct CategoryRepository: RepositoryProtocol {
             T.table[T.col_categId] == Self.table[Self.col_id]
         ) ).union(TP.table.select(1).where(
             TP.table[TP.col_categId] == Self.table[Self.col_id]
-        ) ).union(R.table.select(1).where(
-            R.table[R.col_categId] == Self.table[Self.col_id]
-        ) ).union(RP.table.select(1).where(
-            RP.table[RP.col_categId] == Self.table[Self.col_id]
+        ) ).union(Q.table.select(1).where(
+            Q.table[Q.col_categId] == Self.table[Self.col_id]
+        ) ).union(QP.table.select(1).where(
+            QP.table[QP.col_categId] == Self.table[Self.col_id]
         ) ).union(B.table.select(1).where(
             B.table[B.col_categId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
@@ -86,8 +86,8 @@ struct CategoryRepository: RepositoryProtocol {
         typealias P = PayeeRepository
         typealias T = TransactionRepository
         typealias TP = TransactionSplitRepository
-        typealias R = ScheduledRepository
-        typealias RP = ScheduledSplitRepository
+        typealias Q = ScheduledRepository
+        typealias QP = ScheduledSplitRepository
         typealias B = BudgetRepository
         let CP_table: SQLite.Table = C.table.alias("Parent")
 
@@ -103,10 +103,10 @@ struct CategoryRepository: RepositoryProtocol {
             T.table[T.col_categId] == Self.table[Self.col_id]
         ) ).union(TP.table.select(1).where(
             TP.table[TP.col_categId] == Self.table[Self.col_id]
-        ) ).union(R.table.select(1).where(
-            R.table[R.col_categId] == Self.table[Self.col_id]
-        ) ).union(RP.table.select(1).where(
-            RP.table[RP.col_categId] == Self.table[Self.col_id]
+        ) ).union(Q.table.select(1).where(
+            Q.table[Q.col_categId] == Self.table[Self.col_id]
+        ) ).union(QP.table.select(1).where(
+            QP.table[QP.col_categId] == Self.table[Self.col_id]
         ) ).union(B.table.select(1).where(
             B.table[B.col_categId] == Self.table[Self.col_id]
         ) ).expression.description + ")"

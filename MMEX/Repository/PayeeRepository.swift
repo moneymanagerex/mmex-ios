@@ -77,11 +77,11 @@ struct PayeeRepository: RepositoryProtocol {
 
     static func filterUsed(_ table: SQLite.Table) -> SQLite.Table {
         typealias T = TransactionRepository
-        typealias R = ScheduledRepository
+        typealias Q = ScheduledRepository
         let cond = "EXISTS (" + (T.table.select(1).where(
             T.table[T.col_payeeId] == Self.table[Self.col_id]
-        ) ).union(R.table.select(1).where(
-            R.table[R.col_payeeId] == Self.table[Self.col_id]
+        ) ).union(Q.table.select(1).where(
+            Q.table[Q.col_payeeId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }

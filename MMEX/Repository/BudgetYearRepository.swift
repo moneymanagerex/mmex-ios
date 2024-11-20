@@ -1,5 +1,5 @@
 //
-//  YearRepository.swift
+//  BudgetYearRepository.swift
 //  MMEX
 //
 //  Created 2024-09-26 by George Ef (george.a.ef@gmail.com)
@@ -8,8 +8,8 @@
 import Foundation
 import SQLite
 
-struct YearRepository: RepositoryProtocol {
-    typealias RepositoryData = YearData
+struct BudgetYearRepository: RepositoryProtocol {
+    typealias RepositoryData = BudgetYearData
 
     let db: Connection
 
@@ -32,14 +32,14 @@ struct YearRepository: RepositoryProtocol {
         )
     }
 
-    static func fetchData(_ row: SQLite.Row) -> YearData {
-        return YearData(
+    static func fetchData(_ row: SQLite.Row) -> BudgetYearData {
+        return BudgetYearData(
             id   : DataId(row[col_id]),
             name : row[col_name]
         )
     }
 
-    static func itemSetters(_ data: YearData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: BudgetYearData) -> [SQLite.Setter] {
         return [
             col_name <- data.name
         ]
@@ -54,9 +54,9 @@ struct YearRepository: RepositoryProtocol {
     }
 }
 
-extension YearRepository {
+extension BudgetYearRepository {
     // load all budget years
-    func load() -> [YearData]? {
+    func load() -> [BudgetYearData]? {
         return select(from: Self.table
             .order(Self.col_name)
         )

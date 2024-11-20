@@ -57,8 +57,8 @@ class ViewModel: ObservableObject {
     @Published var transactionList  : TransactionList  = .init()
     //@Published var transactionGroup : TransactionGroup = .init()
 
-    typealias R = ScheduledRepository
-    typealias RP = ScheduledSplitRepository
+    typealias Q = ScheduledRepository
+    typealias QP = ScheduledSplitRepository
     @Published var scheduledList  : ScheduledList  = .init()
     //@Published var scheduledGroup : ScheduledGroup = .init()
 
@@ -76,9 +76,9 @@ class ViewModel: ObservableObject {
     @Published var attachmentList  : AttachmentList  = .init()
     @Published var attachmentGroup : AttachmentGroup = .init()
 
-    typealias Y = YearRepository
+    typealias BY = BudgetYearRepository
     typealias B = BudgetRepository
-    typealias O = ReportRepository
+    typealias R = ReportRepository
 
     init(env: EnvironmentManager) {
         self.env = env

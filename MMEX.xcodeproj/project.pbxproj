@@ -18,10 +18,10 @@
 		920824042CA4ADC100388AB2 /* ScheduledSplitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824032CA4ADC100388AB2 /* ScheduledSplitData.swift */; };
 		920824062CA4AE0A00388AB2 /* TransactionSplitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824052CA4AE0A00388AB2 /* TransactionSplitRepository.swift */; };
 		920824082CA4B05700388AB2 /* ScheduledSplitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824072CA4B05700388AB2 /* ScheduledSplitRepository.swift */; };
-		9208240A2CA4C2AD00388AB2 /* YearData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824092CA4C2AD00388AB2 /* YearData.swift */; };
+		9208240A2CA4C2AD00388AB2 /* BudgetYearData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824092CA4C2AD00388AB2 /* BudgetYearData.swift */; };
 		9208240C2CA4C31B00388AB2 /* BudgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208240B2CA4C31B00388AB2 /* BudgetData.swift */; };
 		9208240E2CA4C4FA00388AB2 /* ReportData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208240D2CA4C4FA00388AB2 /* ReportData.swift */; };
-		920824102CA4C5CD00388AB2 /* YearRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208240F2CA4C5CD00388AB2 /* YearRepository.swift */; };
+		920824102CA4C5CD00388AB2 /* BudgetYearRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9208240F2CA4C5CD00388AB2 /* BudgetYearRepository.swift */; };
 		920824122CA4C6A400388AB2 /* BudgetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824112CA4C6A400388AB2 /* BudgetRepository.swift */; };
 		920824162CA4C95F00388AB2 /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824152CA4C95F00388AB2 /* ReportRepository.swift */; };
 		920824182CA4CF4300388AB2 /* AttachmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920824172CA4CF4300388AB2 /* AttachmentData.swift */; };
@@ -204,10 +204,10 @@
 		920824032CA4ADC100388AB2 /* ScheduledSplitData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledSplitData.swift; sourceTree = "<group>"; };
 		920824052CA4AE0A00388AB2 /* TransactionSplitRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionSplitRepository.swift; sourceTree = "<group>"; };
 		920824072CA4B05700388AB2 /* ScheduledSplitRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledSplitRepository.swift; sourceTree = "<group>"; };
-		920824092CA4C2AD00388AB2 /* YearData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YearData.swift; sourceTree = "<group>"; };
+		920824092CA4C2AD00388AB2 /* BudgetYearData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetYearData.swift; sourceTree = "<group>"; };
 		9208240B2CA4C31B00388AB2 /* BudgetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetData.swift; sourceTree = "<group>"; };
 		9208240D2CA4C4FA00388AB2 /* ReportData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportData.swift; sourceTree = "<group>"; };
-		9208240F2CA4C5CD00388AB2 /* YearRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YearRepository.swift; sourceTree = "<group>"; };
+		9208240F2CA4C5CD00388AB2 /* BudgetYearRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetYearRepository.swift; sourceTree = "<group>"; };
 		920824112CA4C6A400388AB2 /* BudgetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetRepository.swift; sourceTree = "<group>"; };
 		920824152CA4C95F00388AB2 /* ReportRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		920824172CA4CF4300388AB2 /* AttachmentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentData.swift; sourceTree = "<group>"; };
@@ -733,7 +733,7 @@
 				9208242B2CA615B400388AB2 /* FieldRepository.swift */,
 				9208242D2CA617FB00388AB2 /* FieldValueRepository.swift */,
 				920824192CA4D35700388AB2 /* AttachmentRepository.swift */,
-				9208240F2CA4C5CD00388AB2 /* YearRepository.swift */,
+				9208240F2CA4C5CD00388AB2 /* BudgetYearRepository.swift */,
 				920824112CA4C6A400388AB2 /* BudgetRepository.swift */,
 				920824152CA4C95F00388AB2 /* ReportRepository.swift */,
 			);
@@ -818,7 +818,7 @@
 				920824272CA60E8400388AB2 /* FieldData.swift */,
 				920824292CA60FD900388AB2 /* FieldValueData.swift */,
 				920824172CA4CF4300388AB2 /* AttachmentData.swift */,
-				920824092CA4C2AD00388AB2 /* YearData.swift */,
+				920824092CA4C2AD00388AB2 /* BudgetYearData.swift */,
 				9208240B2CA4C31B00388AB2 /* BudgetData.swift */,
 				9208240D2CA4C4FA00388AB2 /* ReportData.swift */,
 				925EABBB2CD78A65003CEAB3 /* JournalData.swift */,
@@ -1028,7 +1028,7 @@
 				925EABAC2CCF826F003CEAB3 /* CategoryValidation.swift in Sources */,
 				925EAC292CDABF9F003CEAB3 /* FieldList.swift in Sources */,
 				927B122F2CDE83DF00AEA52F /* EnterList.swift in Sources */,
-				9208240A2CA4C2AD00388AB2 /* YearData.swift in Sources */,
+				9208240A2CA4C2AD00388AB2 /* BudgetYearData.swift in Sources */,
 				924353392CCD2F310052E4BC /* CurrencySearch.swift in Sources */,
 				925EAC152CDA8EEA003CEAB3 /* TagListView.swift in Sources */,
 				9243533B2CCD2F610052E4BC /* AccountSearch.swift in Sources */,
@@ -1069,7 +1069,7 @@
 				927B123B2CE0B41D00AEA52F /* SettingsReload.swift in Sources */,
 				925EAC172CDA8EF5003CEAB3 /* TagFormView.swift in Sources */,
 				924353172CC51F8E0052E4BC /* StockReload.swift in Sources */,
-				920824102CA4C5CD00388AB2 /* YearRepository.swift in Sources */,
+				920824102CA4C5CD00388AB2 /* BudgetYearRepository.swift in Sources */,
 				925EABB62CD6E6EF003CEAB3 /* InfotableList.swift in Sources */,
 				920824202CA4E5C200388AB2 /* TagLinkData.swift in Sources */,
 				A3C142652C8ED8EA00D3CEC0 /* AccountFormView.swift in Sources */,
