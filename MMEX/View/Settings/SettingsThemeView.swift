@@ -204,6 +204,14 @@ struct SettingsThemeView: View {
         .navigationTitle("Theme")
         .listSectionSpacing(10)
         .scrollDismissesKeyboard(.immediately)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    hideKeyboard()
+                }
+            }
+        }
         .onAppear {
             categoryDelimiter = env.theme.categoryDelimiter
         }
