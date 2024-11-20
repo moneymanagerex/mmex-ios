@@ -50,6 +50,12 @@ struct RepositoryEditView<
                         }
                     }
                 }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        hideKeyboard()
+                    }
+                }
             }
             .alert(isPresented: $alertIsPresented) {
                 Alert(
