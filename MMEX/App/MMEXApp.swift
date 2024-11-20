@@ -20,9 +20,8 @@ struct MMEXApp: App {
 
     func track(env: EnvironmentManager) {
         log.debug("DEBUG: MMEXApp.track()")
-        var userId = env.track.userId
-        if userId.isEmpty {
-            userId = String(format: "ios_%@", TimestampString(Date()).string)
+        if env.track.userId.isEmpty {
+            env.track.userId = String(format: "ios_%@", TimestampString(Date()).string)
         }
 
         if env.track.sendUsage == .boolTrue {
@@ -30,7 +29,7 @@ struct MMEXApp: App {
                 true, appLifecycles: true, deepLinks: false, screenViews: false
             )
             Amplitude.instance().initializeApiKey("1e1fbc10354400d9c3392a89558d693d")
-            Amplitude.instance().setUserId(userId) // copy from/to Infotable.UID
+            Amplitude.instance().setUserId(env.track.userId) // copy from/to Infotable.UID
         }
     }
 
