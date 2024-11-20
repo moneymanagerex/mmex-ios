@@ -58,7 +58,8 @@ struct CategoryListView: View {
                     vm.loadCategoryGroup(choice: groupChoice)
                     vm.searchCategory(search: search)
                 }
-                .padding(.vertical, -5)
+                .padding(.top, 10)
+                .padding(.bottom, 15)
                 //.padding(.trailing, 50)
                 //.border(.red)
 
@@ -117,6 +118,8 @@ struct CategoryListView: View {
         }
         //.listStyle(.plain)
         .listSectionSpacing(.compact)
+        //.listRowSpacing(0)
+        .environment(\.defaultMinListRowHeight, 0)
         //.border(.red)
         .navigationTitle(CategoryData.dataName.1)
 
@@ -243,6 +246,8 @@ struct CategoryListView: View {
                     let id = evalTree.order[i].dataId
                     if groupTree.order[i].isVisible, let data = listData[id] {
                         itemView(i, data)
+                            .listRowSeparator(.hidden)
+                            //.border(.red)
                     }
                 }
             }
@@ -309,6 +314,7 @@ struct CategoryListView: View {
                     }
                 }
             }
+            .listRowInsets(.init(top: 6, leading: 20, bottom: 6, trailing: 20))
             
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 if Self.features.canDelete { Button {
