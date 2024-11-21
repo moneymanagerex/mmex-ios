@@ -103,7 +103,7 @@ struct InsightsView: View {
         .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
         .task {
             log.debug("DEBUG: InsightsView.onAppear(main=\(Thread.isMainThread))")
-            await vm.loadInsightsList()
+            await vm.reloadInsightsList()
         }
     }
 }

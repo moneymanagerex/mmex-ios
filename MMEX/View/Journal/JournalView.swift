@@ -70,7 +70,7 @@ struct JournalView: View {
         }
         .task {
             log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
-            await vm.loadTransactionList()
+            await vm.reloadTransactionList()
             if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                 accountId = defaultAccountId
             }

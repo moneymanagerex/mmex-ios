@@ -35,8 +35,8 @@ struct InfotableList: ListProtocol {
     var state : LoadState                     = .init()
     var count : LoadMainCount<MainRepository> = .init()
     var data  : LoadMainData<MainRepository>  = .init()
-    var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
     var used  : LoadMainUsed<MainRepository>  = .init()
+    var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
 
     var baseCurrencyId    : LoadInfotableValue<DataId> = .init(
         key: InfoKey.baseCurrencyID.rawValue,
@@ -55,7 +55,7 @@ struct InfotableList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadInfotableList() async {
+    func reloadInfotableList() async {
         guard infotableList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -74,6 +74,17 @@ extension ViewModel {
         guard infotableList.unloading() else { return }
         infotableList.data.unload()
         infotableList.order.unload()
+        infotableList.unloaded()
+    }
+
+    func clearInfotableList() {
+        guard infotableList.reloading() else { return }
+        infotableList.count.unload()
+        infotableList.data.unload()
+        infotableList.used.unload()
+        infotableList.order.unload()
+        infotableList.baseCurrencyId.unload()
+        infotableList.defaultAccountId.unload()
         infotableList.unloaded()
     }
 }

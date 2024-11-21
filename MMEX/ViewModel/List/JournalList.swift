@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension ViewModel {
-    func loadJournalList() async {
+    func reloadJournalList() async {
         guard journalList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -16,10 +16,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         journalList.loaded(ok: ok)
-    }
-
-    func unloadJournalList() {
-        guard journalList.unloading() else { return }
-        journalList.unloaded()
     }
 }

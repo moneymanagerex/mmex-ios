@@ -233,7 +233,7 @@ struct CategoryListView: View {
 
     private func load() async {
         log.trace("DEBUG: CategoryListView.load(main=\(Thread.isMainThread))")
-        await vm.loadCategoryList()
+        await vm.reloadCategoryList()
         vm.loadCategoryGroup(choice: groupChoice)
         vm.searchCategory(search: search)
     }

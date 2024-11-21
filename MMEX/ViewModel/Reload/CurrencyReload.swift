@@ -52,7 +52,7 @@ extension ViewModel {
 
         currencyList.order.unload()
 
-        await loadCurrencyList()
+        await reloadCurrencyList()
         loadCurrencyGroup(choice: currencyGroup.choice)
 
         // restore isExpanded

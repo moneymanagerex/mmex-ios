@@ -20,7 +20,7 @@ struct StockList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadStockList() async {
+    func reloadStockList() async {
         guard stockList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -40,6 +40,16 @@ extension ViewModel {
 
     func unloadStockList() {
         guard stockList.unloading() else { return }
+        stockList.data.unload()
+        stockList.used.unload()
+        stockList.order.unload()
+        stockList.att.unload()
+        stockList.unloaded()
+    }
+
+    func clearStockList() {
+        guard stockList.reloading() else { return }
+        stockList.count.unload()
         stockList.data.unload()
         stockList.used.unload()
         stockList.order.unload()

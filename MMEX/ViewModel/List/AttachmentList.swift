@@ -23,7 +23,7 @@ struct AttachmentList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadAttachmentList() async {
+    func reloadAttachmentList() async {
         guard attachmentList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -38,6 +38,15 @@ extension ViewModel {
     func unloadAttachmentList() {
         guard attachmentList.unloading() else { return }
         attachmentList.data.unload()
+        attachmentList.order.unload()
+        attachmentList.unloaded()
+    }
+
+    func clearAttachmentList() {
+        guard attachmentList.reloading() else { return }
+        attachmentList.count.unload()
+        attachmentList.data.unload()
+        attachmentList.used.unload()
         attachmentList.order.unload()
         attachmentList.unloaded()
     }
