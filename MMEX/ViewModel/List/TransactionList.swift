@@ -18,7 +18,7 @@ struct TransactionList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadTransactionList() async {
+    func loadTransactionList() async {
         guard transactionList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -49,13 +49,6 @@ extension ViewModel {
     }
 
     func unloadTransactionList() {
-        guard transactionList.unloading() else { return }
-        transactionList.data.unload()
-        transactionList.used.unload()
-        transactionList.unloaded()
-    }
-
-    func clearTransactionList() {
         guard transactionList.reloading() else { return }
         transactionList.count.unload()
         transactionList.data.unload()

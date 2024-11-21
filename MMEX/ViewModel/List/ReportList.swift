@@ -19,11 +19,12 @@ struct ReportList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadReportList() async {
+    func loadReportList() async {
         guard reportList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.reportList.data),
+                load(&taskGroup, keyPath: \Self.reportList.used),
                 load(&taskGroup, keyPath: \Self.reportList.order)
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
@@ -32,13 +33,6 @@ extension ViewModel {
     }
 
     func unloadReportList() {
-        guard reportList.unloading() else { return }
-        reportList.data.unload()
-        reportList.order.unload()
-        reportList.unloaded()
-    }
-
-    func clearReportList() {
         guard reportList.reloading() else { return }
         reportList.count.unload()
         reportList.data.unload()

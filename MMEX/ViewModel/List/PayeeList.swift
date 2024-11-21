@@ -20,7 +20,7 @@ struct PayeeList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadPayeeList() async {
+    func loadPayeeList() async {
         guard payeeList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -46,15 +46,6 @@ extension ViewModel {
     }
 
     func unloadPayeeList() {
-        guard payeeList.unloading() else { return }
-        payeeList.data.unload()
-        payeeList.used.unload()
-        payeeList.order.unload()
-        payeeList.att.unload()
-        payeeList.unloaded()
-    }
-
-    func clearPayeeList() {
         guard payeeList.reloading() else { return }
         payeeList.count.unload()
         payeeList.data.unload()

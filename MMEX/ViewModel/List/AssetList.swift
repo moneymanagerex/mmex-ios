@@ -20,7 +20,7 @@ struct AssetList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadAssetList() async {
+    func loadAssetList() async {
         guard assetList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -39,15 +39,6 @@ extension ViewModel {
     }
 
     func unloadAssetList() {
-        guard assetList.unloading() else { return }
-        assetList.data.unload()
-        assetList.used.unload()
-        assetList.order.unload()
-        assetList.att.unload()
-        assetList.unloaded()
-    }
-
-    func clearAssetList() {
         guard assetList.reloading() else { return }
         assetList.count.unload()
         assetList.data.unload()

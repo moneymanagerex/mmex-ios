@@ -23,11 +23,12 @@ struct AttachmentList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadAttachmentList() async {
+    func loadAttachmentList() async {
         guard attachmentList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.attachmentList.data),
+                load(&taskGroup, keyPath: \Self.attachmentList.used),
                 load(&taskGroup, keyPath: \Self.attachmentList.order)
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
@@ -36,13 +37,6 @@ extension ViewModel {
     }
 
     func unloadAttachmentList() {
-        guard attachmentList.unloading() else { return }
-        attachmentList.data.unload()
-        attachmentList.order.unload()
-        attachmentList.unloaded()
-    }
-
-    func clearAttachmentList() {
         guard attachmentList.reloading() else { return }
         attachmentList.count.unload()
         attachmentList.data.unload()

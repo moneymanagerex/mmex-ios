@@ -38,6 +38,13 @@ extension ViewModel {
     }
 
     func deleteAttachment(_ data: AttachmentData) -> String? {
+        guard let attachmentUsed = attachmentList.used.readyValue else {
+            return "* attachmentUsed is not loaded"
+        }
+        if attachmentUsed.contains(data.id) {
+            return "* Attachment #\(data.id.value) is used"
+        }
+
         guard let d = D(env) else {
             return "* Database is not available"
         }

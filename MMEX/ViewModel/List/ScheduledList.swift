@@ -18,7 +18,7 @@ struct ScheduledList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadScheduledList() async {
+    func loadScheduledList() async {
         guard scheduledList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -49,13 +49,6 @@ extension ViewModel {
     }
 
     func unloadScheduledList() {
-        guard scheduledList.unloading() else { return }
-        scheduledList.data.unload()
-        scheduledList.used.unload()
-        scheduledList.unloaded()
-    }
-
-    func clearScheduledList() {
         guard scheduledList.reloading() else { return }
         scheduledList.count.unload()
         scheduledList.data.unload()

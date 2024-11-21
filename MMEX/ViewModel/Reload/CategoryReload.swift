@@ -36,7 +36,7 @@ extension ViewModel {
 
         categoryList.order.unload()
 
-        await reloadCategoryList()
+        await loadCategoryList()
         loadCategoryGroup(choice: categoryGroup.choice)
 
         // TODO: restore isExpanded

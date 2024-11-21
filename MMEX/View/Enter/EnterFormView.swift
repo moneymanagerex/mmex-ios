@@ -263,7 +263,7 @@ struct EnterFormView: View {
             txn: .constant(TransactionData.sampleData[0])
         )
     }.padding() }
-    .task { await vm.reloadEnterList() }
+    .task { await vm.loadEnterList() }
     .environmentObject(env)
 }
 
@@ -276,6 +276,6 @@ struct EnterFormView: View {
             txn: .constant(TransactionData.sampleData[3])
         )
     }.padding() }
-    .task { await vm.reloadEnterList() }
+    .task { await vm.loadEnterList() }
     .environmentObject(env)
 }
