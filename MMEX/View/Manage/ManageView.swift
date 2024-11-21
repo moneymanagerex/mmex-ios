@@ -133,8 +133,14 @@ struct ManageView: View {
         .listSectionSpacing(5)
         .padding(.top, -20)
         //.border(.red)
+
         .task {
-            await vm.loadManageList()
+            await vm.reloadManageList()
+        }
+        
+        .refreshable {
+            vm.clearList()
+            await vm.reloadManageList()
         }
     }
     

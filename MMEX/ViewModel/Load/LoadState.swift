@@ -47,8 +47,7 @@ extension LoadState {
     }
 
     mutating func unload() {
-        if self.rawValue > Self.loading.rawValue {
-            self = .idle
-        }
+        guard self.rawValue > Self.loading.rawValue else { return }
+        self = .idle
     }
 }

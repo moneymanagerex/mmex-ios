@@ -16,12 +16,13 @@ struct FieldList: ListProtocol {
     var data  : LoadMainData<MainRepository>  = .init()
     var used  : LoadMainUsed<MainRepository>  = .init()
     var order : LoadMainOrder<MainRepository> = .init(order: [
-        MainRepository.col_refType, MainRepository.col_description
+        MainRepository.col_refType,
+        MainRepository.col_description
     ])
 }
 
 extension ViewModel {
-    func loadFieldList() async {
+    func reloadFieldList() async {
         guard fieldList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -36,6 +37,15 @@ extension ViewModel {
 
     func unloadFieldList() {
         guard fieldList.unloading() else { return }
+        fieldList.data.unload()
+        fieldList.used.unload()
+        fieldList.order.unload()
+        fieldList.unloaded()
+    }
+
+    func clearFieldList() {
+        guard fieldList.reloading() else { return }
+        fieldList.count.unload()
         fieldList.data.unload()
         fieldList.used.unload()
         fieldList.order.unload()

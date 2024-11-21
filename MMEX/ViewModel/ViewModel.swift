@@ -76,9 +76,14 @@ class ViewModel: ObservableObject {
     @Published var attachmentList  : AttachmentList  = .init()
     @Published var attachmentGroup : AttachmentGroup = .init()
 
-    typealias BY = BudgetYearRepository
+    typealias Y = YearRepository
+    @Published var yearList  : YearList  = .init()
+
     typealias B = BudgetRepository
+    @Published var budgetList  : BudgetList  = .init()
+
     typealias R = ReportRepository
+    @Published var reportList  : ReportList  = .init()
 
     init(env: EnvironmentManager) {
         self.env = env
@@ -93,7 +98,7 @@ extension ViewModel {
             return self[keyPath: keyPath].state == .ready
         }
         let loadName = self[keyPath: keyPath].loadName
-        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         let value = await self[keyPath: keyPath].fetchValue(env: self.env)
         if let value {
             self[keyPath: keyPath].value = value
@@ -115,7 +120,7 @@ extension ViewModel {
             return self[keyPath: keyPath].state == .ready
         }
         let loadName = self[keyPath: keyPath].loadName
-        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
         if let value {
             self[keyPath: keyPath].value = value
@@ -138,7 +143,7 @@ extension ViewModel {
             return self[keyPath: keyPath].state == .ready
         }
         let loadName = self[keyPath: keyPath].loadName
-        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
             let value = await self[keyPath: keyPath].fetchValue(env: self.env)
             let ok = value != nil
@@ -166,7 +171,7 @@ extension ViewModel {
             return self[keyPath: keyPath].state == .ready
         }
         let loadName = self[keyPath: keyPath].loadName
-        log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+        //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
             let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
             let ok = value != nil

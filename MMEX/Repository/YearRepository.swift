@@ -8,8 +8,8 @@
 import Foundation
 import SQLite
 
-struct BudgetYearRepository: RepositoryProtocol {
-    typealias RepositoryData = BudgetYearData
+struct YearRepository: RepositoryProtocol {
+    typealias RepositoryData = YearData
 
     let db: Connection
 
@@ -32,14 +32,14 @@ struct BudgetYearRepository: RepositoryProtocol {
         )
     }
 
-    static func fetchData(_ row: SQLite.Row) -> BudgetYearData {
-        return BudgetYearData(
+    static func fetchData(_ row: SQLite.Row) -> YearData {
+        return YearData(
             id   : DataId(row[col_id]),
             name : row[col_name]
         )
     }
 
-    static func itemSetters(_ data: BudgetYearData) -> [SQLite.Setter] {
+    static func itemSetters(_ data: YearData) -> [SQLite.Setter] {
         return [
             col_name <- data.name
         ]
@@ -54,9 +54,9 @@ struct BudgetYearRepository: RepositoryProtocol {
     }
 }
 
-extension BudgetYearRepository {
+extension YearRepository {
     // load all budget years
-    func load() -> [BudgetYearData]? {
+    func load() -> [YearData]? {
         return select(from: Self.table
             .order(Self.col_name)
         )

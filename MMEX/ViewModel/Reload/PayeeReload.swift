@@ -65,7 +65,7 @@ extension ViewModel {
             }
         }
 
-        await loadPayeeList()
+        await reloadPayeeList()
         loadPayeeGroup(choice: payeeGroup.choice)
 
         // restore isExpanded

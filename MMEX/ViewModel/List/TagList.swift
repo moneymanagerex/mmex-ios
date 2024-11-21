@@ -19,7 +19,7 @@ struct TagList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadTagList() async {
+    func reloadTagList() async {
         guard tagList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -34,6 +34,15 @@ extension ViewModel {
 
     func unloadTagList() {
         guard tagList.unloading() else { return }
+        tagList.data.unload()
+        tagList.used.unload()
+        tagList.order.unload()
+        tagList.unloaded()
+    }
+
+    func clearTagList() {
+        guard tagList.reloading() else { return }
+        tagList.count.unload()
         tagList.data.unload()
         tagList.used.unload()
         tagList.order.unload()

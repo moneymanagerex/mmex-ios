@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension ViewModel {
-    func loadEnterList() async {
+    func reloadEnterList() async {
         guard enterList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -32,10 +32,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         } }
         enterList.loaded(ok: ok)
-    }
-
-    func unloadEnterList() {
-        guard enterList.unloading() else { return }
-        enterList.unloaded()
     }
 }

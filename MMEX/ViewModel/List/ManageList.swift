@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension ViewModel {
-    func loadManageList() async {
+    func reloadManageList() async {
         guard manageList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -24,26 +24,12 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.tagList.count),
                 load(&taskGroup, keyPath: \Self.fieldList.count),
                 load(&taskGroup, keyPath: \Self.attachmentList.count),
+                load(&taskGroup, keyPath: \Self.yearList.count),
+                load(&taskGroup, keyPath: \Self.budgetList.count),
+                load(&taskGroup, keyPath: \Self.reportList.count),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
         manageList.loaded(ok: ok)
-    }
-
-    func unloadManegeList() {
-        guard manageList.unloading() else { return }
-        infotableList.count.unload()
-        currencyList.count.unload()
-        accountList.count.unload()
-        assetList.count.unload()
-        stockList.count.unload()
-        categoryList.count.unload()
-        payeeList.count.unload()
-        transactionList.count.unload()
-        scheduledList.count.unload()
-        tagList.count.unload()
-        fieldList.count.unload()
-        attachmentList.count.unload()
-        manageList.unloaded()
     }
 }

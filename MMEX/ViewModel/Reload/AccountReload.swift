@@ -83,7 +83,7 @@ extension ViewModel {
             }
         }
 
-        await loadAccountList()
+        await reloadAccountList()
         loadAccountGroup(choice: accountGroup.choice)
 
         // restore isExpanded

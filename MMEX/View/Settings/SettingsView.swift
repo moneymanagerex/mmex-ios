@@ -146,7 +146,7 @@ struct SettingsView: View {
         //.border(.red)
         .task {
             log.trace("DEBUG: SettingsView.load(main=\(Thread.isMainThread))")
-            await vm.loadSettingsList()
+            await vm.reloadSettingsList()
             baseCurrencyId    = vm.infotableList.baseCurrencyId.value
             defaultAccountId  = vm.infotableList.defaultAccountId.value
         }

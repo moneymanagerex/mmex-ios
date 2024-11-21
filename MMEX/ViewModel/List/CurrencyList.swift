@@ -17,6 +17,7 @@ struct CurrencyList: ListProtocol {
     var name  : LoadMainName<MainRepository>  = .init { $0[MainRepository.col_name] }
     var used  : LoadMainUsed<MainRepository>  = .init()
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
+
     var info  : LoadMainValue<MainRepository, CurrencyInfo> = .init(
         table : MainRepository.filterUsed(MainRepository.table),
         with  : { row in CurrencyInfo(MainRepository.fetchData(row)) }
@@ -30,7 +31,7 @@ struct CurrencyList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadCurrencyList() async {
+    func reloadCurrencyList() async {
         guard currencyList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -49,6 +50,18 @@ extension ViewModel {
         currencyList.data.unload()
         currencyList.used.unload()
         currencyList.order.unload()
+        currencyList.history.unload()
+        currencyList.unloaded()
+    }
+
+    func clearCurrencyList() {
+        guard currencyList.reloading() else { return }
+        currencyList.count.unload()
+        currencyList.data.unload()
+        currencyList.name.unload()
+        currencyList.used.unload()
+        currencyList.order.unload()
+        currencyList.info.unload()
         currencyList.history.unload()
         currencyList.unloaded()
     }

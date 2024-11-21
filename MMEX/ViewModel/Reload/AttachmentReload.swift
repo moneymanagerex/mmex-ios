@@ -33,7 +33,7 @@ extension ViewModel {
 
         attachmentList.order.unload()
 
-        await loadAttachmentList()
+        await reloadAttachmentList()
         loadAttachmentGroup(choice: attachmentGroup.choice)
 
         // restore isExpanded

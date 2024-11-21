@@ -243,7 +243,7 @@ where GroupType.MainRepository == ListType.MainRepository,
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(main=\(Thread.isMainThread))")
-        await vm.loadList(vmList)
+        await vm.reloadList(vmList)
         vm.loadGroup(vmGroup, choice: groupChoice)
         vm.searchGroup(vmGroup, search: search)
     }
