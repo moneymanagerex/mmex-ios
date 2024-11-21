@@ -31,7 +31,7 @@ struct CurrencyList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadCurrencyList() async {
+    func loadCurrencyList() async {
         guard currencyList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -46,15 +46,6 @@ extension ViewModel {
     }
 
     func unloadCurrencyList() {
-        guard currencyList.unloading() else { return }
-        currencyList.data.unload()
-        currencyList.used.unload()
-        currencyList.order.unload()
-        currencyList.history.unload()
-        currencyList.unloaded()
-    }
-
-    func clearCurrencyList() {
         guard currencyList.reloading() else { return }
         currencyList.count.unload()
         currencyList.data.unload()

@@ -24,7 +24,7 @@ extension LoadProtocol {
 
     mutating func unload() {
         guard state.unloading() else { return }
-        let loadName = self.loadName
+        //let loadName = self.loadName
         //log.trace("DEBUG: LoadProtocol.unload(\(loadName), main=\(Thread.isMainThread))")
         value = idleValue
         state.unloaded()

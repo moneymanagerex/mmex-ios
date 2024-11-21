@@ -33,7 +33,7 @@ extension ViewModel {
 
         tagList.order.unload()
 
-        await reloadTagList()
+        await loadTagList()
         loadTagGroup(choice: tagGroup.choice)
 
         // restore isExpanded

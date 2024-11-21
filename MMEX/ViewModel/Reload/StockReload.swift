@@ -65,7 +65,7 @@ extension ViewModel {
             }
         }
 
-        await reloadStockList()
+        await loadStockList()
         loadStockGroup(choice: stockGroup.choice)
 
         // restore isExpanded

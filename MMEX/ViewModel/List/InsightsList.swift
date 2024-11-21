@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension ViewModel {
-    func reloadInsightsList() async {
+    func loadInsightsList() async {
         guard insightsList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [

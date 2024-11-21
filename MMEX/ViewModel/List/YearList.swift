@@ -19,7 +19,7 @@ struct YearList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadYearList() async {
+    func loadYearList() async {
         guard yearList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -33,14 +33,6 @@ extension ViewModel {
     }
 
     func unloadYearList() {
-        guard yearList.unloading() else { return }
-        yearList.data.unload()
-        yearList.used.unload()
-        yearList.order.unload()
-        yearList.unloaded()
-    }
-
-    func clearYearList() {
         guard yearList.reloading() else { return }
         yearList.count.unload()
         yearList.data.unload()

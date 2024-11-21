@@ -22,11 +22,12 @@ struct BudgetList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadBudgetList() async {
+    func loadBudgetList() async {
         guard budgetList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.budgetList.data),
+                load(&taskGroup, keyPath: \Self.budgetList.used),
                 load(&taskGroup, keyPath: \Self.budgetList.order)
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
@@ -35,13 +36,6 @@ extension ViewModel {
     }
 
     func unloadBudgetList() {
-        guard budgetList.unloading() else { return }
-        budgetList.data.unload()
-        budgetList.order.unload()
-        budgetList.unloaded()
-    }
-
-    func clearBudgetList() {
         guard budgetList.reloading() else { return }
         budgetList.count.unload()
         budgetList.data.unload()

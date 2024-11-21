@@ -56,7 +56,7 @@ struct EnterView: View {
 
     private func load() async {
         log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
-        await vm.reloadEnterList()
+        await vm.loadEnterList()
 
         if newTxn.accountId.isVoid {
             if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {

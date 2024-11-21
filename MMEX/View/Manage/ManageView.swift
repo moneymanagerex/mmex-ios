@@ -135,12 +135,12 @@ struct ManageView: View {
         //.border(.red)
 
         .task {
-            await vm.reloadManageList()
+            await vm.loadManageList()
         }
         
         .refreshable {
-            vm.clearList()
-            await vm.reloadManageList()
+            vm.unloadList()
+            await vm.loadManageList()
         }
     }
     

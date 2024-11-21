@@ -83,7 +83,7 @@ extension ViewModel {
             }
         }
 
-        await reloadAssetList()
+        await loadAssetList()
         loadAssetGroup(choice: assetGroup.choice)
 
         // restore isExpanded

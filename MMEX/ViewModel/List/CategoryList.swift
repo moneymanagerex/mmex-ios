@@ -38,7 +38,7 @@ struct CategoryList: ListProtocol {
 }
 
 extension ViewModel {
-    func reloadCategoryList() async {
+    func loadCategoryList() async {
         guard categoryList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -62,17 +62,6 @@ extension ViewModel {
     }
 
     func unloadCategoryList() {
-        guard categoryList.unloading() else { return }
-        categoryList.evalPath.unload()
-        categoryList.evalUsed.unload()
-        categoryList.evalTree.unload()
-        categoryList.data.unload()
-        categoryList.used.unload()
-        categoryList.order.unload()
-        categoryList.unloaded()
-    }
-
-    func clearCategoryList() {
         guard categoryList.reloading() else { return }
         categoryList.evalPath.unload()
         categoryList.evalUsed.unload()
