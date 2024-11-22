@@ -79,6 +79,8 @@ extension ViewModel {
             searchBudgetPeriodGroup(search: search as! BudgetPeriodSearch, expand: expand)
         } else if GroupType.MainRepository.self == B.self {
             searchBudgetGroup(search: search as! BudgetSearch, expand: expand)
+        } else if GroupType.MainRepository.self == R.self {
+            searchReportGroup(search: search as! ReportSearch, expand: expand)
         }
     }
 }
