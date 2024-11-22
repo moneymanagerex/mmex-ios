@@ -23,5 +23,8 @@ extension BudgetPeriodData: DataProtocol {
 
 extension BudgetPeriodData {
     static let sampleData: [BudgetPeriodData] = [
+        BudgetPeriodData(id: 0, name: "2024"),
+        BudgetPeriodData(id: 1, name: "2024-01"),
+        BudgetPeriodData(id: 2, name: "2025"),
     ]
 }

@@ -149,6 +149,8 @@
 		92F6860B2CF110D900171A6A /* ReportSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6860A2CF110D900171A6A /* ReportSearch.swift */; };
 		92F6860D2CF111C800171A6A /* ReportValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6860C2CF111C800171A6A /* ReportValidation.swift */; };
 		92F6860F2CF112E200171A6A /* ReportReload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6860E2CF112E200171A6A /* ReportReload.swift */; };
+		92F686142CF11E5900171A6A /* BudgetPeriodListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686132CF11E5900171A6A /* BudgetPeriodListView.swift */; };
+		92F686162CF11EF900171A6A /* BudgetPeriodFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686152CF11EF900171A6A /* BudgetPeriodFormView.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
@@ -350,6 +352,8 @@
 		92F6860A2CF110D900171A6A /* ReportSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportSearch.swift; sourceTree = "<group>"; };
 		92F6860C2CF111C800171A6A /* ReportValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportValidation.swift; sourceTree = "<group>"; };
 		92F6860E2CF112E200171A6A /* ReportReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportReload.swift; sourceTree = "<group>"; };
+		92F686132CF11E5900171A6A /* BudgetPeriodListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetPeriodListView.swift; sourceTree = "<group>"; };
+		92F686152CF11EF900171A6A /* BudgetPeriodFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetPeriodFormView.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
@@ -478,6 +482,9 @@
 				A39B1B3B2C9A66CB003E5562 /* Transaction */,
 				925EAC182CDA8F0C003CEAB3 /* Tag */,
 				925EAC252CDAB11C003CEAB3 /* Attachment */,
+				92F686102CF11DED00171A6A /* BudgetPeriod */,
+				92F686122CF11E3300171A6A /* Budget */,
+				92F686112CF11E1700171A6A /* Report */,
 				A37E7D832C9AC14800B4ECFC /* ManageView.swift */,
 			);
 			path = Manage;
@@ -648,6 +655,29 @@
 				925EAC262CDAB134003CEAB3 /* AttachmentFormView.swift */,
 			);
 			path = Attachment;
+			sourceTree = "<group>";
+		};
+		92F686102CF11DED00171A6A /* BudgetPeriod */ = {
+			isa = PBXGroup;
+			children = (
+				92F686132CF11E5900171A6A /* BudgetPeriodListView.swift */,
+				92F686152CF11EF900171A6A /* BudgetPeriodFormView.swift */,
+			);
+			path = BudgetPeriod;
+			sourceTree = "<group>";
+		};
+		92F686112CF11E1700171A6A /* Report */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
+		92F686122CF11E3300171A6A /* Budget */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Budget;
 			sourceTree = "<group>";
 		};
 		A30061742CA3B57700011B1A /* Asset */ = {
@@ -1130,6 +1160,7 @@
 				920824202CA4E5C200388AB2 /* TagLinkData.swift in Sources */,
 				A3C142652C8ED8EA00D3CEC0 /* AccountFormView.swift in Sources */,
 				924353512CCD39850052E4BC /* PayeeList.swift in Sources */,
+				92F686142CF11E5900171A6A /* BudgetPeriodListView.swift in Sources */,
 				929EF6712CA3676B0051A3E6 /* MMEXDocument.swift in Sources */,
 				929EF6692CA034770051A3E6 /* Repository.swift in Sources */,
 				925EABAA2CCF8236003CEAB3 /* StockValidation.swift in Sources */,
@@ -1158,6 +1189,7 @@
 				925EAC222CDAB03B003CEAB3 /* AttachmentReload.swift in Sources */,
 				925EAC1E2CDAAD3F003CEAB3 /* AttachmentSearch.swift in Sources */,
 				92F6860B2CF110D900171A6A /* ReportSearch.swift in Sources */,
+				92F686162CF11EF900171A6A /* BudgetPeriodFormView.swift in Sources */,
 				925EAB9F2CCDDD77003CEAB3 /* CategorySearch.swift in Sources */,
 				924352EA2CAE1E480052E4BC /* StockFormView.swift in Sources */,
 				924352EB2CAE1E480052E4BC /* StockListView.swift in Sources */,
