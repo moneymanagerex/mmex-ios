@@ -57,7 +57,7 @@ extension ViewModel {
         search: SearchType,
         expand: Bool = false
     ) where GroupType.MainRepository.RepositoryData == SearchType.MainData {
-        if GroupType.MainRepository.self == U.self {
+        /**/   if GroupType.MainRepository.self == U.self {
             searchCurrencyGroup(search: search as! CurrencySearch)
         } else if GroupType.MainRepository.self == A.self {
             searchAccountGroup(search: search as! AccountSearch, expand: expand)
@@ -75,6 +75,8 @@ extension ViewModel {
             searchFieldGroup(search: search as! FieldSearch, expand: expand)
         } else if GroupType.MainRepository.self == D.self {
             searchAttachmentGroup(search: search as! AttachmentSearch, expand: expand)
+        } else if GroupType.MainRepository.self == BP.self {
+            searchBudgetPeriodGroup(search: search as! BudgetPeriodSearch, expand: expand)
         }
     }
 }

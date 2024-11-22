@@ -76,8 +76,9 @@ class ViewModel: ObservableObject {
     @Published var attachmentList  : AttachmentList  = .init()
     @Published var attachmentGroup : AttachmentGroup = .init()
 
-    typealias Y = YearRepository
-    @Published var yearList  : YearList  = .init()
+    typealias BP = BudgetPeriodRepository
+    @Published var budgetPeriodList  : BudgetPeriodList  = .init()
+    @Published var budgetPeriodGroup : BudgetPeriodGroup = .init()
 
     typealias B = BudgetRepository
     @Published var budgetList  : BudgetList  = .init()

@@ -10,7 +10,7 @@ import SQLite
 
 extension ViewModel {
     func reloadList<MainData: DataProtocol>(_ oldData: MainData?, _ newData: MainData?) async {
-        if MainData.self == U.RepositoryData.self {
+        /**/   if MainData.self == U.RepositoryData.self {
             await reloadCurrencyList(oldData as! CurrencyData?, newData as! CurrencyData?)
         } else if MainData.self == A.RepositoryData.self {
             await reloadAccountList(oldData as! AccountData?, newData as! AccountData?)
@@ -26,6 +26,8 @@ extension ViewModel {
             await reloadTagList(oldData as! TagData?, newData as! TagData?)
         } else if MainData.self == D.RepositoryData.self {
             await reloadAttachmentList(oldData as! AttachmentData?, newData as! AttachmentData?)
+        } else if MainData.self == BP.RepositoryData.self {
+            await reloadBudgetPeriodList(oldData as! BudgetPeriodData?, newData as! BudgetPeriodData?)
         }
     }
 }
