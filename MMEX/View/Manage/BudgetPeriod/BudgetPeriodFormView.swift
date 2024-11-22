@@ -2,7 +2,7 @@
 //  BudgetPeriodFormView.swift
 //  MMEX
 //
-//  2024-11-05: Edited by George Ef (george.a.ef@gmail.com)
+//  2024-11-22: Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI

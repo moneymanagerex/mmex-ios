@@ -96,8 +96,8 @@ struct StockFormView: View {
             } )
         }
 
-        Section {
-            env.theme.field.notes(edit, "Notes", $data.notes)
+        Section("Notes") {
+            env.theme.field.notes(edit, "", $data.notes)
         }
     }
 }

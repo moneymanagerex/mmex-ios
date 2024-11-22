@@ -1,29 +1,31 @@
 //
-//  StockListView.swift
+//  ReportListView.swift
 //  MMEX
 //
-//  2024-10-03: Created by George Ef (george.a.ef@gmail.com)
+//  2024-11-23: Edited by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
 
-struct StockListView: View {
-    typealias MainData = StockData
+struct ReportListView: View {
+    typealias MainData = ReportData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
-
+    
     static let features = RepositoryFeatures()
-    static let initData = StockData()
+    static let initData = ReportData(
+        active: true
+    )
 
-    @State var search: StockSearch = .init()
+    @State var search: ReportSearch = .init()
 
     var body: some View {
         RepositoryListView(
             vm: vm,
             features: Self.features,
-            vmList: vm.stockList,
-            groupChoice: vm.stockGroup.choice,
-            vmGroup: $vm.stockGroup,
+            vmList: vm.reportList,
+            groupChoice: vm.reportGroup.choice,
+            vmGroup: $vm.reportGroup,
             search: $search,
             initData: Self.initData,
             groupNameView: groupNameView,
@@ -32,7 +34,7 @@ struct StockListView: View {
             formView: formView
         )
         .onAppear {
-            let _ = log.debug("DEBUG: StockListView.onAppear()")
+            let _ = log.debug("DEBUG: ReportListView.onAppear()")
         }
     }
     
@@ -42,30 +44,24 @@ struct StockListView: View {
     }
     
     @ViewBuilder
-    func itemNameView(_ data: StockData) -> some View {
+    func itemNameView(_ data: ReportData) -> some View {
         Text(data.name)
+            .font(.caption)
     }
-
+    
     @ViewBuilder
-    func itemInfoView(_ data: StockData) -> some View {
-        if vm.stockGroup.choice == .account {
-            Text(data.symbol)
-        } else {
-            Text(vm.accountList.data.readyValue?[data.accountId]?.name ?? "")
+    func itemInfoView(_ data: ReportData) -> some View {
+        switch vm.reportGroup.choice {
+        case .group:
+            Text(data.active ? "Active" : "Inactive")
+        default:
+            Text(data.groupName)
         }
-        /*
-         if
-           let account = vm.accountList.data.readyValue?[data.accountId],
-           let formatter = vm.currencyList.info.readyValue?[account.currencyId]?.formatter
-         {
-           Text(data.purchaseValue.formatted(by: formatter))
-         }
-         */
     }
-
+    
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        StockFormView(
+        ReportFormView(
             vm: vm,
             data: data,
             edit: edit
@@ -77,7 +73,7 @@ struct StockListView: View {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView {
-        StockListView(
+        ReportListView(
             vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)

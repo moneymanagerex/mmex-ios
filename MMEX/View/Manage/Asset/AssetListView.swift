@@ -15,7 +15,7 @@ struct AssetListView: View {
 
     static let features = RepositoryFeatures()
     static let initData = AssetData(
-        status       : .open
+        status: .open
     )
 
     @State var search: AssetSearch = .init()

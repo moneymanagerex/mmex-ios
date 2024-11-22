@@ -13,8 +13,7 @@ struct BudgetPeriodListView: View {
     @ObservedObject var vm: ViewModel
     
     static let features = RepositoryFeatures()
-    static let initData = BudgetPeriodData(
-    )
+    static let initData = BudgetPeriodData()
 
     @State var search: BudgetPeriodSearch = .init()
 

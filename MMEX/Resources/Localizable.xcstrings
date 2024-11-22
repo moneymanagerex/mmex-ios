@@ -462,6 +462,9 @@
         }
       }
     },
+    "Description" : {
+
+    },
     "Developed by Lisheng Guan, George Ef" : {
       "localizations" : {
         "it" : {
@@ -698,6 +701,9 @@
     },
     "Loan" : {
       "extractionState" : "manual"
+    },
+    "Lua Content" : {
+
     },
     "Manage" : {
 
@@ -993,6 +999,9 @@
     "Splits" : {
 
     },
+    "SQL Content" : {
+
+    },
     "Start Date" : {
       "localizations" : {
         "it" : {
@@ -1035,6 +1044,9 @@
       }
     },
     "Tab Icons" : {
+
+    },
+    "Template Content" : {
 
     },
     "Term" : {

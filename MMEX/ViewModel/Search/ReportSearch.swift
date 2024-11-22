@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ReportSearch: SearchProtocol {
     var area: [SearchArea<ReportData>] = [
-        ("Name",        true,  {[ $0.name ]}, nil),
-        ("Group",       false, {[ $0.groupName ]}, nil),
-        ("SQL",         false, {[ $0.sqlContent ]}, nil),
-        ("Lua",         false, {[ $0.luaContent ]}, nil),
-        ("Template",    false, {[ $0.templateContent ]}, nil),
-        ("Description", false, {[ $0.description ]}, nil),
+        ("Name",             true,  {[ $0.name ]}, nil),
+        ("Group",            false, {[ $0.groupName ]}, nil),
+        ("Description",      false, {[ $0.description ]}, nil),
+        ("SQL Content",      false, {[ $0.sqlContent ]}, nil),
+        ("Lua Content",      false, {[ $0.luaContent ]}, nil),
+        ("Template Content", false, {[ $0.templateContent ]}, nil),
     ]
     var key: String = ""
 }

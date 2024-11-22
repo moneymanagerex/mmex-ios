@@ -28,12 +28,15 @@ extension FieldTheme {
 }
 
 extension FieldTheme {
+    @ViewBuilder
     func vstackName(_ name: String) -> some View {
-        Text(name)
-            .font(.body.smallCaps())
-            .fontWeight(.thin)
-            .dynamicTypeSize(.small)
-            .padding(0)
+        if !name.isEmpty {
+            Text(name)
+                .font(.body.smallCaps())
+                .fontWeight(.thin)
+                .dynamicTypeSize(.small)
+                .padding(0)
+        }
     }
 
     @ViewBuilder
@@ -137,6 +140,22 @@ extension FieldTheme {
         }, showView: {
             self.valueOrHint("N/A", text: text.wrappedValue)
                 .lineLimit(self.noteLines)
+        } )
+    }
+
+    @ViewBuilder
+    func code(
+        _ edit: Bool, _ name: String, _ text: Binding<String>
+    ) -> some View {
+        self.view(edit, name, editView: {
+            TextEditor(text: text)
+                .font(.caption.monospaced())
+                .textInputAutocapitalization(.never)
+                .frame(minHeight: 100, maxHeight: 400)
+        }, showView: {
+            self.valueOrHint("N/A", text: text.wrappedValue)
+                .font(.caption.monospaced())
+                .lineLimit(self.codeLines)
         } )
     }
 }
