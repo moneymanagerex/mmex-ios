@@ -51,11 +51,12 @@ struct PayeeGroup: GroupProtocol {
 extension ViewModel {
     func loadPayeeGroup(choice: PayeeGroupChoice) {
         guard
-            let listData     = payeeList.data.readyValue,
-            let listUsed     = payeeList.used.readyValue,
-            let listOrder    = payeeList.order.readyValue,
-            let listAtt      = payeeList.att.readyValue,
-            let categoryPath = categoryList.evalPath.readyValue
+            let listData      = payeeList.data.readyValue,
+            let listUsed      = payeeList.used.readyValue,
+            let listOrder     = payeeList.order.readyValue,
+            let listAtt       = payeeList.att.readyValue,
+            let categoryPath  = categoryList.evalPath.readyValue,
+            let categoryOrder = categoryList.evalTree.readyValue?.order
         else { return }
 
         guard payeeGroup.state.loading() else { return }
@@ -82,9 +83,9 @@ extension ViewModel {
             }
         case .category:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.categoryId }
-            payeeGroup.groupCategory = [.void] + categoryPath.compactMap {
-                dict[$0.key] != nil ? ($0.key, $0.value) : nil
-            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            payeeGroup.groupCategory = [.void] + categoryOrder.compactMap {
+                dict[$0.dataId] != nil ? $0.dataId : nil
+            }
             for g in payeeGroup.groupCategory {
                 let name = g == .void ? "(none)" : categoryPath[g] ?? "(unknown)"
                 payeeGroup.append(name, dict[g] ?? [], dict[g] != nil, true)

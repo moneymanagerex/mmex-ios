@@ -56,11 +56,12 @@ struct AssetGroup: GroupProtocol {
 extension ViewModel {
     func loadAssetGroup(choice: AssetGroupChoice) {
         guard
-            let listData     = assetList.data.readyValue,
-            let listUsed     = assetList.used.readyValue,
-            let listOrder    = assetList.order.readyValue,
-            let listAtt      = assetList.att.readyValue,
-            let currencyName = currencyList.name.readyValue
+            let listData      = assetList.data.readyValue,
+            let listUsed      = assetList.used.readyValue,
+            let listOrder     = assetList.order.readyValue,
+            let listAtt       = assetList.att.readyValue,
+            let currencyName  = currencyList.name.readyValue,
+            let currencyOrder = currencyList.order.readyValue
         else { return }
 
         guard assetGroup.state.loading() else { return }
@@ -91,9 +92,9 @@ extension ViewModel {
             }
         case .currency:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.currencyId }
-            assetGroup.groupCurrency = currencyName.compactMap {
-                dict[$0.key] != nil ? ($0.key, $0.value) : nil
-            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            assetGroup.groupCurrency = currencyOrder.compactMap {
+                dict[$0] != nil ? $0 : nil
+            }
             for g in assetGroup.groupCurrency {
                 let name = currencyName[g]
                 assetGroup.append(name, dict[g] ?? [], dict[g] != nil, true)

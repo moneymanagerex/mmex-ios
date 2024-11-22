@@ -11,9 +11,9 @@ struct StockSearch: SearchProtocol {
     var area: [SearchArea<StockData>] = [
         ("Name",       true,  {[ $0.name ]}, nil),
         ("Symbol",     false, {[ $0.symbol ]}, nil),
-        ("Account",    false, nil, { vm, data in [
-            vm.accountList.data.readyValue?[data.accountId]?.name ?? ""
-        ] } ),
+        ("Account",    false, nil, { vm, data in
+            vm.accountList.data.readyValue?[data.accountId].map { [$0.name] } ?? []
+        } ),
         ("Attachment", false, nil, { vm, data in
             (vm.accountList.att.readyValue?[data.id]?.map { $0.description } ?? []) +
             (vm.accountList.att.readyValue?[data.id]?.map { $0.filename } ?? [])

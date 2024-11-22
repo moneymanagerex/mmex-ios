@@ -82,6 +82,7 @@ class ViewModel: ObservableObject {
 
     typealias B = BudgetRepository
     @Published var budgetList  : BudgetList  = .init()
+    @Published var budgetGroup : BudgetGroup = .init()
 
     typealias R = ReportRepository
     @Published var reportList  : ReportList  = .init()

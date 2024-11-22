@@ -10,9 +10,9 @@ import SwiftUI
 struct PayeeSearch: SearchProtocol {
     var area: [SearchArea<PayeeData>] = [
         ("Name",       true,  {[ $0.name ]}, nil),
-        ("Category",   false, nil, { vm, data in [
-            vm.categoryList.evalPath.readyValue?[data.categoryId] ?? ""
-        ] } ),
+        ("Category",   false, nil, { vm, data in
+            vm.categoryList.evalPath.readyValue?[data.categoryId].map { [$0] } ?? []
+        } ),
         ("Notes",      false, {[ $0.notes ]}, nil),
         ("Attachment", false, nil, { vm, data in
             (vm.accountList.att.readyValue?[data.id]?.map { $0.description } ?? []) +

@@ -32,6 +32,8 @@ extension ViewModel {
             return attachmentList.used.readyValue?.contains(data.id)
         } else if DataType.self == BP.RepositoryData.self {
             return budgetPeriodList.used.readyValue?.contains(data.id)
+        } else if DataType.self == B.RepositoryData.self {
+            return budgetList.used.readyValue?.contains(data.id)
         }
         return nil
     }
@@ -65,6 +67,9 @@ extension ViewModel {
         } else if var data1 = data as? BudgetPeriodData {
             copyBudgetPeriod(&data1)
             data = data1 as! DataType
+        } else if var data1 = data as? BudgetData {
+            copyBudget(&data1)
+            data = data1 as! DataType
         }
     }
 
@@ -97,6 +102,9 @@ extension ViewModel {
         } else if var data1 = data as? BudgetPeriodData {
             error = updateBudgetPeriod(&data1)
             data = data1 as! DataType
+        } else if var data1 = data as? BudgetData {
+            error = updateBudget(&data1)
+            data = data1 as! DataType
         } else {
             error = "* unknown data type"
         }
@@ -122,6 +130,8 @@ extension ViewModel {
             return deleteAttachment(data)
         } else if let data = data as? BudgetPeriodData {
             return deleteBudgetPeriod(data)
+        } else if let data = data as? BudgetData {
+            return deleteBudget(data)
         }
         return "* unknown data type"
     }

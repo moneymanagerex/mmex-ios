@@ -25,7 +25,7 @@ extension ViewModel {
             let ok = [
                 load(&taskGroup, keyPath: \Self.reportList.data),
                 load(&taskGroup, keyPath: \Self.reportList.used),
-                load(&taskGroup, keyPath: \Self.reportList.order)
+                load(&taskGroup, keyPath: \Self.reportList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

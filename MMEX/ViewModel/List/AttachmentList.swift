@@ -29,7 +29,7 @@ extension ViewModel {
             let ok = [
                 load(&taskGroup, keyPath: \Self.attachmentList.data),
                 load(&taskGroup, keyPath: \Self.attachmentList.used),
-                load(&taskGroup, keyPath: \Self.attachmentList.order)
+                load(&taskGroup, keyPath: \Self.attachmentList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

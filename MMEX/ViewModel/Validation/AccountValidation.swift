@@ -33,7 +33,8 @@ extension ViewModel {
         }
 
         guard let dataName = a.selectId(from: A.table.filter(
-            A.table[A.col_id] == Int64(data.id) || A.table[A.col_name] == data.name
+            A.table[A.col_id] == Int64(data.id) ||
+            A.table[A.col_name] == data.name
         ) ) else {
             return "* Cannot fetch from database"
         }

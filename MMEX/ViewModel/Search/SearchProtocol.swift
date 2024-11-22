@@ -77,6 +77,8 @@ extension ViewModel {
             searchAttachmentGroup(search: search as! AttachmentSearch, expand: expand)
         } else if GroupType.MainRepository.self == BP.self {
             searchBudgetPeriodGroup(search: search as! BudgetPeriodSearch, expand: expand)
+        } else if GroupType.MainRepository.self == B.self {
+            searchBudgetGroup(search: search as! BudgetSearch, expand: expand)
         }
     }
 }
