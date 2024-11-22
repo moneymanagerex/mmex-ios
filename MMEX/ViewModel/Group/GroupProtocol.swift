@@ -65,6 +65,7 @@ extension ViewModel {
         else if MainRepository.self == D.self  { loadAttachmentGroup(choice: choice as! AttachmentGroupChoice) }
         else if MainRepository.self == BP.self { loadBudgetPeriodGroup(choice: choice as! BudgetPeriodGroupChoice) }
         else if MainRepository.self == B.self  { loadBudgetGroup(choice: choice as! BudgetGroupChoice) }
+        else if MainRepository.self == R.self  { loadReportGroup(choice: choice as! ReportGroupChoice) }
     }
 
     func unloadGroup<GroupType: GroupProtocol>(_ group: GroupType) {
@@ -80,6 +81,7 @@ extension ViewModel {
         else if MainRepository.self == D.self  { unloadAttachmentGroup() }
         else if MainRepository.self == BP.self { unloadBudgetPeriodGroup() }
         else if MainRepository.self == B.self  { unloadBudgetGroup() }
+        else if MainRepository.self == R.self  { unloadReportGroup() }
     }
 
     func unloadGroup() {
@@ -94,6 +96,7 @@ extension ViewModel {
         unloadAttachmentGroup()
         unloadBudgetPeriodGroup()
         unloadBudgetGroup()
+        unloadReportGroup()
     }
 
     func unloadAll() {

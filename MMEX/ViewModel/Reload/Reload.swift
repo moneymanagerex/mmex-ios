@@ -30,6 +30,8 @@ extension ViewModel {
             await reloadBudgetPeriod(oldData as! BudgetPeriodData?, newData as! BudgetPeriodData?)
         } else if MainData.self == B.RepositoryData.self {
             await reloadBudget(oldData as! BudgetData?, newData as! BudgetData?)
+        } else if MainData.self == R.RepositoryData.self {
+            await reloadReport(oldData as! ReportData?, newData as! ReportData?)
         }
     }
 }

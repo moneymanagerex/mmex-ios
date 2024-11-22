@@ -86,6 +86,7 @@ class ViewModel: ObservableObject {
 
     typealias R = ReportRepository
     @Published var reportList  : ReportList  = .init()
+    @Published var reportGroup : ReportGroup = .init()
 
     init(env: EnvironmentManager) {
         self.env = env
