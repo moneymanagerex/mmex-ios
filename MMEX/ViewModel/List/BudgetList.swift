@@ -24,14 +24,26 @@ struct BudgetList: ListProtocol {
 extension ViewModel {
     func loadBudgetList() async {
         guard budgetList.reloading() else { return }
-        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+        var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.budgetList.data),
                 load(&taskGroup, keyPath: \Self.budgetList.used),
-                load(&taskGroup, keyPath: \Self.budgetList.order)
+                load(&taskGroup, keyPath: \Self.budgetList.order),
+                // auxiliary
+                load(&taskGroup, keyPath: \Self.budgetPeriodList.data),
+                load(&taskGroup, keyPath: \Self.budgetPeriodList.order),
+                load(&taskGroup, keyPath: \Self.categoryList.data),
+                load(&taskGroup, keyPath: \Self.categoryList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
+        if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
+            let ok = [
+                load(&taskGroup, keyPath: \Self.categoryList.evalPath),
+                load(&taskGroup, keyPath: \Self.categoryList.evalTree),
+            ].allSatisfy { $0 }
+            return await taskGroupOk(taskGroup, ok)
+        } }
         budgetList.loaded(ok: ok)
     }
 

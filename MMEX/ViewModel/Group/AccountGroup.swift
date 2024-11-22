@@ -61,11 +61,12 @@ struct AccountGroup: GroupProtocol {
 extension ViewModel {
     func loadAccountGroup(choice: AccountGroupChoice) {
         guard
-            let listData     = accountList.data.readyValue,
-            let listUsed     = accountList.used.readyValue,
-            let listOrder    = accountList.order.readyValue,
-            let listAtt      = accountList.att.readyValue,
-            let currencyName = currencyList.name.readyValue
+            let listData      = accountList.data.readyValue,
+            let listUsed      = accountList.used.readyValue,
+            let listOrder     = accountList.order.readyValue,
+            let listAtt       = accountList.att.readyValue,
+            let currencyName  = currencyList.name.readyValue,
+            let currencyOrder = currencyList.order.readyValue
         else { return }
 
         guard accountGroup.state.loading() else { return }
@@ -102,9 +103,9 @@ extension ViewModel {
             }
         case .currency:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.currencyId }
-            accountGroup.groupCurrency = currencyName.compactMap {
-                dict[$0.key] != nil ? ($0.key, $0.value) : nil
-            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            accountGroup.groupCurrency = currencyOrder.compactMap {
+                dict[$0] != nil ? $0 : nil
+            }
             for g in accountGroup.groupCurrency {
                 let name = currencyName[g]
                 accountGroup.append(name, dict[g] ?? [], dict[g] != nil, true)

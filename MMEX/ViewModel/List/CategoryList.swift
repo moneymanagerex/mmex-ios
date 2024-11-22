@@ -33,8 +33,8 @@ struct CategoryList: ListProtocol {
     )
 
     var evalPath : LoadCategoryPath = .init()
-    var evalUsed : LoadCategoryUsed = .init()
     var evalTree : LoadCategoryTree = .init()
+    var evalUsed : LoadCategoryUsed = .init()
 }
 
 extension ViewModel {
@@ -53,8 +53,8 @@ extension ViewModel {
         if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
                 load(&taskGroup, keyPath: \Self.categoryList.evalPath),
-                load(&taskGroup, keyPath: \Self.categoryList.evalUsed),
                 load(&taskGroup, keyPath: \Self.categoryList.evalTree),
+                load(&taskGroup, keyPath: \Self.categoryList.evalUsed),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         } }
@@ -64,8 +64,8 @@ extension ViewModel {
     func unloadCategoryList() {
         guard categoryList.reloading() else { return }
         categoryList.evalPath.unload()
-        categoryList.evalUsed.unload()
         categoryList.evalTree.unload()
+        categoryList.evalUsed.unload()
         categoryList.count.unload()
         categoryList.data.unload()
         categoryList.used.unload()
@@ -92,26 +92,6 @@ struct LoadCategoryPath: LoadEvalProtocol {
     }
 }
 
-struct LoadCategoryUsed: LoadEvalProtocol {
-    typealias ValueType = Set<DataId>
-    let loadName: String = "UsedClosure(\(CategoryRepository.repositoryName))"
-    let idleValue: ValueType = []
-    var state: LoadState = .init()
-    var value: ValueType
-
-    init() {
-        self.value = idleValue
-    }
-
-    nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
-        guard
-            let data = await vm.categoryList.data.readyValue,
-            let used = await vm.categoryList.used.readyValue
-        else { return nil }
-        return vm.evalCategoryUsedClosure(data: data, used: used)
-    }
-}
-
 struct LoadCategoryTree: LoadEvalProtocol {
     typealias ValueType = CategoryListTree
     let loadName: String = "Tree(\(CategoryRepository.repositoryName))"
@@ -129,6 +109,26 @@ struct LoadCategoryTree: LoadEvalProtocol {
             let order = await vm.categoryList.order.readyValue
         else { return nil }
         return vm.evalCategoryTree(data: data, order: order)
+    }
+}
+
+struct LoadCategoryUsed: LoadEvalProtocol {
+    typealias ValueType = Set<DataId>
+    let loadName: String = "UsedClosure(\(CategoryRepository.repositoryName))"
+    let idleValue: ValueType = []
+    var state: LoadState = .init()
+    var value: ValueType
+
+    init() {
+        self.value = idleValue
+    }
+
+    nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
+        guard
+            let data = await vm.categoryList.data.readyValue,
+            let used = await vm.categoryList.used.readyValue
+        else { return nil }
+        return vm.evalCategoryUsedClosure(data: data, used: used)
     }
 }
 
@@ -154,22 +154,6 @@ extension ViewModel {
             }
         }
         return path
-    }
-
-    nonisolated func evalCategoryUsedClosure(
-        data: [DataId: CategoryData],
-        used: Set<DataId>
-    ) -> Set<DataId> {
-        var usedClosure: Set<DataId> = []
-        for id in data.keys {
-            guard used.contains(id) else { continue }
-            var pid = id
-            while !pid.isVoid, !usedClosure.contains(pid) {
-                usedClosure.insert(pid)
-                pid = data[pid]?.parentId ?? .void
-            }
-        }
-        return usedClosure
     }
 
     nonisolated func evalCategoryTree(
@@ -233,6 +217,22 @@ extension ViewModel {
             indexById    : indexById,
             order        : treeOrder
         )
+    }
+
+    nonisolated func evalCategoryUsedClosure(
+        data: [DataId: CategoryData],
+        used: Set<DataId>
+    ) -> Set<DataId> {
+        var usedClosure: Set<DataId> = []
+        for id in data.keys {
+            guard used.contains(id) else { continue }
+            var pid = id
+            while !pid.isVoid, !usedClosure.contains(pid) {
+                usedClosure.insert(pid)
+                pid = data[pid]?.parentId ?? .void
+            }
+        }
+        return usedClosure
     }
 }
 

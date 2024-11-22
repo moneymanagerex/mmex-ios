@@ -25,7 +25,7 @@ extension ViewModel {
             let ok = [
                 load(&taskGroup, keyPath: \Self.budgetPeriodList.data),
                 load(&taskGroup, keyPath: \Self.budgetPeriodList.used),
-                load(&taskGroup, keyPath: \Self.budgetPeriodList.order)
+                load(&taskGroup, keyPath: \Self.budgetPeriodList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

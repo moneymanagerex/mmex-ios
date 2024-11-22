@@ -36,13 +36,13 @@ enum BudgetFrequency: String, EnumCollateNoCase {
 }
 
 struct BudgetData: ExportableEntity {
-    var id        : DataId          = .void
-    var periodId  : DataId          = .void
-    var categId   : DataId          = .void
-    var frequency : BudgetFrequency = .defaultValue
-    var amount    : Double          = 0.0
-    var notes     : String          = ""
-    var active    : Bool            = false
+    var id         : DataId          = .void
+    var periodId   : DataId          = .void
+    var categoryId : DataId          = .void
+    var frequency  : BudgetFrequency = .defaultValue
+    var amount     : Double          = 0.0
+    var notes      : String          = ""
+    var active     : Bool            = false
 }
 
 extension BudgetData: DataProtocol {

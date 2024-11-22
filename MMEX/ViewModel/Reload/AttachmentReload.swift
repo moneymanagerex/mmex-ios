@@ -9,8 +9,21 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadAttachmentList(_ oldData: AttachmentData?, _ newData: AttachmentData?) async {
-        log.trace("DEBUG: ViewModel.reloadAttachmentList(main=\(Thread.isMainThread))")
+    func reloadAttachment(_ oldData: AttachmentData?, _ newData: AttachmentData?) async {
+        log.trace("DEBUG: ViewModel.reloadAttachment(main=\(Thread.isMainThread))")
+
+        if oldData?.refType == .account || newData?.refType == .account {
+            reloadAccountAtt()
+        }
+        if oldData?.refType == .asset || newData?.refType == .asset {
+            reloadAssetAtt()
+        }
+        if oldData?.refType == .stock || newData?.refType == .stock {
+            reloadStockAtt()
+        }
+        if oldData?.refType == .payee || newData?.refType == .payee {
+            reloadPayeeAtt()
+        }
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = attachmentGroup.readyValue?.map { $0.isExpanded }
@@ -46,6 +59,6 @@ extension ViewModel {
             }
         } }
 
-        log.info("INFO: ViewModel.reloadAttachmentList(main=\(Thread.isMainThread))")
+        log.info("INFO: ViewModel.reloadAttachment(main=\(Thread.isMainThread))")
     }
 }

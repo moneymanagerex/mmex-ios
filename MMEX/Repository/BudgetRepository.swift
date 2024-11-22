@@ -52,20 +52,20 @@ struct BudgetRepository: RepositoryProtocol {
 
     static func fetchData(_ row: SQLite.Row) -> BudgetData {
         return BudgetData(
-            id        : DataId(row[col_id]),
-            periodId  : DataId(row[col_yearId] ?? -1),
-            categId   : DataId(row[col_categId] ?? -1),
-            frequency : BudgetFrequency(collateNoCase: row[col_period]),
-            amount    : row[cast_amount],
-            notes     : row[col_notes] ?? "",
-            active    : row[col_active] ?? 0 != 0
+            id         : DataId(row[col_id]),
+            periodId   : DataId(row[col_yearId] ?? -1),
+            categoryId : DataId(row[col_categId] ?? -1),
+            frequency  : BudgetFrequency(collateNoCase: row[col_period]),
+            amount     : row[cast_amount],
+            notes      : row[col_notes] ?? "",
+            active     : row[col_active] ?? 0 != 0
         )
     }
 
     static func itemSetters(_ data: BudgetData) -> [SQLite.Setter] {
         return [
             col_yearId  <- Int64(data.periodId),
-            col_categId <- Int64(data.categId),
+            col_categId <- Int64(data.categoryId),
             col_period  <- data.frequency.rawValue,
             col_amount  <- data.amount,
             col_notes   <- data.notes,

@@ -408,7 +408,7 @@ extension Repository {
             for var data in BudgetData.sampleData {
                 let id = data.id
                 data.periodId  = budgetYearMap[data.periodId] ?? data.periodId
-                data.categId = categoryMap[data.categId]  ?? data.categId
+                data.categoryId = categoryMap[data.categoryId]  ?? data.categoryId
                 guard repo.insert(&data) else { return false }
                 budgetTableMap[id] = data.id
             }

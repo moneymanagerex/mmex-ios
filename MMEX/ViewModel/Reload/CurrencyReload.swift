@@ -9,8 +9,8 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadCurrencyList(_ oldData: CurrencyData?, _ newData: CurrencyData?) async {
-        log.trace("DEBUG: ViewModel.reloadCurrencyList(main=\(Thread.isMainThread))")
+    func reloadCurrency(_ oldData: CurrencyData?, _ newData: CurrencyData?) async {
+        log.trace("DEBUG: ViewModel.reloadCurrency(main=\(Thread.isMainThread))")
 
         // vm.currencyList.info contains only used currencies
         if let _ = oldData, let newData {
@@ -62,6 +62,45 @@ extension ViewModel {
             }
         }
 
-        log.info("INFO: ViewModel.reloadCurrencyList(main=\(Thread.isMainThread))")
+        log.info("INFO: ViewModel.reloadCurrency(main=\(Thread.isMainThread))")
+    }
+
+    func reloadCurrencyUsed(_ oldId: DataId?, _ newId: DataId?) {
+        log.trace("DEBUG: ViewModel.reloadCurencyUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
+
+        if
+            let newId,
+            let currencyInfo = currencyList.info.readyValue,
+            currencyInfo[newId] == nil
+        {
+            if
+                let currencyData = currencyList.data.readyValue,
+                let newData = currencyData[newId]
+            {
+                if currencyList.info.state.unloading() {
+                    currencyList.info.value[newId] = CurrencyInfo(newData)
+                    currencyList.info.state.loaded()
+                }
+            } else {
+                currencyList.info.unload()
+            }
+        }
+
+        guard let currencyUsed = currencyList.used.readyValue else { return }
+        if let oldId, newId != oldId {
+            if currencyGroup.choice == .used {
+                unloadCurrencyGroup()
+            }
+            currencyList.unload()
+            currencyList.used.unload()
+        } else if let newId, !currencyUsed.contains(newId) {
+            if currencyGroup.choice == .used {
+                unloadCurrencyGroup()
+            }
+            if currencyList.used.state.unloading() {
+                currencyList.used.value.insert(newId)
+                currencyList.used.state.loaded()
+            }
+        }
     }
 }

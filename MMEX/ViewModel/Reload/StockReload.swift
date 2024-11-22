@@ -9,28 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadStockList(_ oldData: StockData?, _ newData: StockData?) async {
-        log.trace("DEBUG: ViewModel.reloadStockList(main=\(Thread.isMainThread))")
+    func reloadStock(_ oldData: StockData?, _ newData: StockData?) async {
+        log.trace("DEBUG: ViewModel.reloadStock(main=\(Thread.isMainThread))")
 
-        var accountChanged = false
-        if let accountUsed = accountList.used.readyValue {
-            let oldAccountId = oldData?.accountId
-            let newAccountId = newData?.accountId
-            if let oldAccountId, newAccountId != oldAccountId {
-                accountList.used.unload()
-                accountChanged = true
-            } else if let newAccountId, !accountUsed.contains(newAccountId) {
-                if accountList.used.state.unloading() {
-                    accountList.used.value.insert(newAccountId)
-                    accountList.used.state.loaded()
-                    accountChanged = true
-                }
-            }
-        }
-        if accountChanged {
-            unloadAccountGroup()
-            accountList.unload()
-        }
+        reloadAccountUsed(oldData?.accountId, newData?.accountId)
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = stockGroup.readyValue?.map { $0.isExpanded }
@@ -83,6 +65,36 @@ extension ViewModel {
             }
         } }
 
-        log.info("INFO: ViewModel.reloadStockList(main=\(Thread.isMainThread))")
+        log.info("INFO: ViewModel.reloadStock(main=\(Thread.isMainThread))")
+    }
+
+    func reloadStockUsed(_ oldId: DataId?, _ newId: DataId?) {
+        log.trace("DEBUG: ViewModel.reloadStockUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
+        guard let stockUsed = stockList.used.readyValue else { return }
+        if let oldId, newId != oldId {
+            if stockGroup.choice == .used {
+                unloadStockGroup()
+            }
+            stockList.unload()
+            stockList.used.unload()
+        } else if let newId, !stockUsed.contains(newId) {
+            if stockGroup.choice == .used {
+                unloadStockGroup()
+            }
+            if stockList.used.state.unloading() {
+                stockList.used.value.insert(newId)
+                stockList.used.state.loaded()
+            }
+        }
+    }
+
+    func reloadStockAtt() {
+        log.trace("DEBUG: ViewModel.reloadStockAtt(main=\(Thread.isMainThread))")
+        guard stockList.att.state == .ready else { return }
+        if stockGroup.choice == .attachment {
+            unloadStockGroup()
+        }
+        stockList.unload()
+        stockList.att.unload()
     }
 }
