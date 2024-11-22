@@ -36,6 +36,10 @@ struct ReportFormView: View {
             } )
         }
 
+        Section("Description") {
+            env.theme.field.notes(edit, "", $data.description)
+        }
+
         Section("SQL Content") {
             env.theme.field.code(edit, "", $data.sqlContent)
         }
@@ -46,10 +50,6 @@ struct ReportFormView: View {
 
         Section("Template Content") {
             env.theme.field.code(edit, "", $data.templateContent)
-        }
-
-        Section("Description") {
-            env.theme.field.notes(edit, "", $data.description)
         }
     }
 }
