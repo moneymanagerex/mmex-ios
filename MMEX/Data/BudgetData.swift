@@ -60,7 +60,7 @@ struct BudgetData: ExportableEntity {
 }
 
 extension BudgetData: DataProtocol {
-    static let dataName = ("Budget", "Budget")
+    static let dataName = ("Budget", "Budgets")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
