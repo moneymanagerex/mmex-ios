@@ -14,7 +14,7 @@ struct TagListView: View {
     
     static let features = RepositoryFeatures()
     static let initData = TagData(
-        active     : true
+        active: true
     )
 
     @State var search: TagSearch = .init()

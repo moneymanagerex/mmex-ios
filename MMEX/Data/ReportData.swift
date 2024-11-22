@@ -29,6 +29,11 @@ extension ReportData: DataProtocol {
 
 extension ReportData {
     static let sampleData: [ReportData] = [
-        
+        ReportData(
+            id: 1, name: "report 1", active: true
+        ),
+        ReportData(
+            id: 1, name: "report 2", active: true
+        ),
     ]
 }

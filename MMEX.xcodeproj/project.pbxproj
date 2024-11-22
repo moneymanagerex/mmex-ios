@@ -153,6 +153,8 @@
 		92F686162CF11EF900171A6A /* BudgetPeriodFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686152CF11EF900171A6A /* BudgetPeriodFormView.swift */; };
 		92F686182CF1220D00171A6A /* BudgetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686172CF1220D00171A6A /* BudgetListView.swift */; };
 		92F6861A2CF1221B00171A6A /* BudgetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686192CF1221B00171A6A /* BudgetFormView.swift */; };
+		92F6861C2CF1416B00171A6A /* ReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6861B2CF1416B00171A6A /* ReportListView.swift */; };
+		92F6861E2CF1427400171A6A /* ReportFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6861D2CF1427400171A6A /* ReportFormView.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
@@ -358,6 +360,8 @@
 		92F686152CF11EF900171A6A /* BudgetPeriodFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetPeriodFormView.swift; sourceTree = "<group>"; };
 		92F686172CF1220D00171A6A /* BudgetListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetListView.swift; sourceTree = "<group>"; };
 		92F686192CF1221B00171A6A /* BudgetFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetFormView.swift; sourceTree = "<group>"; };
+		92F6861B2CF1416B00171A6A /* ReportListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportListView.swift; sourceTree = "<group>"; };
+		92F6861D2CF1427400171A6A /* ReportFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportFormView.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
@@ -673,6 +677,8 @@
 		92F686112CF11E1700171A6A /* Report */ = {
 			isa = PBXGroup;
 			children = (
+				92F6861B2CF1416B00171A6A /* ReportListView.swift */,
+				92F6861D2CF1427400171A6A /* ReportFormView.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -1050,7 +1056,9 @@
 				A37E7D922C9AC60000B4ECFC /* ContactSupportView.swift in Sources */,
 				9208240E2CA4C4FA00388AB2 /* ReportData.swift in Sources */,
 				92F685FB2CF0CBB800171A6A /* BudgetPeriodSearch.swift in Sources */,
+				92F6861C2CF1416B00171A6A /* ReportListView.swift in Sources */,
 				925EAB952CCD8341003CEAB3 /* RepositoryReadView.swift in Sources */,
+				92F6861E2CF1427400171A6A /* ReportFormView.swift in Sources */,
 				929EF6652C9FF3FB0051A3E6 /* StockRepository.swift in Sources */,
 				92F685FD2CF0CD7400171A6A /* BudgetPeriodValidation.swift in Sources */,
 				925EABB82CD6FAC7003CEAB3 /* TransactionList.swift in Sources */,
