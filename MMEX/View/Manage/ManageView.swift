@@ -100,6 +100,12 @@ struct ManageView: View {
                         count: vm.budgetPeriodList.count
                     )
                 }
+                NavigationLink(destination: BudgetListView(vm: vm)) {
+                    env.theme.group.manageItem(
+                        nameView: { Text(BudgetData.dataName.1) },
+                        count: vm.budgetList.count
+                    )
+                }
                 /*
                 Text("More coming soon ...")
                     .foregroundColor(.accentColor)

@@ -29,5 +29,6 @@ extension ReportData: DataProtocol {
 
 extension ReportData {
     static let sampleData: [ReportData] = [
+        
     ]
 }

@@ -44,7 +44,7 @@ extension ViewModel {
     func loadBudgetGroup(choice: BudgetGroupChoice) {
         guard
             let listData      = budgetList.data.readyValue,
-            let listOrder     = budgetList.order.readyValue,
+            let evalOrder     = budgetList.evalOrder.readyValue,
             let periodData    = budgetPeriodList.data.readyValue,
             let periodOrder   = budgetPeriodList.order.readyValue,
             let categoryPath  = categoryList.evalPath.readyValue,
@@ -61,8 +61,8 @@ extension ViewModel {
 
         switch choice {
         case .period:
-            let dict = Dictionary(grouping: listOrder) { listData[$0]!.periodId }
-            budgetGroup.groupPeriod = periodOrder.compactMap {
+            let dict = Dictionary(grouping: evalOrder) { listData[$0]!.periodId }
+            budgetGroup.groupPeriod = [.void] + periodOrder.compactMap {
                 dict[$0] != nil ? $0 : nil
             }
             for g in budgetGroup.groupPeriod {
@@ -70,16 +70,16 @@ extension ViewModel {
                 budgetGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .category:
-            let dict = Dictionary(grouping: listOrder) { listData[$0]!.categoryId }
+            let dict = Dictionary(grouping: evalOrder) { listData[$0]!.categoryId }
             budgetGroup.groupCategory = [.void] + categoryOrder.compactMap {
                 dict[$0.dataId] != nil ? $0.dataId : nil
             }
             for g in budgetGroup.groupCategory {
-                let name = g == .void ? "(none)" : categoryPath[g] ?? "(unknown)"
+                let name = g.isVoid ? "(none)" : categoryPath[g] ?? "(unknown)"
                 budgetGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .active:
-            let dict = Dictionary(grouping: listOrder) { listData[$0]!.active }
+            let dict = Dictionary(grouping: evalOrder) { listData[$0]!.active }
             for g in BudgetGroup.groupActive {
                 let name = g ? "Active" : "Other"
                 budgetGroup.append(name, dict[g] ?? [], true, g)

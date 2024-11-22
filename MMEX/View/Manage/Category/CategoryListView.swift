@@ -350,6 +350,7 @@ struct CategoryListView: View {
         } }
     }
 
+    @ViewBuilder
     func formView(_ data: Binding<CategoryData>, _ edit: Bool) -> some View {
         CategoryFormView(
             vm: vm,

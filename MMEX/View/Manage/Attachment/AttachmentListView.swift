@@ -41,10 +41,12 @@ struct AttachmentListView: View {
         }
     }
     
+    @ViewBuilder
     func groupNameView(_ g: Int, _ name: String?) -> some View {
         Text(name ?? "(unknown group name)")
     }
 
+    @ViewBuilder
     func itemNameView(_ data: AttachmentData) -> some View {
         // filename may be long
         // to avoid overlap, use VStack and small font size
@@ -57,10 +59,12 @@ struct AttachmentListView: View {
         }
     }
 
+    @ViewBuilder
     func itemInfoView(_ data: AttachmentData) -> some View {
         EmptyView()
     }
     
+    @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         AttachmentFormView(
             vm: vm,

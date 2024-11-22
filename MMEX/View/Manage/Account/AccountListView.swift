@@ -40,41 +40,41 @@ struct AccountListView: View {
         }
     }
     
+    @ViewBuilder
     func groupNameView(_ g: Int, _ name: String?) -> some View {
-        Group {
-            switch vm.accountGroup.choice {
-            case .type:
-                HStack {
-                    Image(systemName: AccountGroup.groupType[g].symbolName)
-                        .frame(minWidth: 10, alignment: .leading)
-                        .font(.system(size: 16, weight: .bold))
-                    //.foregroundColor(.blue)
-                    Text(name ?? "(unknown group name)")
-                    //.font(.subheadline)
-                    //.padding(.leading)
-                }
-            default:
+        switch vm.accountGroup.choice {
+        case .type:
+            HStack {
+                Image(systemName: AccountGroup.groupType[g].symbolName)
+                    .frame(minWidth: 10, alignment: .leading)
+                    .font(.system(size: 16, weight: .bold))
+                //.foregroundColor(.blue)
                 Text(name ?? "(unknown group name)")
+                //.font(.subheadline)
+                //.padding(.leading)
             }
+        default:
+            Text(name ?? "(unknown group name)")
         }
     }
     
+    @ViewBuilder
     func itemNameView(_ data: AccountData) -> some View {
         Text(data.name)
     }
     
+    @ViewBuilder
     func itemInfoView(_ data: AccountData) -> some View {
-        Group {
-            if vm.accountGroup.choice == .type {
-                if let currencyName = vm.currencyList.name.readyValue {
-                    Text(currencyName[data.currencyId] ?? "")
-                }
-            } else {
-                Text(data.type.rawValue)
+        if vm.accountGroup.choice == .type {
+            if let currencyName = vm.currencyList.name.readyValue {
+                Text(currencyName[data.currencyId] ?? "")
             }
+        } else {
+            Text(data.type.rawValue)
         }
     }
 
+    @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         AccountFormView(
             vm: vm,

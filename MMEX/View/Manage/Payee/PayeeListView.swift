@@ -40,25 +40,27 @@ struct PayeeListView: View {
         }
     }
     
+    @ViewBuilder
     func groupNameView(_ g: Int, _ name: String?) -> some View {
         Text(name ?? "(unknown group name)")
     }
     
+    @ViewBuilder
     func itemNameView(_ data: PayeeData) -> some View {
         Text(data.name)
     }
     
+    @ViewBuilder
     func itemInfoView(_ data: PayeeData) -> some View {
-        Group {
-            if vm.payeeGroup.choice == .category {
-                Text(data.active ? "Active" : "Inactive")
-            } else {
-                //Text(vm.categoryList.data.readyValue?[data.categoryId]?.name ?? "")
-                Text(vm.categoryList.evalPath.readyValue?[data.categoryId] ?? "")
-            }
+        if vm.payeeGroup.choice == .category {
+            Text(data.active ? "Active" : "Inactive")
+        } else {
+            //Text(vm.categoryList.data.readyValue?[data.categoryId]?.name ?? "")
+            Text(vm.categoryList.evalPath.readyValue?[data.categoryId] ?? "")
         }
     }
     
+    @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         PayeeFormView(
             vm: vm,

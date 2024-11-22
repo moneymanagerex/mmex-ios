@@ -37,31 +37,34 @@ struct StockListView: View {
         }
     }
     
+    @ViewBuilder
     func groupNameView(_ g: Int, _ name: String?) -> some View {
         Text(name ?? "(unknown group name)")
     }
     
+    @ViewBuilder
     func itemNameView(_ data: StockData) -> some View {
         Text(data.name)
     }
 
+    @ViewBuilder
     func itemInfoView(_ data: StockData) -> some View {
-        Group {
-            if vm.stockGroup.choice == .account {
-                Text(data.symbol)
-            } else {
-                Text(vm.accountList.data.readyValue?[data.accountId]?.name ?? "")
-            }
-            /*
-            if let account = vm.accountList.data.readyValue?[data.accountId],
-               let formatter = vm.currencyList.info.readyValue?[account.currencyId]?.formatter
-            {
-                Text(data.purchaseValue.formatted(by: formatter))
-            }
-            */
+        if vm.stockGroup.choice == .account {
+            Text(data.symbol)
+        } else {
+            Text(vm.accountList.data.readyValue?[data.accountId]?.name ?? "")
         }
+        /*
+         if
+           let account = vm.accountList.data.readyValue?[data.accountId],
+           let formatter = vm.currencyList.info.readyValue?[account.currencyId]?.formatter
+         {
+           Text(data.purchaseValue.formatted(by: formatter))
+         }
+         */
     }
 
+    @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         StockFormView(
             vm: vm,
