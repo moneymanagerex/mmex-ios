@@ -1,5 +1,5 @@
 //
-//  TagFormView.swift
+//  BudgetPeriodFormView.swift
 //  MMEX
 //
 //  2024-11-05: Edited by George Ef (george.a.ef@gmail.com)
@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct TagFormView: View {
+struct BudgetPeriodFormView: View {
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
-    @Binding var data: TagData
+    @Binding var data: BudgetPeriodData
     @State var edit: Bool
 
     var body: some View {
@@ -21,33 +21,27 @@ struct TagFormView: View {
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
-
-            env.theme.field.view(edit, true, "Active", editView: {
-                Toggle(isOn: $data.active) { }
-            }, showView: {
-                Text(data.active ? "Yes" : "No")
-            } )
         }
     }
 }
 
-#Preview("\(TagData.sampleData[0].name) (show)") {
+#Preview("\(BudgetPeriodData.sampleData[0].name) (show)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { TagFormView(
+    Form { BudgetPeriodFormView(
         vm: vm,
-        data: .constant(TagData.sampleData[0]),
+        data: .constant(BudgetPeriodData.sampleData[0]),
         edit: false
     ) }
     .environmentObject(env)
 }
 
-#Preview("\(TagData.sampleData[0].name) (edit)") {
+#Preview("\(BudgetPeriodData.sampleData[0].name) (edit)") {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
-    Form { TagFormView(
+    Form { BudgetPeriodFormView(
         vm: vm,
-        data: .constant(TagData.sampleData[0]),
+        data: .constant(BudgetPeriodData.sampleData[0]),
         edit: true
     ) }
     .environmentObject(env)

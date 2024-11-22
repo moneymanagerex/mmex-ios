@@ -43,10 +43,10 @@ struct CategoryFormView: View {
             }
 
             env.theme.field.view(edit, "Name", editView: {
-                TextField("Cannot be empty!", text: $data.name)
+                TextField("Shall not be empty!", text: $data.name)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Cannot be empty!", text: data.name)
+                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
             
             env.theme.field.view(edit, true, "Active", editView: {

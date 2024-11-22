@@ -20,10 +20,10 @@ struct AssetFormView: View {
     var body: some View {
         Section {
             env.theme.field.view(edit, "Name", editView: {
-                TextField("Cannot be empty!", text: $data.name)
+                TextField("Shall not be empty!", text: $data.name)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Cannot be empty!", text: data.name)
+                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
             
             env.theme.field.view(edit, false, "Type", editView: {
@@ -63,7 +63,7 @@ struct AssetFormView: View {
                         }
                     }
                 }, showView: {
-                    env.theme.field.valueOrError("Cannot be empty!", text: currency?.name)
+                    env.theme.field.valueOrError("Shall not be empty!", text: currency?.name)
                 } )
             }
 

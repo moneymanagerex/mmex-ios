@@ -209,9 +209,6 @@
         }
       }
     },
-    "Cannot be empty!" : {
-
-    },
     "Cash" : {
       "extractionState" : "manual"
     },
@@ -705,9 +702,6 @@
     "Manage" : {
 
     },
-    "More coming soon ..." : {
-
-    },
     "More Insights Coming Soon..." : {
 
     },
@@ -960,6 +954,9 @@
           }
         }
       }
+    },
+    "Shall not be empty!" : {
+
     },
     "Shares" : {
       "extractionState" : "manual"
