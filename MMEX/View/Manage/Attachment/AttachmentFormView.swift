@@ -28,10 +28,10 @@ struct AttachmentFormView: View {
 
                 // TODO: select file
                 env.theme.field.view(edit, "Filename", editView: {
-                    TextField("Cannot be empty!", text: $data.filename)
+                    TextField("Shall not be empty!", text: $data.filename)
                         .textInputAutocapitalization(.words)
                 }, showView: {
-                    env.theme.field.valueOrError("Cannot be empty!", text: data.filename)
+                    env.theme.field.valueOrError("Shall not be empty!", text: data.filename)
                 } )
             }
         } else {

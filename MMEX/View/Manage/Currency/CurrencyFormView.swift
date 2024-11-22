@@ -22,17 +22,17 @@ struct CurrencyFormView: View {
     var body: some View {
         Section {
             env.theme.field.view(edit, "Name", editView: {
-                TextField("Cannot be empty!", text: $data.name)
+                TextField("Shall not be empty!", text: $data.name)
                     .textInputAutocapitalization(.sentences)
             }, showView: {
-                env.theme.field.valueOrError("Cannot be empty!", text: data.name)
+                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
             
             env.theme.field.view(edit, "Symbol", editView: {
-                TextField("Cannot be empty!", text: $data.symbol)
+                TextField("Shall not be empty!", text: $data.symbol)
                     .textInputAutocapitalization(.characters)
             }, showView: {
-                env.theme.field.valueOrError("Cannot be empty!", text: data.symbol)
+                env.theme.field.valueOrError("Shall not be empty!", text: data.symbol)
             } )
 
             env.theme.field.view(edit, false, "Type", editView: {

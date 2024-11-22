@@ -94,9 +94,17 @@ struct ManageView: View {
                         count: vm.attachmentList.count
                     )
                 }
+                NavigationLink(destination: BudgetPeriodListView(vm: vm)) {
+                    env.theme.group.manageItem(
+                        nameView: { Text(BudgetPeriodData.dataName.1) },
+                        count: vm.budgetPeriodList.count
+                    )
+                }
+                /*
                 Text("More coming soon ...")
                     .foregroundColor(.accentColor)
                     .opacity(0.6)
+                 */
             }
 
             groupTheme.section(
