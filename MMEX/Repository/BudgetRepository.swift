@@ -56,7 +56,7 @@ struct BudgetRepository: RepositoryProtocol {
             periodId   : DataId(row[col_yearId] ?? -1),
             categoryId : DataId(row[col_categId] ?? -1),
             frequency  : BudgetFrequency(collateNoCase: row[col_period]),
-            amount     : row[cast_amount],
+            flow       : row[cast_amount],
             notes      : row[col_notes] ?? "",
             active     : row[col_active] ?? 0 != 0
         )
@@ -67,7 +67,7 @@ struct BudgetRepository: RepositoryProtocol {
             col_yearId  <- Int64(data.periodId),
             col_categId <- Int64(data.categoryId),
             col_period  <- data.frequency.rawValue,
-            col_amount  <- data.amount,
+            col_amount  <- data.flow,
             col_notes   <- data.notes,
             col_active  <- data.active ? 1 : 0
         ]

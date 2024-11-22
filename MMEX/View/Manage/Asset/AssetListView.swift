@@ -39,32 +39,33 @@ struct AssetListView: View {
         }
     }
     
+    @ViewBuilder
     func groupNameView(_ g: Int, _ name: String?) -> some View {
         Text(name ?? "(unknown group name)")
     }
     
+    @ViewBuilder
     func itemNameView(_ data: AssetData) -> some View {
         Text(data.name)
     }
 
+    @ViewBuilder
     func itemInfoView(_ data: AssetData) -> some View {
-        Group {
-            if vm.assetGroup.choice == .type {
-                if let currencyName = vm.currencyList.name.readyValue {
-                    Text(currencyName[data.currencyId] ?? "")
-                }
-            } else {
-                Text(data.type.rawValue)
+        if vm.assetGroup.choice == .type {
+            if let currencyName = vm.currencyList.name.readyValue {
+                Text(currencyName[data.currencyId] ?? "")
             }
-            /*
-            if let formatter = vm.currencyList.info.readyValue?[asset.currencyId]?.formatter
-            {
-                Text(asset.value.formatted(by: formatter))
-            }
-            */
+        } else {
+            Text(data.type.rawValue)
         }
+        /*
+         if let formatter = vm.currencyList.info.readyValue?[asset.currencyId]?.formatter {
+           Text(asset.value.formatted(by: formatter))
+         }
+         */
     }
 
+    @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         AssetFormView(
             vm: vm,

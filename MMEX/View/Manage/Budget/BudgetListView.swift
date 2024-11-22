@@ -1,5 +1,5 @@
 //
-//  TagListView.swift
+//  BudgetListView.swift
 //  MMEX
 //
 //  2024-11-05: Edited by George Ef (george.a.ef@gmail.com)
@@ -7,25 +7,28 @@
 
 import SwiftUI
 
-struct TagListView: View {
-    typealias MainData = TagData
+struct BudgetListView: View {
+    typealias MainData = BudgetData
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     
     static let features = RepositoryFeatures()
-    static let initData = TagData(
+    static let initData = BudgetData(
         active     : true
     )
 
-    @State var search: TagSearch = .init()
+    @State var search: BudgetSearch = .init()
+
+    var baseCurrencyId: DataId? { vm.infotableList.baseCurrencyId.readyValue }
+    var formatter: CurrencyFormatter? { baseCurrencyId.map { vm.currencyList.info.readyValue?[$0]?.formatter } ?? nil }
 
     var body: some View {
         RepositoryListView(
             vm: vm,
             features: Self.features,
-            vmList: vm.tagList,
-            groupChoice: vm.tagGroup.choice,
-            vmGroup: $vm.tagGroup,
+            vmList: vm.budgetList,
+            groupChoice: vm.budgetGroup.choice,
+            vmGroup: $vm.budgetGroup,
             search: $search,
             initData: Self.initData,
             groupNameView: groupNameView,
@@ -34,7 +37,7 @@ struct TagListView: View {
             formView: formView
         )
         .onAppear {
-            let _ = log.debug("DEBUG: TagListView.onAppear()")
+            let _ = log.debug("DEBUG: BudgetListView.onAppear()")
         }
     }
     
@@ -44,22 +47,28 @@ struct TagListView: View {
     }
     
     @ViewBuilder
-    func itemNameView(_ data: TagData) -> some View {
-        Text(data.name)
+    func itemNameView(_ data: BudgetData) -> some View {
+        switch vm.budgetGroup.choice {
+        case .period:
+            Text(vm.categoryList.evalPath.readyValue?[data.categoryId] ?? "(unknown category)")
+        default:
+            Text(vm.budgetPeriodList.data.readyValue?[data.periodId]?.name ?? "(unknown period)")
+        }
     }
     
     @ViewBuilder
-    func itemInfoView(_ data: TagData) -> some View {
-        if vm.tagGroup.choice == .active {
-            EmptyView()
-        } else {
-            Text(data.active ? "Active" : "Inactive")
+    func itemInfoView(_ data: BudgetData) -> some View {
+        switch vm.budgetGroup.choice {
+        case .active:
+            Text(vm.categoryList.evalPath.readyValue?[data.categoryId] ?? "(unknown category)")
+        default:
+            Text(data.flow.formatted(by: formatter) + data.frequency.suffix)
         }
     }
     
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
-        TagFormView(
+        BudgetFormView(
             vm: vm,
             data: data,
             edit: edit
@@ -71,7 +80,7 @@ struct TagListView: View {
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView {
-        TagListView(
+        BudgetListView(
             vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)

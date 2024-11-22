@@ -37,18 +37,22 @@ struct BudgetPeriodListView: View {
         }
     }
 
+    @ViewBuilder
     func groupNameView(_ g: Int, _ name: String?) -> some View {
         Text(name ?? "(unknown group name)")
     }
 
+    @ViewBuilder
     func itemNameView(_ data: BudgetPeriodData) -> some View {
         Text(data.name)
     }
 
+    @ViewBuilder
     func itemInfoView(_ data: BudgetPeriodData) -> some View {
         EmptyView()
     }
 
+    @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         BudgetPeriodFormView(
             vm: vm,
