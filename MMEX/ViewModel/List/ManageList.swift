@@ -24,7 +24,7 @@ extension ViewModel {
                 load(&taskGroup, keyPath: \Self.tagList.count),
                 load(&taskGroup, keyPath: \Self.fieldList.count),
                 load(&taskGroup, keyPath: \Self.attachmentList.count),
-                load(&taskGroup, keyPath: \Self.yearList.count),
+                load(&taskGroup, keyPath: \Self.budgetPeriodList.count),
                 load(&taskGroup, keyPath: \Self.budgetList.count),
                 load(&taskGroup, keyPath: \Self.reportList.count),
             ].allSatisfy { $0 }
