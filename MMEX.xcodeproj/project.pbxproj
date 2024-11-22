@@ -147,6 +147,7 @@
 		92F686072CF1010300171A6A /* BudgetReload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686062CF1010300171A6A /* BudgetReload.swift */; };
 		92F686092CF10DD100171A6A /* ReportGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686082CF10DD100171A6A /* ReportGroup.swift */; };
 		92F6860B2CF110D900171A6A /* ReportSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6860A2CF110D900171A6A /* ReportSearch.swift */; };
+		92F6860D2CF111C800171A6A /* ReportValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6860C2CF111C800171A6A /* ReportValidation.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
@@ -346,6 +347,7 @@
 		92F686062CF1010300171A6A /* BudgetReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetReload.swift; sourceTree = "<group>"; };
 		92F686082CF10DD100171A6A /* ReportGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportGroup.swift; sourceTree = "<group>"; };
 		92F6860A2CF110D900171A6A /* ReportSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportSearch.swift; sourceTree = "<group>"; };
+		92F6860C2CF111C800171A6A /* ReportValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportValidation.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
@@ -622,6 +624,7 @@
 				925EAC1F2CDAADFB003CEAB3 /* AttachmentValidation.swift */,
 				92F685FC2CF0CD7400171A6A /* BudgetPeriodValidation.swift */,
 				92F686042CF0F31700171A6A /* BudgetValidation.swift */,
+				92F6860C2CF111C800171A6A /* ReportValidation.swift */,
 			);
 			path = Validation;
 			sourceTree = "<group>";
@@ -1098,6 +1101,7 @@
 				A3C142982C8FE62200D3CEC0 /* TransactionListView.swift in Sources */,
 				9243533D2CCD2F990052E4BC /* AssetSearch.swift in Sources */,
 				A33742882CA8E55400698466 /* IncomeExpenseView.swift in Sources */,
+				92F6860D2CF111C800171A6A /* ReportValidation.swift in Sources */,
 				92F686072CF1010300171A6A /* BudgetReload.swift in Sources */,
 				9243534B2CCD37AE0052E4BC /* AccountList.swift in Sources */,
 				9243532F2CCD2C140052E4BC /* CurrencyGroup.swift in Sources */,
