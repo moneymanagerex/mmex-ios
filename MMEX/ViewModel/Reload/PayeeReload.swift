@@ -9,28 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadPayeeList(_ oldData: PayeeData?, _ newData: PayeeData?) async {
-        log.trace("DEBUG: ViewModel.reloadPayeeList(main=\(Thread.isMainThread))")
+    func reloadPayee(_ oldData: PayeeData?, _ newData: PayeeData?) async {
+        log.trace("DEBUG: ViewModel.reloadPayee(main=\(Thread.isMainThread))")
 
-        var categoryChanged = false
-        if let categoryUsed = categoryList.used.readyValue {
-            let oldCategoryId = oldData?.categoryId
-            let newCategoryId = newData?.categoryId
-            if let oldCategoryId, newCategoryId != oldCategoryId {
-                categoryList.used.unload()
-                categoryChanged = true
-            } else if let newCategoryId, !categoryUsed.contains(newCategoryId) {
-                if categoryList.used.state.unloading() {
-                    categoryList.used.value.insert(newCategoryId)
-                    categoryList.used.state.loaded()
-                    categoryChanged = true
-                }
-            }
-        }
-        if categoryChanged {
-            unloadCategoryGroup()
-            categoryList.unload()
-        }
+        reloadCategoryUsed(oldData?.categoryId, newData?.categoryId)
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = payeeGroup.readyValue?.map { $0.isExpanded }
@@ -83,6 +65,36 @@ extension ViewModel {
             }
         } }
 
-        log.info("INFO: ViewModel.reloadPayeeList(main=\(Thread.isMainThread))")
+        log.info("INFO: ViewModel.reloadPayee(main=\(Thread.isMainThread))")
+    }
+
+    func reloadPayeeUsed(_ oldId: DataId?, _ newId: DataId?) {
+        log.trace("DEBUG: ViewModel.reloadPayeeUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
+        guard let payeeUsed = payeeList.used.readyValue else { return }
+        if let oldId, newId != oldId {
+            if payeeGroup.choice == .used {
+                unloadPayeeGroup()
+            }
+            payeeList.unload()
+            payeeList.used.unload()
+        } else if let newId, !payeeUsed.contains(newId) {
+            if payeeGroup.choice == .used {
+                unloadPayeeGroup()
+            }
+            if payeeList.used.state.unloading() {
+                payeeList.used.value.insert(newId)
+                payeeList.used.state.loaded()
+            }
+        }
+    }
+
+    func reloadPayeeAtt() {
+        log.trace("DEBUG: ViewModel.reloadPayeeAtt(main=\(Thread.isMainThread))")
+        guard payeeList.att.state == .ready else { return }
+        if payeeGroup.choice == .attachment {
+            unloadPayeeGroup()
+        }
+        payeeList.unload()
+        payeeList.att.unload()
     }
 }

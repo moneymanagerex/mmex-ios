@@ -8,8 +8,8 @@
 import SwiftUI
 
 enum BudgetPeriodGroupChoice: String, GroupChoiceProtocol {
-    case all    = "All"
-    case used   = "Used"
+    case all  = "All"
+    case used = "Used"
     static let defaultValue = Self.all
     static let isSingleton: Set<Self> = [.all]
 }
@@ -38,7 +38,6 @@ struct BudgetPeriodGroup: GroupProtocol {
 extension ViewModel {
     func loadBudgetPeriodGroup(choice: BudgetPeriodGroupChoice) {
         guard
-            let listData    = budgetPeriodList.data.readyValue,
             let listUsed    = budgetPeriodList.used.readyValue,
             let listOrder   = budgetPeriodList.order.readyValue
         else { return }

@@ -9,60 +9,24 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadAccountList(_ oldData: AccountData?, _ newData: AccountData?) async {
-        log.trace("DEBUG: ViewModel.reloadAccountList(main=\(Thread.isMainThread))")
-
-        if
-            let newCurrencyId = newData?.currencyId,
-            let currencyInfo = currencyList.info.readyValue,
-            currencyInfo[newCurrencyId] == nil
-        {
-            if
-                let currencyData = currencyList.data.readyValue,
-                let newCurrencyData = currencyData[newCurrencyId]
-            {
-                if currencyList.info.state.unloading() {
-                    currencyList.info.value[newCurrencyId] = CurrencyInfo(newCurrencyData)
-                    currencyList.info.state.loaded()
-                }
-            } else {
-                currencyList.info.unload()
-            }
-        }
-
-        var currencyChanged = false
-        if let currencyUsed = currencyList.used.readyValue {
-            let oldCurrencyId = oldData?.currencyId
-            let newCurrencyId = newData?.currencyId
-            if let oldCurrencyId, newCurrencyId != oldCurrencyId {
-                currencyList.used.unload()
-                currencyChanged = true
-            } else if let newCurrencyId, !currencyUsed.contains(newCurrencyId) {
-                if currencyList.used.state.unloading() {
-                    currencyList.used.value.insert(newCurrencyId)
-                    currencyList.used.state.loaded()
-                    currencyChanged = true
-                }
-            }
-        }
-        if currencyChanged {
-            unloadCurrencyGroup()
-            currencyList.unload()
-        }
-
+    func reloadAccount(_ oldData: AccountData?, _ newData: AccountData?) async {
+        log.trace("DEBUG: ViewModel.reloadAccount(main=\(Thread.isMainThread))")
+        
+        reloadCurrencyUsed(oldData?.currencyId, newData?.currencyId)
+        
         // save isExpanded
         let groupIsExpanded: [Bool]? = accountGroup.readyValue?.map { $0.isExpanded }
         let currencyIndex: [DataId: Int] = Dictionary(
             uniqueKeysWithValues: accountGroup.groupCurrency.enumerated().map { ($0.1, $0.0) }
         )
-
+        
         unloadAccountGroup()
         accountList.unload()
-
+        
         if (oldData != nil) != (newData != nil) {
             accountList.count.unload()
         }
-
+        
         if accountList.data.state.unloading() {
             if let newData {
                 accountList.data.value[newData.id] = newData
@@ -71,9 +35,9 @@ extension ViewModel {
             }
             accountList.data.state.loaded()
         }
-
+        
         accountList.order.unload()
-
+        
         if let _ = newData {
             accountList.att.unload()
         } else if let oldData {
@@ -82,10 +46,10 @@ extension ViewModel {
                 accountList.att.state.loaded()
             }
         }
-
+        
         await loadAccountList()
         loadAccountGroup(choice: accountGroup.choice)
-
+        
         // restore isExpanded
         if let groupIsExpanded { switch accountGroup.choice {
         case .currency:
@@ -100,7 +64,37 @@ extension ViewModel {
                 }
             }
         } }
+        
+        log.info("INFO: ViewModel.reloadAccount(main=\(Thread.isMainThread))")
+    }
 
-        log.info("INFO: ViewModel.reloadAccountList(main=\(Thread.isMainThread))")
+    func reloadAccountUsed(_ oldId: DataId?, _ newId: DataId?) {
+        log.trace("DEBUG: ViewModel.reloadAccountUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
+        guard let accountUsed = accountList.used.readyValue else { return }
+        if let oldId, newId != oldId {
+            if accountGroup.choice == .used {
+                unloadAccountGroup()
+            }
+            accountList.unload()
+            accountList.used.unload()
+        } else if let newId, !accountUsed.contains(newId) {
+            if accountGroup.choice == .used {
+                unloadAccountGroup()
+            }
+            if accountList.used.state.unloading() {
+                accountList.used.value.insert(newId)
+                accountList.used.state.loaded()
+            }
+        }
+    }
+
+    func reloadAccountAtt() {
+        log.trace("DEBUG: ViewModel.reloadAccountAtt(main=\(Thread.isMainThread))")
+        guard accountList.att.state == .ready else { return }
+        if accountGroup.choice == .attachment {
+            unloadAccountGroup()
+        }
+        accountList.unload()
+        accountList.att.unload()
     }
 }

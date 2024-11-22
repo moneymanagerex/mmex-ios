@@ -171,7 +171,7 @@ struct CategoryListView: View {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryCreateView.onDisappear()")
                 Task {
-                    await vm.reloadCategoryList(nil as CategoryData?, newData)
+                    await vm.reloadCategory(nil as CategoryData?, newData)
                     vm.searchCategory(search: search)
                     newData = nil
                 }
@@ -193,7 +193,7 @@ struct CategoryListView: View {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryEditView.onDisappear")
                 Task {
-                    await vm.reloadCategoryList(data, newData)
+                    await vm.reloadCategory(data, newData)
                     vm.searchCategory(search: search)
                     newData = nil
                 }
@@ -214,7 +214,7 @@ struct CategoryListView: View {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryCopyView.onDisappear")
                 Task {
-                    await vm.reloadCategoryList(nil as CategoryData?, newData)
+                    await vm.reloadCategory(nil as CategoryData?, newData)
                     vm.searchCategory(search: search)
                     newData = nil
                 }
@@ -270,7 +270,7 @@ struct CategoryListView: View {
                     guard deleteData || newData != nil else { return }
                     log.debug("DEBUG: CategoryListView.RepositoryReadView.onDisappear")
                     Task {
-                        await vm.reloadCategoryList(data, newData)
+                        await vm.reloadCategory(data, newData)
                         vm.searchCategory(search: search)
                         newData = nil
                         deleteData = false
@@ -324,7 +324,7 @@ struct CategoryListView: View {
                         alertIsPresented = true
                     } else {
                         Task {
-                            await vm.reloadCategoryList(data, nil)
+                            await vm.reloadCategory(data, nil)
                             vm.searchCategory(search: search)
                         }
                     }

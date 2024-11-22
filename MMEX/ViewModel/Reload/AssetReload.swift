@@ -9,46 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadAssetList(_ oldData: AssetData?, _ newData: AssetData?) async {
-        log.trace("DEBUG: ViewModel.reloadAssetList(main=\(Thread.isMainThread))")
+    func reloadAsset(_ oldData: AssetData?, _ newData: AssetData?) async {
+        log.trace("DEBUG: ViewModel.reloadAsset(main=\(Thread.isMainThread))")
 
-        if
-            let newCurrencyId = newData?.currencyId,
-            let currencyInfo = currencyList.info.readyValue,
-            currencyInfo[newCurrencyId] == nil
-        {
-            if
-                let currencyData = currencyList.data.readyValue,
-                let newCurrencyData = currencyData[newCurrencyId]
-            {
-                if currencyList.info.state.unloading() {
-                    currencyList.info.value[newCurrencyId] = CurrencyInfo(newCurrencyData)
-                    currencyList.info.state.loaded()
-                }
-            } else {
-                currencyList.info.unload()
-            }
-        }
-
-        var currencyChanged = false
-        if let currencyUsed = currencyList.used.readyValue {
-            let oldCurrencyId = oldData?.currencyId
-            let newCurrencyId = newData?.currencyId
-            if let oldCurrencyId, newCurrencyId != oldCurrencyId {
-                currencyList.used.unload()
-                currencyChanged = true
-            } else if let newCurrencyId, !currencyUsed.contains(newCurrencyId) {
-                if currencyList.used.state.unloading() {
-                    currencyList.used.value.insert(newCurrencyId)
-                    currencyList.used.state.loaded()
-                    currencyChanged = true
-                }
-            }
-        }
-        if currencyChanged {
-            unloadCurrencyGroup()
-            currencyList.unload()
-        }
+        reloadCurrencyUsed(oldData?.currencyId, newData?.currencyId)
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = assetGroup.readyValue?.map { $0.isExpanded }
@@ -101,6 +65,36 @@ extension ViewModel {
             }
         } }
 
-        log.info("INFO: ViewModel.reloadAssetList(main=\(Thread.isMainThread))")
+        log.info("INFO: ViewModel.reloadAsset(main=\(Thread.isMainThread))")
+    }
+
+    func reloadAssetUsed(_ oldId: DataId?, _ newId: DataId?) {
+        log.trace("DEBUG: ViewModel.reloadAssetUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
+        guard let assetUsed = assetList.used.readyValue else { return }
+        if let oldId, newId != oldId {
+            if assetGroup.choice == .used {
+                unloadAssetGroup()
+            }
+            assetList.unload()
+            assetList.used.unload()
+        } else if let newId, !assetUsed.contains(newId) {
+            if assetGroup.choice == .used {
+                unloadAssetGroup()
+            }
+            if assetList.used.state.unloading() {
+                assetList.used.value.insert(newId)
+                assetList.used.state.loaded()
+            }
+        }
+    }
+
+    func reloadAssetAtt() {
+        log.trace("DEBUG: ViewModel.reloadAssetAtt(main=\(Thread.isMainThread))")
+        guard assetList.att.state == .ready else { return }
+        if assetGroup.choice == .attachment {
+            unloadAssetGroup()
+        }
+        assetList.unload()
+        assetList.att.unload()
     }
 }

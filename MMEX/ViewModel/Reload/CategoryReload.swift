@@ -9,22 +9,22 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadCategoryList(_ oldData: CategoryData?, _ newData: CategoryData?) async {
-        log.trace("DEBUG: ViewModel.reloadCategoryList(main=\(Thread.isMainThread))")
-
+    func reloadCategory(_ oldData: CategoryData?, _ newData: CategoryData?) async {
+        log.trace("DEBUG: ViewModel.reloadCategory(main=\(Thread.isMainThread))")
+        
         // TODO: save isExpanded
-
+        
         unloadCategoryGroup()
         categoryList.unload()
-
+        
         if (oldData != nil) != (newData != nil) {
             categoryList.count.unload()
         }
-
+        
         categoryList.evalPath.unload()
         categoryList.evalUsed.unload()
         categoryList.evalTree.unload()
-
+        
         if categoryList.data.state.unloading() {
             if let newData {
                 categoryList.data.value[newData.id] = newData
@@ -33,14 +33,34 @@ extension ViewModel {
             }
             categoryList.data.state.loaded()
         }
-
+        
         categoryList.order.unload()
-
+        
         await loadCategoryList()
         loadCategoryGroup(choice: categoryGroup.choice)
-
+        
         // TODO: restore isExpanded
+        
+        log.info("INFO: ViewModel.reloadCategory(main=\(Thread.isMainThread))")
+    }
 
-        log.info("INFO: ViewModel.reloadCategoryList(main=\(Thread.isMainThread))")
+    func reloadCategoryUsed(_ oldId: DataId?, _ newId: DataId?) {
+        log.trace("DEBUG: ViewModel.reloadCategoryUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0)")
+        guard let categoryUsed = categoryList.used.readyValue else { return }
+        if let oldId, newId != oldId {
+            if categoryGroup.choice == .used || categoryGroup.choice == .notUsed {
+                unloadCategoryGroup()
+            }
+            categoryList.unload()
+            categoryList.used.unload()
+        } else if let newId, !categoryUsed.contains(newId) {
+            if categoryGroup.choice == .used || categoryGroup.choice == .notUsed {
+                unloadCategoryGroup()
+            }
+            if categoryList.used.state.unloading() {
+                categoryList.used.value.insert(newId)
+                categoryList.used.state.loaded()
+            }
+        }
     }
 }

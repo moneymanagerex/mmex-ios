@@ -9,25 +9,27 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadList<MainData: DataProtocol>(_ oldData: MainData?, _ newData: MainData?) async {
+    func reload<MainData: DataProtocol>(_ oldData: MainData?, _ newData: MainData?) async {
         /**/   if MainData.self == U.RepositoryData.self {
-            await reloadCurrencyList(oldData as! CurrencyData?, newData as! CurrencyData?)
+            await reloadCurrency(oldData as! CurrencyData?, newData as! CurrencyData?)
         } else if MainData.self == A.RepositoryData.self {
-            await reloadAccountList(oldData as! AccountData?, newData as! AccountData?)
+            await reloadAccount(oldData as! AccountData?, newData as! AccountData?)
         } else if MainData.self == E.RepositoryData.self {
-            await reloadAssetList(oldData as! AssetData?, newData as! AssetData?)
+            await reloadAsset(oldData as! AssetData?, newData as! AssetData?)
         } else if MainData.self == S.RepositoryData.self {
-            await reloadStockList(oldData as! StockData?, newData as! StockData?)
+            await reloadStock(oldData as! StockData?, newData as! StockData?)
         } else if MainData.self == C.RepositoryData.self {
-            await reloadCategoryList(oldData as! CategoryData?, newData as! CategoryData?)
+            await reloadCategory(oldData as! CategoryData?, newData as! CategoryData?)
         } else if MainData.self == P.RepositoryData.self {
-            await reloadPayeeList(oldData as! PayeeData?, newData as! PayeeData?)
+            await reloadPayee(oldData as! PayeeData?, newData as! PayeeData?)
         } else if MainData.self == G.RepositoryData.self {
-            await reloadTagList(oldData as! TagData?, newData as! TagData?)
+            await reloadTag(oldData as! TagData?, newData as! TagData?)
         } else if MainData.self == D.RepositoryData.self {
-            await reloadAttachmentList(oldData as! AttachmentData?, newData as! AttachmentData?)
+            await reloadAttachment(oldData as! AttachmentData?, newData as! AttachmentData?)
         } else if MainData.self == BP.RepositoryData.self {
-            await reloadBudgetPeriodList(oldData as! BudgetPeriodData?, newData as! BudgetPeriodData?)
+            await reloadBudgetPeriod(oldData as! BudgetPeriodData?, newData as! BudgetPeriodData?)
+        } else if MainData.self == B.RepositoryData.self {
+            await reloadBudget(oldData as! BudgetData?, newData as! BudgetData?)
         }
     }
 }

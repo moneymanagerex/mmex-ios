@@ -183,7 +183,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryCreateView.onDisappear()")
                 Task {
-                    await vm.reloadList(nil as MainData?, newData)
+                    await vm.reload(nil as MainData?, newData)
                     vm.searchGroup(vmGroup, search: search)
                     newData = nil
                 }
@@ -204,7 +204,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryEditView.onDisappear")
                 Task {
-                    await vm.reloadList(data, newData)
+                    await vm.reload(data, newData)
                     vm.searchGroup(vmGroup, search: search)
                     newData = nil
                 }
@@ -225,7 +225,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryCopyView.onDisappear")
                 Task {
-                    await vm.reloadList(nil as MainData?, newData)
+                    await vm.reload(nil as MainData?, newData)
                     vm.searchGroup(vmGroup, search: search)
                     newData = nil
                 }
@@ -315,7 +315,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 guard deleteData || newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
                 Task {
-                    await vm.reloadList(data, newData)
+                    await vm.reload(data, newData)
                     vm.searchGroup(vmGroup, search: search)
                     newData = nil
                     deleteData = false
@@ -336,7 +336,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                     alertIsPresented = true
                 } else {
                     Task {
-                        await vm.reloadList(data, nil)
+                        await vm.reload(data, nil)
                         vm.searchGroup(vmGroup, search: search)
                     }
                 }

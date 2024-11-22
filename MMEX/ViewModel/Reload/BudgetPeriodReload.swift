@@ -9,8 +9,8 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadBudgetPeriodList(_ oldData: BudgetPeriodData?, _ newData: BudgetPeriodData?) async {
-        log.trace("DEBUG: ViewModel.reloadBudgetPeriodList(main=\(Thread.isMainThread))")
+    func reloadBudgetPeriod(_ oldData: BudgetPeriodData?, _ newData: BudgetPeriodData?) async {
+        log.trace("DEBUG: ViewModel.reloadBudgetPeriod(main=\(Thread.isMainThread))")
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = budgetPeriodGroup.readyValue?.map { $0.isExpanded }
@@ -46,6 +46,26 @@ extension ViewModel {
             }
         } }
 
-        log.info("INFO: ViewModel.reloadBudgetPeriodList(main=\(Thread.isMainThread))")
+        log.info("INFO: ViewModel.reloadBudgetPeriod(main=\(Thread.isMainThread))")
+    }
+
+    func reloadBudgetPeriodUsed(_ oldId: DataId?, _ newId: DataId?) {
+        log.trace("DEBUG: ViewModel.reloadBudgetPeriodUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
+        guard let budgetPeriodUsed = budgetPeriodList.used.readyValue else { return }
+        if let oldId, newId != oldId {
+            if budgetPeriodGroup.choice == .used {
+                unloadBudgetPeriodGroup()
+            }
+            budgetPeriodList.unload()
+            budgetPeriodList.used.unload()
+        } else if let newId, !budgetPeriodUsed.contains(newId) {
+            if budgetPeriodGroup.choice == .used {
+                unloadBudgetPeriodGroup()
+            }
+            if budgetPeriodList.used.state.unloading() {
+                budgetPeriodList.used.value.insert(newId)
+                budgetPeriodList.used.state.loaded()
+            }
+        }
     }
 }
