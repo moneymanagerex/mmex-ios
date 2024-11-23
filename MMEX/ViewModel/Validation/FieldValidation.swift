@@ -2,7 +2,7 @@
 //  FieldValidation.swift
 //  MMEX
 //
-//  2024-11-05: Created by George Ef (george.a.ef@gmail.com)
+//  2024-11-23: Created by George Ef (george.a.ef@gmail.com)
 //
 
 import SwiftUI
