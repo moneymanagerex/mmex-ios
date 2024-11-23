@@ -37,48 +37,52 @@ struct ContentView: View {
             isPresented: $isDocumentPickerPresented,
             allowedContentTypes: [.item],
             allowsMultipleSelection: false
-        ) { handleFileImport($0) }
+        ) {
+            handleFileImport($0)
+        }
         .fileExporter(
             isPresented: $isNewDocumentPickerPresented,
             document: MMEXDocument(),
             contentType: .mmb,
             defaultFilename: isSampleDocument ? "Sample.mmb" : "Untitled.mmb"
-        ) { handleFileExport($0) }
+        ) {
+            handleFileExport($0)
+        }
+        .autocorrectionDisabled()
+
     }
 
+    @ViewBuilder
     private var connectedView: some View {
-        Group {
-            if horizontalSizeClass == .regular {
-                NavigationSplitView {
-                    SidebarView(selectedTab: $selectedTab)
-                } detail: {
-                    TabContentView(
-                        vm: vm,
-                        selectedTab: $selectedTab,
-                        isDocumentPickerPresented: $isDocumentPickerPresented,
-                        isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
-                        isSampleDocument: $isSampleDocument
-                    )
-                }
-            } else {
-                // problem: if VM is declared here, it is re-instantiated on switching between tabs
-                // fix: move VM declaration to View and initialize it in init()
-                //let vm = RepositoryViewModel(env: env)
-                let insightsViewModel = InsightsViewModel(env: env)
-                let infotableViewModel = TransactionViewModel(env: env)
-                TabView(selection: $selectedTab) {
-                    journalTab(vm: vm, viewModel: infotableViewModel)
-                    insightsTab(vm: vm, viewModel: insightsViewModel)
-                    enterTab(vm: vm, viewModel: infotableViewModel)
-                    managementTab(vm: vm, viewModel: infotableViewModel)
-                    settingsTab(vm: vm, viewModel: infotableViewModel)
-                }
-                .onChange(of: selectedTab) { _, tab in
-                    if tab == 2 { isPresentingTransactionAddView = true }
-                }
+        if horizontalSizeClass == .regular {
+            NavigationSplitView {
+                SidebarView(selectedTab: $selectedTab)
+            } detail: {
+                TabContentView(
+                    vm: vm,
+                    selectedTab: $selectedTab,
+                    isDocumentPickerPresented: $isDocumentPickerPresented,
+                    isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                    isSampleDocument: $isSampleDocument
+                )
+            }
+        } else {
+            // problem: if VM is declared here, it is re-instantiated on switching between tabs
+            // fix: move VM declaration to View and initialize it in init()
+            //let vm = RepositoryViewModel(env: env)
+            let insightsViewModel = InsightsViewModel(env: env)
+            let infotableViewModel = TransactionViewModel(env: env)
+            TabView(selection: $selectedTab) {
+                journalTab(vm: vm, viewModel: infotableViewModel)
+                insightsTab(vm: vm, viewModel: insightsViewModel)
+                enterTab(vm: vm, viewModel: infotableViewModel)
+                managementTab(vm: vm, viewModel: infotableViewModel)
+                settingsTab(vm: vm, viewModel: infotableViewModel)
+            }
+            .onChange(of: selectedTab) { _, tab in
+                if tab == 2 { isPresentingTransactionAddView = true }
             }
         }
-        
     }
 
     private var disconnectedView: some View {

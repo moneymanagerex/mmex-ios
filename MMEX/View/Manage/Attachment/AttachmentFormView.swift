@@ -23,12 +23,14 @@ struct AttachmentFormView: View {
 
                 env.theme.field.view(edit, "Description") {
                     TextField("N/A", text: $data.description)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 }
 
                 // TODO: select file
                 env.theme.field.view(edit, "Filename", editView: {
                     TextField("Shall not be empty!", text: $data.filename)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.words)
                 }, showView: {
                     env.theme.field.valueOrError("Shall not be empty!", text: data.filename)

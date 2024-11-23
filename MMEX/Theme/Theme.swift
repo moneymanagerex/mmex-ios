@@ -39,8 +39,12 @@ extension Theme {
     var decimalPad: UIKeyboardType {
         switch numericKeypad {
         case .boolTrue: .decimalPad
-        default: .default
+        default: .alphabet
         }
+    }
+
+    var textPad: UIKeyboardType {
+        .alphabet
     }
 }
 

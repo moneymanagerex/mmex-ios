@@ -17,6 +17,7 @@ struct TagFormView: View {
         Section {
             env.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.name)

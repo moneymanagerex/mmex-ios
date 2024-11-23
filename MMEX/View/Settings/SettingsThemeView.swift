@@ -56,6 +56,7 @@ struct SettingsThemeView: View {
                     Text("Category Delimiter")
                     Spacer()
                     TextField("Default is ':'", text: $categoryDelimiter)
+                        .keyboardType(env.theme.textPad)
                         .focused($categoryDelimiterFocus)
                         .onChange(of: categoryDelimiterFocus) {
                             if !categoryDelimiterFocus { currencyDelimiterUpdate() }

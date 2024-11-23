@@ -73,6 +73,7 @@ struct EnterFormView: View {
                 get: { txn.notes }, // Safely unwrap the optional notes field
                 set: { txn.notes = $0 } // Set notes to nil if the input is empty
             ))
+            .keyboardType(env.theme.textPad)
             .padding(.horizontal)
             .padding(.vertical, 10)
             .background(Color.gray.opacity(0.2)) // Style the notes input field
@@ -215,6 +216,7 @@ struct EnterFormView: View {
                             Spacer()
                             // split notes
                             TextField("split notes", text: $newSplit.notes)
+                                .keyboardType(env.theme.textPad)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Button(action: {
                                 withAnimation {

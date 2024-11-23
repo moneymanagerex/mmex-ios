@@ -17,6 +17,7 @@ struct FieldFormView: View {
         Section {
             env.theme.field.view(edit, "Description", editView: {
                 TextField("Shall not be empty!", text: $data.description)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.description)
@@ -52,6 +53,7 @@ struct FieldFormView: View {
 
         Section("Properties") {
             env.theme.field.code(edit, "", $data.properties)
+                .keyboardType(env.theme.textPad)
         }
     }
 }
