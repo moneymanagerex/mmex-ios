@@ -70,14 +70,15 @@ extension ViewModel {
 
     func reloadPayeeUsed(_ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadPayeeUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
-        guard let payeeUsed = payeeList.used.readyValue else { return }
         if let oldId, newId != oldId {
             if payeeGroup.choice == .used {
                 unloadPayeeGroup()
             }
-            payeeList.unload()
             payeeList.used.unload()
-        } else if let newId, !payeeUsed.contains(newId) {
+        } else if
+            let payeeUsed = payeeList.used.readyValue,
+            let newId, !payeeUsed.contains(newId)
+        {
             if payeeGroup.choice == .used {
                 unloadPayeeGroup()
             }
@@ -90,11 +91,9 @@ extension ViewModel {
 
     func reloadPayeeAtt() {
         log.trace("DEBUG: ViewModel.reloadPayeeAtt(main=\(Thread.isMainThread))")
-        guard payeeList.att.state == .ready else { return }
         if payeeGroup.choice == .attachment {
             unloadPayeeGroup()
         }
-        payeeList.unload()
         payeeList.att.unload()
     }
 }

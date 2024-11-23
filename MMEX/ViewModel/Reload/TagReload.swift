@@ -51,14 +51,15 @@ extension ViewModel {
 
     func reloadTagUsed(_ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadTagUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
-        guard let tagUsed = tagList.used.readyValue else { return }
         if let oldId, newId != oldId {
             if tagGroup.choice == .used {
                 unloadTagGroup()
             }
-            tagList.unload()
             tagList.used.unload()
-        } else if let newId, !tagUsed.contains(newId) {
+        } else if
+            let tagUsed = tagList.used.readyValue,
+            let newId, !tagUsed.contains(newId)
+        {
             if tagGroup.choice == .used {
                 unloadTagGroup()
             }

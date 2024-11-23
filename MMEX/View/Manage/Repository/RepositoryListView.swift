@@ -64,9 +64,9 @@ where GroupType.MainRepository == ListType.MainRepository,
                     Text(Image(systemName: "chevron.up.chevron.down"))
                 ) } )
                 .onChange(of: groupChoice) {
-                    vm.unloadGroup(vmGroup)
-                    vm.loadGroup(vmGroup, choice: groupChoice)
-                    vm.searchGroup(vmGroup, search: search)
+                    vm.unloadGroup(GroupType.self)
+                    vm.loadGroup(GroupType.self, choice: groupChoice)
+                    vm.searchGroup(GroupType.self, search: search)
                 }
                 .padding(.vertical, -5)
                 //.padding(.trailing, 50)
@@ -152,7 +152,7 @@ where GroupType.MainRepository == ListType.MainRepository,
         .onChange(of: debounce.output) { _, newValue in
             search.key = newValue
             vmGroup.search = false
-            vm.searchGroup(vmGroup, search: search, expand: true)
+            vm.searchGroup(GroupType.self, search: search, expand: true)
         }
 
         .onAppear {
@@ -165,8 +165,8 @@ where GroupType.MainRepository == ListType.MainRepository,
         .refreshable {
             if deleteData || newData != nil { return }
             log.debug("DEBUG: RepositoryListView.refreshable()")
-            vm.unloadGroup(vmGroup)
-            vm.unloadList(vmList)
+            vm.unloadGroup(GroupType.self)
+            vm.unloadList(ListType.self)
             await load()
         }
 
@@ -184,7 +184,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 log.debug("DEBUG: RepositoryListView.RepositoryCreateView.onDisappear()")
                 Task {
                     await vm.reload(nil as MainData?, newData)
-                    vm.searchGroup(vmGroup, search: search)
+                    vm.searchGroup(GroupType.self, search: search)
                     newData = nil
                 }
             }
@@ -205,7 +205,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 log.debug("DEBUG: RepositoryListView.RepositoryEditView.onDisappear")
                 Task {
                     await vm.reload(data, newData)
-                    vm.searchGroup(vmGroup, search: search)
+                    vm.searchGroup(GroupType.self, search: search)
                     newData = nil
                 }
             }
@@ -226,7 +226,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 log.debug("DEBUG: RepositoryListView.RepositoryCopyView.onDisappear")
                 Task {
                     await vm.reload(nil as MainData?, newData)
-                    vm.searchGroup(vmGroup, search: search)
+                    vm.searchGroup(GroupType.self, search: search)
                     newData = nil
                 }
             }
@@ -243,9 +243,9 @@ where GroupType.MainRepository == ListType.MainRepository,
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(main=\(Thread.isMainThread))")
-        await vm.loadList(vmList)
-        vm.loadGroup(vmGroup, choice: groupChoice)
-        vm.searchGroup(vmGroup, search: search)
+        await vm.loadList(ListType.self)
+        vm.loadGroup(GroupType.self, choice: groupChoice)
+        vm.searchGroup(GroupType.self, search: search)
     }
 
     func groupView(_ g: Int) -> some View { Group { if vmGroup.state == .ready {
@@ -316,7 +316,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
                 Task {
                     await vm.reload(data, newData)
-                    vm.searchGroup(vmGroup, search: search)
+                    vm.searchGroup(GroupType.self, search: search)
                     newData = nil
                     deleteData = false
                 }
@@ -337,7 +337,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 } else {
                     Task {
                         await vm.reload(data, nil)
-                        vm.searchGroup(vmGroup, search: search)
+                        vm.searchGroup(GroupType.self, search: search)
                     }
                 }
             } label: {

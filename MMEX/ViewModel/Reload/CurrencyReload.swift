@@ -86,14 +86,15 @@ extension ViewModel {
             }
         }
 
-        guard let currencyUsed = currencyList.used.readyValue else { return }
         if let oldId, newId != oldId {
             if currencyGroup.choice == .used {
                 unloadCurrencyGroup()
             }
-            currencyList.unload()
             currencyList.used.unload()
-        } else if let newId, !currencyUsed.contains(newId) {
+        } else if
+            let currencyUsed = currencyList.used.readyValue,
+            let newId, !currencyUsed.contains(newId)
+        {
             if currencyGroup.choice == .used {
                 unloadCurrencyGroup()
             }

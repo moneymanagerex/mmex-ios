@@ -66,7 +66,7 @@ extension ListProtocol {
 }
 
 extension ViewModel {
-    func loadList<ListType: ListProtocol>(_ list: ListType) async {
+    func loadList<ListType: ListProtocol>(_ listType: ListType.Type) async {
         typealias MainRepository = ListType.MainRepository
         /**/ if MainRepository.self == I.self  { await loadInfotableList() }
         else if MainRepository.self == U.self  { await loadCurrencyList() }
@@ -85,7 +85,7 @@ extension ViewModel {
         else if MainRepository.self == R.self  { await loadReportList() }
     }
 
-    func unloadList<ListType: ListProtocol>(_ list: ListType) {
+    func unloadList<ListType: ListProtocol>(_ listType: ListType.Type) {
         typealias MainRepository = ListType.MainRepository
         /**/ if MainRepository.self == I.self  { unloadInfotableList() }
         else if MainRepository.self == U.self  { unloadCurrencyList() }

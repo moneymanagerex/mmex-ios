@@ -51,14 +51,15 @@ extension ViewModel {
 
     func reloadFieldUsed(_ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadFieldUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
-        guard let fieldUsed = fieldList.used.readyValue else { return }
         if let oldId, newId != oldId {
             if fieldGroup.choice == .used {
                 unloadFieldGroup()
             }
-            fieldList.unload()
             fieldList.used.unload()
-        } else if let newId, !fieldUsed.contains(newId) {
+        } else if
+            let fieldUsed = fieldList.used.readyValue,
+            let newId, !fieldUsed.contains(newId)
+        {
             if fieldGroup.choice == .used {
                 unloadFieldGroup()
             }

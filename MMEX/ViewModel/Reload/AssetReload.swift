@@ -70,14 +70,15 @@ extension ViewModel {
 
     func reloadAssetUsed(_ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadAssetUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
-        guard let assetUsed = assetList.used.readyValue else { return }
         if let oldId, newId != oldId {
             if assetGroup.choice == .used {
                 unloadAssetGroup()
             }
-            assetList.unload()
             assetList.used.unload()
-        } else if let newId, !assetUsed.contains(newId) {
+        } else if
+            let assetUsed = assetList.used.readyValue,
+            let newId, !assetUsed.contains(newId)
+        {
             if assetGroup.choice == .used {
                 unloadAssetGroup()
             }
@@ -90,11 +91,9 @@ extension ViewModel {
 
     func reloadAssetAtt() {
         log.trace("DEBUG: ViewModel.reloadAssetAtt(main=\(Thread.isMainThread))")
-        guard assetList.att.state == .ready else { return }
         if assetGroup.choice == .attachment {
             unloadAssetGroup()
         }
-        assetList.unload()
         assetList.att.unload()
     }
 }

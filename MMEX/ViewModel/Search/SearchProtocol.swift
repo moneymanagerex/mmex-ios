@@ -53,7 +53,7 @@ extension SearchProtocol {
 
 extension ViewModel {
     func searchGroup<GroupType: GroupProtocol, SearchType: SearchProtocol>(
-        _ group: GroupType,
+        _ groupType: GroupType.Type,
         search: SearchType,
         expand: Bool = false
     ) where GroupType.MainRepository.RepositoryData == SearchType.MainData {
