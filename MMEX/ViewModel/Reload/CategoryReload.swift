@@ -46,14 +46,15 @@ extension ViewModel {
 
     func reloadCategoryUsed(_ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadCategoryUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0)")
-        guard let categoryUsed = categoryList.used.readyValue else { return }
         if let oldId, newId != oldId {
             if categoryGroup.choice == .used || categoryGroup.choice == .notUsed {
                 unloadCategoryGroup()
             }
-            categoryList.unload()
             categoryList.used.unload()
-        } else if let newId, !categoryUsed.contains(newId) {
+        } else if
+            let categoryUsed = categoryList.used.readyValue,
+            let newId, !categoryUsed.contains(newId)
+        {
             if categoryGroup.choice == .used || categoryGroup.choice == .notUsed {
                 unloadCategoryGroup()
             }

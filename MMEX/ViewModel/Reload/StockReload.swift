@@ -70,14 +70,15 @@ extension ViewModel {
 
     func reloadStockUsed(_ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadStockUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
-        guard let stockUsed = stockList.used.readyValue else { return }
         if let oldId, newId != oldId {
             if stockGroup.choice == .used {
                 unloadStockGroup()
             }
-            stockList.unload()
             stockList.used.unload()
-        } else if let newId, !stockUsed.contains(newId) {
+        } else if
+            let stockUsed = stockList.used.readyValue,
+            let newId, !stockUsed.contains(newId)
+        {
             if stockGroup.choice == .used {
                 unloadStockGroup()
             }
@@ -90,11 +91,9 @@ extension ViewModel {
 
     func reloadStockAtt() {
         log.trace("DEBUG: ViewModel.reloadStockAtt(main=\(Thread.isMainThread))")
-        guard stockList.att.state == .ready else { return }
         if stockGroup.choice == .attachment {
             unloadStockGroup()
         }
-        stockList.unload()
         stockList.att.unload()
     }
 }

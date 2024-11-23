@@ -50,7 +50,7 @@ extension GroupProtocol where ValueType == [GroupData] {
 
 extension ViewModel {
     func loadGroup<GroupType: GroupProtocol>(
-        _ group: GroupType,
+        _ groupType: GroupType.Type,
         choice: GroupType.GroupChoice
     ) {
         typealias MainRepository = GroupType.MainRepository
@@ -68,7 +68,7 @@ extension ViewModel {
         else if MainRepository.self == R.self  { loadReportGroup(choice: choice as! ReportGroupChoice) }
     }
 
-    func unloadGroup<GroupType: GroupProtocol>(_ group: GroupType) {
+    func unloadGroup<GroupType: GroupProtocol>(_ groupType: GroupType.Type) {
         typealias MainRepository = GroupType.MainRepository
         /**/ if MainRepository.self == U.self  { unloadCurrencyGroup() }
         else if MainRepository.self == A.self  { unloadAccountGroup() }

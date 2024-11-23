@@ -70,14 +70,15 @@ extension ViewModel {
 
     func reloadAccountUsed(_ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadAccountUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
-        guard let accountUsed = accountList.used.readyValue else { return }
         if let oldId, newId != oldId {
             if accountGroup.choice == .used {
                 unloadAccountGroup()
             }
-            accountList.unload()
             accountList.used.unload()
-        } else if let newId, !accountUsed.contains(newId) {
+        } else if
+            let accountUsed = accountList.used.readyValue,
+            let newId, !accountUsed.contains(newId)
+        {
             if accountGroup.choice == .used {
                 unloadAccountGroup()
             }
@@ -90,11 +91,9 @@ extension ViewModel {
 
     func reloadAccountAtt() {
         log.trace("DEBUG: ViewModel.reloadAccountAtt(main=\(Thread.isMainThread))")
-        guard accountList.att.state == .ready else { return }
         if accountGroup.choice == .attachment {
             unloadAccountGroup()
         }
-        accountList.unload()
         accountList.att.unload()
     }
 }
