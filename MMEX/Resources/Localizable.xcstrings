@@ -10,6 +10,9 @@
     "(none)" : {
 
     },
+    "(unknown)" : {
+
+    },
     "%@" : {
       "localizations" : {
         "it" : {
@@ -833,6 +836,9 @@
           }
         }
       }
+    },
+    "Properties" : {
+
     },
     "Release Notes" : {
       "localizations" : {

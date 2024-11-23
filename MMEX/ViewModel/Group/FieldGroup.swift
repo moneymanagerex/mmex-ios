@@ -72,12 +72,13 @@ extension ViewModel {
         case .refType:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.refType }
             for g in FieldGroup.groupRefType {
-                fieldGroup.append(g.rawValue, dict[g] ?? [], dict[g] != nil, true)
+                fieldGroup.append(g.name, dict[g] ?? [], dict[g] != nil, true)
             }
         case .type:
             let dict = Dictionary(grouping: listOrder) { listData[$0]!.type }
             for g in FieldGroup.groupType {
-                fieldGroup.append(g.rawValue, dict[g] ?? [], dict[g] != nil, true)
+                let name = g == .unknown ? "(unknown)" : g.rawValue
+                fieldGroup.append(name, dict[g] ?? [], dict[g] != nil, true)
             }
         }
 

@@ -23,7 +23,7 @@ enum RefType: String, EnumCollateNoCase {
         switch self {
         case .account          : "Account"
         case .transactionSplit : "Transaction Split"
-        case .scheduled        : "Scheduled Transaction"
+        case .scheduled        : "Scheduled"
         case .scheduledSplit   : "Scheduled Split"
         default: rawValue
         }

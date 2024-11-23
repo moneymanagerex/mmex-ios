@@ -88,6 +88,12 @@ struct ManageView: View {
                         count: vm.tagList.count
                     )
                 }
+                NavigationLink(destination: FieldListView(vm: vm)) {
+                    env.theme.group.manageItem(
+                        nameView: { Text(FieldData.dataName.1) },
+                        count: vm.fieldList.count
+                    )
+                }
                 NavigationLink(destination: AttachmentListView(vm: vm)) {
                     env.theme.group.manageItem(
                         nameView: { Text(AttachmentData.dataName.1) },
