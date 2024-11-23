@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct CurrencyFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: CurrencyData
@@ -21,23 +22,23 @@ struct CurrencyFormView: View {
 
     var body: some View {
         Section {
-            env.theme.field.view(edit, "Name", editView: {
+            pref.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.sentences)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
             
-            env.theme.field.view(edit, "Symbol", editView: {
+            pref.theme.field.view(edit, "Symbol", editView: {
                 TextField("Shall not be empty!", text: $data.symbol)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.characters)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.symbol)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.symbol)
             } )
 
-            env.theme.field.view(edit, false, "Type", editView: {
+            pref.theme.field.view(edit, false, "Type", editView: {
                 Picker("", selection: $data.type) {
                     ForEach(CurrencyType.allCases) { type in
                         Text(type.rawValue).tag(type)
@@ -48,56 +49,56 @@ struct CurrencyFormView: View {
             } )
 
             if edit || !data.unitName.isEmpty || !data.centName.isEmpty {
-                env.theme.field.view(edit, "Unit Name", valueView: {
+                pref.theme.field.view(edit, "Unit Name", valueView: {
                     TextField("N/A", text: $data.unitName)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 } )
 
-                env.theme.field.view(edit, "Cent Name", valueView: {
+                pref.theme.field.view(edit, "Cent Name", valueView: {
                     TextField("N/A", text: $data.centName)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 } )
             }
 
-            env.theme.field.view(edit, true, "Conversion Rate", editView: {
+            pref.theme.field.view(edit, true, "Conversion Rate", editView: {
                 TextField("Default is 1", value: $data.baseConvRate.defaultOne, format: .number)
-                    .keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text("\(data.baseConvRate)")
             } )
         }
         
         Section("Format") {
-            env.theme.field.view(false, "", valueView: {
+            pref.theme.field.view(false, "", valueView: {
                 Text(format)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .foregroundColor(.gray)
             } )
 
             if edit {
-                env.theme.field.view(edit, "Prefix Symbol") {
+                pref.theme.field.view(edit, "Prefix Symbol") {
                     TextField("N/A", text: $data.prefixSymbol)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.characters)
                 }
-                env.theme.field.view(edit, "Suffix Symbol") {
+                pref.theme.field.view(edit, "Suffix Symbol") {
                     TextField("N/A", text: $data.suffixSymbol)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.characters)
                 }
-                env.theme.field.view(edit, "Decimal Point") {
+                pref.theme.field.view(edit, "Decimal Point") {
                     TextField("N/A", text: $data.decimalPoint)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                 }
-                env.theme.field.view(edit, "Thousands Separator") {
+                pref.theme.field.view(edit, "Thousands Separator") {
                     TextField("N/A", text: $data.groupSeparator)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                 }
-                env.theme.field.view(edit, true, "Scale", editView: {
+                pref.theme.field.view(edit, true, "Scale", editView: {
                     TextField("Default is 1", value: $data.scale.defaultOne, format: .number)
-                        .keyboardType(env.theme.decimalPad)
+                        .keyboardType(pref.theme.decimalPad)
                 }, showView: {
                     Text("\(data.scale)")
                 } )
@@ -107,6 +108,7 @@ struct CurrencyFormView: View {
 }
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { CurrencyFormView(
@@ -114,10 +116,12 @@ struct CurrencyFormView: View {
         data: .constant(CurrencyData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { CurrencyFormView(
@@ -125,5 +129,6 @@ struct CurrencyFormView: View {
         data: .constant(CurrencyData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

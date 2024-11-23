@@ -9,7 +9,7 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadTag(_ oldData: TagData?, _ newData: TagData?) async {
+    func reloadTag(_ pref: Preference, _ oldData: TagData?, _ newData: TagData?) async {
         log.trace("DEBUG: ViewModel.reloadTag(main=\(Thread.isMainThread))")
 
         // save isExpanded
@@ -33,7 +33,7 @@ extension ViewModel {
 
         tagList.order.unload()
 
-        await loadTagList()
+        await loadTagList(pref)
         loadTagGroup(choice: tagGroup.choice)
 
         // restore isExpanded
@@ -49,7 +49,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadTag(main=\(Thread.isMainThread))")
     }
 
-    func reloadTagUsed(_ oldId: DataId?, _ newId: DataId?) {
+    func reloadTagUsed(_ pref: Preference, _ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadTagUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if tagGroup.choice == .used {

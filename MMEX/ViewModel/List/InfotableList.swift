@@ -55,7 +55,7 @@ struct InfotableList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadInfotableList() async {
+    func loadInfotableList(_ pref: Preference) async {
         guard infotableList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [

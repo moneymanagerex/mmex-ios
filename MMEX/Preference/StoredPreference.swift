@@ -1,5 +1,5 @@
 //
-//  Preferences.swift
+//  StoredPreference.swift
 //  MMEX
 //
 //  2024-11-15: Created by George Ef (george.a.ef@gmail.com)
@@ -8,7 +8,7 @@
 import Foundation
 
 @propertyWrapper
-struct Preference<ValueType: LosslessStringConvertible> {
+struct StoredPreference<ValueType: LosslessStringConvertible> {
     private var key: String?
     private var value: ValueType
     private let initValue: ValueType
@@ -57,24 +57,8 @@ struct Preference<ValueType: LosslessStringConvertible> {
     }
 }
 
-extension Preference where ValueType: EnumCollateNoCase {
+extension StoredPreference where ValueType: EnumCollateNoCase {
     init(key: String? = nil) {
         self.init(key: key, wrappedValue: ValueType.defaultValue)
-    }
-}
-
-struct Preferences {
-    @Preference var reuseLastAccount  : BoolEnum          = .boolFalse
-    @Preference var reuseLastCategory : BoolEnum          = .boolFalse
-    @Preference var reuseLastPayee    : BoolEnum          = .boolFalse
-    @Preference var defaultStatus     : TransactionStatus = .none
-}
-
-extension Preferences {
-    init(prefix: String?) {
-        self.$reuseLastAccount  = prefix?.appending("reuseLastAccount")
-        self.$reuseLastCategory = prefix?.appending("reuseLastCategory")
-        self.$reuseLastPayee    = prefix?.appending("reuseLastPayee")
-        self.$defaultStatus     = prefix?.appending("defaultStatus")
     }
 }

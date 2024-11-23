@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ManageView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
@@ -34,37 +35,37 @@ struct ManageView: View {
                 nameView: { Text("Data") }
             ) {
                 NavigationLink(destination: AccountListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(AccountData.dataName.1) },
                         count: vm.accountList.count
                     )
                 }
                 NavigationLink(destination: AssetListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(AssetData.dataName.1) },
                         count: vm.assetList.count
                     )
                 }
                 NavigationLink(destination: StockListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(StockData.dataName.1) },
                         count: vm.stockList.count
                     )
                 }
                 NavigationLink(destination: CategoryListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(CategoryData.dataName.1) },
                         count: vm.categoryList.count
                     )
                 }
                 NavigationLink(destination: PayeeListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(PayeeData.dataName.1) },
                         count: vm.payeeList.count
                     )
                 }
                 NavigationLink(destination: TransactionListView(vm: vm, viewModel: viewModel)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(TransactionData.dataName.1) },
                         count: vm.transactionList.count
                     )
@@ -73,47 +74,47 @@ struct ManageView: View {
 
             groupTheme.section(
                 nameView: { Text("Auxiliary Data") },
-                count: (env.theme.group.showCount.asBool ? auxSum : nil),
+                count: (pref.theme.group.showCount.asBool ? auxSum : nil),
                 isExpanded: $auxDataIsExpanded
             ) {
                 NavigationLink(destination: CurrencyListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(CurrencyData.dataName.1) },
                         count: vm.currencyList.count
                     )
                 }
                 NavigationLink(destination: TagListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(TagData.dataName.1) },
                         count: vm.tagList.count
                     )
                 }
                 NavigationLink(destination: FieldListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(FieldData.dataName.1) },
                         count: vm.fieldList.count
                     )
                 }
                 NavigationLink(destination: AttachmentListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(AttachmentData.dataName.1) },
                         count: vm.attachmentList.count
                     )
                 }
                 NavigationLink(destination: BudgetPeriodListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(BudgetPeriodData.dataName.1) },
                         count: vm.budgetPeriodList.count
                     )
                 }
                 NavigationLink(destination: BudgetListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(BudgetData.dataName.1) },
                         count: vm.budgetList.count
                     )
                 }
                 NavigationLink(destination: ReportListView(vm: vm)) {
-                    env.theme.group.manageItem(
+                    pref.theme.group.manageItem(
                         nameView: { Text(ReportData.dataName.1) },
                         count: vm.reportList.count
                     )
@@ -161,12 +162,12 @@ struct ManageView: View {
         //.border(.red)
 
         .task {
-            await vm.loadManageList()
+            await vm.loadManageList(pref)
         }
         
         .refreshable {
             vm.unloadList()
-            await vm.loadManageList()
+            await vm.loadManageList(pref)
         }
     }
     
@@ -187,6 +188,7 @@ struct ManageView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let viewModel = TransactionViewModel(env: env)
@@ -200,5 +202,6 @@ struct ManageView: View {
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

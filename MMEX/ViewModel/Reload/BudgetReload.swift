@@ -9,11 +9,11 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadBudget(_ oldData: BudgetData?, _ newData: BudgetData?) async {
+    func reloadBudget(_ pref: Preference, _ oldData: BudgetData?, _ newData: BudgetData?) async {
         log.trace("DEBUG: ViewModel.reloadBudget(main=\(Thread.isMainThread))")
 
-        reloadBudgetPeriodUsed(oldData?.periodId, newData?.periodId)
-        reloadCategoryUsed(oldData?.categoryId, newData?.categoryId)
+        reloadBudgetPeriodUsed(pref, oldData?.periodId, newData?.periodId)
+        reloadCategoryUsed(pref, oldData?.categoryId, newData?.categoryId)
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = budgetGroup.readyValue?.map { $0.isExpanded }
@@ -42,7 +42,7 @@ extension ViewModel {
 
         budgetList.order.unload()
 
-        await loadBudgetList()
+        await loadBudgetList(pref)
         loadBudgetGroup(choice: budgetGroup.choice)
 
         // restore isExpanded

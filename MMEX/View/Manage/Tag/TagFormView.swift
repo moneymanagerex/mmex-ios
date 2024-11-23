@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TagFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: TagData
@@ -15,15 +16,15 @@ struct TagFormView: View {
 
     var body: some View {
         Section {
-            env.theme.field.view(edit, "Name", editView: {
+            pref.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
 
-            env.theme.field.view(edit, true, "Active", editView: {
+            pref.theme.field.view(edit, true, "Active", editView: {
                 Toggle(isOn: $data.active) { }
             }, showView: {
                 Text(data.active ? "Yes" : "No")
@@ -33,6 +34,7 @@ struct TagFormView: View {
 }
 
 #Preview("\(TagData.sampleData[0].name) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { TagFormView(
@@ -40,10 +42,12 @@ struct TagFormView: View {
         data: .constant(TagData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("\(TagData.sampleData[0].name) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { TagFormView(
@@ -51,5 +55,6 @@ struct TagFormView: View {
         data: .constant(TagData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

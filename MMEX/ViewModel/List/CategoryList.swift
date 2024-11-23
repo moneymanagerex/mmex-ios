@@ -38,7 +38,7 @@ struct CategoryList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadCategoryList() async {
+    func loadCategoryList(_ pref: Preference) async {
         guard categoryList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -52,9 +52,9 @@ extension ViewModel {
         }
         if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.categoryList.evalPath),
-                load(&taskGroup, keyPath: \Self.categoryList.evalTree),
-                load(&taskGroup, keyPath: \Self.categoryList.evalUsed),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.evalPath),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.evalTree),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.evalUsed),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         } }
@@ -86,9 +86,9 @@ struct LoadCategoryPath: LoadEvalProtocol {
         self.value = idleValue
     }
 
-    nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
+    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType? {
         guard let data = await vm.categoryList.data.readyValue else { return nil }
-        return vm.evalCategoryPath(data: data, sep: env.theme.categoryDelimiter)
+        return vm.evalCategoryPath(data: data, sep: pref.theme.categoryDelimiter)
     }
 }
 
@@ -103,7 +103,7 @@ struct LoadCategoryTree: LoadEvalProtocol {
         self.value = idleValue
     }
 
-    nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
+    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType? {
         guard
             let data  = await vm.categoryList.data.readyValue,
             let order = await vm.categoryList.order.readyValue
@@ -123,7 +123,7 @@ struct LoadCategoryUsed: LoadEvalProtocol {
         self.value = idleValue
     }
 
-    nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType? {
+    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType? {
         guard
             let data = await vm.categoryList.data.readyValue,
             let used = await vm.categoryList.used.readyValue

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FieldFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: FieldData
@@ -15,15 +16,15 @@ struct FieldFormView: View {
 
     var body: some View {
         Section {
-            env.theme.field.view(edit, "Description", editView: {
+            pref.theme.field.view(edit, "Description", editView: {
                 TextField("Shall not be empty!", text: $data.description)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.description)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.description)
             } )
 
-            env.theme.field.view(edit, false, "Reference Type", editView: {
+            pref.theme.field.view(edit, false, "Reference Type", editView: {
                 Picker("", selection: $data.refType) {
                     ForEach(RefType.allCases) { choice in
                         if FieldData.refTypes.contains(choice) {
@@ -35,7 +36,7 @@ struct FieldFormView: View {
                 Text(data.refType.name)
             } )
 
-            env.theme.field.view(edit, false, "Field Type", editView: {
+            pref.theme.field.view(edit, false, "Field Type", editView: {
                 Picker("", selection: $data.type) {
                     if data.type == .unknown {
                         Text("(unknown)").tag(FieldType.unknown)
@@ -52,13 +53,14 @@ struct FieldFormView: View {
         }
 
         Section("Properties") {
-            env.theme.field.code(edit, "", $data.properties)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.code(edit, "", $data.properties)
+                .keyboardType(pref.theme.textPad)
         }
     }
 }
 
 #Preview("#\(FieldData.sampleData[0].id) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { FieldFormView(
@@ -66,10 +68,12 @@ struct FieldFormView: View {
         data: .constant(FieldData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("#\(FieldData.sampleData[0].id) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { FieldFormView(
@@ -77,5 +81,6 @@ struct FieldFormView: View {
         data: .constant(FieldData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

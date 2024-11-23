@@ -66,23 +66,23 @@ extension ListProtocol {
 }
 
 extension ViewModel {
-    func loadList<ListType: ListProtocol>(_ listType: ListType.Type) async {
+    func loadList<ListType: ListProtocol>(_ pref: Preference, _ listType: ListType.Type) async {
         typealias MainRepository = ListType.MainRepository
-        /**/ if MainRepository.self == I.self  { await loadInfotableList() }
-        else if MainRepository.self == U.self  { await loadCurrencyList() }
-        else if MainRepository.self == A.self  { await loadAccountList() }
-        else if MainRepository.self == E.self  { await loadAssetList() }
-        else if MainRepository.self == S.self  { await loadStockList() }
-        else if MainRepository.self == C.self  { await loadCategoryList() }
-        else if MainRepository.self == P.self  { await loadPayeeList() }
-        else if MainRepository.self == T.self  { await loadTransactionList() }
-        else if MainRepository.self == Q.self  { await loadScheduledList() }
-        else if MainRepository.self == G.self  { await loadTagList() }
-        else if MainRepository.self == F.self  { await loadFieldList() }
-        else if MainRepository.self == D.self  { await loadAttachmentList() }
-        else if MainRepository.self == BP.self { await loadBudgetPeriodList() }
-        else if MainRepository.self == B.self  { await loadBudgetList() }
-        else if MainRepository.self == R.self  { await loadReportList() }
+        /**/ if MainRepository.self == I.self  { await loadInfotableList(pref) }
+        else if MainRepository.self == U.self  { await loadCurrencyList(pref) }
+        else if MainRepository.self == A.self  { await loadAccountList(pref) }
+        else if MainRepository.self == E.self  { await loadAssetList(pref) }
+        else if MainRepository.self == S.self  { await loadStockList(pref) }
+        else if MainRepository.self == C.self  { await loadCategoryList(pref) }
+        else if MainRepository.self == P.self  { await loadPayeeList(pref) }
+        else if MainRepository.self == T.self  { await loadTransactionList(pref) }
+        else if MainRepository.self == Q.self  { await loadScheduledList(pref) }
+        else if MainRepository.self == G.self  { await loadTagList(pref) }
+        else if MainRepository.self == F.self  { await loadFieldList(pref) }
+        else if MainRepository.self == D.self  { await loadAttachmentList(pref) }
+        else if MainRepository.self == BP.self { await loadBudgetPeriodList(pref) }
+        else if MainRepository.self == B.self  { await loadBudgetList(pref) }
+        else if MainRepository.self == R.self  { await loadReportList(pref) }
     }
 
     func unloadList<ListType: ListProtocol>(_ listType: ListType.Type) {
@@ -104,22 +104,22 @@ extension ViewModel {
         else if MainRepository.self == R.self  { unloadReportList() }
     }
 
-    func loadList() async {
-        await loadInfotableList()
-        await loadCurrencyList()
-        await loadAccountList()
-        await loadAssetList()
-        await loadStockList()
-        await loadCategoryList()
-        await loadPayeeList()
-        await loadTransactionList()
-        await loadScheduledList()
-        await loadTagList()
-        await loadFieldList()
-        await loadAttachmentList()
-        await loadBudgetPeriodList()
-        await loadBudgetList()
-        await loadReportList()
+    func loadList(_ pref: Preference) async {
+        await loadInfotableList(pref)
+        await loadCurrencyList(pref)
+        await loadAccountList(pref)
+        await loadAssetList(pref)
+        await loadStockList(pref)
+        await loadCategoryList(pref)
+        await loadPayeeList(pref)
+        await loadTransactionList(pref)
+        await loadScheduledList(pref)
+        await loadTagList(pref)
+        await loadFieldList(pref)
+        await loadAttachmentList(pref)
+        await loadBudgetPeriodList(pref)
+        await loadBudgetList(pref)
+        await loadReportList(pref)
     }
 
     func unloadList() {

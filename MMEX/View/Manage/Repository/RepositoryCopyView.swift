@@ -71,6 +71,7 @@ struct RepositoryCopyView<
 }
 
 #Preview(AccountData.sampleData[0].name) {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let data = AccountData.sampleData[0]
@@ -88,5 +89,6 @@ struct RepositoryCopyView<
         dismiss: nil,
         formView: formView
     )
+    .environmentObject(pref)
     .environmentObject(env)
 }

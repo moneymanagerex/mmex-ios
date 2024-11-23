@@ -71,6 +71,7 @@ struct PayeeListView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView {
@@ -79,5 +80,6 @@ struct PayeeListView: View {
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

@@ -20,7 +20,7 @@ struct AccountList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadAccountList() async {
+    func loadAccountList(_ pref: Preference) async {
         guard accountList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [

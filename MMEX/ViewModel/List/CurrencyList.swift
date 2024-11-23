@@ -31,7 +31,7 @@ struct CurrencyList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadCurrencyList() async {
+    func loadCurrencyList(_ pref: Preference) async {
         guard currencyList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [

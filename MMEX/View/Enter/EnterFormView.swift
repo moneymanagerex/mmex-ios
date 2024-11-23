@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EnterFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @Binding var txn: TransactionData
@@ -49,7 +50,7 @@ struct EnterFormView: View {
 
             // 2. Unified Numeric Input for the Amount with automatic keyboard focus
             TextField("", value: $txn.transAmount, format: .number)
-                .keyboardType(env.theme.decimalPad) // Show numeric keyboard with decimal support
+                .keyboardType(pref.theme.decimalPad) // Show numeric keyboard with decimal support
                 .font(.system(size: 48, weight: .bold)) // Large, bold text for amount input
                 .multilineTextAlignment(.center) // Center the text for better UX
                 .padding()
@@ -73,7 +74,7 @@ struct EnterFormView: View {
                 get: { txn.notes }, // Safely unwrap the optional notes field
                 set: { txn.notes = $0 } // Set notes to nil if the input is empty
             ))
-            .keyboardType(env.theme.textPad)
+            .keyboardType(pref.theme.textPad)
             .padding(.horizontal)
             .padding(.vertical, 10)
             .background(Color.gray.opacity(0.2)) // Style the notes input field
@@ -210,13 +211,13 @@ struct EnterFormView: View {
                             Spacer()
                             // Split amount
                             TextField("split amount", value: $newSplit.amount, format: .number)
-                                .keyboardType(env.theme.decimalPad)
+                                .keyboardType(pref.theme.decimalPad)
                                 .multilineTextAlignment(.center) // Center the text for better UX
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
                             Spacer()
                             // split notes
                             TextField("split notes", text: $newSplit.notes)
-                                .keyboardType(env.theme.textPad)
+                                .keyboardType(pref.theme.textPad)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Button(action: {
                                 withAnimation {
@@ -257,6 +258,7 @@ struct EnterFormView: View {
 }
 
 #Preview("txn #0") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView { NavigationStack {
@@ -265,11 +267,13 @@ struct EnterFormView: View {
             txn: .constant(TransactionData.sampleData[0])
         )
     }.padding() }
-    .task { await vm.loadEnterList() }
+    .task { await vm.loadEnterList(pref) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("txn #3") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView { NavigationStack {
@@ -278,6 +282,7 @@ struct EnterFormView: View {
             txn: .constant(TransactionData.sampleData[3])
         )
     }.padding() }
-    .task { await vm.loadEnterList() }
+    .task { await vm.loadEnterList(pref) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

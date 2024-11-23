@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct StockFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: StockData
@@ -19,27 +20,27 @@ struct StockFormView: View {
 
     var body: some View {
         Section {
-            env.theme.field.view(edit, "Name", editView: {
+            pref.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
             
-            env.theme.field.view(edit, "Symbol", editView: {
+            pref.theme.field.view(edit, "Symbol", editView: {
                 TextField("Shall not be empty!", text: $data.symbol)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.characters)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.symbol)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.symbol)
             } )
 
             if
                 let accountOrder = vm.accountList.order.readyValue,
                 let accountData  = vm.accountList.data.readyValue
             {
-                env.theme.field.view(edit, false, "Account", editView: {
+                pref.theme.field.view(edit, false, "Account", editView: {
                     Picker("", selection: $data.accountId) {
                         if (data.accountId.isVoid) {
                             Text("(none)").tag(DataId.void)
@@ -49,63 +50,64 @@ struct StockFormView: View {
                         }
                     }
                 }, showView: {
-                    env.theme.field.valueOrError("Shall not be empty!", text: account?.name)
+                    pref.theme.field.valueOrError("Shall not be empty!", text: account?.name)
                 } )
             }
         }
 
         Section {
-            env.theme.field.view(edit, true, "Number of Shares", editView: {
+            pref.theme.field.view(edit, true, "Number of Shares", editView: {
                 TextField("Default is 0", value: $data.numShares.defaultZero, format: .number)
-                    .keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text("\(data.numShares)")
             } )
             
-            env.theme.field.view(edit, true, "Purchase Date", editView: {
+            pref.theme.field.view(edit, true, "Purchase Date", editView: {
                 DatePicker("", selection: $data.purchaseDate.date, displayedComponents: [.date])
                     .labelsHidden()
             }, showView: {
-                env.theme.field.valueOrError("Should not be empty!", text: data.purchaseDate.string)
+                pref.theme.field.valueOrError("Should not be empty!", text: data.purchaseDate.string)
             } )
             
-            env.theme.field.view(edit, true, "Purchase Price", editView: {
+            pref.theme.field.view(edit, true, "Purchase Price", editView: {
                 TextField("Default is 0", value: $data.purchasePrice.defaultZero, format: .number)
-                    .keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text("\(data.purchasePrice)")
             } )
             
-            env.theme.field.view(edit, true, "Current Price", editView: {
+            pref.theme.field.view(edit, true, "Current Price", editView: {
                 TextField("Default is 0", value: $data.currentPrice.defaultZero, format: .number)
-                    .keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text("\(data.currentPrice)")
             } )
             
-            env.theme.field.view(edit, true, "Purchase Value", editView: {
+            pref.theme.field.view(edit, true, "Purchase Value", editView: {
                 TextField("Default is 0", value: $data.purchaseValue.defaultZero, format: .number)
-                    .keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text(data.purchaseValue.formatted(by: formatter))
             } )
             
-            env.theme.field.view(edit, true, "Commisison", editView: {
+            pref.theme.field.view(edit, true, "Commisison", editView: {
                 TextField("Default is 0", value: $data.commisison.defaultZero, format: .number)
-                    .keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text(data.commisison.formatted(by: formatter))
             } )
         }
 
         Section("Notes") {
-            env.theme.field.notes(edit, "", $data.notes)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.notes(edit, "", $data.notes)
+                .keyboardType(pref.theme.textPad)
         }
     }
 }
 
 #Preview("\(StockData.sampleData[0].name) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { StockFormView(
@@ -113,10 +115,12 @@ struct StockFormView: View {
         data: .constant(StockData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("\(StockData.sampleData[0].name) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { StockFormView(
@@ -124,5 +128,6 @@ struct StockFormView: View {
         data: .constant(StockData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

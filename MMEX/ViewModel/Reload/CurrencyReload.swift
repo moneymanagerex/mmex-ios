@@ -9,7 +9,7 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadCurrency(_ oldData: CurrencyData?, _ newData: CurrencyData?) async {
+    func reloadCurrency(_ pref: Preference, _ oldData: CurrencyData?, _ newData: CurrencyData?) async {
         log.trace("DEBUG: ViewModel.reloadCurrency(main=\(Thread.isMainThread))")
 
         // vm.currencyList.info contains only used currencies
@@ -52,7 +52,7 @@ extension ViewModel {
 
         currencyList.order.unload()
 
-        await loadCurrencyList()
+        await loadCurrencyList(pref)
         loadCurrencyGroup(choice: currencyGroup.choice)
 
         // restore isExpanded
@@ -65,7 +65,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadCurrency(main=\(Thread.isMainThread))")
     }
 
-    func reloadCurrencyUsed(_ oldId: DataId?, _ newId: DataId?) {
+    func reloadCurrencyUsed(_ pref: Preference, _ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadCurencyUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
 
         if

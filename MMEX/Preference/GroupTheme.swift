@@ -8,15 +8,15 @@
 import Foundation
 import SwiftUI
 
-struct GroupTheme: ThemeProtocol {
+struct GroupTheme {
     enum Layout: String, EnumCollateNoCase {
         case foldName = "Fold Name space Count"
         case nameFold = "Name space Count Fold"
         static let defaultValue = Self.foldName
     }
     
-    @Preference var layout    : Layout   = .defaultValue
-    @Preference var showCount : BoolEnum = .boolTrue
+    @StoredPreference var layout    : Layout   = .defaultValue
+    @StoredPreference var showCount : BoolEnum = .boolTrue
 }
 
 extension GroupTheme {

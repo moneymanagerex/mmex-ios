@@ -147,6 +147,7 @@ struct InsightsAccountView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     NavigationStack {
         ScrollView {
@@ -158,5 +159,6 @@ struct InsightsAccountView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

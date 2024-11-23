@@ -163,31 +163,37 @@ struct TransactionDetailView: View {
 }
 
 #Preview("txn #0") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     TransactionDetailView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env),
         txn: .constant(TransactionData.sampleData[0])
     )
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("txn #2") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     TransactionDetailView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env),
         txn: .constant(TransactionData.sampleData[2])
     )
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("txn #3") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     TransactionDetailView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env),
         txn: .constant(TransactionData.sampleData[3])
     )
+    .environmentObject(pref)
     .environmentObject(env)
 }

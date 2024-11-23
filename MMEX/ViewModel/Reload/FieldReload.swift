@@ -9,7 +9,7 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadField(_ oldData: FieldData?, _ newData: FieldData?) async {
+    func reloadField(_ pref: Preference, _ oldData: FieldData?, _ newData: FieldData?) async {
         log.trace("DEBUG: ViewModel.reloadField(main=\(Thread.isMainThread))")
 
         // save isExpanded
@@ -33,7 +33,7 @@ extension ViewModel {
 
         fieldList.order.unload()
 
-        await loadFieldList()
+        await loadFieldList(pref)
         loadFieldGroup(choice: fieldGroup.choice)
 
         // restore isExpanded
@@ -49,7 +49,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadField(main=\(Thread.isMainThread))")
     }
 
-    func reloadFieldUsed(_ oldId: DataId?, _ newId: DataId?) {
+    func reloadFieldUsed(_ pref: Preference, _ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadFieldUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if fieldGroup.choice == .used {

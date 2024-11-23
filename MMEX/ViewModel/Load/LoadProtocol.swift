@@ -37,5 +37,5 @@ protocol LoadFetchProtocol: LoadProtocol {
 }
 
 protocol LoadEvalProtocol: LoadProtocol {
-    nonisolated func evalValue(env: EnvironmentManager, vm: ViewModel) async -> ValueType?
+    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType?
 }

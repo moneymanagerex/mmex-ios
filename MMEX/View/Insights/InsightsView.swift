@@ -9,6 +9,7 @@ import SwiftUI
 import Charts
 
 struct InsightsView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: InsightsViewModel
@@ -23,7 +24,7 @@ struct InsightsView: View {
             VStack(spacing: 20) {
                 Section(header: HStack {
                     Button(action: { accountBalanceIsExpanded.toggle() }) {
-                        env.theme.group.view(
+                        pref.theme.group.view(
                             nameView: { Text(InsightsAccountView.statusChoices[statusChoice].0) },
                             isExpanded: accountBalanceIsExpanded
                         )
@@ -38,7 +39,7 @@ struct InsightsView: View {
                 
                 Section(header: HStack {
                     Button(action: { accountIncomeIsExpanded.toggle() }) {
-                        env.theme.group.view(
+                        pref.theme.group.view(
                             nameView: { Text("Account Income Summary") },
                             isExpanded: accountIncomeIsExpanded
                         )
@@ -52,7 +53,7 @@ struct InsightsView: View {
                 
                 Section(header: HStack {
                     Button(action: { incomeExpenseIsExpanded.toggle() }) {
-                        env.theme.group.view(
+                        pref.theme.group.view(
                             nameView: { Text("Income vs Expense Over Time") },
                             isExpanded: incomeExpenseIsExpanded
                         )
@@ -103,12 +104,13 @@ struct InsightsView: View {
         .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
         .task {
             log.debug("DEBUG: InsightsView.onAppear(main=\(Thread.isMainThread))")
-            await vm.loadInsightsList()
+            await vm.loadInsightsList(pref)
         }
     }
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let viewModel = InsightsViewModel(env: env)
@@ -119,5 +121,6 @@ struct InsightsView: View {
         )
         .navigationBarTitle("Insights", displayMode: .inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

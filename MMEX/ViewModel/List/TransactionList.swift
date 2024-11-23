@@ -18,7 +18,7 @@ struct TransactionList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadTransactionList() async {
+    func loadTransactionList(_ pref: Preference) async {
         guard transactionList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
@@ -40,8 +40,8 @@ extension ViewModel {
         }
         if ok { ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.categoryList.evalPath),
-                load(&taskGroup, keyPath: \Self.categoryList.evalTree),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.evalPath),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.evalTree),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         } }

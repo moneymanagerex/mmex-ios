@@ -9,10 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadStock(_ oldData: StockData?, _ newData: StockData?) async {
+    func reloadStock(_ pref: Preference, _ oldData: StockData?, _ newData: StockData?) async {
         log.trace("DEBUG: ViewModel.reloadStock(main=\(Thread.isMainThread))")
 
-        reloadAccountUsed(oldData?.accountId, newData?.accountId)
+        reloadAccountUsed(pref, oldData?.accountId, newData?.accountId)
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = stockGroup.readyValue?.map { $0.isExpanded }
@@ -47,7 +47,7 @@ extension ViewModel {
             }
         }
 
-        await loadStockList()
+        await loadStockList(pref)
         loadStockGroup(choice: stockGroup.choice)
 
         // restore isExpanded
@@ -68,7 +68,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadStock(main=\(Thread.isMainThread))")
     }
 
-    func reloadStockUsed(_ oldId: DataId?, _ newId: DataId?) {
+    func reloadStockUsed(_ pref: Preference, _ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadStockUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if stockGroup.choice == .used {
@@ -89,7 +89,7 @@ extension ViewModel {
         }
     }
 
-    func reloadStockAtt() {
+    func reloadStockAtt(_ pref: Preference) {
         log.trace("DEBUG: ViewModel.reloadStockAtt(main=\(Thread.isMainThread))")
         if stockGroup.choice == .attachment {
             unloadStockGroup()

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TransactionListView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
@@ -84,7 +85,7 @@ struct TransactionListView: View {
         .onAppear {
             log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
             Task {
-                await vm.loadEnterList()
+                await vm.loadEnterList(pref)
                 if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                     newTxn.accountId = defaultAccountId
                 }
@@ -139,10 +140,12 @@ struct TransactionListView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     TransactionListView(
         vm: ViewModel(env: env),
         viewModel: TransactionViewModel(env: env)
     )
+    .environmentObject(pref)
     .environmentObject(env)
 }

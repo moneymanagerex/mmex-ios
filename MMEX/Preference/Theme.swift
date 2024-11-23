@@ -8,13 +8,10 @@
 import Foundation
 import SwiftUI
 
-protocol ThemeProtocol {
-}
-
-struct Theme: ThemeProtocol {
-    @Preference var appearance: Appearance = .defaultValue
-    @Preference var numericKeypad: BoolEnum = .boolTrue
-    @Preference var categoryDelimiter: String = ":"
+struct Theme {
+    @StoredPreference var appearance: Appearance = .defaultValue
+    @StoredPreference var numericKeypad: BoolEnum = .boolTrue
+    @StoredPreference var categoryDelimiter: String = ":"
 
     var tab   : TabTheme   = .init()
     var group : GroupTheme = .init()
@@ -45,17 +42,5 @@ extension Theme {
 
     var textPad: UIKeyboardType {
         .alphabet
-    }
-}
-
-struct BadgeCount: View {
-    var count: Int
-    var body: some View {
-        Text("\(count)")
-            .font(.caption)
-            .foregroundStyle(.white)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 2)
-            .background(.gray, in: .capsule)
     }
 }
