@@ -20,7 +20,7 @@ struct ContentView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
     init(env: EnvironmentManager) {
-        log.debug("ContentView.init()")
+        log.debug("DEBUG: ContentView.init()")
         self.vm = ViewModel(env: env)
         //self._vm = StateObject(wrappedValue: RepositoryViewModel(env: env))
     }
@@ -33,6 +33,7 @@ struct ContentView: View {
                 disconnectedView
             }
         }
+
         .fileImporter(
             isPresented: $isDocumentPickerPresented,
             allowedContentTypes: [.item],
@@ -40,6 +41,7 @@ struct ContentView: View {
         ) {
             handleFileImport($0)
         }
+
         .fileExporter(
             isPresented: $isNewDocumentPickerPresented,
             document: MMEXDocument(),
@@ -48,8 +50,8 @@ struct ContentView: View {
         ) {
             handleFileExport($0)
         }
-        .autocorrectionDisabled()
 
+        .autocorrectionDisabled()
     }
 
     @ViewBuilder
