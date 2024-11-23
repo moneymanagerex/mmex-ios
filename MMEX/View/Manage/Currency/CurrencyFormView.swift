@@ -65,8 +65,8 @@ struct CurrencyFormView: View {
             } )
         }
         
-        Section {
-            env.theme.field.view(false, "Format", valueView: {
+        Section("Format") {
+            env.theme.field.view(false, "", valueView: {
                 Text(format)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .foregroundColor(.gray)
