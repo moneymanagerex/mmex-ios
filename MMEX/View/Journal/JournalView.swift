@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct JournalView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
@@ -70,7 +71,7 @@ struct JournalView: View {
         }
         .task {
             log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
-            await vm.loadTransactionList()
+            await vm.loadTransactionList(pref)
             if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                 accountId = defaultAccountId
             }
@@ -209,6 +210,7 @@ struct JournalView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let viewModel = TransactionViewModel(env: env)
@@ -219,5 +221,6 @@ struct JournalView: View {
         )
         .navigationBarTitle("Latest Transactions", displayMode: .inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

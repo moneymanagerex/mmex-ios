@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AttachmentFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: AttachmentData
@@ -16,24 +17,24 @@ struct AttachmentFormView: View {
     var body: some View {
         if !data.id.isVoid, !data.refId.isVoid {
             Section {
-                env.theme.field.view(false, "Reference") {
+                pref.theme.field.view(false, "Reference") {
                     Text("\(data.refType.name) #\(data.refId.value)")
                         .opacity(0.5)
                 }
 
-                env.theme.field.view(edit, "Description") {
+                pref.theme.field.view(edit, "Description") {
                     TextField("N/A", text: $data.description)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 }
 
                 // TODO: select file
-                env.theme.field.view(edit, "Filename", editView: {
+                pref.theme.field.view(edit, "Filename", editView: {
                     TextField("Shall not be empty!", text: $data.filename)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.words)
                 }, showView: {
-                    env.theme.field.valueOrError("Shall not be empty!", text: data.filename)
+                    pref.theme.field.valueOrError("Shall not be empty!", text: data.filename)
                 } )
             }
         } else {
@@ -43,21 +44,25 @@ struct AttachmentFormView: View {
 }
 
 #Preview("\(AttachmentData.sampleData[0].filename) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     Form { AttachmentFormView(
         vm: ViewModel(env: env),
         data: .constant(AttachmentData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("\(AttachmentData.sampleData[0].filename) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     Form { AttachmentFormView(
         vm: ViewModel(env: env),
         data: .constant(AttachmentData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

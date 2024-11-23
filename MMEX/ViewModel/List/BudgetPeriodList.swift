@@ -19,7 +19,7 @@ struct BudgetPeriodList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadBudgetPeriodList() async {
+    func loadBudgetPeriodList(_ pref: Preference) async {
         guard budgetPeriodList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [

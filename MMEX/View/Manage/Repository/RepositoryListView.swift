@@ -20,6 +20,7 @@ where GroupType.MainRepository == ListType.MainRepository,
     typealias MainData = MainRepository.RepositoryData
     typealias GroupChoice = GroupType.GroupChoice
 
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     var features: RepositoryFeatures
@@ -183,7 +184,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryCreateView.onDisappear()")
                 Task {
-                    await vm.reload(nil as MainData?, newData)
+                    await vm.reload(pref, nil as MainData?, newData)
                     vm.searchGroup(GroupType.self, search: search)
                     newData = nil
                 }
@@ -204,7 +205,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryEditView.onDisappear")
                 Task {
-                    await vm.reload(data, newData)
+                    await vm.reload(pref, data, newData)
                     vm.searchGroup(GroupType.self, search: search)
                     newData = nil
                 }
@@ -225,7 +226,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryCopyView.onDisappear")
                 Task {
-                    await vm.reload(nil as MainData?, newData)
+                    await vm.reload(pref, nil as MainData?, newData)
                     vm.searchGroup(GroupType.self, search: search)
                     newData = nil
                 }
@@ -243,7 +244,7 @@ where GroupType.MainRepository == ListType.MainRepository,
 
     private func load() async {
         log.trace("DEBUG: RepositoryListView.load(main=\(Thread.isMainThread))")
-        await vm.loadList(ListType.self)
+        await vm.loadList(pref, ListType.self)
         vm.loadGroup(GroupType.self, choice: groupChoice)
         vm.searchGroup(GroupType.self, search: search)
     }
@@ -255,7 +256,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                     Button(
                         action: { vmGroup.value[g].isExpanded.toggle() }
                     ) {
-                        env.theme.group.view(
+                        pref.theme.group.view(
                             nameView: { groupNameView(g, vmGroup.value[g].name) },
                             count: vmGroup.value[g].dataId.count,
                             isExpanded: vmGroup.value[g].isExpanded
@@ -315,14 +316,14 @@ where GroupType.MainRepository == ListType.MainRepository,
                 guard deleteData || newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryReadView.onDisappear")
                 Task {
-                    await vm.reload(data, newData)
+                    await vm.reload(pref, data, newData)
                     vm.searchGroup(GroupType.self, search: search)
                     newData = nil
                     deleteData = false
                 }
             }
         ) {
-            env.theme.item.view(
+            pref.theme.item.view(
                 nameView: { itemNameView(data) },
                 infoView: { itemInfoView(data) }
             )
@@ -336,7 +337,7 @@ where GroupType.MainRepository == ListType.MainRepository,
                     alertIsPresented = true
                 } else {
                     Task {
-                        await vm.reload(data, nil)
+                        await vm.reload(pref, data, nil)
                         vm.searchGroup(GroupType.self, search: search)
                     }
                 }
@@ -416,6 +417,7 @@ class RepositorySearchDebounce: ObservableObject {
 }
 
 #Preview("Account") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView {
@@ -424,5 +426,6 @@ class RepositorySearchDebounce: ObservableObject {
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

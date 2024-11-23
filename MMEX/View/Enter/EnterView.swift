@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EnterView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @Environment(\.dismiss) var dismiss
     @ObservedObject var vm: ViewModel
@@ -56,7 +57,7 @@ struct EnterView: View {
 
     private func load() async {
         log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
-        await vm.loadEnterList()
+        await vm.loadEnterList(pref)
 
         if newTxn.accountId.isVoid {
             if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
@@ -75,13 +76,13 @@ struct EnterView: View {
         if newTxn.payeeId.isVoid {
             if let payeeOrder = vm.payeeList.order.readyValue, payeeOrder.count == 1 {
                 newTxn.payeeId = payeeOrder[0]
-            } else if env.pref.reuseLastPayee == .boolTrue, !newTxn.accountId.isVoid {
+            } else if pref.enter.reuseLastPayee == .boolTrue, !newTxn.accountId.isVoid {
                 loadLatestTxn(for: newTxn.accountId)
             }
         }
 
         if newTxn.id.isVoid {
-            newTxn.status = env.pref.defaultStatus
+            newTxn.status = pref.enter.defaultStatus
         }
     }
 
@@ -100,6 +101,7 @@ struct EnterView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let viewModel = TransactionViewModel(env: env)
@@ -110,5 +112,6 @@ struct EnterView: View {
             selectedTab: .constant(0)
         )
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

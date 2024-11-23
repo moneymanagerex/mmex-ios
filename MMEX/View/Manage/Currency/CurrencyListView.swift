@@ -68,9 +68,11 @@ struct CurrencyListView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     CurrencyListView(
         vm: ViewModel(env: env)
     )
+    .environmentObject(pref)
     .environmentObject(env)
 }

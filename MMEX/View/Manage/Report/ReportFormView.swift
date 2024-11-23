@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ReportFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: ReportData
@@ -15,23 +16,23 @@ struct ReportFormView: View {
 
     var body: some View {
         Section {
-            env.theme.field.view(edit, "Name", editView: {
+            pref.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
 
-            env.theme.field.view(edit, "Group Name", editView: {
+            pref.theme.field.view(edit, "Group Name", editView: {
                 TextField("N/A", text: $data.groupName)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrHint("N/A", text: data.groupName)
+                pref.theme.field.valueOrHint("N/A", text: data.groupName)
             } )
 
-            env.theme.field.view(edit, true, "Active", editView: {
+            pref.theme.field.view(edit, true, "Active", editView: {
                 Toggle(isOn: $data.active) { }
             }, showView: {
                 Text(data.active ? "Yes" : "No")
@@ -39,28 +40,29 @@ struct ReportFormView: View {
         }
 
         Section("Description") {
-            env.theme.field.notes(edit, "", $data.description)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.notes(edit, "", $data.description)
+                .keyboardType(pref.theme.textPad)
         }
 
         Section("SQL Content") {
-            env.theme.field.code(edit, "", $data.sqlContent)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.code(edit, "", $data.sqlContent)
+                .keyboardType(pref.theme.textPad)
         }
 
         Section("Lua Content") {
-            env.theme.field.code(edit, "", $data.luaContent)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.code(edit, "", $data.luaContent)
+                .keyboardType(pref.theme.textPad)
         }
 
         Section("Template Content") {
-            env.theme.field.code(edit, "", $data.templateContent)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.code(edit, "", $data.templateContent)
+                .keyboardType(pref.theme.textPad)
         }
     }
 }
 
 #Preview("#\(ReportData.sampleData[0].id) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { ReportFormView(
@@ -68,10 +70,12 @@ struct ReportFormView: View {
         data: .constant(ReportData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("#\(ReportData.sampleData[0].id) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { ReportFormView(
@@ -79,5 +83,6 @@ struct ReportFormView: View {
         data: .constant(ReportData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

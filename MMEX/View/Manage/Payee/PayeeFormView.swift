@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct PayeeFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: PayeeData
@@ -18,15 +19,15 @@ struct PayeeFormView: View {
 
     var body: some View {
         Section {
-            env.theme.field.view(edit, "Name", editView: {
+            pref.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
             
-            env.theme.field.view(edit, true, "Active", editView: {
+            pref.theme.field.view(edit, true, "Active", editView: {
                 Toggle(isOn: $data.active) { }
             }, showView: {
                 Text(data.active ? "Yes" : "No")
@@ -39,7 +40,7 @@ struct PayeeFormView: View {
                 let categoryPath  = vm.categoryList.evalPath.readyValue
             {
                 // TODO: hierarchical picker
-                env.theme.field.view(edit, false, "Category", editView: {
+                pref.theme.field.view(edit, false, "Category", editView: {
                     Picker("", selection: $data.categoryId) {
                         Text("(none)").tag(DataId.void)
                         ForEach(categoryOrder, id: \.dataId) { node in
@@ -47,43 +48,44 @@ struct PayeeFormView: View {
                         }
                     }
                 }, showView: {
-                    env.theme.field.valueOrHint("N/A", text: category)
+                    pref.theme.field.valueOrHint("N/A", text: category)
                 } )
             }
             
             if edit || !data.number.isEmpty {
-                env.theme.field.view(edit, "Payment Number") {
+                pref.theme.field.view(edit, "Payment Number") {
                     TextField("N/A", text: $data.number)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.never)
                 }
             }
             
             if edit || !data.website.isEmpty {
-                env.theme.field.view(edit, "Website") {
+                pref.theme.field.view(edit, "Website") {
                     TextField("N/A", text: $data.website)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.never)
                 }
             }
             
             if edit || !data.pattern.isEmpty {
-                env.theme.field.view(edit, "Pattern") {
+                pref.theme.field.view(edit, "Pattern") {
                     TextField("N/A", text: $data.pattern)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .textInputAutocapitalization(.never)
                 }
             }
         }
 
         Section("Notes") {
-            env.theme.field.notes(edit, "", $data.notes)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.notes(edit, "", $data.notes)
+                .keyboardType(pref.theme.textPad)
         }
     }
 }
 
 #Preview("\(PayeeData.sampleData[0].name) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { PayeeFormView(
@@ -91,10 +93,12 @@ struct PayeeFormView: View {
         data: .constant(PayeeData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("\(PayeeData.sampleData[0].name) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { PayeeFormView(
@@ -102,5 +106,6 @@ struct PayeeFormView: View {
         data: .constant(PayeeData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

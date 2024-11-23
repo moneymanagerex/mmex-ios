@@ -118,6 +118,7 @@ extension ViewModel {
     }
 
     func load<RepositoryLoadType: LoadEvalProtocol>(
+        _ pref: Preference,
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
     ) async -> Bool {
         guard self[keyPath: keyPath].state.loading() else {
@@ -125,7 +126,7 @@ extension ViewModel {
         }
         let loadName = self[keyPath: keyPath].loadName
         //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
-        let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
+        let value = await self[keyPath: keyPath].evalValue(pref: pref, vm: self)
         if let value {
             self[keyPath: keyPath].value = value
         }
@@ -168,6 +169,7 @@ extension ViewModel {
     }
 
     func load<RepositoryLoadType: LoadEvalProtocol>(
+        _ pref: Preference,
         _ taskGroup: inout TaskGroup<Bool>,
         keyPath: ReferenceWritableKeyPath<ViewModel, RepositoryLoadType>
     ) -> Bool {
@@ -177,7 +179,7 @@ extension ViewModel {
         let loadName = self[keyPath: keyPath].loadName
         //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
-            let value = await self[keyPath: keyPath].evalValue(env: self.env, vm: self)
+            let value = await self[keyPath: keyPath].evalValue(pref: pref, vm: self)
             let ok = value != nil
             await MainActor.run {
                 if let value {

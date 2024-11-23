@@ -9,10 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadPayee(_ oldData: PayeeData?, _ newData: PayeeData?) async {
+    func reloadPayee(_ pref: Preference, _ oldData: PayeeData?, _ newData: PayeeData?) async {
         log.trace("DEBUG: ViewModel.reloadPayee(main=\(Thread.isMainThread))")
 
-        reloadCategoryUsed(oldData?.categoryId, newData?.categoryId)
+        reloadCategoryUsed(pref, oldData?.categoryId, newData?.categoryId)
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = payeeGroup.readyValue?.map { $0.isExpanded }
@@ -47,7 +47,7 @@ extension ViewModel {
             }
         }
 
-        await loadPayeeList()
+        await loadPayeeList(pref)
         loadPayeeGroup(choice: payeeGroup.choice)
 
         // restore isExpanded
@@ -68,7 +68,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadPayee(main=\(Thread.isMainThread))")
     }
 
-    func reloadPayeeUsed(_ oldId: DataId?, _ newId: DataId?) {
+    func reloadPayeeUsed(_ pref: Preference, _ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadPayeeUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if payeeGroup.choice == .used {
@@ -89,7 +89,7 @@ extension ViewModel {
         }
     }
 
-    func reloadPayeeAtt() {
+    func reloadPayeeAtt(_ pref: Preference) {
         log.trace("DEBUG: ViewModel.reloadPayeeAtt(main=\(Thread.isMainThread))")
         if payeeGroup.choice == .attachment {
             unloadPayeeGroup()

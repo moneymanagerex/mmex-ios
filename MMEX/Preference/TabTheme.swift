@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct TabTheme: ThemeProtocol {
+struct TabTheme {
     enum Layout: String, EnumCollateNoCase {
         case icon     = "Icon"
         case iconText = "Icon and Text"
         static let defaultValue = Self.iconText
     }
 
-    @Preference var layout: Layout = .defaultValue
+    @StoredPreference var layout: Layout = .defaultValue
 }
 
 extension TabTheme {

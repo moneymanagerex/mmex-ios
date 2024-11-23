@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct ItemTheme: ThemeProtocol {
+struct ItemTheme {
     enum Layout: String, EnumCollateNoCase {
         case hstack = "HStack"
         case vstack = "VStack"
         static let defaultValue = Self.hstack
     }
 
-    @Preference var layout: Layout = .defaultValue
+    @StoredPreference var layout: Layout = .defaultValue
 }
 
 extension ItemTheme {

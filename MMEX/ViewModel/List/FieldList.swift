@@ -22,7 +22,7 @@ struct FieldList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadFieldList() async {
+    func loadFieldList(_ pref: Preference) async {
         guard fieldList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [

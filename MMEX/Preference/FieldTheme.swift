@@ -8,15 +8,15 @@
 import Foundation
 import SwiftUI
 
-struct FieldTheme: ThemeProtocol {
+struct FieldTheme {
     enum Layout: String, EnumCollateNoCase {
         case vstack = "VStack"
         static let defaultValue = Self.vstack
     }
 
-    @Preference var layout    : Layout = .defaultValue
-    @Preference var noteLines : Int    = 4
-    @Preference var codeLines : Int    = 8
+    @StoredPreference var layout    : Layout = .defaultValue
+    @StoredPreference var noteLines : Int    = 4
+    @StoredPreference var codeLines : Int    = 8
 }
 
 extension FieldTheme {

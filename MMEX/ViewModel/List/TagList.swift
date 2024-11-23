@@ -19,7 +19,7 @@ struct TagList: ListProtocol {
 }
 
 extension ViewModel {
-    func loadTagList() async {
+    func loadTagList(_ pref: Preference) async {
         guard tagList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [

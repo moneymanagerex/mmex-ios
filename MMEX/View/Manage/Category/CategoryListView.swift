@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CategoryListView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
 
@@ -171,7 +172,7 @@ struct CategoryListView: View {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryCreateView.onDisappear()")
                 Task {
-                    await vm.reloadCategory(nil as CategoryData?, newData)
+                    await vm.reloadCategory(pref, nil as CategoryData?, newData)
                     vm.searchCategory(search: search)
                     newData = nil
                 }
@@ -193,7 +194,7 @@ struct CategoryListView: View {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryEditView.onDisappear")
                 Task {
-                    await vm.reloadCategory(data, newData)
+                    await vm.reloadCategory(pref, data, newData)
                     vm.searchCategory(search: search)
                     newData = nil
                 }
@@ -214,7 +215,7 @@ struct CategoryListView: View {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryCopyView.onDisappear")
                 Task {
-                    await vm.reloadCategory(nil as CategoryData?, newData)
+                    await vm.reloadCategory(pref, nil as CategoryData?, newData)
                     vm.searchCategory(search: search)
                     newData = nil
                 }
@@ -233,7 +234,7 @@ struct CategoryListView: View {
 
     private func load() async {
         log.trace("DEBUG: CategoryListView.load(main=\(Thread.isMainThread))")
-        await vm.loadCategoryList()
+        await vm.loadCategoryList(pref)
         vm.loadCategoryGroup(choice: groupChoice)
         vm.searchCategory(search: search)
     }
@@ -270,7 +271,7 @@ struct CategoryListView: View {
                     guard deleteData || newData != nil else { return }
                     log.debug("DEBUG: CategoryListView.RepositoryReadView.onDisappear")
                     Task {
-                        await vm.reloadCategory(data, newData)
+                        await vm.reloadCategory(pref, data, newData)
                         vm.searchCategory(search: search)
                         newData = nil
                         deleteData = false
@@ -324,7 +325,7 @@ struct CategoryListView: View {
                         alertIsPresented = true
                     } else {
                         Task {
-                            await vm.reloadCategory(data, nil)
+                            await vm.reloadCategory(pref, data, nil)
                             vm.searchCategory(search: search)
                         }
                     }
@@ -361,6 +362,7 @@ struct CategoryListView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     NavigationView {
@@ -369,5 +371,6 @@ struct CategoryListView: View {
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

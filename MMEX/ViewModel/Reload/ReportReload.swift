@@ -9,7 +9,7 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadReport(_ oldData: ReportData?, _ newData: ReportData?) async {
+    func reloadReport(_ pref: Preference, _ oldData: ReportData?, _ newData: ReportData?) async {
         log.trace("DEBUG: ViewModel.reloadReport(main=\(Thread.isMainThread))")
 
         // save isExpanded
@@ -36,7 +36,7 @@ extension ViewModel {
 
         reportList.order.unload()
 
-        await loadReportList()
+        await loadReportList(pref)
         loadReportGroup(choice: reportGroup.choice)
 
         // restore isExpanded

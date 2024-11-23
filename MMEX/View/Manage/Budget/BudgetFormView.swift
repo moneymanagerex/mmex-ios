@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BudgetFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: BudgetData
@@ -22,7 +23,7 @@ struct BudgetFormView: View {
                 let periodOrder = vm.budgetPeriodList.order.readyValue,
                 let periodData  = vm.budgetPeriodList.data.readyValue
             {
-                env.theme.field.view(edit, false, "Period", editView: {
+                pref.theme.field.view(edit, false, "Period", editView: {
                     Picker("", selection: $data.periodId) {
                         if data.periodId.isVoid {
                             Text("(none)").tag(DataId.void)
@@ -32,11 +33,11 @@ struct BudgetFormView: View {
                         }
                     }
                 }, showView: {
-                    env.theme.field.valueOrHint("N/A", text: periodData[data.periodId]?.name)
+                    pref.theme.field.valueOrHint("N/A", text: periodData[data.periodId]?.name)
                 } )
             }
 
-            env.theme.field.view(edit, true, "Active", editView: {
+            pref.theme.field.view(edit, true, "Active", editView: {
                 Toggle(isOn: $data.active) { }
             }, showView: {
                 Text(data.active ? "Yes" : "No")
@@ -49,7 +50,7 @@ struct BudgetFormView: View {
                 let categoryPath  = vm.categoryList.evalPath.readyValue
             {
                 // TODO: hierarchical picker
-                env.theme.field.view(edit, false, "Category", editView: {
+                pref.theme.field.view(edit, false, "Category", editView: {
                     Picker("", selection: $data.categoryId) {
                         if data.categoryId.isVoid {
                             Text("(none)").tag(DataId.void)
@@ -59,37 +60,38 @@ struct BudgetFormView: View {
                         }
                     }
                 }, showView: {
-                    env.theme.field.valueOrHint("N/A", text: categoryPath[data.categoryId])
+                    pref.theme.field.valueOrHint("N/A", text: categoryPath[data.categoryId])
                 } )
             }
 
-            env.theme.field.view(edit, false, "Frequency", editView: {
+            pref.theme.field.view(edit, false, "Frequency", editView: {
                 Picker("", selection: $data.frequency) {
                     ForEach(BudgetFrequency.allCases, id: \.self) { choice in
                         Text(choice.rawValue).tag(choice)
                     }
                 }
             }, showView: {
-                env.theme.field.valueOrHint("N/A", text: data.frequency.rawValue)
+                pref.theme.field.valueOrHint("N/A", text: data.frequency.rawValue)
             } )
 
-            env.theme.field.view(edit, true, "Flow", editView: {
+            pref.theme.field.view(edit, true, "Flow", editView: {
                 TextField("Negative for outflow", value: $data.flow.defaultZero, format: .number)
-                    .keyboardType(env.theme.textPad)
-                    //.keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.textPad)
+                    //.keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text(data.flow.formatted(by: formatter))
             } )
         }
 
         Section("Notes") {
-            env.theme.field.notes(edit, "", $data.notes)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.notes(edit, "", $data.notes)
+                .keyboardType(pref.theme.textPad)
         }
     }
 }
 
 #Preview("#\(BudgetData.sampleData[0].id) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { BudgetFormView(
@@ -97,10 +99,12 @@ struct BudgetFormView: View {
         data: .constant(BudgetData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("#\(BudgetData.sampleData[0].id) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { BudgetFormView(
@@ -108,5 +112,6 @@ struct BudgetFormView: View {
         data: .constant(BudgetData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

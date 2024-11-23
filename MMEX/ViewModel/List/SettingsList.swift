@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension ViewModel {
-    func loadSettingsList() async {
+    func loadSettingsList(_ pref: Preference) async {
         guard settingsList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [

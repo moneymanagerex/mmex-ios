@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @StateObject private var vm: ViewModel
     @State private var isDocumentPickerPresented = false
@@ -145,7 +146,7 @@ struct ContentView: View {
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
         }
         .tabItem {
-            env.theme.tab.iconText(icon: "list.bullet", text: "Journal")
+            pref.theme.tab.iconText(icon: "list.bullet", text: "Journal")
         }
         .tag(0)
     }
@@ -157,7 +158,7 @@ struct ContentView: View {
                 .navigationBarTitle("Insights", displayMode: .inline)
         }
         .tabItem {
-            env.theme.tab.iconText(icon: "arrow.up.right", text: "Insights")
+            pref.theme.tab.iconText(icon: "arrow.up.right", text: "Insights")
         }
         .tag(1)
     }
@@ -169,7 +170,7 @@ struct ContentView: View {
                 // .navigationBarTitle("Enter Transaction", displayMode: .inline)
         }
         .tabItem {
-            env.theme.tab.iconText(icon: "plus.circle", text: "Enter")
+            pref.theme.tab.iconText(icon: "plus.circle", text: "Enter")
         }
         .tag(2)
     }
@@ -190,7 +191,7 @@ struct ContentView: View {
             .navigationBarTitle("Manage", displayMode: .inline)
         }
         .tabItem {
-            env.theme.tab.iconText(icon: "folder", text: "Manage")
+            pref.theme.tab.iconText(icon: "folder", text: "Manage")
         }
         .tag(3)
     }
@@ -202,7 +203,7 @@ struct ContentView: View {
                 .navigationBarTitle("Settings", displayMode: .inline)
         }
         .tabItem {
-            env.theme.tab.iconText(icon: "gearshape", text: "Settings")
+            pref.theme.tab.iconText(icon: "gearshape", text: "Settings")
         }
         .tag(4)
     }

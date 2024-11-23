@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
@@ -30,7 +31,7 @@ struct SettingsView: View {
                     Text("Theme")
                 }
                 
-                Picker("Default Transaction Status", selection: $env.pref.defaultStatus) {
+                Picker("Default Transaction Status", selection: $pref.enter.defaultStatus) {
                     ForEach(TransactionStatus.allCases) { status in
                         Text(status.fullName).tag(status)
                     }
@@ -53,13 +54,13 @@ struct SettingsView: View {
                 HStack {
                     Text("Reuse Last Payee")
                     Spacer()
-                    Toggle(isOn: $env.pref.reuseLastPayee.asBool) { }
+                    Toggle(isOn: $pref.enter.reuseLastPayee.asBool) { }
                 }
                 
                 HStack {
                     Text("Send Anonymous Usage Data")
                     Spacer()
-                    Toggle(isOn: $env.track.sendUsage.asBool) { }
+                    Toggle(isOn: $pref.track.sendUsage.asBool) { }
                 }
             }
             
@@ -147,7 +148,7 @@ struct SettingsView: View {
 
         .task {
             log.trace("DEBUG: SettingsView.task(main=\(Thread.isMainThread))")
-            await vm.loadSettingsList()
+            await vm.loadSettingsList(pref)
             baseCurrencyId    = vm.infotableList.baseCurrencyId.value
             defaultAccountId  = vm.infotableList.defaultAccountId.value
         }
@@ -155,7 +156,7 @@ struct SettingsView: View {
         .refreshable {
             log.trace("DEBUG: SettingsView.refreshable(main=\(Thread.isMainThread))")
             vm.unloadAll()
-            await vm.loadSettingsList()
+            await vm.loadSettingsList(pref)
             baseCurrencyId    = vm.infotableList.baseCurrencyId.value
             defaultAccountId  = vm.infotableList.defaultAccountId.value
         }
@@ -237,6 +238,7 @@ struct SettingsView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let viewModel = TransactionViewModel(env: env)
@@ -247,5 +249,6 @@ struct SettingsView: View {
         )
         .navigationBarTitle("Settings", displayMode: .inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

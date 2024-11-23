@@ -16,20 +16,21 @@ let log = Logger(
 
 @main
 struct MMEXApp: App {
+    @StateObject private var pref = Preference()
     @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
 
-    func track(env: EnvironmentManager) {
+    func track(pref: Preference) {
         log.debug("DEBUG: MMEXApp.track()")
-        if env.track.userId.isEmpty {
-            env.track.userId = String(format: "ios_%@", TimestampString(Date()).string)
+        if pref.track.userId.isEmpty {
+            pref.track.userId = String(format: "ios_%@", TimestampString(Date()).string)
         }
 
-        if env.track.sendUsage == .boolTrue {
+        if pref.track.sendUsage == .boolTrue {
             Amplitude.instance().defaultTracking = AMPDefaultTrackingOptions.initWithSessions(
                 true, appLifecycles: true, deepLinks: false, screenViews: false
             )
             Amplitude.instance().initializeApiKey("1e1fbc10354400d9c3392a89558d693d")
-            Amplitude.instance().setUserId(env.track.userId) // copy from/to Infotable.UID
+            Amplitude.instance().setUserId(pref.track.userId) // copy from/to Infotable.UID
         }
     }
 
@@ -37,9 +38,10 @@ struct MMEXApp: App {
         WindowGroup {
             ContentView(env: env)
                 .onAppear {
-                    env.theme.appearance.apply()
-                    track(env: env)
+                    pref.theme.appearance.apply()
+                    track(pref: pref)
                 }
+                .environmentObject(pref)
                 .environmentObject(env)
         }
     }

@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct AssetFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: AssetData
@@ -19,15 +20,15 @@ struct AssetFormView: View {
 
     var body: some View {
         Section {
-            env.theme.field.view(edit, "Name", editView: {
+            pref.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
             
-            env.theme.field.view(edit, false, "Type", editView: {
+            pref.theme.field.view(edit, false, "Type", editView: {
                 Picker("", selection: $data.type) {
                     ForEach(AssetType.allCases) { type in
                         Text(type.rawValue).tag(type)
@@ -37,24 +38,24 @@ struct AssetFormView: View {
                 Text(data.type.rawValue)
             } )
             
-            env.theme.field.view(edit, false, "Status", editView: {
+            pref.theme.field.view(edit, false, "Status", editView: {
                 Toggle(isOn: $data.status.isOpen) { }
             }, showView: {
                 Text(data.status.rawValue)
             } )
             
-            env.theme.field.view(edit, true, "Start Date", editView: {
+            pref.theme.field.view(edit, true, "Start Date", editView: {
                 DatePicker("", selection: $data.startDate.date, displayedComponents: [.date])
                     .labelsHidden()
             }, showView: {
-                env.theme.field.valueOrError("Should not be empty!", text: data.startDate.string)
+                pref.theme.field.valueOrError("Should not be empty!", text: data.startDate.string)
             } )
             
             if
                 let currencyOrder = vm.currencyList.order.readyValue,
                 let currencyName  = vm.currencyList.name.readyValue
             {
-                env.theme.field.view(edit, false, "Currency", editView: {
+                pref.theme.field.view(edit, false, "Currency", editView: {
                     Picker("", selection: $data.currencyId) {
                         if (data.currencyId.isVoid) {
                             Text("(none)").tag(DataId.void)
@@ -64,20 +65,20 @@ struct AssetFormView: View {
                         }
                     }
                 }, showView: {
-                    env.theme.field.valueOrError("Shall not be empty!", text: currency?.name)
+                    pref.theme.field.valueOrError("Shall not be empty!", text: currency?.name)
                 } )
             }
 
-            env.theme.field.view(edit, true, "Value", editView: {
+            pref.theme.field.view(edit, true, "Value", editView: {
                 TextField("Default is 0", value: $data.value.defaultZero, format: .number)
-                    .keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text(data.value.formatted(by: formatter))
             } )
         }
         
         Section {
-            env.theme.field.view(edit, false, "Change", editView: {
+            pref.theme.field.view(edit, false, "Change", editView: {
                 Picker("", selection: $data.change) {
                     ForEach(AssetChange.allCases) { change in
                         Text(change.rawValue).tag(change)
@@ -87,7 +88,7 @@ struct AssetFormView: View {
                 Text(data.change.rawValue)
             } )
             
-            env.theme.field.view(edit, false, "Change Mode", editView: {
+            pref.theme.field.view(edit, false, "Change Mode", editView: {
                 Picker("", selection: $data.changeMode) {
                     ForEach(AssetChangeMode.allCases) { mode in
                         Text(mode.rawValue).tag(mode)
@@ -97,22 +98,23 @@ struct AssetFormView: View {
                 Text(data.changeMode.rawValue)
             } )
             
-            env.theme.field.view(edit, true, "Change Rate", editView: {
+            pref.theme.field.view(edit, true, "Change Rate", editView: {
                 TextField("Default is 0", value: $data.changeRate.defaultZero, format: .number)
-                    .keyboardType(env.theme.decimalPad)
+                    .keyboardType(pref.theme.decimalPad)
             }, showView: {
                 Text("\(data.changeRate)")
             } )
         }
 
         Section("Notes") {
-            env.theme.field.notes(edit, "", $data.notes)
-                .keyboardType(env.theme.textPad)
+            pref.theme.field.notes(edit, "", $data.notes)
+                .keyboardType(pref.theme.textPad)
         }
     }
 }
 
 #Preview("\(AssetData.sampleData[0].name) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { AssetFormView(
@@ -120,10 +122,12 @@ struct AssetFormView: View {
         data: .constant(AssetData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("\(AssetData.sampleData[0].name) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { AssetFormView(
@@ -131,5 +135,6 @@ struct AssetFormView: View {
         data: .constant(AssetData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

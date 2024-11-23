@@ -9,7 +9,7 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadCategory(_ oldData: CategoryData?, _ newData: CategoryData?) async {
+    func reloadCategory(_ pref: Preference, _ oldData: CategoryData?, _ newData: CategoryData?) async {
         log.trace("DEBUG: ViewModel.reloadCategory(main=\(Thread.isMainThread))")
         
         // TODO: save isExpanded
@@ -36,7 +36,7 @@ extension ViewModel {
         
         categoryList.order.unload()
         
-        await loadCategoryList()
+        await loadCategoryList(pref)
         loadCategoryGroup(choice: categoryGroup.choice)
         
         // TODO: restore isExpanded
@@ -44,7 +44,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadCategory(main=\(Thread.isMainThread))")
     }
 
-    func reloadCategoryUsed(_ oldId: DataId?, _ newId: DataId?) {
+    func reloadCategoryUsed(_ pref: Preference, _ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadCategoryUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0)")
         if let oldId, newId != oldId {
             if categoryGroup.choice == .used || categoryGroup.choice == .notUsed {

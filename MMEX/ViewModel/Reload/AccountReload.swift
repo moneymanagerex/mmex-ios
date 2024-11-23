@@ -9,10 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadAccount(_ oldData: AccountData?, _ newData: AccountData?) async {
+    func reloadAccount(_ pref: Preference, _ oldData: AccountData?, _ newData: AccountData?) async {
         log.trace("DEBUG: ViewModel.reloadAccount(main=\(Thread.isMainThread))")
         
-        reloadCurrencyUsed(oldData?.currencyId, newData?.currencyId)
+        reloadCurrencyUsed(pref, oldData?.currencyId, newData?.currencyId)
         
         // save isExpanded
         let groupIsExpanded: [Bool]? = accountGroup.readyValue?.map { $0.isExpanded }
@@ -47,7 +47,7 @@ extension ViewModel {
             }
         }
         
-        await loadAccountList()
+        await loadAccountList(pref)
         loadAccountGroup(choice: accountGroup.choice)
         
         // restore isExpanded
@@ -68,7 +68,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadAccount(main=\(Thread.isMainThread))")
     }
 
-    func reloadAccountUsed(_ oldId: DataId?, _ newId: DataId?) {
+    func reloadAccountUsed(_ pref: Preference, _ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadAccountUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if accountGroup.choice == .used {
@@ -89,7 +89,7 @@ extension ViewModel {
         }
     }
 
-    func reloadAccountAtt() {
+    func reloadAccountAtt(_ pref: Preference) {
         log.trace("DEBUG: ViewModel.reloadAccountAtt(main=\(Thread.isMainThread))")
         if accountGroup.choice == .attachment {
             unloadAccountGroup()

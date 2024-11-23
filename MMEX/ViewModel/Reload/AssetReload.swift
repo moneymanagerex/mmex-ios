@@ -9,10 +9,10 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func reloadAsset(_ oldData: AssetData?, _ newData: AssetData?) async {
+    func reloadAsset(_ pref: Preference, _ oldData: AssetData?, _ newData: AssetData?) async {
         log.trace("DEBUG: ViewModel.reloadAsset(main=\(Thread.isMainThread))")
 
-        reloadCurrencyUsed(oldData?.currencyId, newData?.currencyId)
+        reloadCurrencyUsed(pref, oldData?.currencyId, newData?.currencyId)
 
         // save isExpanded
         let groupIsExpanded: [Bool]? = assetGroup.readyValue?.map { $0.isExpanded }
@@ -47,7 +47,7 @@ extension ViewModel {
             }
         }
 
-        await loadAssetList()
+        await loadAssetList(pref)
         loadAssetGroup(choice: assetGroup.choice)
 
         // restore isExpanded
@@ -68,7 +68,7 @@ extension ViewModel {
         log.info("INFO: ViewModel.reloadAsset(main=\(Thread.isMainThread))")
     }
 
-    func reloadAssetUsed(_ oldId: DataId?, _ newId: DataId?) {
+    func reloadAssetUsed(_ pref: Preference, _ oldId: DataId?, _ newId: DataId?) {
         log.trace("DEBUG: ViewModel.reloadAssetUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if assetGroup.choice == .used {
@@ -89,7 +89,7 @@ extension ViewModel {
         }
     }
 
-    func reloadAssetAtt() {
+    func reloadAssetAtt(_ pref: Preference) {
         log.trace("DEBUG: ViewModel.reloadAssetAtt(main=\(Thread.isMainThread))")
         if assetGroup.choice == .attachment {
             unloadAssetGroup()

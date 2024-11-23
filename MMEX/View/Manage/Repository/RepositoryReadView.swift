@@ -125,6 +125,7 @@ struct RepositoryReadView<
 }
 
 #Preview(AccountData.sampleData[0].name) {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     let formView = { $data, edit in AccountFormView(
@@ -144,5 +145,6 @@ struct RepositoryReadView<
         .navigationTitle(AccountData.dataName.1)
         .navigationBarTitle("Manage", displayMode: .inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

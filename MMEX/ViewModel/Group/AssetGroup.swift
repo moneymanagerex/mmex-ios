@@ -24,7 +24,7 @@ struct AssetGroup: GroupProtocol {
     typealias ValueType      = [GroupData]
     let idleValue: ValueType = []
 
-    @Preference var choice: GroupChoice = .defaultValue
+    @StoredPreference var choice: GroupChoice = .defaultValue
     var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType

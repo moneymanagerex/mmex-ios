@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CategoryFormView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     var vm: ViewModel
     @Binding var data: CategoryData
@@ -27,7 +28,7 @@ struct CategoryFormView: View {
         Section {
             if let categoryPath, let categoryOrder = categoryTree?.order {
                 // TODO: hierarchical picker
-                env.theme.field.view(edit, "Parent Category", editView: {
+                pref.theme.field.view(edit, "Parent Category", editView: {
                     Picker("", selection: $data.parentId) {
                         Text("(none)").tag(DataId.void)
                         ForEach(categoryOrder.indices, id: \.self) { i in
@@ -38,19 +39,19 @@ struct CategoryFormView: View {
                         }
                     }
                 }, showView: {
-                    env.theme.field.valueOrHint("(none)", text: categoryPath[data.parentId])
+                    pref.theme.field.valueOrHint("(none)", text: categoryPath[data.parentId])
                 } )
             }
 
-            env.theme.field.view(edit, "Name", editView: {
+            pref.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
-                    .keyboardType(env.theme.textPad)
+                    .keyboardType(pref.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
-                env.theme.field.valueOrError("Shall not be empty!", text: data.name)
+                pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
             } )
             
-            env.theme.field.view(edit, true, "Active", editView: {
+            pref.theme.field.view(edit, true, "Active", editView: {
                 Toggle(isOn: $data.active) { }
             }, showView: {
                 Text(data.active ? "Yes" : "No")
@@ -60,6 +61,7 @@ struct CategoryFormView: View {
 }
 
 #Preview("\(CategoryData.sampleData[1].name) (show)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { CategoryFormView(
@@ -67,10 +69,12 @@ struct CategoryFormView: View {
         data: .constant(CategoryData.sampleData[0]),
         edit: false
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }
 
 #Preview("\(CategoryData.sampleData[1].name) (edit)") {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     let vm = ViewModel(env: env)
     Form { CategoryFormView(
@@ -78,5 +82,6 @@ struct CategoryFormView: View {
         data: .constant(CategoryData.sampleData[0]),
         edit: true
     ) }
+    .environmentObject(pref)
     .environmentObject(env)
 }

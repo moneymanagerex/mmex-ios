@@ -54,7 +54,7 @@ struct CategoryGroup: GroupProtocol {
     typealias ValueType      = CategoryGroupTree
     let idleValue: ValueType = CategoryGroupTree()
 
-    @Preference var choice: GroupChoice = .defaultValue
+    @StoredPreference var choice: GroupChoice = .defaultValue
     var search: Bool = false
     var state: LoadState = .init()
     var value: ValueType

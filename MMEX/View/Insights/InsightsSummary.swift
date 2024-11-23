@@ -29,6 +29,7 @@ struct InsightsSummaryView: View {
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     NavigationStack {
         ScrollView {
@@ -39,5 +40,6 @@ struct InsightsSummaryView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
     }
+    .environmentObject(pref)
     .environmentObject(env)
 }

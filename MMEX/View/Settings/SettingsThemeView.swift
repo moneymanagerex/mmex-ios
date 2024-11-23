@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsThemeView: View {
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var env: EnvironmentManager
     @ObservedObject var vm: ViewModel
 
@@ -30,20 +31,20 @@ struct SettingsThemeView: View {
                 HStack {
                     Text("Appearance")
                     Spacer()
-                    Picker("", selection: $env.theme.appearance) {
+                    Picker("", selection: $pref.theme.appearance) {
                         ForEach(Appearance.allCases) { choice in
                             Text(choice.rawValue).tag(choice)
                         }
                     }
-                    .onChange(of: env.theme.appearance) {
-                        env.theme.appearance.apply()
+                    .onChange(of: pref.theme.appearance) {
+                        pref.theme.appearance.apply()
                     }
                 }
 
                 HStack {
                     Text("Numeric Keypad")
                     Spacer()
-                    Toggle(isOn: $env.theme.numericKeypad.asBool) { }
+                    Toggle(isOn: $pref.theme.numericKeypad.asBool) { }
                 }
 
                 HStack {
@@ -56,7 +57,7 @@ struct SettingsThemeView: View {
                     Text("Category Delimiter")
                     Spacer()
                     TextField("Default is ':'", text: $categoryDelimiter)
-                        .keyboardType(env.theme.textPad)
+                        .keyboardType(pref.theme.textPad)
                         .focused($categoryDelimiterFocus)
                         .onChange(of: categoryDelimiterFocus) {
                             if !categoryDelimiterFocus { currencyDelimiterUpdate() }
@@ -81,7 +82,7 @@ struct SettingsThemeView: View {
                 HStack {
                     Text("Tab Icons")
                     Spacer()
-                    Picker("", selection: $env.theme.tab.layout) {
+                    Picker("", selection: $pref.theme.tab.layout) {
                         ForEach(TabTheme.Layout.allCases) { layout in
                             Text(layout.rawValue).tag(layout)
                         }
@@ -91,7 +92,7 @@ struct SettingsThemeView: View {
                 HStack {
                     Text("Group Count")
                     Spacer()
-                    Toggle(isOn: $env.theme.group.showCount.asBool) { }
+                    Toggle(isOn: $pref.theme.group.showCount.asBool) { }
                 }
             }
 
@@ -99,7 +100,7 @@ struct SettingsThemeView: View {
                 Button(action: {
                     isExpanded["Group Layout"]?.toggle()
                 }) {
-                    env.theme.group.view(
+                    pref.theme.group.view(
                         nameView: { Text("Group Layout") },
                         isExpanded: isExpanded["Group Layout"] == true
                     )
@@ -109,9 +110,9 @@ struct SettingsThemeView: View {
                     VStack(spacing: 15) {
                         ForEach(GroupTheme.Layout.allCases) { layout in
                             Button(action: {
-                                env.theme.group.layout = layout
+                                pref.theme.group.layout = layout
                             }) {
-                                GroupTheme(layout: layout, showCount: env.theme.group.showCount).view(
+                                GroupTheme(layout: layout, showCount: pref.theme.group.showCount).view(
                                     nameView: { Text("Group Name") },
                                     count: 10,
                                     isExpanded: false
@@ -121,8 +122,8 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.group.layout == layout ? accentColor : .gray,
-                                    lineWidth: env.theme.group.layout == layout ? 3 : 1
+                                    pref.theme.group.layout == layout ? accentColor : .gray,
+                                    lineWidth: pref.theme.group.layout == layout ? 3 : 1
                                 )
                             )
                         }
@@ -135,7 +136,7 @@ struct SettingsThemeView: View {
                 Button(action: {
                     isExpanded["Item Layout"]?.toggle()
                 }) {
-                    env.theme.group.view(
+                    pref.theme.group.view(
                         nameView: { Text("Item Layout") },
                         isExpanded: isExpanded["Item Layout"] == true
                     )
@@ -145,7 +146,7 @@ struct SettingsThemeView: View {
                     VStack(spacing: 15) {
                         ForEach(ItemTheme.Layout.allCases) { layout in
                             Button(action: {
-                                env.theme.item.layout = layout
+                                pref.theme.item.layout = layout
                             }) {
                                 ItemTheme(layout: layout).view(
                                     nameView: { Text("Item Name") },
@@ -157,8 +158,8 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.item.layout == layout ? accentColor : .gray,
-                                    lineWidth: env.theme.item.layout == layout ? 3 : 1
+                                    pref.theme.item.layout == layout ? accentColor : .gray,
+                                    lineWidth: pref.theme.item.layout == layout ? 3 : 1
                                 )
                             )
                         }
@@ -171,7 +172,7 @@ struct SettingsThemeView: View {
                 Button(action: {
                     isExpanded["Field Layout"]?.toggle()
                 }) {
-                    env.theme.group.view(
+                    pref.theme.group.view(
                         nameView: { Text("Field Layout") },
                         isExpanded: isExpanded["Field Layout"] == true
                     )
@@ -181,7 +182,7 @@ struct SettingsThemeView: View {
                     VStack(spacing: 15) {
                         ForEach(FieldTheme.Layout.allCases) { layout in
                             Button(action: {
-                                env.theme.field.layout = layout
+                                pref.theme.field.layout = layout
                             }) {
                                 FieldTheme(layout: layout).view(false, "Field Name") {
                                     Text("Field Value")
@@ -193,8 +194,8 @@ struct SettingsThemeView: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8).stroke(
-                                    env.theme.field.layout == layout ? accentColor : .gray,
-                                    lineWidth: env.theme.field.layout == layout ? 3 : 1
+                                    pref.theme.field.layout == layout ? accentColor : .gray,
+                                    lineWidth: pref.theme.field.layout == layout ? 3 : 1
                                 )
                             )
                         }
@@ -214,7 +215,7 @@ struct SettingsThemeView: View {
             }
         }
         .onAppear {
-            categoryDelimiter = env.theme.categoryDelimiter
+            categoryDelimiter = pref.theme.categoryDelimiter
         }
     }
 
@@ -227,16 +228,18 @@ struct SettingsThemeView: View {
 
     func currencyDelimiterUpdate() {
         if categoryDelimiter.isEmpty { categoryDelimiter = ":" }
-        guard categoryDelimiter != env.theme.categoryDelimiter else { return }
-        env.theme.categoryDelimiter = categoryDelimiter
+        guard categoryDelimiter != pref.theme.categoryDelimiter else { return }
+        pref.theme.categoryDelimiter = categoryDelimiter
         vm.categoryList.evalPath.unload()
     }
 }
 
 #Preview {
+    let pref = Preference()
     let env = EnvironmentManager.sampleData
     SettingsThemeView(
         vm: ViewModel(env: env)
     )
+    .environmentObject(pref)
     .environmentObject(env)
 }
