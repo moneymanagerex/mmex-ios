@@ -155,6 +155,7 @@
 		92F6861A2CF1221B00171A6A /* BudgetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686192CF1221B00171A6A /* BudgetFormView.swift */; };
 		92F6861C2CF1416B00171A6A /* ReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6861B2CF1416B00171A6A /* ReportListView.swift */; };
 		92F6861E2CF1427400171A6A /* ReportFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6861D2CF1427400171A6A /* ReportFormView.swift */; };
+		92F686202CF152F500171A6A /* FieldValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6861F2CF152F500171A6A /* FieldValidation.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
@@ -362,6 +363,7 @@
 		92F686192CF1221B00171A6A /* BudgetFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetFormView.swift; sourceTree = "<group>"; };
 		92F6861B2CF1416B00171A6A /* ReportListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportListView.swift; sourceTree = "<group>"; };
 		92F6861D2CF1427400171A6A /* ReportFormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportFormView.swift; sourceTree = "<group>"; };
+		92F6861F2CF152F500171A6A /* FieldValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldValidation.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
@@ -639,6 +641,7 @@
 				925EABAB2CCF826F003CEAB3 /* CategoryValidation.swift */,
 				925EABAD2CCF8293003CEAB3 /* PayeeValidation.swift */,
 				925EAC102CDA8BCE003CEAB3 /* TagValidation.swift */,
+				92F6861F2CF152F500171A6A /* FieldValidation.swift */,
 				925EAC1F2CDAADFB003CEAB3 /* AttachmentValidation.swift */,
 				92F685FC2CF0CD7400171A6A /* BudgetPeriodValidation.swift */,
 				92F686042CF0F31700171A6A /* BudgetValidation.swift */,
@@ -1025,6 +1028,7 @@
 				927B12332CDE852900AEA52F /* JournalList.swift in Sources */,
 				925EAC0B2CDA8903003CEAB3 /* TagList.swift in Sources */,
 				A3C1424C2C8AB52600D3CEC0 /* CurrencyData.swift in Sources */,
+				92F686202CF152F500171A6A /* FieldValidation.swift in Sources */,
 				9243531B2CC51FB10052E4BC /* CurrencyReload.swift in Sources */,
 				920823FA2CA49A4B00388AB2 /* StockHistoryData.swift in Sources */,
 				A37E7D8E2C9AC4C900B4ECFC /* PrivacyPolicyView.swift in Sources */,
