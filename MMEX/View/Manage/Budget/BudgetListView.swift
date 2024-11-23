@@ -59,10 +59,10 @@ struct BudgetListView: View {
     @ViewBuilder
     func itemInfoView(_ data: BudgetData) -> some View {
         switch vm.budgetGroup.choice {
-        case .active:
-            Text(vm.categoryList.evalPath.readyValue?[data.categoryId] ?? "(unknown category)")
-        default:
+        case .period, .category:
             Text(data.flow.formatted(by: formatter) + data.frequency.suffix)
+        default:
+            Text(vm.categoryList.evalPath.readyValue?[data.categoryId] ?? "(unknown category)")
         }
     }
     

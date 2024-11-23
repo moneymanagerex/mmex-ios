@@ -16,8 +16,8 @@ struct FieldList: ListProtocol {
     var data  : LoadMainData<MainRepository>  = .init()
     var used  : LoadMainUsed<MainRepository>  = .init()
     var order : LoadMainOrder<MainRepository> = .init(order: [
-        MainRepository.col_refType,
-        MainRepository.col_description
+        MainRepository.col_description,
+        MainRepository.col_refType
     ])
 }
 

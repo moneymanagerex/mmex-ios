@@ -24,6 +24,8 @@ extension ViewModel {
             await reloadPayee(oldData as! PayeeData?, newData as! PayeeData?)
         } else if MainData.self == G.RepositoryData.self {
             await reloadTag(oldData as! TagData?, newData as! TagData?)
+        } else if MainData.self == F.RepositoryData.self {
+            await reloadField(oldData as! FieldData?, newData as! FieldData?)
         } else if MainData.self == D.RepositoryData.self {
             await reloadAttachment(oldData as! AttachmentData?, newData as! AttachmentData?)
         } else if MainData.self == BP.RepositoryData.self {
