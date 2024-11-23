@@ -90,7 +90,7 @@ class ViewModel: ObservableObject {
 
     init(env: EnvironmentManager) {
         self.env = env
-        Task { await loadSettingsList() }
+        //Task { await loadSettingsList() }
     }
 }
 
