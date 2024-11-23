@@ -17,6 +17,7 @@ struct ReportFormView: View {
         Section {
             env.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.name)
@@ -24,6 +25,7 @@ struct ReportFormView: View {
 
             env.theme.field.view(edit, "Group Name", editView: {
                 TextField("N/A", text: $data.groupName)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
                 env.theme.field.valueOrHint("N/A", text: data.groupName)
@@ -38,18 +40,22 @@ struct ReportFormView: View {
 
         Section("Description") {
             env.theme.field.notes(edit, "", $data.description)
+                .keyboardType(env.theme.textPad)
         }
 
         Section("SQL Content") {
             env.theme.field.code(edit, "", $data.sqlContent)
+                .keyboardType(env.theme.textPad)
         }
 
         Section("Lua Content") {
             env.theme.field.code(edit, "", $data.luaContent)
+                .keyboardType(env.theme.textPad)
         }
 
         Section("Template Content") {
             env.theme.field.code(edit, "", $data.templateContent)
+                .keyboardType(env.theme.textPad)
         }
     }
 }

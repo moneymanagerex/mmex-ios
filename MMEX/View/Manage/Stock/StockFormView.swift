@@ -21,6 +21,7 @@ struct StockFormView: View {
         Section {
             env.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.name)
@@ -28,6 +29,7 @@ struct StockFormView: View {
             
             env.theme.field.view(edit, "Symbol", editView: {
                 TextField("Shall not be empty!", text: $data.symbol)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.characters)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.symbol)
@@ -98,6 +100,7 @@ struct StockFormView: View {
 
         Section("Notes") {
             env.theme.field.notes(edit, "", $data.notes)
+                .keyboardType(env.theme.textPad)
         }
     }
 }

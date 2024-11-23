@@ -21,6 +21,7 @@ struct AccountFormView: View {
         Section {
             env.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.name)
@@ -135,6 +136,7 @@ struct AccountFormView: View {
             if edit || !data.num.isEmpty {
                 env.theme.field.view(edit, "Number") {
                     TextField("N/A", text: $data.num)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.never)
                 }
             }
@@ -142,6 +144,7 @@ struct AccountFormView: View {
             if edit || !data.heldAt.isEmpty {
                 env.theme.field.view(edit, "Held at") {
                     TextField("N/A", text: $data.heldAt)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 }
             }
@@ -149,6 +152,7 @@ struct AccountFormView: View {
             if edit || !data.website.isEmpty {
                 env.theme.field.view(edit, "Website") {
                     TextField("N/A", text: $data.website)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.never)
                 }
             }
@@ -156,6 +160,7 @@ struct AccountFormView: View {
             if edit || !data.contactInfo.isEmpty {
                 env.theme.field.view(edit, "Contact Info") {
                     TextField("N/A", text: $data.contactInfo)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 }
             }
@@ -163,6 +168,7 @@ struct AccountFormView: View {
             if edit || !data.accessInfo.isEmpty {
                 env.theme.field.view(edit, "Access Info") {
                     TextField("N/A", text: $data.accessInfo)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 }
             }
@@ -170,6 +176,7 @@ struct AccountFormView: View {
 
         Section("Notes") {
             env.theme.field.notes(edit, "", $data.notes)
+                .keyboardType(env.theme.textPad)
         }
     }
 }

@@ -20,6 +20,7 @@ struct PayeeFormView: View {
         Section {
             env.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.words)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.name)
@@ -53,6 +54,7 @@ struct PayeeFormView: View {
             if edit || !data.number.isEmpty {
                 env.theme.field.view(edit, "Payment Number") {
                     TextField("N/A", text: $data.number)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.never)
                 }
             }
@@ -60,6 +62,7 @@ struct PayeeFormView: View {
             if edit || !data.website.isEmpty {
                 env.theme.field.view(edit, "Website") {
                     TextField("N/A", text: $data.website)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.never)
                 }
             }
@@ -67,6 +70,7 @@ struct PayeeFormView: View {
             if edit || !data.pattern.isEmpty {
                 env.theme.field.view(edit, "Pattern") {
                     TextField("N/A", text: $data.pattern)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.never)
                 }
             }
@@ -74,6 +78,7 @@ struct PayeeFormView: View {
 
         Section("Notes") {
             env.theme.field.notes(edit, "", $data.notes)
+                .keyboardType(env.theme.textPad)
         }
     }
 }

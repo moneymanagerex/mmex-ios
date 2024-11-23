@@ -75,6 +75,7 @@ struct BudgetFormView: View {
 
             env.theme.field.view(edit, true, "Flow", editView: {
                 TextField("Negative for outflow", value: $data.flow.defaultZero, format: .number)
+                    .keyboardType(env.theme.textPad)
                     //.keyboardType(env.theme.decimalPad)
             }, showView: {
                 Text(data.flow.formatted(by: formatter))
@@ -83,6 +84,7 @@ struct BudgetFormView: View {
 
         Section("Notes") {
             env.theme.field.notes(edit, "", $data.notes)
+                .keyboardType(env.theme.textPad)
         }
     }
 }

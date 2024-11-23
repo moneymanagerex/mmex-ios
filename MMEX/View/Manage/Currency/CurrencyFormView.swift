@@ -23,6 +23,7 @@ struct CurrencyFormView: View {
         Section {
             env.theme.field.view(edit, "Name", editView: {
                 TextField("Shall not be empty!", text: $data.name)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.sentences)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.name)
@@ -30,6 +31,7 @@ struct CurrencyFormView: View {
             
             env.theme.field.view(edit, "Symbol", editView: {
                 TextField("Shall not be empty!", text: $data.symbol)
+                    .keyboardType(env.theme.textPad)
                     .textInputAutocapitalization(.characters)
             }, showView: {
                 env.theme.field.valueOrError("Shall not be empty!", text: data.symbol)
@@ -48,11 +50,13 @@ struct CurrencyFormView: View {
             if edit || !data.unitName.isEmpty || !data.centName.isEmpty {
                 env.theme.field.view(edit, "Unit Name", valueView: {
                     TextField("N/A", text: $data.unitName)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 } )
 
                 env.theme.field.view(edit, "Cent Name", valueView: {
                     TextField("N/A", text: $data.centName)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.sentences)
                 } )
             }
@@ -75,17 +79,21 @@ struct CurrencyFormView: View {
             if edit {
                 env.theme.field.view(edit, "Prefix Symbol") {
                     TextField("N/A", text: $data.prefixSymbol)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.characters)
                 }
                 env.theme.field.view(edit, "Suffix Symbol") {
                     TextField("N/A", text: $data.suffixSymbol)
+                        .keyboardType(env.theme.textPad)
                         .textInputAutocapitalization(.characters)
                 }
                 env.theme.field.view(edit, "Decimal Point") {
                     TextField("N/A", text: $data.decimalPoint)
+                        .keyboardType(env.theme.textPad)
                 }
                 env.theme.field.view(edit, "Thousands Separator") {
                     TextField("N/A", text: $data.groupSeparator)
+                        .keyboardType(env.theme.textPad)
                 }
                 env.theme.field.view(edit, true, "Scale", editView: {
                     TextField("Default is 1", value: $data.scale.defaultOne, format: .number)
