@@ -95,12 +95,3 @@ struct PayeeRepository: RepositoryProtocol {
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
 }
-
-extension PayeeRepository {
-    // load all payees
-    func load() -> [PayeeData]? {
-        return select(from: Self.table
-            .order(Self.col_active.desc, Self.col_name)
-        )
-    }
-}

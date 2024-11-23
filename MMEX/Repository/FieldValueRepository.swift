@@ -57,12 +57,3 @@ struct FieldValueRepository: RepositoryProtocol {
         ]
     }
 }
-
-extension FieldValueRepository {
-    // load all field content
-    func load() -> [FieldValueData]? {
-        return select(from: Self.table
-            .order(Self.col_id)
-        )
-    }
-}

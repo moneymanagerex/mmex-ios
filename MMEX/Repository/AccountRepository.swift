@@ -180,30 +180,6 @@ struct AccountRepository: RepositoryProtocol {
 }
 
 extension AccountRepository {
-    // load all accounts, sorted by name
-    func load() -> [AccountData]? {
-        return select(from: Self.table
-            .order(Self.col_name)
-        )
-    }
-
-    // load account ids
-    func loadId(from table: SQLite.Table = Self.table) -> [DataId]? {
-        return select(from: table) { row in
-            DataId(row[Self.col_id])
-        }
-    }
-
-    // load all account names
-    func loadName() -> [(id: DataId, name: String)]? {
-        log.trace("DEBUG: AccountRepository.loadName()")
-        return select(from: Self.table
-            .order(Self.col_name)
-        ) { row in
-            (id: DataId(row[Self.col_id]), name: row[Self.col_name])
-        }
-    }
-
     // load account flow, indexed by id and transaction status
     func dictFlowByStatus(
         from table: SQLite.Table = Self.table,
@@ -298,22 +274,5 @@ extension AccountRepository {
             log.error("ERROR: AccountRepository.dictFlowByStatus(): \(error)")
             return nil
         }
-    }
-
-    // load currencyId for all accounts
-    func loadCurrencyId() -> [DataId]? {
-        return select(from: Self.table
-            .select(distinct: Self.col_currencyId)
-        ) { row in
-            DataId(row[Self.col_currencyId])
-        }
-    }
-
-    // load account of a stock
-    func pluck(for stock: StockData) -> RepositoryPluckResult<AccountData> {
-        return pluck(
-            key: "\(stock.accountId.value)",
-            from: Self.table.filter(Self.col_id == Int64(stock.accountId))
-        )
     }
 }

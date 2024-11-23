@@ -68,12 +68,3 @@ struct FieldRepository: RepositoryProtocol {
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
 }
-
-extension FieldRepository {
-    // load all fields
-    func load() -> [FieldData]? {
-        return select(from: Self.table
-            .order(Self.col_id)
-        )
-    }
-}

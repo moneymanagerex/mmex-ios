@@ -62,13 +62,6 @@ struct AttachmentRepository: RepositoryProtocol {
 }
 
 extension AttachmentRepository {
-    // load all attachments
-    func load() -> [AttachmentData]? {
-        return select(from: Self.table
-            .order(Self.col_id)
-        )
-    }
-
     func delete(refType: RefType, refId: DataId) -> Bool {
         do {
             let query = Self.table
