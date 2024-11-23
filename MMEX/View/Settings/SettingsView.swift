@@ -144,12 +144,22 @@ struct SettingsView: View {
         .listSectionSpacing(5)
         .padding(.top, -20)
         //.border(.red)
+
         .task {
-            log.trace("DEBUG: SettingsView.load(main=\(Thread.isMainThread))")
+            log.trace("DEBUG: SettingsView.task(main=\(Thread.isMainThread))")
             await vm.loadSettingsList()
             baseCurrencyId    = vm.infotableList.baseCurrencyId.value
             defaultAccountId  = vm.infotableList.defaultAccountId.value
         }
+
+        .refreshable {
+            log.trace("DEBUG: SettingsView.refreshable(main=\(Thread.isMainThread))")
+            vm.unloadAll()
+            await vm.loadSettingsList()
+            baseCurrencyId    = vm.infotableList.baseCurrencyId.value
+            defaultAccountId  = vm.infotableList.defaultAccountId.value
+        }
+
         .alert(isPresented: $alertIsPresented) {
             Alert(
                 title: Text("Error"),
