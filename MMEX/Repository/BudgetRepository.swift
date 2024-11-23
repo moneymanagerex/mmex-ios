@@ -73,12 +73,3 @@ struct BudgetRepository: RepositoryProtocol {
         ]
     }
 }
-
-extension BudgetRepository {
-    // load all budget tables
-    func load() -> [BudgetData]? {
-        return select(from: Self.table
-            .order(Self.col_id)
-        )
-    }
-}

@@ -66,13 +66,6 @@ struct CurrencyHistoryRepository: RepositoryProtocol {
 }
 
 extension CurrencyHistoryRepository {
-    // load all currency history
-    func load() -> [CurrencyHistoryData]? {
-        return select(from: Self.table
-            .order(Self.col_currencyId, Self.col_currDate)
-        )
-    }
-
     func delete(currencyId: DataId) -> Bool {
         do {
             let query = Self.table

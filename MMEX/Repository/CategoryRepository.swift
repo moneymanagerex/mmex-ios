@@ -115,18 +115,3 @@ struct CategoryRepository: RepositoryProtocol {
             .union(table.filter(SQLite.Expression<Bool>(literal: cond2)))
     }
 }
-
-extension CategoryRepository {
-    // load all categories
-    func load() -> [CategoryData]? {
-        return select(from: Self.table)
-    }
-
-    // load category of a payee
-    func pluck(for payee: PayeeData) -> RepositoryPluckResult<CategoryData> {
-        return pluck(
-            key: "\(payee.categoryId.value)",
-            from: Self.table.filter(Self.col_id == Int64(payee.categoryId))
-        )
-    }
-}

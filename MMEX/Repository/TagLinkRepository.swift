@@ -56,12 +56,3 @@ struct TagLinkRepository: RepositoryProtocol {
         ]
     }
 }
-
-extension TagLinkRepository {
-    // load all tag links
-    func load() -> [TagLinkData]? {
-        return select(from: Self.table
-            .order(Self.col_id)
-        )
-    }
-}

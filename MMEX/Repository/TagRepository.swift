@@ -60,13 +60,6 @@ struct TagRepository: RepositoryProtocol {
 }
 
 extension TagRepository {
-    // load all tags
-    func load() -> [TagData]? {
-        return select(from: Self.table
-            .order(Self.col_name)
-        )
-    }
-
     // load tags of a specific item
     func load(for trans: TransactionData) -> [String]? {
         typealias G = TagRepository

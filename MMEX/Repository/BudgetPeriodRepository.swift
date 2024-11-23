@@ -53,12 +53,3 @@ struct BudgetPeriodRepository: RepositoryProtocol {
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }
 }
-
-extension BudgetPeriodRepository {
-    // load all budget years
-    func load() -> [BudgetPeriodData]? {
-        return select(from: Self.table
-            .order(Self.col_name)
-        )
-    }
-}
