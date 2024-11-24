@@ -129,8 +129,10 @@ struct TransactionListView: View {
     func loadSelectedTransactions() {
         let startDate = Calendar.current.date(from: DateComponents(year: selectedYear, month: 1, day: 1)) ?? Date()
         let endDate = Calendar.current.date(from: DateComponents(year: selectedYear + 1, month: 1, day: 1))?.addingTimeInterval(-1) ?? Date()
-
-        vm.loadTransactions(for: nil, startDate: startDate, endDate: endDate)
+        Task {
+            let data = await vm.loadTransactions(db: vm.db, for: nil, startDate: startDate, endDate: endDate)
+            vm.groupTransactions(data)
+        }
     }
 }
 

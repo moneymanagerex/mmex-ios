@@ -11,54 +11,45 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func loadTransactions(for accountId: DataId? = nil, startDate: Date? = nil, endDate: Date? = nil) {
-        let transactionRepository = TransactionRepository(self.db)
-        let transactionSplitRepository = TransactionSplitRepository(self.db)
-        DispatchQueue.global(qos: .background).async {
-            var loadedTransactions = transactionRepository?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
-            for i in loadedTransactions.indices {
-                // TODO other better indicator
-                if loadedTransactions[i].categId.isVoid {
-                    loadedTransactions[i].splits = transactionSplitRepository?.load(for: loadedTransactions[i]) ?? []
-                }
-            }
-            let result = loadedTransactions
-
-            DispatchQueue.main.async {
-                self.txns = result.filter { txn in txn.deletedTime.string.isEmpty }
-                self.txns_per_day = Dictionary(grouping: self.txns) { txn in
-                    // Extract the date portion (ignoring the time) from ISO-8601 string
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
-
-                    if let date = formatter.date(from: txn.transDate.string) {
-                        formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
-                        return formatter.string(from: date)
-                    }
-                    return txn.transDate.string // If parsing fails, return original string
-                }
+    nonisolated func loadTransactions(
+        db: SQLite.Connection?,
+        for accountId: DataId? = nil,
+        startDate: Date? = nil,
+        endDate: Date? = nil
+    ) async -> [TransactionData] {
+        log.debug("DEBUG: ViewModel.loadTransactions()")
+        guard
+            let t  = TransactionRepository(db),
+            let tp = TransactionSplitRepository(db)
+        else { return [] }
+        var data = t.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
+        for i in data.indices {
+            // TODO other better indicator
+            if data[i].categId.isVoid {
+                data[i].splits = tp.load(for: data[i]) ?? []
             }
         }
+        return data
     }
-    
+
+    func groupTransactions(_ data: [TransactionData]) {
+        log.debug("DEBUG: ViewModel.groupTransactions()")
+        self.txns = data.filter { txn in txn.deletedTime.string.isEmpty }
+        self.txns_per_day = Dictionary(grouping: self.txns) { txn in
+            String(txn.transDate.string.prefix(10))
+        }
+    }
+
     func filterTransactions(by query: String) {
+        log.debug("DEBUG: ViewModel.filterTransactions(\(query)")
         let filteredTxns = query.isEmpty ? txns : txns.filter { txn in
             txn.notes.localizedCaseInsensitiveContains(query) ||
             txn.splits.contains { split in
                 split.notes.localizedCaseInsensitiveContains(query)
             }
         }
-        // TODO: refine and consolidate
         self.txns_per_day = Dictionary(grouping: filteredTxns) { txn in
-            // Extract the date portion (ignoring the time) from ISO-8601 string
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO-8601 format
-
-            if let date = formatter.date(from: txn.transDate.string) {
-                formatter.dateFormat = "yyyy-MM-dd" // Extract just the date
-                return formatter.string(from: date)
-            }
-            return txn.transDate.string // If parsing fails, return original string
+            String(txn.transDate.string.prefix(10))
         }
     }
 
