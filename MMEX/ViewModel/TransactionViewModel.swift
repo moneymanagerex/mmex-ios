@@ -10,19 +10,10 @@ import Combine
 import SwiftUI
 import SQLite
 
-@MainActor
-class TransactionViewModel: ObservableObject {
-    private var vm: ViewModel
-    @Published var txns: [TransactionData] = []
-    @Published var txns_per_day: [String: [TransactionData]] = [:]
-
-    init(_ vm: ViewModel) {
-        self.vm = vm
-    }
-
+extension ViewModel {
     func loadTransactions(for accountId: DataId? = nil, startDate: Date? = nil, endDate: Date? = nil) {
-        let transactionRepository = TransactionRepository(vm)
-        let transactionSplitRepository = TransactionSplitRepository(vm)
+        let transactionRepository = TransactionRepository(self)
+        let transactionSplitRepository = TransactionSplitRepository(self)
         DispatchQueue.global(qos: .background).async {
             var loadedTransactions = transactionRepository?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
             for i in loadedTransactions.indices {
@@ -78,7 +69,7 @@ class TransactionViewModel: ObservableObject {
             txn.toAccountId = 0
         }
 
-        guard let transactionRepository = TransactionRepository(vm) else { return }
+        guard let transactionRepository = TransactionRepository(self) else { return }
 
         if transactionRepository.insertWithSplits(&txn) {
             self.txns.append(txn) // id is ready after repo call
@@ -88,13 +79,13 @@ class TransactionViewModel: ObservableObject {
     }
 
     func updateTransaction(_ data: inout TransactionData) -> Bool {
-        guard let transactionRepository = TransactionRepository(vm) else { return false }
+        guard let transactionRepository = TransactionRepository(self) else { return false }
         return transactionRepository.updateWithSplits(&data)
     }
 
     func deleteTransaction(_ data: TransactionData) -> Bool {
-        guard let transactionRepository = TransactionRepository(vm) else { return false }
-        guard let transactionSplitRepository = TransactionSplitRepository(vm) else { return false }
+        guard let transactionRepository = TransactionRepository(self) else { return false }
+        guard let transactionSplitRepository = TransactionSplitRepository(self) else { return false }
         return transactionRepository.delete(data) && transactionSplitRepository.delete(data)
     }
 }

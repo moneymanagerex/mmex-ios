@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     @EnvironmentObject var vm: ViewModel
-    @ObservedObject var viewModel: TransactionViewModel
     @Binding var txn: TransactionData
 
     @State private var editingTxn = TransactionData()
@@ -95,7 +94,7 @@ struct TransactionDetailView: View {
 
             Section {
                 Button("Delete Transaction") {
-                    if viewModel.deleteTransaction(txn) {
+                    if vm.deleteTransaction(txn) {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
@@ -135,7 +134,7 @@ struct TransactionDetailView: View {
                             Button("Done") {
                                 isPresentingEditView = false
                                 txn = editingTxn
-                                if (viewModel.updateTransaction(&txn) == false) {
+                                if (vm.updateTransaction(&txn) == false) {
                                     // TODO
                                 }
                             }
@@ -164,7 +163,6 @@ struct TransactionDetailView: View {
     let pref = Preference()
     let vm = ViewModel.sampleData
     TransactionDetailView(
-        viewModel: TransactionViewModel(vm),
         txn: .constant(TransactionData.sampleData[0])
     )
     .environmentObject(pref)
@@ -175,7 +173,6 @@ struct TransactionDetailView: View {
     let pref = Preference()
     let vm = ViewModel.sampleData
     TransactionDetailView(
-        viewModel: TransactionViewModel(vm),
         txn: .constant(TransactionData.sampleData[2])
     )
     .environmentObject(pref)
@@ -186,7 +183,6 @@ struct TransactionDetailView: View {
     let pref = Preference()
     let vm = ViewModel.sampleData
     TransactionDetailView(
-        viewModel: TransactionViewModel(vm),
         txn: .constant(TransactionData.sampleData[3])
     )
     .environmentObject(pref)

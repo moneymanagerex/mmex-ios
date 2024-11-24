@@ -11,7 +11,6 @@ struct EnterView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var viewModel: TransactionViewModel
     @Binding var selectedTab: Int
 
     @State var newTxn: TransactionData = TransactionData()
@@ -33,7 +32,7 @@ struct EnterView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Add") {
-                    viewModel.addTransaction(txn: &newTxn)
+                    vm.addTransaction(txn: &newTxn)
                     dismiss()
                     selectedTab = 0
                     newTxn = TransactionData()
@@ -101,10 +100,8 @@ struct EnterView: View {
 #Preview {
     let pref = Preference()
     let vm = ViewModel.sampleData
-    let viewModel = TransactionViewModel(vm)
     NavigationView {
         EnterView(
-            viewModel: viewModel,
             selectedTab: .constant(0)
         )
     }

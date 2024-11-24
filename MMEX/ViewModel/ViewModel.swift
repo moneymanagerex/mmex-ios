@@ -91,6 +91,10 @@ class ViewModel: ObservableObject {
     @Published var reportList  : ReportList  = .init()
     @Published var reportGroup : ReportGroup = .init()
 
+    // moved from TransactionViewModel.swift
+    @Published var txns: [TransactionData] = []
+    @Published var txns_per_day: [String: [TransactionData]] = [:]
+
     init() {
     }
 

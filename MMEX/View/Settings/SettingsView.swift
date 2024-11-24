@@ -10,7 +10,6 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
-    @ObservedObject var viewModel: TransactionViewModel
 
     let groupTheme = GroupTheme(layout: .nameFold)
     @State var dbSettingsIsExpanded = false
@@ -239,10 +238,8 @@ struct SettingsView: View {
 #Preview {
     let pref = Preference()
     let vm = ViewModel.sampleData
-    let viewModel = TransactionViewModel(vm)
     NavigationView {
         SettingsView(
-            viewModel: viewModel
         )
         .navigationBarTitle("Settings", displayMode: .inline)
     }
