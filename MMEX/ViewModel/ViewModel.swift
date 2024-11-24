@@ -95,6 +95,15 @@ class ViewModel: ObservableObject {
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
 
+    // moved from InsightsViewModel
+    @Published var baseCurrency: CurrencyData?
+    @Published var stats: [TransactionData] = [] // all transactions
+    @Published var recentStats: [TransactionData] = []
+    @Published var startDate: Date = Date()
+    @Published var endDate: Date = Date()
+    @Published var flow = InsightsFlow()
+    var cancellables = Set<AnyCancellable>()
+
     init() {
     }
 

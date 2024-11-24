@@ -62,13 +62,9 @@ struct ContentView: View {
                 )
             }
         } else {
-            // problem: if VM is declared here, it is re-instantiated on switching between tabs
-            // fix: move VM declaration to View and initialize it in init()
-            //let vm = RepositoryViewModel(env: env)
-            let insightsViewModel = InsightsViewModel(vm)
             TabView(selection: $selectedTab) {
                 journalTab()
-                insightsTab(viewModel: insightsViewModel)
+                insightsTab()
                 enterTab()
                 managementTab()
                 settingsTab()
@@ -143,9 +139,9 @@ struct ContentView: View {
     }
 
     // Insights tab
-    private func insightsTab(viewModel: InsightsViewModel) -> some View {
+    private func insightsTab() -> some View {
         NavigationView {
-            InsightsView(viewModel: viewModel)
+            InsightsView()
                 .navigationBarTitle("Insights", displayMode: .inline)
         }
         .tabItem {
@@ -265,7 +261,6 @@ struct TabContentView: View {
     var body: some View {
         log.trace("TabContentView.body")
         // Use @StateObject to manage the lifecycle of TransactionViewModel
-        let insightsViewModel = InsightsViewModel(vm)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {
@@ -273,7 +268,7 @@ struct TabContentView: View {
                 JournalView() // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
-                InsightsView(viewModel: insightsViewModel)
+                InsightsView()
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
                 EnterView(selectedTab: $selectedTab)
