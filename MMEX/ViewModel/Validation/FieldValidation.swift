@@ -12,7 +12,7 @@ extension FieldData {
     @MainActor
     mutating func update(_ vm: ViewModel) -> String? {
         typealias F = ViewModel.F
-        guard let f = F(vm) else {
+        guard let f = F(vm.db) else {
             return "* Database is not available"
         }
 
@@ -39,7 +39,7 @@ extension FieldData {
         }
 
         typealias F = ViewModel.F
-        guard let f = F(vm) else {
+        guard let f = F(vm.db) else {
             return "* Database is not available"
         }
 

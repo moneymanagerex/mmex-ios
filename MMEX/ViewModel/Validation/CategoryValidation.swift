@@ -31,7 +31,7 @@ extension CategoryData {
         }
 
         typealias C = ViewModel.C
-        guard let c = C(vm) else {
+        guard let c = C(vm.db) else {
             return "* Database is not available"
         }
 
@@ -77,7 +77,7 @@ extension CategoryData {
         }
 
         typealias C = ViewModel.C
-        guard let c = C(vm) else {
+        guard let c = C(vm.db) else {
             return "* Database is not available"
         }
 

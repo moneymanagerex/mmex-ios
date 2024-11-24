@@ -26,7 +26,7 @@ extension AssetData {
         }
 
         typealias E = ViewModel.E
-        guard let e = E(vm) else {
+        guard let e = E(vm.db) else {
             return "* Database is not available"
         }
 
@@ -57,7 +57,7 @@ extension AssetData {
 
         typealias E = ViewModel.E
         typealias D = ViewModel.D
-        guard let e = E(vm), let d = D(vm) else {
+        guard let e = E(vm.db), let d = D(vm.db) else {
             return "* Database is not available"
         }
 

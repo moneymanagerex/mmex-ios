@@ -132,20 +132,6 @@ extension ViewModel {
     }
 }
 
-extension Repository {
-    @MainActor
-    init?(_ vm: ViewModel) {
-        self.init(vm.db)
-    }
-}
-
-extension RepositoryProtocol {
-    @MainActor
-    init?(_ vm: ViewModel) {
-        self.init(vm.db)
-    }
-}
-
 extension ViewModel {
     static var sampleData: ViewModel {
         ViewModel(withSampleDatabaseInMemory: ())

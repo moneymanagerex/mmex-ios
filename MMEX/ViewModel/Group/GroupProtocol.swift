@@ -17,7 +17,6 @@ extension GroupChoiceProtocol {
     var fullName: String { self.rawValue }
 }
 
-@MainActor
 protocol GroupProtocol: LoadProtocol {
     associatedtype MainRepository: RepositoryProtocol
     associatedtype GroupChoice: GroupChoiceProtocol

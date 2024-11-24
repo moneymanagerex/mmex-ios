@@ -25,7 +25,7 @@ extension PayeeData {
         }
 
         typealias P = ViewModel.P
-        guard let p = P(vm) else {
+        guard let p = P(vm.db) else {
             return "* Database is not available"
         }
 
@@ -63,7 +63,7 @@ extension PayeeData {
 
         typealias P = ViewModel.P
         typealias D = ViewModel.D
-        guard let p = P(vm), let d = D(vm) else {
+        guard let p = P(vm.db), let d = D(vm.db) else {
             return "* Database is not available"
         }
 

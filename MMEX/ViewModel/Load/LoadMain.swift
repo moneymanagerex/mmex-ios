@@ -22,7 +22,7 @@ struct LoadMainCount<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(_ pref: Preference, _ db: Connection?) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ db: SQLite.Connection?) async -> ValueType? {
         MainRepository(db)?.count(from: self.table)
     }
 }
@@ -45,8 +45,8 @@ struct LoadMainPluck<MainRepository: RepositoryProtocol, MainValue>: LoadFetchPr
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
-        await MainRepository(vm)?.pluck(key: key, from: self.table, with: rowValue).toOptional()
+    nonisolated func fetchValue(_ pref: Preference, _ db: SQLite.Connection?) async -> ValueType? {
+        MainRepository(db)?.pluck(key: key, from: self.table, with: rowValue).toOptional()
     }
 }
 
@@ -65,8 +65,8 @@ struct LoadMainData<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
-        await MainRepository(vm)?.selectById(from: self.table)
+    nonisolated func fetchValue(_ pref: Preference, _ db: SQLite.Connection?) async -> ValueType? {
+        MainRepository(db)?.selectById(from: self.table)
     }
 }
 
@@ -86,8 +86,8 @@ struct LoadMainValue<MainRepository: RepositoryProtocol, MainValue>: LoadFetchPr
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
-        await MainRepository(vm)?.selectById(from: self.table, with: rowValue)
+    nonisolated func fetchValue(_ pref: Preference, _ db: SQLite.Connection?) async -> ValueType? {
+        MainRepository(db)?.selectById(from: self.table, with: rowValue)
     }
 }
 
@@ -108,8 +108,8 @@ struct LoadMainUsed<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
-        await MainRepository(vm)?.select(from: self.table, with: MainRepository.fetchId).map(Set.init)
+    nonisolated func fetchValue(_ pref: Preference, _ db: SQLite.Connection?) async -> ValueType? {
+        MainRepository(db)?.select(from: self.table, with: MainRepository.fetchId).map(Set.init)
     }
 }
 
@@ -131,7 +131,7 @@ struct LoadMainOrder<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.init(table: MainRepository.table.order(order))
     }
 
-    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
-        await MainRepository(vm)?.selectId(from: self.table)
+    nonisolated func fetchValue(_ pref: Preference, _ db: SQLite.Connection?) async -> ValueType? {
+        MainRepository(db)?.selectId(from: self.table)
     }
 }

@@ -19,7 +19,7 @@ extension ViewModel {
             }
         }
 
-        guard let i = I(self) else {
+        guard let i = I(self.db) else {
             return "* Database is not available"
         }
 
@@ -40,7 +40,7 @@ extension ViewModel {
             }
         }
 
-        guard let i = I(self) else {
+        guard let i = I(self.db) else {
             return "* Database is not available"
         }
 
@@ -56,7 +56,7 @@ extension ViewModel {
             return "Delimiter is empty"
         }
 
-        guard let i = I(self) else {
+        guard let i = I(self.db) else {
             return "* Database is not available"
         }
 

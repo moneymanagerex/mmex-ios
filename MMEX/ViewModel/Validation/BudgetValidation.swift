@@ -34,7 +34,7 @@ extension BudgetData {
         }
 
         typealias B = ViewModel.B
-        guard let b = B(vm) else {
+        guard let b = B(vm.db) else {
             return "* Database is not available"
         }
 
@@ -72,7 +72,7 @@ extension BudgetData {
         }
 
         typealias B = ViewModel.B
-        guard let b = B(vm) else {
+        guard let b = B(vm.db) else {
             return "* Database is not available"
         }
 

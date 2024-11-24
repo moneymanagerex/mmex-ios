@@ -19,7 +19,7 @@ extension CurrencyData {
         }
 
         typealias U = ViewModel.U
-        guard let u = U(vm) else {
+        guard let u = U(vm.db) else {
             return "* Database is not available"
         }
 
@@ -59,7 +59,7 @@ extension CurrencyData {
 
         typealias U  = ViewModel.U
         typealias UH = ViewModel.UH
-        guard let u = U(vm), let uh = UH(vm) else {
+        guard let u = U(vm.db), let uh = UH(vm.db) else {
             return "* Database is not available"
         }
 

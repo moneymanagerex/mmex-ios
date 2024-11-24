@@ -67,7 +67,7 @@ extension ViewModel {
         let loadName = self[keyPath: keyPath].loadName
         //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
-            let value = await self[keyPath: keyPath].fetchValue(pref, self)
+            let value = await self[keyPath: keyPath].fetchValue(pref, self.db)
             let ok = value != nil
             await MainActor.run {
                 if let value {

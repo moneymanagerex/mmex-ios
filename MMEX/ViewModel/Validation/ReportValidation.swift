@@ -16,7 +16,7 @@ extension ReportData {
         }
 
         typealias R = ViewModel.R
-        guard let r = R(vm) else {
+        guard let r = R(vm.db) else {
             return "* Database is not available"
         }
 
@@ -53,7 +53,7 @@ extension ReportData {
         }
 
         typealias R = ViewModel.R
-        guard let r = R(vm) else {
+        guard let r = R(vm.db) else {
             return "* Database is not available"
         }
 

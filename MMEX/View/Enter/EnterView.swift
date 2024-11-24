@@ -84,7 +84,7 @@ struct EnterView: View {
     }
 
     func loadLatestTxn(for accountId: DataId) {
-        let repository = TransactionRepository(vm)
+        let repository = TransactionRepository(vm.db)
         if let latestTxn = repository?.latest(accountID: accountId).toOptional() ?? repository?.latest().toOptional() {
             // Update UI on the main thread
             DispatchQueue.main.async {
