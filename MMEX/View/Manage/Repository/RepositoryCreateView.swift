@@ -12,8 +12,7 @@ struct RepositoryCreateView<
     MainData: DataProtocol,
     FormView: View
 >: View {
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     var features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
@@ -70,15 +69,12 @@ struct RepositoryCreateView<
 
 #Preview("Account") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     let formView = { $data, edit in AccountFormView(
-        vm: vm,
         data: $data,
         edit: edit
     ) }
     RepositoryCreateView(
-        vm: vm,
         features: RepositoryFeatures(),
         data: AccountListView.initData,
         newData: .constant(nil),
@@ -86,5 +82,5 @@ struct RepositoryCreateView<
         formView: formView
     )
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

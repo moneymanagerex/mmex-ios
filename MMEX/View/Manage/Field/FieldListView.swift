@@ -9,9 +9,8 @@ import SwiftUI
 
 struct FieldListView: View {
     typealias MainData = FieldData
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
-    
+    @EnvironmentObject var vm: ViewModel
+
     static let features = RepositoryFeatures()
     static let initData = FieldData()
 
@@ -19,7 +18,6 @@ struct FieldListView: View {
 
     var body: some View {
         RepositoryListView(
-            vm: vm,
             features: Self.features,
             vmList: vm.fieldList,
             groupChoice: vm.fieldGroup.choice,
@@ -59,7 +57,6 @@ struct FieldListView: View {
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         FieldFormView(
-            vm: vm,
             data: data,
             edit: edit
         )
@@ -68,14 +65,12 @@ struct FieldListView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView {
         FieldListView(
-            vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

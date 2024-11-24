@@ -24,14 +24,14 @@ extension ViewModel {
         guard assetList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.assetList.data),
-                load(&taskGroup, keyPath: \Self.assetList.used),
-                load(&taskGroup, keyPath: \Self.assetList.order),
-                load(&taskGroup, keyPath: \Self.assetList.att),
+                load(pref, &taskGroup, keyPath: \Self.assetList.data),
+                load(pref, &taskGroup, keyPath: \Self.assetList.used),
+                load(pref, &taskGroup, keyPath: \Self.assetList.order),
+                load(pref, &taskGroup, keyPath: \Self.assetList.att),
                 // auxiliary
-                load(&taskGroup, keyPath: \Self.currencyList.info),
-                load(&taskGroup, keyPath: \Self.currencyList.name),
-                load(&taskGroup, keyPath: \Self.currencyList.order),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.info),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.name),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

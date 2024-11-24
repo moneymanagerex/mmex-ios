@@ -9,8 +9,7 @@ import SwiftUI
 
 struct AttachmentFormView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var data: AttachmentData
     @State var edit: Bool
 
@@ -45,24 +44,22 @@ struct AttachmentFormView: View {
 
 #Preview("\(AttachmentData.sampleData[0].filename) (show)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     Form { AttachmentFormView(
-        vm: ViewModel(env: env),
         data: .constant(AttachmentData.sampleData[0]),
         edit: false
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("\(AttachmentData.sampleData[0].filename) (edit)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     Form { AttachmentFormView(
-        vm: ViewModel(env: env),
         data: .constant(AttachmentData.sampleData[0]),
         edit: true
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

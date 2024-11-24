@@ -17,7 +17,7 @@ let log = Logger(
 @main
 struct MMEXApp: App {
     @StateObject private var pref = Preference()
-    @StateObject private var env = EnvironmentManager(withStoredDatabase: ())
+    @StateObject private var vm = ViewModel(withStoredDatabase: ())
 
     func track(pref: Preference) {
         log.debug("DEBUG: MMEXApp.track()")
@@ -36,13 +36,13 @@ struct MMEXApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(env: env)
+            ContentView()
                 .onAppear {
                     pref.theme.appearance.apply()
                     track(pref: pref)
                 }
                 .environmentObject(pref)
-                .environmentObject(env)
+                .environmentObject(vm)
         }
     }
 }

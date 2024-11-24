@@ -27,9 +27,9 @@ extension ViewModel {
         guard attachmentList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.attachmentList.data),
-                load(&taskGroup, keyPath: \Self.attachmentList.used),
-                load(&taskGroup, keyPath: \Self.attachmentList.order),
+                load(pref, &taskGroup, keyPath: \Self.attachmentList.data),
+                load(pref, &taskGroup, keyPath: \Self.attachmentList.used),
+                load(pref, &taskGroup, keyPath: \Self.attachmentList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

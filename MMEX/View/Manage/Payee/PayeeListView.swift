@@ -10,9 +10,8 @@ import SwiftUI
 
 struct PayeeListView: View {
     typealias MainData = PayeeData
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
-    
+    @EnvironmentObject var vm: ViewModel
+
     static let features = RepositoryFeatures()
     static let initData = PayeeData(
         categoryId : -1,
@@ -23,7 +22,6 @@ struct PayeeListView: View {
 
     var body: some View {
         RepositoryListView(
-            vm: vm,
             features: Self.features,
             vmList: vm.payeeList,
             groupChoice: vm.payeeGroup.choice,
@@ -63,7 +61,6 @@ struct PayeeListView: View {
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         PayeeFormView(
-            vm: vm,
             data: data,
             edit: edit
         )
@@ -72,14 +69,12 @@ struct PayeeListView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView {
         PayeeListView(
-            vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

@@ -20,7 +20,7 @@ extension ViewModel {
         // data.description may be empty
         // assumption: data.refType, data.refId are valid by construction
 
-        guard let d = D(env) else {
+        guard let d = D(self) else {
             return "* Database is not available"
         }
 
@@ -45,7 +45,7 @@ extension ViewModel {
             return "* Attachment #\(data.id.value) is used"
         }
 
-        guard let d = D(env) else {
+        guard let d = D(self) else {
             return "* Database is not available"
         }
 

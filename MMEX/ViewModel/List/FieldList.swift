@@ -26,9 +26,9 @@ extension ViewModel {
         guard fieldList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.fieldList.data),
-                load(&taskGroup, keyPath: \Self.fieldList.used),
-                load(&taskGroup, keyPath: \Self.fieldList.order),
+                load(pref, &taskGroup, keyPath: \Self.fieldList.data),
+                load(pref, &taskGroup, keyPath: \Self.fieldList.used),
+                load(pref, &taskGroup, keyPath: \Self.fieldList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

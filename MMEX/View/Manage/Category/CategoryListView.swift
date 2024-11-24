@@ -9,8 +9,7 @@ import SwiftUI
 
 struct CategoryListView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
 
     static let features = RepositoryFeatures()
     static let initData = CategoryData(
@@ -161,7 +160,6 @@ struct CategoryListView: View {
 
         .sheet(isPresented: $createSheetIsPresented) {
             RepositoryCreateView(
-                vm: vm,
                 features: Self.features,
                 data: Self.initData,
                 newData: $newData,
@@ -183,7 +181,6 @@ struct CategoryListView: View {
             let data = listData?[editDataId] ?? Self.initData
             //let _ = print("DEBUG: editSheetIsPresented: \(editDataId.value)")
             RepositoryEditView(
-                vm: vm,
                 features: Self.features,
                 data: data,
                 newData: $newData,
@@ -204,7 +201,6 @@ struct CategoryListView: View {
         .sheet(isPresented: $copySheetIsPresented) {
             let data = listData?[copyDataId] ?? Self.initData
             RepositoryCopyView(
-                vm: vm,
                 features: Self.features,
                 data: data,
                 newData: $newData,
@@ -260,7 +256,6 @@ struct CategoryListView: View {
         Group { if let evalTree, let groupTree {
             NavigationLink(
                 destination: RepositoryReadView(
-                    vm: vm,
                     features: Self.features,
                     data: data,
                     newData: $newData,
@@ -354,7 +349,6 @@ struct CategoryListView: View {
     @ViewBuilder
     func formView(_ data: Binding<CategoryData>, _ edit: Bool) -> some View {
         CategoryFormView(
-            vm: vm,
             data: data,
             edit: edit
         )
@@ -363,14 +357,12 @@ struct CategoryListView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView {
         CategoryListView(
-            vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

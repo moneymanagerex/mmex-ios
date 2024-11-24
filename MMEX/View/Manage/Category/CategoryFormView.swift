@@ -9,8 +9,7 @@ import SwiftUI
 
 struct CategoryFormView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var data: CategoryData
     @State var edit: Bool
     
@@ -62,26 +61,22 @@ struct CategoryFormView: View {
 
 #Preview("\(CategoryData.sampleData[1].name) (show)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { CategoryFormView(
-        vm: vm,
         data: .constant(CategoryData.sampleData[0]),
         edit: false
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("\(CategoryData.sampleData[1].name) (edit)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { CategoryFormView(
-        vm: vm,
         data: .constant(CategoryData.sampleData[0]),
         edit: true
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

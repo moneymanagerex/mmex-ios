@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ReportFormView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var data: ReportData
     @State var edit: Bool
 
@@ -63,26 +62,22 @@ struct ReportFormView: View {
 
 #Preview("#\(ReportData.sampleData[0].id) (show)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { ReportFormView(
-        vm: vm,
         data: .constant(ReportData.sampleData[0]),
         edit: false
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("#\(ReportData.sampleData[0].id) (edit)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { ReportFormView(
-        vm: vm,
         data: .constant(ReportData.sampleData[0]),
         edit: true
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionAddView: View {
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var newTxn: TransactionData
     @Binding var isPresentingTransactionAddView: Bool
 
@@ -17,7 +17,6 @@ struct TransactionAddView: View {
     var body: some View {
         NavigationStack {
             EnterFormView(
-                vm: vm,
                 txn: $newTxn
             )
             .toolbar {

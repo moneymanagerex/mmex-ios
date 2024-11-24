@@ -42,11 +42,11 @@ extension ViewModel {
         guard categoryList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.categoryList.data),
-                load(&taskGroup, keyPath: \Self.categoryList.used),
-                load(&taskGroup, keyPath: \Self.categoryList.order),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.data),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.used),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.order),
                 // auxiliary
-                //load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                //load(pref, &taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

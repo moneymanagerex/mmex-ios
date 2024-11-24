@@ -10,8 +10,7 @@ import SwiftUI
 
 struct CurrencyFormView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var data: CurrencyData
     @State var edit: Bool
 
@@ -109,26 +108,22 @@ struct CurrencyFormView: View {
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (show)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { CurrencyFormView(
-        vm: vm,
         data: .constant(CurrencyData.sampleData[0]),
         edit: false
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (edit)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { CurrencyFormView(
-        vm: vm,
         data: .constant(CurrencyData.sampleData[0]),
         edit: true
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

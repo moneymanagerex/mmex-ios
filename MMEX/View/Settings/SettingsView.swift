@@ -9,8 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
 
     let groupTheme = GroupTheme(layout: .nameFold)
@@ -27,7 +26,7 @@ struct SettingsView: View {
             groupTheme.section(
                 nameView: { Text("App Settings") }
             ) {
-                NavigationLink(destination: SettingsThemeView(vm: vm)) {
+                NavigationLink(destination: SettingsThemeView()) {
                     Text("Theme")
                 }
                 
@@ -131,13 +130,13 @@ struct SettingsView: View {
                 HStack {
                     Text("Database File")
                     Spacer()
-                    Text(env.getDatabaseFileName() ?? "")
+                    Text(vm.getDatabaseFileName() ?? "")
                 }
 
                 HStack {
                     Text("Schema Version")
                     Spacer()
-                    Text(String(env.getDatabaseUserVersion() ?? 0))
+                    Text(String(vm.getDatabaseUserVersion() ?? 0))
                 }
             }
         }
@@ -239,16 +238,14 @@ struct SettingsView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
-    let viewModel = TransactionViewModel(env: env)
+    let vm = ViewModel.sampleData
+    let viewModel = TransactionViewModel(vm)
     NavigationView {
         SettingsView(
-            vm: vm,
             viewModel: viewModel
         )
         .navigationBarTitle("Settings", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

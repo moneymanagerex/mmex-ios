@@ -10,8 +10,7 @@ import SwiftUI
 
 struct AccountListView: View {
     typealias MainData = AccountData
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
 
     static let features = RepositoryFeatures()
     static let initData = AccountData(
@@ -23,7 +22,6 @@ struct AccountListView: View {
 
     var body: some View {
         RepositoryListView(
-            vm: vm,
             features: Self.features,
             vmList: vm.accountList,
             groupChoice: vm.accountGroup.choice,
@@ -77,7 +75,6 @@ struct AccountListView: View {
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         AccountFormView(
-            vm: vm,
             data: data,
             edit: edit
         )
@@ -86,14 +83,12 @@ struct AccountListView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView {
         AccountListView(
-            vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

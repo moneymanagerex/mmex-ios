@@ -27,15 +27,15 @@ extension ViewModel {
         guard budgetList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.budgetList.data),
-                load(&taskGroup, keyPath: \Self.budgetList.used),
-                load(&taskGroup, keyPath: \Self.budgetList.order),
+                load(pref, &taskGroup, keyPath: \Self.budgetList.data),
+                load(pref, &taskGroup, keyPath: \Self.budgetList.used),
+                load(pref, &taskGroup, keyPath: \Self.budgetList.order),
                 // auxiliary
-                load(&taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
-                load(&taskGroup, keyPath: \Self.budgetPeriodList.data),
-                load(&taskGroup, keyPath: \Self.budgetPeriodList.order),
-                load(&taskGroup, keyPath: \Self.categoryList.data),
-                load(&taskGroup, keyPath: \Self.categoryList.order),
+                load(pref, &taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
+                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.data),
+                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.order),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.data),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

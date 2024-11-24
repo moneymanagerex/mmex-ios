@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ManageView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
@@ -34,37 +33,37 @@ struct ManageView: View {
             groupTheme.section(
                 nameView: { Text("Data") }
             ) {
-                NavigationLink(destination: AccountListView(vm: vm)) {
+                NavigationLink(destination: AccountListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(AccountData.dataName.1) },
                         count: vm.accountList.count
                     )
                 }
-                NavigationLink(destination: AssetListView(vm: vm)) {
+                NavigationLink(destination: AssetListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(AssetData.dataName.1) },
                         count: vm.assetList.count
                     )
                 }
-                NavigationLink(destination: StockListView(vm: vm)) {
+                NavigationLink(destination: StockListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(StockData.dataName.1) },
                         count: vm.stockList.count
                     )
                 }
-                NavigationLink(destination: CategoryListView(vm: vm)) {
+                NavigationLink(destination: CategoryListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(CategoryData.dataName.1) },
                         count: vm.categoryList.count
                     )
                 }
-                NavigationLink(destination: PayeeListView(vm: vm)) {
+                NavigationLink(destination: PayeeListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(PayeeData.dataName.1) },
                         count: vm.payeeList.count
                     )
                 }
-                NavigationLink(destination: TransactionListView(vm: vm, viewModel: viewModel)) {
+                NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
                     pref.theme.group.manageItem(
                         nameView: { Text(TransactionData.dataName.1) },
                         count: vm.transactionList.count
@@ -77,43 +76,43 @@ struct ManageView: View {
                 count: (pref.theme.group.showCount.asBool ? auxSum : nil),
                 isExpanded: $auxDataIsExpanded
             ) {
-                NavigationLink(destination: CurrencyListView(vm: vm)) {
+                NavigationLink(destination: CurrencyListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(CurrencyData.dataName.1) },
                         count: vm.currencyList.count
                     )
                 }
-                NavigationLink(destination: TagListView(vm: vm)) {
+                NavigationLink(destination: TagListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(TagData.dataName.1) },
                         count: vm.tagList.count
                     )
                 }
-                NavigationLink(destination: FieldListView(vm: vm)) {
+                NavigationLink(destination: FieldListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(FieldData.dataName.1) },
                         count: vm.fieldList.count
                     )
                 }
-                NavigationLink(destination: AttachmentListView(vm: vm)) {
+                NavigationLink(destination: AttachmentListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(AttachmentData.dataName.1) },
                         count: vm.attachmentList.count
                     )
                 }
-                NavigationLink(destination: BudgetPeriodListView(vm: vm)) {
+                NavigationLink(destination: BudgetPeriodListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(BudgetPeriodData.dataName.1) },
                         count: vm.budgetPeriodList.count
                     )
                 }
-                NavigationLink(destination: BudgetListView(vm: vm)) {
+                NavigationLink(destination: BudgetListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(BudgetData.dataName.1) },
                         count: vm.budgetList.count
                     )
                 }
-                NavigationLink(destination: ReportListView(vm: vm)) {
+                NavigationLink(destination: ReportListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(ReportData.dataName.1) },
                         count: vm.reportList.count
@@ -144,7 +143,7 @@ struct ManageView: View {
                     }
                 }
                 databaseButton("Close Database", fg: .white, bg: .red) {
-                    env.closeDatabase()
+                    vm.closeDatabase()
                 }
             }
 
@@ -189,12 +188,10 @@ struct ManageView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
-    let viewModel = TransactionViewModel(env: env)
+    let vm = ViewModel.sampleData
+    let viewModel = TransactionViewModel(vm)
     NavigationView {
         ManageView(
-            vm: vm,
             viewModel: viewModel,
             isDocumentPickerPresented: .constant(false),
             isNewDocumentPickerPresented: .constant(false),
@@ -203,5 +200,5 @@ struct ManageView: View {
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

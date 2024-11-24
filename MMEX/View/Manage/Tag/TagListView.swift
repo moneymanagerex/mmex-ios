@@ -9,9 +9,8 @@ import SwiftUI
 
 struct TagListView: View {
     typealias MainData = TagData
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
-    
+    @EnvironmentObject var vm: ViewModel
+
     static let features = RepositoryFeatures()
     static let initData = TagData(
         active: true
@@ -21,7 +20,6 @@ struct TagListView: View {
 
     var body: some View {
         RepositoryListView(
-            vm: vm,
             features: Self.features,
             vmList: vm.tagList,
             groupChoice: vm.tagGroup.choice,
@@ -60,7 +58,6 @@ struct TagListView: View {
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         TagFormView(
-            vm: vm,
             data: data,
             edit: edit
         )
@@ -69,14 +66,12 @@ struct TagListView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView {
         TagListView(
-            vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

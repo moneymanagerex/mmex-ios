@@ -33,7 +33,7 @@ extension ViewModel {
             }
         }
 
-        guard let c = C(env) else {
+        guard let c = C(self) else {
             return "* Database is not available"
         }
 
@@ -77,7 +77,7 @@ extension ViewModel {
             return "* Category #\(data.id.value) has sub-categories"
         }
 
-        guard let c = C(env) else {
+        guard let c = C(self) else {
             return "* Database is not available"
         }
 

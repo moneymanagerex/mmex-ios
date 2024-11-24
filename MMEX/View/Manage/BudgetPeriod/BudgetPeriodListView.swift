@@ -9,9 +9,8 @@ import SwiftUI
 
 struct BudgetPeriodListView: View {
     typealias MainData = BudgetPeriodData
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
-    
+    @EnvironmentObject var vm: ViewModel
+
     static let features = RepositoryFeatures()
     static let initData = BudgetPeriodData()
 
@@ -19,7 +18,6 @@ struct BudgetPeriodListView: View {
 
     var body: some View {
         RepositoryListView(
-            vm: vm,
             features: Self.features,
             vmList: vm.budgetPeriodList,
             groupChoice: vm.budgetPeriodGroup.choice,
@@ -54,7 +52,6 @@ struct BudgetPeriodListView: View {
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         BudgetPeriodFormView(
-            vm: vm,
             data: data,
             edit: edit
         )
@@ -63,14 +60,12 @@ struct BudgetPeriodListView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView {
         BudgetPeriodListView(
-            vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

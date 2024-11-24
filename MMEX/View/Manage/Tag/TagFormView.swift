@@ -9,8 +9,7 @@ import SwiftUI
 
 struct TagFormView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var data: TagData
     @State var edit: Bool
 
@@ -35,26 +34,22 @@ struct TagFormView: View {
 
 #Preview("\(TagData.sampleData[0].name) (show)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { TagFormView(
-        vm: vm,
         data: .constant(TagData.sampleData[0]),
         edit: false
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("\(TagData.sampleData[0].name) (edit)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { TagFormView(
-        vm: vm,
         data: .constant(TagData.sampleData[0]),
         edit: true
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

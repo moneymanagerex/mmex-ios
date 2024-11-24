@@ -13,7 +13,7 @@ extension ViewModel {
     }
 
     func updateField(_ data: inout FieldData) -> String? {
-        guard let f = F(env) else {
+        guard let f = F(self) else {
             return "* Database is not available"
         }
 
@@ -38,7 +38,7 @@ extension ViewModel {
             return "* Field #\(data.id.value) is used"
         }
 
-        guard let f = F(env) else {
+        guard let f = F(self) else {
             return "* Database is not available"
         }
 

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct BudgetFormView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var data: BudgetData
     @State var edit: Bool
 
@@ -92,26 +91,22 @@ struct BudgetFormView: View {
 
 #Preview("#\(BudgetData.sampleData[0].id) (show)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { BudgetFormView(
-        vm: vm,
         data: .constant(BudgetData.sampleData[0]),
         edit: false
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("#\(BudgetData.sampleData[0].id) (edit)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { BudgetFormView(
-        vm: vm,
         data: .constant(BudgetData.sampleData[0]),
         edit: true
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

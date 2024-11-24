@@ -28,7 +28,7 @@ extension ViewModel {
             return "* Unknown currency #\(data.currencyId.value)"
         }
 
-        guard let e = E(env) else {
+        guard let e = E(self) else {
             return "* Database is not available"
         }
 
@@ -56,7 +56,7 @@ extension ViewModel {
             return "* Asset #\(data.id.value) is used"
         }
 
-        guard let e = E(env), let d = D(env) else {
+        guard let e = E(self), let d = D(self) else {
             return "* Database is not available"
         }
 

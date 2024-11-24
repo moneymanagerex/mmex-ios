@@ -27,7 +27,7 @@ extension ViewModel {
             }
         }
 
-        guard let p = P(env) else {
+        guard let p = P(self) else {
             return "* Database is not available"
         }
 
@@ -62,7 +62,7 @@ extension ViewModel {
             return "* Payee #\(data.id.value) is used"
         }
 
-        guard let p = P(env), let d = D(env) else {
+        guard let p = P(self), let d = D(self) else {
             return "* Database is not available"
         }
 

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct JournalView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
 
     @State private var searchQuery: String = "" // New: Search query
@@ -81,7 +80,6 @@ struct JournalView: View {
 
     func transactionView(_ txn: TransactionData, for day: String) -> some View {
         NavigationLink(destination: TransactionDetailView(
-            vm: vm,
             viewModel: viewModel,
             txn: Binding(
                 get: {
@@ -211,16 +209,14 @@ struct JournalView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
-    let viewModel = TransactionViewModel(env: env)
+    let vm = ViewModel.sampleData
+    let viewModel = TransactionViewModel(vm)
     NavigationView {
         JournalView(
-            vm: vm,
             viewModel: viewModel
         )
         .navigationBarTitle("Latest Transactions", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

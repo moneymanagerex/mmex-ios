@@ -32,7 +32,7 @@ extension ViewModel {
             return "* Unknown account #\(data.accountId.value)"
         }
 
-        guard let s = S(env) else {
+        guard let s = S(self) else {
             return "* Database is not available"
         }
 
@@ -60,7 +60,7 @@ extension ViewModel {
             return "* Stock #\(data.id.value) is used"
         }
 
-        guard let s = S(env), let d = D(env) else {
+        guard let s = S(self), let d = D(self) else {
             return "* Database is not available"
         }
 

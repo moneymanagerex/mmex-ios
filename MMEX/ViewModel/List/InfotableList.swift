@@ -24,8 +24,8 @@ struct LoadInfotableValue<MainValue: LosslessStringConvertible>: LoadFetchProtoc
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(env: EnvironmentManager) async -> ValueType? {
-        InfotableRepository(env)?.getValue(for: key, default: idleValue)
+    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+        await InfotableRepository(vm)?.getValue(for: key, default: idleValue)
     }
 }
 
@@ -59,11 +59,11 @@ extension ViewModel {
         guard infotableList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.infotableList.data),
-                load(&taskGroup, keyPath: \Self.infotableList.order),
-                //load(&taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
-                //load(&taskGroup, keyPath: \Self.infotableList.defaultAccountId),
-                //load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                load(pref, &taskGroup, keyPath: \Self.infotableList.data),
+                load(pref, &taskGroup, keyPath: \Self.infotableList.order),
+                //load(pref, &taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
+                //load(pref, &taskGroup, keyPath: \Self.infotableList.defaultAccountId),
+                //load(pref, &taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

@@ -11,8 +11,7 @@ struct RepositoryCopyView<
     MainData: DataProtocol,
     FormView: View
 >: View {
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     var features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
@@ -72,16 +71,13 @@ struct RepositoryCopyView<
 
 #Preview(AccountData.sampleData[0].name) {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     let data = AccountData.sampleData[0]
     let formView = { $data, edit in AccountFormView(
-        vm: vm,
         data: $data,
         edit: edit
     ) }
     RepositoryCopyView(
-        vm: vm,
         features: RepositoryFeatures(),
         data: data,
         newData: .constant(nil),
@@ -90,5 +86,5 @@ struct RepositoryCopyView<
         formView: formView
     )
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

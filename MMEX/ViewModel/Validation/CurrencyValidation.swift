@@ -22,7 +22,7 @@ extension ViewModel {
             return "Symbol is empty"
         }
 
-        guard let u = U(env) else {
+        guard let u = U(self) else {
             return "* Database is not available"
         }
 
@@ -59,7 +59,7 @@ extension ViewModel {
         }
         // TODO: check base currency
 
-        guard let u = U(env), let uh = UH(env) else {
+        guard let u = U(self), let uh = UH(self) else {
             return "* Database is not available"
         }
 

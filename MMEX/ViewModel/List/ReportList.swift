@@ -23,9 +23,9 @@ extension ViewModel {
         guard reportList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.reportList.data),
-                load(&taskGroup, keyPath: \Self.reportList.used),
-                load(&taskGroup, keyPath: \Self.reportList.order),
+                load(pref, &taskGroup, keyPath: \Self.reportList.data),
+                load(pref, &taskGroup, keyPath: \Self.reportList.used),
+                load(pref, &taskGroup, keyPath: \Self.reportList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

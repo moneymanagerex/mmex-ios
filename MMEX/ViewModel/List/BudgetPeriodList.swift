@@ -23,9 +23,9 @@ extension ViewModel {
         guard budgetPeriodList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.budgetPeriodList.data),
-                load(&taskGroup, keyPath: \Self.budgetPeriodList.used),
-                load(&taskGroup, keyPath: \Self.budgetPeriodList.order),
+                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.data),
+                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.used),
+                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }
