@@ -16,7 +16,7 @@ extension ViewModel {
         let groupIsExpanded: [Bool]? = fieldGroup.readyValue?.map { $0.isExpanded }
 
         unloadFieldGroup()
-        fieldList.unload()
+        fieldList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             fieldList.count.unload()

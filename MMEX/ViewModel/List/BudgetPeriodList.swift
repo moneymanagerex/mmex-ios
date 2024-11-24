@@ -18,6 +18,17 @@ struct BudgetPeriodList: ListProtocol {
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
 }
 
+extension BudgetPeriodList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadBudgetPeriodList(_ pref: Preference) async {
         guard budgetPeriodList.reloading() else { return }
@@ -30,14 +41,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         budgetPeriodList.loaded(ok: ok)
-    }
-
-    func unloadBudgetPeriodList() {
-        guard budgetPeriodList.reloading() else { return }
-        budgetPeriodList.count.unload()
-        budgetPeriodList.data.unload()
-        budgetPeriodList.used.unload()
-        budgetPeriodList.order.unload()
-        budgetPeriodList.unloaded()
     }
 }

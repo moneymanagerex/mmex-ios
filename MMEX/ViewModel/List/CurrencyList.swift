@@ -30,6 +30,20 @@ struct CurrencyList: ListProtocol {
     )
 }
 
+extension CurrencyList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        name.unload()
+        used.unload()
+        order.unload()
+        info.unload()
+        history.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadCurrencyList(_ pref: Preference) async {
         guard currencyList.reloading() else { return }
@@ -43,17 +57,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         currencyList.loaded(ok: ok)
-    }
-
-    func unloadCurrencyList() {
-        guard currencyList.reloading() else { return }
-        currencyList.count.unload()
-        currencyList.data.unload()
-        currencyList.name.unload()
-        currencyList.used.unload()
-        currencyList.order.unload()
-        currencyList.info.unload()
-        currencyList.history.unload()
-        currencyList.unloaded()
     }
 }

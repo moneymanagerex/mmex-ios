@@ -25,7 +25,7 @@ extension ViewModel {
         )
 
         unloadBudgetGroup()
-        budgetList.unload()
+        budgetList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             budgetList.count.unload()

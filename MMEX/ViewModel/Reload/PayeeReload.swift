@@ -21,7 +21,7 @@ extension ViewModel {
         )
 
         unloadPayeeGroup()
-        payeeList.unload()
+        payeeList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             payeeList.count.unload()

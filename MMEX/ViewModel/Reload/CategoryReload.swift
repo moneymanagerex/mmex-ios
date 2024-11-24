@@ -15,7 +15,7 @@ extension ViewModel {
         // TODO: save isExpanded
         
         unloadCategoryGroup()
-        categoryList.unload()
+        categoryList.unloadNone()
         
         if (oldData != nil) != (newData != nil) {
             categoryList.count.unload()

@@ -22,6 +22,18 @@ struct BudgetList: ListProtocol {
     var evalOrder : LoadBudgetOrder = .init()
 }
 
+extension BudgetList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        evalOrder.unload()
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadBudgetList(_ pref: Preference) async {
         guard budgetList.reloading() else { return }
@@ -53,16 +65,6 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         } }
         budgetList.loaded(ok: ok)
-    }
-
-    func unloadBudgetList() {
-        guard budgetList.reloading() else { return }
-        budgetList.evalOrder.unload()
-        budgetList.count.unload()
-        budgetList.data.unload()
-        budgetList.used.unload()
-        budgetList.order.unload()
-        budgetList.unloaded()
     }
 }
 

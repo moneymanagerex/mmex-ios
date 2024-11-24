@@ -18,6 +18,17 @@ struct TagList: ListProtocol {
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
 }
 
+extension TagList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadTagList(_ pref: Preference) async {
         guard tagList.reloading() else { return }
@@ -30,14 +41,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         tagList.loaded(ok: ok)
-    }
-
-    func unloadTagList() {
-        guard tagList.reloading() else { return }
-        tagList.count.unload()
-        tagList.data.unload()
-        tagList.used.unload()
-        tagList.order.unload()
-        tagList.unloaded()
     }
 }

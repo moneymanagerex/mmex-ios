@@ -29,7 +29,7 @@ extension ViewModel {
         let groupIsExpanded: [Bool]? = attachmentGroup.readyValue?.map { $0.isExpanded }
 
         unloadAttachmentGroup()
-        attachmentList.unload()
+        attachmentList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             attachmentList.count.unload()

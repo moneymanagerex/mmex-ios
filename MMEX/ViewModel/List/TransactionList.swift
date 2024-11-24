@@ -17,6 +17,16 @@ struct TransactionList: ListProtocol {
     var used  : LoadMainUsed<MainRepository>  = .init()
 }
 
+extension TransactionList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadTransactionList(_ pref: Preference) async {
         guard transactionList.reloading() else { return }
@@ -46,13 +56,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         } }
         transactionList.loaded(ok: ok)
-    }
-
-    func unloadTransactionList() {
-        guard transactionList.reloading() else { return }
-        transactionList.count.unload()
-        transactionList.data.unload()
-        transactionList.used.unload()
-        transactionList.unloaded()
     }
 }

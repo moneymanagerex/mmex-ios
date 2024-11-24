@@ -22,6 +22,17 @@ struct AttachmentList: ListProtocol {
     ])
 }
 
+extension AttachmentList {
+    mutating func unload() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadAttachmentList(_ pref: Preference) async {
         guard attachmentList.reloading() else { return }
@@ -34,14 +45,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         attachmentList.loaded(ok: ok)
-    }
-
-    func unloadAttachmentList() {
-        guard attachmentList.reloading() else { return }
-        attachmentList.count.unload()
-        attachmentList.data.unload()
-        attachmentList.used.unload()
-        attachmentList.order.unload()
-        attachmentList.unloaded()
     }
 }

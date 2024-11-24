@@ -19,6 +19,18 @@ struct PayeeList: ListProtocol {
     var att   : LoadAuxAtt<MainRepository>    = .init()
 }
 
+extension PayeeList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        att.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadPayeeList(_ pref: Preference) async {
         guard payeeList.reloading() else { return }
@@ -43,15 +55,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         } }
         payeeList.loaded(ok: ok)
-    }
-
-    func unloadPayeeList() {
-        guard payeeList.reloading() else { return }
-        payeeList.count.unload()
-        payeeList.data.unload()
-        payeeList.used.unload()
-        payeeList.order.unload()
-        payeeList.att.unload()
-        payeeList.unloaded()
     }
 }
