@@ -8,22 +8,29 @@
 import Foundation
 import SQLite
 
-struct TagLinkData: ExportableEntity {
+struct TagLinkData: DataProtocol {
     var id      : DataId  = .void
     var tagId   : DataId  = .void
     var refType : RefType = .transaction
     var refId   : DataId  = .void
+
+    // unique(refType, refId, tagId)
+
     static let refTypes: Set<RefType> = [
         .transaction, .transactionSplit,
         .scheduled, .scheduledSplit,
     ]
 }
 
-extension TagLinkData: DataProtocol {
+extension TagLinkData {
     static let dataName = ("Tag Link", "Tag Links")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 

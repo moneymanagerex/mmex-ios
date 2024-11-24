@@ -21,20 +21,25 @@ enum FieldType: String, EnumCollateNoCase {
     static let defaultValue = Self.unknown
 }
 
-struct FieldData: ExportableEntity {
+struct FieldData: DataProtocol {
     var id          : DataId    = .void
     var refType     : RefType   = .defaultValue
     var description : String    = ""
     var type        : FieldType = .defaultValue
     var properties  : String    = ""
+
     static let refTypes: Set<RefType> = [ .transaction, .scheduled ]
 }
 
-extension FieldData: DataProtocol {
+extension FieldData {
     static let dataName = ("Field", "Fields")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 

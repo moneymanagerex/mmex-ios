@@ -28,6 +28,12 @@ extension StockData: DataProtocol {
     func shortDesc() -> String {
         "#\(self.id.value): \(self.name)"
     }
+
+    mutating func copy() {
+        id     = .void
+        name   = Self.copy(of: name)
+        symbol = Self.copy(of: symbol)
+    }
 }
 
 extension StockData {

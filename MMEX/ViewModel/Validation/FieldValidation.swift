@@ -9,9 +9,6 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func copyField(_ data: inout FieldData) {
-    }
-
     func updateField(_ data: inout FieldData) -> String? {
         guard let f = F(self) else {
             return "* Database is not available"

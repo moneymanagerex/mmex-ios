@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct TransactionSplitData: ExportableEntity {
+struct TransactionSplitData: DataProtocol {
     var id      : DataId = .void
     var transId : DataId = .void
     var categId : DataId = .void
@@ -16,11 +16,15 @@ struct TransactionSplitData: ExportableEntity {
     var notes   : String = ""
 }
 
-extension TransactionSplitData: DataProtocol {
+extension TransactionSplitData {
     static let dataName = ("Transaction Split", "Transaction Splits")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 

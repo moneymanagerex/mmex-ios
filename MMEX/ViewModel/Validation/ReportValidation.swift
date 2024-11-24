@@ -9,10 +9,6 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func copyReport(_ data: inout ReportData) {
-        data.name.append(" (Copy)")
-    }
-
     func updateReport(_ data: inout ReportData) -> String? {
         if data.name.isEmpty {
             return "Name is empty"

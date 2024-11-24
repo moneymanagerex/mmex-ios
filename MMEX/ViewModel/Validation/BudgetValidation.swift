@@ -9,9 +9,6 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func copyBudget(_ data: inout BudgetData) {
-    }
-
     func updateBudget(_ data: inout BudgetData) -> String? {
         if data.periodId.isVoid {
             return "Budget period is not defined"

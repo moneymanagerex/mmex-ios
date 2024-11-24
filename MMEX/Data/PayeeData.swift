@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct PayeeData: ExportableEntity {
+struct PayeeData: DataProtocol {
     var id         : DataId  = .void
     var name       : String  = ""
     var categoryId : DataId  = .void
@@ -17,13 +17,20 @@ struct PayeeData: ExportableEntity {
     var notes      : String  = ""
     var active     : Bool    = false
     var pattern    : String  = ""
+    
+    // unique(name)
 }
 
-extension PayeeData: DataProtocol {
+extension PayeeData {
     static let dataName = ("Payee", "Payees")
 
     func shortDesc() -> String {
         "\(self.name)"
+    }
+
+    mutating func copy() {
+        id   = .void
+        name = Self.copy(of: name)
     }
 }
 

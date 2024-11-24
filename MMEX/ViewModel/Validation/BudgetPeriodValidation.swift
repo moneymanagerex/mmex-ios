@@ -9,10 +9,6 @@ import SwiftUI
 import SQLite
 
 extension ViewModel {
-    func copyBudgetPeriod(_ data: inout BudgetPeriodData) {
-        data.name.append(" (Copy)")
-    }
-
     func updateBudgetPeriod(_ data: inout BudgetPeriodData) -> String? {
         if data.name.isEmpty {
             return "Name is empty"

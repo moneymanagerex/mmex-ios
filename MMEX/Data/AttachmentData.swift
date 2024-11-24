@@ -30,7 +30,7 @@ enum RefType: String, EnumCollateNoCase {
     }
 }
 
-struct AttachmentData: ExportableEntity {
+struct AttachmentData: DataProtocol {
     var id          : DataId  = .void
     var refType     : RefType = .defaultValue
     var refId       : DataId  = .void
@@ -38,11 +38,15 @@ struct AttachmentData: ExportableEntity {
     var filename    : String  = ""
 }
 
-extension AttachmentData: DataProtocol {
+extension AttachmentData {
     static let dataName = ("Attachment", "Attachments")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 

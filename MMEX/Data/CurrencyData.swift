@@ -14,7 +14,7 @@ enum CurrencyType: String, EnumCollateNoCase {
     static let defaultValue = Self.fiat
 }
 
-struct CurrencyData: ExportableEntity {
+struct CurrencyData: DataProtocol {
     var id             : DataId       = .void
     var name           : String       = ""
     var prefixSymbol   : String       = ""
@@ -27,13 +27,22 @@ struct CurrencyData: ExportableEntity {
     var baseConvRate   : Double       = 0.0
     var symbol         : String       = ""
     var type           : CurrencyType = .defaultValue
+
+    // unique(name)
+    // unique(symbol)
 }
 
-extension CurrencyData: DataProtocol {
+extension CurrencyData {
     static let dataName = ("Currency", "Currencies")
 
     func shortDesc() -> String {
         "\(self.name)"
+    }
+
+    mutating func copy() {
+        id     = .void
+        name   = Self.copy(of: name)
+        symbol = Self.copy(of: symbol)
     }
 }
 

@@ -8,23 +8,30 @@
 import Foundation
 import SQLite
 
-struct CategoryData: ExportableEntity {
+struct CategoryData: DataProtocol {
     var id       : DataId = .void
     var name     : String = ""
     var active   : Bool   = false
     var parentId : DataId = .void
+    
+    // unique(name, parentId)
 }
 
 extension CategoryData {
-    var isRoot: Bool { parentId.isVoid }
-}
-
-extension CategoryData: DataProtocol {
     static let dataName = ("Category", "Categories")
 
     func shortDesc() -> String {
         "#\(self.id.value): \(self.name)"
     }
+
+    mutating func copy() {
+        id   = .void
+        name = Self.copy(of: name)
+    }
+}
+
+extension CategoryData {
+    var isRoot: Bool { parentId.isVoid }
 }
 
 extension CategoryData {

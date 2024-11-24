@@ -22,19 +22,26 @@ enum UpdateType: Int, CaseIterable, Identifiable, Codable {
     var name: String { Self.names[self.rawValue] }
 }
 
-struct StockHistoryData: ExportableEntity {
+struct StockHistoryData: DataProtocol {
     var id         : DataId      = .void
     var symbol     : String      = ""
     var date       : DateString  = DateString("")
     var price      : Double      = 0.0
     var updateType : UpdateType? = nil
+    
+    // unique(symbol, date)
 }
 
-extension StockHistoryData: DataProtocol {
+extension StockHistoryData {
     static let dataName = ("Stock History", "Stock History")
 
     func shortDesc() -> String {
         "\(self.symbol), \(self.date)"
+    }
+
+    mutating func copy() {
+        id   = .void
+        date = DateString(Date())
     }
 }
 

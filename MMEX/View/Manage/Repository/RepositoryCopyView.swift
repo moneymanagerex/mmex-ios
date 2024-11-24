@@ -64,7 +64,7 @@ struct RepositoryCopyView<
             }
         }
         .onAppear {
-            vm.copy(&data)
+            data.copy()
         }
     }
 }
