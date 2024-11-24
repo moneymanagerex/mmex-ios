@@ -10,7 +10,6 @@ import SwiftUI
 struct TransactionListView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
-    @ObservedObject var viewModel: TransactionViewModel
 
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
@@ -19,9 +18,8 @@ struct TransactionListView: View {
 
     var body: some View {
         Group {
-            List($viewModel.txns) { $txn in
+            List($vm.txns) { $txn in
                 NavigationLink(destination: TransactionDetailView(
-                    viewModel: viewModel,
                     txn: $txn
                 ) ) {
                     HStack {
@@ -95,7 +93,7 @@ struct TransactionListView: View {
                 newTxn: $newTxn,
                 isPresentingTransactionAddView: $isPresentingTransactionAddView
             ) { newTxn in
-                viewModel.addTransaction(txn: &newTxn)
+                vm.addTransaction(txn: &newTxn)
                 newTxn = TransactionData()
             }
         }
@@ -132,7 +130,7 @@ struct TransactionListView: View {
         let startDate = Calendar.current.date(from: DateComponents(year: selectedYear, month: 1, day: 1)) ?? Date()
         let endDate = Calendar.current.date(from: DateComponents(year: selectedYear + 1, month: 1, day: 1))?.addingTimeInterval(-1) ?? Date()
 
-        viewModel.loadTransactions(for: nil, startDate: startDate, endDate: endDate)
+        vm.loadTransactions(for: nil, startDate: startDate, endDate: endDate)
     }
 }
 
@@ -140,7 +138,6 @@ struct TransactionListView: View {
     let pref = Preference()
     let vm = ViewModel.sampleData
     TransactionListView(
-        viewModel: TransactionViewModel(vm)
     )
     .environmentObject(pref)
     .environmentObject(vm)

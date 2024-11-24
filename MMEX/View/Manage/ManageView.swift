@@ -10,7 +10,6 @@ import SwiftUI
 struct ManageView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
-    @ObservedObject var viewModel: TransactionViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
@@ -63,7 +62,7 @@ struct ManageView: View {
                         count: vm.payeeList.count
                     )
                 }
-                NavigationLink(destination: TransactionListView(viewModel: viewModel)) {
+                NavigationLink(destination: TransactionListView()) {
                     pref.theme.group.manageItem(
                         nameView: { Text(TransactionData.dataName.1) },
                         count: vm.transactionList.count
@@ -189,10 +188,8 @@ struct ManageView: View {
 #Preview {
     let pref = Preference()
     let vm = ViewModel.sampleData
-    let viewModel = TransactionViewModel(vm)
     NavigationView {
         ManageView(
-            viewModel: viewModel,
             isDocumentPickerPresented: .constant(false),
             isNewDocumentPickerPresented: .constant(false),
             isSampleDocument: .constant(false)

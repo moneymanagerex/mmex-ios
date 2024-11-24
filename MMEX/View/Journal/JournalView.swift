@@ -10,7 +10,6 @@ import SwiftUI
 struct JournalView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
-    @ObservedObject var viewModel: TransactionViewModel
 
     @State private var searchQuery: String = "" // New: Search query
     @State private var accountId: DataId = .void
@@ -18,7 +17,7 @@ struct JournalView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(viewModel.txns_per_day.keys.sorted(by: >), id: \.self) { day in
+                ForEach(vm.txns_per_day.keys.sorted(by: >), id: \.self) { day in
                     Section(
                         header: HStack {
                             Text(humanReadableDate(day))
@@ -28,7 +27,7 @@ struct JournalView: View {
                                 .font(.subheadline)
                         }
                     ) {
-                        ForEach(viewModel.txns_per_day[day]!, id: \.id) { txn in
+                        ForEach(vm.txns_per_day[day]!, id: \.id) { txn in
                             transactionView(txn, for: day)
                         }
                     }
@@ -58,14 +57,14 @@ struct JournalView: View {
                         }
                         .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
                         .onChange(of: accountId) {
-                            viewModel.loadTransactions(for: accountId)
+                            vm.loadTransactions(for: accountId)
                         }
                     }
                 }
             }
             .searchable(text: $searchQuery, prompt: "Search by notes") // New: Search bar
             .onChange(of: searchQuery) { _, query in
-                viewModel.filterTransactions(by: query)
+                vm.filterTransactions(by: query)
             }
         }
         .task {
@@ -74,20 +73,19 @@ struct JournalView: View {
             if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                 accountId = defaultAccountId
             }
-            viewModel.loadTransactions(for: accountId)
+            vm.loadTransactions(for: accountId)
         }
     }
 
     func transactionView(_ txn: TransactionData, for day: String) -> some View {
         NavigationLink(destination: TransactionDetailView(
-            viewModel: viewModel,
             txn: Binding(
                 get: {
-                    self.viewModel.txns_per_day[day]?.first(where: { $0.id == txn.id }) ?? txn
+                    self.vm.txns_per_day[day]?.first(where: { $0.id == txn.id }) ?? txn
                 },
                 set: { newTxn in
-                    if let index = self.viewModel.txns_per_day[day]?.firstIndex(where: { $0.id == txn.id }) {
-                        self.viewModel.txns_per_day[day]?[index] = newTxn
+                    if let index = self.vm.txns_per_day[day]?.firstIndex(where: { $0.id == txn.id }) {
+                        self.vm.txns_per_day[day]?[index] = newTxn
                     }
                 }
             )
@@ -173,7 +171,7 @@ struct JournalView: View {
     }
 
     func calculateTotal(for day: String) -> String {
-        let transactions = viewModel.txns_per_day[day] ?? []
+        let transactions = vm.txns_per_day[day] ?? []
         let totalAmount = transactions.reduce(0.0) { $0 + $1.actual }
         let account = vm.accountList.data.readyValue?[accountId]
         let formatter = vm.currencyList.info.readyValue?[account?.currencyId ?? .void]?.formatter
@@ -210,10 +208,8 @@ struct JournalView: View {
 #Preview {
     let pref = Preference()
     let vm = ViewModel.sampleData
-    let viewModel = TransactionViewModel(vm)
     NavigationView {
         JournalView(
-            viewModel: viewModel
         )
         .navigationBarTitle("Latest Transactions", displayMode: .inline)
     }

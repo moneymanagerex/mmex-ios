@@ -66,13 +66,12 @@ struct ContentView: View {
             // fix: move VM declaration to View and initialize it in init()
             //let vm = RepositoryViewModel(env: env)
             let insightsViewModel = InsightsViewModel(vm)
-            let infotableViewModel = TransactionViewModel(vm)
             TabView(selection: $selectedTab) {
-                journalTab(viewModel: infotableViewModel)
+                journalTab()
                 insightsTab(viewModel: insightsViewModel)
-                enterTab(viewModel: infotableViewModel)
-                managementTab(viewModel: infotableViewModel)
-                settingsTab(viewModel: infotableViewModel)
+                enterTab()
+                managementTab()
+                settingsTab()
             }
             .onChange(of: selectedTab) { _, tab in
                 if tab == 2 { isPresentingTransactionAddView = true }
@@ -132,9 +131,9 @@ struct ContentView: View {
     }
 
     // Transaction tab
-    private func journalTab(viewModel: TransactionViewModel) -> some View {
+    private func journalTab() -> some View {
         NavigationView {
-            JournalView(viewModel: viewModel)
+            JournalView()
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
         }
         .tabItem {
@@ -156,9 +155,9 @@ struct ContentView: View {
     }
 
     // Add transaction tab
-    private func enterTab(viewModel: TransactionViewModel) -> some View {
+    private func enterTab() -> some View {
         NavigationView {
-            EnterView(viewModel: viewModel, selectedTab: $selectedTab)
+            EnterView(selectedTab: $selectedTab)
                 // .navigationBarTitle("Enter Transaction", displayMode: .inline)
         }
         .tabItem {
@@ -168,12 +167,9 @@ struct ContentView: View {
     }
 
     // Management tab
-    private func managementTab(
-        viewModel: TransactionViewModel
-    ) -> some View {
+    private func managementTab() -> some View {
         NavigationView {
             ManageView(
-                viewModel: viewModel,
                 isDocumentPickerPresented: $isDocumentPickerPresented,
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
@@ -187,9 +183,9 @@ struct ContentView: View {
     }
 
     // Settings tab
-    private func settingsTab(viewModel: TransactionViewModel) -> some View {
+    private func settingsTab() -> some View {
         NavigationView {
-            SettingsView(viewModel: viewModel)
+            SettingsView()
                 .navigationBarTitle("Settings", displayMode: .inline)
         }
         .tabItem {
@@ -270,29 +266,27 @@ struct TabContentView: View {
         log.trace("TabContentView.body")
         // Use @StateObject to manage the lifecycle of TransactionViewModel
         let insightsViewModel = InsightsViewModel(vm)
-        let infotableViewModel = TransactionViewModel(vm)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {
             case 0:
-                JournalView(viewModel: infotableViewModel) // Summary and Edit feature
+                JournalView() // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
                 InsightsView(viewModel: insightsViewModel)
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
-                EnterView(viewModel: infotableViewModel, selectedTab: $selectedTab)
+                EnterView(selectedTab: $selectedTab)
                     .navigationBarTitle("Enter Transaction", displayMode: .inline)
             case 3:
                 ManageView(
-                    viewModel:infotableViewModel,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
                 )
                 .navigationBarTitle("Manage", displayMode: .inline)
             case 4:
-                SettingsView(viewModel: infotableViewModel)
+                SettingsView()
                     .navigationBarTitle("Settings", displayMode: .inline)
             default:
                 EmptyView()
