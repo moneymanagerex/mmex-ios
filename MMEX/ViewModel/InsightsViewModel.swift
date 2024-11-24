@@ -22,8 +22,8 @@ extension ViewModel {
         self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
         self.endDate = Date()
 
-        if let baseCurrencyId = InfotableRepository(self)?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
-            baseCurrency = CurrencyRepository(self)?.pluck(
+        if let baseCurrencyId = InfotableRepository(self.db)?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
+            baseCurrency = CurrencyRepository(self.db)?.pluck(
                 key: InfoKey.baseCurrencyID.id,
                 from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
             ).toOptional()
@@ -44,7 +44,7 @@ extension ViewModel {
     }
     
     func loadInsightsRecentTransactions() {
-        let repository = TransactionRepository(self)
+        let repository = TransactionRepository(self.db)
         let startDate = self.startDate
         let endDate = self.endDate
         // Fetch transactions asynchronously
@@ -58,7 +58,7 @@ extension ViewModel {
     }
     
     func loadInsightsTransactions() {
-        let repository = TransactionRepository(self)
+        let repository = TransactionRepository(self.db)
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {
             let transactions = repository?.load() ?? []
@@ -71,7 +71,7 @@ extension ViewModel {
 
     func loadInsightsFlow() {
         self.flow.today = String(endDate.ISO8601Format().prefix(10))
-        let repository = AccountRepository(self)
+        let repository = AccountRepository(self.db)
         typealias A = AccountRepository
         let table = A.table
             .filter(A.table[A.col_status] == AccountStatus.open.rawValue)

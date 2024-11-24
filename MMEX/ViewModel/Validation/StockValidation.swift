@@ -29,7 +29,7 @@ extension StockData {
         }
 
         typealias S = ViewModel.S
-        guard let s = S(vm) else {
+        guard let s = S(vm.db) else {
             return "* Database is not available"
         }
 
@@ -60,7 +60,7 @@ extension StockData {
 
         typealias S = ViewModel.S
         typealias D = ViewModel.D
-        guard let s = S(vm), let d = D(vm) else {
+        guard let s = S(vm.db), let d = D(vm.db) else {
             return "* Database is not available"
         }
 

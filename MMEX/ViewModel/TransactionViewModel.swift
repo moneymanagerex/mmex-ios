@@ -12,8 +12,8 @@ import SQLite
 
 extension ViewModel {
     func loadTransactions(for accountId: DataId? = nil, startDate: Date? = nil, endDate: Date? = nil) {
-        let transactionRepository = TransactionRepository(self)
-        let transactionSplitRepository = TransactionSplitRepository(self)
+        let transactionRepository = TransactionRepository(self.db)
+        let transactionSplitRepository = TransactionSplitRepository(self.db)
         DispatchQueue.global(qos: .background).async {
             var loadedTransactions = transactionRepository?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
             for i in loadedTransactions.indices {
@@ -69,7 +69,7 @@ extension ViewModel {
             txn.toAccountId = 0
         }
 
-        guard let transactionRepository = TransactionRepository(self) else { return }
+        guard let transactionRepository = TransactionRepository(self.db) else { return }
 
         if transactionRepository.insertWithSplits(&txn) {
             self.txns.append(txn) // id is ready after repo call
@@ -79,13 +79,13 @@ extension ViewModel {
     }
 
     func updateTransaction(_ data: inout TransactionData) -> Bool {
-        guard let transactionRepository = TransactionRepository(self) else { return false }
+        guard let transactionRepository = TransactionRepository(self.db) else { return false }
         return transactionRepository.updateWithSplits(&data)
     }
 
     func deleteTransaction(_ data: TransactionData) -> Bool {
-        guard let transactionRepository = TransactionRepository(self) else { return false }
-        guard let transactionSplitRepository = TransactionSplitRepository(self) else { return false }
+        guard let transactionRepository = TransactionRepository(self.db) else { return false }
+        guard let transactionSplitRepository = TransactionSplitRepository(self.db) else { return false }
         return transactionRepository.delete(data) && transactionSplitRepository.delete(data)
     }
 }

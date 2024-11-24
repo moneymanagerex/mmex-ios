@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
+import SQLite
 
-@MainActor
 protocol LoadProtocol: Copyable {
     associatedtype ValueType: Copyable
 
@@ -34,9 +34,9 @@ extension LoadProtocol {
 }
 
 protocol LoadFetchProtocol: LoadProtocol {
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType?
+    nonisolated func fetchValue(_ pref: Preference, _ db: SQLite.Connection?) async -> ValueType?
 }
 
 protocol LoadEvalProtocol: LoadProtocol {
-    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType?
+    nonisolated func evalValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType?
 }

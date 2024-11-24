@@ -19,7 +19,7 @@ extension AttachmentData {
         // assumption: refType, refId are valid by construction
 
         typealias D = ViewModel.D
-        guard let d = D(vm) else {
+        guard let d = D(vm.db) else {
             return "* Database is not available"
         }
 
@@ -46,7 +46,7 @@ extension AttachmentData {
         }
 
         typealias D = ViewModel.D
-        guard let d = D(vm) else {
+        guard let d = D(vm.db) else {
             return "* Database is not available"
         }
 

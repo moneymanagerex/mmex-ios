@@ -16,7 +16,7 @@ extension TagData {
         }
 
         typealias G = ViewModel.G
-        guard let g = G(vm) else {
+        guard let g = G(vm.db) else {
             return "* Database is not available"
         }
 
@@ -53,7 +53,7 @@ extension TagData {
         }
 
         typealias G = ViewModel.G
-        guard let g = G(vm) else {
+        guard let g = G(vm.db) else {
             return "* Database is not available"
         }
 
