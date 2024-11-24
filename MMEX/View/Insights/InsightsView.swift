@@ -11,7 +11,6 @@ import Charts
 struct InsightsView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
-    @ObservedObject var viewModel: InsightsViewModel
 
     @State var statusChoice: Int = 0
     @State var accountBalanceIsExpanded = true
@@ -30,7 +29,6 @@ struct InsightsView: View {
                     }
                 } ) { if accountBalanceIsExpanded {
                     InsightsAccountView(
-                        viewModel: viewModel,
                         statusChoice: $statusChoice
                     )
                 } }
@@ -44,7 +42,7 @@ struct InsightsView: View {
                     }
                 } ) { if accountIncomeIsExpanded {
                     InsightsSummaryView(
-                        stats: $viewModel.stats
+                        stats: $vm.stats
                     )
                 } }
                 
@@ -58,13 +56,13 @@ struct InsightsView: View {
                 } ) { if incomeExpenseIsExpanded {
                     // Date Range Filters
                     HStack {
-                        DatePicker("Start Date", selection: $viewModel.startDate, displayedComponents: .date)
+                        DatePicker("Start Date", selection: $vm.startDate, displayedComponents: .date)
                             .labelsHidden()
                             .datePickerStyle(.compact)
                         
                         Spacer()
                         
-                        DatePicker("End Date", selection: $viewModel.endDate, displayedComponents: .date)
+                        DatePicker("End Date", selection: $vm.endDate, displayedComponents: .date)
                             .labelsHidden()
                             .datePickerStyle(.compact)
                     }
@@ -73,7 +71,7 @@ struct InsightsView: View {
                     .cornerRadius(10)
                     .shadow(radius: 2)
                     
-                    IncomeExpenseView(stats: $viewModel.recentStats)
+                    IncomeExpenseView(stats: $vm.recentStats)
                 } }
                 
                 // Placeholder for Future Sections
@@ -102,6 +100,7 @@ struct InsightsView: View {
         .task {
             log.debug("DEBUG: InsightsView.onAppear(main=\(Thread.isMainThread))")
             await vm.loadInsightsList(pref)
+            vm.loadInsights()
         }
     }
 }
@@ -109,10 +108,8 @@ struct InsightsView: View {
 #Preview {
     let pref = Preference()
     let vm = ViewModel.sampleData
-    let viewModel = InsightsViewModel(vm)
     NavigationView {
         InsightsView(
-            viewModel: viewModel
         )
         .navigationBarTitle("Insights", displayMode: .inline)
     }
