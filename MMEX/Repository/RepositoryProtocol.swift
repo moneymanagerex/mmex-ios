@@ -230,7 +230,7 @@ extension RepositoryProtocol {
             log.info("INFO: RepositoryProtocol.insert(\(Self.repositoryName)): \(desc)")
             return true
         } catch {
-            log.error("ERROR: RepositoryProtocol.insert\(Self.repositoryName)): \(error)")
+            log.error("ERROR: RepositoryProtocol.insert(\(Self.repositoryName)): \(error)")
             return false
         }
     }

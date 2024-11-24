@@ -274,7 +274,7 @@
 		9243531A2CC51FB10052E4BC /* CurrencyReload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyReload.swift; sourceTree = "<group>"; };
 		9243531C2CC5201C0052E4BC /* ManageList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageList.swift; sourceTree = "<group>"; };
 		924353202CC6EFA70052E4BC /* LoadAux.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadAux.swift; sourceTree = "<group>"; };
-		924353262CCAD2780052E4BC /* LoadState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadState.swift; sourceTree = "<group>"; };
+		924353262CCAD2780052E4BC /* LoadState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadState.swift; path = MMEX/ViewModel/Load/LoadState.swift; sourceTree = SOURCE_ROOT; };
 		9243532E2CCD2C140052E4BC /* CurrencyGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyGroup.swift; sourceTree = "<group>"; };
 		924353302CCD2CF40052E4BC /* AccountGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountGroup.swift; sourceTree = "<group>"; };
 		924353322CCD2D580052E4BC /* AssetGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetGroup.swift; sourceTree = "<group>"; };

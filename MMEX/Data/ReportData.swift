@@ -40,7 +40,7 @@ extension ReportData {
             id: 1, name: "report 1", active: true
         ),
         ReportData(
-            id: 1, name: "report 2", active: true
+            id: 2, name: "report 2", active: true
         ),
     ]
 }

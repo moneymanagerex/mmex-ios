@@ -28,7 +28,7 @@ extension ViewModel {
         if ok {
             log.info("INFO: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         } else {
-            log.debug("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+            log.error("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         }
         return ok
     }
@@ -51,7 +51,7 @@ extension ViewModel {
         if ok {
             log.info("INFO: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         } else {
-            log.debug("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+            log.error("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         }
         return ok
     }
@@ -78,7 +78,7 @@ extension ViewModel {
             if ok {
                 log.info("INFO: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
             } else {
-                log.debug("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+                log.error("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
             }
             return ok
         }
@@ -107,7 +107,7 @@ extension ViewModel {
             if ok {
                 log.info("INFO: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
             } else {
-                log.debug("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
+                log.error("ERROR: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
             }
             return ok
         }

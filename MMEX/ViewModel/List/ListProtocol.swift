@@ -53,7 +53,7 @@ extension ListProtocol {
         if ok {
             log.info("INFO: ListProtocol.loaded(\(Self.listName), main=\(Thread.isMainThread))")
         } else {
-            log.debug("ERROR: ListProtocol.loaded(\(Self.listName), main=\(Thread.isMainThread))")
+            log.error("ERROR: ListProtocol.loaded(\(Self.listName), main=\(Thread.isMainThread))")
         }
     }
     
