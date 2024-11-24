@@ -20,7 +20,7 @@ extension ViewModel {
             uniqueKeysWithValues: stockGroup.groupAccount.enumerated().map { ($0.1, $0.0) }
         )
 
-        unloadStockGroup()
+        stockGroup.unload()
         stockList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
@@ -72,7 +72,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadStockUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if stockGroup.choice == .used {
-                unloadStockGroup()
+                stockGroup.unload()
             }
             stockList.used.unload()
         } else if
@@ -80,7 +80,7 @@ extension ViewModel {
             let newId, !stockUsed.contains(newId)
         {
             if stockGroup.choice == .used {
-                unloadStockGroup()
+                stockGroup.unload()
             }
             if stockList.used.state.unloading() {
                 stockList.used.value.insert(newId)
@@ -92,7 +92,7 @@ extension ViewModel {
     func reloadStockAtt(_ pref: Preference) {
         log.trace("DEBUG: ViewModel.reloadStockAtt(main=\(Thread.isMainThread))")
         if stockGroup.choice == .attachment {
-            unloadStockGroup()
+            stockGroup.unload()
         }
         stockList.att.unload()
     }

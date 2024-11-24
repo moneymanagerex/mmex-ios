@@ -24,7 +24,7 @@ extension ViewModel {
             uniqueKeysWithValues: budgetGroup.groupCategory.enumerated().map { ($0.1, $0.0) }
         )
 
-        unloadBudgetGroup()
+        budgetGroup.unload()
         budgetList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {

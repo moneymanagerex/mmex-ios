@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 protocol LoadProtocol: Copyable {
     associatedtype ValueType: Copyable
 

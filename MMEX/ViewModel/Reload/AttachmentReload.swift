@@ -28,7 +28,7 @@ extension ViewModel {
         // save isExpanded
         let groupIsExpanded: [Bool]? = attachmentGroup.readyValue?.map { $0.isExpanded }
 
-        unloadAttachmentGroup()
+        attachmentGroup.unload()
         attachmentList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {

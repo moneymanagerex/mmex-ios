@@ -20,7 +20,7 @@ extension ViewModel {
             uniqueKeysWithValues: accountGroup.groupCurrency.enumerated().map { ($0.1, $0.0) }
         )
         
-        unloadAccountGroup()
+        accountGroup.unload()
         accountList.unloadNone()
         
         if (oldData != nil) != (newData != nil) {
@@ -72,7 +72,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadAccountUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if accountGroup.choice == .used {
-                unloadAccountGroup()
+                accountGroup.unload()
             }
             accountList.used.unload()
         } else if
@@ -80,7 +80,7 @@ extension ViewModel {
             let newId, !accountUsed.contains(newId)
         {
             if accountGroup.choice == .used {
-                unloadAccountGroup()
+                accountGroup.unload()
             }
             if accountList.used.state.unloading() {
                 accountList.used.value.insert(newId)
@@ -92,7 +92,7 @@ extension ViewModel {
     func reloadAccountAtt(_ pref: Preference) {
         log.trace("DEBUG: ViewModel.reloadAccountAtt(main=\(Thread.isMainThread))")
         if accountGroup.choice == .attachment {
-            unloadAccountGroup()
+            accountGroup.unload()
         }
         accountList.att.unload()
     }

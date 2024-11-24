@@ -17,6 +17,7 @@ enum LoadState: Int, Copyable, Equatable {
     }
 }
 
+@MainActor
 extension LoadState {
     mutating func loading() -> Bool {
         guard self.rawValue < Self.loading.rawValue else { return false }

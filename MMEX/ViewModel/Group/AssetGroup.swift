@@ -110,8 +110,4 @@ extension ViewModel {
         assetGroup.state.loaded()
         log.info("INFO: ViewModel.loadAssetGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadAssetGroup() {
-        assetGroup.unload()
-    }
 }

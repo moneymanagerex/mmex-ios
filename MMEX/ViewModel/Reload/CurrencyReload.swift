@@ -25,7 +25,7 @@ extension ViewModel {
         // save isExpanded
         let groupIsExpanded: [Bool]? = currencyGroup.readyValue?.map { $0.isExpanded }
 
-        unloadCurrencyGroup()
+        currencyGroup.unload()
         currencyList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
@@ -88,7 +88,7 @@ extension ViewModel {
 
         if let oldId, newId != oldId {
             if currencyGroup.choice == .used {
-                unloadCurrencyGroup()
+                currencyGroup.unload()
             }
             currencyList.used.unload()
         } else if
@@ -96,7 +96,7 @@ extension ViewModel {
             let newId, !currencyUsed.contains(newId)
         {
             if currencyGroup.choice == .used {
-                unloadCurrencyGroup()
+                currencyGroup.unload()
             }
             if currencyList.used.state.unloading() {
                 currencyList.used.value.insert(newId)

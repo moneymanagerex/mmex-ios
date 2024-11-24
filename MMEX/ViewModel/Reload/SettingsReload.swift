@@ -33,7 +33,7 @@ extension ViewModel {
             }
         }
         if currencyChanged {
-            unloadCurrencyGroup()
+            currencyGroup.unload()
             currencyList.unloadNone()
         }
         
@@ -64,7 +64,7 @@ extension ViewModel {
             }
         }
         if accountChanged {
-            unloadAccountGroup()
+            accountGroup.unload()
             accountList.unloadNone()
         }
 

@@ -74,8 +74,4 @@ extension ViewModel {
         tagGroup.state.loaded()
         log.info("INFO: ViewModel.loadTagGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadTagGroup() {
-        tagGroup.unload()
-    }
 }

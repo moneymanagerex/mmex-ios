@@ -20,7 +20,7 @@ extension ViewModel {
             uniqueKeysWithValues: payeeGroup.groupCategory.enumerated().map { ($0.1, $0.0) }
         )
 
-        unloadPayeeGroup()
+        payeeGroup.unload()
         payeeList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
@@ -72,7 +72,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadPayeeUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if payeeGroup.choice == .used {
-                unloadPayeeGroup()
+                payeeGroup.unload()
             }
             payeeList.used.unload()
         } else if
@@ -80,7 +80,7 @@ extension ViewModel {
             let newId, !payeeUsed.contains(newId)
         {
             if payeeGroup.choice == .used {
-                unloadPayeeGroup()
+                payeeGroup.unload()
             }
             if payeeList.used.state.unloading() {
                 payeeList.used.value.insert(newId)
@@ -92,7 +92,7 @@ extension ViewModel {
     func reloadPayeeAtt(_ pref: Preference) {
         log.trace("DEBUG: ViewModel.reloadPayeeAtt(main=\(Thread.isMainThread))")
         if payeeGroup.choice == .attachment {
-            unloadPayeeGroup()
+            payeeGroup.unload()
         }
         payeeList.att.unload()
     }

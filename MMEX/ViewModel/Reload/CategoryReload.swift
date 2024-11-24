@@ -14,7 +14,7 @@ extension ViewModel {
         
         // TODO: save isExpanded
         
-        unloadCategoryGroup()
+        categoryGroup.unload()
         categoryList.unloadNone()
         
         if (oldData != nil) != (newData != nil) {
@@ -48,7 +48,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadCategoryUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0)")
         if let oldId, newId != oldId {
             if categoryGroup.choice == .used || categoryGroup.choice == .notUsed {
-                unloadCategoryGroup()
+                categoryGroup.unload()
             }
             categoryList.used.unload()
         } else if
@@ -56,7 +56,7 @@ extension ViewModel {
             let newId, !categoryUsed.contains(newId)
         {
             if categoryGroup.choice == .used || categoryGroup.choice == .notUsed {
-                unloadCategoryGroup()
+                categoryGroup.unload()
             }
             if categoryList.used.state.unloading() {
                 categoryList.used.value.insert(newId)

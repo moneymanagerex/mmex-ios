@@ -54,7 +54,7 @@ struct CategoryListView: View {
                     Text(Image(systemName: "chevron.up.chevron.down"))
                 ) } )
                 .onChange(of: groupChoice) {
-                    vm.unloadCategoryGroup()
+                    vm.unloadGroup(CategoryGroup.self)
                     vm.loadCategoryGroup(choice: groupChoice)
                     vm.searchCategory(search: search)
                 }
@@ -153,7 +153,7 @@ struct CategoryListView: View {
         .refreshable {
             if deleteData || newData != nil { return }
             log.debug("DEBUG: CategoryListView.refreshable()")
-            vm.unloadCategoryGroup()
+            vm.unloadGroup(CategoryGroup.self)
             vm.unloadList(CategoryList.self)
             await load()
         }

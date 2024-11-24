@@ -15,7 +15,7 @@ extension ViewModel {
         // save isExpanded
         let groupIsExpanded: [Bool]? = tagGroup.readyValue?.map { $0.isExpanded }
 
-        unloadTagGroup()
+        tagGroup.unload()
         tagList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
@@ -53,7 +53,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadTagUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if tagGroup.choice == .used {
-                unloadTagGroup()
+                tagGroup.unload()
             }
             tagList.used.unload()
         } else if
@@ -61,7 +61,7 @@ extension ViewModel {
             let newId, !tagUsed.contains(newId)
         {
             if tagGroup.choice == .used {
-                unloadTagGroup()
+                tagGroup.unload()
             }
             if tagList.used.state.unloading() {
                 tagList.used.value.insert(newId)

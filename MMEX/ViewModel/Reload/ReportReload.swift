@@ -18,7 +18,7 @@ extension ViewModel {
             uniqueKeysWithValues: reportGroup.groupGroup.enumerated().map { ($0.1, $0.0) }
         )
 
-        unloadReportGroup()
+        reportGroup.unload()
         reportList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {

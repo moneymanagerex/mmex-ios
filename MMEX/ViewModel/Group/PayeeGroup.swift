@@ -101,8 +101,4 @@ extension ViewModel {
         payeeGroup.state.loaded()
         log.info("INFO: ViewModel.loadPayeeGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadPayeeGroup() {
-        payeeGroup.unload()
-    }
 }

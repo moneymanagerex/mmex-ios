@@ -63,8 +63,4 @@ extension ViewModel {
         attachmentGroup.state.loaded()
         log.info("INFO: ViewModel.loadAttachmentGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadAttachmentGroup() {
-        attachmentGroup.unload()
-    }
 }

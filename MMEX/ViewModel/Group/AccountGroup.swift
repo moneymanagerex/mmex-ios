@@ -121,8 +121,4 @@ extension ViewModel {
         accountGroup.state.loaded()
         log.info("INFO: ViewModel.loadAccountGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadAccountGroup() {
-        accountGroup.unload()
-    }
 }
