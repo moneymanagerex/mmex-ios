@@ -8,72 +8,76 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateBudget(_ data: inout BudgetData) -> String? {
-        if data.periodId.isVoid {
+extension BudgetData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if periodId.isVoid {
             return "Budget period is not defined"
         } else {
-            guard let budgetPeriodData = budgetPeriodList.data.readyValue else {
+            guard let budgetPeriodData = vm.budgetPeriodList.data.readyValue else {
                 return "* budgetPeriodData is not loaded"
             }
-            if budgetPeriodData[data.periodId] == nil {
-                return "* Unknown budget period #\(data.periodId.value)"
+            if budgetPeriodData[periodId] == nil {
+                return "* Unknown budget period #\(periodId.value)"
             }
         }
 
-        if data.categoryId.isVoid {
+        if categoryId.isVoid {
             return "Category is not defined"
         } else {
-            guard let categoryData = categoryList.data.readyValue else {
+            guard let categoryData = vm.categoryList.data.readyValue else {
                 return "* categoryData is not loaded"
             }
-            if categoryData[data.categoryId] == nil {
-                return "* Unknown category #\(data.categoryId.value)"
+            if categoryData[categoryId] == nil {
+                return "* Unknown category #\(categoryId.value)"
             }
         }
 
-        guard let b = B(self) else {
+        typealias B = ViewModel.B
+        guard let b = B(vm) else {
             return "* Database is not available"
         }
 
         guard let dataKey = b.selectId(from: B.table.filter(
-            B.table[B.col_id] == Int64(data.id) ||
-            (B.table[B.col_yearId] == Int64(data.periodId) && B.table[B.col_categId] == Int64(data.categoryId))
+            B.table[B.col_id] == Int64(id) ||
+            (B.table[B.col_yearId] == Int64(periodId) && B.table[B.col_categId] == Int64(categoryId))
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataKey.count == (data.id.isVoid ? 0 : 1) else {
+        guard dataKey.count == (id.isVoid ? 0 : 1) else {
             // MMEX Desktop supports only unique (periodId, categoryId)
             return "Budget key (period, category) already exists"
         }
 
-        if data.id.isVoid {
-            guard b.insert(&data) else {
+        if id.isVoid {
+            guard b.insert(&self) else {
                 return "* Cannot create new budget"
             }
         } else {
-            guard b.update(data) else {
-                return "* Cannot update budget #\(data.id.value)"
+            guard b.update(self) else {
+                return "* Cannot update budget #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteBudget(_ data: BudgetData) -> String? {
-        guard let budgetUsed = budgetList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let budgetUsed = vm.budgetList.used.readyValue else {
             return "* budgetUsed is not loaded"
         }
-        if budgetUsed.contains(data.id) {
-            return "* Budget #\(data.id.value) is used"
+        if budgetUsed.contains(id) {
+            return "* Budget #\(id.value) is used"
         }
 
-        guard let b = B(self) else {
+        typealias B = ViewModel.B
+        guard let b = B(vm) else {
             return "* Database is not available"
         }
 
-        guard b.delete(data) else {
-            return "* Cannot delete budget #\(data.id.value)"
+        guard b.delete(self) else {
+            return "* Cannot delete budget #\(id.value)"
         }
 
         return nil

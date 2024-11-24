@@ -8,53 +8,57 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateReport(_ data: inout ReportData) -> String? {
-        if data.name.isEmpty {
+extension ReportData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if name.isEmpty {
             return "Name is empty"
         }
 
-        guard let r = R(self) else {
+        typealias R = ViewModel.R
+        guard let r = R(vm) else {
             return "* Database is not available"
         }
 
-        guard let dataName = r.selectId(from: G.table.filter(
-            R.table[R.col_id] == Int64(data.id) ||
-            R.table[R.col_name] == data.name
+        guard let dataName = r.selectId(from: R.table.filter(
+            R.table[R.col_id] == Int64(id) ||
+            R.table[R.col_name] == name
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
-            return "Report \(data.name) already exists"
+        guard dataName.count == (id.isVoid ? 0 : 1) else {
+            return "Report \(name) already exists"
         }
 
-        if data.id.isVoid {
-            guard r.insert(&data) else {
+        if id.isVoid {
+            guard r.insert(&self) else {
                 return "* Cannot create new report"
             }
         } else {
-            guard r.update(data) else {
-                return "* Cannot update report #\(data.id.value)"
+            guard r.update(self) else {
+                return "* Cannot update report #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteReport(_ data: ReportData) -> String? {
-        guard let reportUsed = reportList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let reportUsed = vm.reportList.used.readyValue else {
             return "* reportUsed is not loaded"
         }
-        if reportUsed.contains(data.id) {
-            return "* Report #\(data.id.value) is used"
+        if reportUsed.contains(id) {
+            return "* Report #\(id.value) is used"
         }
 
-        guard let r = R(self) else {
+        typealias R = ViewModel.R
+        guard let r = R(vm) else {
             return "* Database is not available"
         }
 
-        guard r.delete(data) else {
-            return "* Cannot delete report #\(data.id.value)"
+        guard r.delete(self) else {
+            return "* Cannot delete report #\(id.value)"
         }
 
         return nil

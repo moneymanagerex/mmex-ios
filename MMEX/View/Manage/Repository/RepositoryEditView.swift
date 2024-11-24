@@ -39,7 +39,7 @@ struct RepositoryEditView<
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        if let updateError = vm.update(&data) {
+                        if let updateError = data.update(vm) {
                             alertMessage = updateError
                             alertIsPresented = true
                         } else {

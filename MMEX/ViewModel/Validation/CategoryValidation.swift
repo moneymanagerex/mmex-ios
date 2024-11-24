@@ -8,77 +8,81 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateCategory(_ data: inout CategoryData) -> String? {
-        if data.name.isEmpty {
+extension CategoryData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if name.isEmpty {
             return "Name is empty"
         }
 
-        if !data.id.isVoid, !data.parentId.isVoid {
-            guard let categoryTree = categoryList.evalTree.readyValue else {
+        if !id.isVoid, !parentId.isVoid {
+            guard let categoryTree = vm.categoryList.evalTree.readyValue else {
                 return "* currencyTree is not loaded"
             }
             guard
-                let i = categoryTree.indexById[data.id],
-                let p = categoryTree.indexById[data.parentId]
+                let i = categoryTree.indexById[id],
+                let p = categoryTree.indexById[parentId]
             else {
-                return "* currencyTree does not contain #\(data.id.value) and #\(data.parentId.value)"
+                return "* currencyTree does not contain #\(id.value) and #\(parentId.value)"
             }
             if p >= i, p < categoryTree.order[i].next {
-                return "Parent category #\(data.parentId.value) is under category #\(data.id.value)"
+                return "Parent category #\(parentId.value) is under category #\(id.value)"
             }
         }
 
-        guard let c = C(self) else {
+        typealias C = ViewModel.C
+        guard let c = C(vm) else {
             return "* Database is not available"
         }
 
         guard let dataName = c.selectId(from: C.table.filter(
-            C.table[C.col_id] == Int64(data.id) || (
-                C.table[C.col_parentId] == Int64(data.parentId) &&
-                C.table[C.col_name] == data.name
+            C.table[C.col_id] == Int64(id) || (
+                C.table[C.col_parentId] == Int64(parentId) &&
+                C.table[C.col_name] == name
             )
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
-            return "Category \(data.name) already exists"
+        guard dataName.count == (id.isVoid ? 0 : 1) else {
+            return "Category \(name) already exists"
         }
 
-        if data.id.isVoid {
-            guard c.insert(&data) else {
+        if id.isVoid {
+            guard c.insert(&self) else {
                 return "* Cannot create new category"
             }
         } else {
-            guard c.update(data) else {
-                return "* Cannot update category #\(data.id.value)"
+            guard c.update(self) else {
+                return "* Cannot update category #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteCategory(_ data: CategoryData) -> String? {
-        guard let categoryUsed = categoryList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let categoryUsed = vm.categoryList.used.readyValue else {
             return "* categoryUsed is not loaded"
         }
-        if categoryUsed.contains(data.id) {
-            return "* Category #\(data.id.value) is used"
+        if categoryUsed.contains(id) {
+            return "* Category #\(id.value) is used"
         }
 
-        guard let categoryTree = categoryList.evalTree.readyValue else {
+        guard let categoryTree = vm.categoryList.evalTree.readyValue else {
             return "* categoryTree is not loaded"
         }
-        if categoryTree.childrenById[data.id] != nil {
-            return "* Category #\(data.id.value) has sub-categories"
+        if categoryTree.childrenById[id] != nil {
+            return "* Category #\(id.value) has sub-categories"
         }
 
-        guard let c = C(self) else {
+        typealias C = ViewModel.C
+        guard let c = C(vm) else {
             return "* Database is not available"
         }
 
-        guard c.delete(data) else {
-            return "* Cannot delete category #\(data.id.value)"
+        guard c.delete(self) else {
+            return "* Cannot delete category #\(id.value)"
         }
 
         return nil

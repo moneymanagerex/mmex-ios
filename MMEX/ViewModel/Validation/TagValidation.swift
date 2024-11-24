@@ -8,53 +8,57 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateTag(_ data: inout TagData) -> String? {
-        if data.name.isEmpty {
+extension TagData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if name.isEmpty {
             return "Name is empty"
         }
 
-        guard let g = G(self) else {
+        typealias G = ViewModel.G
+        guard let g = G(vm) else {
             return "* Database is not available"
         }
 
         guard let dataName = g.selectId(from: G.table.filter(
-            G.table[G.col_id] == Int64(data.id) ||
-            G.table[G.col_name] == data.name
+            G.table[G.col_id] == Int64(id) ||
+            G.table[G.col_name] == name
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
-            return "Tag \(data.name) already exists"
+        guard dataName.count == (id.isVoid ? 0 : 1) else {
+            return "Tag \(name) already exists"
         }
 
-        if data.id.isVoid {
-            guard g.insert(&data) else {
+        if id.isVoid {
+            guard g.insert(&self) else {
                 return "* Cannot create new tag"
             }
         } else {
-            guard g.update(data) else {
-                return "* Cannot update tag #\(data.id.value)"
+            guard g.update(self) else {
+                return "* Cannot update tag #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteTag(_ data: TagData) -> String? {
-        guard let tagUsed = tagList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let tagUsed = vm.tagList.used.readyValue else {
             return "* tagUsed is not loaded"
         }
-        if tagUsed.contains(data.id) {
-            return "* Tag #\(data.id.value) is used"
+        if tagUsed.contains(id) {
+            return "* Tag #\(id.value) is used"
         }
 
-        guard let g = G(self) else {
+        typealias G = ViewModel.G
+        guard let g = G(vm) else {
             return "* Database is not available"
         }
 
-        guard g.delete(data) else {
-            return "* Cannot delete tag #\(data.id.value)"
+        guard g.delete(self) else {
+            return "* Cannot delete tag #\(id.value)"
         }
 
         return nil

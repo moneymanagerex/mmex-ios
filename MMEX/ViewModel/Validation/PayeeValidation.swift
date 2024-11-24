@@ -8,71 +8,76 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updatePayee(_ data: inout PayeeData) -> String? {
-        if data.name.isEmpty {
+extension PayeeData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if name.isEmpty {
             return "Name is empty"
         }
 
-        if !data.categoryId.isVoid {
-            guard let categoryData = categoryList.data.readyValue else {
+        if !categoryId.isVoid {
+            guard let categoryData = vm.categoryList.data.readyValue else {
                 return "* categoryData is not loaded"
             }
-            if categoryData[data.categoryId] == nil {
-                return "* Unknown category #\(data.categoryId.value)"
+            if categoryData[categoryId] == nil {
+                return "* Unknown category #\(categoryId.value)"
             }
         }
 
-        guard let p = P(self) else {
+        typealias P = ViewModel.P
+        guard let p = P(vm) else {
             return "* Database is not available"
         }
 
         guard let dataName = p.selectId(from: P.table.filter(
-            P.table[P.col_id] == Int64(data.id) ||
-            P.table[P.col_name] == data.name
+            P.table[P.col_id] == Int64(id) ||
+            P.table[P.col_name] == name
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
-            return "Payee \(data.name) already exists"
+        guard dataName.count == (id.isVoid ? 0 : 1) else {
+            return "Payee \(name) already exists"
         }
 
-        if data.id.isVoid {
-            guard p.insert(&data) else {
+        if id.isVoid {
+            guard p.insert(&self) else {
                 return "* Cannot create new payee"
             }
         } else {
-            guard p.update(data) else {
-                return "* Cannot update payee #\(data.id.value)"
+            guard p.update(self) else {
+                return "* Cannot update payee #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deletePayee(_ data: PayeeData) -> String? {
-        guard let payeeUsed = payeeList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let payeeUsed = vm.payeeList.used.readyValue else {
             return "* payeeUsed is not loaded"
         }
-        if payeeUsed.contains(data.id) {
-            return "* Payee #\(data.id.value) is used"
+        if payeeUsed.contains(id) {
+            return "* Payee #\(id.value) is used"
         }
 
-        guard let p = P(self), let d = D(self) else {
+        typealias P = ViewModel.P
+        typealias D = ViewModel.D
+        guard let p = P(vm), let d = D(vm) else {
             return "* Database is not available"
         }
 
-        guard let payeeAtt = payeeList.att.readyValue else {
+        guard let payeeAtt = vm.payeeList.att.readyValue else {
             return "* payeeAtt is not loaded"
         }
-        if payeeAtt[data.id] != nil {
-            guard d.delete(refType: .payee, refId: data.id) else {
-                return "* Cannot delete attachments for payee #\(data.id.value)"
+        if payeeAtt[id] != nil {
+            guard d.delete(refType: .payee, refId: id) else {
+                return "* Cannot delete attachments for payee #\(id.value)"
             }
         }
 
-        guard p.delete(data) else {
-            return "* Cannot delete payee #\(data.id.value)"
+        guard p.delete(self) else {
+            return "* Cannot delete payee #\(id.value)"
         }
 
         return nil
