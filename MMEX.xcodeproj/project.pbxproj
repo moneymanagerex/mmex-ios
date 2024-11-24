@@ -202,7 +202,7 @@
 		A3C1424E2C8B335900D3CEC0 /* PayeeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1424D2C8B335900D3CEC0 /* PayeeData.swift */; };
 		A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */; };
 		A3C142542C8B381400D3CEC0 /* PayeeFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142532C8B381400D3CEC0 /* PayeeFormView.swift */; };
-		A3C1425F2C8DE70300D3CEC0 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1425E2C8DE70300D3CEC0 /* Database.swift */; };
+		A3C1425F2C8DE70300D3CEC0 /* MMEXDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1425E2C8DE70300D3CEC0 /* MMEXDatabase.swift */; };
 		A3C142652C8ED8EA00D3CEC0 /* AccountFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142642C8ED8EA00D3CEC0 /* AccountFormView.swift */; };
 		A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142662C8F2AF500D3CEC0 /* TransactionData.swift */; };
 		A3C142922C8FE11700D3CEC0 /* AccountRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */; };
@@ -412,7 +412,7 @@
 		A3C1424D2C8B335900D3CEC0 /* PayeeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeData.swift; sourceTree = "<group>"; };
 		A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeListView.swift; sourceTree = "<group>"; };
 		A3C142532C8B381400D3CEC0 /* PayeeFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeFormView.swift; sourceTree = "<group>"; };
-		A3C1425E2C8DE70300D3CEC0 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		A3C1425E2C8DE70300D3CEC0 /* MMEXDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEXDatabase.swift; sourceTree = "<group>"; };
 		A3C142642C8ED8EA00D3CEC0 /* AccountFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFormView.swift; sourceTree = "<group>"; };
 		A3C142662C8F2AF500D3CEC0 /* TransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionData.swift; sourceTree = "<group>"; };
 		A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRepository.swift; sourceTree = "<group>"; };
@@ -472,6 +472,7 @@
 			children = (
 				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
 				929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */,
+				A3C1425E2C8DE70300D3CEC0 /* MMEXDatabase.swift */,
 				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
 			);
 			path = App;
@@ -759,7 +760,6 @@
 				925EABA42CCF8178003CEAB3 /* Validation */,
 				925EAB912CCD5691003CEAB3 /* Reload */,
 				924353042CC3B2E30052E4BC /* ViewModel.swift */,
-				A3C1425E2C8DE70300D3CEC0 /* Database.swift */,
 				A350BDC02CA26415006669D5 /* TransactionViewModel.swift */,
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
 			);
@@ -1083,7 +1083,7 @@
 				A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */,
 				927B124D2CE8C2E100AEA52F /* RepositoryCopyView.swift in Sources */,
 				A37E7D8C2C9AC36800B4ECFC /* LegalView.swift in Sources */,
-				A3C1425F2C8DE70300D3CEC0 /* Database.swift in Sources */,
+				A3C1425F2C8DE70300D3CEC0 /* MMEXDatabase.swift in Sources */,
 				924353012CBA06210052E4BC /* AccountReload.swift in Sources */,
 				925EAC242CDAB100003CEAB3 /* AttachmentListView.swift in Sources */,
 				A3C1424E2C8B335900D3CEC0 /* PayeeData.swift in Sources */,

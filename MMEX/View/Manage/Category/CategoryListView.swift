@@ -89,19 +89,9 @@ struct CategoryListView: View {
             .listRowBackground(Color.clear)
             //.border(.red)
 
-            switch vm.categoryGroup.state {
+            switch LoadState.merge(vm.categoryList.state, vm.categoryGroup.state) {
             case .ready:
                 groupView()
-            case .loading:
-                HStack {
-                    Text("Loading data ...")
-                    ProgressView()
-                }
-            case .error:
-                HStack {
-                    Text("Load error ...")
-                    ProgressView()
-                }.tint(.red)
             case .idle:
                 Button(action: { Task {
                     await load()
@@ -114,6 +104,16 @@ struct CategoryListView: View {
                 .padding()
                 //.background(.secondary)
                 .foregroundColor(.secondary)
+            case .loading:
+                HStack {
+                    Text("Loading data ... ")
+                    ProgressView()
+                }
+            case .error:
+                HStack {
+                    Text("Load error ... ").foregroundColor(.red)
+                    ProgressView().tint(.red)
+                }
             }
         }
         //.listStyle(.plain)

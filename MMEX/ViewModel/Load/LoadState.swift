@@ -51,3 +51,12 @@ extension LoadState {
         self = .idle
     }
 }
+
+extension LoadState {
+    static func merge(_ s1: LoadState, _ s2: LoadState) -> LoadState {
+        /**/ if s1 == .error   || s2 == .error   { return .error }
+        else if s1 == .loading || s2 == .loading { return .loading }
+        else if s1 == .idle    || s2 == .idle    { return .idle }
+        else                                     { return .ready }
+    }
+}
