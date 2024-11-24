@@ -13,7 +13,7 @@ struct RepositoryEditView<
     FormView: View
 >: View {
     @EnvironmentObject var vm: ViewModel
-    var features: RepositoryFeatures
+    let features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
     @Binding var isPresented: Bool

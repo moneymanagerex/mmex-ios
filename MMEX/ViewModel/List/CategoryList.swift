@@ -49,6 +49,14 @@ extension CategoryList {
         order.unload()
         unloaded()
     }
+
+    func isUsed(_ dataId: DataId) -> Bool? {
+        guard
+            let used = used.readyValue,
+            let childrenById = evalTree.readyValue?.childrenById
+        else { return nil }
+        return used.contains(dataId) || childrenById[dataId] != nil
+    }
 }
 
 extension ViewModel {

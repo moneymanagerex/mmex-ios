@@ -14,11 +14,12 @@ struct RepositoryReadView<
 >: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var vm: ViewModel
-    var features: RepositoryFeatures
+    let features: RepositoryFeatures
     @State var data: MainData
+    let isUsed: Bool?
     @Binding var newData: MainData?
     @Binding var deleteData: Bool
-    @ViewBuilder var formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
+    @ViewBuilder let formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
 
     @State private var editSheetIsPresented = false
     @State private var copySheetIsPresented = false
@@ -29,7 +30,7 @@ struct RepositoryReadView<
     var body: some View {
         Form {
             formView($data, false)
-            if vm.isUsed(data) == false {
+            if isUsed == false {
                 Button("Delete \(MainData.dataName.0)") {
                     if let deleteError = data.delete(vm) {
                         alertMessage = deleteError
@@ -132,6 +133,7 @@ struct RepositoryReadView<
         RepositoryReadView(
             features: RepositoryFeatures(),
             data: AccountData.sampleData[0],
+            isUsed: nil,
             newData: .constant(nil),
             deleteData: .constant(false),
             formView: formView

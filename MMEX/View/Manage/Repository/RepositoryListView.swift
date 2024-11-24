@@ -22,16 +22,16 @@ where GroupType.MainRepository == ListType.MainRepository,
 
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
-    var features: RepositoryFeatures
-    var vmList: ListType
+    let features: RepositoryFeatures
+    let vmList: ListType
     @State var groupChoice: GroupChoice
     @Binding var vmGroup: GroupType
     @Binding var search: SearchType
     let initData: MainData
-    @ViewBuilder var groupNameView: (_ g: Int, _ name: String?) -> GroupNameView
-    @ViewBuilder var itemNameView: (_ data: MainData) -> ItemNameView
-    @ViewBuilder var itemInfoView: (_ data: MainData) -> ItemInfoView
-    @ViewBuilder var formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
+    @ViewBuilder let groupNameView: (_ g: Int, _ name: String?) -> GroupNameView
+    @ViewBuilder let itemNameView: (_ data: MainData) -> ItemNameView
+    @ViewBuilder let itemInfoView: (_ data: MainData) -> ItemInfoView
+    @ViewBuilder let formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
 
     @StateObject var debounce = RepositorySearchDebounce()
     @State var newData: MainData? = nil
@@ -303,6 +303,7 @@ where GroupType.MainRepository == ListType.MainRepository,
             destination: RepositoryReadView(
                 features: features,
                 data: data,
+                isUsed: vmList.isUsed(data.id),
                 newData: $newData,
                 deleteData: $deleteData,
                 formView: formView
@@ -326,7 +327,7 @@ where GroupType.MainRepository == ListType.MainRepository,
 
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if features.canDelete { Button {
-                guard vm.isUsed(data) == false else { return }
+                guard vmList.isUsed(data.id) == false else { return }
                 if let deleteError = data.delete(vm) {
                     alertMessage = deleteError
                     alertIsPresented = true
@@ -337,8 +338,11 @@ where GroupType.MainRepository == ListType.MainRepository,
                     }
                 }
             } label: {
-                Label("Delete", systemImage: vm.isUsed(data) == false ? "trash.fill" : "trash.slash.fill")
-            }.tint(vm.isUsed(data) == false ? .red : .gray) }
+                Label(
+                    "Delete",
+                    systemImage: vmList.isUsed(data.id) == false ? "trash.fill" : "trash.slash.fill"
+                )
+            }.tint(vmList.isUsed(data.id) == false ? .red : .gray) }
 
             if features.canEdit { Button {
                 editDataId = data.id

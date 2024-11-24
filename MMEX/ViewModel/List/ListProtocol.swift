@@ -24,6 +24,7 @@ protocol ListProtocol {
 
     mutating func unloadNone()
     mutating func unloadAll()
+    func isUsed(_ id: DataId) -> Bool?
 }
 
 extension ListProtocol {
@@ -72,6 +73,11 @@ extension ListProtocol {
     mutating func unloadAll() {
         guard reloading() else { return }
         unloaded()
+    }
+
+    // default implementation
+    func isUsed(_ dataId: DataId) -> Bool? {
+        return used.readyValue?.contains(dataId)
     }
 }
 
