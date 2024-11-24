@@ -21,7 +21,7 @@ extension ViewModel {
         )
 
         unloadAssetGroup()
-        assetList.unload()
+        assetList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             assetList.count.unload()

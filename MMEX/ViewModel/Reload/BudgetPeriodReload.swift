@@ -16,7 +16,7 @@ extension ViewModel {
         let groupIsExpanded: [Bool]? = budgetPeriodGroup.readyValue?.map { $0.isExpanded }
 
         unloadBudgetPeriodGroup()
-        budgetPeriodList.unload()
+        budgetPeriodList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             budgetPeriodList.count.unload()

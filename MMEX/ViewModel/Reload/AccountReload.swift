@@ -21,7 +21,7 @@ extension ViewModel {
         )
         
         unloadAccountGroup()
-        accountList.unload()
+        accountList.unloadNone()
         
         if (oldData != nil) != (newData != nil) {
             accountList.count.unload()

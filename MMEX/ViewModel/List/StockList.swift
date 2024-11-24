@@ -19,6 +19,18 @@ struct StockList: ListProtocol {
     var att   : LoadAuxAtt<MainRepository>    = .init()
 }
 
+extension StockList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        att.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadStockList(_ pref: Preference) async {
         guard stockList.reloading() else { return }
@@ -36,15 +48,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         stockList.loaded(ok: ok)
-    }
-
-    func unloadStockList() {
-        guard stockList.reloading() else { return }
-        stockList.count.unload()
-        stockList.data.unload()
-        stockList.used.unload()
-        stockList.order.unload()
-        stockList.att.unload()
-        stockList.unloaded()
     }
 }

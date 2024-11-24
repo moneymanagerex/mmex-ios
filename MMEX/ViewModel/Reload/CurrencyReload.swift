@@ -26,7 +26,7 @@ extension ViewModel {
         let groupIsExpanded: [Bool]? = currencyGroup.readyValue?.map { $0.isExpanded }
 
         unloadCurrencyGroup()
-        currencyList.unload()
+        currencyList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             currencyList.count.unload()

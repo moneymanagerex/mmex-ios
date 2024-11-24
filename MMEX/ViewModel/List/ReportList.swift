@@ -18,6 +18,17 @@ struct ReportList: ListProtocol {
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
 }
 
+extension ReportList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadReportList(_ pref: Preference) async {
         guard reportList.reloading() else { return }
@@ -30,14 +41,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         reportList.loaded(ok: ok)
-    }
-
-    func unloadReportList() {
-        guard reportList.reloading() else { return }
-        reportList.count.unload()
-        reportList.data.unload()
-        reportList.used.unload()
-        reportList.order.unload()
-        reportList.unloaded()
     }
 }

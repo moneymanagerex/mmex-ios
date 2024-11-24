@@ -17,6 +17,16 @@ struct ScheduledList: ListProtocol {
     var used  : LoadMainUsed<MainRepository>  = .init()
 }
 
+extension ScheduledList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadScheduledList(_ pref: Preference) async {
         guard scheduledList.reloading() else { return }
@@ -46,13 +56,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         } }
         scheduledList.loaded(ok: ok)
-    }
-
-    func unloadScheduledList() {
-        guard scheduledList.reloading() else { return }
-        scheduledList.count.unload()
-        scheduledList.data.unload()
-        scheduledList.used.unload()
-        scheduledList.unloaded()
     }
 }

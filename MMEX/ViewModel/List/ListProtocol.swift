@@ -21,30 +21,32 @@ protocol ListProtocol {
     mutating func reloading() -> Bool
     mutating func loaded(ok: Bool)
     mutating func unloaded()
-    mutating func unload()
+
+    mutating func unloadNone()
+    mutating func unloadAll()
 }
 
 extension ListProtocol {
     static var listName: String { MainRepository.RepositoryData.dataName.0 }
-
+    
     mutating func loading() -> Bool {
         guard state.loading() else { return false }
         //log.trace("DEBUG: ListProtocol.loading(\(Self.listName), main=\(Thread.isMainThread))")
         return true
     }
-
+    
     mutating func unloading() -> Bool {
         guard state.unloading() else { return false }
         //log.trace("DEBUG: ListProtocol.unloading(\(Self.listName), main=\(Thread.isMainThread))")
         return true
     }
-
+    
     mutating func reloading() -> Bool {
         guard state.reloading() else { return false }
         //log.trace("DEBUG: ListProtocol.reloading(\(Self.listName), main=\(Thread.isMainThread))")
         return true
     }
-
+    
     mutating func loaded(ok: Bool = true) {
         state.loaded(ok: ok)
         if ok {
@@ -53,15 +55,23 @@ extension ListProtocol {
             log.debug("ERROR: ListProtocol.loaded(\(Self.listName), main=\(Thread.isMainThread))")
         }
     }
-
+    
     mutating func unloaded() {
         state.unloaded()
         log.info("INFO: ListProtocol.unloaded(\(Self.listName), main=\(Thread.isMainThread))")
     }
+}
 
-    mutating func unload() {
-        guard state.unloading() else { return }
-        state.unloaded()
+extension ListProtocol {
+    mutating func unloadNone() {
+        guard unloading() else { return }
+        unloaded()
+    }
+
+    // default implementation
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        unloaded()
     }
 }
 
@@ -85,25 +95,6 @@ extension ViewModel {
         else if MainRepository.self == R.self  { await loadReportList(pref) }
     }
 
-    func unloadList<ListType: ListProtocol>(_ listType: ListType.Type) {
-        typealias MainRepository = ListType.MainRepository
-        /**/ if MainRepository.self == I.self  { unloadInfotableList() }
-        else if MainRepository.self == U.self  { unloadCurrencyList() }
-        else if MainRepository.self == A.self  { unloadAccountList() }
-        else if MainRepository.self == E.self  { unloadAssetList() }
-        else if MainRepository.self == S.self  { unloadStockList() }
-        else if MainRepository.self == C.self  { unloadCategoryList() }
-        else if MainRepository.self == P.self  { unloadPayeeList() }
-        else if MainRepository.self == T.self  { unloadTransactionList() }
-        else if MainRepository.self == Q.self  { unloadScheduledList() }
-        else if MainRepository.self == G.self  { unloadTagList() }
-        else if MainRepository.self == F.self  { unloadFieldList() }
-        else if MainRepository.self == D.self  { unloadAttachmentList() }
-        else if MainRepository.self == BP.self { unloadBudgetPeriodList() }
-        else if MainRepository.self == B.self  { unloadBudgetList() }
-        else if MainRepository.self == R.self  { unloadReportList() }
-    }
-
     func loadList(_ pref: Preference) async {
         await loadInfotableList(pref)
         await loadCurrencyList(pref)
@@ -122,21 +113,40 @@ extension ViewModel {
         await loadReportList(pref)
     }
 
+    func unloadList<ListType: ListProtocol>(_ listType: ListType.Type) {
+        typealias MainRepository = ListType.MainRepository
+        /**/ if MainRepository.self == I.self  { infotableList.unloadAll() }
+        else if MainRepository.self == U.self  { currencyList.unloadAll() }
+        else if MainRepository.self == A.self  { accountList.unloadAll() }
+        else if MainRepository.self == E.self  { assetList.unloadAll() }
+        else if MainRepository.self == S.self  { stockList.unloadAll() }
+        else if MainRepository.self == C.self  { categoryList.unloadAll() }
+        else if MainRepository.self == P.self  { payeeList.unloadAll() }
+        else if MainRepository.self == T.self  { transactionList.unloadAll() }
+        else if MainRepository.self == Q.self  { scheduledList.unloadAll() }
+        else if MainRepository.self == G.self  { tagList.unloadAll() }
+        else if MainRepository.self == F.self  { fieldList.unloadAll() }
+        else if MainRepository.self == D.self  { attachmentList.unloadAll() }
+        else if MainRepository.self == BP.self { budgetPeriodList.unloadAll() }
+        else if MainRepository.self == B.self  { budgetList.unloadAll() }
+        else if MainRepository.self == R.self  { reportList.unloadAll() }
+    }
+
     func unloadList() {
-        unloadInfotableList()
-        unloadCurrencyList()
-        unloadAccountList()
-        unloadAssetList()
-        unloadStockList()
-        unloadCategoryList()
-        unloadPayeeList()
-        unloadTransactionList()
-        unloadScheduledList()
-        unloadTagList()
-        unloadFieldList()
-        unloadAttachmentList()
-        unloadBudgetPeriodList()
-        unloadBudgetList()
-        unloadReportList()
+        infotableList.unloadAll()
+        currencyList.unloadAll()
+        accountList.unloadAll()
+        assetList.unloadAll()
+        stockList.unloadAll()
+        categoryList.unloadAll()
+        payeeList.unloadAll()
+        transactionList.unloadAll()
+        scheduledList.unloadAll()
+        tagList.unloadAll()
+        fieldList.unloadAll()
+        attachmentList.unloadAll()
+        budgetPeriodList.unloadAll()
+        budgetList.unloadAll()
+        reportList.unloadAll()
     }
 }

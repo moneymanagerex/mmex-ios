@@ -37,6 +37,20 @@ struct CategoryList: ListProtocol {
     var evalUsed : LoadCategoryUsed = .init()
 }
 
+extension CategoryList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        evalPath.unload()
+        evalTree.unload()
+        evalUsed.unload()
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadCategoryList(_ pref: Preference) async {
         guard categoryList.reloading() else { return }
@@ -59,18 +73,6 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         } }
         categoryList.loaded(ok: ok)
-    }
-
-    func unloadCategoryList() {
-        guard categoryList.reloading() else { return }
-        categoryList.evalPath.unload()
-        categoryList.evalTree.unload()
-        categoryList.evalUsed.unload()
-        categoryList.count.unload()
-        categoryList.data.unload()
-        categoryList.used.unload()
-        categoryList.order.unload()
-        categoryList.unloaded()
     }
 }
 

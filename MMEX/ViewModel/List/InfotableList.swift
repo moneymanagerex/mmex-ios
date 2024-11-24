@@ -54,6 +54,19 @@ struct InfotableList: ListProtocol {
      */
 }
 
+extension InfotableList {
+    mutating func unloadAll() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        baseCurrencyId.unload()
+        defaultAccountId.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadInfotableList(_ pref: Preference) async {
         guard infotableList.reloading() else { return }
@@ -68,16 +81,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         infotableList.loaded(ok: ok)
-    }
-
-    func unloadInfotableList() {
-        guard infotableList.reloading() else { return }
-        infotableList.count.unload()
-        infotableList.data.unload()
-        infotableList.used.unload()
-        infotableList.order.unload()
-        infotableList.baseCurrencyId.unload()
-        infotableList.defaultAccountId.unload()
-        infotableList.unloaded()
     }
 }

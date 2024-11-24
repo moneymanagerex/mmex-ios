@@ -34,7 +34,7 @@ extension ViewModel {
         }
         if currencyChanged {
             unloadCurrencyGroup()
-            currencyList.unload()
+            currencyList.unloadNone()
         }
         
         if infotableList.baseCurrencyId.state.unloading() {
@@ -65,7 +65,7 @@ extension ViewModel {
         }
         if accountChanged {
             unloadAccountGroup()
-            accountList.unload()
+            accountList.unloadNone()
         }
 
         if infotableList.defaultAccountId.state.unloading() {

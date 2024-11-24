@@ -21,6 +21,17 @@ struct FieldList: ListProtocol {
     ])
 }
 
+extension FieldList {
+    mutating func unload() {
+        guard reloading() else { return }
+        count.unload()
+        data.unload()
+        used.unload()
+        order.unload()
+        unloaded()
+    }
+}
+
 extension ViewModel {
     func loadFieldList(_ pref: Preference) async {
         guard fieldList.reloading() else { return }
@@ -33,14 +44,5 @@ extension ViewModel {
             return await taskGroupOk(taskGroup, ok)
         }
         fieldList.loaded(ok: ok)
-    }
-
-    func unloadFieldList() {
-        guard fieldList.reloading() else { return }
-        fieldList.count.unload()
-        fieldList.data.unload()
-        fieldList.used.unload()
-        fieldList.order.unload()
-        fieldList.unloaded()
     }
 }

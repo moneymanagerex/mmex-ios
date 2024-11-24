@@ -154,7 +154,7 @@ struct CategoryListView: View {
             if deleteData || newData != nil { return }
             log.debug("DEBUG: CategoryListView.refreshable()")
             vm.unloadCategoryGroup()
-            vm.unloadCategoryList()
+            vm.unloadList(CategoryList.self)
             await load()
         }
 

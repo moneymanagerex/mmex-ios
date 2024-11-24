@@ -21,7 +21,7 @@ extension ViewModel {
         )
 
         unloadStockGroup()
-        stockList.unload()
+        stockList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             stockList.count.unload()

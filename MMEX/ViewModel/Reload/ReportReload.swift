@@ -19,7 +19,7 @@ extension ViewModel {
         )
 
         unloadReportGroup()
-        reportList.unload()
+        reportList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
             reportList.count.unload()
