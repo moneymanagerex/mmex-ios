@@ -57,7 +57,10 @@ struct JournalView: View {
                         }
                         .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
                         .onChange(of: accountId) {
-                            vm.loadTransactions(for: accountId)
+                            Task {
+                                let data = await vm.loadTransactions(db: vm.db, for: accountId)
+                                vm.groupTransactions(data)
+                            }
                         }
                     }
                 }
@@ -73,7 +76,10 @@ struct JournalView: View {
             if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                 accountId = defaultAccountId
             }
-            vm.loadTransactions(for: accountId)
+            Task {
+                let data = await vm.loadTransactions(db: vm.db, for: accountId)
+                vm.groupTransactions(data)
+            }
         }
     }
 

@@ -32,8 +32,8 @@ extension ViewModel {
         guard transactionList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(pref, &taskGroup, keyPath: \Self.transactionList.data),
-                load(pref, &taskGroup, keyPath: \Self.transactionList.used),
+                //load(pref, &taskGroup, keyPath: \Self.transactionList.data),
+                //load(pref, &taskGroup, keyPath: \Self.transactionList.used),
                 // auxiliary
                 load(pref, &taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
                 load(pref, &taskGroup, keyPath: \Self.infotableList.defaultAccountId),

@@ -129,8 +129,10 @@ struct ContentView: View {
     // Transaction tab
     private func journalTab() -> some View {
         NavigationView {
-            JournalView()
-                .navigationBarTitle("Latest Transactions", displayMode: .inline)
+            if selectedTab == 0 {
+                JournalView()
+                    .navigationBarTitle("Latest Transactions", displayMode: .inline)
+            }
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "list.bullet", text: "Journal")
@@ -141,8 +143,10 @@ struct ContentView: View {
     // Insights tab
     private func insightsTab() -> some View {
         NavigationView {
-            InsightsView()
-                .navigationBarTitle("Insights", displayMode: .inline)
+            if selectedTab == 1 {
+                InsightsView()
+                    .navigationBarTitle("Insights", displayMode: .inline)
+            }
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "arrow.up.right", text: "Insights")
@@ -154,7 +158,7 @@ struct ContentView: View {
     private func enterTab() -> some View {
         NavigationView {
             EnterView(selectedTab: $selectedTab)
-                // .navigationBarTitle("Enter Transaction", displayMode: .inline)
+            // .navigationBarTitle("Enter Transaction", displayMode: .inline)
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "plus.circle", text: "Enter")
@@ -165,12 +169,14 @@ struct ContentView: View {
     // Management tab
     private func managementTab() -> some View {
         NavigationView {
-            ManageView(
-                isDocumentPickerPresented: $isDocumentPickerPresented,
-                isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
-                isSampleDocument: $isSampleDocument
-            )
-            .navigationBarTitle("Manage", displayMode: .inline)
+            if selectedTab == 3 {
+                ManageView(
+                    isDocumentPickerPresented: $isDocumentPickerPresented,
+                    isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                    isSampleDocument: $isSampleDocument
+                )
+                .navigationBarTitle("Manage", displayMode: .inline)
+            }
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "folder", text: "Manage")
@@ -181,8 +187,10 @@ struct ContentView: View {
     // Settings tab
     private func settingsTab() -> some View {
         NavigationView {
-            SettingsView()
-                .navigationBarTitle("Settings", displayMode: .inline)
+            if selectedTab == 4 {
+                SettingsView()
+                    .navigationBarTitle("Settings", displayMode: .inline)
+            }
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "gearshape", text: "Settings")
