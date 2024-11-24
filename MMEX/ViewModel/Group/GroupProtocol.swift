@@ -17,6 +17,7 @@ extension GroupChoiceProtocol {
     var fullName: String { self.rawValue }
 }
 
+@MainActor
 protocol GroupProtocol: LoadProtocol {
     associatedtype MainRepository: RepositoryProtocol
     associatedtype GroupChoice: GroupChoiceProtocol
@@ -70,33 +71,33 @@ extension ViewModel {
 
     func unloadGroup<GroupType: GroupProtocol>(_ groupType: GroupType.Type) {
         typealias MainRepository = GroupType.MainRepository
-        /**/ if MainRepository.self == U.self  { unloadCurrencyGroup() }
-        else if MainRepository.self == A.self  { unloadAccountGroup() }
-        else if MainRepository.self == E.self  { unloadAssetGroup() }
-        else if MainRepository.self == S.self  { unloadStockGroup() }
-        else if MainRepository.self == C.self  { unloadCategoryGroup() }
-        else if MainRepository.self == P.self  { unloadPayeeGroup() }
-        else if MainRepository.self == G.self  { unloadTagGroup() }
-        else if MainRepository.self == F.self  { unloadFieldGroup() }
-        else if MainRepository.self == D.self  { unloadAttachmentGroup() }
-        else if MainRepository.self == BP.self { unloadBudgetPeriodGroup() }
-        else if MainRepository.self == B.self  { unloadBudgetGroup() }
-        else if MainRepository.self == R.self  { unloadReportGroup() }
+        /**/ if MainRepository.self == U.self  { currencyGroup.unload() }
+        else if MainRepository.self == A.self  { accountGroup.unload() }
+        else if MainRepository.self == E.self  { assetGroup.unload() }
+        else if MainRepository.self == S.self  { stockGroup.unload() }
+        else if MainRepository.self == C.self  { categoryGroup.unload() }
+        else if MainRepository.self == P.self  { payeeGroup.unload() }
+        else if MainRepository.self == G.self  { tagGroup.unload() }
+        else if MainRepository.self == F.self  { fieldGroup.unload() }
+        else if MainRepository.self == D.self  { attachmentGroup.unload() }
+        else if MainRepository.self == BP.self { budgetPeriodGroup.unload() }
+        else if MainRepository.self == B.self  { budgetGroup.unload() }
+        else if MainRepository.self == R.self  { reportGroup.unload() }
     }
 
     func unloadGroup() {
-        unloadCurrencyGroup()
-        unloadAccountGroup()
-        unloadAssetGroup()
-        unloadStockGroup()
-        unloadCategoryGroup()
-        unloadPayeeGroup()
-        unloadTagGroup()
-        unloadFieldGroup()
-        unloadAttachmentGroup()
-        unloadBudgetPeriodGroup()
-        unloadBudgetGroup()
-        unloadReportGroup()
+        currencyGroup.unload()
+        accountGroup.unload()
+        assetGroup.unload()
+        stockGroup.unload()
+        categoryGroup.unload()
+        payeeGroup.unload()
+        tagGroup.unload()
+        fieldGroup.unload()
+        attachmentGroup.unload()
+        budgetPeriodGroup.unload()
+        budgetGroup.unload()
+        reportGroup.unload()
     }
 
     func unloadAll() {

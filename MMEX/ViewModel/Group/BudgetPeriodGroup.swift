@@ -62,8 +62,4 @@ extension ViewModel {
         budgetPeriodGroup.state.loaded()
         log.info("INFO: ViewModel.loadBudgetPeriodGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadBudgetPeriodGroup() {
-        budgetPeriodGroup.unload()
-    }
 }

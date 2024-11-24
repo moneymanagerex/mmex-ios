@@ -73,8 +73,4 @@ extension ViewModel {
         currencyGroup.state.loaded()
         log.info("INFO: ViewModel.loadCurrencyGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadCurrencyGroup() {
-        currencyGroup.unload()
-    }
 }

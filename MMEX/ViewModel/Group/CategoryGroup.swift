@@ -147,10 +147,6 @@ extension ViewModel {
         categoryGroup.state.loaded()
         log.info("INFO: ViewModel.loadCategoryGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadCategoryGroup() {
-        categoryGroup.unload()
-    }
 }
 
 extension ViewModel {

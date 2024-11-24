@@ -73,8 +73,4 @@ extension ViewModel {
         reportGroup.state.loaded()
         log.info("INFO: ViewModel.loadReportGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadReportGroup() {
-        reportGroup.unload()
-    }
 }

@@ -85,8 +85,4 @@ extension ViewModel {
         fieldGroup.state.loaded()
         log.info("INFO: ViewModel.loadFieldGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadFieldGroup() {
-        fieldGroup.unload()
-    }
 }

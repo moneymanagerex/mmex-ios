@@ -15,7 +15,7 @@ extension ViewModel {
         // save isExpanded
         let groupIsExpanded: [Bool]? = budgetPeriodGroup.readyValue?.map { $0.isExpanded }
 
-        unloadBudgetPeriodGroup()
+        budgetPeriodGroup.unload()
         budgetPeriodList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
@@ -53,7 +53,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadBudgetPeriodUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if budgetPeriodGroup.choice == .used {
-                unloadBudgetPeriodGroup()
+                budgetPeriodGroup.unload()
             }
             budgetPeriodList.used.unload()
         } else if
@@ -61,7 +61,7 @@ extension ViewModel {
             let newId, !budgetPeriodUsed.contains(newId)
         {
             if budgetPeriodGroup.choice == .used {
-                unloadBudgetPeriodGroup()
+                budgetPeriodGroup.unload()
             }
             if budgetPeriodList.used.state.unloading() {
                 budgetPeriodList.used.value.insert(newId)

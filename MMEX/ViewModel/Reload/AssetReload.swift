@@ -20,7 +20,7 @@ extension ViewModel {
             uniqueKeysWithValues: assetGroup.groupCurrency.enumerated().map { ($0.1, $0.0) }
         )
 
-        unloadAssetGroup()
+        assetGroup.unload()
         assetList.unloadNone()
 
         if (oldData != nil) != (newData != nil) {
@@ -72,7 +72,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadAssetUsed(main=\(Thread.isMainThread), \(oldId?.value ?? 0), \(newId?.value ?? 0))")
         if let oldId, newId != oldId {
             if assetGroup.choice == .used {
-                unloadAssetGroup()
+                assetGroup.unload()
             }
             assetList.used.unload()
         } else if
@@ -80,7 +80,7 @@ extension ViewModel {
             let newId, !assetUsed.contains(newId)
         {
             if assetGroup.choice == .used {
-                unloadAssetGroup()
+                assetGroup.unload()
             }
             if assetList.used.state.unloading() {
                 assetList.used.value.insert(newId)
@@ -92,7 +92,7 @@ extension ViewModel {
     func reloadAssetAtt(_ pref: Preference) {
         log.trace("DEBUG: ViewModel.reloadAssetAtt(main=\(Thread.isMainThread))")
         if assetGroup.choice == .attachment {
-            unloadAssetGroup()
+            assetGroup.unload()
         }
         assetList.att.unload()
     }

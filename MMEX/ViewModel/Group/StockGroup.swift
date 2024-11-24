@@ -90,8 +90,4 @@ extension ViewModel {
         stockGroup.state.loaded()
         log.info("INFO: ViewModel.loadStockGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
     }
-
-    func unloadStockGroup() {
-        stockGroup.unload()
-    }
 }
