@@ -12,6 +12,11 @@ extension ViewModel {
     func reloadCurrency(_ pref: Preference, _ oldData: CurrencyData?, _ newData: CurrencyData?) async {
         log.trace("DEBUG: ViewModel.reloadCurrency(main=\(Thread.isMainThread))")
 
+        if oldData?.name != newData?.name {
+            if accountGroup.choice == .currency { accountGroup.unload() }
+            if assetGroup.choice == .currency { assetGroup.unload() }
+        }
+        
         // vm.currencyList.info contains only used currencies
         if let _ = oldData, let newData {
             if currencyList.info.readyValue?[newData.id] != nil {

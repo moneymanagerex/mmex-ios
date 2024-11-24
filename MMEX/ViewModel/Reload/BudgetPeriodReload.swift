@@ -12,6 +12,10 @@ extension ViewModel {
     func reloadBudgetPeriod(_ pref: Preference, _ oldData: BudgetPeriodData?, _ newData: BudgetPeriodData?) async {
         log.trace("DEBUG: ViewModel.reloadBudgetPeriod(main=\(Thread.isMainThread))")
 
+        if oldData?.name != newData?.name {
+            if budgetGroup.choice == .period { budgetGroup.unload() }
+        }
+
         // save isExpanded
         let groupIsExpanded: [Bool]? = budgetPeriodGroup.readyValue?.map { $0.isExpanded }
 

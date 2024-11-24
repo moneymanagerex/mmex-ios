@@ -13,6 +13,10 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.reloadAccount(main=\(Thread.isMainThread))")
         
         reloadCurrencyUsed(pref, oldData?.currencyId, newData?.currencyId)
+
+        if oldData?.name != newData?.name {
+            if stockGroup.choice == .account { stockGroup.unload() }
+        }
         
         // save isExpanded
         let groupIsExpanded: [Bool]? = accountGroup.readyValue?.map { $0.isExpanded }
