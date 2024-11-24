@@ -8,39 +8,43 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateField(_ data: inout FieldData) -> String? {
-        guard let f = F(self) else {
+extension FieldData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        typealias F = ViewModel.F
+        guard let f = F(vm) else {
             return "* Database is not available"
         }
 
-        if data.id.isVoid {
-            guard f.insert(&data) else {
+        if id.isVoid {
+            guard f.insert(&self) else {
                 return "* Cannot create new field"
             }
         } else {
-            guard f.update(data) else {
-                return "* Cannot update field #\(data.id.value)"
+            guard f.update(self) else {
+                return "* Cannot update field #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteField(_ data: FieldData) -> String? {
-        guard let fieldUsed = fieldList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let fieldUsed = vm.fieldList.used.readyValue else {
             return "* fieldUsed is not loaded"
         }
-        if fieldUsed.contains(data.id) {
-            return "* Field #\(data.id.value) is used"
+        if fieldUsed.contains(id) {
+            return "* Field #\(id.value) is used"
         }
 
-        guard let f = F(self) else {
+        typealias F = ViewModel.F
+        guard let f = F(vm) else {
             return "* Database is not available"
         }
 
-        guard f.delete(data) else {
-            return "* Cannot delete field #\(data.id.value)"
+        guard f.delete(self) else {
+            return "* Cannot delete field #\(id.value)"
         }
 
         return nil

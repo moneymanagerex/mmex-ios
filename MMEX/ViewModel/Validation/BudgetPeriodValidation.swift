@@ -8,53 +8,57 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateBudgetPeriod(_ data: inout BudgetPeriodData) -> String? {
-        if data.name.isEmpty {
+extension BudgetPeriodData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if name.isEmpty {
             return "Name is empty"
         }
 
-        guard let bp = BP(self) else {
+        typealias BP = ViewModel.BP
+        guard let bp = BP(vm) else {
             return "* Database is not available"
         }
 
-        guard let dataName = bp.selectId(from: G.table.filter(
-            G.table[G.col_id] == Int64(data.id) ||
-            G.table[G.col_name] == data.name
+        guard let dataName = bp.selectId(from: BP.table.filter(
+            BP.table[BP.col_id] == Int64(id) ||
+            BP.table[BP.col_name] == name
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
-            return "Budget period \(data.name) already exists"
+        guard dataName.count == (id.isVoid ? 0 : 1) else {
+            return "Budget period \(name) already exists"
         }
 
-        if data.id.isVoid {
-            guard bp.insert(&data) else {
+        if id.isVoid {
+            guard bp.insert(&self) else {
                 return "* Cannot create new budget period"
             }
         } else {
-            guard bp.update(data) else {
-                return "* Cannot update budget period #\(data.id.value)"
+            guard bp.update(self) else {
+                return "* Cannot update budget period #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteBudgetPeriod(_ data: BudgetPeriodData) -> String? {
-        guard let budgetPeriodUsed = budgetPeriodList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let budgetPeriodUsed = vm.budgetPeriodList.used.readyValue else {
             return "* budgetPeriodUsed is not loaded"
         }
-        if budgetPeriodUsed.contains(data.id) {
-            return "* Budget period #\(data.id.value) is used"
+        if budgetPeriodUsed.contains(id) {
+            return "* Budget period #\(id.value) is used"
         }
 
-        guard let bp = BP(self) else {
+        typealias BP = ViewModel.BP
+        guard let bp = BP(vm) else {
             return "* Database is not available"
         }
 
-        guard bp.delete(data) else {
-            return "* Cannot delete budget period #\(data.id.value)"
+        guard bp.delete(self) else {
+            return "* Cannot delete budget period #\(id.value)"
         }
 
         return nil

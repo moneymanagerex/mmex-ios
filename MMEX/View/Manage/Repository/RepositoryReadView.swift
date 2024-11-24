@@ -31,7 +31,7 @@ struct RepositoryReadView<
             formView($data, false)
             if vm.isUsed(data) == false {
                 Button("Delete \(MainData.dataName.0)") {
-                    if let deleteError = vm.delete(data) {
+                    if let deleteError = data.delete(vm) {
                         alertMessage = deleteError
                         alertIsPresented = true
                     } else {

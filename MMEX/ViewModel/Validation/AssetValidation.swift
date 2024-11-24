@@ -8,65 +8,70 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateAsset(_ data: inout AssetData) -> String? {
-        if data.name.isEmpty {
+extension AssetData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if name.isEmpty {
             return "Name is empty"
         }
 
-        guard !data.currencyId.isVoid else {
+        guard !currencyId.isVoid else {
             return "No currency is selected"
         }
-        guard let currencyName = currencyList.name.readyValue else {
+        guard let currencyName = vm.currencyList.name.readyValue else {
             return "* currencyName is not loaded"
         }
-        if currencyName[data.currencyId] == nil {
-            return "* Unknown currency #\(data.currencyId.value)"
+        if currencyName[currencyId] == nil {
+            return "* Unknown currency #\(currencyId.value)"
         }
 
-        guard let e = E(self) else {
+        typealias E = ViewModel.E
+        guard let e = E(vm) else {
             return "* Database is not available"
         }
 
         // DB schema does not enforce unique name.
         // E.g., two Assets may have the same name and different type.
 
-        if data.id.isVoid {
-            guard e.insert(&data) else {
+        if id.isVoid {
+            guard e.insert(&self) else {
                 return "* Cannot create new asset"
             }
         } else {
-            guard e.update(data) else {
-                return "* Cannot update asset #\(data.id.value)"
+            guard e.update(self) else {
+                return "* Cannot update asset #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteAsset(_ data: AssetData) -> String? {
-        guard let assetUsed = assetList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let assetUsed = vm.assetList.used.readyValue else {
             return "* assetUsed is not loaded"
         }
-        if assetUsed.contains(data.id) {
-            return "* Asset #\(data.id.value) is used"
+        if assetUsed.contains(id) {
+            return "* Asset #\(id.value) is used"
         }
 
-        guard let e = E(self), let d = D(self) else {
+        typealias E = ViewModel.E
+        typealias D = ViewModel.D
+        guard let e = E(vm), let d = D(vm) else {
             return "* Database is not available"
         }
 
-        guard let assetAtt = assetList.att.readyValue else {
+        guard let assetAtt = vm.assetList.att.readyValue else {
             return "* assetAtt is not loaded"
         }
-        if assetAtt[data.id] != nil {
-            guard d.delete(refType: .asset, refId: data.id) else {
-                return "* Cannot delete attachments for asset #\(data.id.value)"
+        if assetAtt[id] != nil {
+            guard d.delete(refType: .asset, refId: id) else {
+                return "* Cannot delete attachments for asset #\(id.value)"
             }
         }
 
-        guard e.delete(data) else {
-            return "* Cannot delete asset #\(data.id.value)"
+        guard e.delete(self) else {
+            return "* Cannot delete asset #\(id.value)"
         }
 
         return nil

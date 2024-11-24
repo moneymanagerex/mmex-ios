@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct StockData: ExportableEntity {
+struct StockData: DataProtocol {
     var id            : DataId     = .void
     var accountId     : DataId     = .void
     var name          : String     = ""
@@ -22,7 +22,7 @@ struct StockData: ExportableEntity {
     var notes         : String     = ""
 }
 
-extension StockData: DataProtocol {
+extension StockData {
     static let dataName = ("Stock", "Stocks")
 
     func shortDesc() -> String {

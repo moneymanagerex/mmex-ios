@@ -8,71 +8,76 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateStock(_ data: inout StockData) -> String? {
-        if data.name.isEmpty {
+extension StockData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if name.isEmpty {
             return "Name is empty"
         }
-        if data.symbol.isEmpty {
+        if symbol.isEmpty {
             return "Symbol is empty"
         }
 
-        guard !data.accountId.isVoid else {
+        guard !accountId.isVoid else {
             return "No account is selected"
         }
-        guard let accountData = accountList.data.readyValue else {
+        guard let accountData = vm.accountList.data.readyValue else {
             return "* accountData is not loaded"
         }
-        if accountData[data.accountId] == nil {
-            return "* Unknown account #\(data.accountId.value)"
+        if accountData[accountId] == nil {
+            return "* Unknown account #\(accountId.value)"
         }
 
-        guard let s = S(self) else {
+        typealias S = ViewModel.S
+        guard let s = S(vm) else {
             return "* Database is not available"
         }
 
         // DB schema does not enforce unique name or symbol.
         // E.g., the same stock may have been purchased more than once.
 
-        if data.id.isVoid {
-            guard s.insert(&data) else {
+        if id.isVoid {
+            guard s.insert(&self) else {
                 return "* Cannot create new stock"
             }
         } else {
-            guard s.update(data) else {
-                return "* Cannot update stock #\(data.id.value)"
+            guard s.update(self) else {
+                return "* Cannot update stock #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteStock(_ data: StockData) -> String? {
-        guard let stockUsed = stockList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let stockUsed = vm.stockList.used.readyValue else {
             return "* stockUsed is not loaded"
         }
-        if stockUsed.contains(data.id) {
-            return "* Stock #\(data.id.value) is used"
+        if stockUsed.contains(id) {
+            return "* Stock #\(id.value) is used"
         }
 
-        guard let s = S(self), let d = D(self) else {
+        typealias S = ViewModel.S
+        typealias D = ViewModel.D
+        guard let s = S(vm), let d = D(vm) else {
             return "* Database is not available"
         }
 
         // Do not cleanup SH (Stock History), even if this is the last item for a symbol.
         // Offer a different interface to manipulate Stock History.
 
-        guard let stockAtt = stockList.att.readyValue else {
+        guard let stockAtt = vm.stockList.att.readyValue else {
             return "* stockAtt is not loaded"
         }
-        if stockAtt[data.id] != nil {
-            guard d.delete(refType: .stock, refId: data.id) else {
-                return "* Cannot delete attachments for stock #\(data.id.value)"
+        if stockAtt[id] != nil {
+            guard d.delete(refType: .stock, refId: id) else {
+                return "* Cannot delete attachments for stock #\(id.value)"
             }
         }
 
-        guard s.delete(data) else {
-            return "* Cannot delete stock #\(data.id.value)"
+        guard s.delete(self) else {
+            return "* Cannot delete stock #\(id.value)"
         }
 
         return nil

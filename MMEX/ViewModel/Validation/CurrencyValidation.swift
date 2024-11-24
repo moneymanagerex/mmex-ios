@@ -8,67 +8,72 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateCurrency(_ data: inout CurrencyData) -> String? {
-        if data.name.isEmpty {
+extension CurrencyData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if name.isEmpty {
             return "Name is empty"
         }
-        if data.symbol.isEmpty {
+        if symbol.isEmpty {
             return "Symbol is empty"
         }
 
-        guard let u = U(self) else {
+        typealias U = ViewModel.U
+        guard let u = U(vm) else {
             return "* Database is not available"
         }
 
         guard let dataName = u.selectId(from: U.table.filter(
-            U.table[U.col_id] == Int64(data.id) ||
-            U.table[U.col_name] == data.name ||
-            U.table[U.col_symbol] == data.symbol
+            U.table[U.col_id] == Int64(id) ||
+            U.table[U.col_name] == name ||
+            U.table[U.col_symbol] == symbol
         ) ) else {
             return "* Cannot fetch from database"
         }
-        guard dataName.count == (data.id.isVoid ? 0 : 1) else {
-            return "Currency \(data.name) already exists"
+        guard dataName.count == (id.isVoid ? 0 : 1) else {
+            return "Currency \(name) already exists"
         }
 
-        if data.id.isVoid {
-            guard u.insert(&data) else {
+        if id.isVoid {
+            guard u.insert(&self) else {
                 return "* Cannot create new currency"
             }
         } else {
-            guard u.update(data) else {
-                return "* Cannot update currency #\(data.id.value)"
+            guard u.update(self) else {
+                return "* Cannot update currency #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteCurrency(_ data: CurrencyData) -> String? {
-        guard let currencyUsed = currencyList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let currencyUsed = vm.currencyList.used.readyValue else {
             return "* currencyUsed is not loaded"
         }
-        if currencyUsed.contains(data.id) {
-            return "* Currency #\(data.id.value) is used"
+        if currencyUsed.contains(id) {
+            return "* Currency #\(id.value) is used"
         }
         // TODO: check base currency
 
-        guard let u = U(self), let uh = UH(self) else {
+        typealias U  = ViewModel.U
+        typealias UH = ViewModel.UH
+        guard let u = U(vm), let uh = UH(vm) else {
             return "* Database is not available"
         }
 
-        guard let currencyHistory = currencyList.history.readyValue else {
+        guard let currencyHistory = vm.currencyList.history.readyValue else {
             return "* currencyHistory is not loaded"
         }
-        if currencyHistory[data.id] != nil {
-            guard uh.delete(currencyId: data.id) else {
-                return "* Cannot delete history for currency #\(data.id.value)"
+        if currencyHistory[id] != nil {
+            guard uh.delete(currencyId: id) else {
+                return "* Cannot delete history for currency #\(id.value)"
             }
         }
 
-        guard u.delete(data) else {
-            return "* Cannot delete currency #\(data.id.value)"
+        guard u.delete(self) else {
+            return "* Cannot delete currency #\(id.value)"
         }
 
         return nil

@@ -60,7 +60,10 @@ protocol DataProtocol: ExportableEntity {
 
     var id: DataId { get set }
     func shortDesc() -> String
+
     mutating func copy()
+    @MainActor mutating func update(_ vm: ViewModel) -> String?
+    @MainActor func delete(_ vm: ViewModel) -> String?
 }
 
 extension DataProtocol {

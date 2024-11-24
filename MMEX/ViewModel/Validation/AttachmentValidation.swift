@@ -8,46 +8,50 @@
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    func updateAttachment(_ data: inout AttachmentData) -> String? {
-        if data.filename.isEmpty {
+extension AttachmentData {
+    @MainActor
+    mutating func update(_ vm: ViewModel) -> String? {
+        if filename.isEmpty {
             return "Filename is empty"
         }
 
-        // data.description may be empty
-        // assumption: data.refType, data.refId are valid by construction
+        // description may be empty
+        // assumption: refType, refId are valid by construction
 
-        guard let d = D(self) else {
+        typealias D = ViewModel.D
+        guard let d = D(vm) else {
             return "* Database is not available"
         }
 
-        if data.id.isVoid {
-            guard d.insert(&data) else {
+        if id.isVoid {
+            guard d.insert(&self) else {
                 return "* Cannot create new attachment"
             }
         } else {
-            guard d.update(data) else {
-                return "* Cannot update attachment #\(data.id.value)"
+            guard d.update(self) else {
+                return "* Cannot update attachment #\(id.value)"
             }
         }
 
         return nil
     }
 
-    func deleteAttachment(_ data: AttachmentData) -> String? {
-        guard let attachmentUsed = attachmentList.used.readyValue else {
+    @MainActor
+    func delete(_ vm: ViewModel) -> String? {
+        guard let attachmentUsed = vm.attachmentList.used.readyValue else {
             return "* attachmentUsed is not loaded"
         }
-        if attachmentUsed.contains(data.id) {
-            return "* Attachment #\(data.id.value) is used"
+        if attachmentUsed.contains(id) {
+            return "* Attachment #\(id.value) is used"
         }
 
-        guard let d = D(self) else {
+        typealias D = ViewModel.D
+        guard let d = D(vm) else {
             return "* Database is not available"
         }
 
-        guard d.delete(data) else {
-            return "* Cannot delete attachment #\(data.id.value)"
+        guard d.delete(self) else {
+            return "* Cannot delete attachment #\(id.value)"
         }
 
         return nil
