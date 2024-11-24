@@ -1,5 +1,5 @@
 //
-//  Database.swift
+//  MMEXDatabase.swift
 //  MMEX
 //
 //  2024-09-08: Created by Lisheng Guan
@@ -10,6 +10,7 @@ import SQLite
 
 extension ViewModel {
     func openDatabase(at url: URL?, isNew: Bool = false) {
+        unloadAll()
         db = nil
         if let url {
             if url.startAccessingSecurityScopedResource() {
@@ -107,16 +108,17 @@ extension ViewModel {
             }
         }
         // Nullify the connection and reset the state
+        unloadAll()
         isDatabaseConnected = false
         db = nil
         databaseURL = nil
         log.info("Database connection closed.")
     }
 
-    /// basic stats
     func getDatabaseFileName() -> String? {
         return self.databaseURL?.lastPathComponent
     }
+
     func getDatabaseUserVersion() -> Int32? {
         return self.db?.userVersion
     }

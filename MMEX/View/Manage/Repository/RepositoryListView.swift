@@ -98,23 +98,13 @@ where GroupType.MainRepository == ListType.MainRepository,
             .listRowBackground(Color.clear)
             //.border(.red)
 
-            switch vmGroup.state {
+            switch LoadState.merge(vmList.state, vmGroup.state) {
             case .ready:
                 ForEach(0 ..< vmGroup.value.count, id: \.self) { g in
                     if vmGroup.value[g].isVisible {
                         groupView(g)
                     }
                 }
-            case .loading:
-                HStack {
-                    Text("Loading data ...")
-                    ProgressView()
-                }
-            case .error:
-                HStack {
-                    Text("Load error ...")
-                    ProgressView()
-                }.tint(.red)
             case .idle:
                 Button(action: { Task {
                     await load()
@@ -127,6 +117,16 @@ where GroupType.MainRepository == ListType.MainRepository,
                 .padding()
                 //.background(.secondary)
                 .foregroundColor(.secondary)
+            case .loading:
+                HStack {
+                    Text("Loading data ... ")
+                    ProgressView()
+                }
+            case .error:
+                HStack {
+                    Text("Load error ... ").foregroundColor(.red)
+                    ProgressView().tint(.red)
+                }
             }
         }
         //.listStyle(.plain)
