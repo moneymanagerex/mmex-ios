@@ -14,7 +14,7 @@ enum CHECKING_TYPE: DataId {
     case AS_TRANSFER
 }
 
-struct TransactionLinkData: ExportableEntity {
+struct TransactionLinkData: DataProtocol {
     var id      : DataId  = .void
     var transId : DataId  = .void
     var refType : RefType = .asset
@@ -22,11 +22,15 @@ struct TransactionLinkData: ExportableEntity {
     static let refTypes: Set<RefType> = [ .asset, .stock ]
 }
 
-extension TransactionLinkData: DataProtocol {
+extension TransactionLinkData {
     static let dataName = ("Transaction Link", "Transaction Links")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 

@@ -60,6 +60,13 @@ protocol DataProtocol: ExportableEntity {
 
     var id: DataId { get set }
     func shortDesc() -> String
+    mutating func copy()
+}
+
+extension DataProtocol {
+    static func copy(of s: String) -> String {
+        return s + " (Copy)"
+    }
 }
 
 protocol EnumCollateNoCase: RawRepresentable, CaseIterable, Identifiable, Codable, LosslessStringConvertible

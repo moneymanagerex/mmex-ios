@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-struct ReportData: ExportableEntity {
+struct ReportData: DataProtocol {
     var id              : DataId = .void
     var name            : String = ""
     var groupName       : String = ""
@@ -17,13 +17,20 @@ struct ReportData: ExportableEntity {
     var luaContent      : String = ""
     var templateContent : String = ""
     var description     : String = ""
+
+    // unique(name)
 }
 
-extension ReportData: DataProtocol {
+extension ReportData {
     static let dataName = ("Report", "Reports")
 
     func shortDesc() -> String {
         "\(self.name)"
+    }
+
+    mutating func copy() {
+        id   = .void
+        name = Self.copy(of: name)
     }
 }
 

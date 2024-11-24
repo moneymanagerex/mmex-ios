@@ -49,7 +49,7 @@ enum BudgetFrequency: String, EnumCollateNoCase {
     }
 }
 
-struct BudgetData: ExportableEntity {
+struct BudgetData: DataProtocol {
     var id         : DataId          = .void
     var periodId   : DataId          = .void
     var categoryId : DataId          = .void
@@ -59,11 +59,15 @@ struct BudgetData: ExportableEntity {
     var active     : Bool            = false
 }
 
-extension BudgetData: DataProtocol {
+extension BudgetData {
     static let dataName = ("Budget", "Budgets")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 

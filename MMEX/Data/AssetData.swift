@@ -43,7 +43,7 @@ enum AssetChangeMode: String, EnumCollateNoCase {
     static let defaultValue = Self.percentage
 }
 
-struct AssetData: ExportableEntity {
+struct AssetData: DataProtocol {
     var id         : DataId           = .void
     var type       : AssetType        = .defaultValue
     var status     : AssetStatus      = .defaultValue
@@ -57,11 +57,16 @@ struct AssetData: ExportableEntity {
     var notes      : String           = ""
 }
 
-extension AssetData: DataProtocol {
+extension AssetData {
     static let dataName = ("Asset", "Assets")
 
     func shortDesc() -> String {
         "#\(self.id.value): \(self.name)"
+    }
+
+    mutating func copy() {
+        id   = .void
+        name = Self.copy(of: name)
     }
 }
 

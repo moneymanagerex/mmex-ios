@@ -14,6 +14,9 @@ struct FieldValueData: ExportableEntity {
     var refType : RefType = .transaction
     var refId   : DataId  = .void
     var content : String  = ""
+
+    // unique(fieldId, refId)
+
     static let refTypes: Set<RefType> = [ .transaction, .scheduled ]
 }
 
@@ -22,6 +25,10 @@ extension FieldValueData: DataProtocol {
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 

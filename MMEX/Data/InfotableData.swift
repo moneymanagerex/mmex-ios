@@ -20,17 +20,24 @@ enum InfoKey: String {
     var id: String { return rawValue }
 }
 
-struct InfotableData: ExportableEntity {
+struct InfotableData: DataProtocol {
     var id    : DataId = .void
     var name  : String = ""
     var value : String = ""
+
+    // unique(name)
 }
 
-extension InfotableData: DataProtocol {
+extension InfotableData {
     static let dataName = ("Infotable", "Infotable")
 
     func shortDesc() -> String {
         "\(self.name)"
+    }
+
+    mutating func copy() {
+        id   = .void
+        name = Self.copy(of: name)
     }
 }
 

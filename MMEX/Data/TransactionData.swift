@@ -55,7 +55,7 @@ enum TransactionStatus: String, EnumCollateNoCase {
     }
 }
 
-struct TransactionData: ExportableEntity {
+struct TransactionData: DataProtocol {
     var id                : DataId            = .void
     var accountId         : DataId            = .void
     var toAccountId       : DataId            = .void
@@ -76,11 +76,15 @@ struct TransactionData: ExportableEntity {
     var splits            : [TransactionSplitData] = []
 }
 
-extension TransactionData: DataProtocol {
+extension TransactionData {
     static let dataName = ("Transaction", "Transactions")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 

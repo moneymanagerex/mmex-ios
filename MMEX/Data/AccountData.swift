@@ -64,7 +64,7 @@ enum AccountType: String, EnumCollateNoCase {
     }
 }
 
-struct AccountData: ExportableEntity {
+struct AccountData: DataProtocol {
     var id              : DataId          = .void
     var name            : String          = ""
     var type            : AccountType     = .defaultValue
@@ -86,13 +86,20 @@ struct AccountData: ExportableEntity {
     var interestRate    : Double          = 0.0
     var paymentDueDate  : DateString      = DateString("")
     var minimumPayment  : Double          = 0.0
+    
+    // unique(name)
 }
 
-extension AccountData: DataProtocol {
+extension AccountData {
     static let dataName = ("Account", "Accounts")
 
     func shortDesc() -> String {
         "\(self.name)"
+    }
+
+    mutating func copy() {
+        id   = .void
+        name = Self.copy(of: name)
     }
 }
 

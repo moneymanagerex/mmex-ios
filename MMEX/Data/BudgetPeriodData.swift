@@ -8,16 +8,23 @@
 import Foundation
 import SQLite
 
-struct BudgetPeriodData: ExportableEntity {
+struct BudgetPeriodData: DataProtocol {
     var id   : DataId = .void
     var name : String = ""
+    
+    // unique(name)
 }
 
-extension BudgetPeriodData: DataProtocol {
+extension BudgetPeriodData {
     static let dataName = ("Budget Period", "Budget Periods")
 
     func shortDesc() -> String {
         "\(self.name)"
+    }
+
+    mutating func copy() {
+        id   = .void
+        name = Self.copy(of: name)
     }
 }
 

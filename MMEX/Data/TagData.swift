@@ -8,17 +8,24 @@
 import Foundation
 import SQLite
 
-struct TagData: ExportableEntity {
+struct TagData: DataProtocol {
     var id     : DataId = .void
     var name   : String = ""
     var active : Bool   = false
+    
+    // unique(name)
 }
 
-extension TagData: DataProtocol {
+extension TagData {
     static let dataName = ("Tag", "Tags")
 
     func shortDesc() -> String {
         "\(self.name)"
+    }
+
+    mutating func copy() {
+        id   = .void
+        name = Self.copy(of: name)
     }
 }
 

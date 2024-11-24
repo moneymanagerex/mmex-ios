@@ -66,7 +66,7 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
     var name: String { Self.names[self.rawValue] }
 }
 
-struct ScheduledData: ExportableEntity {
+struct ScheduledData: DataProtocol {
     var id                : DataId            = .void
     var accountId         : DataId            = .void
     var toAccountId       : DataId            = .void
@@ -87,11 +87,15 @@ struct ScheduledData: ExportableEntity {
     var color             : Int64             = 0
 }
 
-extension ScheduledData: DataProtocol {
+extension ScheduledData {
     static let dataName = ("Scheduled Transaction", "Scheduled Transactions")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
+    }
+
+    mutating func copy() {
+        id = .void
     }
 }
 
