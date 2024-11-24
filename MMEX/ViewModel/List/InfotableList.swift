@@ -24,7 +24,7 @@ struct LoadInfotableValue<MainValue: LosslessStringConvertible>: LoadFetchProtoc
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         await InfotableRepository(vm)?.getValue(for: key, default: idleValue)
     }
 }

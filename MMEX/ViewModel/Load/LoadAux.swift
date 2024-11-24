@@ -27,7 +27,7 @@ struct LoadAuxData<
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         await AuxRepository(vm)?.selectBy(property: mainId, from: self.auxTable)
     }
 }
@@ -83,7 +83,7 @@ struct LoadAuxValue<
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         await AuxRepository(vm)?.selectBy(property: mainId, from: self.auxTable, with: auxValue)
     }
 }

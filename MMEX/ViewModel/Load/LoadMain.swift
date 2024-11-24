@@ -22,8 +22,8 @@ struct LoadMainCount<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
-        await MainRepository(vm)?.count(from: self.table)
+    nonisolated func fetchValue(_ pref: Preference, _ db: Connection?) async -> ValueType? {
+        MainRepository(db)?.count(from: self.table)
     }
 }
 
@@ -45,7 +45,7 @@ struct LoadMainPluck<MainRepository: RepositoryProtocol, MainValue>: LoadFetchPr
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         await MainRepository(vm)?.pluck(key: key, from: self.table, with: rowValue).toOptional()
     }
 }
@@ -65,7 +65,7 @@ struct LoadMainData<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         await MainRepository(vm)?.selectById(from: self.table)
     }
 }
@@ -86,7 +86,7 @@ struct LoadMainValue<MainRepository: RepositoryProtocol, MainValue>: LoadFetchPr
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         await MainRepository(vm)?.selectById(from: self.table, with: rowValue)
     }
 }
@@ -108,7 +108,7 @@ struct LoadMainUsed<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.value = idleValue
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         await MainRepository(vm)?.select(from: self.table, with: MainRepository.fetchId).map(Set.init)
     }
 }
@@ -131,7 +131,7 @@ struct LoadMainOrder<MainRepository: RepositoryProtocol>: LoadFetchProtocol {
         self.init(table: MainRepository.table.order(order))
     }
 
-    nonisolated func fetchValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func fetchValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         await MainRepository(vm)?.selectId(from: self.table)
     }
 }

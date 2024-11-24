@@ -96,7 +96,7 @@ struct LoadCategoryPath: LoadEvalProtocol {
         self.value = idleValue
     }
 
-    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func evalValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         guard let data = await vm.categoryList.data.readyValue else { return nil }
         return vm.evalCategoryPath(data: data, sep: pref.theme.categoryDelimiter)
     }
@@ -113,7 +113,7 @@ struct LoadCategoryTree: LoadEvalProtocol {
         self.value = idleValue
     }
 
-    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func evalValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         guard
             let data  = await vm.categoryList.data.readyValue,
             let order = await vm.categoryList.order.readyValue
@@ -133,7 +133,7 @@ struct LoadCategoryUsed: LoadEvalProtocol {
         self.value = idleValue
     }
 
-    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func evalValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         guard
             let data = await vm.categoryList.data.readyValue,
             let used = await vm.categoryList.used.readyValue

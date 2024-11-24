@@ -19,7 +19,7 @@ extension ViewModel {
         }
         let loadName = self[keyPath: keyPath].loadName
         //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
-        let value = await self[keyPath: keyPath].fetchValue(pref: pref, vm: self)
+        let value = await self[keyPath: keyPath].fetchValue(pref, self.db)
         if let value {
             self[keyPath: keyPath].value = value
         }
@@ -42,7 +42,7 @@ extension ViewModel {
         }
         let loadName = self[keyPath: keyPath].loadName
         //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
-        let value = await self[keyPath: keyPath].evalValue(pref: pref, vm: self)
+        let value = await self[keyPath: keyPath].evalValue(pref, self)
         if let value {
             self[keyPath: keyPath].value = value
         }
@@ -67,7 +67,7 @@ extension ViewModel {
         let loadName = self[keyPath: keyPath].loadName
         //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
-            let value = await self[keyPath: keyPath].fetchValue(pref: pref, vm: self)
+            let value = await self[keyPath: keyPath].fetchValue(pref, self)
             let ok = value != nil
             await MainActor.run {
                 if let value {
@@ -96,7 +96,7 @@ extension ViewModel {
         let loadName = self[keyPath: keyPath].loadName
         //log.trace("DEBUG: ViewModel.load(\(loadName), main=\(Thread.isMainThread))")
         taskGroup.addTask(priority: .background) {
-            let value = await self[keyPath: keyPath].evalValue(pref: pref, vm: self)
+            let value = await self[keyPath: keyPath].evalValue(pref, self)
             let ok = value != nil
             await MainActor.run {
                 if let value {

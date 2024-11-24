@@ -80,7 +80,7 @@ struct LoadBudgetOrder: LoadEvalProtocol {
         self.value = idleValue
     }
 
-    nonisolated func evalValue(pref: Preference, vm: ViewModel) async -> ValueType? {
+    nonisolated func evalValue(_ pref: Preference, _ vm: ViewModel) async -> ValueType? {
         return await vm.evalBudgetOrder()
     }
 }
