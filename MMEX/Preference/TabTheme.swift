@@ -28,9 +28,7 @@ extension TabTheme {
     func iconText(icon: String, text: String) -> some View {
         VStack{
             Image(systemName: icon)
-            if self.layout == .iconText {
-                Text(text)
-            }
+            Text(self.layout == .iconText ? text : "")
         }
     }
 }

@@ -169,14 +169,12 @@ struct ContentView: View {
     // Management tab
     private func managementTab() -> some View {
         NavigationView {
-            if selectedTab == 3 {
-                ManageView(
-                    isDocumentPickerPresented: $isDocumentPickerPresented,
-                    isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
-                    isSampleDocument: $isSampleDocument
-                )
-                .navigationBarTitle("Manage", displayMode: .inline)
-            }
+            ManageView(
+                isDocumentPickerPresented: $isDocumentPickerPresented,
+                isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                isSampleDocument: $isSampleDocument
+            )
+            .navigationBarTitle("Manage", displayMode: .inline)
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "folder", text: "Manage")
@@ -187,10 +185,8 @@ struct ContentView: View {
     // Settings tab
     private func settingsTab() -> some View {
         NavigationView {
-            if selectedTab == 4 {
-                SettingsView()
-                    .navigationBarTitle("Settings", displayMode: .inline)
-            }
+            SettingsView()
+                .navigationBarTitle("Settings", displayMode: .inline)
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "gearshape", text: "Settings")
