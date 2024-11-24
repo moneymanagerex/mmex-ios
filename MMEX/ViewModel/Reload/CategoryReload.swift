@@ -11,7 +11,12 @@ import SQLite
 extension ViewModel {
     func reloadCategory(_ pref: Preference, _ oldData: CategoryData?, _ newData: CategoryData?) async {
         log.trace("DEBUG: ViewModel.reloadCategory(main=\(Thread.isMainThread))")
-        
+
+        if oldData?.name != newData?.name || oldData?.parentId != newData?.parentId {
+            if payeeGroup.choice == .category { payeeGroup.unload() }
+            if budgetGroup.choice == .category { budgetGroup.unload() }
+        }
+
         // TODO: save isExpanded
         
         categoryGroup.unload()
