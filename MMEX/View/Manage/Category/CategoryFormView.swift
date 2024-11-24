@@ -12,11 +12,11 @@ struct CategoryFormView: View {
     @EnvironmentObject var vm: ViewModel
     @Binding var data: CategoryData
     @State var edit: Bool
-    
+
     var categoryPath : [DataId: String]? { vm.categoryList.evalPath.readyValue }
-    var categoryTree : CategoryListTree?     { vm.categoryList.evalTree.readyValue }
-    var dataIndex: Int? { categoryTree?.indexById[data.id] }
-    
+    var categoryTree : CategoryListTree? { vm.categoryList.evalTree.readyValue }
+    var dataIndex    : Int?              { categoryTree?.indexById[data.id] }
+
     func isDescendant(_ i: Int) -> Bool? {
         guard let dataIndex else { return false }
         guard let categoryOrder = categoryTree?.order else { return nil }

@@ -13,12 +13,12 @@ struct RepositoryCreateView<
     FormView: View
 >: View {
     @EnvironmentObject var vm: ViewModel
-    var features: RepositoryFeatures
+    let features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
     @Binding var isPresented: Bool
     var dismiss: DismissAction?
-    @ViewBuilder var formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
+    @ViewBuilder let formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
 
     @State private var alertIsPresented = false
     @State private var alertMessage: String?

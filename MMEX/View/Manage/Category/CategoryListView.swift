@@ -258,6 +258,7 @@ struct CategoryListView: View {
                 destination: RepositoryReadView(
                     features: Self.features,
                     data: data,
+                    isUsed: vm.categoryList.isUsed(data.id),
                     newData: $newData,
                     deleteData: $deleteData,
                     formView: formView
@@ -314,7 +315,7 @@ struct CategoryListView: View {
             
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 if Self.features.canDelete { Button {
-                    guard vm.isUsed(data) == false else { return }
+                    guard vm.categoryList.isUsed(data.id) == false else { return }
                     if let deleteError = data.delete(vm) {
                         alertMessage = deleteError
                         alertIsPresented = true
@@ -325,8 +326,11 @@ struct CategoryListView: View {
                         }
                     }
                 } label: {
-                    Label("Delete", systemImage: vm.isUsed(data) == false ? "trash.fill" : "trash.slash.fill")
-                }.tint(vm.isUsed(data) == false ? .red : .gray) }
+                    Label(
+                        "Delete",
+                        systemImage: vm.categoryList.isUsed(data.id) == false ? "trash.fill" : "trash.slash.fill"
+                    )
+                }.tint(vm.categoryList.isUsed(data.id) == false ? .red : .gray) }
                 
                 if Self.features.canEdit { Button {
                     editDataId = data.id
