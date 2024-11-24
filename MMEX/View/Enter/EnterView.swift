@@ -9,9 +9,8 @@ import SwiftUI
 
 struct EnterView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
+    @EnvironmentObject var vm: ViewModel
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
     @Binding var selectedTab: Int
 
@@ -20,7 +19,6 @@ struct EnterView: View {
     var body: some View {
         NavigationStack {
             EnterFormView(
-                vm: vm,
                 txn: $newTxn
             )
         }
@@ -87,7 +85,7 @@ struct EnterView: View {
     }
 
     func loadLatestTxn(for accountId: DataId) {
-        let repository = TransactionRepository(env)
+        let repository = TransactionRepository(vm)
         if let latestTxn = repository?.latest(accountID: accountId).toOptional() ?? repository?.latest().toOptional() {
             // Update UI on the main thread
             DispatchQueue.main.async {
@@ -102,16 +100,14 @@ struct EnterView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
-    let viewModel = TransactionViewModel(env: env)
+    let vm = ViewModel.sampleData
+    let viewModel = TransactionViewModel(vm)
     NavigationView {
         EnterView(
-            vm: vm,
             viewModel: viewModel,
             selectedTab: .constant(0)
         )
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

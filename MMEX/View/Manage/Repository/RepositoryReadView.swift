@@ -13,8 +13,7 @@ struct RepositoryReadView<
     FormView: View
 >: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     var features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
@@ -78,7 +77,6 @@ struct RepositoryReadView<
 
         .sheet(isPresented: $editSheetIsPresented) {
             RepositoryEditView(
-                vm: vm,
                 features: features,
                 data: data,
                 newData: $newData,
@@ -90,7 +88,6 @@ struct RepositoryReadView<
 
         .sheet(isPresented: $copySheetIsPresented) {
             RepositoryCopyView(
-                vm: vm,
                 features: features,
                 data: data,
                 newData: $newData,
@@ -126,16 +123,13 @@ struct RepositoryReadView<
 
 #Preview(AccountData.sampleData[0].name) {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     let formView = { $data, edit in AccountFormView(
-        vm: vm,
         data: $data,
         edit: edit
     ) }
     NavigationView {
         RepositoryReadView(
-            vm: vm,
             features: RepositoryFeatures(),
             data: AccountData.sampleData[0],
             newData: .constant(nil),
@@ -146,5 +140,5 @@ struct RepositoryReadView<
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

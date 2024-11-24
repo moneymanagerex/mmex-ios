@@ -21,8 +21,7 @@ where GroupType.MainRepository == ListType.MainRepository,
     typealias GroupChoice = GroupType.GroupChoice
 
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     var features: RepositoryFeatures
     var vmList: ListType
     @State var groupChoice: GroupChoice
@@ -173,7 +172,6 @@ where GroupType.MainRepository == ListType.MainRepository,
 
         .sheet(isPresented: $createSheetIsPresented) {
             RepositoryCreateView(
-                vm: vm,
                 features: features,
                 data: initData,
                 newData: $newData,
@@ -194,7 +192,6 @@ where GroupType.MainRepository == ListType.MainRepository,
         .sheet(isPresented: $editSheetIsPresented) {
             let data = vmList.data.value[editDataId] ?? initData
             RepositoryEditView(
-                vm: vm,
                 features: features,
                 data: data,
                 newData: $newData,
@@ -215,7 +212,6 @@ where GroupType.MainRepository == ListType.MainRepository,
         .sheet(isPresented: $copySheetIsPresented) {
             let data = vmList.data.value[copyDataId] ?? initData
             RepositoryCopyView(
-                vm: vm,
                 features: features,
                 data: data,
                 newData: $newData,
@@ -305,7 +301,6 @@ where GroupType.MainRepository == ListType.MainRepository,
     func itemView(_ data: MainData) -> some View {
         NavigationLink(
             destination: RepositoryReadView(
-                vm: vm,
                 features: features,
                 data: data,
                 newData: $newData,
@@ -418,14 +413,12 @@ class RepositorySearchDebounce: ObservableObject {
 
 #Preview("Account") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView {
         AccountListView(
-            vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

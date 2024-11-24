@@ -12,21 +12,21 @@ extension ViewModel {
         guard manageList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.infotableList.count),
-                load(&taskGroup, keyPath: \Self.currencyList.count),
-                load(&taskGroup, keyPath: \Self.accountList.count),
-                load(&taskGroup, keyPath: \Self.assetList.count),
-                load(&taskGroup, keyPath: \Self.stockList.count),
-                load(&taskGroup, keyPath: \Self.categoryList.count),
-                load(&taskGroup, keyPath: \Self.payeeList.count),
-                load(&taskGroup, keyPath: \Self.transactionList.count),
-                load(&taskGroup, keyPath: \Self.scheduledList.count),
-                load(&taskGroup, keyPath: \Self.tagList.count),
-                load(&taskGroup, keyPath: \Self.fieldList.count),
-                load(&taskGroup, keyPath: \Self.attachmentList.count),
-                load(&taskGroup, keyPath: \Self.budgetPeriodList.count),
-                load(&taskGroup, keyPath: \Self.budgetList.count),
-                load(&taskGroup, keyPath: \Self.reportList.count),
+                load(pref, &taskGroup, keyPath: \Self.infotableList.count),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.count),
+                load(pref, &taskGroup, keyPath: \Self.accountList.count),
+                load(pref, &taskGroup, keyPath: \Self.assetList.count),
+                load(pref, &taskGroup, keyPath: \Self.stockList.count),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.count),
+                load(pref, &taskGroup, keyPath: \Self.payeeList.count),
+                load(pref, &taskGroup, keyPath: \Self.transactionList.count),
+                load(pref, &taskGroup, keyPath: \Self.scheduledList.count),
+                load(pref, &taskGroup, keyPath: \Self.tagList.count),
+                load(pref, &taskGroup, keyPath: \Self.fieldList.count),
+                load(pref, &taskGroup, keyPath: \Self.attachmentList.count),
+                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.count),
+                load(pref, &taskGroup, keyPath: \Self.budgetList.count),
+                load(pref, &taskGroup, keyPath: \Self.reportList.count),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

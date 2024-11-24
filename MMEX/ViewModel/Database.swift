@@ -1,33 +1,14 @@
 //
-//  EnvironmentManager.swift
+//  Database.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2024/9/8.
+//  2024-09-08: Created by Lisheng Guan
 //
 
 import Foundation
 import SQLite
 
-class EnvironmentManager: ObservableObject {
-    // for file database: db != nil && databaseURL != nil
-    // for in-memmory database: db != nil && databaseURL == nil
-    @Published var isDatabaseConnected = false
-    private(set) var db: Connection?
-    private(set) var databaseURL: URL?
-
-    init(withStoredDatabase: Void) {
-        connectToStoredDatabase()
-    }
-
-    init(withSampleDatabaseInMemory: Void) {
-        createDatabase(at: nil, sampleData: true)
-    }
-
-    init() {
-    }
-}
-
-extension EnvironmentManager {
+extension ViewModel {
     func openDatabase(at url: URL?, isNew: Bool = false) {
         db = nil
         if let url {
@@ -62,7 +43,7 @@ extension EnvironmentManager {
     }
 
     /// Method to connect to a previously stored database path if available
-    private func connectToStoredDatabase() {
+    func connectToStoredDatabase() {
         guard let storedPath = UserDefaults.standard.string(forKey: "SelectedFilePath") else {
             log.warning("No stored database path found.")
             return
@@ -141,7 +122,7 @@ extension EnvironmentManager {
     }
 }
 
-extension EnvironmentManager {
+extension ViewModel {
     func setTempStoreDirectory(db: Connection) {
         // Get the path to the app's sandbox Caches directory
         let fileManager = FileManager.default
@@ -152,19 +133,21 @@ extension EnvironmentManager {
 }
 
 extension Repository {
-    init?(_ env: EnvironmentManager) {
-        self.init(env.db)
+    @MainActor
+    init?(_ vm: ViewModel) {
+        self.init(vm.db)
     }
 }
 
 extension RepositoryProtocol {
-    init?(_ env: EnvironmentManager) {
-        self.init(env.db)
+    @MainActor
+    init?(_ vm: ViewModel) {
+        self.init(vm.db)
     }
 }
 
-extension EnvironmentManager {
-    static var sampleData: EnvironmentManager {
-        EnvironmentManager(withSampleDatabaseInMemory: ())
+extension ViewModel {
+    static var sampleData: ViewModel {
+        ViewModel(withSampleDatabaseInMemory: ())
     }
 }

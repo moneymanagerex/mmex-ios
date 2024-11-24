@@ -18,7 +18,7 @@ extension ViewModel {
             return "Name is empty"
         }
 
-        guard let g = G(env) else {
+        guard let g = G(self) else {
             return "* Database is not available"
         }
 
@@ -53,7 +53,7 @@ extension ViewModel {
             return "* Tag #\(data.id.value) is used"
         }
 
-        guard let g = G(env) else {
+        guard let g = G(self) else {
             return "* Database is not available"
         }
 

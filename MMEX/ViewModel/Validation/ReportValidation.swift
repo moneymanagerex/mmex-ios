@@ -18,7 +18,7 @@ extension ViewModel {
             return "Name is empty"
         }
 
-        guard let r = R(env) else {
+        guard let r = R(self) else {
             return "* Database is not available"
         }
 
@@ -53,7 +53,7 @@ extension ViewModel {
             return "* Report #\(data.id.value) is used"
         }
 
-        guard let r = R(env) else {
+        guard let r = R(self) else {
             return "* Database is not available"
         }
 

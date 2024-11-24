@@ -10,18 +10,19 @@ import Combine
 import SwiftUI
 import SQLite
 
+@MainActor
 class TransactionViewModel: ObservableObject {
-    private var env: EnvironmentManager
+    private var vm: ViewModel
     @Published var txns: [TransactionData] = []
     @Published var txns_per_day: [String: [TransactionData]] = [:]
 
-    init(env: EnvironmentManager) {
-        self.env = env
+    init(_ vm: ViewModel) {
+        self.vm = vm
     }
 
     func loadTransactions(for accountId: DataId? = nil, startDate: Date? = nil, endDate: Date? = nil) {
-        let transactionRepository = TransactionRepository(env)
-        let transactionSplitRepository = TransactionSplitRepository(env)
+        let transactionRepository = TransactionRepository(vm)
+        let transactionSplitRepository = TransactionSplitRepository(vm)
         DispatchQueue.global(qos: .background).async {
             var loadedTransactions = transactionRepository?.loadRecent(accountId: accountId, startDate: startDate, endDate: endDate) ?? []
             for i in loadedTransactions.indices {
@@ -30,9 +31,10 @@ class TransactionViewModel: ObservableObject {
                     loadedTransactions[i].splits = transactionSplitRepository?.load(for: loadedTransactions[i]) ?? []
                 }
             }
+            let result = loadedTransactions
 
             DispatchQueue.main.async {
-                self.txns = loadedTransactions.filter { txn in txn.deletedTime.string.isEmpty }
+                self.txns = result.filter { txn in txn.deletedTime.string.isEmpty }
                 self.txns_per_day = Dictionary(grouping: self.txns) { txn in
                     // Extract the date portion (ignoring the time) from ISO-8601 string
                     let formatter = DateFormatter()
@@ -76,7 +78,7 @@ class TransactionViewModel: ObservableObject {
             txn.toAccountId = 0
         }
 
-        guard let transactionRepository = TransactionRepository(env) else { return }
+        guard let transactionRepository = TransactionRepository(vm) else { return }
 
         if transactionRepository.insertWithSplits(&txn) {
             self.txns.append(txn) // id is ready after repo call
@@ -86,13 +88,13 @@ class TransactionViewModel: ObservableObject {
     }
 
     func updateTransaction(_ data: inout TransactionData) -> Bool {
-        guard let transactionRepository = TransactionRepository(env) else { return false }
+        guard let transactionRepository = TransactionRepository(vm) else { return false }
         return transactionRepository.updateWithSplits(&data)
     }
 
     func deleteTransaction(_ data: TransactionData) -> Bool {
-        guard let transactionRepository = TransactionRepository(env) else { return false }
-        guard let transactionSplitRepository = TransactionSplitRepository(env) else { return false }
+        guard let transactionRepository = TransactionRepository(vm) else { return false }
+        guard let transactionSplitRepository = TransactionSplitRepository(vm) else { return false }
         return transactionRepository.delete(data) && transactionSplitRepository.delete(data)
     }
 }

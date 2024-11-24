@@ -23,9 +23,9 @@ extension ViewModel {
         guard tagList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.tagList.data),
-                load(&taskGroup, keyPath: \Self.tagList.used),
-                load(&taskGroup, keyPath: \Self.tagList.order),
+                load(pref, &taskGroup, keyPath: \Self.tagList.data),
+                load(pref, &taskGroup, keyPath: \Self.tagList.used),
+                load(pref, &taskGroup, keyPath: \Self.tagList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

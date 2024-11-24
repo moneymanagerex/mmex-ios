@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @StateObject private var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @State private var isDocumentPickerPresented = false
     @State private var isNewDocumentPickerPresented = false
     @State private var isSampleDocument = false
@@ -20,15 +19,9 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
-    init(env: EnvironmentManager) {
-        log.debug("DEBUG: ContentView.init()")
-        //self.vm = ViewModel(env: env)
-        self._vm = StateObject(wrappedValue: ViewModel(env: env))
-    }
-
     var body: some View {
         ZStack {
-            if env.isDatabaseConnected {
+            if vm.isDatabaseConnected {
                 connectedView
             } else {
                 disconnectedView
@@ -62,7 +55,6 @@ struct ContentView: View {
                 SidebarView(selectedTab: $selectedTab)
             } detail: {
                 TabContentView(
-                    vm: vm,
                     selectedTab: $selectedTab,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
@@ -73,14 +65,14 @@ struct ContentView: View {
             // problem: if VM is declared here, it is re-instantiated on switching between tabs
             // fix: move VM declaration to View and initialize it in init()
             //let vm = RepositoryViewModel(env: env)
-            let insightsViewModel = InsightsViewModel(env: env)
-            let infotableViewModel = TransactionViewModel(env: env)
+            let insightsViewModel = InsightsViewModel(vm)
+            let infotableViewModel = TransactionViewModel(vm)
             TabView(selection: $selectedTab) {
-                journalTab(vm: vm, viewModel: infotableViewModel)
-                insightsTab(vm: vm, viewModel: insightsViewModel)
-                enterTab(vm: vm, viewModel: infotableViewModel)
-                managementTab(vm: vm, viewModel: infotableViewModel)
-                settingsTab(vm: vm, viewModel: infotableViewModel)
+                journalTab(viewModel: infotableViewModel)
+                insightsTab(viewModel: insightsViewModel)
+                enterTab(viewModel: infotableViewModel)
+                managementTab(viewModel: infotableViewModel)
+                settingsTab(viewModel: infotableViewModel)
             }
             .onChange(of: selectedTab) { _, tab in
                 if tab == 2 { isPresentingTransactionAddView = true }
@@ -121,8 +113,8 @@ struct ContentView: View {
             .controlSize(.large)
 
             Button(action: {
-                env.createDatabase(at: nil, sampleData: true)
-                guard env.isDatabaseConnected else { return }
+                vm.createDatabase(at: nil, sampleData: true)
+                guard vm.isDatabaseConnected else { return }
                 log.info("Successfully created sample database in memory")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     selectedTab = 0
@@ -140,9 +132,9 @@ struct ContentView: View {
     }
 
     // Transaction tab
-    private func journalTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
+    private func journalTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            JournalView(vm: vm, viewModel: viewModel)
+            JournalView(viewModel: viewModel)
                 .navigationBarTitle("Latest Transactions", displayMode: .inline)
         }
         .tabItem {
@@ -152,9 +144,9 @@ struct ContentView: View {
     }
 
     // Insights tab
-    private func insightsTab(vm: ViewModel, viewModel: InsightsViewModel) -> some View {
+    private func insightsTab(viewModel: InsightsViewModel) -> some View {
         NavigationView {
-            InsightsView(vm: vm, viewModel: viewModel)
+            InsightsView(viewModel: viewModel)
                 .navigationBarTitle("Insights", displayMode: .inline)
         }
         .tabItem {
@@ -164,9 +156,9 @@ struct ContentView: View {
     }
 
     // Add transaction tab
-    private func enterTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
+    private func enterTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            EnterView(vm: vm, viewModel: viewModel, selectedTab: $selectedTab)
+            EnterView(viewModel: viewModel, selectedTab: $selectedTab)
                 // .navigationBarTitle("Enter Transaction", displayMode: .inline)
         }
         .tabItem {
@@ -177,12 +169,10 @@ struct ContentView: View {
 
     // Management tab
     private func managementTab(
-        vm: ViewModel,
         viewModel: TransactionViewModel
     ) -> some View {
         NavigationView {
             ManageView(
-                vm: vm,
                 viewModel: viewModel,
                 isDocumentPickerPresented: $isDocumentPickerPresented,
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
@@ -197,9 +187,9 @@ struct ContentView: View {
     }
 
     // Settings tab
-    private func settingsTab(vm: ViewModel, viewModel: TransactionViewModel) -> some View {
+    private func settingsTab(viewModel: TransactionViewModel) -> some View {
         NavigationView {
-            SettingsView(vm: vm, viewModel: viewModel)
+            SettingsView(viewModel: viewModel)
                 .navigationBarTitle("Settings", displayMode: .inline)
         }
         .tabItem {
@@ -213,8 +203,8 @@ struct ContentView: View {
         switch result {
         case .success(let urls):
             if let url = urls.first {
-                env.openDatabase(at: url)
-                guard env.isDatabaseConnected else { return }
+                vm.openDatabase(at: url)
+                guard vm.isDatabaseConnected else { return }
                 log.info("Successfully opened database: \(url)")
                 UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -230,8 +220,8 @@ struct ContentView: View {
     private func handleFileExport(_ result: Result<URL, Error>) {
         switch result {
         case .success(let url):
-            env.createDatabase(at: url, sampleData: isSampleDocument)
-            guard env.isDatabaseConnected else { return }
+            vm.createDatabase(at: url, sampleData: isSampleDocument)
+            guard vm.isDatabaseConnected else { return }
             log.info("Successfully created database: \(url)")
             UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -269,8 +259,8 @@ struct SidebarView: View {
 }
 
 struct TabContentView: View {
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var pref: Preference
+    @EnvironmentObject var vm: ViewModel
     @Binding var selectedTab: Int
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
@@ -279,23 +269,22 @@ struct TabContentView: View {
     var body: some View {
         log.trace("TabContentView.body")
         // Use @StateObject to manage the lifecycle of TransactionViewModel
-        let insightsViewModel = InsightsViewModel(env: env)
-        let infotableViewModel = TransactionViewModel(env: env)
+        let insightsViewModel = InsightsViewModel(vm)
+        let infotableViewModel = TransactionViewModel(vm)
         // Here we ensure that there's no additional NavigationStack or NavigationView
         return Group {
             switch selectedTab {
             case 0:
-                JournalView(vm: vm, viewModel: infotableViewModel) // Summary and Edit feature
+                JournalView(viewModel: infotableViewModel) // Summary and Edit feature
                     .navigationBarTitle("Latest Transactions", displayMode: .inline)
             case 1:
-                InsightsView(vm: vm, viewModel: insightsViewModel)
+                InsightsView(viewModel: insightsViewModel)
                     .navigationBarTitle("Reports and Insights", displayMode: .inline)
             case 2:
-                EnterView(vm: vm, viewModel: infotableViewModel, selectedTab: $selectedTab)
+                EnterView(viewModel: infotableViewModel, selectedTab: $selectedTab)
                     .navigationBarTitle("Enter Transaction", displayMode: .inline)
             case 3:
                 ManageView(
-                    vm: vm,
                     viewModel:infotableViewModel,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
@@ -303,7 +292,7 @@ struct TabContentView: View {
                 )
                 .navigationBarTitle("Manage", displayMode: .inline)
             case 4:
-                SettingsView(vm: vm, viewModel: infotableViewModel)
+                SettingsView(viewModel: infotableViewModel)
                     .navigationBarTitle("Settings", displayMode: .inline)
             default:
                 EmptyView()
@@ -314,9 +303,10 @@ struct TabContentView: View {
 }
 
 #Preview(){
-    let env = EnvironmentManager.sampleData
+    let pref = Preference()
+    let vm = ViewModel.sampleData
     ContentView(
-        env: env
     )
-    .environmentObject(env)
+    .environmentObject(pref)
+    .environmentObject(vm)
 }

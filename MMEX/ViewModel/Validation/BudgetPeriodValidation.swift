@@ -18,7 +18,7 @@ extension ViewModel {
             return "Name is empty"
         }
 
-        guard let bp = BP(env) else {
+        guard let bp = BP(self) else {
             return "* Database is not available"
         }
 
@@ -53,7 +53,7 @@ extension ViewModel {
             return "* Budget period #\(data.id.value) is used"
         }
 
-        guard let bp = BP(env) else {
+        guard let bp = BP(self) else {
             return "* Database is not available"
         }
 

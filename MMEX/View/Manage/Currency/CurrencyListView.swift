@@ -10,8 +10,7 @@ import SwiftUI
 
 struct CurrencyListView: View {
     typealias MainData = CurrencyData
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
 
     static let features = RepositoryFeatures()
     static let initData = CurrencyData(
@@ -25,7 +24,6 @@ struct CurrencyListView: View {
 
     var body: some View {
         RepositoryListView(
-            vm: vm,
             features: Self.features,
             vmList: vm.currencyList,
             groupChoice: vm.currencyGroup.choice,
@@ -60,7 +58,6 @@ struct CurrencyListView: View {
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         CurrencyFormView(
-            vm: vm,
             data: data,
             edit: edit
         )
@@ -69,10 +66,9 @@ struct CurrencyListView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     CurrencyListView(
-        vm: ViewModel(env: env)
     )
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

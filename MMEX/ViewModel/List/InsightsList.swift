@@ -12,8 +12,8 @@ extension ViewModel {
         guard insightsList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.currencyList.info),
-                load(&taskGroup, keyPath: \Self.accountList.data),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.info),
+                load(pref, &taskGroup, keyPath: \Self.accountList.data),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct AttachmentListView: View {
     typealias MainData = AttachmentData
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
 
     // new attachments are created from the items that contain them
     static let features = RepositoryFeatures(
@@ -24,7 +23,6 @@ struct AttachmentListView: View {
 
     var body: some View {
         RepositoryListView(
-            vm: vm,
             features: Self.features,
             vmList: vm.attachmentList,
             groupChoice: vm.attachmentGroup.choice,
@@ -67,7 +65,6 @@ struct AttachmentListView: View {
     @ViewBuilder
     func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
         AttachmentFormView(
-            vm: vm,
             data: data,
             edit: edit
         )
@@ -76,14 +73,12 @@ struct AttachmentListView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView {
         AttachmentListView(
-            vm: vm
         )
         .navigationBarTitle("Manage", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct SettingsThemeView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
 
     @State var dateFormat: String = "%Y-%m-%d"
     @State var categoryDelimiter : String = ":"
@@ -236,10 +235,9 @@ struct SettingsThemeView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     SettingsThemeView(
-        vm: ViewModel(env: env)
     )
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

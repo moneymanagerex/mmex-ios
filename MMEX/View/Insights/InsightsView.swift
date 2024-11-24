@@ -10,8 +10,7 @@ import Charts
 
 struct InsightsView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @ObservedObject var viewModel: InsightsViewModel
 
     @State var statusChoice: Int = 0
@@ -31,7 +30,6 @@ struct InsightsView: View {
                     }
                 } ) { if accountBalanceIsExpanded {
                     InsightsAccountView(
-                        vm: vm,
                         viewModel: viewModel,
                         statusChoice: $statusChoice
                     )
@@ -46,7 +44,6 @@ struct InsightsView: View {
                     }
                 } ) { if accountIncomeIsExpanded {
                     InsightsSummaryView(
-                        vm: vm,
                         stats: $viewModel.stats
                     )
                 } }
@@ -111,16 +108,14 @@ struct InsightsView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
-    let viewModel = InsightsViewModel(env: env)
+    let vm = ViewModel.sampleData
+    let viewModel = InsightsViewModel(vm)
     NavigationView {
         InsightsView(
-            vm: vm,
             viewModel: viewModel
         )
         .navigationBarTitle("Insights", displayMode: .inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

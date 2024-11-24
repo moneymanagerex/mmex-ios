@@ -22,19 +22,19 @@ extension ViewModel {
         guard transactionList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.transactionList.data),
-                load(&taskGroup, keyPath: \Self.transactionList.used),
+                load(pref, &taskGroup, keyPath: \Self.transactionList.data),
+                load(pref, &taskGroup, keyPath: \Self.transactionList.used),
                 // auxiliary
-                load(&taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
-                load(&taskGroup, keyPath: \Self.infotableList.defaultAccountId),
-                //load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
-                load(&taskGroup, keyPath: \Self.currencyList.info),
-                load(&taskGroup, keyPath: \Self.accountList.data),
-                load(&taskGroup, keyPath: \Self.accountList.order),
-                load(&taskGroup, keyPath: \Self.categoryList.data),
-                load(&taskGroup, keyPath: \Self.categoryList.order),
-                load(&taskGroup, keyPath: \Self.payeeList.data),
-                load(&taskGroup, keyPath: \Self.payeeList.order),
+                load(pref, &taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
+                load(pref, &taskGroup, keyPath: \Self.infotableList.defaultAccountId),
+                //load(pref, &taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.info),
+                load(pref, &taskGroup, keyPath: \Self.accountList.data),
+                load(pref, &taskGroup, keyPath: \Self.accountList.order),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.data),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.order),
+                load(pref, &taskGroup, keyPath: \Self.payeeList.data),
+                load(pref, &taskGroup, keyPath: \Self.payeeList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

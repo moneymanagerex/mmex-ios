@@ -24,14 +24,14 @@ extension ViewModel {
         guard payeeList.reloading() else { return }
         var ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.payeeList.data),
-                load(&taskGroup, keyPath: \Self.payeeList.used),
-                load(&taskGroup, keyPath: \Self.payeeList.order),
-                load(&taskGroup, keyPath: \Self.payeeList.att),
+                load(pref, &taskGroup, keyPath: \Self.payeeList.data),
+                load(pref, &taskGroup, keyPath: \Self.payeeList.used),
+                load(pref, &taskGroup, keyPath: \Self.payeeList.order),
+                load(pref, &taskGroup, keyPath: \Self.payeeList.att),
                 // auxiliary
-                //load(&taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
-                load(&taskGroup, keyPath: \Self.categoryList.data),
-                load(&taskGroup, keyPath: \Self.categoryList.order),
+                //load(pref, &taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.data),
+                load(pref, &taskGroup, keyPath: \Self.categoryList.order),
             ].allSatisfy({$0})
             return await taskGroupOk(taskGroup, ok)
         }

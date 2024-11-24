@@ -35,7 +35,7 @@ extension ViewModel {
             }
         }
 
-        guard let b = B(env) else {
+        guard let b = B(self) else {
             return "* Database is not available"
         }
 
@@ -71,7 +71,7 @@ extension ViewModel {
             return "* Budget #\(data.id.value) is used"
         }
 
-        guard let b = B(env) else {
+        guard let b = B(self) else {
             return "* Database is not available"
         }
 

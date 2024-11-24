@@ -35,10 +35,10 @@ extension ViewModel {
         guard currencyList.reloading() else { return }
         let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
             let ok = [
-                load(&taskGroup, keyPath: \Self.currencyList.data),
-                load(&taskGroup, keyPath: \Self.currencyList.used),
-                load(&taskGroup, keyPath: \Self.currencyList.order),
-                load(&taskGroup, keyPath: \Self.currencyList.history),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.data),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.used),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.order),
+                load(pref, &taskGroup, keyPath: \Self.currencyList.history),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct TransactionDetailView: View {
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @ObservedObject var viewModel: TransactionViewModel
     @Binding var txn: TransactionData
 
@@ -124,7 +123,6 @@ struct TransactionDetailView: View {
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 EnterFormView(
-                    vm: vm,
                     txn: $editingTxn
                 )
                     .toolbar {
@@ -164,36 +162,33 @@ struct TransactionDetailView: View {
 
 #Preview("txn #0") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     TransactionDetailView(
-        vm: ViewModel(env: env),
-        viewModel: TransactionViewModel(env: env),
+        viewModel: TransactionViewModel(vm),
         txn: .constant(TransactionData.sampleData[0])
     )
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("txn #2") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     TransactionDetailView(
-        vm: ViewModel(env: env),
-        viewModel: TransactionViewModel(env: env),
+        viewModel: TransactionViewModel(vm),
         txn: .constant(TransactionData.sampleData[2])
     )
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("txn #3") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     TransactionDetailView(
-        vm: ViewModel(env: env),
-        viewModel: TransactionViewModel(env: env),
+        viewModel: TransactionViewModel(vm),
         txn: .constant(TransactionData.sampleData[3])
     )
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

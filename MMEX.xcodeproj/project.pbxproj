@@ -162,6 +162,7 @@
 		92F6862A2CF27AE800171A6A /* EnterPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686292CF27AE800171A6A /* EnterPreference.swift */; };
 		92F6862D2CF27C6B00171A6A /* BadgeCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6862C2CF27C6B00171A6A /* BadgeCount.swift */; };
 		92F6862F2CF27DD200171A6A /* TrackPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6862E2CF27DD200171A6A /* TrackPreference.swift */; };
+		92F686332CF297A000171A6A /* LoadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686322CF297A000171A6A /* LoadRepository.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
@@ -201,7 +202,7 @@
 		A3C1424E2C8B335900D3CEC0 /* PayeeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1424D2C8B335900D3CEC0 /* PayeeData.swift */; };
 		A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */; };
 		A3C142542C8B381400D3CEC0 /* PayeeFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142532C8B381400D3CEC0 /* PayeeFormView.swift */; };
-		A3C1425F2C8DE70300D3CEC0 /* EnvironmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1425E2C8DE70300D3CEC0 /* EnvironmentManager.swift */; };
+		A3C1425F2C8DE70300D3CEC0 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1425E2C8DE70300D3CEC0 /* Database.swift */; };
 		A3C142652C8ED8EA00D3CEC0 /* AccountFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142642C8ED8EA00D3CEC0 /* AccountFormView.swift */; };
 		A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142662C8F2AF500D3CEC0 /* TransactionData.swift */; };
 		A3C142922C8FE11700D3CEC0 /* AccountRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */; };
@@ -376,6 +377,7 @@
 		92F686292CF27AE800171A6A /* EnterPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPreference.swift; sourceTree = "<group>"; };
 		92F6862C2CF27C6B00171A6A /* BadgeCount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCount.swift; sourceTree = "<group>"; };
 		92F6862E2CF27DD200171A6A /* TrackPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackPreference.swift; sourceTree = "<group>"; };
+		92F686322CF297A000171A6A /* LoadRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadRepository.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
@@ -410,7 +412,7 @@
 		A3C1424D2C8B335900D3CEC0 /* PayeeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeData.swift; sourceTree = "<group>"; };
 		A3C1424F2C8B366400D3CEC0 /* PayeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeListView.swift; sourceTree = "<group>"; };
 		A3C142532C8B381400D3CEC0 /* PayeeFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeFormView.swift; sourceTree = "<group>"; };
-		A3C1425E2C8DE70300D3CEC0 /* EnvironmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentManager.swift; sourceTree = "<group>"; };
+		A3C1425E2C8DE70300D3CEC0 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		A3C142642C8ED8EA00D3CEC0 /* AccountFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFormView.swift; sourceTree = "<group>"; };
 		A3C142662C8F2AF500D3CEC0 /* TransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionData.swift; sourceTree = "<group>"; };
 		A3C142912C8FE11700D3CEC0 /* AccountRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRepository.swift; sourceTree = "<group>"; };
@@ -470,7 +472,6 @@
 			children = (
 				A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */,
 				929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */,
-				A3C1425E2C8DE70300D3CEC0 /* EnvironmentManager.swift */,
 				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
 			);
 			path = App;
@@ -535,6 +536,7 @@
 				9243530E2CC516B70052E4BC /* LoadProtocol.swift */,
 				9243530D2CC516B70052E4BC /* LoadMain.swift */,
 				924353202CC6EFA70052E4BC /* LoadAux.swift */,
+				92F686322CF297A000171A6A /* LoadRepository.swift */,
 			);
 			path = Load;
 			sourceTree = "<group>";
@@ -757,6 +759,7 @@
 				925EABA42CCF8178003CEAB3 /* Validation */,
 				925EAB912CCD5691003CEAB3 /* Reload */,
 				924353042CC3B2E30052E4BC /* ViewModel.swift */,
+				A3C1425E2C8DE70300D3CEC0 /* Database.swift */,
 				A350BDC02CA26415006669D5 /* TransactionViewModel.swift */,
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
 			);
@@ -1080,7 +1083,7 @@
 				A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */,
 				927B124D2CE8C2E100AEA52F /* RepositoryCopyView.swift in Sources */,
 				A37E7D8C2C9AC36800B4ECFC /* LegalView.swift in Sources */,
-				A3C1425F2C8DE70300D3CEC0 /* EnvironmentManager.swift in Sources */,
+				A3C1425F2C8DE70300D3CEC0 /* Database.swift in Sources */,
 				924353012CBA06210052E4BC /* AccountReload.swift in Sources */,
 				925EAC242CDAB100003CEAB3 /* AttachmentListView.swift in Sources */,
 				A3C1424E2C8B335900D3CEC0 /* PayeeData.swift in Sources */,
@@ -1173,6 +1176,7 @@
 				A37E7D942C9B217500B4ECFC /* InfotableData.swift in Sources */,
 				924353192CC51FA00052E4BC /* PayeeReload.swift in Sources */,
 				9243530F2CC516B70052E4BC /* LoadMain.swift in Sources */,
+				92F686332CF297A000171A6A /* LoadRepository.swift in Sources */,
 				924353102CC516B70052E4BC /* LoadProtocol.swift in Sources */,
 				925EABAE2CCF8293003CEAB3 /* PayeeValidation.swift in Sources */,
 				9208242E2CA617FB00388AB2 /* FieldValueRepository.swift in Sources */,

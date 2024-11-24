@@ -10,8 +10,7 @@ import SwiftUI
 
 struct AccountFormView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var data: AccountData
     @State var edit: Bool
 
@@ -184,25 +183,22 @@ struct AccountFormView: View {
 
 #Preview("\(AccountData.sampleData[0].name) (show)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     Form { AccountFormView(
-        vm: ViewModel(env: env),
         data: .constant(AccountData.sampleData[0]),
         edit: false
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("\(AccountData.sampleData[0].name) (edit)") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     Form { AccountFormView(
-        vm: vm,
         data: .constant(AccountData.sampleData[0]),
         edit: true
     ) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

@@ -17,8 +17,9 @@ struct InsightsAccountInfo {
     var flowAfterToday: [DataId: AccountFlowByStatus] = [:]
 }
 
+@MainActor
 class InsightsViewModel: ObservableObject {
-    private var env: EnvironmentManager
+    private var vm: ViewModel
 
     @Published var baseCurrency: CurrencyData?
     @Published var stats: [TransactionData] = [] // all transactions
@@ -30,14 +31,14 @@ class InsightsViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(env: EnvironmentManager) {
-        self.env = env
+    init(_ vm: ViewModel) {
+        self.vm = vm
         self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
         self.endDate = Date()
 
         // get base currency
-        if let baseCurrencyId = InfotableRepository(env)?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
-            baseCurrency = CurrencyRepository(env)?.pluck(
+        if let baseCurrencyId = InfotableRepository(vm)?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
+            baseCurrency = CurrencyRepository(vm)?.pluck(
                 key: InfoKey.baseCurrencyID.id,
                 from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
             ).toOptional()
@@ -58,10 +59,12 @@ class InsightsViewModel: ObservableObject {
     }
     
     func loadRecentTransactions() {
-        let repository = TransactionRepository(env)
+        let repository = TransactionRepository(vm)
+        let startDate = self.startDate
+        let endDate = self.endDate
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {
-            let transactions = repository?.loadRecent(startDate: self.startDate, endDate: self.endDate) ?? []
+            let transactions = repository?.loadRecent(startDate: startDate, endDate: endDate) ?? []
             // Update the published stats on the main thread
             DispatchQueue.main.async {
                 self.recentStats = transactions
@@ -70,7 +73,7 @@ class InsightsViewModel: ObservableObject {
     }
     
     func loadTransactions() {
-        let repository = TransactionRepository(env)
+        let repository = TransactionRepository(vm)
         // Fetch transactions asynchronously
         DispatchQueue.global(qos: .background).async {
             let transactions = repository?.load() ?? []
@@ -83,7 +86,7 @@ class InsightsViewModel: ObservableObject {
 
     func loadAccountInfo() {
         self.accountInfo.today = String(self.endDate.ISO8601Format().prefix(10))
-        let repository = AccountRepository(env)
+        let repository = AccountRepository(vm)
         typealias A = AccountRepository
         let table = A.table
             .filter(A.table[A.col_status] == AccountStatus.open.rawValue)
@@ -103,10 +106,11 @@ class InsightsViewModel: ObservableObject {
         }
 
         // fetch flow of open accounts until today
+        let today = self.accountInfo.today
         DispatchQueue.global(qos: .background).async {
             let flowByStatus = repository?.dictFlowByStatus(
                 from: table,
-                supDate: self.accountInfo.today + "z"
+                supDate: today + "z"
             ) ?? [:]
             DispatchQueue.main.async {
                 self.accountInfo.flowUntilToday = flowByStatus
@@ -117,7 +121,7 @@ class InsightsViewModel: ObservableObject {
         DispatchQueue.global(qos: .background).async {
             let flowByStatus = repository?.dictFlowByStatus(
                 from: table,
-                minDate: self.accountInfo.today + "z"
+                minDate: today + "z"
             ) ?? [:]
             DispatchQueue.main.async {
                 self.accountInfo.flowAfterToday = flowByStatus

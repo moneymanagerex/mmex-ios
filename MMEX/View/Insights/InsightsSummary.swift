@@ -9,8 +9,7 @@ import SwiftUI
 import Charts
 
 struct InsightsSummaryView: View {
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var stats: [TransactionData]
 
     var body: some View {
@@ -30,16 +29,15 @@ struct InsightsSummaryView: View {
 
 #Preview {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
+    let vm = ViewModel.sampleData
     NavigationStack {
         ScrollView {
             InsightsSummaryView(
-                vm: ViewModel(env: env),
                 stats: .constant(TransactionData.sampleData)
             )
         }
         .navigationBarTitleDisplayMode(.inline)
     }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }

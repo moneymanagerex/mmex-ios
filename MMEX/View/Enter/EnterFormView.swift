@@ -9,8 +9,7 @@ import SwiftUI
 
 struct EnterFormView: View {
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var env: EnvironmentManager
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel
     @Binding var txn: TransactionData
 
     @State private var selectedDate = Date()
@@ -259,30 +258,26 @@ struct EnterFormView: View {
 
 #Preview("txn #0") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView { NavigationStack {
         EnterFormView(
-            vm: vm,
             txn: .constant(TransactionData.sampleData[0])
         )
     }.padding() }
     .task { await vm.loadEnterList(pref) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
 
 #Preview("txn #3") {
     let pref = Preference()
-    let env = EnvironmentManager.sampleData
-    let vm = ViewModel(env: env)
+    let vm = ViewModel.sampleData
     NavigationView { NavigationStack {
         EnterFormView(
-            vm: vm,
             txn: .constant(TransactionData.sampleData[3])
         )
     }.padding() }
     .task { await vm.loadEnterList(pref) }
     .environmentObject(pref)
-    .environmentObject(env)
+    .environmentObject(vm)
 }
