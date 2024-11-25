@@ -290,9 +290,11 @@ struct CategoryListView: View {
                             if count > 0 {
                                 GroupTheme.fold(isExpanded)
                                     .frame(minWidth: w2)
-                                //.border(.red)
+                                    //.border(.red)
                             } else {
-                                Spacer().frame(width: w2)
+                                GroupTheme.fold(false)
+                                    .opacity(0)
+                                    .frame(width: w2)
                             }
                         }
                     }
