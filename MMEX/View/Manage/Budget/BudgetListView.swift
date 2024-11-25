@@ -74,13 +74,7 @@ struct BudgetListView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
-        BudgetListView(
-        )
-        .navigationBarTitle("Manage", displayMode: .inline)
+    MMEXPreview.sampleManage {
+        BudgetListView()
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

@@ -72,13 +72,7 @@ struct AttachmentListView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
-        AttachmentListView(
-        )
-        .navigationBarTitle("Manage", displayMode: .inline)
+    MMEXPreview.sampleManage {
+        AttachmentListView()
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

@@ -24,13 +24,14 @@ struct RepositoryCreateView<
     @State private var alertMessage: String?
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
                 formView($data, true)
             }
             .textSelection(.enabled)
             .scrollDismissesKeyboard(.immediately)
-            .navigationTitle("Create")
+            .navigationBarTitle("Create", displayMode: .inline)
+
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -68,19 +69,17 @@ struct RepositoryCreateView<
 }
 
 #Preview("Account") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    let formView = { $data, edit in AccountFormView(
-        data: $data,
-        edit: edit
-    ) }
-    RepositoryCreateView(
-        features: RepositoryFeatures(),
-        data: AccountListView.initData,
-        newData: .constant(nil),
-        isPresented: .constant(true),
-        formView: formView
-    )
-    .environmentObject(pref)
-    .environmentObject(vm)
+    MMEXPreview.sample {
+        let formView = { $data, edit in AccountFormView(
+            data: $data,
+            edit: edit
+        ) }
+        RepositoryCreateView(
+            features: RepositoryFeatures(),
+            data: AccountListView.initData,
+            newData: .constant(nil),
+            isPresented: .constant(true),
+            formView: formView
+        )
+    }
 }

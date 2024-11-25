@@ -27,23 +27,15 @@ struct BudgetPeriodFormView: View {
 }
 
 #Preview("\(BudgetPeriodData.sampleData[0].name) (show)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { BudgetPeriodFormView(
+    MMEXPreview.repositoryEdit { BudgetPeriodFormView(
         data: .constant(BudgetPeriodData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
 
 #Preview("\(BudgetPeriodData.sampleData[0].name) (edit)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { BudgetPeriodFormView(
+    MMEXPreview.repositoryEdit { BudgetPeriodFormView(
         data: .constant(BudgetPeriodData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

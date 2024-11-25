@@ -106,23 +106,15 @@ struct StockFormView: View {
 }
 
 #Preview("\(StockData.sampleData[0].name) (show)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { StockFormView(
+    MMEXPreview.repositoryEdit { StockFormView(
         data: .constant(StockData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
 
 #Preview("\(StockData.sampleData[0].name) (edit)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { StockFormView(
+    MMEXPreview.repositoryEdit { StockFormView(
         data: .constant(StockData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

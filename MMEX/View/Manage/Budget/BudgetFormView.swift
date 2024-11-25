@@ -90,23 +90,15 @@ struct BudgetFormView: View {
 }
 
 #Preview("#\(BudgetData.sampleData[0].id) (show)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { BudgetFormView(
+    MMEXPreview.repositoryEdit { BudgetFormView(
         data: .constant(BudgetData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
 
 #Preview("#\(BudgetData.sampleData[0].id) (edit)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { BudgetFormView(
+    MMEXPreview.repositoryEdit { BudgetFormView(
         data: .constant(BudgetData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

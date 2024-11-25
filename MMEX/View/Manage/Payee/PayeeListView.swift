@@ -68,13 +68,7 @@ struct PayeeListView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
-        PayeeListView(
-        )
-        .navigationBarTitle("Manage", displayMode: .inline)
+    MMEXPreview.sampleManage {
+        PayeeListView()
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

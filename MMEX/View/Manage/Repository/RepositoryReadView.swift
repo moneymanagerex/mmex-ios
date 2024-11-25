@@ -123,13 +123,11 @@ struct RepositoryReadView<
 }
 
 #Preview(AccountData.sampleData[0].name) {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    let formView = { $data, edit in AccountFormView(
-        data: $data,
-        edit: edit
-    ) }
-    NavigationView {
+    MMEXPreview.sampleManage {
+        let formView = { $data, edit in AccountFormView(
+            data: $data,
+            edit: edit
+        ) }
         RepositoryReadView(
             features: RepositoryFeatures(),
             data: AccountData.sampleData[0],
@@ -139,8 +137,5 @@ struct RepositoryReadView<
             formView: formView
         )
         .navigationTitle(AccountData.dataName.1)
-        .navigationBarTitle("Manage", displayMode: .inline)
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

@@ -416,13 +416,7 @@ class RepositorySearchDebounce: ObservableObject {
 }
 
 #Preview("Account") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
-        AccountListView(
-        )
-        .navigationBarTitle("Manage", displayMode: .inline)
+    MMEXPreview.sampleManage {
+        AccountListView()
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

@@ -59,23 +59,15 @@ struct FieldFormView: View {
 }
 
 #Preview("#\(FieldData.sampleData[0].id) (show)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { FieldFormView(
+    MMEXPreview.repositoryEdit { FieldFormView(
         data: .constant(FieldData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
 
 #Preview("#\(FieldData.sampleData[0].id) (edit)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { FieldFormView(
+    MMEXPreview.repositoryEdit { FieldFormView(
         data: .constant(FieldData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
