@@ -27,52 +27,53 @@ extension GroupTheme {
 }
 
 extension GroupTheme {
+    @ViewBuilder
     static func fold(_ isExpanded: Bool) -> some View {
         Image(systemName: isExpanded ? "chevron.down.circle.fill" : "chevron.right.circle")
             .foregroundColor(.gray)
     }
 
+    @ViewBuilder
     func view<NameView: View>(
         @ViewBuilder nameView: @escaping () -> NameView,
         count: Int? = nil,
         isExpanded: Bool? = nil
     ) -> some View {
-        return Group {
-            switch layout {
-            case .foldName:
-                HStack {
-                    if let isExpanded {
-                        Self.fold(isExpanded)
-                    }
-                    nameView()
-                        .font(.headline.smallCaps())
-                        .foregroundColor(.accentColor)
-                        //.padding(.leading)
-                    
-                    Spacer()
-                    if showCount == .boolTrue, let count {
-                        BadgeCount(count: count)
-                    }
+        switch layout {
+        case .foldName:
+            HStack {
+                if let isExpanded {
+                    Self.fold(isExpanded)
                 }
-            case .nameFold:
-                HStack {
-                    nameView()
-                        .font(.headline.smallCaps())
-                        .foregroundColor(.accentColor)
-                        //.padding(.leading)
-                    
-                    Spacer()
-                    if showCount == .boolTrue, let count {
-                        BadgeCount(count: count)
-                    }
-                    if let isExpanded {
-                        Self.fold(isExpanded)
-                    }
+                nameView()
+                    .font(.headline.smallCaps())
+                    .foregroundColor(.accentColor)
+                //.padding(.leading)
+                
+                Spacer()
+                if showCount == .boolTrue, let count {
+                    BadgeCount(count: count)
+                }
+            }
+        case .nameFold:
+            HStack {
+                nameView()
+                    .font(.headline.smallCaps())
+                    .foregroundColor(.accentColor)
+                //.padding(.leading)
+                
+                Spacer()
+                if showCount == .boolTrue, let count {
+                    BadgeCount(count: count)
+                }
+                if let isExpanded {
+                    Self.fold(isExpanded)
                 }
             }
         }
     }
 
+    @ViewBuilder
     func section<NameView: View, Content: View>(
         @ViewBuilder nameView: @escaping () -> NameView,
         count: Int? = nil,
@@ -99,6 +100,7 @@ extension GroupTheme {
         } }
     }
 
+    @ViewBuilder
     func manageItem<NameView: View, MainRepository: RepositoryProtocol>(
         @ViewBuilder nameView: @escaping () -> NameView,
         count: LoadMainCount<MainRepository>

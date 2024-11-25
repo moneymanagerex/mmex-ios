@@ -65,10 +65,7 @@ struct CurrencyListView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    CurrencyListView(
-    )
-    .environmentObject(pref)
-    .environmentObject(vm)
+    MMEXPreview.sampleManage {
+        CurrencyListView()
+    }
 }

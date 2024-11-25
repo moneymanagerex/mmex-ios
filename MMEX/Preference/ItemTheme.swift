@@ -25,41 +25,40 @@ extension ItemTheme {
 }
 
 extension ItemTheme {
+    @ViewBuilder
     func view<NameView: View, InfoView: View>(
         @ViewBuilder nameView: @escaping () -> NameView,
         @ViewBuilder infoView: @escaping () -> InfoView
     ) -> some View {
-        return Group {
-            switch layout {
-            case .hstack:
-                HStack {
+        switch layout {
+        case .hstack:
+            HStack {
+                nameView()
+                    .font(.body)
+                Spacer()
+                infoView()
+                    .font(.caption)
+                //.border(.red)
+            }
+            .listRowInsets(.init())
+            //.border(.red)
+            .padding(.horizontal, 0)
+        case .vstack:
+            HStack{
+                VStack(alignment: .leading, spacing: 4) {
                     nameView()
                         .font(.body)
-                    Spacer()
+                    //.border(.red)
+                    //Spacer()
                     infoView()
                         .font(.caption)
-                        //.border(.red)
+                    //.border(.red)
                 }
-                .listRowInsets(.init())
-                //.border(.red)
-                .padding(.horizontal, 0)
-            case .vstack:
-                HStack{
-                    VStack(alignment: .leading, spacing: 4) {
-                        nameView()
-                            .font(.body)
-                            //.border(.red)
-                        //Spacer()
-                        infoView()
-                            .font(.caption)
-                            //.border(.red)
-                    }
-                    Spacer()
-                }
-                .listRowInsets(.init())
-                //.border(.red)
-                .padding(.horizontal, 0)
+                Spacer()
             }
+            .listRowInsets(.init())
+            //.border(.red)
+            .padding(.horizontal, 0)
         }
     }
 }

@@ -65,13 +65,7 @@ struct TagListView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
-        TagListView(
-        )
-        .navigationBarTitle("Manage", displayMode: .inline)
+    MMEXPreview.sampleManage {
+        TagListView()
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

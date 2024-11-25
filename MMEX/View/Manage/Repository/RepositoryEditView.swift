@@ -24,13 +24,14 @@ struct RepositoryEditView<
     @State private var alertMessage: String?
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
                 formView($data, true)
             }
             .textSelection(.enabled)
             .scrollDismissesKeyboard(.immediately)
-            .navigationTitle("Edit")
+            .navigationBarTitle("Edit", displayMode: .inline)
+
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -68,21 +69,35 @@ struct RepositoryEditView<
 }
 
 #Preview(AccountData.sampleData[0].name) {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    let data = AccountData.sampleData[0]
-    let formView = { $data, edit in AccountFormView(
-        data: $data,
-        edit: edit
-    ) }
-    RepositoryEditView(
-        features: RepositoryFeatures(),
-        data: data,
-        newData: .constant(nil),
-        isPresented: .constant(true),
-        dismiss: nil,
-        formView: formView
-    )
-    .environmentObject(pref)
-    .environmentObject(vm)
+    MMEXPreview.sample {
+        let data = AccountData.sampleData[0]
+        let formView = { $data, edit in AccountFormView(
+            data: $data,
+            edit: edit
+        ) }
+        RepositoryEditView(
+            features: RepositoryFeatures(),
+            data: data,
+            newData: .constant(nil),
+            isPresented: .constant(true),
+            dismiss: nil,
+            formView: formView
+        )
+    }
+}
+
+extension MMEXPreview {
+    @ViewBuilder
+    static func repositoryEdit<Content: View>(
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        MMEXPreview.sample {
+            NavigationView {
+                Form {
+                    content()
+                }
+                .navigationBarTitle("Edit", displayMode: .inline)
+            }
+        }
+    }
 }

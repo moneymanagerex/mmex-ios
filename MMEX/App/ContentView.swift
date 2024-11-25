@@ -66,7 +66,7 @@ struct ContentView: View {
                 journalTab()
                 insightsTab()
                 enterTab()
-                managementTab()
+                manageTab()
                 settingsTab()
             }
             .onChange(of: selectedTab) { _, tab in
@@ -167,7 +167,8 @@ struct ContentView: View {
     }
 
     // Management tab
-    private func managementTab() -> some View {
+    private func manageTab() -> some View {
+        // note: NavigationStack and @Environment(\.dismiss) hands the app
         NavigationView {
             ManageView(
                 isDocumentPickerPresented: $isDocumentPickerPresented,
@@ -175,6 +176,8 @@ struct ContentView: View {
                 isSampleDocument: $isSampleDocument
             )
             .navigationBarTitle("Manage", displayMode: .inline)
+            //.navigationTitle("Manage")
+            //.navigationBarTitleDisplayMode(.inline)
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "folder", text: "Manage")
@@ -295,11 +298,26 @@ struct TabContentView: View {
     }
 }
 
-#Preview(){
+#Preview() {
     let pref = Preference()
     let vm = ViewModel.sampleData
     ContentView(
     )
     .environmentObject(pref)
     .environmentObject(vm)
+}
+
+@MainActor
+struct MMEXPreview {
+    @ViewBuilder
+    static func sample<Content: View>(
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        let pref = Preference()
+        let vm = ViewModel.sampleData
+        content()
+            .environmentObject(pref)
+            .environmentObject(vm)
+    }
+
 }

@@ -61,23 +61,15 @@ struct ReportFormView: View {
 }
 
 #Preview("#\(ReportData.sampleData[0].id) (show)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { ReportFormView(
+    MMEXPreview.repositoryEdit { ReportFormView(
         data: .constant(ReportData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
 
 #Preview("#\(ReportData.sampleData[0].id) (edit)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { ReportFormView(
+    MMEXPreview.repositoryEdit { ReportFormView(
         data: .constant(ReportData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

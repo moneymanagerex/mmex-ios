@@ -33,23 +33,15 @@ struct TagFormView: View {
 }
 
 #Preview("\(TagData.sampleData[0].name) (show)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { TagFormView(
+    MMEXPreview.repositoryEdit { TagFormView(
         data: .constant(TagData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
 
 #Preview("\(TagData.sampleData[0].name) (edit)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { TagFormView(
+    MMEXPreview.repositoryEdit { TagFormView(
         data: .constant(TagData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

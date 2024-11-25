@@ -43,23 +43,15 @@ struct AttachmentFormView: View {
 }
 
 #Preview("\(AttachmentData.sampleData[0].filename) (show)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { AttachmentFormView(
+    MMEXPreview.repositoryEdit { AttachmentFormView(
         data: .constant(AttachmentData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
 
 #Preview("\(AttachmentData.sampleData[0].filename) (edit)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { AttachmentFormView(
+    MMEXPreview.repositoryEdit { AttachmentFormView(
         data: .constant(AttachmentData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

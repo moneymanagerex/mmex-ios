@@ -186,16 +186,31 @@ struct ManageView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
-        ManageView(
-            isDocumentPickerPresented: .constant(false),
-            isNewDocumentPickerPresented: .constant(false),
-            isSampleDocument: .constant(false)
-        )
-        .navigationBarTitle("Manage", displayMode: .inline)
+    MMEXPreview.sample {
+        NavigationStack {
+            ManageView(
+                isDocumentPickerPresented: .constant(false),
+                isNewDocumentPickerPresented: .constant(false),
+                isSampleDocument: .constant(false)
+            )
+            .navigationTitle("Manage")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
+}
+
+extension MMEXPreview {
+    @ViewBuilder
+    static func sampleManage<Content: View>(
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        MMEXPreview.sample {
+            NavigationView {
+                content()
+                    .navigationBarTitle("Manage", displayMode: .inline)
+                    //.navigationTitle("Manage")
+                    //.navigationBarTitleDisplayMode(.inline)
+            }
+        }
+    }
 }

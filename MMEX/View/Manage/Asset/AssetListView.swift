@@ -73,13 +73,7 @@ struct AssetListView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
-        AssetListView(
-        )
-        .navigationBarTitle("Manage", displayMode: .inline)
+    MMEXPreview.sampleManage {
+        AssetListView()
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

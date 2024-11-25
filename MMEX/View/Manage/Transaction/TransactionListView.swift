@@ -137,10 +137,7 @@ struct TransactionListView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    TransactionListView(
-    )
-    .environmentObject(pref)
-    .environmentObject(vm)
+    MMEXPreview.sampleManage {
+        TransactionListView()
+    }
 }

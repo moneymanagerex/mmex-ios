@@ -84,23 +84,15 @@ struct PayeeFormView: View {
 }
 
 #Preview("\(PayeeData.sampleData[0].name) (show)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { PayeeFormView(
+    MMEXPreview.repositoryEdit { PayeeFormView(
         data: .constant(PayeeData.sampleData[0]),
         edit: false
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
 
 #Preview("\(PayeeData.sampleData[0].name) (edit)") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    Form { PayeeFormView(
+    MMEXPreview.repositoryEdit { PayeeFormView(
         data: .constant(PayeeData.sampleData[0]),
         edit: true
     ) }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }

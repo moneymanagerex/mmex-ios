@@ -67,13 +67,7 @@ struct ReportListView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
-        ReportListView(
-        )
-        .navigationBarTitle("Manage", displayMode: .inline)
+    MMEXPreview.sampleManage {
+        ReportListView()
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
 }
