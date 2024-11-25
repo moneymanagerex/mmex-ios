@@ -34,5 +34,11 @@ extension FieldValueData: DataProtocol {
 
 extension FieldValueData {
     static let sampleData: [FieldValueData] = [
+        FieldValueData(
+            id: 1, fieldId: 1, refType: .transaction, refId: 1, content: "1"
+        ),
+        FieldValueData(
+            id: 2, fieldId: 2, refType: .scheduled, refId: 1, content: "info"
+        ),
     ]
 }

@@ -32,7 +32,7 @@ struct FieldData: DataProtocol {
 }
 
 extension FieldData {
-    static let dataName = ("Field", "Fields")
+    static let dataName = ("Custom Field", "Custom Fields")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
@@ -45,5 +45,11 @@ extension FieldData {
 
 extension FieldData {
     static let sampleData: [FieldData] = [
+        FieldData(
+            id: 1, refType: .transaction, description: "field 1", type: .integer
+        ),
+        FieldData(
+            id: 2, refType: .scheduled, description: "field 2", type: .string
+        ),
     ]
 }
