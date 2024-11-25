@@ -22,7 +22,7 @@ struct FieldList: ListProtocol {
 }
 
 extension FieldList {
-    mutating func unload() {
+    mutating func unloadAll() {
         guard reloading() else { return }
         count.unload()
         data.unload()
