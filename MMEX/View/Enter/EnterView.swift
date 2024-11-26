@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct EnterView: View {
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
-    @Environment(\.dismiss) var dismiss
     @Binding var selectedTab: Int
 
     @State var newTxn: TransactionData = TransactionData()
@@ -26,7 +26,7 @@ struct EnterView: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Dismiss") {
                     dismiss()
-                    selectedTab = 0
+                    selectedTab = Preference.selectedTab
                     newTxn = TransactionData()
                 }
             }
@@ -34,7 +34,7 @@ struct EnterView: View {
                 Button("Add") {
                     vm.addTransaction(txn: &newTxn)
                     dismiss()
-                    selectedTab = 0
+                    selectedTab = Preference.selectedTab
                     newTxn = TransactionData()
                 }
                 .disabled(!newTxn.isValid)

@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var isDocumentPickerPresented = false
     @State private var isNewDocumentPickerPresented = false
     @State private var isSampleDocument = false
-    @State private var selectedTab = 0
+    @State private var selectedTab = Preference.selectedTab
     @State private var selectedFileURL: URL?
     @State private var isPresentingTransactionAddView = false
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -112,7 +112,7 @@ struct ContentView: View {
                 guard vm.isDatabaseConnected else { return }
                 log.info("Successfully created sample database in memory")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    selectedTab = 0
+                    selectedTab = Preference.selectedTab
                 }
             }) {
                 Label("Sample Database in Memory", systemImage: "memorychip.fill")
@@ -207,7 +207,7 @@ struct ContentView: View {
                 log.info("Successfully opened database: \(url)")
                 UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    selectedTab = 0
+                    selectedTab = Preference.selectedTab
                 }
             }
         case .failure(let error):
@@ -224,7 +224,7 @@ struct ContentView: View {
             log.info("Successfully created database: \(url)")
             UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                selectedTab = 0
+                selectedTab = Preference.selectedTab
             }
         case .failure(let error):
             log.error("Failed to pick a document: \(error.localizedDescription)")
