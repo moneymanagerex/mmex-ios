@@ -49,6 +49,19 @@ extension DataId: LosslessStringConvertible {
     }
 }
 
+// MARK: - Custom Codable Implementation
+extension DataId {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.value = try container.decode(Int.self)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(value)
+    }
+}
+
 extension Int64 {
     init(_ dataId: DataId) {
         self = Int64(dataId.value)
