@@ -128,7 +128,7 @@
 		929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */; };
 		929EF6652C9FF3FB0051A3E6 /* StockRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6642C9FF3FB0051A3E6 /* StockRepository.swift */; };
 		929EF6692CA034770051A3E6 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6682CA034770051A3E6 /* Repository.swift */; };
-		929EF66B2CA03AF90051A3E6 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66A2CA03AF90051A3E6 /* Data.swift */; };
+		929EF66B2CA03AF90051A3E6 /* DataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66A2CA03AF90051A3E6 /* DataProtocol.swift */; };
 		929EF66D2CA0BA5E0051A3E6 /* ScheduledData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */; };
 		929EF66F2CA0BC2D0051A3E6 /* ScheduledRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */; };
 		929EF6712CA3676B0051A3E6 /* MMEXDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */; };
@@ -163,6 +163,12 @@
 		92F6862D2CF27C6B00171A6A /* BadgeCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6862C2CF27C6B00171A6A /* BadgeCount.swift */; };
 		92F6862F2CF27DD200171A6A /* TrackPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6862E2CF27DD200171A6A /* TrackPreference.swift */; };
 		92F686332CF297A000171A6A /* LoadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686322CF297A000171A6A /* LoadRepository.swift */; };
+		92F686382CF5BEE100171A6A /* DataId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686372CF5BEE100171A6A /* DataId.swift */; };
+		92F6863A2CF5BF5000171A6A /* EnumCollateNoCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686392CF5BF5000171A6A /* EnumCollateNoCase.swift */; };
+		92F6863C2CF5BFCC00171A6A /* DateStringProtocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6863B2CF5BFCC00171A6A /* DateStringProtocal.swift */; };
+		92F6863E2CF5C0CD00171A6A /* OptionalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6863D2CF5C0CD00171A6A /* OptionalNumber.swift */; };
+		92F686402CF5C4AD00171A6A /* PInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6863F2CF5C4AD00171A6A /* PInt.swift */; };
+		92F686422CF5C4F700171A6A /* PIntInf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686412CF5C4F700171A6A /* PIntInf.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
@@ -343,7 +349,7 @@
 		929EF6622C9FF3ED0051A3E6 /* AssetRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRepository.swift; sourceTree = "<group>"; };
 		929EF6642C9FF3FB0051A3E6 /* StockRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockRepository.swift; sourceTree = "<group>"; };
 		929EF6682CA034770051A3E6 /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		929EF66A2CA03AF90051A3E6 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		929EF66A2CA03AF90051A3E6 /* DataProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProtocol.swift; sourceTree = "<group>"; };
 		929EF66C2CA0BA5E0051A3E6 /* ScheduledData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledData.swift; sourceTree = "<group>"; };
 		929EF66E2CA0BC2D0051A3E6 /* ScheduledRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledRepository.swift; sourceTree = "<group>"; };
 		929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MMEXDocument.swift; sourceTree = "<group>"; };
@@ -378,6 +384,12 @@
 		92F6862C2CF27C6B00171A6A /* BadgeCount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCount.swift; sourceTree = "<group>"; };
 		92F6862E2CF27DD200171A6A /* TrackPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackPreference.swift; sourceTree = "<group>"; };
 		92F686322CF297A000171A6A /* LoadRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadRepository.swift; sourceTree = "<group>"; };
+		92F686372CF5BEE100171A6A /* DataId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataId.swift; sourceTree = "<group>"; };
+		92F686392CF5BF5000171A6A /* EnumCollateNoCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumCollateNoCase.swift; sourceTree = "<group>"; };
+		92F6863B2CF5BFCC00171A6A /* DateStringProtocal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateStringProtocal.swift; sourceTree = "<group>"; };
+		92F6863D2CF5C0CD00171A6A /* OptionalNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalNumber.swift; sourceTree = "<group>"; };
+		92F6863F2CF5C4AD00171A6A /* PInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PInt.swift; sourceTree = "<group>"; };
+		92F686412CF5C4F700171A6A /* PIntInf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIntInf.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
@@ -732,6 +744,19 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		92F686362CF5BECC00171A6A /* Primitive */ = {
+			isa = PBXGroup;
+			children = (
+				92F6863D2CF5C0CD00171A6A /* OptionalNumber.swift */,
+				92F6863F2CF5C4AD00171A6A /* PInt.swift */,
+				92F686412CF5C4F700171A6A /* PIntInf.swift */,
+				92F686372CF5BEE100171A6A /* DataId.swift */,
+				92F686392CF5BF5000171A6A /* EnumCollateNoCase.swift */,
+				92F6863B2CF5BFCC00171A6A /* DateStringProtocal.swift */,
+			);
+			path = Primitive;
+			sourceTree = "<group>";
+		};
 		A30061742CA3B57700011B1A /* Asset */ = {
 			isa = PBXGroup;
 			children = (
@@ -898,6 +923,7 @@
 		A3C142292C89751500D3CEC0 /* MMEX */ = {
 			isa = PBXGroup;
 			children = (
+				92F686362CF5BECC00171A6A /* Primitive */,
 				A3C142422C89B83A00D3CEC0 /* Data */,
 				A39B1B3F2C9A6741003E5562 /* Repository */,
 				A350BDBF2CA26195006669D5 /* ViewModel */,
@@ -924,7 +950,7 @@
 		A3C142422C89B83A00D3CEC0 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				929EF66A2CA03AF90051A3E6 /* Data.swift */,
+				929EF66A2CA03AF90051A3E6 /* DataProtocol.swift */,
 				A37E7D932C9B217500B4ECFC /* InfotableData.swift */,
 				A3C1424B2C8AB52600D3CEC0 /* CurrencyData.swift */,
 				920823F52CA498A200388AB2 /* CurrencyHistoryData.swift */,
@@ -1076,7 +1102,9 @@
 				A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */,
 				920824082CA4B05700388AB2 /* ScheduledSplitRepository.swift in Sources */,
 				929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */,
+				92F686402CF5C4AD00171A6A /* PInt.swift in Sources */,
 				92F685F92CF0CADF00171A6A /* BudgetPeriodGroup.swift in Sources */,
+				92F6863E2CF5C0CD00171A6A /* OptionalNumber.swift in Sources */,
 				A350BDC12CA26415006669D5 /* TransactionViewModel.swift in Sources */,
 				A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */,
 				925EAB972CCD846C003CEAB3 /* RepositoryEditView.swift in Sources */,
@@ -1102,6 +1130,7 @@
 				92F6861E2CF1427400171A6A /* ReportFormView.swift in Sources */,
 				929EF6652C9FF3FB0051A3E6 /* StockRepository.swift in Sources */,
 				92F685FD2CF0CD7400171A6A /* BudgetPeriodValidation.swift in Sources */,
+				92F6863C2CF5BFCC00171A6A /* DateStringProtocal.swift in Sources */,
 				925EABB82CD6FAC7003CEAB3 /* TransactionList.swift in Sources */,
 				A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */,
 				925EABBA2CD6FBF7003CEAB3 /* ScheduledList.swift in Sources */,
@@ -1140,12 +1169,13 @@
 				A3C1429A2C8FF77D00D3CEC0 /* TransactionDetailView.swift in Sources */,
 				924352F02CB061F10052E4BC /* FieldTheme.swift in Sources */,
 				920823FC2CA4A15C00388AB2 /* StockHistoryRepository.swift in Sources */,
+				92F686422CF5C4F700171A6A /* PIntInf.swift in Sources */,
 				92F685FF2CF0D55A00171A6A /* BudgetPeriodReload.swift in Sources */,
 				A3C142942C8FE13E00D3CEC0 /* PayeeRepository.swift in Sources */,
 				9243533F2CCD2FC90052E4BC /* StockSearch.swift in Sources */,
 				A3C1429E2C8FFCF100D3CEC0 /* TransactionAddView.swift in Sources */,
 				920824282CA60E8400388AB2 /* FieldData.swift in Sources */,
-				929EF66B2CA03AF90051A3E6 /* Data.swift in Sources */,
+				929EF66B2CA03AF90051A3E6 /* DataProtocol.swift in Sources */,
 				A3C142922C8FE11700D3CEC0 /* AccountRepository.swift in Sources */,
 				924353412CCD2FFA0052E4BC /* PayeeSearch.swift in Sources */,
 				924353272CCAD2780052E4BC /* LoadState.swift in Sources */,
@@ -1178,6 +1208,7 @@
 				9243530F2CC516B70052E4BC /* LoadMain.swift in Sources */,
 				92F686332CF297A000171A6A /* LoadRepository.swift in Sources */,
 				924353102CC516B70052E4BC /* LoadProtocol.swift in Sources */,
+				92F686382CF5BEE100171A6A /* DataId.swift in Sources */,
 				925EABAE2CCF8293003CEAB3 /* PayeeValidation.swift in Sources */,
 				9208242E2CA617FB00388AB2 /* FieldValueRepository.swift in Sources */,
 				9208241E2CA4E1C500388AB2 /* TransactionLinkRepository.swift in Sources */,
@@ -1255,6 +1286,7 @@
 				92F6860B2CF110D900171A6A /* ReportSearch.swift in Sources */,
 				92F686162CF11EF900171A6A /* BudgetPeriodFormView.swift in Sources */,
 				925EAB9F2CCDDD77003CEAB3 /* CategorySearch.swift in Sources */,
+				92F6863A2CF5BF5000171A6A /* EnumCollateNoCase.swift in Sources */,
 				924352EA2CAE1E480052E4BC /* StockFormView.swift in Sources */,
 				924352EB2CAE1E480052E4BC /* StockListView.swift in Sources */,
 				924353352CCD2DA90052E4BC /* StockGroup.swift in Sources */,

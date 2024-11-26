@@ -23,6 +23,12 @@ enum RepeatAuto: Int, CaseIterable, Identifiable, Codable {
     var name: String { Self.names[self.rawValue] }
 }
 
+enum RepeatKind: Int {
+    case times = 0
+    case inX
+    case everyX
+}
+
 enum RepeatType: Int, CaseIterable, Identifiable, Codable {
     case once = 0
     case weekly
@@ -42,7 +48,7 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
     case monthlyLastDay
     case monthlyLastBusinessDay
     static let defaultValue = Self.once
-
+    
     static let names = [
         "Once",
         "Weekly",
@@ -64,6 +70,12 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
     ]
     var id: Int { self.rawValue }
     var name: String { Self.names[self.rawValue] }
+
+    var kind: RepeatKind {
+        return if self == .inXDays || self == .inXMonths { .inX }
+        else if self == .everyXDays || self == .everyXMonths { .everyX }
+        else { .times }
+    }
 }
 
 struct ScheduledData: DataProtocol {
@@ -96,6 +108,29 @@ extension ScheduledData {
 
     mutating func copy() {
         id = .void
+    }
+}
+
+extension ScheduledData {
+    var repeatKind: RepeatKind {
+        repeatType.kind
+    }
+
+    var repeatIsValid: Bool {
+        if repeatType == .once { return true }
+        return switch repeatKind {
+        case .times: repeatNum > 0 || repeatNum == -1
+        case .inX, .everyX: repeatNum > 0
+        }
+    }
+
+    var repeatTimes: PIntInf? {
+        if repeatType == .once { return PIntInf(1) }
+        return switch repeatKind {
+        case .times: (repeatNum > 0 || repeatNum == -1) ? PIntInf(repeatNum) : nil
+        case .inX: repeatNum > 0 ? PIntInf(2) : nil
+        case .everyX: repeatNum > 0 ? PIntInf.inf : nil
+        }
     }
 }
 
