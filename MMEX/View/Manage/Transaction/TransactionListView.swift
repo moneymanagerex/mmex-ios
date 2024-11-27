@@ -19,9 +19,11 @@ struct TransactionListView: View {
     var body: some View {
         Group {
             List($vm.txns) { $txn in
-                NavigationLink(destination: TransactionDetailView(
-                    txn: $txn
-                ) ) {
+                NavigationLink(
+                    destination: TransactionDetailView(
+                        txn: $txn
+                    )
+                ) {
                     HStack {
                         // Left column: Date (truncated to day)
                         Text(formatDate(from: txn.transDate.string))
@@ -54,9 +56,10 @@ struct TransactionListView: View {
                     }
                 }
             }
+
             .toolbar {
                 // Year Picker
-                ToolbarItem(placement: .navigation) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Picker("Year", selection: $selectedYear) {
                         ForEach((2010...Calendar.current.component(.year, from: Date())).reversed(), id: \.self) { year in
                             Text(String(format: "%d", year)).tag(year) // Correct year format
@@ -68,7 +71,7 @@ struct TransactionListView: View {
                     }
                 }
 
-                ToolbarItem(placement: .navigation) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         isPresentingTransactionAddView = true
                     }, label: {
@@ -78,6 +81,17 @@ struct TransactionListView: View {
                 }
             }
         }
+
+        .sheet(isPresented: $isPresentingTransactionAddView) {
+            TransactionAddView(
+                newTxn: $newTxn,
+                isPresentingTransactionAddView: $isPresentingTransactionAddView
+            ) { newTxn in
+                vm.addTransaction(txn: &newTxn)
+                newTxn = TransactionData()
+            }
+        }
+
         .onAppear {
             log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
             Task {
@@ -87,15 +101,6 @@ struct TransactionListView: View {
                 }
             }
             loadSelectedTransactions()
-        }
-        .sheet(isPresented: $isPresentingTransactionAddView) {
-            TransactionAddView(
-                newTxn: $newTxn,
-                isPresentingTransactionAddView: $isPresentingTransactionAddView
-            ) { newTxn in
-                vm.addTransaction(txn: &newTxn)
-                newTxn = TransactionData()
-            }
         }
     }
 
@@ -137,7 +142,7 @@ struct TransactionListView: View {
 }
 
 #Preview {
-    MMEXPreview.sampleManage {
+    MMEXPreview.sampleManage { pref, vm in
         TransactionListView()
     }
 }

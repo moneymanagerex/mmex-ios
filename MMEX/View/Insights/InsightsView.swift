@@ -96,7 +96,9 @@ struct InsightsView: View {
             .padding(.horizontal)
             .padding(.top, 10) // Reduce the top padding for less space at the top
         }
-        .navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
+
+        //.navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
+
         .task {
             log.debug("DEBUG: InsightsView.onAppear(main=\(Thread.isMainThread))")
             await vm.loadInsightsList(pref)
@@ -106,13 +108,9 @@ struct InsightsView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
+    MMEXPreview.sample { pref, vm in NavigationView {
         InsightsView(
         )
         .navigationBarTitle("Insights", displayMode: .inline)
-    }
-    .environmentObject(pref)
-    .environmentObject(vm)
+    } }
 }

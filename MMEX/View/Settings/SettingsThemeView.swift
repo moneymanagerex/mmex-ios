@@ -20,7 +20,8 @@ struct SettingsThemeView: View {
         "Item Layout"  : true,
         "Field Layout" : true,
     ]
-    @FocusState private var categoryDelimiterFocus: Bool
+
+    @FocusState private var focus: Int?
 
     let accentColor = Color.green
 
@@ -57,9 +58,9 @@ struct SettingsThemeView: View {
                     Spacer()
                     TextField("Default is ':'", text: $categoryDelimiter)
                         .keyboardType(pref.theme.textPad)
-                        .focused($categoryDelimiterFocus)
-                        .onChange(of: categoryDelimiterFocus) {
-                            if !categoryDelimiterFocus { currencyDelimiterUpdate() }
+                        .focused($focus, equals: 1)
+                        .onChange(of: focus) {
+                            if focus == nil { currencyDelimiterUpdate() }
                         }
                         .textInputAutocapitalization(.never)
                         // problem: trailing space is not visible
@@ -202,17 +203,15 @@ struct SettingsThemeView: View {
                 }
             }
         }
-        .navigationTitle("Theme")
         .listSectionSpacing(10)
+
         .scrollDismissesKeyboard(.immediately)
         .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") {
-                    hideKeyboard()
-                }
+            ToolbarItem(placement: .confirmationAction) {
+                KeyboardState(focus: $focus)
             }
         }
+
         .onAppear {
             categoryDelimiter = pref.theme.categoryDelimiter
         }
@@ -234,10 +233,10 @@ struct SettingsThemeView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    SettingsThemeView(
-    )
-    .environmentObject(pref)
-    .environmentObject(vm)
+    MMEXPreview.sample { pref, vm in NavigationView {
+        SettingsThemeView(
+        )
+        .navigationTitle("Theme")
+        .navigationBarTitle("Settings", displayMode: .inline)
+    } }
 }

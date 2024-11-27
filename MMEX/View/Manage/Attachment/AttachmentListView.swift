@@ -72,7 +72,7 @@ struct AttachmentListView: View {
 }
 
 #Preview {
-    MMEXPreview.sampleManage {
+    MMEXPreview.sampleManage { pref, vm in
         AttachmentListView()
     }
 }

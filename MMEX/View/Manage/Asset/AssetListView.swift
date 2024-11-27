@@ -73,7 +73,7 @@ struct AssetListView: View {
 }
 
 #Preview {
-    MMEXPreview.sampleManage {
+    MMEXPreview.sampleManage { pref, vm in
         AssetListView()
     }
 }

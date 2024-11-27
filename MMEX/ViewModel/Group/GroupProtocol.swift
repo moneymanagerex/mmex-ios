@@ -84,7 +84,7 @@ extension ViewModel {
         else if MainRepository.self == R.self  { reportGroup.unload() }
     }
 
-    func unloadGroup() {
+    func unloadAllGroup() {
         currencyGroup.unload()
         accountGroup.unload()
         assetGroup.unload()
@@ -100,7 +100,7 @@ extension ViewModel {
     }
 
     func unloadAll() {
-        unloadGroup()
-        unloadList()
+        unloadAllGroup()
+        unloadAllList()
     }
 }

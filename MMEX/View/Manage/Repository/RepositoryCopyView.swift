@@ -70,9 +70,9 @@ struct RepositoryCopyView<
         }
     }
 }
-
+/*
 #Preview(AccountData.sampleData[0].name) {
-    MMEXPreview.sample {
+    MMEXPreview.sample { pref, vm in
         let data = AccountData.sampleData[0]
         let formView = { $data, edit in AccountFormView(
             data: $data,
@@ -88,3 +88,4 @@ struct RepositoryCopyView<
         )
     }
 }
+*/

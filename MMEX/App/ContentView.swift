@@ -131,7 +131,7 @@ struct ContentView: View {
         NavigationView {
             if selectedTab == 0 {
                 JournalView()
-                    .navigationBarTitle("Latest Transactions", displayMode: .inline)
+                    .navigationBarTitle("Journal", displayMode: .inline)
             }
         }
         .tabItem {
@@ -238,7 +238,7 @@ struct SidebarView: View {
     var body: some View {
         List {
             Button(action: { selectedTab = 0 }) {
-                Label("Checking", systemImage: "list.bullet")
+                Label("Journal", systemImage: "list.bullet")
             }
             Button(action: { selectedTab = 1 }) {
                 Label("Insights", systemImage: "arrow.up.right")
@@ -273,13 +273,13 @@ struct TabContentView: View {
             switch selectedTab {
             case 0:
                 JournalView() // Summary and Edit feature
-                    .navigationBarTitle("Latest Transactions", displayMode: .inline)
+                    .navigationBarTitle("Journal", displayMode: .inline)
             case 1:
                 InsightsView()
-                    .navigationBarTitle("Reports and Insights", displayMode: .inline)
+                    .navigationBarTitle("Insights", displayMode: .inline)
             case 2:
                 EnterView(selectedTab: $selectedTab)
-                    .navigationBarTitle("Enter Transaction", displayMode: .inline)
+                    .navigationBarTitle("Enter", displayMode: .inline)
             case 3:
                 ManageView(
                     isDocumentPickerPresented: $isDocumentPickerPresented,
@@ -299,25 +299,8 @@ struct TabContentView: View {
 }
 
 #Preview() {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    ContentView(
-    )
-    .environmentObject(pref)
-    .environmentObject(vm)
-}
-
-@MainActor
-struct MMEXPreview {
-    @ViewBuilder
-    static func sample<Content: View>(
-        @ViewBuilder content: @escaping () -> Content
-    ) -> some View {
-        let pref = Preference()
-        let vm = ViewModel.sampleData
-        content()
-            .environmentObject(pref)
-            .environmentObject(vm)
+    MMEXPreview.sample { pref, vm in
+        ContentView(
+        )
     }
-
 }

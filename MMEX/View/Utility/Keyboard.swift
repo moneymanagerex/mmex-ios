@@ -14,6 +14,21 @@ extension View {
     }
 }
 
+struct KeyboardState: View {
+    var focus: FocusState<Int?>.Binding
+
+    var body: some View {
+        Button(action: {
+            focus.wrappedValue = nil
+        }, label: {
+            Image(systemName: "keyboard.chevron.compact.down")
+                .font(.footnote)
+            //.imageScale(.small)
+        } )
+        .disabled(focus.wrappedValue == nil)
+    }
+}
+
 struct CustomNumberPadView: View {
     @Binding var input: String
     

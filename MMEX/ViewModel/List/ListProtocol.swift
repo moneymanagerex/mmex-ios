@@ -101,7 +101,7 @@ extension ViewModel {
         else if MainRepository.self == R.self  { await loadReportList(pref) }
     }
 
-    func loadList(_ pref: Preference) async {
+    func loadAllList(_ pref: Preference) async {
         await loadInfotableList(pref)
         await loadCurrencyList(pref)
         await loadAccountList(pref)
@@ -138,7 +138,7 @@ extension ViewModel {
         else if MainRepository.self == R.self  { reportList.unloadAll() }
     }
 
-    func unloadList() {
+    func unloadAllList() {
         infotableList.unloadAll()
         currencyList.unloadAll()
         accountList.unloadAll()

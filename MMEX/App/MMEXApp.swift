@@ -46,3 +46,17 @@ struct MMEXApp: App {
         }
     }
 }
+
+@MainActor
+struct MMEXPreview {
+    @ViewBuilder
+    static func sample<Content: View>(
+        @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
+    ) -> some View {
+        let pref = Preference()
+        let vm = ViewModel.sampleData
+        content(pref, vm)
+            .environmentObject(pref)
+            .environmentObject(vm)
+    }
+}

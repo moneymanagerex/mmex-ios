@@ -212,13 +212,9 @@ struct JournalView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
+    MMEXPreview.sample { pref, vm in NavigationView {
         JournalView(
         )
-        .navigationBarTitle("Latest Transactions", displayMode: .inline)
-    }
-    .environmentObject(pref)
-    .environmentObject(vm)
+        .navigationBarTitle("Journal", displayMode: .inline)
+    } }
 }
