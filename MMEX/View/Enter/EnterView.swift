@@ -22,16 +22,17 @@ struct EnterView: View {
             )
         }
         .padding()
+
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Dismiss") {
+                Button("Cancel") {
                     dismiss()
                     selectedTab = Preference.selectedTab
                     newTxn = TransactionData()
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("Add") {
+                Button("Done") {
                     vm.addTransaction(txn: &newTxn)
                     dismiss()
                     selectedTab = Preference.selectedTab

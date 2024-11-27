@@ -23,48 +23,46 @@ struct RepositoryCopyView<
     @State private var alertMessage: String?
 
     var body: some View {
-        NavigationView {
-            Form {
-                formView($data, true)
+        Form {
+            formView($data, true)
+        }
+        .textSelection(.enabled)
+        .scrollDismissesKeyboard(.immediately)
+        
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") {
+                    isPresented = false
+                }
             }
-            .textSelection(.enabled)
-            .scrollDismissesKeyboard(.immediately)
-            .navigationBarTitle("Copy", displayMode: .inline)
-
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    if let updateError = data.update(vm) {
+                        alertMessage = updateError
+                        alertIsPresented = true
+                    } else {
+                        newData = data
                         isPresented = false
-                    }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        if let updateError = data.update(vm) {
-                            alertMessage = updateError
-                            alertIsPresented = true
-                        } else {
-                            newData = data
-                            isPresented = false
-                            if let dismiss { dismiss() }
-                        }
-                    }
-                }
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("Done") {
-                        hideKeyboard()
+                        if let dismiss { dismiss() }
                     }
                 }
             }
-
-            .alert(isPresented: $alertIsPresented) {
-                Alert(
-                    title: Text("Error"),
-                    message: Text(alertMessage!),
-                    dismissButton: .default(Text("OK"))
-                )
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    hideKeyboard()
+                }
             }
         }
+        
+        .alert(isPresented: $alertIsPresented) {
+            Alert(
+                title: Text("Error"),
+                message: Text(alertMessage!),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+
         .onAppear {
             data.copy()
         }

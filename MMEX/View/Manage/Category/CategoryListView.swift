@@ -159,13 +159,16 @@ struct CategoryListView: View {
         }
 
         .sheet(isPresented: $createSheetIsPresented) {
-            RepositoryCreateView(
-                features: Self.features,
-                data: Self.initData,
-                newData: $newData,
-                isPresented: $createSheetIsPresented,
-                formView: formView
-            )
+            NavigationView {
+                RepositoryCreateView(
+                    features: Self.features,
+                    data: Self.initData,
+                    newData: $newData,
+                    isPresented: $createSheetIsPresented,
+                    formView: formView
+                )
+                .navigationBarTitle("Create", displayMode: .inline)
+            }
             .onDisappear {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryCreateView.onDisappear()")
@@ -180,13 +183,16 @@ struct CategoryListView: View {
         .sheet(isPresented: $editSheetIsPresented) {
             let data = listData?[editDataId] ?? Self.initData
             //let _ = print("DEBUG: editSheetIsPresented: \(editDataId.value)")
-            RepositoryEditView(
-                features: Self.features,
-                data: data,
-                newData: $newData,
-                isPresented: $editSheetIsPresented,
-                formView: formView
-            )
+            NavigationView {
+                RepositoryEditView(
+                    features: Self.features,
+                    data: data,
+                    newData: $newData,
+                    isPresented: $editSheetIsPresented,
+                    formView: formView
+                )
+                .navigationBarTitle("Edit", displayMode: .inline)
+            }
             .onDisappear {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryEditView.onDisappear")
@@ -200,13 +206,16 @@ struct CategoryListView: View {
 
         .sheet(isPresented: $copySheetIsPresented) {
             let data = listData?[copyDataId] ?? Self.initData
-            RepositoryCopyView(
-                features: Self.features,
-                data: data,
-                newData: $newData,
-                isPresented: $copySheetIsPresented,
-                formView: formView
-            )
+            NavigationView {
+                RepositoryCopyView(
+                    features: Self.features,
+                    data: data,
+                    newData: $newData,
+                    isPresented: $copySheetIsPresented,
+                    formView: formView
+                )
+                .navigationBarTitle("Copy", displayMode: .inline)
+            }
             .onDisappear {
                 guard newData != nil else { return }
                 log.debug("DEBUG: CategoryListView.RepositoryCopyView.onDisappear")

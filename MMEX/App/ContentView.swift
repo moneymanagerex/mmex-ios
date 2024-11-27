@@ -126,7 +126,6 @@ struct ContentView: View {
         }
     }
 
-    // Transaction tab
     private func journalTab() -> some View {
         NavigationView {
             if selectedTab == 0 {
@@ -140,7 +139,6 @@ struct ContentView: View {
         .tag(0)
     }
 
-    // Insights tab
     private func insightsTab() -> some View {
         NavigationView {
             if selectedTab == 1 {
@@ -154,11 +152,10 @@ struct ContentView: View {
         .tag(1)
     }
 
-    // Add transaction tab
     private func enterTab() -> some View {
         NavigationView {
             EnterView(selectedTab: $selectedTab)
-            // .navigationBarTitle("Enter Transaction", displayMode: .inline)
+                .navigationBarTitle("Enter", displayMode: .inline)
         }
         .tabItem {
             pref.theme.tab.iconText(icon: "plus.circle", text: "Enter")
@@ -166,7 +163,6 @@ struct ContentView: View {
         .tag(2)
     }
 
-    // Management tab
     private func manageTab() -> some View {
         // note: NavigationStack and @Environment(\.dismiss) hands the app
         NavigationView {

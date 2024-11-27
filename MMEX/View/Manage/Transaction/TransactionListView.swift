@@ -83,12 +83,14 @@ struct TransactionListView: View {
         }
 
         .sheet(isPresented: $isPresentingTransactionAddView) {
-            TransactionAddView(
-                newTxn: $newTxn,
-                isPresentingTransactionAddView: $isPresentingTransactionAddView
-            ) { newTxn in
-                vm.addTransaction(txn: &newTxn)
-                newTxn = TransactionData()
+            NavigationView {
+                TransactionAddView(
+                    newTxn: $newTxn,
+                    isPresentingTransactionAddView: $isPresentingTransactionAddView
+                ) { newTxn in
+                    vm.addTransaction(txn: &newTxn)
+                    newTxn = TransactionData()
+                }
             }
         }
 
