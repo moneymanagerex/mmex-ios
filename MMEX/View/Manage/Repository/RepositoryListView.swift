@@ -171,13 +171,16 @@ where GroupType.MainRepository == ListType.MainRepository,
         }
 
         .sheet(isPresented: $createSheetIsPresented) {
-            RepositoryCreateView(
-                features: features,
-                data: initData,
-                newData: $newData,
-                isPresented: $createSheetIsPresented,
-                formView: formView
-            )
+            NavigationView {
+                RepositoryCreateView(
+                    features: features,
+                    data: initData,
+                    newData: $newData,
+                    isPresented: $createSheetIsPresented,
+                    formView: formView
+                )
+                .navigationBarTitle("Create", displayMode: .inline)
+            }
             .onDisappear {
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryCreateView.onDisappear()")
@@ -191,13 +194,16 @@ where GroupType.MainRepository == ListType.MainRepository,
 
         .sheet(isPresented: $editSheetIsPresented) {
             let data = vmList.data.value[editDataId] ?? initData
-            RepositoryEditView(
-                features: features,
-                data: data,
-                newData: $newData,
-                isPresented: $editSheetIsPresented,
-                formView: formView
-            )
+            NavigationView {
+                RepositoryEditView(
+                    features: features,
+                    data: data,
+                    newData: $newData,
+                    isPresented: $editSheetIsPresented,
+                    formView: formView
+                )
+                .navigationBarTitle("Edit", displayMode: .inline)
+            }
             .onDisappear {
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryEditView.onDisappear")
@@ -211,13 +217,16 @@ where GroupType.MainRepository == ListType.MainRepository,
 
         .sheet(isPresented: $copySheetIsPresented) {
             let data = vmList.data.value[copyDataId] ?? initData
-            RepositoryCopyView(
-                features: features,
-                data: data,
-                newData: $newData,
-                isPresented: $copySheetIsPresented,
-                formView: formView
-            )
+            NavigationView {
+                RepositoryCopyView(
+                    features: features,
+                    data: data,
+                    newData: $newData,
+                    isPresented: $copySheetIsPresented,
+                    formView: formView
+                )
+                .navigationBarTitle("Copy", displayMode: .inline)
+            }
             .onDisappear {
                 guard newData != nil else { return }
                 log.debug("DEBUG: RepositoryListView.RepositoryCopyView.onDisappear")

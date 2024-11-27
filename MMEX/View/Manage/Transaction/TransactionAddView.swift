@@ -15,23 +15,22 @@ struct TransactionAddView: View {
     var onSave: (inout TransactionData) -> Void
     
     var body: some View {
-        NavigationStack {
-            EnterFormView(
-                txn: $newTxn
-            )
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Dismiss") {
-                        isPresentingTransactionAddView = false
-                    }
+        EnterFormView(
+            txn: $newTxn
+        )
+    
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") {
+                    isPresentingTransactionAddView = false
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
-                        isPresentingTransactionAddView = false
-                        onSave(&newTxn)
-                    }
-                    .disabled(!newTxn.isValid)
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    isPresentingTransactionAddView = false
+                    onSave(&newTxn)
                 }
+                .disabled(!newTxn.isValid)
             }
         }
     }

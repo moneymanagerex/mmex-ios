@@ -56,6 +56,7 @@ struct RepositoryReadView<
                     }
                 } label: {
                     Image(systemName: "square.and.arrow.up")
+                        .font(.footnote)
                 }
             }
 
@@ -63,7 +64,8 @@ struct RepositoryReadView<
                 Button {
                     copySheetIsPresented = true
                 } label: {
-                    Label("Copy", systemImage: "doc.on.doc")
+                    Image(systemName: "doc.on.doc")
+                        .font(.footnote)
                 }
             }
 
@@ -71,31 +73,38 @@ struct RepositoryReadView<
                 Button {
                     editSheetIsPresented = true
                 } label: {
-                    Label("Edit", systemImage: "square.and.pencil")
+                    Image(systemName: "square.and.pencil")
+                        .font(.footnote)
                 }
             }
         }
 
         .sheet(isPresented: $editSheetIsPresented) {
-            RepositoryEditView(
-                features: features,
-                data: data,
-                newData: $newData,
-                isPresented: $editSheetIsPresented,
-                dismiss: dismiss,
-                formView: formView
-            )
+            NavigationView {
+                RepositoryEditView(
+                    features: features,
+                    data: data,
+                    newData: $newData,
+                    isPresented: $editSheetIsPresented,
+                    dismiss: dismiss,
+                    formView: formView
+                )
+                .navigationBarTitle("Edit", displayMode: .inline)
+            }
         }
 
         .sheet(isPresented: $copySheetIsPresented) {
-            RepositoryCopyView(
-                features: features,
-                data: data,
-                newData: $newData,
-                isPresented: $copySheetIsPresented,
-                dismiss: dismiss,
-                formView: formView
-            )
+            NavigationView {
+                RepositoryCopyView(
+                    features: features,
+                    data: data,
+                    newData: $newData,
+                    isPresented: $copySheetIsPresented,
+                    dismiss: dismiss,
+                    formView: formView
+                )
+                .navigationBarTitle("Copy", displayMode: .inline)
+            }
         }
 
         .fileExporter(

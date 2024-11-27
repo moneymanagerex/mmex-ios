@@ -102,11 +102,8 @@ struct TransactionDetailView: View {
             }
         }
         .textSelection(.enabled)
+
         .toolbar {
-            Button("Edit") {
-                isPresentingEditView = true
-                editingTxn = txn
-            }
             // Export button for pasteboard and external storage
             Menu {
                 Button("Copy to Clipboard") {
@@ -117,32 +114,42 @@ struct TransactionDetailView: View {
                 }
             } label: {
                 Image(systemName: "square.and.arrow.up")
+                    .font(.footnote)
+            }
+            Button {
+                isPresentingEditView = true
+                editingTxn = txn
+            } label: {
+                Image(systemName: "square.and.pencil")
+                    .font(.footnote)
             }
         }
+
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
                 EnterFormView(
                     txn: $editingTxn
                 )
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") {
-                                isPresentingEditView = false
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") {
-                                isPresentingEditView = false
-                                txn = editingTxn
-                                if (vm.updateTransaction(&txn) == false) {
-                                    // TODO
-                                }
-                            }
-                            .disabled(!editingTxn.isValid)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            isPresentingEditView = false
                         }
                     }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            isPresentingEditView = false
+                            txn = editingTxn
+                            if (vm.updateTransaction(&txn) == false) {
+                                // TODO
+                            }
+                        }
+                        .disabled(!editingTxn.isValid)
+                    }
+                }
             }
         }
+
         .fileExporter(
             isPresented: $isExporting,
             document: ExportableEntityDocument(entity: txn),
