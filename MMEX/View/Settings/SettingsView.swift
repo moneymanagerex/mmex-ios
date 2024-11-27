@@ -25,7 +25,9 @@ struct SettingsView: View {
             groupTheme.section(
                 nameView: { Text("App Settings") }
             ) {
-                NavigationLink(destination: SettingsThemeView()) {
+                NavigationLink(destination: SettingsThemeView()
+                    .navigationTitle("Theme")
+                ) {
                     Text("Theme")
                 }
                 
@@ -236,13 +238,9 @@ struct SettingsView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
+    MMEXPreview.sample { pref, vm in NavigationView {
         SettingsView(
         )
         .navigationBarTitle("Settings", displayMode: .inline)
-    }
-    .environmentObject(pref)
-    .environmentObject(vm)
+    } }
 }

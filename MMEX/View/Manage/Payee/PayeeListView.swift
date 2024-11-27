@@ -68,7 +68,7 @@ struct PayeeListView: View {
 }
 
 #Preview {
-    MMEXPreview.sampleManage {
+    MMEXPreview.sampleManage { pref, vm in
         PayeeListView()
     }
 }

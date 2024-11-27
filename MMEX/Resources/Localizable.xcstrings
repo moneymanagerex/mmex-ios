@@ -260,9 +260,6 @@
     "Category:" : {
 
     },
-    "Checking" : {
-
-    },
     "Coming soon ..." : {
 
     },
@@ -534,6 +531,7 @@
 
     },
     "Enter Transaction" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -684,10 +682,10 @@
     "Item Name" : {
 
     },
-    "Last updated: September 18, 2024" : {
+    "Journal" : {
 
     },
-    "Latest Transactions" : {
+    "Last updated: September 18, 2024" : {
 
     },
     "Legal" : {
@@ -870,6 +868,7 @@
       }
     },
     "Reports and Insights" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {

@@ -121,9 +121,9 @@ struct RepositoryReadView<
         }
     }
 }
-
+/*
 #Preview(AccountData.sampleData[0].name) {
-    MMEXPreview.sampleManage {
+    MMEXPreview.sampleManage {  pref, vm in
         let formView = { $data, edit in AccountFormView(
             data: $data,
             edit: edit
@@ -139,3 +139,4 @@ struct RepositoryReadView<
         .navigationTitle(AccountData.dataName.1)
     }
 }
+*/

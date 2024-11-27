@@ -416,7 +416,7 @@ class RepositorySearchDebounce: ObservableObject {
 }
 
 #Preview("Account") {
-    MMEXPreview.sampleManage {
+    MMEXPreview.sampleManage { pref, vm in
         AccountListView()
     }
 }

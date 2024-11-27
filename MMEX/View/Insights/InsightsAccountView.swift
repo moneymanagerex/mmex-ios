@@ -136,6 +136,7 @@ struct InsightsAccountView: View {
         .padding(.bottom, 8)
         .background(Color(.systemGray5))
         .cornerRadius(8)
+
         .onAppear {
             for accountType in Self.typeOrder {
                 expandedSections[accountType] = true
@@ -145,16 +146,19 @@ struct InsightsAccountView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationStack {
+    MMEXPreview.sample { pref, vm in NavigationView {
         ScrollView {
-            InsightsAccountView(
-                statusChoice: .constant(0)
-            )
+            Section(header: Text(InsightsAccountView.statusChoices[0].0)) {
+                InsightsAccountView(
+                    statusChoice: .constant(0)
+                )
+            }
+            .padding()
         }
-        .navigationBarTitleDisplayMode(.inline)
-    }
-    .environmentObject(pref)
-    .environmentObject(vm)
+        .task {
+            await vm.loadInsightsList(pref)
+            vm.loadInsights()
+        }
+        .navigationBarTitle("Insights", displayMode: .inline)
+    } }
 }

@@ -64,7 +64,7 @@ struct FieldListView: View {
 }
 
 #Preview {
-    MMEXPreview.sampleManage {
+    MMEXPreview.sampleManage { pref, vm in
         FieldListView()
     }
 }

@@ -36,42 +36,42 @@ struct ManageView: View {
             groupTheme.section(
                 nameView: { Text("Data") }
             ) {
-                NavigationLink(destination: AccountListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(AccountData.dataName.1) },
-                        count: vm.accountList.count
-                    )
-                }
-                NavigationLink(destination: AssetListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(AssetData.dataName.1) },
-                        count: vm.assetList.count
-                    )
-                }
-                NavigationLink(destination: StockListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(StockData.dataName.1) },
-                        count: vm.stockList.count
-                    )
-                }
-                NavigationLink(destination: CategoryListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(CategoryData.dataName.1) },
-                        count: vm.categoryList.count
-                    )
-                }
-                NavigationLink(destination: PayeeListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(PayeeData.dataName.1) },
-                        count: vm.payeeList.count
-                    )
-                }
-                NavigationLink(destination: TransactionListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(TransactionData.dataName.1) },
-                        count: vm.transactionList.count
-                    )
-                }
+                NavigationLink(
+                    destination: AccountListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(AccountData.dataName.1) },
+                    count: vm.accountList.count
+                ) }
+                NavigationLink(
+                    destination: AssetListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(AssetData.dataName.1) },
+                    count: vm.assetList.count
+                ) }
+                NavigationLink(
+                    destination: StockListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(StockData.dataName.1) },
+                    count: vm.stockList.count
+                ) }
+                NavigationLink(
+                    destination: CategoryListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(CategoryData.dataName.1) },
+                    count: vm.categoryList.count
+                ) }
+                NavigationLink(
+                    destination: PayeeListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(PayeeData.dataName.1) },
+                    count: vm.payeeList.count
+                ) }
+                NavigationLink(
+                    destination: TransactionListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(TransactionData.dataName.1) },
+                    count: vm.transactionList.count
+                ) }
             }
 
             groupTheme.section(
@@ -79,48 +79,48 @@ struct ManageView: View {
                 count: (pref.theme.group.showCount.asBool && !auxDataIsExpanded ? auxSum : nil),
                 isExpanded: $auxDataIsExpanded
             ) {
-                NavigationLink(destination: CurrencyListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(CurrencyData.dataName.1) },
-                        count: vm.currencyList.count
-                    )
-                }
-                NavigationLink(destination: TagListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(TagData.dataName.1) },
-                        count: vm.tagList.count
-                    )
-                }
-                NavigationLink(destination: FieldListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(FieldData.dataName.1) },
-                        count: vm.fieldList.count
-                    )
-                }
-                NavigationLink(destination: AttachmentListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(AttachmentData.dataName.1) },
-                        count: vm.attachmentList.count
-                    )
-                }
-                NavigationLink(destination: BudgetPeriodListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(BudgetPeriodData.dataName.1) },
-                        count: vm.budgetPeriodList.count
-                    )
-                }
-                NavigationLink(destination: BudgetListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(BudgetData.dataName.1) },
-                        count: vm.budgetList.count
-                    )
-                }
-                NavigationLink(destination: ReportListView()) {
-                    pref.theme.group.manageItem(
-                        nameView: { Text(ReportData.dataName.1) },
-                        count: vm.reportList.count
-                    )
-                }
+                NavigationLink(
+                    destination: CurrencyListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(CurrencyData.dataName.1) },
+                    count: vm.currencyList.count
+                ) }
+                NavigationLink(
+                    destination: TagListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(TagData.dataName.1) },
+                    count: vm.tagList.count
+                ) }
+                NavigationLink(
+                    destination: FieldListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(FieldData.dataName.1) },
+                    count: vm.fieldList.count
+                ) }
+                NavigationLink(
+                    destination: AttachmentListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(AttachmentData.dataName.1) },
+                    count: vm.attachmentList.count
+                ) }
+                NavigationLink(
+                    destination: BudgetPeriodListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(BudgetPeriodData.dataName.1) },
+                    count: vm.budgetPeriodList.count
+                ) }
+                NavigationLink(
+                    destination: BudgetListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(BudgetData.dataName.1) },
+                    count: vm.budgetList.count
+                ) }
+                NavigationLink(
+                    destination: ReportListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(ReportData.dataName.1) },
+                    count: vm.reportList.count
+                ) }
                 /*
                 Text("More coming soon ...")
                     .foregroundColor(.accentColor)
@@ -168,7 +168,7 @@ struct ManageView: View {
         }
         
         .refreshable {
-            vm.unloadList()
+            vm.unloadAllList()
             await vm.loadManageList(pref)
         }
     }
@@ -190,15 +190,14 @@ struct ManageView: View {
 }
 
 #Preview {
-    MMEXPreview.sample {
-        NavigationStack {
+    MMEXPreview.sample { pref, vm in
+        NavigationView {
             ManageView(
                 isDocumentPickerPresented: .constant(false),
                 isNewDocumentPickerPresented: .constant(false),
                 isSampleDocument: .constant(false)
             )
-            .navigationTitle("Manage")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitle("Manage", displayMode: .inline)
         }
     }
 }
@@ -206,14 +205,12 @@ struct ManageView: View {
 extension MMEXPreview {
     @ViewBuilder
     static func sampleManage<Content: View>(
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
     ) -> some View {
-        MMEXPreview.sample {
+        MMEXPreview.sample { pref, vm in
             NavigationView {
-                content()
+                content(pref, vm)
                     .navigationBarTitle("Manage", displayMode: .inline)
-                    //.navigationTitle("Manage")
-                    //.navigationBarTitleDisplayMode(.inline)
             }
         }
     }
