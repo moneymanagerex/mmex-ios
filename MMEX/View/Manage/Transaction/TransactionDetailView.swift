@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct TransactionDetailView: View {
+    @Environment(\.presentationMode) var presentationMode // To dismiss the view
     @EnvironmentObject var vm: ViewModel
     @Binding var txn: TransactionData
 
     @State private var editingTxn = TransactionData()
-    @State private var isPresentingEditView = false
-    @Environment(\.presentationMode) var presentationMode // To dismiss the view
-    
+    @State private var focus = false
+
+    @State private var editSheetIsPresented = false
     @State private var isExporting = false
 
     var body: some View {
@@ -117,7 +118,7 @@ struct TransactionDetailView: View {
                     .font(.footnote)
             }
             Button {
-                isPresentingEditView = true
+                editSheetIsPresented = true
                 editingTxn = txn
             } label: {
                 Image(systemName: "square.and.pencil")
@@ -125,28 +126,13 @@ struct TransactionDetailView: View {
             }
         }
 
-        .sheet(isPresented: $isPresentingEditView) {
-            NavigationStack {
-                EnterFormView(
-                    txn: $editingTxn
+        .sheet(isPresented: $editSheetIsPresented) {
+            NavigationView {
+                TransactionEditView(
+                    isPresented: $editSheetIsPresented,
+                    txn: $txn,
+                    editingTxn: $editingTxn
                 )
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
-                            isPresentingEditView = false
-                        }
-                    }
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
-                            isPresentingEditView = false
-                            txn = editingTxn
-                            if (vm.updateTransaction(&txn) == false) {
-                                // TODO
-                            }
-                        }
-                        .disabled(!editingTxn.isValid)
-                    }
-                }
             }
         }
 

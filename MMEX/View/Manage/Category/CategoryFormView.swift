@@ -10,8 +10,11 @@ import SwiftUI
 struct CategoryFormView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @Binding var focus: Bool
     @Binding var data: CategoryData
     @State var edit: Bool
+
+    @FocusState var focusState: Int?
 
     var categoryPath : [DataId: String]? { vm.categoryList.evalPath.readyValue }
     var categoryTree : CategoryListTree? { vm.categoryList.evalTree.readyValue }
@@ -24,43 +27,53 @@ struct CategoryFormView: View {
     }
 
     var body: some View {
-        Section {
-            if let categoryPath, let categoryOrder = categoryTree?.order {
-                // TODO: hierarchical picker
-                pref.theme.field.view(edit, "Parent Category", editView: {
-                    Picker("", selection: $data.parentId) {
-                        Text("(none)").tag(DataId.void)
-                        ForEach(categoryOrder.indices, id: \.self) { i in
-                            let node = categoryOrder[i]
-                            if isDescendant(i) == false {
-                                Text(categoryPath[node.dataId] ?? "").tag(node.dataId)
+        Group {
+            Section {
+                if let categoryPath, let categoryOrder = categoryTree?.order {
+                    // TODO: hierarchical picker
+                    pref.theme.field.view(edit, "Parent Category", editView: {
+                        Picker("", selection: $data.parentId) {
+                            Text("(none)").tag(DataId.void)
+                            ForEach(categoryOrder.indices, id: \.self) { i in
+                                let node = categoryOrder[i]
+                                if isDescendant(i) == false {
+                                    Text(categoryPath[node.dataId] ?? "").tag(node.dataId)
+                                }
                             }
                         }
-                    }
+                    }, showView: {
+                        pref.theme.field.valueOrHint("(none)", text: categoryPath[data.parentId])
+                    } )
+                }
+                
+                pref.theme.field.view(edit, "Name", editView: {
+                    TextField("Shall not be empty!", text: $data.name)
+                        .focused($focusState, equals: 1)
+                        .keyboardType(pref.theme.textPad)
+                        .textInputAutocapitalization(.words)
                 }, showView: {
-                    pref.theme.field.valueOrHint("(none)", text: categoryPath[data.parentId])
+                    pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
+                } )
+                
+                pref.theme.field.view(edit, true, "Active", editView: {
+                    Toggle(isOn: $data.active) { }
+                }, showView: {
+                    Text(data.active ? "Yes" : "No")
                 } )
             }
-
-            pref.theme.field.view(edit, "Name", editView: {
-                TextField("Shall not be empty!", text: $data.name)
-                    .keyboardType(pref.theme.textPad)
-                    .textInputAutocapitalization(.words)
-            }, showView: {
-                pref.theme.field.valueOrError("Shall not be empty!", text: data.name)
-            } )
-            
-            pref.theme.field.view(edit, true, "Active", editView: {
-                Toggle(isOn: $data.active) { }
-            }, showView: {
-                Text(data.active ? "Yes" : "No")
-            } )
+        }
+        .onChange(of: focusState) {
+            if focusState != nil { focus = true }
+        }
+        .onChange(of: focus) {
+            if focus == false { focusState = nil }
         }
     }
 }
 
 #Preview("\(CategoryData.sampleData[1].name) (show)") {
     MMEXPreview.repositoryEdit { CategoryFormView(
+        focus: .constant(false),
         data: .constant(CategoryData.sampleData[0]),
         edit: false
     ) }
@@ -68,6 +81,7 @@ struct CategoryFormView: View {
 
 #Preview("\(CategoryData.sampleData[1].name) (edit)") {
     MMEXPreview.repositoryEdit { CategoryFormView(
+        focus: .constant(false),
         data: .constant(CategoryData.sampleData[0]),
         edit: true
     ) }

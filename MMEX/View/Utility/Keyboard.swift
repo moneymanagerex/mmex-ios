@@ -7,25 +7,17 @@
 
 import SwiftUI
 
-extension View {
-    func hideKeyboard() {
-        let resign = #selector(UIResponder.resignFirstResponder)
-        UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
-    }
-}
-
 struct KeyboardState: View {
-    var focus: FocusState<Int?>.Binding
+    var focus: Binding<Bool>
 
     var body: some View {
         Button(action: {
-            focus.wrappedValue = nil
+            focus.wrappedValue = false
         }, label: {
             Image(systemName: "keyboard.chevron.compact.down")
                 .font(.footnote)
-            //.imageScale(.small)
         } )
-        .disabled(focus.wrappedValue == nil)
+        .disabled(focus.wrappedValue == false)
     }
 }
 

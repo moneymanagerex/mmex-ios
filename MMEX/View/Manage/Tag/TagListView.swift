@@ -56,8 +56,9 @@ struct TagListView: View {
     }
     
     @ViewBuilder
-    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+    func formView(_ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool) -> some View {
         TagFormView(
+            focus: focus,
             data: data,
             edit: edit
         )

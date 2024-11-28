@@ -13,14 +13,14 @@ struct EnterView: View {
     @EnvironmentObject var vm: ViewModel
     @Binding var selectedTab: Int
 
+    @State private var focus = false
     @State var newTxn: TransactionData = TransactionData()
     
     var body: some View {
-        NavigationStack {
-            EnterFormView(
-                txn: $newTxn
-            )
-        }
+        EnterFormView(
+            focus: $focus,
+            txn: $newTxn
+        )
         .padding()
 
         .toolbar {
@@ -40,11 +40,8 @@ struct EnterView: View {
                 }
                 .disabled(!newTxn.isValid)
             }
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") {
-                    hideKeyboard()
-                }
+            ToolbarItem(placement: .confirmationAction) {
+                KeyboardState(focus: $focus)
             }
         }
         // .navigationBarTitle("Add Transaction", displayMode: .inline)

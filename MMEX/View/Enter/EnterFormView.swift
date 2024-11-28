@@ -10,15 +10,13 @@ import SwiftUI
 struct EnterFormView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @Binding var focus: Bool
     @Binding var txn: TransactionData
 
+    @FocusState var focusState: Int?
     @State private var selectedDate = Date()
-
     @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
 
-    // Focus state for the Amount input to control keyboard focus
-    @FocusState private var isAmountFocused: Bool
-    
     var body: some View {
         VStack {
             // 1. Transaction type picker (Deposit/Withdrawal/Transfer)
@@ -49,6 +47,7 @@ struct EnterFormView: View {
 
             // 2. Unified Numeric Input for the Amount with automatic keyboard focus
             TextField("", value: $txn.transAmount, format: .number)
+                .focused($focusState, equals: 1)
                 .keyboardType(pref.theme.decimalPad) // Show numeric keyboard with decimal support
                 .font(.system(size: 48, weight: .bold)) // Large, bold text for amount input
                 .multilineTextAlignment(.center) // Center the text for better UX
@@ -56,13 +55,6 @@ struct EnterFormView: View {
                 .background(Color.gray.opacity(0.2)) // Background styling for the input field
                 .cornerRadius(10) // Rounded corners
                 .padding(.bottom, 0) // Space between the amount input and the next section
-                .focused($isAmountFocused)  // Bind the focus state to trigger keyboard display
-                .onAppear {
-                    // Automatically focus on the amount field when the view appears
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        isAmountFocused = true
-                    }
-                }
                 .disabled(!txn.splits.isEmpty)
                 .onChange(of: txn.transAmount) {
                     txn.toTransAmount = txn.transAmount
@@ -73,6 +65,7 @@ struct EnterFormView: View {
                 get: { txn.notes }, // Safely unwrap the optional notes field
                 set: { txn.notes = $0 } // Set notes to nil if the input is empty
             ))
+            .focused($focusState, equals: 2)
             .keyboardType(pref.theme.textPad)
             .padding(.horizontal)
             .padding(.vertical, 10)
@@ -210,12 +203,14 @@ struct EnterFormView: View {
                             Spacer()
                             // Split amount
                             TextField("split amount", value: $newSplit.amount, format: .number)
+                                .focused($focusState, equals: 3)
                                 .keyboardType(pref.theme.decimalPad)
                                 .multilineTextAlignment(.center) // Center the text for better UX
                                 .frame(width: 80, alignment: .center) // Centered with fixed width
                             Spacer()
                             // split notes
                             TextField("split notes", text: $newSplit.notes)
+                                .focused($focusState, equals: 4)
                                 .keyboardType(pref.theme.textPad)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Button(action: {
@@ -240,18 +235,26 @@ struct EnterFormView: View {
             Spacer() // Push the contents to the top
         }
         .padding(.horizontal)
-        //.onTapGesture {
-        //    hideKeyboard()
-        //}
+
         .onAppear {
             // Initialize state variables from the txn object when the view appears
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             selectedDate = dateFormatter.date(from: txn.transDate.string) ?? Date()
+            Task {
+                try? await Task.sleep(nanoseconds: 300_000_000)
+                focusState = 1
+            }
         }
         .onDisappear {
-            // Resign the focus when the view disappears, hiding the keyboard
-            isAmountFocused = false
+            focusState = nil
+        }
+
+        .onChange(of: focusState) {
+            if focusState != nil { focus = true }
+        }
+        .onChange(of: focus) {
+            if focus == false { focusState = nil }
         }
     }
 }
@@ -261,6 +264,7 @@ struct EnterFormView: View {
     let vm = ViewModel.sampleData
     NavigationView { NavigationStack {
         EnterFormView(
+            focus: .constant(false),
             txn: .constant(TransactionData.sampleData[0])
         )
     }.padding() }
@@ -274,6 +278,7 @@ struct EnterFormView: View {
     let vm = ViewModel.sampleData
     NavigationView { NavigationStack {
         EnterFormView(
+            focus: .constant(false),
             txn: .constant(TransactionData.sampleData[3])
         )
     }.padding() }
