@@ -46,7 +46,7 @@ struct ReportListView: View {
         Text(data.name)
             .font(.caption)
     }
-    
+
     @ViewBuilder
     func itemInfoView(_ data: ReportData) -> some View {
         switch vm.reportGroup.choice {
@@ -56,10 +56,11 @@ struct ReportListView: View {
             Text(data.groupName)
         }
     }
-    
+
     @ViewBuilder
-    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+    func formView(_ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool) -> some View {
         ReportFormView(
+            focus: focus,
             data: data,
             edit: edit
         )

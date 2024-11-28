@@ -161,10 +161,10 @@ struct CategoryListView: View {
         .sheet(isPresented: $createSheetIsPresented) {
             NavigationView {
                 RepositoryCreateView(
+                    isPresented: $createSheetIsPresented,
                     features: Self.features,
                     data: Self.initData,
                     newData: $newData,
-                    isPresented: $createSheetIsPresented,
                     formView: formView
                 )
                 .navigationBarTitle("Create", displayMode: .inline)
@@ -185,10 +185,10 @@ struct CategoryListView: View {
             //let _ = print("DEBUG: editSheetIsPresented: \(editDataId.value)")
             NavigationView {
                 RepositoryEditView(
+                    isPresented: $editSheetIsPresented,
                     features: Self.features,
                     data: data,
                     newData: $newData,
-                    isPresented: $editSheetIsPresented,
                     formView: formView
                 )
                 .navigationBarTitle("Edit", displayMode: .inline)
@@ -208,10 +208,10 @@ struct CategoryListView: View {
             let data = listData?[copyDataId] ?? Self.initData
             NavigationView {
                 RepositoryCopyView(
+                    isPresented: $copySheetIsPresented,
                     features: Self.features,
                     data: data,
                     newData: $newData,
-                    isPresented: $copySheetIsPresented,
                     formView: formView
                 )
                 .navigationBarTitle("Copy", displayMode: .inline)
@@ -362,8 +362,9 @@ struct CategoryListView: View {
     }
 
     @ViewBuilder
-    func formView(_ data: Binding<CategoryData>, _ edit: Bool) -> some View {
+    func formView(_ focus: Binding<Bool>, _ data: Binding<CategoryData>, _ edit: Bool) -> some View {
         CategoryFormView(
+            focus: focus,
             data: data,
             edit: edit
         )

@@ -13,19 +13,20 @@ struct RepositoryCreateView<
     FormView: View
 >: View {
     @EnvironmentObject var vm: ViewModel
+    @Binding var isPresented: Bool
     let features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
-    @Binding var isPresented: Bool
     var dismiss: DismissAction?
-    @ViewBuilder let formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
+    @ViewBuilder let formView: (_ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool) -> FormView
 
+    @State private var focus = false
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
     
     var body: some View {
         Form {
-            formView($data, true)
+            formView($focus, $data, true)
         }
         .textSelection(.enabled)
         .scrollDismissesKeyboard(.immediately)
@@ -48,11 +49,8 @@ struct RepositoryCreateView<
                     }
                 }
             }
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") {
-                    hideKeyboard()
-                }
+            ToolbarItem(placement: .confirmationAction) {
+                KeyboardState(focus: $focus)
             }
         }
 

@@ -19,8 +19,9 @@ struct RepositoryReadView<
     let isUsed: Bool?
     @Binding var newData: MainData?
     @Binding var deleteData: Bool
-    @ViewBuilder let formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
+    @ViewBuilder let formView: (_ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool) -> FormView
 
+    @State private var focus = false
     @State private var editSheetIsPresented = false
     @State private var copySheetIsPresented = false
     @State private var exporterIsPresented = false
@@ -29,7 +30,7 @@ struct RepositoryReadView<
 
     var body: some View {
         Form {
-            formView($data, false)
+            formView($focus, $data, false)
             if isUsed == false {
                 Button("Delete \(MainData.dataName.0)") {
                     if let deleteError = data.delete(vm) {
@@ -82,10 +83,10 @@ struct RepositoryReadView<
         .sheet(isPresented: $editSheetIsPresented) {
             NavigationView {
                 RepositoryEditView(
+                    isPresented: $editSheetIsPresented,
                     features: features,
                     data: data,
                     newData: $newData,
-                    isPresented: $editSheetIsPresented,
                     dismiss: dismiss,
                     formView: formView
                 )
@@ -96,10 +97,10 @@ struct RepositoryReadView<
         .sheet(isPresented: $copySheetIsPresented) {
             NavigationView {
                 RepositoryCopyView(
+                    isPresented: $copySheetIsPresented,
                     features: features,
                     data: data,
                     newData: $newData,
-                    isPresented: $copySheetIsPresented,
                     dismiss: dismiss,
                     formView: formView
                 )

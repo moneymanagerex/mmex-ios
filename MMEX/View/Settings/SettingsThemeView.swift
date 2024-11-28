@@ -21,7 +21,8 @@ struct SettingsThemeView: View {
         "Field Layout" : true,
     ]
 
-    @FocusState private var focus: Int?
+    @State var focus: Bool = false
+    @FocusState private var focusState: Int?
 
     let accentColor = Color.green
 
@@ -58,9 +59,9 @@ struct SettingsThemeView: View {
                     Spacer()
                     TextField("Default is ':'", text: $categoryDelimiter)
                         .keyboardType(pref.theme.textPad)
-                        .focused($focus, equals: 1)
-                        .onChange(of: focus) {
-                            if focus == nil { currencyDelimiterUpdate() }
+                        .focused($focusState, equals: 1)
+                        .onChange(of: focusState) {
+                            if focusState == nil { currencyDelimiterUpdate() }
                         }
                         .textInputAutocapitalization(.never)
                         // problem: trailing space is not visible
@@ -210,6 +211,12 @@ struct SettingsThemeView: View {
             ToolbarItem(placement: .confirmationAction) {
                 KeyboardState(focus: $focus)
             }
+        }
+        .onChange(of: focusState) {
+            if focusState != nil { focus = true }
+        }
+        .onChange(of: focus) {
+            if focus == false { focusState = nil }
         }
 
         .onAppear {

@@ -13,16 +13,15 @@ struct TransactionListView: View {
 
     @State private var txns: [TransactionData] = []
     @State private var newTxn = TransactionData()
-    @State private var isPresentingTransactionAddView = false
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
+
+    @State private var createSheetIsPresented = false
 
     var body: some View {
         Group {
             List($vm.txns) { $txn in
                 NavigationLink(
-                    destination: TransactionDetailView(
-                        txn: $txn
-                    )
+                    destination: TransactionDetailView(txn: $txn)
                 ) {
                     HStack {
                         // Left column: Date (truncated to day)
@@ -73,7 +72,7 @@ struct TransactionListView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        isPresentingTransactionAddView = true
+                        createSheetIsPresented = true
                     }, label: {
                         Image(systemName: "plus")
                     })
@@ -82,11 +81,11 @@ struct TransactionListView: View {
             }
         }
 
-        .sheet(isPresented: $isPresentingTransactionAddView) {
+        .sheet(isPresented: $createSheetIsPresented) {
             NavigationView {
-                TransactionAddView(
-                    newTxn: $newTxn,
-                    isPresentingTransactionAddView: $isPresentingTransactionAddView
+                TransactionCreateView(
+                    isPresented: $createSheetIsPresented,
+                    newTxn: $newTxn
                 ) { newTxn in
                     vm.addTransaction(txn: &newTxn)
                     newTxn = TransactionData()

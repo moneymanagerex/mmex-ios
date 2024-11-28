@@ -13,19 +13,20 @@ struct RepositoryEditView<
     FormView: View
 >: View {
     @EnvironmentObject var vm: ViewModel
+    @Binding var isPresented: Bool
     let features: RepositoryFeatures
     @State var data: MainData
     @Binding var newData: MainData?
-    @Binding var isPresented: Bool
     var dismiss: DismissAction?
-    @ViewBuilder var formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
+    @ViewBuilder var formView: (_ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool) -> FormView
 
+    @State private var focus = false
     @State private var alertIsPresented = false
     @State private var alertMessage: String?
 
     var body: some View {
         Form {
-            formView($data, true)
+            formView($focus, $data, true)
         }
         .textSelection(.enabled)
         .scrollDismissesKeyboard(.immediately)
@@ -48,11 +49,8 @@ struct RepositoryEditView<
                     }
                 }
             }
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") {
-                    hideKeyboard()
-                }
+            ToolbarItem(placement: .confirmationAction) {
+                KeyboardState(focus: $focus)
             }
         }
         .alert(isPresented: $alertIsPresented) {
@@ -68,15 +66,16 @@ struct RepositoryEditView<
 #Preview(AccountData.sampleData[0].name) {
     MMEXPreview.sample {pref, vm in
         let data = AccountData.sampleData[0]
-        let formView = { $data, edit in AccountFormView(
+        let formView = { $isFocused, $data, edit in AccountFormView(
+            focus: $isFocused,
             data: $data,
             edit: edit
         ) }
         RepositoryEditView(
+            isPresented: .constant(true),
             features: RepositoryFeatures(),
             data: data,
             newData: .constant(nil),
-            isPresented: .constant(true),
             dismiss: nil,
             formView: formView
         )

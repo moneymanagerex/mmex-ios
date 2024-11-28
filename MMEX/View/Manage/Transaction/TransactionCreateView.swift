@@ -1,5 +1,5 @@
 //
-//  TransactionAddView.swift
+//  TransactionCreateView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
@@ -7,30 +7,35 @@
 
 import SwiftUI
 
-struct TransactionAddView: View {
+struct TransactionCreateView: View {
     @EnvironmentObject var vm: ViewModel
+    @Binding var isPresented: Bool
     @Binding var newTxn: TransactionData
-    @Binding var isPresentingTransactionAddView: Bool
-
     var onSave: (inout TransactionData) -> Void
-    
+
+    @State private var focus = false
+
     var body: some View {
         EnterFormView(
+            focus: $focus,
             txn: $newTxn
         )
-    
+
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
-                    isPresentingTransactionAddView = false
+                    isPresented = false
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    isPresentingTransactionAddView = false
+                    isPresented = false
                     onSave(&newTxn)
                 }
                 .disabled(!newTxn.isValid)
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                KeyboardState(focus: $focus)
             }
         }
     }

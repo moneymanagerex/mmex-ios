@@ -31,7 +31,7 @@ where GroupType.MainRepository == ListType.MainRepository,
     @ViewBuilder let groupNameView: (_ g: Int, _ name: String?) -> GroupNameView
     @ViewBuilder let itemNameView: (_ data: MainData) -> ItemNameView
     @ViewBuilder let itemInfoView: (_ data: MainData) -> ItemInfoView
-    @ViewBuilder let formView: (_ data: Binding<MainData>, _ edit: Bool) -> FormView
+    @ViewBuilder let formView: (_ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool) -> FormView
 
     @StateObject var debounce = RepositorySearchDebounce()
     @State var newData: MainData? = nil
@@ -173,10 +173,10 @@ where GroupType.MainRepository == ListType.MainRepository,
         .sheet(isPresented: $createSheetIsPresented) {
             NavigationView {
                 RepositoryCreateView(
+                    isPresented: $createSheetIsPresented,
                     features: features,
                     data: initData,
                     newData: $newData,
-                    isPresented: $createSheetIsPresented,
                     formView: formView
                 )
                 .navigationBarTitle("Create", displayMode: .inline)
@@ -196,10 +196,10 @@ where GroupType.MainRepository == ListType.MainRepository,
             let data = vmList.data.value[editDataId] ?? initData
             NavigationView {
                 RepositoryEditView(
+                    isPresented: $editSheetIsPresented,
                     features: features,
                     data: data,
                     newData: $newData,
-                    isPresented: $editSheetIsPresented,
                     formView: formView
                 )
                 .navigationBarTitle("Edit", displayMode: .inline)
@@ -219,10 +219,10 @@ where GroupType.MainRepository == ListType.MainRepository,
             let data = vmList.data.value[copyDataId] ?? initData
             NavigationView {
                 RepositoryCopyView(
+                    isPresented: $copySheetIsPresented,
                     features: features,
                     data: data,
                     newData: $newData,
-                    isPresented: $copySheetIsPresented,
                     formView: formView
                 )
                 .navigationBarTitle("Copy", displayMode: .inline)

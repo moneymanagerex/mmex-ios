@@ -55,8 +55,9 @@ struct FieldListView: View {
     }
     
     @ViewBuilder
-    func formView(_ data: Binding<MainData>, _ edit: Bool) -> some View {
+    func formView(_ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool) -> some View {
         FieldFormView(
+            focus: focus,
             data: data,
             edit: edit
         )
