@@ -41,7 +41,7 @@ struct EnterView: View {
                 .disabled(!newTxn.isValid)
             }
             ToolbarItem(placement: .confirmationAction) {
-                KeyboardState(focus: $focus)
+                KeyboardFocus(focus: $focus)
             }
         }
         // .navigationBarTitle("Add Transaction", displayMode: .inline)

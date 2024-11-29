@@ -35,7 +35,7 @@ struct TransactionCreateView: View {
                 .disabled(!newTxn.isValid)
             }
             ToolbarItem(placement: .confirmationAction) {
-                KeyboardState(focus: $focus)
+                KeyboardFocus(focus: $focus)
             }
         }
     }

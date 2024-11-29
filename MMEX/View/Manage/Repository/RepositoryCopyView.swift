@@ -49,7 +49,7 @@ struct RepositoryCopyView<
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
-                KeyboardState(focus: $focus)
+                KeyboardFocus(focus: $focus)
             }
         }
         

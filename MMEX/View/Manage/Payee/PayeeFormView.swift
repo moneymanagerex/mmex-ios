@@ -90,12 +90,7 @@ struct PayeeFormView: View {
                     .keyboardType(pref.theme.textPad)
             }
         }
-        .onChange(of: focusState) {
-            if focusState != nil { focus = true }
-        }
-        .onChange(of: focus) {
-            if focus == false { focusState = nil }
-        }
+        .keyboardState(focus: $focus, focusState: $focusState)
     }
 }
 
