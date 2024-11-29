@@ -26,6 +26,7 @@ extension ExportableEntity {
     // Copy the JSON string to pasteboard
     func copyToPasteboard() {
         if let exportString = self.export() {
+            log.debug("DEBUG: ExportableEntity.copyToPasteboard(): \(exportString)")
             UIPasteboard.general.string = exportString
         }
     }
