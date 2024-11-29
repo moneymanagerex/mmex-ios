@@ -9,7 +9,7 @@ import Foundation
 
 struct TrackPreference {
     @StoredPreference var userId    : String   = ""
-    @StoredPreference var sendUsage : BoolEnum = .boolTrue
+    @StoredPreference var sendUsage : BoolChoice = .boolTrue
 }
 
 extension TrackPreference {

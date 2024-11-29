@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct TabTheme {
-    enum Layout: String, EnumCollateNoCase {
+    enum Layout: String, ChoiceProtocol {
         case icon     = "Icon"
         case iconText = "Icon and Text"
         static let defaultValue = Self.iconText

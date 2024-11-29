@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum AccountStatus: String, EnumCollateNoCase {
+enum AccountStatus: String, ChoiceProtocol {
     case open   = "Open"
     case closed = "Closed"
     static let defaultValue = Self.closed
@@ -19,7 +19,7 @@ enum AccountStatus: String, EnumCollateNoCase {
     }
 }
 
-enum AccountFavorite: String, EnumCollateNoCase {
+enum AccountFavorite: String, ChoiceProtocol {
     case boolFalse = "FALSE"
     case boolTrue  = "TRUE"
     static let defaultValue = Self.boolFalse
@@ -30,7 +30,7 @@ enum AccountFavorite: String, EnumCollateNoCase {
     }
 }
 
-enum AccountType: String, EnumCollateNoCase {
+enum AccountType: String, ChoiceProtocol {
     case cash       = "Cash"
     case checking   = "Checking"
     case creditCard = "Credit Card"

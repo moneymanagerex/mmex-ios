@@ -8,9 +8,9 @@
 import Foundation
 
 struct EnterPreference {
-    @StoredPreference var reuseLastAccount  : BoolEnum          = .boolFalse
-    @StoredPreference var reuseLastCategory : BoolEnum          = .boolFalse
-    @StoredPreference var reuseLastPayee    : BoolEnum          = .boolFalse
+    @StoredPreference var reuseLastAccount  : BoolChoice          = .boolFalse
+    @StoredPreference var reuseLastCategory : BoolChoice          = .boolFalse
+    @StoredPreference var reuseLastPayee    : BoolChoice          = .boolFalse
     @StoredPreference var defaultStatus     : TransactionStatus = .none
 }
 

@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum TransactionType: String, EnumCollateNoCase {
+enum TransactionType: String, ChoiceProtocol {
     case withdrawal = "Withdrawal"
     case deposit    = "Deposit"
     case transfer   = "Transfer"
@@ -19,7 +19,7 @@ enum TransactionType: String, EnumCollateNoCase {
     }
 }
 
-enum TransactionStatus: String, EnumCollateNoCase {
+enum TransactionStatus: String, ChoiceProtocol {
     case none       = ""
     case reconciled = "R"
     case void       = "V"

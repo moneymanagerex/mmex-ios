@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum AssetType: String, EnumCollateNoCase {
+enum AssetType: String, ChoiceProtocol {
     case property   = "Property"
     case automobile = "Automobile"
     case household  = "Household Object"
@@ -19,7 +19,7 @@ enum AssetType: String, EnumCollateNoCase {
     static let defaultValue = Self.property
 }
 
-enum AssetStatus: String, EnumCollateNoCase {
+enum AssetStatus: String, ChoiceProtocol {
     case closed = "Closed"
     case open   = "Open"
     static let defaultValue = Self.open
@@ -30,14 +30,14 @@ enum AssetStatus: String, EnumCollateNoCase {
     }
 }
 
-enum AssetChange: String, EnumCollateNoCase {
+enum AssetChange: String, ChoiceProtocol {
     case none        = "None"
     case appreciates = "Appreciates"
     case depreciates = "Depreciates"
     static let defaultValue = Self.none
 }
 
-enum AssetChangeMode: String, EnumCollateNoCase {
+enum AssetChangeMode: String, ChoiceProtocol {
     case percentage = "Percentage"
     case linear     = "Linear"
     static let defaultValue = Self.percentage

@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum BudgetFrequency: String, EnumCollateNoCase {
+enum BudgetFrequency: String, ChoiceProtocol {
     case none       = "None"
     case weekly     = "Weekly"
     case biweekly   = "Fortnightly"

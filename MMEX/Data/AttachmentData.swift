@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum RefType: String, EnumCollateNoCase {
+enum RefType: String, ChoiceProtocol {
     case transaction      = "Transaction"
     case stock            = "Stock"
     case asset            = "Asset"

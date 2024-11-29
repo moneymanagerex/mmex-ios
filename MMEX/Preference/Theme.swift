@@ -10,7 +10,7 @@ import SwiftUI
 
 struct Theme {
     @StoredPreference var appearance: Appearance = .defaultValue
-    @StoredPreference var numericKeypad: BoolEnum = .boolTrue
+    @StoredPreference var numericKeypad: BoolChoice = .boolTrue
     @StoredPreference var categoryDelimiter: String = ":"
 
     var tab   : TabTheme   = .init()

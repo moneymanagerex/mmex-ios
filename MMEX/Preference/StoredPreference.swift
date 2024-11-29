@@ -57,7 +57,7 @@ struct StoredPreference<ValueType: LosslessStringConvertible> {
     }
 }
 
-extension StoredPreference where ValueType: EnumCollateNoCase {
+extension StoredPreference where ValueType: ChoiceProtocol {
     init(key: String? = nil) {
         self.init(key: key, wrappedValue: ValueType.defaultValue)
     }

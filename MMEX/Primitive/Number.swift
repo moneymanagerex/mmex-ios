@@ -1,5 +1,5 @@
 //
-//  OptionalNumber.swift
+//  Number.swift
 //  MMEX
 //
 //  2024-09-22: Created by George Ef (george.a.ef@gmail.com)
@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Optional Int with default(set)
+// Int with default(set)
 extension Int {
     var defaultZero: Int? {
         get { self }
@@ -20,7 +20,7 @@ extension Int {
     }
 }
 
-// Optional Double with default(set)
+// Double with default(set)
 extension Double {
     var defaultZero: Double? {
         get { self }
