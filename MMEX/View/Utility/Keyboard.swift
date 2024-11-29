@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct KeyboardState: View {
+struct KeyboardFocus: View {
     var focus: Binding<Bool>
 
     var body: some View {
@@ -18,6 +18,28 @@ struct KeyboardState: View {
                 .font(.footnote)
         } )
         .disabled(focus.wrappedValue == false)
+    }
+}
+
+struct KeyboardState: ViewModifier {
+    @Binding var focus: Bool
+    var focusState: FocusState<Int?>.Binding
+    
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: focusState.wrappedValue) {
+                if focusState.wrappedValue != nil { focus = true }
+            }
+            .onChange(of: focus) {
+                if focus == false { focusState.wrappedValue = nil }
+            }
+
+    }
+}
+
+extension View {
+    func keyboardState(focus: Binding<Bool>, focusState: FocusState<Int?>.Binding) -> some View {
+        modifier(KeyboardState(focus: focus, focusState: focusState))
     }
 }
 

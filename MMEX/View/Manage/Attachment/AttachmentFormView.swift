@@ -43,12 +43,7 @@ struct AttachmentFormView: View {
                     } )
                 }
             }
-            .onChange(of: focusState) {
-                if focusState != nil { focus = true }
-            }
-            .onChange(of: focus) {
-                if focus == false { focusState = nil }
-            }
+            .keyboardState(focus: $focus, focusState: $focusState)
         } else {
             Text("New attachments can be created from the items that contain them.")
         }

@@ -209,15 +209,10 @@ struct SettingsThemeView: View {
         .scrollDismissesKeyboard(.immediately)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                KeyboardState(focus: $focus)
+                KeyboardFocus(focus: $focus)
             }
         }
-        .onChange(of: focusState) {
-            if focusState != nil { focus = true }
-        }
-        .onChange(of: focus) {
-            if focus == false { focusState = nil }
-        }
+        .keyboardState(focus: $focus, focusState: $focusState)
 
         .onAppear {
             categoryDelimiter = pref.theme.categoryDelimiter

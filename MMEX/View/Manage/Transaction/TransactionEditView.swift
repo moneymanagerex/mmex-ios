@@ -38,7 +38,7 @@ struct TransactionEditView: View {
                 .disabled(!editingTxn.isValid)
             }
             ToolbarItem(placement: .confirmationAction) {
-                KeyboardState(focus: $focus)
+                KeyboardFocus(focus: $focus)
             }
         }
     }

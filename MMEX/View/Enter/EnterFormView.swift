@@ -234,6 +234,7 @@ struct EnterFormView: View {
 
             Spacer() // Push the contents to the top
         }
+        .keyboardState(focus: $focus, focusState: $focusState)
         .padding(.horizontal)
 
         .onAppear {
@@ -248,13 +249,6 @@ struct EnterFormView: View {
         }
         .onDisappear {
             focusState = nil
-        }
-
-        .onChange(of: focusState) {
-            if focusState != nil { focus = true }
-        }
-        .onChange(of: focus) {
-            if focus == false { focusState = nil }
         }
     }
 }

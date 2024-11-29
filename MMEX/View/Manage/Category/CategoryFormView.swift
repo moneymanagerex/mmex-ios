@@ -62,12 +62,7 @@ struct CategoryFormView: View {
                 } )
             }
         }
-        .onChange(of: focusState) {
-            if focusState != nil { focus = true }
-        }
-        .onChange(of: focus) {
-            if focus == false { focusState = nil }
-        }
+        .keyboardState(focus: $focus, focusState: $focusState)
     }
 }
 
