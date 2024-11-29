@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum Appearance: String, EnumCollateNoCase {
+enum Appearance: String, ChoiceProtocol {
     case system = "System"
     case light  = "Light"
     case dark   = "Dark"

@@ -23,12 +23,6 @@ enum RepeatAuto: Int, CaseIterable, Identifiable, Codable {
     var name: String { Self.names[self.rawValue] }
 }
 
-enum RepeatKind: Int {
-    case times = 0
-    case inX
-    case everyX
-}
-
 enum RepeatType: Int, CaseIterable, Identifiable, Codable {
     case once = 0
     case weekly
@@ -68,14 +62,9 @@ enum RepeatType: Int, CaseIterable, Identifiable, Codable {
         "Monthly (last day)",
         "Monthly (last business day)",
     ]
+
     var id: Int { self.rawValue }
     var name: String { Self.names[self.rawValue] }
-
-    var kind: RepeatKind {
-        return if self == .inXDays || self == .inXMonths { .inX }
-        else if self == .everyXDays || self == .everyXMonths { .everyX }
-        else { .times }
-    }
 }
 
 struct ScheduledData: DataProtocol {
@@ -111,25 +100,55 @@ extension ScheduledData {
     }
 }
 
-extension ScheduledData {
-    var repeatKind: RepeatKind {
-        repeatType.kind
-    }
+enum RepeatTypeNum {
+    case once
+    case times(RepeatType, PIntInf)
+    case inX(RepeatType, PInt)
+    case everyX(RepeatType, PInt)
+}
 
-    var repeatIsValid: Bool {
-        if repeatType == .once { return true }
-        return switch repeatKind {
-        case .times: repeatNum > 0 || repeatNum == -1
-        case .inX, .everyX: repeatNum > 0
+extension RepeatTypeNum {
+    var typeNum: (RepeatType, Int) {
+        return switch self {
+        case .once             : (.once, -1)
+        case let .times(t, n)  : (t, n.value)
+        case let .inX(t, n)    : (t, n.value)
+        case let .everyX(t, n) : (t, n.value)
         }
     }
 
-    var repeatTimes: PIntInf? {
-        if repeatType == .once { return PIntInf(1) }
-        return switch repeatKind {
-        case .times: (repeatNum > 0 || repeatNum == -1) ? PIntInf(repeatNum) : nil
-        case .inX: repeatNum > 0 ? PIntInf(2) : nil
-        case .everyX: repeatNum > 0 ? PIntInf.inf : nil
+    var times: PIntInf {
+        return switch self {
+        case .once             : PIntInf(exactly: 1)!
+        case let .times(_, n)  : n
+        case .inX(_, _)        : PIntInf(exactly: 2)!
+        case .everyX(_, _)     : PIntInf.inf
+        }
+    }
+
+    var next: Self? {
+        return switch self {
+        case .once             : nil
+        case let .times(t, n)  : n.dec.map { .times(t, $0) }
+        case .inX(_, _)        : .once
+        case let .everyX(t, n) : .everyX(t, n)
+        }
+    }
+}
+
+extension ScheduledData {
+    var repeatTypeNum: RepeatTypeNum? {
+        switch repeatType {
+        case .once: return .once
+        case .inXDays, .inXMonths:
+            let n: PInt? = PInt(exactly: repeatNum)
+            return n.map { .inX(repeatType, $0) }
+        case .everyXDays, .everyXMonths:
+            let n: PInt? = PInt(exactly: repeatNum)
+            return n.map { .everyX(repeatType, $0) }
+        default:
+            let n: PIntInf? = repeatNum == -1 ? PIntInf.inf : PIntInf(exactly: repeatNum)
+            return n.map { .times(repeatType, $0) }
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum FieldType: String, EnumCollateNoCase {
+enum FieldType: String, ChoiceProtocol {
     case string       = "String"
     case integer      = "Integer"
     case decimal      = "Decimal"

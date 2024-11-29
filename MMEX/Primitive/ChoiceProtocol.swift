@@ -1,5 +1,5 @@
 //
-//  EnumCollateNoCase.swift
+//  ChoiceProtocol.swift
 //  MMEX
 //
 //  2024-09-22: Created by George Ef (george.a.ef@gmail.com)
@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol EnumCollateNoCase: RawRepresentable, CaseIterable, Identifiable, Codable, LosslessStringConvertible
+protocol ChoiceProtocol: RawRepresentable, CaseIterable, Identifiable, Codable, LosslessStringConvertible
     where RawValue == String
 {
     static var defaultValue: Self { get }
 }
 
-extension EnumCollateNoCase {
+extension ChoiceProtocol {
     init(collateNoCase name: String?) {
         guard let name else { self = Self.defaultValue; return }
         switch Self.allCases.first(where: {
@@ -28,7 +28,7 @@ extension EnumCollateNoCase {
     var name: String { rawValue.capitalized }
 }
 
-extension EnumCollateNoCase {
+extension ChoiceProtocol {
     var description: String {
         self.rawValue
     }
@@ -38,7 +38,7 @@ extension EnumCollateNoCase {
     }
 }
 
-enum BoolEnum: String, EnumCollateNoCase {
+enum BoolChoice: String, ChoiceProtocol {
     case boolFalse = "FALSE"
     case boolTrue  = "TRUE"
     static let defaultValue = Self.boolFalse

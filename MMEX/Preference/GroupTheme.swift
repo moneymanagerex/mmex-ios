@@ -9,14 +9,14 @@ import Foundation
 import SwiftUI
 
 struct GroupTheme {
-    enum Layout: String, EnumCollateNoCase {
+    enum Layout: String, ChoiceProtocol {
         case foldName = "Fold Name space Count"
         case nameFold = "Name space Count Fold"
         static let defaultValue = Self.foldName
     }
     
     @StoredPreference var layout    : Layout   = .defaultValue
-    @StoredPreference var showCount : BoolEnum = .boolTrue
+    @StoredPreference var showCount : BoolChoice = .boolTrue
 }
 
 extension GroupTheme {

@@ -164,9 +164,9 @@
 		92F6862F2CF27DD200171A6A /* TrackPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6862E2CF27DD200171A6A /* TrackPreference.swift */; };
 		92F686332CF297A000171A6A /* LoadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686322CF297A000171A6A /* LoadRepository.swift */; };
 		92F686382CF5BEE100171A6A /* DataId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686372CF5BEE100171A6A /* DataId.swift */; };
-		92F6863A2CF5BF5000171A6A /* EnumCollateNoCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686392CF5BF5000171A6A /* EnumCollateNoCase.swift */; };
+		92F6863A2CF5BF5000171A6A /* ChoiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686392CF5BF5000171A6A /* ChoiceProtocol.swift */; };
 		92F6863C2CF5BFCC00171A6A /* DateStringProtocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6863B2CF5BFCC00171A6A /* DateStringProtocal.swift */; };
-		92F6863E2CF5C0CD00171A6A /* OptionalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6863D2CF5C0CD00171A6A /* OptionalNumber.swift */; };
+		92F6863E2CF5C0CD00171A6A /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6863D2CF5C0CD00171A6A /* Number.swift */; };
 		92F686402CF5C4AD00171A6A /* PInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F6863F2CF5C4AD00171A6A /* PInt.swift */; };
 		92F686422CF5C4F700171A6A /* PIntInf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686412CF5C4F700171A6A /* PIntInf.swift */; };
 		92F686442CF81FE500171A6A /* TransactionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686432CF81FE500171A6A /* TransactionEditView.swift */; };
@@ -386,9 +386,9 @@
 		92F6862E2CF27DD200171A6A /* TrackPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackPreference.swift; sourceTree = "<group>"; };
 		92F686322CF297A000171A6A /* LoadRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadRepository.swift; sourceTree = "<group>"; };
 		92F686372CF5BEE100171A6A /* DataId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataId.swift; sourceTree = "<group>"; };
-		92F686392CF5BF5000171A6A /* EnumCollateNoCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumCollateNoCase.swift; sourceTree = "<group>"; };
+		92F686392CF5BF5000171A6A /* ChoiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoiceProtocol.swift; sourceTree = "<group>"; };
 		92F6863B2CF5BFCC00171A6A /* DateStringProtocal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateStringProtocal.swift; sourceTree = "<group>"; };
-		92F6863D2CF5C0CD00171A6A /* OptionalNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalNumber.swift; sourceTree = "<group>"; };
+		92F6863D2CF5C0CD00171A6A /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		92F6863F2CF5C4AD00171A6A /* PInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PInt.swift; sourceTree = "<group>"; };
 		92F686412CF5C4F700171A6A /* PIntInf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIntInf.swift; sourceTree = "<group>"; };
 		92F686432CF81FE500171A6A /* TransactionEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionEditView.swift; sourceTree = "<group>"; };
@@ -749,11 +749,11 @@
 		92F686362CF5BECC00171A6A /* Primitive */ = {
 			isa = PBXGroup;
 			children = (
-				92F6863D2CF5C0CD00171A6A /* OptionalNumber.swift */,
+				92F6863D2CF5C0CD00171A6A /* Number.swift */,
 				92F6863F2CF5C4AD00171A6A /* PInt.swift */,
 				92F686412CF5C4F700171A6A /* PIntInf.swift */,
 				92F686372CF5BEE100171A6A /* DataId.swift */,
-				92F686392CF5BF5000171A6A /* EnumCollateNoCase.swift */,
+				92F686392CF5BF5000171A6A /* ChoiceProtocol.swift */,
 				92F6863B2CF5BFCC00171A6A /* DateStringProtocal.swift */,
 			);
 			path = Primitive;
@@ -1107,7 +1107,7 @@
 				929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */,
 				92F686402CF5C4AD00171A6A /* PInt.swift in Sources */,
 				92F685F92CF0CADF00171A6A /* BudgetPeriodGroup.swift in Sources */,
-				92F6863E2CF5C0CD00171A6A /* OptionalNumber.swift in Sources */,
+				92F6863E2CF5C0CD00171A6A /* Number.swift in Sources */,
 				A350BDC12CA26415006669D5 /* TransactionViewModel.swift in Sources */,
 				A3C1423E2C89760600D3CEC0 /* AccountListView.swift in Sources */,
 				925EAB972CCD846C003CEAB3 /* RepositoryEditView.swift in Sources */,
@@ -1290,7 +1290,7 @@
 				92F6860B2CF110D900171A6A /* ReportSearch.swift in Sources */,
 				92F686162CF11EF900171A6A /* BudgetPeriodFormView.swift in Sources */,
 				925EAB9F2CCDDD77003CEAB3 /* CategorySearch.swift in Sources */,
-				92F6863A2CF5BF5000171A6A /* EnumCollateNoCase.swift in Sources */,
+				92F6863A2CF5BF5000171A6A /* ChoiceProtocol.swift in Sources */,
 				924352EA2CAE1E480052E4BC /* StockFormView.swift in Sources */,
 				924352EB2CAE1E480052E4BC /* StockListView.swift in Sources */,
 				924353352CCD2DA90052E4BC /* StockGroup.swift in Sources */,

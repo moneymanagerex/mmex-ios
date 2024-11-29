@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-enum CurrencyType: String, EnumCollateNoCase {
+enum CurrencyType: String, ChoiceProtocol {
     case fiat   = "Fiat"
     case crypto = "Crypto"
     static let defaultValue = Self.fiat

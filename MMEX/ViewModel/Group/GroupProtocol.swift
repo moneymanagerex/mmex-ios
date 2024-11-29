@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol GroupChoiceProtocol: EnumCollateNoCase, Hashable
+protocol GroupChoiceProtocol: ChoiceProtocol, Hashable
 where Self.AllCases: RandomAccessCollection {
     static var isSingleton: Set<Self> { get }
     var fullName: String { get }

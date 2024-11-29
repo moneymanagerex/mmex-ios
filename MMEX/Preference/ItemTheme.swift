@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ItemTheme {
-    enum Layout: String, EnumCollateNoCase {
+    enum Layout: String, ChoiceProtocol {
         case hstack = "HStack"
         case vstack = "VStack"
         static let defaultValue = Self.hstack
