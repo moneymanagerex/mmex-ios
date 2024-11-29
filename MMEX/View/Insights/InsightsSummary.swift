@@ -27,32 +27,16 @@ struct InsightsSummaryView: View {
     }
 }
 
-/*
 #Preview {
     struct InsightsSummaryPreview: View {
-        @EnvironmentObject var pref: Preference
-        @EnvironmentObject var vm: ViewModel
-        @State var statusChoice: Int = 0
         var body: some View {
-            ScrollView {
-                Section() {
-                    InsightsSummaryView(
-                        stats: $vm.stats
-                    )
-                }
-                .padding()
-            }
-            .task {
-                await vm.loadInsightsList(pref)
-                vm.loadInsights()
+            MMEXPreview.insights("Account Income Summary") { pref, vm in
+                InsightsSummaryView(
+                    stats: .constant(vm.stats)
+                )
             }
         }
     }
 
-    return MMEXPreview.sample { pref, vm in NavigationView {
-        InsightsSummaryPreview(
-        )
-        .navigationBarTitle("Insights", displayMode: .inline)
-    } }
+    return InsightsSummaryPreview()
 }
-*/

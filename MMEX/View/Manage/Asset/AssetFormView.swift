@@ -122,18 +122,20 @@ struct AssetFormView: View {
     }
 }
 
-#Preview("\(AssetData.sampleData[0].name) (show)") {
-    MMEXPreview.repositoryEdit { AssetFormView(
-        focus: .constant(false),
-        data: .constant(AssetData.sampleData[0]),
-        edit: false
+#Preview("\(AssetData.sampleData[0].name) (read)") {
+    let data = AssetData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in AssetFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(AssetData.sampleData[0].name) (edit)") {
-    MMEXPreview.repositoryEdit { AssetFormView(
-        focus: .constant(false),
-        data: .constant(AssetData.sampleData[0]),
-        edit: true
+    let data = AssetData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in AssetFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

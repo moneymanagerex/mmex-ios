@@ -74,7 +74,7 @@ struct AssetListView: View {
 }
 
 #Preview {
-    MMEXPreview.sampleManage { pref, vm in
+    MMEXPreview.manageList { pref, vm in
         AssetListView()
     }
 }

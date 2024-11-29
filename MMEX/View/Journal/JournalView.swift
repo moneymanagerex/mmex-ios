@@ -212,9 +212,7 @@ struct JournalView: View {
 }
 
 #Preview {
-    MMEXPreview.sample { pref, vm in NavigationView {
-        JournalView(
-        )
-        .navigationBarTitle("Journal", displayMode: .inline)
-    } }
+    MMEXPreview.tab("Journal") { pref, vm in
+        JournalView()
+    }
 }

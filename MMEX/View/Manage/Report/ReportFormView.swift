@@ -72,18 +72,20 @@ struct ReportFormView: View {
     }
 }
 
-#Preview("#\(ReportData.sampleData[0].id) (show)") {
-    MMEXPreview.repositoryEdit { ReportFormView(
-        focus: .constant(false),
-        data: .constant(ReportData.sampleData[0]),
-        edit: false
+#Preview("#\(ReportData.sampleData[0].id) (read)") {
+    let data = ReportData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in ReportFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("#\(ReportData.sampleData[0].id) (edit)") {
-    MMEXPreview.repositoryEdit { ReportFormView(
-        focus: .constant(false),
-        data: .constant(ReportData.sampleData[0]),
-        edit: true
+    let data = ReportData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in ReportFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

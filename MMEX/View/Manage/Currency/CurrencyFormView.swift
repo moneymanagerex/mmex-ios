@@ -122,18 +122,20 @@ struct CurrencyFormView: View {
     }
 }
 
-#Preview("\(CurrencyData.sampleData[0].symbol) (show)") {
-    MMEXPreview.repositoryEdit { CurrencyFormView(
-        focus: .constant(false),
-        data: .constant(CurrencyData.sampleData[0]),
-        edit: false
+#Preview("\(CurrencyData.sampleData[0].symbol) (read)") {
+    let data = CurrencyData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in CurrencyFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (edit)") {
-    MMEXPreview.repositoryEdit { CurrencyFormView(
-        focus: .constant(false),
-        data: .constant(CurrencyData.sampleData[0]),
-        edit: true
+    let data = CurrencyData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in CurrencyFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

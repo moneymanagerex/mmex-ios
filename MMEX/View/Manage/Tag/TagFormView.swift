@@ -39,18 +39,20 @@ struct TagFormView: View {
     }
 }
 
-#Preview("\(TagData.sampleData[0].name) (show)") {
-    MMEXPreview.repositoryEdit { TagFormView(
-        focus: .constant(false),
-        data: .constant(TagData.sampleData[0]),
-        edit: false
+#Preview("\(TagData.sampleData[0].name) (read)") {
+    let data = TagData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in TagFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(TagData.sampleData[0].name) (edit)") {
-    MMEXPreview.repositoryEdit { TagFormView(
-        focus: .constant(false),
-        data: .constant(TagData.sampleData[0]),
-        edit: true
+    let data = TagData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in TagFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

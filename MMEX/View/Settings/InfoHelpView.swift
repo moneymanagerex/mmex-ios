@@ -1,5 +1,5 @@
 //
-//  HelpFAQView.swift
+//  InfoHelpView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/18.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HelpFAQView: View {
+struct InfoHelpView: View {
     var body: some View {
         List {
             Section(header: Text("General")) {
@@ -20,14 +20,11 @@ struct HelpFAQView: View {
                 Text("How to generate reports?")
             }
         }
-        .navigationTitle("Help / FAQ")
     }
 }
 
 #Preview {
-    NavigationView {
-        HelpFAQView(
-        )
-        .navigationBarTitle("Settings", displayMode: .inline)
+    MMEXPreview.settings("Help") { pref, vm in
+        InfoHelpView()
     }
 }

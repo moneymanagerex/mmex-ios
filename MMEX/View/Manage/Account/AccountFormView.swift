@@ -199,18 +199,20 @@ struct AccountFormView: View {
     }
 }
 
-#Preview("\(AccountData.sampleData[0].name) (show)") {
-    MMEXPreview.repositoryEdit { AccountFormView(
-        focus: .constant(false),
-        data: .constant(AccountData.sampleData[0]),
-        edit: false
+#Preview("\(AccountData.sampleData[0].name) (read)") {
+    let data = AccountData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in AccountFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(AccountData.sampleData[0].name) (edit)") {
-    MMEXPreview.repositoryEdit { AccountFormView(
-        focus: .constant(false),
-        data: .constant(AccountData.sampleData[0]),
-        edit: true
+    let data = AccountData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in AccountFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

@@ -63,20 +63,20 @@ struct RepositoryCreateView<
         }
     }
 }
-/*
+
 #Preview("Account") {
-    MMEXPreview.sample { pref, vm in
-        let formView = { $data, edit in AccountFormView(
-            data: $data,
-            edit: edit
-        ) }
+    let formView = { $focus, $data, edit in AccountFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
+    ) }
+    MMEXPreview.manageSheet("Create") { pref, vm in
         RepositoryCreateView(
+            isPresented: .constant(true),
             features: RepositoryFeatures(),
             data: AccountListView.initData,
             newData: .constant(nil),
-            isPresented: .constant(true),
             formView: formView
         )
     }
 }
-*/

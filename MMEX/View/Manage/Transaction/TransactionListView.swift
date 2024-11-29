@@ -143,7 +143,7 @@ struct TransactionListView: View {
 }
 
 #Preview {
-    MMEXPreview.sampleManage { pref, vm in
+    MMEXPreview.manageList { pref, vm in
         TransactionListView()
     }
 }

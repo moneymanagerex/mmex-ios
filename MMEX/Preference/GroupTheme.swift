@@ -99,7 +99,9 @@ extension GroupTheme {
             content()
         } }
     }
+}
 
+extension GroupTheme {
     @ViewBuilder
     func manageItem<NameView: View, MainRepository: RepositoryProtocol>(
         @ViewBuilder nameView: @escaping () -> NameView,

@@ -94,18 +94,20 @@ struct PayeeFormView: View {
     }
 }
 
-#Preview("\(PayeeData.sampleData[0].name) (show)") {
-    MMEXPreview.repositoryEdit { PayeeFormView(
-        focus: .constant(false),
-        data: .constant(PayeeData.sampleData[0]),
-        edit: false
+#Preview("\(PayeeData.sampleData[0].name) (read)") {
+    let data = PayeeData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in PayeeFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(PayeeData.sampleData[0].name) (edit)") {
-    MMEXPreview.repositoryEdit { PayeeFormView(
-        focus: .constant(false),
-        data: .constant(PayeeData.sampleData[0]),
-        edit: true
+    let data = PayeeData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in PayeeFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

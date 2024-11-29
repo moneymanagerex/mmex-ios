@@ -64,19 +64,18 @@ struct RepositoryEditView<
 }
 
 #Preview(AccountData.sampleData[0].name) {
-    MMEXPreview.sample {pref, vm in
-        let data = AccountData.sampleData[0]
-        let formView = { $isFocused, $data, edit in AccountFormView(
-            focus: $isFocused,
-            data: $data,
-            edit: edit
-        ) }
+    let data = AccountData.sampleData[0]
+    let formView = { $focus, $data, edit in AccountFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
+    ) }
+    MMEXPreview.manageSheet("Edit") { pref, vm in
         RepositoryEditView(
             isPresented: .constant(true),
             features: RepositoryFeatures(),
             data: data,
             newData: .constant(nil),
-            dismiss: nil,
             formView: formView
         )
     }
@@ -84,16 +83,20 @@ struct RepositoryEditView<
 
 extension MMEXPreview {
     @ViewBuilder
-    static func repositoryEdit<Content: View>(
-        @ViewBuilder content: @escaping () -> Content
+    static func manageEdit<MainData: DataProtocol, FormView: View>(
+        _ data: MainData,
+        @ViewBuilder formView: @escaping (
+            _ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool
+        ) -> FormView
     ) -> some View {
-        MMEXPreview.sample { pref, vm in
-            NavigationView {
-                Form {
-                    content()
-                }
-                .navigationBarTitle("Edit", displayMode: .inline)
-            }
+        MMEXPreview.manageSheet("Edit") { pref, vm in
+            RepositoryEditView(
+                isPresented: .constant(true),
+                features: RepositoryFeatures(),
+                data: data,
+                newData: .constant(nil),
+                formView: formView
+            )
         }
     }
 }

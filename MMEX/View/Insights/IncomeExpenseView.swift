@@ -49,48 +49,16 @@ struct IncomeExpenseView: View {
     }
 }
 
-/*
 #Preview {
     struct InsightsExpensePreview: View {
-        @EnvironmentObject var pref: Preference
-        @EnvironmentObject var vm: ViewModel
-        @State var statusChoice: Int = 0
         var body: some View {
-            ScrollView {
-                Section() {
-                    HStack {
-                        DatePicker("Start Date", selection: $vm.startDate, displayedComponents: .date)
-                            .labelsHidden()
-                            .datePickerStyle(.compact)
-                        
-                        Spacer()
-                        
-                        DatePicker("End Date", selection: $vm.endDate, displayedComponents: .date)
-                            .labelsHidden()
-                            .datePickerStyle(.compact)
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(10)
-                    .shadow(radius: 2)
-
-                    IncomeExpenseView(
-                        stats: $vm.recentStats
-                    )
-                }
-                .padding()
-            }
-            .task {
-                await vm.loadInsightsList(pref)
-                vm.loadInsights()
+            MMEXPreview.insights("Account Income Summary") { pref, vm in
+                IncomeExpenseView(
+                    stats: .constant(vm.recentStats)
+                )
             }
         }
     }
 
-    return MMEXPreview.sample { pref, vm in NavigationView {
-        InsightsExpensePreview(
-        )
-        .navigationBarTitle("Insights", displayMode: .inline)
-    } }
+    return InsightsExpensePreview()
 }
-*/

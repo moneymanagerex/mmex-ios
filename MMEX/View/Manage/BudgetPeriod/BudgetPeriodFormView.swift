@@ -33,18 +33,20 @@ struct BudgetPeriodFormView: View {
     }
 }
 
-#Preview("\(BudgetPeriodData.sampleData[0].name) (show)") {
-    MMEXPreview.repositoryEdit { BudgetPeriodFormView(
-        focus: .constant(false),
-        data: .constant(BudgetPeriodData.sampleData[0]),
-        edit: false
+#Preview("\(BudgetPeriodData.sampleData[0].name) (read)") {
+    let data = BudgetPeriodData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in BudgetPeriodFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(BudgetPeriodData.sampleData[0].name) (edit)") {
-    MMEXPreview.repositoryEdit { BudgetPeriodFormView(
-        focus: .constant(false),
-        data: .constant(BudgetPeriodData.sampleData[0]),
-        edit: true
+    let data = BudgetPeriodData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in BudgetPeriodFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

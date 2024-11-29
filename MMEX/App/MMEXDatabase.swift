@@ -133,9 +133,3 @@ extension ViewModel {
         }
     }
 }
-
-extension ViewModel {
-    static var sampleData: ViewModel {
-        ViewModel(withSampleDatabaseInMemory: ())
-    }
-}

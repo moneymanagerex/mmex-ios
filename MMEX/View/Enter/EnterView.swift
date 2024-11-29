@@ -96,10 +96,25 @@ struct EnterView: View {
 }
 
 #Preview {
-    MMEXPreview.sample { pref, vm in NavigationView {
+    MMEXPreview.tab("Enter") { pref, vm in
         EnterView(
             selectedTab: .constant(0)
         )
-        .navigationBarTitle("Enter", displayMode: .inline)
-    } }
+    }
+}
+
+extension MMEXPreview {
+    // TODO: add focus
+
+    @ViewBuilder
+    static func enter(
+        _ data: TransactionData
+    ) -> some View {
+        MMEXPreview.tab("Enter") { pref, vm in
+            EnterView(
+                selectedTab: .constant(0),
+                newTxn: data
+            )
+        }
+    }
 }

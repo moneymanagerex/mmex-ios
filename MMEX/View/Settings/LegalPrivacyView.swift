@@ -1,5 +1,5 @@
 //
-//  PrivacyPolicyView.swift
+//  LegalPrivacyView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/18.
@@ -7,14 +7,10 @@
 
 import SwiftUI
 
-struct PrivacyPolicyView: View {
+struct LegalPrivacyView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                Text("Privacy Policy")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                
                 Text("Last updated: September 18, 2024")
                     .font(.subheadline)
                     .foregroundColor(.gray)
@@ -26,15 +22,11 @@ struct PrivacyPolicyView: View {
             }
             .padding()
         }
-        .navigationTitle("Privacy Policy")
     }
 }
 
 #Preview {
-    NavigationView {
-        PrivacyPolicyView(
-        )
-        .navigationTitle("Legal")
-        .navigationBarTitle("Settings", displayMode: .inline)
+    MMEXPreview.settings("Privacy Policy") { pref, vm in
+        LegalPrivacyView()
     }
 }

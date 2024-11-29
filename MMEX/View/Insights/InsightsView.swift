@@ -108,9 +108,36 @@ struct InsightsView: View {
 }
 
 #Preview {
-    MMEXPreview.sample { pref, vm in NavigationView {
-        InsightsView(
-        )
-        .navigationBarTitle("Insights", displayMode: .inline)
-    } }
+    MMEXPreview.tab("Insights") { pref, vm in
+        InsightsView()
+    }
+}
+
+extension MMEXPreview {
+    @ViewBuilder
+    static func insights<Content: View>(
+        _ sectionTitle: String,
+        @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
+    ) -> some View {
+        MMEXPreview.tab("Insights") { pref, vm in
+            ScrollView {
+                VStack(spacing: 20) {
+                    Section(header: HStack {
+                        pref.theme.group.view(
+                            nameView: { Text(sectionTitle) },
+                            isExpanded: true
+                        )
+                    } ) {
+                        content(pref, vm)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.top, 10)
+            }
+            .task {
+                await vm.loadInsightsList(pref)
+                vm.loadInsights()
+            }
+        }
+    }
 }

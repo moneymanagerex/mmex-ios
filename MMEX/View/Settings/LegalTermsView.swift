@@ -1,5 +1,5 @@
 //
-//  TermsOfServiceView.swift
+//  LegalTermsView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/18.
@@ -7,14 +7,10 @@
 
 import SwiftUI
 
-struct TermsOfServiceView: View {
+struct LegalTermsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                Text("Terms of Service")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                
                 Text("Last updated: September 18, 2024")
                     .font(.subheadline)
                     .foregroundColor(.gray)
@@ -39,15 +35,11 @@ struct TermsOfServiceView: View {
             }
             .padding()
         }
-        .navigationTitle("Terms of Service")
     }
 }
 
 #Preview {
-    NavigationView {
-        TermsOfServiceView(
-        )
-        .navigationTitle("Legal")
-        .navigationBarTitle("Settings", displayMode: .inline)
+    MMEXPreview.settings("Terms of Service") { pref, vm in
+        LegalTermsView()
     }
 }
