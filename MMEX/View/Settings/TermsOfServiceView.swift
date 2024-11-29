@@ -44,5 +44,10 @@ struct TermsOfServiceView: View {
 }
 
 #Preview {
-    TermsOfServiceView()
+    NavigationView {
+        TermsOfServiceView(
+        )
+        .navigationTitle("Legal")
+        .navigationBarTitle("Settings", displayMode: .inline)
+    }
 }

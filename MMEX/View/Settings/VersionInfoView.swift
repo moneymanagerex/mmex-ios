@@ -107,5 +107,9 @@ struct VersionInfoView: View {
 }
 
 #Preview {
-    VersionInfoView()
+    NavigationView {
+        VersionInfoView(
+        )
+        .navigationBarTitle("Settings", displayMode: .inline)
+    }
 }

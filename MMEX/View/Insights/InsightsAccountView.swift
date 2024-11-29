@@ -145,20 +145,32 @@ struct InsightsAccountView: View {
     }
 }
 
+/*
 #Preview {
-    MMEXPreview.sample { pref, vm in NavigationView {
-        ScrollView {
-            Section(header: Text(InsightsAccountView.statusChoices[0].0)) {
-                InsightsAccountView(
-                    statusChoice: .constant(0)
-                )
+    struct InsightsAccountPreview: View {
+        @EnvironmentObject var pref: Preference
+        @EnvironmentObject var vm: ViewModel
+        @State var statusChoice: Int = 0
+        var body: some View {
+            ScrollView {
+                Section() {
+                    InsightsAccountView(
+                        statusChoice: $statusChoice
+                    )
+                }
+                .padding()
             }
-            .padding()
+            .task {
+                await vm.loadInsightsList(pref)
+                vm.loadInsights()
+            }
         }
-        .task {
-            await vm.loadInsightsList(pref)
-            vm.loadInsights()
-        }
+    }
+
+    return MMEXPreview.sample { pref, vm in NavigationView {
+        InsightsAccountPreview(
+        )
         .navigationBarTitle("Insights", displayMode: .inline)
     } }
 }
+*/

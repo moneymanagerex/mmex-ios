@@ -31,5 +31,10 @@ struct PrivacyPolicyView: View {
 }
 
 #Preview {
-    PrivacyPolicyView()
+    NavigationView {
+        PrivacyPolicyView(
+        )
+        .navigationTitle("Legal")
+        .navigationBarTitle("Settings", displayMode: .inline)
+    }
 }

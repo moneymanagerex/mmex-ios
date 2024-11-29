@@ -24,5 +24,9 @@ struct LegalView: View {
 }
 
 #Preview {
-    LegalView()
+    NavigationView {
+        LegalView(
+        )
+        .navigationBarTitle("Settings", displayMode: .inline)
+    }
 }

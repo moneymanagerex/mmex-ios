@@ -96,13 +96,10 @@ struct EnterView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
+    MMEXPreview.sample { pref, vm in NavigationView {
         EnterView(
             selectedTab: .constant(0)
         )
-    }
-    .environmentObject(pref)
-    .environmentObject(vm)
+        .navigationBarTitle("Enter", displayMode: .inline)
+    } }
 }

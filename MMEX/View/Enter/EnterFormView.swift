@@ -254,29 +254,25 @@ struct EnterFormView: View {
 }
 
 #Preview("txn #0") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView { NavigationStack {
+    MMEXPreview.sample { pref, vm in NavigationView {
         EnterFormView(
             focus: .constant(false),
             txn: .constant(TransactionData.sampleData[0])
         )
-    }.padding() }
-    .task { await vm.loadEnterList(pref) }
-    .environmentObject(pref)
-    .environmentObject(vm)
+        .padding()
+        .task { await vm.loadEnterList(pref) }
+        .navigationBarTitle("Enter", displayMode: .inline)
+    } }
 }
 
 #Preview("txn #3") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView { NavigationStack {
+    MMEXPreview.sample { pref, vm in NavigationView {
         EnterFormView(
             focus: .constant(false),
             txn: .constant(TransactionData.sampleData[3])
         )
-    }.padding() }
-    .task { await vm.loadEnterList(pref) }
-    .environmentObject(pref)
-    .environmentObject(vm)
+        .padding()
+        .task { await vm.loadEnterList(pref) }
+        .navigationBarTitle("Enter", displayMode: .inline)
+    } }
 }

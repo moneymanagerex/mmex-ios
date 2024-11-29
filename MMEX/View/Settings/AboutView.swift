@@ -30,5 +30,9 @@ struct AboutView: View {
 }
 
 #Preview {
-    AboutView()
+    NavigationView {
+        AboutView(
+        )
+        .navigationBarTitle("Settings", displayMode: .inline)
+    }
 }

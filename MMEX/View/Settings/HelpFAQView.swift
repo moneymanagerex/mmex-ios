@@ -25,5 +25,9 @@ struct HelpFAQView: View {
 }
 
 #Preview {
-    HelpFAQView()
+    NavigationView {
+        HelpFAQView(
+        )
+        .navigationBarTitle("Settings", displayMode: .inline)
+    }
 }

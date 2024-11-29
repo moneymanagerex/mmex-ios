@@ -74,5 +74,9 @@ struct ContactSupportView: View {
 }
 
 #Preview {
-    ContactSupportView()
+    NavigationView {
+        ContactSupportView(
+        )
+        .navigationBarTitle("Settings", displayMode: .inline)
+    }
 }
