@@ -50,18 +50,20 @@ struct AttachmentFormView: View {
     }
 }
 
-#Preview("\(AttachmentData.sampleData[0].filename) (show)") {
-    MMEXPreview.repositoryEdit { AttachmentFormView(
-        focus: .constant(false),
-        data: .constant(AttachmentData.sampleData[0]),
-        edit: false
+#Preview("\(AttachmentData.sampleData[0].filename) (read)") {
+    let data = AttachmentData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in AttachmentFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(AttachmentData.sampleData[0].filename) (edit)") {
-    MMEXPreview.repositoryEdit { AttachmentFormView(
-        focus: .constant(false),
-        data: .constant(AttachmentData.sampleData[0]),
-        edit: true
+    let data = AttachmentData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in AttachmentFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

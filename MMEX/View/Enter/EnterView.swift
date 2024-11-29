@@ -96,13 +96,25 @@ struct EnterView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView {
+    MMEXPreview.tab("Enter") { pref, vm in
         EnterView(
             selectedTab: .constant(0)
         )
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
+}
+
+extension MMEXPreview {
+    // TODO: add focus
+
+    @ViewBuilder
+    static func enter(
+        _ data: TransactionData
+    ) -> some View {
+        MMEXPreview.tab("Enter") { pref, vm in
+            EnterView(
+                selectedTab: .constant(0),
+                newTxn: data
+            )
+        }
+    }
 }

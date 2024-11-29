@@ -1,5 +1,5 @@
 //
-//  SettingsThemeView.swift
+//  ThemeView.swift
 //  MMEX
 //
 //  Created 2024-10-07 by George Ef (george.a.ef@gmail.com)
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsThemeView: View {
+struct ThemeView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
 
@@ -235,10 +235,7 @@ struct SettingsThemeView: View {
 }
 
 #Preview {
-    MMEXPreview.sample { pref, vm in NavigationView {
-        SettingsThemeView(
-        )
-        .navigationTitle("Theme")
-        .navigationBarTitle("Settings", displayMode: .inline)
-    } }
+    MMEXPreview.settings("Theme") { pref, vm in
+        ThemeView()
+    }
 }

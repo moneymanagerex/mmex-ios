@@ -50,5 +50,15 @@ struct IncomeExpenseView: View {
 }
 
 #Preview {
-    IncomeExpenseView(stats: .constant(TransactionData.sampleData))
+    struct InsightsExpensePreview: View {
+        var body: some View {
+            MMEXPreview.insights("Account Income Summary") { pref, vm in
+                IncomeExpenseView(
+                    stats: .constant(vm.recentStats)
+                )
+            }
+        }
+    }
+
+    return InsightsExpensePreview()
 }

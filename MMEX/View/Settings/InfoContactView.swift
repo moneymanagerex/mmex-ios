@@ -1,5 +1,5 @@
 //
-//  ContactSupportView.swift
+//  InfoContactView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/18.
@@ -9,10 +9,10 @@ import SwiftUI
 
 import SwiftUI
 
-struct ContactSupportView: View {
+struct InfoContactView: View {
     var body: some View {
         List {
-            Section(header: Text("Contact Support")) {
+            Section(header: Text("Support")) {
                 // Link to the official website
                 Link(destination: URL(string: "https://moneymanagerex.org/")!) {
                     HStack {
@@ -69,10 +69,11 @@ struct ContactSupportView: View {
                 }
             }
         }
-        .navigationTitle("Contact Support")
     }
 }
 
 #Preview {
-    ContactSupportView()
+    MMEXPreview.settings("Contact") { pref, vm in
+        InfoContactView()
+    }
 }

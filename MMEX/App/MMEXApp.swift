@@ -49,14 +49,25 @@ struct MMEXApp: App {
 
 @MainActor
 struct MMEXPreview {
+    static let pref = Preference()
+    static let vmWithoutData    = ViewModel.withoutData
+    static let vmWithSampleData = ViewModel.withSampleData
+
     @ViewBuilder
-    static func sample<Content: View>(
+    static func appWithoutData<Content: View>(
         @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
     ) -> some View {
-        let pref = Preference()
-        let vm = ViewModel.sampleData
-        content(pref, vm)
-            .environmentObject(pref)
-            .environmentObject(vm)
+        content(Self.pref, Self.vmWithoutData)
+            .environmentObject(Self.pref)
+            .environmentObject(Self.vmWithoutData)
+    }
+
+    @ViewBuilder
+    static func appWithSampleData<Content: View>(
+        @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
+    ) -> some View {
+        content(Self.pref, Self.vmWithSampleData)
+            .environmentObject(Self.pref)
+            .environmentObject(Self.vmWithSampleData)
     }
 }

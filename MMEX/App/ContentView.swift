@@ -294,9 +294,29 @@ struct TabContentView: View {
     }
 }
 
-#Preview() {
-    MMEXPreview.sample { pref, vm in
+#Preview("disconnected") {
+    MMEXPreview.appWithoutData { pref, vm in
         ContentView(
         )
+    }
+}
+
+#Preview("connected") {
+    MMEXPreview.appWithSampleData { pref, vm in
+        ContentView(
+        )
+    }
+}
+
+extension MMEXPreview {
+    @ViewBuilder
+    static func tab<Content: View>(
+        _ title: String,
+        @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
+    ) -> some View {
+        MMEXPreview.appWithSampleData { pref, vm in NavigationView {
+            content(pref, vm)
+                .navigationBarTitle(title, displayMode: .inline)
+        } }
     }
 }

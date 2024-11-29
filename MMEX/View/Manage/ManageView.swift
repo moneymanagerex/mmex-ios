@@ -190,28 +190,22 @@ struct ManageView: View {
 }
 
 #Preview {
-    MMEXPreview.sample { pref, vm in
-        NavigationView {
-            ManageView(
-                isDocumentPickerPresented: .constant(false),
-                isNewDocumentPickerPresented: .constant(false),
-                isSampleDocument: .constant(false)
-            )
-            .navigationBarTitle("Manage", displayMode: .inline)
-        }
+    MMEXPreview.tab("Manage") { pref, vm in
+        ManageView(
+            isDocumentPickerPresented: .constant(false),
+            isNewDocumentPickerPresented: .constant(false),
+            isSampleDocument: .constant(false)
+        )
     }
 }
 
 extension MMEXPreview {
     @ViewBuilder
-    static func sampleManage<Content: View>(
+    static func manageList<Content: View>(
         @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
     ) -> some View {
-        MMEXPreview.sample { pref, vm in
-            NavigationView {
-                content(pref, vm)
-                    .navigationBarTitle("Manage", displayMode: .inline)
-            }
+        MMEXPreview.tab("Manage") { pref, vm in
+            content(pref, vm)
         }
     }
 }

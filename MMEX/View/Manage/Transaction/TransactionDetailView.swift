@@ -152,6 +152,7 @@ struct TransactionDetailView: View {
     }
 }
 
+/*
 #Preview("txn #0") {
     let pref = Preference()
     let vm = ViewModel.sampleData
@@ -181,3 +182,4 @@ struct TransactionDetailView: View {
     .environmentObject(pref)
     .environmentObject(vm)
 }
+*/

@@ -146,19 +146,18 @@ struct InsightsAccountView: View {
 }
 
 #Preview {
-    MMEXPreview.sample { pref, vm in NavigationView {
-        ScrollView {
-            Section(header: Text(InsightsAccountView.statusChoices[0].0)) {
+    struct InsightsAccountPreview: View {
+        @State var statusChoice: Int = 0
+        var sectionTitle: String { InsightsAccountView.statusChoices[statusChoice].0 }
+
+        var body: some View {
+            MMEXPreview.insights(sectionTitle) { pref, vm in
                 InsightsAccountView(
-                    statusChoice: .constant(0)
+                    statusChoice: $statusChoice
                 )
             }
-            .padding()
         }
-        .task {
-            await vm.loadInsightsList(pref)
-            vm.loadInsights()
-        }
-        .navigationBarTitle("Insights", displayMode: .inline)
-    } }
+    }
+
+    return InsightsAccountPreview()
 }

@@ -62,3 +62,19 @@ extension ItemTheme {
         }
     }
 }
+
+extension ItemTheme {
+    @ViewBuilder
+    static func settings<NameView: View, InfoView: View>(
+        @ViewBuilder nameView: @escaping () -> NameView,
+        @ViewBuilder infoView: @escaping () -> InfoView
+    ) -> some View {
+        HStack {
+            nameView()
+                .font(.body)
+            Spacer()
+            infoView()
+                .font(.body)
+        }
+    }
+}

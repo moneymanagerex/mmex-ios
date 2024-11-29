@@ -66,18 +66,20 @@ struct CategoryFormView: View {
     }
 }
 
-#Preview("\(CategoryData.sampleData[1].name) (show)") {
-    MMEXPreview.repositoryEdit { CategoryFormView(
-        focus: .constant(false),
-        data: .constant(CategoryData.sampleData[0]),
-        edit: false
+#Preview("\(CategoryData.sampleData[1].name) (read)") {
+    let data = CategoryData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in CategoryFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(CategoryData.sampleData[1].name) (edit)") {
-    MMEXPreview.repositoryEdit { CategoryFormView(
-        focus: .constant(false),
-        data: .constant(CategoryData.sampleData[0]),
-        edit: true
+    let data = CategoryData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in CategoryFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

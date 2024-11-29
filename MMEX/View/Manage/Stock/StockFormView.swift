@@ -119,18 +119,20 @@ struct StockFormView: View {
     }
 }
 
-#Preview("\(StockData.sampleData[0].name) (show)") {
-    MMEXPreview.repositoryEdit { StockFormView(
-        focus: .constant(false),
-        data: .constant(StockData.sampleData[0]),
-        edit: false
+#Preview("\(StockData.sampleData[0].name) (read)") {
+    let data = StockData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in StockFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("\(StockData.sampleData[0].name) (edit)") {
-    MMEXPreview.repositoryEdit { StockFormView(
-        focus: .constant(false),
-        data: .constant(StockData.sampleData[0]),
-        edit: true
+    let data = StockData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in StockFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

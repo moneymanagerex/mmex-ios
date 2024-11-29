@@ -1,5 +1,5 @@
 //
-//  VersionInfoView.swift
+//  InfoVersionView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/18.
@@ -7,54 +7,50 @@
 
 import SwiftUI
 
-struct VersionInfoView: View {
+struct InfoVersionView: View {
+    var appVersion: String? = Self.appVersion
+    var appBuild: String? = Self.appBuild
     @State private var releaseNotes: String = "Loading..."
     @State private var errorMessage: String?
     @State private var isLoading: Bool = true
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Text("Version")
-                .font(.title)
-                .fontWeight(.bold)
-            Text(Self.appVersion ?? "N/A")
-            
-            Text("Build")
-                .font(.title)
-                .fontWeight(.bold)
-            Text(Self.appBuild ?? "N/A")
-            
-            Text("Release Notes")
-                .font(.headline)
-            
-            if isLoading {
-                ProgressView()
-            } else if let errorMessage = errorMessage {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .multilineTextAlignment(.center)
-            } else {
-                // Attempt to render the markdown
-                if let attributedString = try? AttributedString(markdown: releaseNotes, options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)) {
-                    ScrollView {
+        List {
+            Section {
+                ItemTheme.settings(
+                    nameView: { Text("Version") },
+                    infoView: { Text(appVersion ?? "N/A") }
+                )
+                ItemTheme.settings(
+                    nameView: { Text("Build") },
+                    infoView: { Text(appBuild ?? "N/A") }
+                )
+            }
+       
+            Section("Release Notes") {
+                if isLoading {
+                    ProgressView()
+                } else if let errorMessage = errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                } else {
+                    // Attempt to render the markdown
+                    if let attributedString = try? AttributedString(markdown: releaseNotes, options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)) {
                         Text(attributedString)
                             .padding()
                             .multilineTextAlignment(.leading)
+                    } else {
+                        Text("Failed to render release notes.")
+                            .foregroundColor(.red)
                     }
-                } else {
-                    Text("Failed to render release notes.")
-                        .foregroundColor(.red)
                 }
             }
-            
-            Spacer()
         }
-        .padding()
-        .navigationTitle("Version Info")
-        .onAppear {
-            Task {
-                await fetchReleaseNotes()
-            }
+        .listSectionSpacing(10)
+
+        .task {
+            await fetchReleaseNotes()
         }
     }
 
@@ -65,17 +61,19 @@ struct VersionInfoView: View {
     static var appBuild: String? {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
     }
-    
+
     static var appVersionBuild: String? {
         if let appVersion = Self.appVersion, let appBuild = Self.appBuild {
             "\(appVersion) (\(appBuild))"
+        } else if let appVersion = Self.appVersion {
+            "\(appVersion)"
         } else {
             nil
         }
     }
 
     private func fetchReleaseNotes() async {
-        if let appVersion = Self.appVersion {
+        if let appVersion {
             let urlString = "https://api.github.com/repos/moneymanagerex/mmex-ios/releases/tags/\(appVersion)"
             guard let url = URL(string: urlString) else {
                 errorMessage = "Invalid URL"
@@ -107,5 +105,10 @@ struct VersionInfoView: View {
 }
 
 #Preview {
-    VersionInfoView()
+    MMEXPreview.settings("Version") { pref, vm in
+        InfoVersionView(
+            appVersion: "0.1.20",
+            appBuild: "26"
+        )
+    }
 }

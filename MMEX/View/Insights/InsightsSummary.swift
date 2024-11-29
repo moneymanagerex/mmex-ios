@@ -28,16 +28,15 @@ struct InsightsSummaryView: View {
 }
 
 #Preview {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationStack {
-        ScrollView {
-            InsightsSummaryView(
-                stats: .constant(TransactionData.sampleData)
-            )
+    struct InsightsSummaryPreview: View {
+        var body: some View {
+            MMEXPreview.insights("Account Income Summary") { pref, vm in
+                InsightsSummaryView(
+                    stats: .constant(vm.stats)
+                )
+            }
         }
-        .navigationBarTitleDisplayMode(.inline)
     }
-    .environmentObject(pref)
-    .environmentObject(vm)
+
+    return InsightsSummaryPreview()
 }

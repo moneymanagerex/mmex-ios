@@ -131,16 +131,18 @@ struct RepositoryReadView<
         }
     }
 }
-/*
+
 #Preview(AccountData.sampleData[0].name) {
-    MMEXPreview.sampleManage {  pref, vm in
-        let formView = { $data, edit in AccountFormView(
-            data: $data,
-            edit: edit
-        ) }
+    let data = AccountData.sampleData[0]
+    let formView = { $focus, $data, edit in AccountFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
+    ) }
+    MMEXPreview.manageList { pref, vm in
         RepositoryReadView(
             features: RepositoryFeatures(),
-            data: AccountData.sampleData[0],
+            data: data,
             isUsed: nil,
             newData: .constant(nil),
             deleteData: .constant(false),
@@ -149,4 +151,25 @@ struct RepositoryReadView<
         .navigationTitle(AccountData.dataName.1)
     }
 }
-*/
+
+extension MMEXPreview {
+    @ViewBuilder
+    static func manageRead<MainData: DataProtocol, FormView: View>(
+        _ data: MainData,
+        @ViewBuilder formView: @escaping (
+            _ focus: Binding<Bool>, _ data: Binding<MainData>, _ edit: Bool
+        ) -> FormView
+    ) -> some View {
+        MMEXPreview.manageList { pref, vm in
+            RepositoryReadView(
+                features: RepositoryFeatures(),
+                data: data,
+                isUsed: nil,
+                newData: .constant(nil),
+                deleteData: .constant(false),
+                formView: formView
+            )
+            .navigationTitle(MainData.dataName.1)
+        }
+    }
+}

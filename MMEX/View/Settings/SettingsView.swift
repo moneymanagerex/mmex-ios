@@ -25,7 +25,7 @@ struct SettingsView: View {
             groupTheme.section(
                 nameView: { Text("App Settings") }
             ) {
-                NavigationLink(destination: SettingsThemeView()
+                NavigationLink(destination: ThemeView()
                     .navigationTitle("Theme")
                 ) {
                     Text("Theme")
@@ -102,25 +102,39 @@ struct SettingsView: View {
             groupTheme.section(
                 nameView: { Text("App Info") }
             ) {
-                NavigationLink(destination: AboutView()) {
+                NavigationLink(destination: InfoAboutView()
+                    .navigationTitle("About")
+                ) {
                     Text("About")
                 }
-                NavigationLink(destination: VersionInfoView()) {
+
+                NavigationLink(destination: InfoVersionView()
+                    .navigationTitle("Version")
+                ) {
                     HStack {
                         Text("Version")
-                        if let version = VersionInfoView.appVersionBuild {
+                        if let version = InfoVersionView.appVersionBuild {
                             Spacer()
                             Text(version)
                         }
                     }
                 }
-                NavigationLink(destination: LegalView()) {
+
+                NavigationLink(destination: LegalView()
+                    .navigationTitle("Legal")
+                ) {
                     Text("Legal")
                 }
-                NavigationLink(destination: HelpFAQView()) {
+
+                NavigationLink(destination: InfoHelpView()
+                    .navigationTitle("Help")
+                ) {
                     Text("Help")
                 }
-                NavigationLink(destination: ContactSupportView()) {
+
+                NavigationLink(destination: InfoContactView()
+                    .navigationTitle("Contact")
+                ) {
                     Text("Contact")
                 }
             }
@@ -238,9 +252,21 @@ struct SettingsView: View {
 }
 
 #Preview {
-    MMEXPreview.sample { pref, vm in NavigationView {
+    MMEXPreview.tab("Settings") { pref, vm in
         SettingsView(
         )
-        .navigationBarTitle("Settings", displayMode: .inline)
-    } }
+    }
+}
+
+extension MMEXPreview {
+    @ViewBuilder
+    static func settings<Content: View>(
+        _ title: String,
+        @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
+    ) -> some View {
+        MMEXPreview.tab("Settings") { pref, vm in
+            content(pref, vm)
+                .navigationTitle(title)
+        }
+    }
 }

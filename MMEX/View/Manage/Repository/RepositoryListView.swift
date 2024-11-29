@@ -425,7 +425,24 @@ class RepositorySearchDebounce: ObservableObject {
 }
 
 #Preview("Account") {
-    MMEXPreview.sampleManage { pref, vm in
+    MMEXPreview.manageList { pref, vm in
         AccountListView()
+    }
+}
+
+extension MMEXPreview {
+    @ViewBuilder
+    static func manageSheet<Content: View>(
+        _ title: String,
+        @ViewBuilder content: @escaping (_ pref: Preference, _ vm: ViewModel) -> Content
+    ) -> some View {
+        MMEXPreview.manageList { pref, vm in
+            List { }.sheet(isPresented: .constant(true)) {
+                NavigationView {
+                    content(pref, vm)
+                        .navigationBarTitle(title, displayMode: .inline)
+                }
+            }
+        }
     }
 }

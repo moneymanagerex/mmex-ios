@@ -66,22 +66,21 @@ struct RepositoryCopyView<
         }
     }
 }
-/*
+
 #Preview(AccountData.sampleData[0].name) {
-    MMEXPreview.sample { pref, vm in
-        let data = AccountData.sampleData[0]
-        let formView = { $data, edit in AccountFormView(
-            data: $data,
-            edit: edit
-        ) }
+    let data = AccountData.sampleData[0]
+    let formView = { $focus, $data, edit in AccountFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
+    ) }
+    MMEXPreview.manageSheet("Copy") { pref, vm in
         RepositoryCopyView(
+            isPresented: .constant(true),
             features: RepositoryFeatures(),
             data: data,
             newData: .constant(nil),
-            isPresented: .constant(true),
-            dismiss: nil,
             formView: formView
         )
     }
 }
-*/

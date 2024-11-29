@@ -87,6 +87,7 @@
       }
     },
     "About MMEX4iOS" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -265,9 +266,6 @@
 
     },
     "Contact" : {
-
-    },
-    "Contact Support" : {
 
     },
     "Copy" : {
@@ -610,6 +608,7 @@
 
     },
     "Help / FAQ" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -717,6 +716,9 @@
 
     },
     "Manage" : {
+
+    },
+    "MMEX4iOS" : {
 
     },
     "More Insights Coming Soon..." : {
@@ -1047,6 +1049,9 @@
         }
       }
     },
+    "Support" : {
+
+    },
     "System" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1169,9 +1174,6 @@
 
     },
     "Version" : {
-
-    },
-    "Version Info" : {
 
     },
     "Visit Official Website" : {

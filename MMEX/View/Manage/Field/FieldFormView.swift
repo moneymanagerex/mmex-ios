@@ -66,18 +66,20 @@ struct FieldFormView: View {
     }
 }
 
-#Preview("#\(FieldData.sampleData[0].id) (show)") {
-    MMEXPreview.repositoryEdit { FieldFormView(
-        focus: .constant(false),
-        data: .constant(FieldData.sampleData[0]),
-        edit: false
+#Preview("#\(FieldData.sampleData[0].id) (read)") {
+    let data = FieldData.sampleData[0]
+    MMEXPreview.manageRead(data) { $focus, $data, edit in FieldFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }
 
 #Preview("#\(FieldData.sampleData[0].id) (edit)") {
-    MMEXPreview.repositoryEdit { FieldFormView(
-        focus: .constant(false),
-        data: .constant(FieldData.sampleData[0]),
-        edit: true
+    let data = FieldData.sampleData[0]
+    MMEXPreview.manageEdit(data) { $focus, $data, edit in FieldFormView(
+        focus: $focus,
+        data: $data,
+        edit: edit
     ) }
 }

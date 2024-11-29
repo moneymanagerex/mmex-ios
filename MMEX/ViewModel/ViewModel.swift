@@ -157,3 +157,13 @@ extension ViewModel {
         return "\(name(data))_\(DataType.dataName.0)"
     }
 }
+
+extension ViewModel {
+    static var withoutData: ViewModel {
+        ViewModel()
+    }
+
+    static var withSampleData: ViewModel {
+        ViewModel(withSampleDatabaseInMemory: ())
+    }
+}

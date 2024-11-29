@@ -53,6 +53,7 @@ struct EnterFormView: View {
                 .multilineTextAlignment(.center) // Center the text for better UX
                 .padding()
                 .background(Color.gray.opacity(0.2)) // Background styling for the input field
+                .foregroundColor(!txn.splits.isEmpty ? .gray : .primary)
                 .cornerRadius(10) // Rounded corners
                 .padding(.bottom, 0) // Space between the amount input and the next section
                 .disabled(!txn.splits.isEmpty)
@@ -253,30 +254,14 @@ struct EnterFormView: View {
     }
 }
 
-#Preview("txn #0") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView { NavigationStack {
-        EnterFormView(
-            focus: .constant(false),
-            txn: .constant(TransactionData.sampleData[0])
-        )
-    }.padding() }
-    .task { await vm.loadEnterList(pref) }
-    .environmentObject(pref)
-    .environmentObject(vm)
+#Preview("[0]") {
+    MMEXPreview.enter(
+        TransactionData.sampleData[0]
+    )
 }
 
-#Preview("txn #3") {
-    let pref = Preference()
-    let vm = ViewModel.sampleData
-    NavigationView { NavigationStack {
-        EnterFormView(
-            focus: .constant(false),
-            txn: .constant(TransactionData.sampleData[3])
-        )
-    }.padding() }
-    .task { await vm.loadEnterList(pref) }
-    .environmentObject(pref)
-    .environmentObject(vm)
+#Preview("[3]") {
+    MMEXPreview.enter(
+        TransactionData.sampleData[3]
+    )
 }

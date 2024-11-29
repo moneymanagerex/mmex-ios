@@ -68,7 +68,7 @@ struct ReportListView: View {
 }
 
 #Preview {
-    MMEXPreview.sampleManage { pref, vm in
+    MMEXPreview.manageList { pref, vm in
         ReportListView()
     }
 }
