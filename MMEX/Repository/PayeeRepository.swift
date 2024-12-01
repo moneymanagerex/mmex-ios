@@ -89,7 +89,7 @@ struct PayeeRepository: RepositoryProtocol {
     static func filterDeps(_ table: SQLite.Table) -> SQLite.Table {
         typealias D = AttachmentRepository
         let cond = "EXISTS (" + (D.table.select(1).where(
-            D.table[D.col_refType] == RefType.account.rawValue &&
+            D.table[D.col_refType] == RefType.payee.rawValue &&
             D.table[D.col_refId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
