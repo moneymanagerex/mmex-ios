@@ -21,7 +21,7 @@ struct FieldValueData: ExportableEntity {
 }
 
 extension FieldValueData: DataProtocol {
-    static let dataName = ("Field Value", "Field Values")
+    static let dataName = ("Custom Field Value", "Custom Field Values")
 
     func shortDesc() -> String {
         "#\(self.id.value)"
