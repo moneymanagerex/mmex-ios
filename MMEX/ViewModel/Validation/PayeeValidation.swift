@@ -67,7 +67,7 @@ extension PayeeData {
             return "* Database is not available"
         }
 
-        guard let payeeAtt = vm.payeeList.att.readyValue else {
+        guard let payeeAtt = vm.payeeList.attachment.readyValue else {
             return "* payeeAtt is not loaded"
         }
         if payeeAtt[id] != nil {

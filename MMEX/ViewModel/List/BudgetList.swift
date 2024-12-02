@@ -44,10 +44,10 @@ extension ViewModel {
                 load(pref, &taskGroup, keyPath: \Self.budgetList.order),
                 // auxiliary
                 load(pref, &taskGroup, keyPath: \Self.infotableList.baseCurrencyId),
-                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.data),
-                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.order),
                 load(pref, &taskGroup, keyPath: \Self.categoryList.data),
                 load(pref, &taskGroup, keyPath: \Self.categoryList.order),
+                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.data),
+                load(pref, &taskGroup, keyPath: \Self.budgetPeriodList.order),
             ].allSatisfy { $0 }
             return await taskGroupOk(taskGroup, ok)
         }

@@ -61,7 +61,7 @@ extension AssetData {
             return "* Database is not available"
         }
 
-        guard let assetAtt = vm.assetList.att.readyValue else {
+        guard let assetAtt = vm.assetList.attachment.readyValue else {
             return "* assetAtt is not loaded"
         }
         if assetAtt[id] != nil {

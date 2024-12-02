@@ -39,11 +39,11 @@ extension ViewModel {
         stockList.order.unload()
 
         if let _ = newData {
-            stockList.att.unload()
+            stockList.attachment.unload()
         } else if let oldData {
-            if stockList.att.state.unloading() {
-                stockList.att.value[oldData.id] = nil
-                stockList.att.state.loaded()
+            if stockList.attachment.state.unloading() {
+                stockList.attachment.value[oldData.id] = nil
+                stockList.attachment.state.loaded()
             }
         }
 
@@ -94,6 +94,6 @@ extension ViewModel {
         if stockGroup.choice == .attachment {
             stockGroup.unload()
         }
-        stockList.att.unload()
+        stockList.attachment.unload()
     }
 }

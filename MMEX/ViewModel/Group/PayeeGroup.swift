@@ -54,7 +54,7 @@ extension ViewModel {
             let listData      = payeeList.data.readyValue,
             let listUsed      = payeeList.used.readyValue,
             let listOrder     = payeeList.order.readyValue,
-            let listAtt       = payeeList.att.readyValue,
+            let listAtt       = payeeList.attachment.readyValue,
             let categoryPath  = categoryList.evalPath.readyValue,
             let categoryOrder = categoryList.evalTree.readyValue?.order
         else { return }

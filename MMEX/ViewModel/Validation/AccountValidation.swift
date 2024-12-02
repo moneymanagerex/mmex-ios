@@ -68,7 +68,7 @@ extension AccountData {
             return "* Database is not available"
         }
 
-        guard let accountAtt = vm.accountList.att.readyValue else {
+        guard let accountAtt = vm.accountList.attachment.readyValue else {
             return "* accountAtt is not loaded"
         }
         if accountAtt[id] != nil {
