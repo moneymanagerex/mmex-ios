@@ -59,7 +59,7 @@ extension ViewModel {
             let listData      = assetList.data.readyValue,
             let listUsed      = assetList.used.readyValue,
             let listOrder     = assetList.order.readyValue,
-            let listAtt       = assetList.att.readyValue,
+            let listAtt       = assetList.attachment.readyValue,
             let currencyName  = currencyList.name.readyValue,
             let currencyOrder = currencyList.order.readyValue
         else { return }

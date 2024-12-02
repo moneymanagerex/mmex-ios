@@ -49,7 +49,7 @@ extension ViewModel {
             let listData     = stockList.data.readyValue,
             let listUsed     = stockList.used.readyValue,
             let listOrder    = stockList.order.readyValue,
-            let listAtt      = stockList.att.readyValue,
+            let listAtt      = stockList.attachment.readyValue,
             let accountData  = accountList.data.readyValue,
             let accountOrder = accountList.order.readyValue
         else { return }

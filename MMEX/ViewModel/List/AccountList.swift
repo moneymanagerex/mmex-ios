@@ -11,12 +11,13 @@ import SQLite
 struct AccountList: ListProtocol {
     typealias MainRepository = AccountRepository
 
-    var state : LoadState                     = .init()
-    var count : LoadMainCount<MainRepository> = .init()
-    var data  : LoadMainData<MainRepository>  = .init()
-    var used  : LoadMainUsed<MainRepository>  = .init()
-    var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
-    var att   : LoadAuxAtt<MainRepository>    = .init()
+    var state : LoadState                         = .init()
+    var count : LoadMainCount<MainRepository>     = .init()
+    var data  : LoadMainData<MainRepository>      = .init()
+    var used  : LoadMainUsed<MainRepository>      = .init()
+    var order : LoadMainOrder<MainRepository>     = .init(order: [MainRepository.col_name])
+
+    var attachment : LoadAuxAttachment<MainRepository> = .init()
 }
 
 extension AccountList {
@@ -26,7 +27,7 @@ extension AccountList {
         data.unload()
         used.unload()
         order.unload()
-        att.unload()
+        attachment.unload()
         unloaded()
     }
 }
@@ -39,7 +40,7 @@ extension ViewModel {
                 load(pref, &taskGroup, keyPath: \Self.accountList.data),
                 load(pref, &taskGroup, keyPath: \Self.accountList.used),
                 load(pref, &taskGroup, keyPath: \Self.accountList.order),
-                load(pref, &taskGroup, keyPath: \Self.accountList.att),
+                load(pref, &taskGroup, keyPath: \Self.accountList.attachment),
                 // auxiliary
                 load(pref, &taskGroup, keyPath: \Self.currencyList.info),
                 load(pref, &taskGroup, keyPath: \Self.currencyList.name),

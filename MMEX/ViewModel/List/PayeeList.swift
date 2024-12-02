@@ -11,12 +11,13 @@ import SQLite
 struct PayeeList: ListProtocol {
     typealias MainRepository = PayeeRepository
 
-    var state : LoadState                     = .init()
-    var count : LoadMainCount<MainRepository> = .init()
-    var data  : LoadMainData<MainRepository>  = .init()
-    var used  : LoadMainUsed<MainRepository>  = .init()
-    var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
-    var att   : LoadAuxAtt<MainRepository>    = .init()
+    var state : LoadState                         = .init()
+    var count : LoadMainCount<MainRepository>     = .init()
+    var data  : LoadMainData<MainRepository>      = .init()
+    var used  : LoadMainUsed<MainRepository>      = .init()
+    var order : LoadMainOrder<MainRepository>     = .init(order: [MainRepository.col_name])
+
+    var attachment : LoadAuxAttachment<MainRepository> = .init()
 }
 
 extension PayeeList {
@@ -26,7 +27,7 @@ extension PayeeList {
         data.unload()
         used.unload()
         order.unload()
-        att.unload()
+        attachment.unload()
         unloaded()
     }
 }
@@ -39,7 +40,7 @@ extension ViewModel {
                 load(pref, &taskGroup, keyPath: \Self.payeeList.data),
                 load(pref, &taskGroup, keyPath: \Self.payeeList.used),
                 load(pref, &taskGroup, keyPath: \Self.payeeList.order),
-                load(pref, &taskGroup, keyPath: \Self.payeeList.att),
+                load(pref, &taskGroup, keyPath: \Self.payeeList.attachment),
                 // auxiliary
                 //load(pref, &taskGroup, keyPath: \Self.infotableList.categoryDelimiter),
                 load(pref, &taskGroup, keyPath: \Self.categoryList.data),

@@ -39,11 +39,11 @@ extension ViewModel {
         assetList.order.unload()
 
         if let _ = newData {
-            assetList.att.unload()
+            assetList.attachment.unload()
         } else if let oldData {
-            if assetList.att.state.unloading() {
-                assetList.att.value[oldData.id] = nil
-                assetList.att.state.loaded()
+            if assetList.attachment.state.unloading() {
+                assetList.attachment.value[oldData.id] = nil
+                assetList.attachment.state.loaded()
             }
         }
 
@@ -94,6 +94,6 @@ extension ViewModel {
         if assetGroup.choice == .attachment {
             assetGroup.unload()
         }
-        assetList.att.unload()
+        assetList.attachment.unload()
     }
 }

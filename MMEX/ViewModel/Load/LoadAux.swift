@@ -32,20 +32,72 @@ struct LoadAuxData<
     }
 }
 
-typealias LoadAuxAtt<MainRepository: RepositoryProtocol>
+typealias LoadAuxTagLink<MainRepository: RepositoryProtocol>
+= LoadAuxData<MainRepository, TagLinkRepository>
+
+typealias LoadAuxFieldValue<MainRepository: RepositoryProtocol>
+= LoadAuxData<MainRepository, FieldValueRepository>
+
+typealias LoadAuxAttachment<MainRepository: RepositoryProtocol>
 = LoadAuxData<MainRepository, AttachmentRepository>
 
-extension LoadAuxAtt {
+extension LoadAuxData where AuxRepository == TagLinkRepository {
+    typealias GL = TagLinkRepository
+
+    init(order: [SQLite.Expressible] = [GL.col_tagId]) {
+        let refType: RefType? =
+        MainRepository.self == TransactionRepository.self      ? .transaction      :
+        MainRepository.self == TransactionSplitRepository.self ? .transactionSplit :
+        MainRepository.self == ScheduledRepository.self        ? .scheduled        :
+        MainRepository.self == ScheduledSplitRepository.self   ? .scheduledSplit   :
+        nil
+
+        var table = GL.table
+        if let refType { table = table.filter(GL.col_refType == refType.rawValue) }
+
+        self.init(
+            mainId: { DataId($0[GL.col_refId]) },
+            auxTable: table.order(order)
+        )
+    }
+}
+
+extension LoadAuxData where AuxRepository == FieldValueRepository {
+    typealias FV = FieldValueRepository
+
+    init(order: [SQLite.Expressible] = [FV.col_fieldId]) {
+        let refType: RefType? =
+        MainRepository.self == TransactionRepository.self ? .transaction :
+        MainRepository.self == ScheduledRepository.self   ? .scheduled   :
+        nil
+
+        var table = FV.table
+        if refType == .transaction {
+            table = table.filter(FV.col_refId > 0)
+        } else if refType == .scheduled {
+            table = table.filter(FV.col_refId < 0)
+        }
+
+        self.init(
+            mainId: refType == .scheduled
+            ? { DataId(-$0[FV.col_refId]) }
+            : { DataId($0[FV.col_refId]) },
+            auxTable: table.order(order)
+        )
+    }
+}
+
+extension LoadAuxData where AuxRepository == AttachmentRepository {
     typealias D = AttachmentRepository
 
     init(order: [SQLite.Expressible] = [D.col_id]) {
         let refType: RefType? =
-        MainRepository.self == AccountRepository.self     ? RefType.account     :
-        MainRepository.self == AssetRepository.self       ? RefType.asset       :
-        MainRepository.self == StockRepository.self       ? RefType.stock       :
-        MainRepository.self == PayeeRepository.self       ? RefType.payee       :
-        MainRepository.self == TransactionRepository.self ? RefType.transaction :
-        MainRepository.self == ScheduledRepository.self   ? RefType.scheduled   :
+        MainRepository.self == AccountRepository.self     ? .account     :
+        MainRepository.self == AssetRepository.self       ? .asset       :
+        MainRepository.self == StockRepository.self       ? .stock       :
+        MainRepository.self == PayeeRepository.self       ? .payee       :
+        MainRepository.self == TransactionRepository.self ? .transaction :
+        MainRepository.self == ScheduledRepository.self   ? .scheduled   :
         nil
 
         var table = D.table

@@ -43,11 +43,11 @@ extension ViewModel {
         accountList.order.unload()
         
         if let _ = newData {
-            accountList.att.unload()
+            accountList.attachment.unload()
         } else if let oldData {
-            if accountList.att.state.unloading() {
-                accountList.att.value[oldData.id] = nil
-                accountList.att.state.loaded()
+            if accountList.attachment.state.unloading() {
+                accountList.attachment.value[oldData.id] = nil
+                accountList.attachment.state.loaded()
             }
         }
         
@@ -98,6 +98,6 @@ extension ViewModel {
         if accountGroup.choice == .attachment {
             accountGroup.unload()
         }
-        accountList.att.unload()
+        accountList.attachment.unload()
     }
 }

@@ -39,11 +39,11 @@ extension ViewModel {
         payeeList.order.unload()
 
         if let _ = newData {
-            payeeList.att.unload()
+            payeeList.attachment.unload()
         } else if let oldData {
-            if payeeList.att.state.unloading() {
-                payeeList.att.value[oldData.id] = nil
-                payeeList.att.state.loaded()
+            if payeeList.attachment.state.unloading() {
+                payeeList.attachment.value[oldData.id] = nil
+                payeeList.attachment.state.loaded()
             }
         }
 
@@ -94,6 +94,6 @@ extension ViewModel {
         if payeeGroup.choice == .attachment {
             payeeGroup.unload()
         }
-        payeeList.att.unload()
+        payeeList.attachment.unload()
     }
 }

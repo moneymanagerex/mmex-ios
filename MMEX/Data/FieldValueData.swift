@@ -15,7 +15,7 @@ struct FieldValueData: ExportableEntity {
     var refId   : DataId  = .void
     var content : String  = ""
 
-    // unique(fieldId, refId)
+    // unique(fieldId, refType, refId)
 
     static let refTypes: Set<RefType> = [ .transaction, .scheduled ]
 }

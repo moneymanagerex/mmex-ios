@@ -67,7 +67,7 @@ extension StockData {
         // Do not cleanup SH (Stock History), even if this is the last item for a symbol.
         // Offer a different interface to manipulate Stock History.
 
-        guard let stockAtt = vm.stockList.att.readyValue else {
+        guard let stockAtt = vm.stockList.attachment.readyValue else {
             return "* stockAtt is not loaded"
         }
         if stockAtt[id] != nil {

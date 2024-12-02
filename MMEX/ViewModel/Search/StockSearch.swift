@@ -15,8 +15,8 @@ struct StockSearch: SearchProtocol {
             vm.accountList.data.readyValue?[data.accountId].map { [$0.name] } ?? []
         } ),
         ("Attachment", false, nil, { vm, data in
-            (vm.accountList.att.readyValue?[data.id]?.map { $0.description } ?? []) +
-            (vm.accountList.att.readyValue?[data.id]?.map { $0.filename } ?? [])
+            (vm.accountList.attachment.readyValue?[data.id]?.map { $0.description } ?? []) +
+            (vm.accountList.attachment.readyValue?[data.id]?.map { $0.filename } ?? [])
         } ),
         ("Notes",      false, {[ $0.notes ]}, nil),
     ]
