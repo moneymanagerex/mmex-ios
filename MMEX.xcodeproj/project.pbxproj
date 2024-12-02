@@ -112,6 +112,7 @@
 		925EAC292CDABF9F003CEAB3 /* FieldList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC282CDABF9F003CEAB3 /* FieldList.swift */; };
 		925EAC2B2CDAC10D003CEAB3 /* FieldGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC2A2CDAC10D003CEAB3 /* FieldGroup.swift */; };
 		925EAC2D2CDAC36F003CEAB3 /* FieldSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925EAC2C2CDAC36F003CEAB3 /* FieldSearch.swift */; };
+		926A90B02CFD657E007DDA43 /* ScheduledGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A90AF2CFD657E007DDA43 /* ScheduledGroup.swift */; };
 		927B122F2CDE83DF00AEA52F /* EnterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B122E2CDE83DF00AEA52F /* EnterList.swift */; };
 		927B12312CDE84B500AEA52F /* InsightsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12302CDE84B500AEA52F /* InsightsList.swift */; };
 		927B12332CDE852900AEA52F /* JournalList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927B12322CDE852900AEA52F /* JournalList.swift */; };
@@ -334,6 +335,7 @@
 		925EAC282CDABF9F003CEAB3 /* FieldList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldList.swift; sourceTree = "<group>"; };
 		925EAC2A2CDAC10D003CEAB3 /* FieldGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGroup.swift; sourceTree = "<group>"; };
 		925EAC2C2CDAC36F003CEAB3 /* FieldSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldSearch.swift; sourceTree = "<group>"; };
+		926A90AF2CFD657E007DDA43 /* ScheduledGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledGroup.swift; sourceTree = "<group>"; };
 		927B122E2CDE83DF00AEA52F /* EnterList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterList.swift; sourceTree = "<group>"; };
 		927B12302CDE84B500AEA52F /* InsightsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsightsList.swift; sourceTree = "<group>"; };
 		927B12322CDE852900AEA52F /* JournalList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalList.swift; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 				924353342CCD2DA90052E4BC /* StockGroup.swift */,
 				925EAB9C2CCDD67C003CEAB3 /* CategoryGroup.swift */,
 				924353362CCD2DDA0052E4BC /* PayeeGroup.swift */,
+				926A90AF2CFD657E007DDA43 /* ScheduledGroup.swift */,
 				925EAC0C2CDA89BD003CEAB3 /* TagGroup.swift */,
 				925EAC2A2CDAC10D003CEAB3 /* FieldGroup.swift */,
 				925EAC1B2CDAA900003CEAB3 /* AttachmentGroup.swift */,
@@ -1106,6 +1109,7 @@
 				920824082CA4B05700388AB2 /* ScheduledSplitRepository.swift in Sources */,
 				929EF6632C9FF3ED0051A3E6 /* AssetRepository.swift in Sources */,
 				92F686402CF5C4AD00171A6A /* PInt.swift in Sources */,
+				926A90B02CFD657E007DDA43 /* ScheduledGroup.swift in Sources */,
 				92F685F92CF0CADF00171A6A /* BudgetPeriodGroup.swift in Sources */,
 				92F6863E2CF5C0CD00171A6A /* Number.swift in Sources */,
 				A350BDC12CA26415006669D5 /* TransactionViewModel.swift in Sources */,

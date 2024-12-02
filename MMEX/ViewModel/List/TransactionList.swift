@@ -14,9 +14,9 @@ struct TransactionList: ListProtocol {
     var state : LoadState                         = .init()
     var count : LoadMainCount<MainRepository>     = .init()
     var data  : LoadMainData<MainRepository>      = .init()
-    var used  : LoadMainUsed<MainRepository>      = .init()
+    var used  : LoadMainUsed<MainRepository>      = .init()  // always empty
     var order : LoadMainOrder<MainRepository>     = .init(
-        order: [MainRepository.col_transDate, MainRepository.col_id]
+        order : [MainRepository.col_transDate, MainRepository.col_id]
     )
 
     var tagLink    : LoadAuxTagLink<MainRepository>    = .init()
@@ -24,11 +24,11 @@ struct TransactionList: ListProtocol {
     var attachment : LoadAuxAttachment<MainRepository> = .init()
     
     typealias TP = TransactionSplitRepository
-    var split : LoadAuxData<MainRepository, TP> = .init(
+    var split: LoadAuxData<MainRepository, TP> = .init(
         mainId   : { DataId($0[TP.col_transId]) },
         auxTable : TP.table.order(TP.col_id)
     )
-    var splitTagLink : LoadAuxTagLink<TP> = .init()
+    var splitTagLink: LoadAuxTagLink<TP> = .init()
 
     typealias TL = TransactionLinkRepository
     var transLink : LoadAuxData<MainRepository, TL> = .init(

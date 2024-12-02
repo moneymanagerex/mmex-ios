@@ -32,15 +32,11 @@ struct FieldGroup: GroupProtocol {
         self.$choice = "manage.group.field"
     }
 
-    static let groupUsed: [Bool] = [
-        true, false
-    ]
-
-    static let groupRefType: [RefType] = [
+    static let groupUsed    : [Bool] = [true, false]
+    static let groupRefType : [RefType] = [
         .transaction, .scheduled
     ]
-
-    static let groupType: [FieldType] = [
+    static let groupType    : [FieldType] = [
         .string, .integer, .decimal, .boolean, .date, .time,
         .singleChoice, .multiChoice, .unknown
     ]

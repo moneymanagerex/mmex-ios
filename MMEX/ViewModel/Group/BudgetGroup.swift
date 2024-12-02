@@ -31,13 +31,10 @@ struct BudgetGroup: GroupProtocol {
         self.$choice = "manage.group.budget"
     }
 
-    var groupPeriod: [DataId] = []
+    static let groupActive: [Bool] = [true, false]
 
-    var groupCategory: [DataId] = []
-
-    static let groupActive: [Bool] = [
-        true, false
-    ]
+    var groupPeriod   : [DataId] = []
+    var groupCategory : [DataId] = []
 }
 
 extension ViewModel {

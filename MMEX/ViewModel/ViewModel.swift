@@ -63,7 +63,7 @@ class ViewModel: ObservableObject {
     typealias Q = ScheduledRepository
     typealias QP = ScheduledSplitRepository
     @Published var scheduledList  : ScheduledList  = .init()
-    //@Published var scheduledGroup : ScheduledGroup = .init()
+    @Published var scheduledGroup : ScheduledGroup = .init()
 
     typealias G = TagRepository
     typealias GL = TagLinkRepository
