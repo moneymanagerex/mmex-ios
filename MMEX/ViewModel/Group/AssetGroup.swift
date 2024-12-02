@@ -34,23 +34,14 @@ struct AssetGroup: GroupProtocol {
         self.$choice = "manage.group.asset"
     }
 
-    static let groupUsed: [Bool] = [
-        true, false
-    ]
-
-    static let groupStatus: [AssetStatus] = [
-        .open, .closed
-    ]
-
-    static let groupType: [AssetType] = [
+    static let groupUsed   : [Bool] = [true, false]
+    static let groupStatus : [AssetStatus] = [.open, .closed]
+    static let groupType   : [AssetType] = [
         .property, .automobile, .household, .art, .jewellery, .cash, .other
     ]
+    static let groupAtt    : [Bool] = [true, false]
 
     var groupCurrency: [DataId] = []
-
-    static let groupAttachment: [Bool] = [
-        true, false
-    ]
 }
 
 extension ViewModel {
@@ -101,7 +92,7 @@ extension ViewModel {
             }
         case .attachment:
             let dict = Dictionary(grouping: listOrder) { listAtt[$0]?.count ?? 0 > 0 }
-            for g in AssetGroup.groupAttachment {
+            for g in AssetGroup.groupAtt {
                 let name = g ? "With Attachment" : "Other"
                 assetGroup.append(name, dict[g] ?? [], true, g)
             }

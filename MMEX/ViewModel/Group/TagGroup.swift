@@ -31,13 +31,8 @@ struct TagGroup: GroupProtocol {
         self.$choice = "manage.group.tag"
     }
 
-    static let groupUsed: [Bool] = [
-        true, false
-    ]
-
-    static let groupActive: [Bool] = [
-        true, false
-    ]
+    static let groupUsed   : [Bool] = [true, false]
+    static let groupActive : [Bool] = [true, false]
 }
 
 extension ViewModel {

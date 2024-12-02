@@ -31,13 +31,8 @@ struct CurrencyGroup: GroupProtocol {
         self.$choice = "manage.group.currency"
     }
 
-    static let groupUsed: [Bool] = [
-        true, false
-    ]
-
-    static let groupType: [CurrencyType] = [
-        .fiat, .crypto
-    ]
+    static let groupUsed : [Bool] = [true, false]
+    static let groupType : [CurrencyType] = [.fiat, .crypto]
 }
 
 extension ViewModel {

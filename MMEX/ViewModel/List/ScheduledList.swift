@@ -14,9 +14,9 @@ struct ScheduledList: ListProtocol {
     var state : LoadState                         = .init()
     var count : LoadMainCount<MainRepository>     = .init()
     var data  : LoadMainData<MainRepository>      = .init()
-    var used  : LoadMainUsed<MainRepository>      = .init()
+    var used  : LoadMainUsed<MainRepository>      = .init()  // always empty
     var order : LoadMainOrder<MainRepository>     = .init(
-        order: [MainRepository.col_transDate, MainRepository.col_id]
+        order : [MainRepository.col_transDate, MainRepository.col_id]
     )
 
     var tagLink    : LoadAuxTagLink<MainRepository>    = .init()
@@ -24,11 +24,11 @@ struct ScheduledList: ListProtocol {
     var attachment : LoadAuxAttachment<MainRepository> = .init()
     
     typealias QP = ScheduledSplitRepository
-    var split : LoadAuxData<MainRepository, QP> = .init(
+    var split: LoadAuxData<MainRepository, QP> = .init(
         mainId   : { DataId($0[QP.col_transId]) },
         auxTable : QP.table.order(QP.col_id)
     )
-    var splitTagLink : LoadAuxTagLink<QP> = .init()
+    var splitTagLink: LoadAuxTagLink<QP> = .init()
 }
 
 extension ScheduledList {

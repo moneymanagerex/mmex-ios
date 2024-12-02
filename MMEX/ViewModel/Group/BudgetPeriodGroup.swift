@@ -30,9 +30,7 @@ struct BudgetPeriodGroup: GroupProtocol {
         self.$choice = "manage.group.budgetPeriod"
     }
 
-    static let groupUsed: [Bool] = [
-        true, false
-    ]
+    static let groupUsed: [Bool] = [true, false]
 }
 
 extension ViewModel {

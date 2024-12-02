@@ -35,27 +35,15 @@ struct AccountGroup: GroupProtocol {
         self.$choice = "manage.group.account"
     }
 
-    static let groupUsed: [Bool] = [
-        true, false
-    ]
-
-    static let groupFavorite: [AccountFavorite] = [
-        .boolTrue, .boolFalse
-    ]
-
-    static let groupStatus: [AccountStatus] = [
-        .open, .closed
-    ]
-
-    static let groupType: [AccountType] = [
+    static let groupUsed     : [Bool] = [true, false]
+    static let groupFavorite : [AccountFavorite] = [.boolTrue, .boolFalse]
+    static let groupStatus   : [AccountStatus] = [.open, .closed]
+    static let groupType     : [AccountType] = [
         .checking, .creditCard, .cash, .loan, .term, .asset, .shares, .investment
     ]
+    static let groupAtt      : [Bool] = [true, false]
 
     var groupCurrency: [DataId] = []
-
-    static let groupAttachment: [Bool] = [
-        true, false
-    ]
 }
 
 extension ViewModel {
@@ -112,7 +100,7 @@ extension ViewModel {
             }
         case .attachment:
             let dict = Dictionary(grouping: listOrder) { listAtt[$0]?.count ?? 0 > 0 }
-            for g in AccountGroup.groupAttachment {
+            for g in AccountGroup.groupAtt {
                 let name = g ? "With Attachment" : "Other"
                 accountGroup.append(name, dict[g] ?? [], true, g)
             }

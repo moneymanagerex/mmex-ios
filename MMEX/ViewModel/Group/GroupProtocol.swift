@@ -60,6 +60,7 @@ extension ViewModel {
         else if MainRepository.self == S.self  { loadStockGroup(choice: choice as! StockGroupChoice) }
         else if MainRepository.self == C.self  { loadCategoryGroup(choice: choice as! CategoryGroupChoice) }
         else if MainRepository.self == P.self  { loadPayeeGroup(choice: choice as! PayeeGroupChoice) }
+        else if MainRepository.self == Q.self  { loadScheduledGroup(choice: choice as! ScheduledGroupChoice) }
         else if MainRepository.self == G.self  { loadTagGroup(choice: choice as! TagGroupChoice) }
         else if MainRepository.self == F.self  { loadFieldGroup(choice: choice as! FieldGroupChoice) }
         else if MainRepository.self == D.self  { loadAttachmentGroup(choice: choice as! AttachmentGroupChoice) }
@@ -76,6 +77,7 @@ extension ViewModel {
         else if MainRepository.self == S.self  { stockGroup.unload() }
         else if MainRepository.self == C.self  { categoryGroup.unload() }
         else if MainRepository.self == P.self  { payeeGroup.unload() }
+        else if MainRepository.self == Q.self  { scheduledGroup.unload() }
         else if MainRepository.self == G.self  { tagGroup.unload() }
         else if MainRepository.self == F.self  { fieldGroup.unload() }
         else if MainRepository.self == D.self  { attachmentGroup.unload() }
@@ -91,6 +93,7 @@ extension ViewModel {
         stockGroup.unload()
         categoryGroup.unload()
         payeeGroup.unload()
+        scheduledGroup.unload()
         tagGroup.unload()
         fieldGroup.unload()
         attachmentGroup.unload()

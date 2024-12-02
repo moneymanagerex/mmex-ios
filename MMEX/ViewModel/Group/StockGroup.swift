@@ -32,15 +32,10 @@ struct StockGroup: GroupProtocol {
         self.$choice = "manage.group.stock"
     }
 
-    static let groupUsed: [Bool] = [
-        true, false
-    ]
+    static let groupUsed : [Bool] = [true, false]
+    static let groupAtt  : [Bool] = [true, false]
 
     var groupAccount: [DataId] = []
-
-    static let groupAttachment: [Bool] = [
-        true, false
-    ]
 }
 
 extension ViewModel {
@@ -81,7 +76,7 @@ extension ViewModel {
             }
         case .attachment:
             let dict = Dictionary(grouping: listOrder) { listAtt[$0]?.count ?? 0 > 0 }
-            for g in StockGroup.groupAttachment {
+            for g in StockGroup.groupAtt {
                 let name = g ? "With Attachment" : "Other"
                 stockGroup.append(name, dict[g] ?? [], true, g)
             }

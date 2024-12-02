@@ -31,9 +31,7 @@ struct ReportGroup: GroupProtocol {
         self.$choice = "manage.group.report"
     }
 
-    static let groupActive: [Bool] = [
-        true, false
-    ]
+    static let groupActive: [Bool] = [true, false]
 
     var groupGroup: [String] = []
 }
