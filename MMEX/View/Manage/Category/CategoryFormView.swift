@@ -60,6 +60,17 @@ struct CategoryFormView: View {
                 }, showView: {
                     Text(data.active ? "Yes" : "No")
                 } )
+
+                if let categorySymbol = CategoryData.categoryToSFSymbol[data.name] {
+                    pref.theme.field.view(edit, "Category Symbol", editView: {
+                        // TODO
+                    }, showView: {
+                        Image(systemName: categorySymbol)
+                            .frame(width: 50, alignment: .leading) // Adjust width as needed
+                            .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
+                            .foregroundColor(.blue) // Customize icon style
+                    })
+                }
             }
         }
         .keyboardState(focus: $focus, focusState: $focusState)
