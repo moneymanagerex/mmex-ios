@@ -61,16 +61,27 @@ struct CategoryFormView: View {
                     Text(data.active ? "Yes" : "No")
                 } )
 
-                if let categorySymbol = CategoryData.categoryToSFSymbol[data.name] {
-                    pref.theme.field.view(edit, "Category Symbol", editView: {
-                        // TODO
-                    }, showView: {
-                        Image(systemName: categorySymbol)
-                            .frame(width: 50, alignment: .leading) // Adjust width as needed
-                            .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed
-                            .foregroundColor(.blue) // Customize icon style
-                    })
-                }
+                pref.theme.field.view(edit, "Category Symbol", editView: {
+                    Picker("Symbol", selection: Binding(
+                        get: { pref.symbol.category2symbol[data.name] ?? "" },
+                        set: { newValue in
+                            /// CHECK full name vs name
+                            pref.symbol.category2symbol[data.name] = newValue
+                        }
+                    )) {
+                        ForEach(CategoryData.predefinedSymbols, id: \.self) { symbol in
+                            Image(systemName: symbol)
+                            .tag(symbol)
+                        }
+                    }
+                }, showView: {
+                    /// CHECK full name vs name
+                    if let symbol = pref.symbol.category2symbol[data.name], !symbol.isEmpty {
+                        Image(systemName: symbol)
+                    } else {
+                        pref.theme.field.valueOrError("No symbol", text: nil)
+                    }
+                })
             }
         }
         .keyboardState(focus: $focus, focusState: $focusState)

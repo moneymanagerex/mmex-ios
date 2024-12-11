@@ -99,7 +99,7 @@ struct JournalView: View {
             HStack {
                 let categoryName = vm.categoryList.data.readyValue?[txn.categId]?.name
                 // Left column (Category Icon or Category Name)
-                if let categoryName, let categorySymbol = CategoryData.categoryToSFSymbol[categoryName] {
+                if let categoryName, let categorySymbol = pref.symbol.category2symbol[categoryName] {
                     Image(systemName: categorySymbol)
                         .frame(width: 50, alignment: .leading) // Adjust width as needed
                         .font(.system(size: 16, weight: .bold)) // Customize size and weight as needed

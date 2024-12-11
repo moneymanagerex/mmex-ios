@@ -12,6 +12,7 @@ struct Theme {
     @StoredPreference var appearance: Appearance = .defaultValue
     @StoredPreference var numericKeypad: BoolChoice = .boolTrue
     @StoredPreference var categoryDelimiter: String = ":"
+    @StoredPreferenceDictionary(key: "CategorySymbols") var symbols: [String: String]
 
     var tab   : TabTheme   = .init()
     var group : GroupTheme = .init()

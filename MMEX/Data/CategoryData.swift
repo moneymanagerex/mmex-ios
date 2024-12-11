@@ -92,6 +92,8 @@ extension CategoryData {
         "Water": "drop.fill",
         "Water Tax": "building.columns.fill"
     ]
+
+    static let predefinedSymbols: [String] = Array(categoryToSFSymbol.values)
 }
 
 extension CategoryData {
