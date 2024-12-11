@@ -173,6 +173,8 @@
 		92F686442CF81FE500171A6A /* TransactionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F686432CF81FE500171A6A /* TransactionEditView.swift */; };
 		A30061782CA3B68300011B1A /* AssetFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30061772CA3B68300011B1A /* AssetFormView.swift */; };
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
+		A32ED5CC2D09C33500166673 /* StoredPreferenceDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32ED5CB2D09C33500166673 /* StoredPreferenceDictionary.swift */; };
+		A32ED5CE2D09EB2C00166673 /* Name2Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32ED5CD2D09EB2C00166673 /* Name2Symbol.swift */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
 		A33742882CA8E55400698466 /* IncomeExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742872CA8E55400698466 /* IncomeExpenseView.swift */; };
 		A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742892CA8E72C00698466 /* InsightsSummary.swift */; };
@@ -396,6 +398,8 @@
 		92F686432CF81FE500171A6A /* TransactionEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionEditView.swift; sourceTree = "<group>"; };
 		A30061772CA3B68300011B1A /* AssetFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFormView.swift; sourceTree = "<group>"; };
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A32ED5CB2D09C33500166673 /* StoredPreferenceDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPreferenceDictionary.swift; sourceTree = "<group>"; };
+		A32ED5CD2D09EB2C00166673 /* Name2Symbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Name2Symbol.swift; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
 		A33742872CA8E55400698466 /* IncomeExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeExpenseView.swift; sourceTree = "<group>"; };
 		A33742892CA8E72C00698466 /* InsightsSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsSummary.swift; sourceTree = "<group>"; };
@@ -727,6 +731,8 @@
 			isa = PBXGroup;
 			children = (
 				927B12462CE6C26E00AEA52F /* StoredPreference.swift */,
+				A32ED5CB2D09C33500166673 /* StoredPreferenceDictionary.swift */,
+				A32ED5CD2D09EB2C00166673 /* Name2Symbol.swift */,
 				924352ED2CB060D80052E4BC /* Theme.swift */,
 				927B12482CE6E8B700AEA52F /* Appearance.swift */,
 				924352F12CB0A93E0052E4BC /* TabTheme.swift */,
@@ -1123,6 +1129,7 @@
 				925EAC242CDAB100003CEAB3 /* AttachmentListView.swift in Sources */,
 				A3C1424E2C8B335900D3CEC0 /* PayeeData.swift in Sources */,
 				929EF6612C9FF2FD0051A3E6 /* StockData.swift in Sources */,
+				A32ED5CE2D09EB2C00166673 /* Name2Symbol.swift in Sources */,
 				9243534D2CCD38830052E4BC /* AssetList.swift in Sources */,
 				925EAB9D2CCDD67C003CEAB3 /* CategoryGroup.swift in Sources */,
 				925EAC2B2CDAC10D003CEAB3 /* FieldGroup.swift in Sources */,
@@ -1192,6 +1199,7 @@
 				920824222CA4E67200388AB2 /* TagLinkRepository.swift in Sources */,
 				A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */,
 				A3C142442C89C8FA00D3CEC0 /* AccountData.swift in Sources */,
+				A32ED5CC2D09C33500166673 /* StoredPreferenceDictionary.swift in Sources */,
 				92F6860F2CF112E200171A6A /* ReportReload.swift in Sources */,
 				A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */,
 				925EAB9B2CCDB60B003CEAB3 /* CategoryList.swift in Sources */,

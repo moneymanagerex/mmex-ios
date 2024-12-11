@@ -60,6 +60,28 @@ struct CategoryFormView: View {
                 }, showView: {
                     Text(data.active ? "Yes" : "No")
                 } )
+
+                pref.theme.field.view(edit, "Category Symbol", editView: {
+                    Picker("Symbol", selection: Binding(
+                        get: { pref.symbol.category2symbol[data.name] ?? "" },
+                        set: { newValue in
+                            /// CHECK full name vs name
+                            pref.symbol.category2symbol[data.name] = newValue
+                        }
+                    )) {
+                        ForEach(CategoryData.predefinedSymbols, id: \.self) { symbol in
+                            Image(systemName: symbol)
+                            .tag(symbol)
+                        }
+                    }
+                }, showView: {
+                    /// CHECK full name vs name
+                    if let symbol = pref.symbol.category2symbol[data.name], !symbol.isEmpty {
+                        Image(systemName: symbol)
+                    } else {
+                        pref.theme.field.valueOrError("No symbol", text: nil)
+                    }
+                })
             }
         }
         .keyboardState(focus: $focus, focusState: $focusState)

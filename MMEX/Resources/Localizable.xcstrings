@@ -86,17 +86,6 @@
         }
       }
     },
-    "About MMEX4iOS" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Informazioni Su MMEX4iOS"
-          }
-        }
-      }
-    },
     "Account" : {
       "localizations" : {
         "it" : {
@@ -125,34 +114,6 @@
     },
     "Active" : {
 
-    },
-    "ACTIVE" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ATTIVO"
-          }
-        }
-      }
-    },
-    "Add" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungi"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "添加"
-          }
-        }
-      }
     },
     "Add Note" : {
       "localizations" : {
@@ -217,17 +178,6 @@
     "Cash" : {
       "extractionState" : "manual"
     },
-    "Categories" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Categorie"
-          }
-        }
-      }
-    },
     "Category" : {
       "localizations" : {
         "it" : {
@@ -244,17 +194,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delimitatore Di Categoria"
-          }
-        }
-      }
-    },
-    "Category Name" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome Categoria"
           }
         }
       }
@@ -292,17 +231,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ringraziamenti"
-          }
-        }
-      }
-    },
-    "Dark" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dark"
           }
         }
       }
@@ -409,28 +337,6 @@
     "Default is 1" : {
 
     },
-    "Default Payee" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beneficiario Predefinito"
-          }
-        }
-      }
-    },
-    "Default Status" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stato Predefinito"
-          }
-        }
-      }
-    },
     "Default Transaction Status" : {
 
     },
@@ -439,17 +345,6 @@
     },
     "Delete %@" : {
 
-    },
-    "Delete Category" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina Categoria"
-          }
-        }
-      }
     },
     "Delete Transaction" : {
       "localizations" : {
@@ -529,17 +424,6 @@
     "Enter" : {
 
     },
-    "Enter Transaction" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inserisci Transazione"
-          }
-        }
-      }
-    },
     "Error" : {
 
     },
@@ -606,17 +490,6 @@
     },
     "Help" : {
 
-    },
-    "Help / FAQ" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aiuto / FAQ"
-          }
-        }
-      }
     },
     "How to add a transaction?" : {
       "localizations" : {
@@ -724,17 +597,6 @@
     "More Insights Coming Soon..." : {
 
     },
-    "n/a" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "n.d."
-          }
-        }
-      }
-    },
     "N/A" : {
       "localizations" : {
         "it" : {
@@ -750,17 +612,6 @@
     },
     "New attachments can be created from the items that contain them." : {
 
-    },
-    "New Category" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuova Categoria"
-          }
-        }
-      }
     },
     "New Transaction" : {
       "localizations" : {
@@ -870,17 +721,6 @@
         }
       }
     },
-    "Reports and Insights" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Resoconti e Approfondimenti"
-          }
-        }
-      }
-    },
     "Reuse Last Payee" : {
 
     },
@@ -892,17 +732,6 @@
     },
     "Search area" : {
 
-    },
-    "Search by name" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cerca per nome"
-          }
-        }
-      }
     },
     "Search by notes" : {
       "localizations" : {
@@ -940,17 +769,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seleziona Categoria"
-          }
-        }
-      }
-    },
-    "Select Currency" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleziona Valuta"
           }
         }
       }
@@ -1052,16 +870,8 @@
     "Support" : {
 
     },
-    "System" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sistema"
-          }
-        }
-      }
+    "Symbol" : {
+
     },
     "Tab Icons" : {
 
