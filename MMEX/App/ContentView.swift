@@ -15,7 +15,6 @@ struct ContentView: View {
     @State private var isAttachDocumentPickerPresented = false
     @State private var isSampleDocument = false
     @State private var selectedTab = Preference.selectedTab
-   // @State private var selectedFileURL: URL?
     @State private var isPresentingTransactionAddView = false
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
