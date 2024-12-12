@@ -207,6 +207,7 @@ struct ManageView: View {
         case .success(let urls):
             if let url = urls.first {
                 guard vm.isDatabaseConnected else { return }
+                if vm.databaseURL == url { return }
                 vm.attachDatabase(at: url)
                 log.info("Successfully attached database: \(url)")
                 UserDefaults.standard.set(url.path, forKey: "AttachedFilePath")
