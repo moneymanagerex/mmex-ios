@@ -12,9 +12,10 @@ struct ContentView: View {
     @EnvironmentObject var vm: ViewModel
     @State private var isDocumentPickerPresented = false
     @State private var isNewDocumentPickerPresented = false
+    @State private var isAttachDocumentPickerPresented = false
     @State private var isSampleDocument = false
     @State private var selectedTab = Preference.selectedTab
-    @State private var selectedFileURL: URL?
+   // @State private var selectedFileURL: URL?
     @State private var isPresentingTransactionAddView = false
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
@@ -30,7 +31,15 @@ struct ContentView: View {
 
         .fileImporter(
             isPresented: $isDocumentPickerPresented,
-            allowedContentTypes: [.item],
+            allowedContentTypes: [.mmb],
+            allowsMultipleSelection: false
+        ) {
+            handleFileOpen($0)
+        }
+
+        .fileImporter(
+            isPresented: $isDocumentPickerPresented,
+            allowedContentTypes: [.mmb],
             allowsMultipleSelection: false
         ) {
             handleFileImport($0)
@@ -58,6 +67,7 @@ struct ContentView: View {
                     selectedTab: $selectedTab,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                    isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
                 )
             }
@@ -169,6 +179,7 @@ struct ContentView: View {
             ManageView(
                 isDocumentPickerPresented: $isDocumentPickerPresented,
                 isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
             )
             .navigationBarTitle("Manage", displayMode: .inline)
@@ -193,8 +204,8 @@ struct ContentView: View {
         .tag(4)
     }
 
-    // File import handling
-    private func handleFileImport(_ result: Result<[URL], Error>) {
+    // File open handling
+    private func handleFileOpen(_ result: Result<[URL], Error>) {
         switch result {
         case .success(let urls):
             if let url = urls.first {
@@ -202,6 +213,24 @@ struct ContentView: View {
                 guard vm.isDatabaseConnected else { return }
                 log.info("Successfully opened database: \(url)")
                 UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    selectedTab = Preference.selectedTab
+                }
+            }
+        case .failure(let error):
+            log.error("Failed to pick a document: \(error.localizedDescription)")
+        }
+    }
+
+    // File import handling
+    private func handleFileImport(_ result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            if let url = urls.first {
+                guard vm.isDatabaseConnected else { return }
+                vm.attachDatabase(at: url)
+                log.info("Successfully attached database: \(url)")
+                UserDefaults.standard.set(url.path, forKey: "AttachedFilePath")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     selectedTab = Preference.selectedTab
                 }
@@ -259,6 +288,7 @@ struct TabContentView: View {
     @Binding var selectedTab: Int
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
+    @Binding var isAttachDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
 
     var body: some View {
@@ -280,6 +310,7 @@ struct TabContentView: View {
                 ManageView(
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                    isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
                 )
                 .navigationBarTitle("Manage", displayMode: .inline)

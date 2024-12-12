@@ -12,6 +12,7 @@ struct ManageView: View {
     @EnvironmentObject var vm: ViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
+    @Binding var isAttachDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
 
     let groupTheme = GroupTheme(layout: .nameFold)
@@ -153,6 +154,9 @@ struct ManageView: View {
             groupTheme.section(
                 nameView: { Text("Database Maintenance") }
             ) {
+                databaseButton("Import Database", fg: .white, bg: .purple) {
+                    isAttachDocumentPickerPresented = true
+                }
                 Text("Coming soon ...")
                     .foregroundColor(.accentColor)
                     .opacity(0.6)
@@ -194,6 +198,7 @@ struct ManageView: View {
         ManageView(
             isDocumentPickerPresented: .constant(false),
             isNewDocumentPickerPresented: .constant(false),
+            isAttachDocumentPickerPresented: .constant(false),
             isSampleDocument: .constant(false)
         )
     }
