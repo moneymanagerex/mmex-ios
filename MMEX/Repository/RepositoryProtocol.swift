@@ -41,7 +41,8 @@ protocol RepositoryProtocol {
     associatedtype RepositoryData: DataProtocol
 
     var db: Connection { get }
-    init(db: Connection)
+    var databaseName: String { get }
+    init(db: Connection, databaseName: String)
 
     static var repositoryName: String { get }
     static var table: SQLite.Table { get }
@@ -56,13 +57,13 @@ protocol RepositoryProtocol {
 }
 
 extension RepositoryProtocol {
-    init(_ db: Connection) {
-        self.init(db: db)
+    init(_ db: Connection, databaseName: String = "") {
+        self.init(db: db, databaseName:  databaseName)
     }
 
-    init?(_ db: Connection?) {
+    init?(_ db: Connection?, databaseName: String = "") {
         guard let db else { return nil }
-        self.init(db: db)
+        self.init(db: db, databaseName: databaseName)
     }
 }
 

@@ -12,6 +12,7 @@ struct BudgetRepository: RepositoryProtocol {
     typealias RepositoryData = BudgetData
 
     let db: Connection
+    let databaseName: String
 
     static let repositoryName = "BUDGETTABLE_V1"
     static let table = SQLite.Table(repositoryName)

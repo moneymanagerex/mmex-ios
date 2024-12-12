@@ -12,6 +12,7 @@ struct AttachmentRepository: RepositoryProtocol {
     typealias RepositoryData = AttachmentData
 
     let db: Connection
+    let databaseName: String
 
     static let repositoryName = "ATTACHMENT_V1"
     static let table = SQLite.Table(repositoryName)

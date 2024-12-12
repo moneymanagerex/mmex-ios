@@ -11,6 +11,7 @@ struct CategoryRepository: RepositoryProtocol {
     typealias RepositoryData = CategoryData
 
     let db: Connection
+    let databaseName: String
 
     static let repositoryName = "CATEGORY_V1"
     static let table = SQLite.Table(repositoryName)

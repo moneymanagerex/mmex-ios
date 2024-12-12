@@ -12,6 +12,7 @@ struct StockRepository: RepositoryProtocol {
     typealias RepositoryData = StockData
 
     let db: Connection
+    let databaseName: String
 
     static let repositoryName = "STOCK_V1"
     static let table = SQLite.Table(repositoryName)

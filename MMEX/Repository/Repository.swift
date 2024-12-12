@@ -428,3 +428,20 @@ extension Repository {
         return true
     }
 }
+
+extension Repository {
+    func importData() -> Bool {
+        log.trace("DEBUG: Repository.importData(main=\(Thread.isMainThread))")
+        
+        /// Payee
+        do {
+            // let repoMain = PayeeRepository(db)
+            // let repoAttach = PayeeRepository(db, databaseName: "attach")
+            
+            /// TODO
+            /// 1.
+        }
+
+        return true
+    }
+}

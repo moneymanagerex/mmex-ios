@@ -12,6 +12,7 @@ struct TransactionLinkRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionLinkData
 
     let db: Connection
+    let databaseName: String
 
     static let repositoryName = "TRANSLINK_V1"
     static let table = SQLite.Table(repositoryName)
