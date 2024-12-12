@@ -162,6 +162,15 @@ struct ManageView: View {
                     .opacity(0.6)
             }
         }
+
+        .fileImporter(
+            isPresented: $isAttachDocumentPickerPresented,
+            allowedContentTypes: [.mmb],
+            allowsMultipleSelection: false
+        ) {
+            handleFileImport($0)
+        }
+
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .listSectionSpacing(5)
         .padding(.top, -20)
@@ -190,6 +199,21 @@ struct ManageView: View {
         .foregroundColor(fg)
         .cornerRadius(10)
         .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
+    }
+
+    // File import handling
+    private func handleFileImport(_ result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            if let url = urls.first {
+                guard vm.isDatabaseConnected else { return }
+                vm.attachDatabase(at: url)
+                log.info("Successfully attached database: \(url)")
+                UserDefaults.standard.set(url.path, forKey: "AttachedFilePath")
+            }
+        case .failure(let error):
+            log.error("Failed to pick a document: \(error.localizedDescription)")
+        }
     }
 }
 

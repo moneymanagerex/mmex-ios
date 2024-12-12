@@ -33,14 +33,6 @@ struct ContentView: View {
             allowedContentTypes: [.mmb],
             allowsMultipleSelection: false
         ) {
-            handleFileOpen($0)
-        }
-
-        .fileImporter(
-            isPresented: $isAttachDocumentPickerPresented,
-            allowedContentTypes: [.mmb],
-            allowsMultipleSelection: false
-        ) {
             handleFileImport($0)
         }
 
@@ -203,8 +195,8 @@ struct ContentView: View {
         .tag(4)
     }
 
-    // File open handling
-    private func handleFileOpen(_ result: Result<[URL], Error>) {
+    // File import handling
+    private func handleFileImport(_ result: Result<[URL], Error>) {
         switch result {
         case .success(let urls):
             if let url = urls.first {
@@ -212,24 +204,6 @@ struct ContentView: View {
                 guard vm.isDatabaseConnected else { return }
                 log.info("Successfully opened database: \(url)")
                 UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    selectedTab = Preference.selectedTab
-                }
-            }
-        case .failure(let error):
-            log.error("Failed to pick a document: \(error.localizedDescription)")
-        }
-    }
-
-    // File import handling
-    private func handleFileImport(_ result: Result<[URL], Error>) {
-        switch result {
-        case .success(let urls):
-            if let url = urls.first {
-                guard vm.isDatabaseConnected else { return }
-                vm.attachDatabase(at: url)
-                log.info("Successfully attached database: \(url)")
-                UserDefaults.standard.set(url.path, forKey: "AttachedFilePath")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     selectedTab = Preference.selectedTab
                 }
