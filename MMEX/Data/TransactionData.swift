@@ -173,5 +173,20 @@ extension TransactionData {
             transDate: DateTimeString(Date()),
             splits: TransactionSplitData.sampleData
         ),
+        TransactionData(
+            id: 5, accountId: 1, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
+            transAmount: Double.random(in: 5.0...50.0), status: TransactionStatus.reconciled, categId: 1,
+            transDate: DateTimeString(Date().daysAgo(Int.random(in: 1...7)))
+        ),
+        TransactionData(
+            id: 6, accountId: 1, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.deposit,
+            transAmount: Double.random(in: 5.0...50.0), status: TransactionStatus.reconciled, categId: 1,
+            transDate: DateTimeString(Date().daysAgo(Int.random(in: 1...7)))
+        ),
+        TransactionData(
+            id: 7, accountId: 1, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.deposit,
+            transAmount: Double.random(in: 5.0...50.0), status: TransactionStatus.reconciled, categId: 1,
+            transDate: DateTimeString(Date().daysAgo(Int.random(in: 1...7)))
+        ),
     ]
 }

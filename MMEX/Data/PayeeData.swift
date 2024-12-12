@@ -44,5 +44,17 @@ extension PayeeData {
             id: 2, name: "Payee B", categoryId: 2, number: "654321",
             website: "www.payeeB.com", notes: "Rare payee", active: false
         ),
+        PayeeData(
+            id: 3, name: "Electricity Company", categoryId: 4, number: "7891011",
+            website: "www.electricity.com", notes: "Monthly electricity bill"
+        ),
+        PayeeData(
+            id: 4, name: "ISP", categoryId: 5, number: "12131415",
+            website: "www.isp.com", notes: "Internet service provider"
+        ),
     ]
+
+    static var sampleDataIds : [DataId] {
+        sampleData.map { $0.id }
+    }
 }

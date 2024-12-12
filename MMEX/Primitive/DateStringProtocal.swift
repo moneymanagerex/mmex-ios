@@ -81,3 +81,13 @@ struct TimestampString: DateStringProtocal {
         return df
     }
 }
+
+extension Date {
+    func daysAgo(_ days: Int) -> Date? {
+        return Calendar.current.date(byAdding: .day, value: -days, to: self)
+    }
+
+    func weeksAgo(_ weeks: Int) -> Date? {
+        return Calendar.current.date(byAdding: .weekOfYear, value: -weeks, to: self)
+    }
+}
