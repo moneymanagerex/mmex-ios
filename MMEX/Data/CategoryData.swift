@@ -101,4 +101,7 @@ extension CategoryData {
         CategoryData(id: 1, name: "Bills",     active: true, parentId: .void),
         CategoryData(id: 2, name: "Telephone", active: true, parentId: 1),
     ]
+    static var sampleDataIds : [DataId] {
+        sampleData.map { $0.id }
+    }
 }
