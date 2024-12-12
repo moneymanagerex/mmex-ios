@@ -435,11 +435,25 @@ extension Repository {
         
         /// Payee
         do {
-            // let repoMain = PayeeRepository(db)
-            // let repoAttach = PayeeRepository(db, databaseName: "attach")
+            let repo = PayeeRepository(db)
+            let ids: [DataId] = repo.selectId<PayeeData>(from:PayeeRepository.table) ?? []
             
-            /// TODO
-            /// 1.
+            let table = SQLite.Table(PayeeRepository.repositoryName, database: "attach")
+            var results: [PayeeData]? = PayeeRepository(db).select<PayeeData>(from:table, with: PayeeRepository.fetchData)
+            for var data in results ?? [] {
+                /// assume no id conflicts after SUID
+                if ids.contains(data.id) { continue }
+
+                for i in 1...3 {
+                    if repo.insert(&data) {
+                        break
+                    } else {
+                        /// TODO constraint awareness and update
+                        log.error("ERROR: import failed for \(data.shortDesc())")
+                        data.name = "\(data.name): \(data.id)"
+                    }
+                }
+            }
         }
 
         return true

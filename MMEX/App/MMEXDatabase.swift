@@ -70,6 +70,15 @@ extension ViewModel {
         } else {
             log.error("Failed to access security-scoped resource: \(url.path)")
         }
+
+        let repository = Repository(db)
+
+        guard repository.importData() else {
+            log.error("Failed to import data")
+            detachDatabase()
+            return
+        }
+        detachDatabase()
     }
 
     func detachDatabase(alias: String? = nil) {
