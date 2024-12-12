@@ -12,7 +12,6 @@ struct PayeeRepository: RepositoryProtocol {
     typealias RepositoryData = PayeeData
 
     let db: Connection
-    let databaseName: String
 
     static let repositoryName = "PAYEE_V1"
     static let table = SQLite.Table(repositoryName)

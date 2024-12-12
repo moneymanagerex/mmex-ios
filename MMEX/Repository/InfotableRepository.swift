@@ -12,7 +12,6 @@ struct InfotableRepository: RepositoryProtocol {
     typealias RepositoryData = InfotableData
 
     let db: Connection
-    let databaseName: String
 
     static let repositoryName = "INFOTABLE_V1"
     static let table = SQLite.Table(repositoryName)

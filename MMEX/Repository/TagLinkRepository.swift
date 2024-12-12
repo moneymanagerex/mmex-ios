@@ -12,7 +12,6 @@ struct TagLinkRepository: RepositoryProtocol {
     typealias RepositoryData = TagLinkData
 
     let db: Connection
-    let databaseName: String
 
     static let repositoryName = "TAGLINK_V1"
     static let table = SQLite.Table(repositoryName)

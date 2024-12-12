@@ -12,7 +12,6 @@ struct TransactionSplitRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionSplitData
 
     let db: Connection
-    let databaseName: String
 
     static let repositoryName = "SPLITTRANSACTIONS_V1"
     static let table = SQLite.Table(repositoryName)

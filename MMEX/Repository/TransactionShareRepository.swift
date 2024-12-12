@@ -12,7 +12,6 @@ struct TransactionShareRepository: RepositoryProtocol {
     typealias RepositoryData = TransactionShareData
 
     let db: Connection
-    let databaseName: String
 
     static let repositoryName = "SHAREINFO_V1"
     static let table = SQLite.Table(repositoryName)

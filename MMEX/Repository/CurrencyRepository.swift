@@ -12,7 +12,6 @@ struct CurrencyRepository: RepositoryProtocol {
     typealias RepositoryData = CurrencyData
 
     let db: Connection
-    let databaseName: String
 
     static let repositoryName = "CURRENCYFORMATS_V1"
     static let table = SQLite.Table(repositoryName)

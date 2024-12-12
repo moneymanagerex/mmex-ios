@@ -12,7 +12,6 @@ struct AccountRepository: RepositoryProtocol {
     typealias RepositoryData = AccountData
 
     let db: Connection
-    let databaseName: String
 
     static let repositoryName = "ACCOUNTLIST_V1"
     static let table = SQLite.Table(repositoryName)

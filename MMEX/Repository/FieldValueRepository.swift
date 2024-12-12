@@ -12,7 +12,6 @@ struct FieldValueRepository: RepositoryProtocol {
     typealias RepositoryData = FieldValueData
 
     let db: Connection
-    let databaseName: String
 
     static let repositoryName = "CUSTOMFIELDDATA_V1"
     static let table = SQLite.Table(repositoryName)

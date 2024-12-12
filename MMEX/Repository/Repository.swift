@@ -439,12 +439,12 @@ extension Repository {
             let ids: [DataId] = repo.selectId<PayeeData>(from:PayeeRepository.table) ?? []
             
             let table = SQLite.Table(PayeeRepository.repositoryName, database: "attach")
-            var results: [PayeeData]? = PayeeRepository(db).select<PayeeData>(from:table, with: PayeeRepository.fetchData)
+            let results: [PayeeData]? = PayeeRepository(db).select<PayeeData>(from:table, with: PayeeRepository.fetchData)
             for var data in results ?? [] {
                 /// assume no id conflicts after SUID
                 if ids.contains(data.id) { continue }
 
-                for i in 1...3 {
+                for _ in 1...3 {
                     if repo.insert(&data) {
                         break
                     } else {
