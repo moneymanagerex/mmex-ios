@@ -38,7 +38,7 @@ struct ContentView: View {
         }
 
         .fileImporter(
-            isPresented: $isDocumentPickerPresented,
+            isPresented: $isAttachDocumentPickerPresented,
             allowedContentTypes: [.mmb],
             allowsMultipleSelection: false
         ) {
