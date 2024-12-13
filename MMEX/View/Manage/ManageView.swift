@@ -12,6 +12,7 @@ struct ManageView: View {
     @EnvironmentObject var vm: ViewModel
     @Binding var isDocumentPickerPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
+    @Binding var isAttachDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
 
     let groupTheme = GroupTheme(layout: .nameFold)
@@ -153,11 +154,23 @@ struct ManageView: View {
             groupTheme.section(
                 nameView: { Text("Database Maintenance") }
             ) {
+                databaseButton("Import Database", fg: .white, bg: .purple) {
+                    isAttachDocumentPickerPresented = true
+                }
                 Text("Coming soon ...")
                     .foregroundColor(.accentColor)
                     .opacity(0.6)
             }
         }
+
+        .fileImporter(
+            isPresented: $isAttachDocumentPickerPresented,
+            allowedContentTypes: [.mmb],
+            allowsMultipleSelection: false
+        ) {
+            handleFileImport($0)
+        }
+
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
         .listSectionSpacing(5)
         .padding(.top, -20)
@@ -187,6 +200,22 @@ struct ManageView: View {
         .cornerRadius(10)
         .listRowInsets(.init( top: 1, leading: 2, bottom: 1, trailing: 2))
     }
+
+    // File import handling
+    private func handleFileImport(_ result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            if let url = urls.first {
+                guard vm.isDatabaseConnected else { return }
+                if vm.databaseURL == url { return }
+                vm.attachDatabase(at: url)
+                log.info("Successfully attached database: \(url)")
+                UserDefaults.standard.set(url.path, forKey: "AttachedFilePath")
+            }
+        case .failure(let error):
+            log.error("Failed to pick a document: \(error.localizedDescription)")
+        }
+    }
 }
 
 #Preview {
@@ -194,6 +223,7 @@ struct ManageView: View {
         ManageView(
             isDocumentPickerPresented: .constant(false),
             isNewDocumentPickerPresented: .constant(false),
+            isAttachDocumentPickerPresented: .constant(false),
             isSampleDocument: .constant(false)
         )
     }

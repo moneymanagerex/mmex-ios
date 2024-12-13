@@ -428,3 +428,76 @@ extension Repository {
         return true
     }
 }
+
+extension Repository {
+    func importData() -> Bool {
+        log.trace("DEBUG: Repository.importData(main=\(Thread.isMainThread))")
+        
+        let attachDB = "attach"  /// FIXME, defined in Repo
+        let max_retry = 3
+
+        /// Payee
+        do {
+            let repo = PayeeRepository(db)
+            let ids = Set(repo.selectId(from:PayeeRepository.table) ?? [])
+
+            let table = SQLite.Table(PayeeRepository.repositoryName, database: attachDB)
+            let records = PayeeRepository(db).select(from:table, with: PayeeRepository.fetchData)
+            for var data in records ?? [] {
+                /// assume no id conflicts after SUID
+                if ids.contains(data.id) { continue }
+                for _ in 1...max_retry {
+                    if repo.insert(&data) {
+                        break
+                    } else {
+                        /// TODO constraint awareness and update
+                        log.error("ERROR: import failed for \(data.shortDesc())")
+                        data.name = "\(data.name): \(data.id)"
+                    }
+                }
+            }
+        }
+
+        /// Category
+        do {
+            let repo = CategoryRepository(db)
+            let ids = Set(repo.selectId(from:CategoryRepository.table) ?? [])
+
+            let table = SQLite.Table(CategoryRepository.repositoryName, database: attachDB)
+            let records = CategoryRepository(db).select(from: table, with: CategoryRepository.fetchData)
+            for var data in records ?? [] {
+                if ids.contains(data.id) { continue }
+                for _ in 1...max_retry {
+                    if repo.insert(&data) {
+                        break
+                    } else {
+                        log.error("ERROR: import failed for \(data.shortDesc())")
+                        data.name = "\(data.name): \(data.id)"
+                    }
+                }
+            }
+        }
+
+        /// Account
+        do {
+            let repo = AccountRepository(db)
+            let ids = Set(repo.selectId(from:AccountRepository.table) ?? [])
+
+            let table = SQLite.Table(AccountRepository.repositoryName, database: attachDB)
+            let records = AccountRepository(db).select(from: table, with: AccountRepository.fetchData)
+            for var data in records ?? [] {
+                if ids.contains(data.id) { continue }
+                for _ in 1...max_retry {
+                    if repo.insert(&data) {
+                        break
+                    } else {
+                        log.error("ERROR: import failed for \(data.shortDesc())")
+                        data.name = "\(data.name): \(data.id)"
+                    }
+                }
+            }
+        }
+
+        return true
+    }
+}

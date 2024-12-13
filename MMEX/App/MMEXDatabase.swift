@@ -44,6 +44,60 @@ extension ViewModel {
         }
     }
 
+    func attachDatabase(at url: URL?, alias: String? = nil) {
+        guard let db = db else {
+            log.error("No primary database connection available to attach the database.")
+            return
+        }
+
+        guard let url else {
+            log.error("No URL provided for the database to attach.")
+            return
+        }
+
+        // Derive default alias if none is provided
+        let resolvedAlias = alias ?? "attach"
+
+        if url.startAccessingSecurityScopedResource() {
+            defer { url.stopAccessingSecurityScopedResource() }
+            do {
+                // Attach the external database
+                let attachSQL = "ATTACH DATABASE ? AS ?"
+                try db.run(attachSQL, url.path, resolvedAlias)
+                log.info("Successfully attached database at \(url.path) as \(resolvedAlias)")
+            } catch {
+                log.error("Failed to attach database: \(error)")
+            }
+        } else {
+            log.error("Failed to access security-scoped resource: \(url.path)")
+        }
+
+        let repository = Repository(db)
+
+        guard repository.importData() else {
+            log.error("Failed to import data")
+            detachDatabase()
+            return
+        }
+        detachDatabase()
+    }
+
+    func detachDatabase(alias: String? = nil) {
+        guard let db = db else {
+            log.error("No primary database connection available to detach the database.")
+            return
+        }
+        // Determine the alias to detach
+        let resolvedAlias = alias ?? "attachedDB" // Default alias if none is provided
+        do {
+            let detachSQL = "DETACH DATABASE ?"
+            try db.run(detachSQL, alias)
+            log.info("Successfully detached database with alias \(resolvedAlias)")
+        } catch {
+            log.error("Failed to detach database: \(error)")
+        }
+    }
+
     /// Method to connect to a previously stored database path if available
     func connectToStoredDatabase() {
         guard let bookmarkData = UserDefaults.standard.data(forKey: "DatabaseBookmark") else {
