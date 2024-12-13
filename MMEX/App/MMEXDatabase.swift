@@ -17,6 +17,7 @@ extension ViewModel {
                 defer { url.stopAccessingSecurityScopedResource() }
                 do {
                     db = try Connection(url.path)
+                    saveBookmark(for: url)
                     log.info("Successfully connected to database: \(url.path)")
                 } catch {
                     log.error("Failed to connect to database: \(error)")
@@ -45,12 +46,22 @@ extension ViewModel {
 
     /// Method to connect to a previously stored database path if available
     func connectToStoredDatabase() {
-        guard let storedPath = UserDefaults.standard.string(forKey: "SelectedFilePath") else {
-            log.warning("No stored database path found.")
+        guard let bookmarkData = UserDefaults.standard.data(forKey: "DatabaseBookmark") else {
+            log.warning("No stored database bookmark found.")
             return
         }
-        let storedURL = URL(fileURLWithPath: storedPath)
-        openDatabase(at: storedURL)
+        do {
+            var isStale = false
+            let storedURL = try URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
+
+            if isStale {
+                log.error("Bookmark is stale. \(bookmarkData)")
+            }
+            openDatabase(at: storedURL)
+        }
+        catch let error {
+            log.error("Failed to restore bookmark: \(error)")
+        }
     }
 
     func createDatabase(at url: URL?, sampleData: Bool) {
@@ -121,6 +132,16 @@ extension ViewModel {
 
     func getDatabaseUserVersion() -> Int32? {
         return self.db?.userVersion
+    }
+
+    private func saveBookmark(for url: URL) {
+        do {
+            let bookmarkData = try url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: nil, relativeTo: nil)
+            UserDefaults.standard.set(bookmarkData, forKey: "DatabaseBookmark")
+            log.info("Bookmark saved successfully.")
+        } catch {
+            log.error("Failed to save bookmark: \(error)")
+        }
     }
 }
 

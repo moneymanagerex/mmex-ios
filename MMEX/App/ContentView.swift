@@ -201,7 +201,6 @@ struct ContentView: View {
                 vm.openDatabase(at: url)
                 guard vm.isDatabaseConnected else { return }
                 log.info("Successfully opened database: \(url)")
-                UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     selectedTab = Preference.selectedTab
                 }
@@ -218,7 +217,6 @@ struct ContentView: View {
             vm.createDatabase(at: url, sampleData: isSampleDocument)
             guard vm.isDatabaseConnected else { return }
             log.info("Successfully created database: \(url)")
-            UserDefaults.standard.set(url.path, forKey: "SelectedFilePath")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 selectedTab = Preference.selectedTab
             }
