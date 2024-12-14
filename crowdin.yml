@@ -7,6 +7,7 @@
 "files": [
   {
     "source": "MMEX/Resources/Localizable.xcstrings",
-    "translation": "MMEX/Resources/%two_letters_code%.lproj/Localizable.xcstrings"
+    "translation": "MMEX/Resources/Localizable.xcstrings"
+    "multilingual": true
   }
 ]
