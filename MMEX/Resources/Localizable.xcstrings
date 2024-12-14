@@ -14,47 +14,26 @@
 
     },
     "%@" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@"
-          }
-        }
-      }
+
     },
     "%@ " : {
 
     },
     "%@ #%lld" : {
       "localizations" : {
-        "en" : {
+        "it" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ #%2$lld"
+            "state" : "translated",
+            "value" : "%@ #%lld"
           }
         }
       }
     },
     "%lf" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lf"
-          }
-        }
-      }
+
     },
     "%lld" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        }
-      }
+
     },
     "1. Use of the App" : {
       "localizations" : {
@@ -83,6 +62,12 @@
             "state" : "translated",
             "value" : "Info"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关于"
+          }
         }
       }
     },
@@ -92,6 +77,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conto"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账号"
           }
         }
       }
@@ -176,7 +167,15 @@
       }
     },
     "Cash" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contanti"
+          }
+        }
+      }
     },
     "Category" : {
       "localizations" : {
@@ -211,19 +210,41 @@
 
     },
     "Copy to Clipboard" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia negli appunti"
+          }
+        }
+      }
     },
     "Create" : {
 
     },
     "Create New Database" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea Nuovo Database"
+          }
+        }
+      }
     },
     "Create Sample Database" : {
 
     },
     "Credit Card" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carta Di Credito"
+          }
+        }
+      }
     },
     "Credits" : {
       "localizations" : {
@@ -246,14 +267,7 @@
       }
     },
     "Database" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Database"
-          }
-        }
-      }
+
     },
     "Database File" : {
       "localizations" : {
@@ -371,15 +385,7 @@
     },
     "Dismiss" : {
       "comment" : "Button to dismiss the current screen",
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "取消"
-          }
-        }
-      }
+      "extractionState" : "manual"
     },
     "Done" : {
       "localizations" : {
@@ -448,14 +454,7 @@
       }
     },
     "Facebook" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Facebook"
-          }
-        }
-      }
+
     },
     "Failed to render release notes." : {
 
@@ -486,7 +485,14 @@
 
     },
     "Group Name" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome Gruppo"
+          }
+        }
+      }
     },
     "Help" : {
 
@@ -512,10 +518,24 @@
       }
     },
     "How to import/export data?" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come importare/esportare i dati?"
+          }
+        }
+      }
     },
     "How to manage categories?" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come gestire le categorie?"
+          }
+        }
+      }
     },
     "Inactive" : {
 
@@ -568,7 +588,14 @@
 
     },
     "Load data" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carica dati"
+          }
+        }
+      }
     },
     "Load error ..." : {
 
@@ -627,14 +654,7 @@
 
     },
     "NO" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NO"
-          }
-        }
-      }
+
     },
     "No Database Connected" : {
 
@@ -653,14 +673,7 @@
 
     },
     "OK" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
-          }
-        }
-      }
+
     },
     "Open Database" : {
       "localizations" : {
@@ -806,14 +819,7 @@
       "extractionState" : "manual"
     },
     "Social Media" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Social Media"
-          }
-        }
-      }
+
     },
     "Special thanks to all open-source contributors!" : {
       "localizations" : {
@@ -961,14 +967,7 @@
       }
     },
     "Twitter" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Twitter"
-          }
-        }
-      }
+
     },
     "Upcoming Features" : {
       "localizations" : {
@@ -984,10 +983,24 @@
 
     },
     "Version" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versione"
+          }
+        }
+      }
     },
     "Visit Official Website" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visita Il Sito Ufficiale"
+          }
+        }
+      }
     },
     "Year" : {
       "localizations" : {
