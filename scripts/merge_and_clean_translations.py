@@ -1,5 +1,6 @@
 import os
 import shutil
+import stat
 
 # Define the base directory and output file
 base_dir = "MMEX/Resources/"
