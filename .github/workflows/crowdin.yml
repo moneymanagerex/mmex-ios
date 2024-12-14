@@ -32,9 +32,17 @@ jobs:
 
           # Visit https://crowdin.com/settings#api-key to create this token
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
-      - name: Debug File Permissions
-        run: ls -lR MMEX/Resources/
+
       - name: Fix Ownership
         run: sudo chown -R $(whoami) MMEX/Resources/
+
       - name: Merge and Clean Translations
         run: python scripts/merge_and_clean_translations.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Clean up translation files"
+          git push
