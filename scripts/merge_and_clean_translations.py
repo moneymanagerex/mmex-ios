@@ -22,8 +22,13 @@ with open(output_file, "w", encoding="utf-8") as outfile:
             outfile.write(infile.read())
             outfile.write("\n")
 
+# Helper to ensure file deletability
+def make_writable(file_path):
+    os.chmod(file_path, stat.S_IWRITE)  # Add write permission
+
 # Delete the individual language files and directories
 for file in translation_files:
+    make_writable(file)  # Ensure writable
     os.remove(file)  # Remove the file
     folder = os.path.dirname(file)
     if not os.listdir(folder):  # Check if the folder is empty
