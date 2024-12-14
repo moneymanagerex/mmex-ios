@@ -45,4 +45,4 @@ This project is very early, and we got inspired by [Dime](https://github.com/rar
 - Developer, you can take this app dev training online course: [Getting started with Scrumdinger](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger)
 - Art and designer, for better looks, workflow, and design
 - Beta Tester via [Join our TestFlight](https://testflight.apple.com/join/SYakQaAv)
-- Translator [![Crowdin](https://badges.crowdin.net/iosmmex/localized.svg)](https://crowdin.com/project/iosmmex)
+- Translator [Crowdin](https://crowdin.com/project/iosmmex)
