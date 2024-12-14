@@ -22,7 +22,7 @@ jobs:
           skip_untranslated_strings: true
           localization_branch_name: l10n_crowdin_translations
           create_pull_request: true
-          pull_request_title: 'New Crowdin Translations'
+          pull_request_title: 'New Crowdin Translations @ ${{ env.current_date }}'
           pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
           pull_request_base_branch_name: 'master'
         env:
@@ -34,9 +34,3 @@ jobs:
 
           # Visit https://crowdin.com/settings#api-key to create this token
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
-
-      - name: Fix Ownership
-        run: sudo chown -R $(whoami) MMEX/Resources/
-
-      - name: Merge and Clean Translations
-        run: python scripts/merge_and_clean_translations.py
