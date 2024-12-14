@@ -44,5 +44,5 @@ Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance ap
 This project is very early, and we got inspired by [Dime](https://github.com/rarfell/dimeApp). you would play as
 - Developer, you can take this app dev training online course: [Getting started with Scrumdinger](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger)
 - Art and designer, for better looks, workflow, and design
-- Beta Tester via [Join our TestFlight](https://testflight.apple.com/join/SYakQaAv)
+- Beta tester via [TestFlight](https://testflight.apple.com/join/SYakQaAv)
 - Translator [![Crowdin](https://badges.crowdin.net/iosmmex/localized.svg)](https://crowdin.com/project/iosmmex)
