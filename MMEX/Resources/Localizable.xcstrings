@@ -8,10 +8,24 @@
 
     },
     "(none)" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(nincs)"
+          }
+        }
+      }
     },
     "(unknown)" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(ismeretlen)"
+          }
+        }
+      }
     },
     "%@" : {
 
@@ -20,14 +34,7 @@
 
     },
     "%@ #%lld" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ #%lld"
-          }
-        }
-      }
+
     },
     "%lf" : {
 
@@ -57,6 +64,12 @@
     },
     "About" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Névjegy"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97,6 +110,12 @@
             "state" : "translated",
             "value" : "Nome Conto"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "帐户名称"
+          }
         }
       }
     },
@@ -127,34 +146,105 @@
       }
     },
     "Advanced" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高级"
+          }
+        }
+      }
     },
     "All content provided by the app is owned by the app developers or its licensors. You are not allowed to copy, reproduce, or distribute any content without permission." : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用程序提供的所有内容都由应用程序开发者或其许可人拥有。 未经许可，您不得复制、复制或分发任何内容。"
+          }
+        }
+      }
     },
     "Amount" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "金额"
+          }
+        }
+      }
     },
     "App Info" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用信息"
+          }
+        }
+      }
     },
     "App Settings" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App 设置"
+          }
+        }
+      }
     },
     "Appearance" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外观样式"
+          }
+        }
+      }
     },
     "Asset" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "资产"
+          }
+        }
+      }
     },
     "Auxiliary Data" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "辅助数据"
+          }
+        }
+      }
     },
     "Base Currency" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "基本货币"
+          }
+        }
+      }
     },
     "Build" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编译"
+          }
+        }
+      }
     },
     "Cancel" : {
       "localizations" : {
@@ -162,6 +252,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annulla"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
           }
         }
       }
@@ -174,6 +270,12 @@
             "state" : "translated",
             "value" : "Contanti"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "现金"
+          }
         }
       }
     },
@@ -184,6 +286,12 @@
             "state" : "translated",
             "value" : "Categoria"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分类"
+          }
         }
       }
     },
@@ -193,6 +301,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delimitatore Di Categoria"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "类别分隔符"
           }
         }
       }
@@ -207,7 +321,14 @@
 
     },
     "Copy" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制"
+          }
+        }
+      }
     },
     "Copy to Clipboard" : {
       "localizations" : {
@@ -215,6 +336,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copia negli appunti"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制到剪贴板"
           }
         }
       }
