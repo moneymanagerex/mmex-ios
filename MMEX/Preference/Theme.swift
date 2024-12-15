@@ -42,6 +42,6 @@ extension Theme {
     }
 
     var textPad: UIKeyboardType {
-        .alphabet
+        .default
     }
 }
