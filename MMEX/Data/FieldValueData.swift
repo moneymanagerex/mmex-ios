@@ -30,6 +30,11 @@ extension FieldValueData: DataProtocol {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: FieldValueData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension FieldValueData {

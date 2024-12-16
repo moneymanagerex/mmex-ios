@@ -32,6 +32,11 @@ extension TagLinkData {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: TagLinkData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension TagLinkData {

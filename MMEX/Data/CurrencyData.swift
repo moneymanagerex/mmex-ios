@@ -44,6 +44,11 @@ extension CurrencyData {
         name   = Self.copy(of: name)
         symbol = Self.copy(of: symbol)
     }
+
+    mutating func resolveConstraint(conflictingWith existing: CurrencyData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 typealias CurrencyFormatter = NumberFormatter

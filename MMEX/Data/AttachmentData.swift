@@ -48,6 +48,11 @@ extension AttachmentData {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: AttachmentData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension AttachmentData {

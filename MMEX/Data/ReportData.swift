@@ -32,6 +32,12 @@ extension ReportData {
         id   = .void
         name = Self.copy(of: name)
     }
+
+    mutating func resolveConstraint(conflictingWith existing: ReportData? = nil) -> Bool {
+        /// TODO column level
+        self.name = "\(self.name):\(self.id)"
+        return true
+    }
 }
 
 extension ReportData {

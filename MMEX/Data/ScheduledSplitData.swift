@@ -26,6 +26,11 @@ extension ScheduledSplitData {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: ScheduledSplitData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension ScheduledSplitData {

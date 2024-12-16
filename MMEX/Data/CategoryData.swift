@@ -28,6 +28,12 @@ extension CategoryData {
         id   = .void
         name = Self.copy(of: name)
     }
+
+    mutating func resolveConstraint(conflictingWith existing: CategoryData? = nil) -> Bool {
+        /// TODO column level
+        self.name = "\(self.name):\(self.id)"
+        return true
+    }
 }
 
 extension CategoryData {

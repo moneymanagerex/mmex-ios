@@ -68,6 +68,11 @@ extension AssetData {
         id   = .void
         name = Self.copy(of: name)
     }
+
+    mutating func resolveConstraint(conflictingWith existing: AssetData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension AssetData {

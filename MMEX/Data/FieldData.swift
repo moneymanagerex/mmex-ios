@@ -41,6 +41,11 @@ extension FieldData {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: FieldData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension FieldData {

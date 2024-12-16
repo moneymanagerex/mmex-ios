@@ -39,6 +39,10 @@ extension InfotableData {
         id   = .void
         name = Self.copy(of: name)
     }
+
+    mutating func resolveConstraint(conflictingWith existing: InfotableData? = nil) -> Bool {
+        return false
+    }
 }
 
 extension InfotableData {
