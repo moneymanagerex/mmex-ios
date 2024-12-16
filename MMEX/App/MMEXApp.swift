@@ -16,7 +16,6 @@ let log = Logger(
 
 @main
 struct MMEXApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var pref = Preference()
     @StateObject private var vm = ViewModel(withStoredDatabase: ())
 
@@ -43,12 +42,8 @@ struct MMEXApp: App {
                     track(pref: pref)
                 }
                 .handlesExternalEvents(preferring: Set(["mmb"]), allowing: Set(["*"]))
-                .onReceive(NotificationCenter.default.publisher(for: Notification.Name("MMEXOpenFile"))) { notification in
-                    log.debug("DEBUG: onReceive")
-                    if let url = notification.object as? URL {
-                        log.debug("File URL received in SwiftUI: \(url.path)")
-                        // vm.openDatabase(at: url) // Example: Replace with your actual ViewModel logic
-                    }
+                .onOpenURL { url in
+                    vm.openDatabase(at: url)
                 }
                 .environmentObject(pref)
                 .environmentObject(vm)
