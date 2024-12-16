@@ -86,6 +86,11 @@ extension TransactionData {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: TransactionData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension TransactionData {

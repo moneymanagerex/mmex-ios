@@ -34,6 +34,11 @@ extension StockData {
         name   = Self.copy(of: name)
         symbol = Self.copy(of: symbol)
     }
+
+    mutating func resolveConstraint(conflictingWith existing: StockData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension StockData {

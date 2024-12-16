@@ -101,6 +101,12 @@ extension AccountData {
         id   = .void
         name = Self.copy(of: name)
     }
+
+    mutating func resolveConstraint(conflictingWith existing: AccountData? = nil) -> Bool {
+        /// TODO column level
+        self.name = "\(self.name):\(self.id)"
+        return true
+    }
 }
 
 struct AccountFlow {

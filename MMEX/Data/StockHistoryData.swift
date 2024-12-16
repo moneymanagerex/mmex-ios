@@ -43,6 +43,11 @@ extension StockHistoryData {
         id   = .void
         date = DateString(Date())
     }
+
+    mutating func resolveConstraint(conflictingWith existing: StockHistoryData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension StockHistoryData {

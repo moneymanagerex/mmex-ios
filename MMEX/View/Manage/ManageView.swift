@@ -211,6 +211,9 @@ struct ManageView: View {
                 vm.attachDatabase(at: url)
                 log.info("Successfully attached database: \(url)")
                 UserDefaults.standard.set(url.path, forKey: "AttachedFilePath")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    /// TODO switch to default tab
+                }
             }
         case .failure(let error):
             log.error("Failed to pick a document: \(error.localizedDescription)")

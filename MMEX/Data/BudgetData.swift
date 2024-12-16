@@ -69,6 +69,11 @@ extension BudgetData {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: BudgetData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension BudgetData {

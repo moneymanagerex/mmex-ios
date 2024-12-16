@@ -98,6 +98,11 @@ extension ScheduledData {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: ScheduledData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 enum RepeatTypeNum {

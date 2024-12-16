@@ -26,6 +26,11 @@ extension TransactionSplitData {
     mutating func copy() {
         id = .void
     }
+
+    mutating func resolveConstraint(conflictingWith existing: TransactionSplitData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension TransactionSplitData {

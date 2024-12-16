@@ -29,6 +29,11 @@ extension CurrencyHistoryData {
         id   = .void
         date = DateString(Date())
     }
+
+    mutating func resolveConstraint(conflictingWith existing: CurrencyHistoryData? = nil) -> Bool {
+        /// TODO column level
+        return false
+    }
 }
 
 extension CurrencyHistoryData {

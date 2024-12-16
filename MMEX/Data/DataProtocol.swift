@@ -16,6 +16,8 @@ protocol DataProtocol: ExportableEntity {
     mutating func copy()
     @MainActor mutating func update(_ vm: ViewModel) -> String?
     @MainActor func delete(_ vm: ViewModel) -> String?
+
+    mutating func resolveConstraint(conflictingWith existing: Self?) -> Bool
 }
 
 extension DataProtocol {

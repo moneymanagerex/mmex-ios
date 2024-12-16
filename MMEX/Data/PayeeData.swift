@@ -32,6 +32,12 @@ extension PayeeData {
         id   = .void
         name = Self.copy(of: name)
     }
+
+    mutating func resolveConstraint(conflictingWith existing: PayeeData? = nil) -> Bool {
+        /// TODO column level
+        self.name = "\(self.name):\(self.id)"
+        return true
+    }
 }
 
 extension PayeeData {
