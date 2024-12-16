@@ -182,6 +182,7 @@
 		A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F652C94854800F79145 /* ExportableEntity.swift */; };
 		A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */; };
 		A350BDC12CA26415006669D5 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350BDC02CA26415006669D5 /* TransactionViewModel.swift */; };
+		A36599042D0FCB0500F506B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36599032D0FCB0500F506B6 /* AppDelegate.swift */; };
 		A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */; };
 		A37E7D842C9AC14800B4ECFC /* ManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D832C9AC14800B4ECFC /* ManageView.swift */; };
 		A37E7D862C9AC2D000B4ECFC /* InfoAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D852C9AC2D000B4ECFC /* InfoAboutView.swift */; };
@@ -407,6 +408,7 @@
 		A3462F652C94854800F79145 /* ExportableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntity.swift; sourceTree = "<group>"; };
 		A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntityDocument.swift; sourceTree = "<group>"; };
 		A350BDC02CA26415006669D5 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
+		A36599032D0FCB0500F506B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListView.swift; sourceTree = "<group>"; };
 		A37E7D832C9AC14800B4ECFC /* ManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageView.swift; sourceTree = "<group>"; };
 		A37E7D852C9AC2D000B4ECFC /* InfoAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAboutView.swift; sourceTree = "<group>"; };
@@ -494,6 +496,7 @@
 				929EF6702CA3676B0051A3E6 /* MMEXDocument.swift */,
 				A3C1425E2C8DE70300D3CEC0 /* MMEXDatabase.swift */,
 				A3C1422C2C89751500D3CEC0 /* ContentView.swift */,
+				A36599032D0FCB0500F506B6 /* AppDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -1152,6 +1155,7 @@
 				925EABB22CCFFC2E003CEAB3 /* Reload.swift in Sources */,
 				A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */,
+				A36599042D0FCB0500F506B6 /* AppDelegate.swift in Sources */,
 				925EAC0F2CDA8B1A003CEAB3 /* TagSearch.swift in Sources */,
 				92F686032CF0EE7700171A6A /* BudgetSearch.swift in Sources */,
 				925EAC202CDAADFB003CEAB3 /* AttachmentValidation.swift in Sources */,
@@ -1455,7 +1459,7 @@
 				INFOPLIST_FILE = MMEX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MMEX;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1490,7 +1494,7 @@
 				INFOPLIST_FILE = MMEX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MMEX;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
