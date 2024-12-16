@@ -6,6 +6,12 @@
     },
     "'%@'" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„%@”"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36,6 +42,12 @@
     },
     "%@" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46,6 +58,12 @@
     },
     "%@ " : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ "
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55,16 +73,43 @@
       }
     },
     "%@ #%lld" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ %lld sz."
+          }
+        }
+      }
     },
     "%lf" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lf"
+          }
+        }
+      }
     },
     "%lld" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
     },
     "1. Use of the App" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Az alkalmazás használata"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -75,10 +120,10 @@
     },
     "2. Content Ownership" : {
       "localizations" : {
-        "it" : {
+        "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Proprietà Dei Contenuti"
+            "value" : "2. A tartalom tulajdonjoga"
           }
         }
       }
@@ -107,6 +152,12 @@
     },
     "Account" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számla"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -122,10 +173,23 @@
       }
     },
     "Account Income Summary" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számlabevétel összesítése"
+          }
+        }
+      }
     },
     "Account Name" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számlanév"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142,6 +206,12 @@
     },
     "Account:" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számla:"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -152,6 +222,12 @@
     },
     "Active" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fennáll"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162,6 +238,12 @@
     },
     "Add Note" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Megjegyzés hozzáadása"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172,6 +254,12 @@
     },
     "Add split" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Felosztás hozzáadása"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -182,6 +270,12 @@
     },
     "Advanced" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haladó"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198,6 +292,12 @@
     },
     "All content provided by the app is owned by the app developers or its licensors. You are not allowed to copy, reproduce, or distribute any content without permission." : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Az alkalmazás által biztosított összes tartalom az alkalmazás fejlesztőinek vagy licencadóinak tulajdona. Tilos semmilyen tartalmat engedély nélkül másolni, reprodukálni vagy terjeszteni."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -208,6 +308,12 @@
     },
     "Amount" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Összeg"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -218,6 +324,12 @@
     },
     "App Info" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alkalmazásinformáció"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -228,6 +340,12 @@
     },
     "App Settings" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alkalmazásbeállítások"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -238,6 +356,12 @@
     },
     "Appearance" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Megjelenés"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -249,6 +373,12 @@
     "Asset" : {
       "extractionState" : "manual",
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eszköz"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -259,6 +389,12 @@
     },
     "Auxiliary Data" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Segédadatok"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -269,6 +405,12 @@
     },
     "Base Currency" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alappénznem"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -279,6 +421,12 @@
     },
     "Build" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Építés"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -289,6 +437,12 @@
     },
     "Cancel" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mégse"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -306,6 +460,12 @@
     "Cash" : {
       "extractionState" : "manual",
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Készpénz"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -322,6 +482,12 @@
     },
     "Category" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategória"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -338,6 +504,12 @@
     },
     "Category Delimiter" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategóriaelválasztó"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -353,16 +525,43 @@
       }
     },
     "Category:" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategória:"
+          }
+        }
+      }
     },
     "Coming soon ..." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamarosan…"
+          }
+        }
+      }
     },
     "Contact" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapcsolatfelvétel"
+          }
+        }
+      }
     },
     "Copy" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Másolás"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -379,6 +578,12 @@
     },
     "Copy to Clipboard" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Másolás a vágólapra"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -395,6 +600,12 @@
     },
     "Create" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Létrehozás"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -405,6 +616,12 @@
     },
     "Create New Database" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Új adatbázis létrehozása"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -415,6 +632,12 @@
     },
     "Create Sample Database" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mintaadatbázis létrehozása"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -426,6 +649,12 @@
     "Credit Card" : {
       "extractionState" : "manual",
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hitelkártya"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -436,6 +665,12 @@
     },
     "Credits" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Közreműködők"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -446,6 +681,12 @@
     },
     "Data" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adat"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -456,6 +697,12 @@
     },
     "Database" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatbázis"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -466,6 +713,12 @@
     },
     "Database File" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatbázisfájl"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -476,6 +729,12 @@
     },
     "Database Info" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatbázis-információ"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -485,10 +744,23 @@
       }
     },
     "Database Maintenance" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatbázis-karbantartás"
+          }
+        }
+      }
     },
     "Database Settings" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatbázis-beállítások"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -499,6 +771,12 @@
     },
     "Date" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dátum"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -509,6 +787,12 @@
     },
     "Date Format" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dátumformátum"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -519,6 +803,12 @@
     },
     "Day" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nap"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -529,6 +819,12 @@
     },
     "Default Account" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alapértelmezett számla"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -538,26 +834,53 @@
       }
     },
     "Default is ':'" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alapértelmezett érték: kettőspont („:”)"
+          }
+        }
+      }
     },
     "Default is 0" : {
       "localizations" : {
-        "it" : {
+        "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Predefinito è 0"
+            "value" : "Alapértelmezett érték: nulla („0”)"
           }
         }
       }
     },
     "Default is 1" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alapértelmezett érték: egy („1”)"
+          }
+        }
+      }
     },
     "Default Transaction Status" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alapértelmezett ügylet állapota"
+          }
+        }
+      }
     },
     "Delete" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Törlés"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -568,6 +891,12 @@
     },
     "Delete %@" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ törlése"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -578,6 +907,12 @@
     },
     "Delete Transaction" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ügylet törlése"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -588,6 +923,12 @@
     },
     "Description" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leírás"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -598,20 +939,34 @@
     },
     "Developed by Lisheng Guan, George Ef" : {
       "localizations" : {
-        "it" : {
+        "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sviluppato da Lisheng Guan, George Ef"
+            "value" : "Fejlesztő: Guan Lisheng és Ef György"
           }
         }
       }
     },
     "Dismiss" : {
       "comment" : "Button to dismiss the current screen",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bezárás"
+          }
+        }
+      }
     },
     "Done" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kész"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -622,6 +977,12 @@
     },
     "Edit" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szerkesztés"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -632,6 +993,12 @@
     },
     "Email Support" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Támogatás e-mailben"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -642,6 +1009,12 @@
     },
     "End Date" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Záródátum"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -651,10 +1024,23 @@
       }
     },
     "Enter" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Megadás"
+          }
+        }
+      }
     },
     "Error" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiba"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -665,6 +1051,12 @@
     },
     "expenses" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kiadások"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -675,6 +1067,12 @@
     },
     "Export as JSON File" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportálás JSON-fájlként"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -685,6 +1083,12 @@
     },
     "Facebook" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facebook"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -694,19 +1098,53 @@
       }
     },
     "Failed to render release notes." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nem sikerült megjeleníteni a kiadási megjegyzéseket."
+          }
+        }
+      }
     },
     "Field Layout" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mezőelrendezés"
+          }
+        }
+      }
     },
     "Field Value" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mezőérték"
+          }
+        }
+      }
     },
     "Format" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formátum"
+          }
+        }
+      }
     },
     "General" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Általános"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -716,13 +1154,33 @@
       }
     },
     "Group Count" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Csoportszám"
+          }
+        }
+      }
     },
     "Group Layout" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Csoportelrendezés"
+          }
+        }
+      }
     },
     "Group Name" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Csoportnév"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -733,6 +1191,12 @@
     },
     "Help" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Súgó"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -743,6 +1207,12 @@
     },
     "How to add a transaction?" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hogyan lehet ügyletet hozzáadni?"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -753,6 +1223,12 @@
     },
     "How to generate reports?" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hogyan lehet jelentéseket készíteni?"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -763,6 +1239,12 @@
     },
     "How to import/export data?" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hogyan lehet adatokat importálni/exportálni?"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -773,6 +1255,12 @@
     },
     "How to manage categories?" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hogyan lehet kategóriákat kezelni?"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -782,10 +1270,23 @@
       }
     },
     "Inactive" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inaktív"
+          }
+        }
+      }
     },
     "income" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bevételek"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -795,16 +1296,44 @@
       }
     },
     "Income vs Expense Over Time" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bevételek/kiadások"
+          }
+        }
+      }
     },
     "Insights" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betekintések"
+          }
+        }
+      }
     },
     "Investment" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Befektetés"
+          }
+        }
+      }
     },
     "Item Info" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elem-információ"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -814,25 +1343,73 @@
       }
     },
     "Item Layout" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemelrendezés"
+          }
+        }
+      }
     },
     "Item Name" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemnév"
+          }
+        }
+      }
     },
     "Journal" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napló"
+          }
+        }
+      }
     },
     "Last updated: September 18, 2024" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utolsó frissítés: 2024. szeptember 18."
+          }
+        }
+      }
     },
     "Legal" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jogi"
+          }
+        }
+      }
     },
     "Legal Documents" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jogi dokumentumok"
+          }
+        }
+      }
     },
     "Load data" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatok betöltése"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -842,34 +1419,104 @@
       }
     },
     "Load error ..." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betöltési hiba…"
+          }
+        }
+      }
     },
     "Load error ... " : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betöltési hiba… "
+          }
+        }
+      }
     },
     "Loading data ..." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatok betöltése…"
+          }
+        }
+      }
     },
     "Loading data ... " : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatok betöltése… "
+          }
+        }
+      }
     },
     "Loan" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kölcsön"
+          }
+        }
+      }
     },
     "Lua Content" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lua-tartalom"
+          }
+        }
+      }
     },
     "Manage" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kezelés"
+          }
+        }
+      }
     },
     "MMEX4iOS" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MMEX iOS-re"
+          }
+        }
+      }
     },
     "More Insights Coming Soon..." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "További betekintés hamarosan…"
+          }
+        }
+      }
     },
     "N/A" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N. a."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -879,13 +1526,33 @@
       }
     },
     "Negative for outflow" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Negatív a kiáramlásra"
+          }
+        }
+      }
     },
     "New attachments can be created from the items that contain them." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Az azokat tartalmazó elemekből új mellékletek hozhatók létre."
+          }
+        }
+      }
     },
     "New Transaction" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Új ügylet"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -895,16 +1562,43 @@
       }
     },
     "No" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nem"
+          }
+        }
+      }
     },
     "NO" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NEM"
+          }
+        }
+      }
     },
     "No Database Connected" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nincs csatlakoztatott adatbázis"
+          }
+        }
+      }
     },
     "Notes" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Megjegyzések"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -914,13 +1608,33 @@
       }
     },
     "Numeric Keypad" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számbillentyűzet"
+          }
+        }
+      }
     },
     "OK" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rendben"
+          }
+        }
+      }
     },
     "Open Database" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatbázis megnyitása"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -931,6 +1645,12 @@
     },
     "Payee" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kedvezményezett"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -940,13 +1660,33 @@
       }
     },
     "Payee:" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kedvezményezett:"
+          }
+        }
+      }
     },
     "Please open or create a database to get started." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kérjük, nyisson meg vagy hozzon létre egy adatbázist a kezdéshez."
+          }
+        }
+      }
     },
     "Privacy Policy" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adatvédelmi szabályzat"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -956,10 +1696,23 @@
       }
     },
     "Properties" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tulajdonságok"
+          }
+        }
+      }
     },
     "Release Notes" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiadási megjegyzések"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -970,6 +1723,12 @@
     },
     "Report an Issue" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hibabejelentés"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -979,19 +1738,53 @@
       }
     },
     "Reuse Last Payee" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utolsó kedvezményezett újrafelhasználása"
+          }
+        }
+      }
     },
     "Sample Database in Memory" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mintaadatbázis a memóriában"
+          }
+        }
+      }
     },
     "Schema Version" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séma verzió"
+          }
+        }
+      }
     },
     "Search area" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresőterület"
+          }
+        }
+      }
     },
     "Search by notes" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés jegyzetek alapján"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1002,6 +1795,12 @@
     },
     "Select account" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számla kijelölése"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1012,6 +1811,12 @@
     },
     "Select Account" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számla kijelölése"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1022,6 +1827,12 @@
     },
     "Select Category" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategória kijelölése"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1032,6 +1843,12 @@
     },
     "Select Payee" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kedvezményezett kijelölése"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1041,13 +1858,33 @@
       }
     },
     "Select To Account" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cél számla kijelölése"
+          }
+        }
+      }
     },
     "Send Anonymous Usage Data" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statisztikai adatok anonim küldése a használatról"
+          }
+        }
+      }
     },
     "Settings" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beállítások"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1057,38 +1894,94 @@
       }
     },
     "Shall not be empty!" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nem lehet üres!"
+          }
+        }
+      }
     },
     "Shares" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Részvények"
+          }
+        }
+      }
     },
     "Social Media" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Közösségi média"
+          }
+        }
+      }
     },
     "Special thanks to all open-source contributors!" : {
       "localizations" : {
-        "it" : {
+        "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un ringraziamento speciale a tutti i collaboratori open-source!"
+            "value" : "Külön köszönet minden nyílt forráskódú közreműködőnek!"
           }
         }
       }
     },
     "split amount" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "összeg felosztása"
+          }
+        }
+      }
     },
     "split notes" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "megjegyzések felosztása"
+          }
+        }
+      }
     },
     "Splits" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Felosztások"
+          }
+        }
+      }
     },
     "SQL Content" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SQL-tartalom"
+          }
+        }
+      }
     },
     "Start Date" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kezdődátum"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1099,6 +1992,12 @@
     },
     "Status" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Állapot"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1109,6 +2008,12 @@
     },
     "Status Choice" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Állapot kijelölése"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1118,22 +2023,64 @@
       }
     },
     "Support" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Támogatás"
+          }
+        }
+      }
     },
     "Symbol" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jelzés"
+          }
+        }
+      }
     },
     "Tab Icons" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lap ikonok"
+          }
+        }
+      }
     },
     "Template Content" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sablontartalom"
+          }
+        }
+      }
     },
     "Term" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lekötött betét"
+          }
+        }
+      }
     },
     "Terms of Service" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szolgáltatási feltételek"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1144,6 +2091,12 @@
     },
     "Theme" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Téma"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1153,19 +2106,53 @@
       }
     },
     "These Terms of Service govern your use of our app. By using the app, you agree to comply with and be bound by these terms." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ezek a Szerződési Feltételek szabályozzák az alkalmazásunk használatát. Az alkalmazás használatával Ön vállalja, hogy betartja ezeket a feltételeket, és magára nézve kötelezőnek ismeri el."
+          }
+        }
+      }
     },
     "This app helps you manage your finances efficiently by tracking transactions, accounts, and generating insights." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ez az alkalmazás segít hatékonyan kezelni pénzügyeit az ügyletek, számlák nyomon követésével és betekintések generálásával."
+          }
+        }
+      }
     },
     "This Privacy Policy outlines how we handle your personal information while using the app." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ez az adatvédelmi szabályzat felvázolja, hogyan kezeljük személyes adatait az alkalmazás használata során."
+          }
+        }
+      }
     },
     "To Account" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számlára"
+          }
+        }
+      }
     },
     "Total" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Összesen"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1175,13 +2162,33 @@
       }
     },
     "Total: %@" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Összesen: %@"
+          }
+        }
+      }
     },
     "Transaction Amount" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ügylet összege"
+          }
+        }
+      }
     },
     "Transaction Date" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ügyletdátum"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1192,6 +2199,12 @@
     },
     "Transaction Status" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ügylet állapota"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1202,6 +2215,12 @@
     },
     "Transaction Type" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ügylettípus"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1211,10 +2230,23 @@
       }
     },
     "Twitter" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X"
+          }
+        }
+      }
     },
     "Upcoming Features" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemsokára elérhető újdonságok"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1224,10 +2256,23 @@
       }
     },
     "User Forum" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Felhasználói fórum"
+          }
+        }
+      }
     },
     "Version" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verzió"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1238,6 +2283,12 @@
     },
     "Visit Official Website" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hivatalos honlap meglátogassa"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1248,6 +2299,12 @@
     },
     "Year" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Év"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1257,10 +2314,23 @@
       }
     },
     "Yes" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Igen"
+          }
+        }
+      }
     },
     "YES" : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IGEN"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1271,6 +2341,12 @@
     },
     "You must use the app in compliance with all applicable laws. Any misuse or illegal activities related to the app may result in termination of your access." : {
       "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Az alkalmazást az összes vonatkozó törvénynek megfelelően kell használnia. Az alkalmazással kapcsolatos bármilyen visszaélés vagy illegális tevékenység a hozzáférés megszüntetéséhez vezethet."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
