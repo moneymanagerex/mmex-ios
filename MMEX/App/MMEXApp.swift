@@ -41,10 +41,6 @@ struct MMEXApp: App {
                     pref.theme.appearance.apply()
                     track(pref: pref)
                 }
-                .handlesExternalEvents(preferring: Set(["mmb"]), allowing: Set(["*"]))
-                .onOpenURL { url in
-                    vm.openDatabase(at: url)
-                }
                 .environmentObject(pref)
                 .environmentObject(vm)
         }

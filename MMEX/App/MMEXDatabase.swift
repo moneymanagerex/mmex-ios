@@ -9,7 +9,7 @@ import Foundation
 import SQLite
 
 extension ViewModel {
-    func openDatabase(at url: URL?, isNew: Bool = false) {
+    func openDatabase(at url: URL?, isNew: Bool = false, password: String? = nil) {
         unloadAll()
         db = nil
         if let url {
@@ -17,9 +17,14 @@ extension ViewModel {
                 defer { url.stopAccessingSecurityScopedResource() }
                 do {
                     db = try Connection(url.path)
+                    db?.initializeCipher()
+                    if let password, let db {
+                        try db.key(password)
+                    }
                     saveBookmark(for: url)
                     log.info("Successfully connected to database: \(url.path)")
                 } catch {
+                    db = nil
                     log.error("Failed to connect to database: \(error)")
                 }
             } else {
@@ -109,7 +114,11 @@ extension ViewModel {
             if isStale {
                 log.error("Bookmark is stale. \(bookmarkData)")
             }
-            openDatabase(at: storedURL)
+            if storedURL.pathExtension.lowercased() == "mmb" {
+                openDatabase(at: storedURL)
+            } else {
+                // TODO
+            }
         }
         catch let error {
             log.error("Failed to restore bookmark: \(error)")

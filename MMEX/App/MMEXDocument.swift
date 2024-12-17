@@ -12,10 +12,11 @@ import SQLite
 
 extension UTType {
     static var mmb: UTType { UTType(exportedAs: "com.guangong.mmex.mmb") }
+    static var emb: UTType { UTType(exportedAs: "com.guangong.mmex.emb") }
 }
 
 struct MMEXDocument: FileDocument {
-    static var readableContentTypes: [UTType] = [UTType.mmb]
+    static var readableContentTypes: [UTType] = [UTType.mmb, UTType.emb]
 
     init() { }
     init(configuration: ReadConfiguration) throws { }
