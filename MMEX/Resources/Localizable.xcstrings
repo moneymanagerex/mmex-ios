@@ -354,6 +354,12 @@
             "value" : "Alkalmazásinformáció"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info App"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -368,6 +374,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alkalmazásbeállítások"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impostazioni App"
           }
         },
         "zh-Hans" : {
@@ -560,6 +572,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kategória:"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categoria:"
           }
         }
       }
@@ -870,6 +888,12 @@
             "state" : "translated",
             "value" : "Alapértelmezett érték: kettőspont („:”)"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il valore predefinito è ':'"
+          }
         }
       }
     },
@@ -1167,6 +1191,12 @@
             "state" : "translated",
             "value" : "Formátum"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato"
+          }
         }
       }
     },
@@ -1308,6 +1338,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inaktív"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inattivo"
           }
         }
       }
@@ -1502,6 +1538,12 @@
             "state" : "translated",
             "value" : "Kölcsön"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prestito"
+          }
         }
       }
     },
@@ -1578,6 +1620,12 @@
             "state" : "translated",
             "value" : "Az azokat tartalmazó elemekből új mellékletek hozhatók létre."
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuovi allegati possono essere creati dagli elementi che li contengono."
+          }
         }
       }
     },
@@ -1604,6 +1652,12 @@
             "state" : "translated",
             "value" : "Nem"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
+          }
         }
       }
     },
@@ -1613,6 +1667,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "NEM"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NO"
           }
         }
       }
@@ -1650,6 +1710,12 @@
             "state" : "translated",
             "value" : "Számbillentyűzet"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tastierino numerico"
+          }
         }
       }
     },
@@ -1659,6 +1725,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rendben"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }
@@ -1705,6 +1777,12 @@
             "state" : "translated",
             "value" : "Kedvezményezett:"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beneficiario:"
+          }
         }
       }
     },
@@ -1714,6 +1792,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kérjük, nyisson meg vagy hozzon létre egy adatbázist a kezdéshez."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per iniziare, aprire o creare un database."
           }
         }
       }
@@ -1740,6 +1824,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tulajdonságok"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proprietà"
           }
         }
       }
@@ -1783,6 +1873,12 @@
             "state" : "translated",
             "value" : "Utolsó kedvezményezett újrafelhasználása"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riutilizza Ultimo Beneficiario"
+          }
         }
       }
     },
@@ -1802,6 +1898,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Séma verzió"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versione Schema"
           }
         }
       }
@@ -1950,6 +2052,12 @@
             "state" : "translated",
             "value" : "Részvények"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Azioni"
+          }
         }
       }
     },
@@ -2068,6 +2176,12 @@
             "state" : "translated",
             "value" : "Támogatás"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supporto"
+          }
         }
       }
     },
@@ -2077,6 +2191,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jelzés"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Simbolo"
           }
         }
       }
@@ -2151,6 +2271,12 @@
             "state" : "translated",
             "value" : "Ezek a Szerződési Feltételek szabályozzák az alkalmazásunk használatát. Az alkalmazás használatával Ön vállalja, hogy betartja ezeket a feltételeket, és magára nézve kötelezőnek ismeri el."
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I presenti Termini di servizio regolano l'utilizzo dell'applicazione da parte dell'utente. Utilizzando l'applicazione, l'utente accetta di rispettare e di essere vincolato da questi termini."
+          }
         }
       }
     },
@@ -2206,6 +2332,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Összesen: %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totale: %@"
           }
         }
       }
@@ -2274,6 +2406,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "X"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twitter"
           }
         }
       }
@@ -2358,6 +2496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Igen"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sì"
           }
         }
       }
