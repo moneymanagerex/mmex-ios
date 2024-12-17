@@ -276,7 +276,6 @@ struct ContentView: View {
         }
         // Open the database with the provided password
         if let url = fileURL {
-            print("xxxxx")
             vm.openDatabase(at: url, password: password)
             guard vm.isDatabaseConnected else {
                 isPasswordValid = false
