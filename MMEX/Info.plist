@@ -16,6 +16,16 @@
 				<string>com.guangong.mmex.mmb</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Encrypted MMEX Database</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.guangong.mmex.emb</string>
+			</array>
+		</dict>
 	</array>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
@@ -39,6 +49,28 @@
 				<key>public.mime-type</key>
 				<string>application/x-mmb</string>
 			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Encrypted Database</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>com.guangong.mmex.emb</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>emb</string>
+				</array>
+				<key>public.mime-type</key>
+				<string>application/x-emb</string>
+			</dict>
+
 		</dict>
 	</array>
 </dict>

@@ -1063,6 +1063,9 @@
         }
       }
     },
+    "Enter password" : {
+
+    },
     "Error" : {
       "localizations" : {
         "hu" : {
@@ -1344,6 +1347,9 @@
           }
         }
       }
+    },
+    "Invalid password, please try again." : {
+
     },
     "Investment" : {
       "extractionState" : "manual",
@@ -1672,6 +1678,9 @@
           }
         }
       }
+    },
+    "Password Required" : {
+
     },
     "Payee" : {
       "localizations" : {

@@ -19,6 +19,11 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
+    @State private var isPasswordPromptVisible = false
+    @State private var password = ""
+    @State private var fileURL: URL?
+    @State private var isPasswordValid = true // Flag to validate password
+
     var body: some View {
         ZStack {
             if vm.isDatabaseConnected {
@@ -27,13 +32,57 @@ struct ContentView: View {
                 disconnectedView
             }
         }
+        
+        .handlesExternalEvents(preferring: Set(["mmb", "emb"]), allowing: Set(["*"]))
+        .onOpenURL { url in
+            if url.pathExtension.lowercased() == "mmb" {
+                vm.openDatabase(at: url)
+            } else {
+                // If the file is emb, prompt for password
+                fileURL = url
+                isPasswordPromptVisible = true
+            }
+        }
 
         .fileImporter(
             isPresented: $isDocumentPickerPresented,
-            allowedContentTypes: [.mmb],
+            allowedContentTypes: [.mmb, .emb],
             allowsMultipleSelection: false
         ) {
             handleFileImport($0)
+        }
+        .sheet(isPresented: $isPasswordPromptVisible) {
+            // Password input sheet
+            VStack {
+                Text("Password Required")
+                    .font(.headline)
+                    .padding()
+
+                SecureField("Enter password", text: $password)
+                    .padding()
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.bottom)
+
+                if !isPasswordValid {
+                    Text("Invalid password, please try again.")
+                        .foregroundColor(.red)
+                        .padding(.bottom)
+                }
+
+                HStack {
+                    Button("Cancel") {
+                        isPasswordPromptVisible = false
+                    }
+                    .padding()
+
+                    Button("OK") {
+                        validateAndOpenDatabase()
+                    }
+                    .padding()
+                }
+            }
+            .padding()
+            .frame(width: 300, height: 200)
         }
 
         .fileExporter(
@@ -200,8 +249,14 @@ struct ContentView: View {
         switch result {
         case .success(let urls):
             if let url = urls.first {
-                vm.openDatabase(at: url)
-                guard vm.isDatabaseConnected else { return }
+                if url.pathExtension.lowercased() == "mmb" {
+                    vm.openDatabase(at: url)
+                    guard vm.isDatabaseConnected else { return }
+                } else {
+                    // Prompt for password if it's an emb file
+                    fileURL = url
+                    isPasswordPromptVisible = true
+                }
                 log.info("Successfully opened database: \(url)")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     selectedTab = Preference.selectedTab
@@ -212,6 +267,25 @@ struct ContentView: View {
         }
     }
 
+    // Validate and open the database using the entered password
+    private func validateAndOpenDatabase() {
+        guard !password.isEmpty else {
+            // Invalid password, show error
+            isPasswordValid = false
+            return
+        }
+        // Open the database with the provided password
+        if let url = fileURL {
+            vm.openDatabase(at: url, password: password)
+            guard vm.isDatabaseConnected else {
+                isPasswordValid = false
+                return
+            }
+            // Hide the password prompt
+            isPasswordPromptVisible = false
+        }
+    }
+    
     // File export handling
     private func handleFileExport(_ result: Result<URL, Error>) {
         switch result {
