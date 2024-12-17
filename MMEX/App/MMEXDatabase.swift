@@ -62,8 +62,7 @@ extension ViewModel {
             defer { url.stopAccessingSecurityScopedResource() }
             do {
                 // Attach the external database
-                let attachSQL = "ATTACH DATABASE ? AS ?"
-                try db.run(attachSQL, url.path, resolvedAlias)
+                try db.attach(.uri(url.path, parameters: [.mode(.readOnly)]), as: resolvedAlias)
                 log.info("Successfully attached database at \(url.path) as \(resolvedAlias)")
             } catch {
                 log.error("Failed to attach database: \(error)")
@@ -88,10 +87,9 @@ extension ViewModel {
             return
         }
         // Determine the alias to detach
-        let resolvedAlias = alias ?? "attachedDB" // Default alias if none is provided
+        let resolvedAlias = alias ?? "attach" // Default alias if none is provided
         do {
-            let detachSQL = "DETACH DATABASE ?"
-            try db.run(detachSQL, alias)
+            try db.detach(resolvedAlias)
             log.info("Successfully detached database with alias \(resolvedAlias)")
         } catch {
             log.error("Failed to detach database: \(error)")
