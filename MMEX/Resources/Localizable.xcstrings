@@ -184,6 +184,12 @@
     },
     "Account Name" : {
       "localizations" : {
+        "af" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekening naam"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -206,6 +212,12 @@
     },
     "Account:" : {
       "localizations" : {
+        "af" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekening:"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -222,6 +234,12 @@
     },
     "Active" : {
       "localizations" : {
+        "af" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktief"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -308,6 +326,12 @@
     },
     "Amount" : {
       "localizations" : {
+        "af" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bedrag"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -437,6 +461,12 @@
     },
     "Cancel" : {
       "localizations" : {
+        "af" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanselleer"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
