@@ -175,7 +175,6 @@
 		A32AAED62CC3FD23005B4AEF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */; };
 		A32ED5CC2D09C33500166673 /* StoredPreferenceDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32ED5CB2D09C33500166673 /* StoredPreferenceDictionary.swift */; };
 		A32ED5CE2D09EB2C00166673 /* Name2Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32ED5CD2D09EB2C00166673 /* Name2Symbol.swift */; };
-		A3356D432D115DE1003A859F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3356D422D115DE1003A859F /* Security.framework */; };
 		A3356D4E2D116560003A859F /* readme-amalgamation.md in Resources */ = {isa = PBXBuildFile; fileRef = A3356D482D116560003A859F /* readme-amalgamation.md */; };
 		A3356D4F2D116560003A859F /* sqlite3mc.def in Resources */ = {isa = PBXBuildFile; fileRef = A3356D4B2D116560003A859F /* sqlite3mc.def */; };
 		A3356D512D116560003A859F /* sqlite3mc_amalgamation.c in Sources */ = {isa = PBXBuildFile; fileRef = A3356D4D2D116560003A859F /* sqlite3mc_amalgamation.c */; };
@@ -406,7 +405,6 @@
 		A32AAED52CC3FD23005B4AEF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A32ED5CB2D09C33500166673 /* StoredPreferenceDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPreferenceDictionary.swift; sourceTree = "<group>"; };
 		A32ED5CD2D09EB2C00166673 /* Name2Symbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Name2Symbol.swift; sourceTree = "<group>"; };
-		A3356D422D115DE1003A859F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A3356D442D116180003A859F /* sqlite3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		A3356D472D116252003A859F /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		A3356D482D116560003A859F /* readme-amalgamation.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "readme-amalgamation.md"; sourceTree = "<group>"; };
@@ -474,7 +472,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3356D542D1166FC003A859F /* libsqlite3.tbd in Frameworks */,
-				A3356D432D115DE1003A859F /* Security.framework in Frameworks */,
 				A386B2BA2CDB41DC004AD9E3 /* Amplitude in Frameworks */,
 				A3B374C72C96A27800943FDB /* SQLite in Frameworks */,
 				A386B2BC2CDB437E004AD9E3 /* AnalyticsConnector in Frameworks */,
@@ -840,7 +837,6 @@
 			isa = PBXGroup;
 			children = (
 				A3356D532D1166FC003A859F /* libsqlite3.tbd */,
-				A3356D422D115DE1003A859F /* Security.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
