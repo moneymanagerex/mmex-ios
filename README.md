@@ -32,6 +32,8 @@ Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance ap
   - [ ] scheduled transactions
 - Accounts & Currencies
 - Payee & Categories
+- Multi-Language
+- Security via AES256
 - [ ] Others [MMEX features](https://moneymanagerex.org/)
 
 ## Build
