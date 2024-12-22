@@ -11,12 +11,18 @@ import SQLite
 /// This extension interacts with the encrypted SQLite database using sqlite3mc.
 extension Connection {
 
-    // Function to initialize the cipher with the default version and legacy mode
-    public func initializeCipher() {
+    // Function to initialize the SQLCipher with the default version and legacy mode
+    public func initSQLCipher() {
         sqlite3mc_config(handle, "default:cipher", sqlite3mc_cipher_index("sqlcipher"))
         sqlite3mc_config_cipher(handle, "sqlcipher", "legacy", 4);
     }
     
+    //
+    public func initAES128CBC() {
+        sqlite3mc_config(handle, "default:cipher", sqlite3mc_cipher_index("aes128cbc"))
+        sqlite3mc_config_cipher(handle, "sqlcipher", "legacy", 0);
+    }
+
     /// Set the encryption key for the database. This should be called immediately after opening the database.
     ///
     /// - Parameters:
