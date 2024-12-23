@@ -17,9 +17,29 @@ extension ViewModel {
                 defer { url.stopAccessingSecurityScopedResource() }
                 do {
                     db = try Connection(url.path)
-                    db?.initializeCipher()
                     if let password, let db {
-                        try db.key(password)
+                        let cipherMethods: [(Connection) -> Void] = [
+                            { $0.initSQLCipher() },    // SQLCipher
+                            { $0.initAES128CBC() } // Custom AES-128 Cipher
+                            // Add more cipher methods here as needed
+                        ]
+
+                        var cipherInitialized = false
+                        for initCipher in cipherMethods {
+                            do {
+                                initCipher(db) // Try initializing the cipher
+                                try db.key(password)
+                                cipherInitialized = true
+                                break // Exit loop if successful
+                            } catch {
+                                log.warning("Failed to initialize cipher with method: \(error)")
+                                continue
+                            }
+                        }
+
+                        if !cipherInitialized {
+                            throw NSError(domain: "CipherInitialization", code: 1, userInfo: [NSLocalizedDescriptionKey: "All cipher methods failed"])
+                        }
                     }
                     saveBookmark(for: url)
                     log.info("Successfully connected to database: \(url.path)")
