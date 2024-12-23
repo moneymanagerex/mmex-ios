@@ -10,6 +10,7 @@ Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance ap
 - [Swift Chart](https://developer.apple.com/documentation/charts) for reports and insights
 - [SQLite.swift](https://github.com/stephencelis/SQLite.swift) for orm and data access
 - [MMEX Data Model](https://github.com/moneymanagerex/database) for data compatibility
+- [SQLite3MultipleCiphers](https://github.com/utelle/SQLite3MultipleCiphers) for data encryption
 - [Dime](https://github.com/rarfell/dimeApp) for inspiration
 
 ## Screenshots
@@ -23,8 +24,7 @@ Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance ap
 </p>
 
 ## Features
-- Data compatible with [MMEX4Desktop](https://github.com/moneymanagerex/moneymanagerex) and [MMEX4Android](https://github.com/moneymanagerex/android-money-manager-ex/)
-- Data sharable with [MMEX4Desktop](https://github.com/moneymanagerex/moneymanagerex) and [MMEX4Android](https://github.com/moneymanagerex/android-money-manager-ex/) via Files (e.g. iCloud, Synology Drive)
+- Data compatible and sharable with [MMEX4Desktop](https://github.com/moneymanagerex/moneymanagerex) and [MMEX4Android](https://github.com/moneymanagerex/android-money-manager-ex/) via Files
 - Transactions
   - [X] regular transactions
   - [X] split transactions
