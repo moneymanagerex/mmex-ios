@@ -447,6 +447,12 @@
             "value" : "Alappénznem"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valuta Base"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -588,6 +594,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hamarosan…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prossimamente..."
           }
         }
       }
@@ -904,6 +916,12 @@
             "state" : "translated",
             "value" : "Alapértelmezett érték: nulla („0”)"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il valore predefinito è 0"
+          }
         }
       }
     },
@@ -913,6 +931,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alapértelmezett érték: egy („1”)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il valore predefinito è 1"
           }
         }
       }
@@ -1088,7 +1112,20 @@
       }
     },
     "Enter password" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jelszó megadása"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immetti password"
+          }
+        }
+      }
     },
     "Error" : {
       "localizations" : {
@@ -1171,6 +1208,12 @@
             "state" : "translated",
             "value" : "Mezőelrendezés"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Layout Dei Campi"
+          }
         }
       }
     },
@@ -1180,6 +1223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mezőérték"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valore Del Campo"
           }
         }
       }
@@ -1385,7 +1434,14 @@
       }
     },
     "Invalid password, please try again." : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Érvénytelen jelszó. Próbálkozzon újra."
+          }
+        }
+      }
     },
     "Investment" : {
       "extractionState" : "manual",
@@ -1421,6 +1477,12 @@
             "state" : "translated",
             "value" : "Elemelrendezés"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Layout Oggetto"
+          }
         }
       }
     },
@@ -1430,6 +1492,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elemnév"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome Oggetto"
           }
         }
       }
@@ -1574,6 +1642,12 @@
             "state" : "translated",
             "value" : "MMEX iOS-re"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MMEX4iOS"
+          }
         }
       }
     },
@@ -1684,6 +1758,12 @@
             "state" : "translated",
             "value" : "Nincs csatlakoztatott adatbázis"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun Database Connesso"
+          }
         }
       }
     },
@@ -1752,7 +1832,20 @@
       }
     },
     "Password Required" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jelszó szükséges"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password Richiesta"
+          }
+        }
+      }
     },
     "Payee" : {
       "localizations" : {
@@ -1915,6 +2008,12 @@
             "state" : "translated",
             "value" : "Keresőterület"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Area di ricerca"
+          }
         }
       }
     },
@@ -2068,6 +2167,12 @@
             "state" : "translated",
             "value" : "Közösségi média"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social Media"
+          }
         }
       }
     },
@@ -2117,6 +2222,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SQL-tartalom"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contenuto SQL"
           }
         }
       }
@@ -2441,6 +2552,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Felhasználói fórum"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forum Utente"
           }
         }
       }
