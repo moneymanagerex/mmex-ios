@@ -1489,7 +1489,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_ASSET_PATHS = "\"MMEX/Preview Content\"";
 				DEVELOPMENT_TEAM = 3N3NHU8X3F;
 				ENABLE_PREVIEWS = YES;
@@ -1513,7 +1513,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.24;
+				MARKETING_VERSION = 0.1.25;
 				OTHER_CFLAGS = (
 					"-DSQLITE_HAS_CODEC",
 					"-DSQLCIPHER_CRYPTO_CC",
@@ -1539,7 +1539,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_ASSET_PATHS = "\"MMEX/Preview Content\"";
 				DEVELOPMENT_TEAM = 3N3NHU8X3F;
 				ENABLE_PREVIEWS = YES;
@@ -1559,7 +1559,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.24;
+				MARKETING_VERSION = 0.1.25;
 				OTHER_CFLAGS = (
 					"-DSQLITE_HAS_CODEC",
 					"-DSQLCIPHER_CRYPTO_CC",
