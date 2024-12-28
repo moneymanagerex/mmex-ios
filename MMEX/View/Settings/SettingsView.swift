@@ -153,6 +153,12 @@ struct SettingsView: View {
                     Spacer()
                     Text(String(vm.getDatabaseUserVersion() ?? 0))
                 }
+
+                HStack {
+                    Text("SQLite Version")
+                    Spacer()
+                    Text(vm.sqliteVersion?.description ?? "")
+                }
             }
         }
         .listStyle(InsetGroupedListStyle()) // Better styling for iOS
