@@ -215,6 +215,10 @@ extension ViewModel {
         return self.db?.userVersion
     }
 
+    var sqliteVersion: SQLiteVersion? {
+        return self.db?.sqliteVersion
+    }
+
     private func saveBookmark(for url: URL) {
         do {
             let bookmarkData = try url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: nil, relativeTo: nil)
