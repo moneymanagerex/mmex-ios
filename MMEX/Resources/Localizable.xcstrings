@@ -2233,7 +2233,14 @@
       }
     },
     "SQLite Version" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SQLite változat"
+          }
+        }
+      }
     },
     "Start Date" : {
       "localizations" : {
