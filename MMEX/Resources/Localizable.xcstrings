@@ -12,6 +12,12 @@
             "value" : "'%@'"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "'%@'"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62,6 +68,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "(none)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(keins)"
           }
         },
         "el" : {
@@ -116,6 +128,12 @@
             "value" : "(unknown)"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(unbekannt)"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163,6 +181,12 @@
     "%@" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@"
@@ -220,6 +244,12 @@
             "value" : "%@ "
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ "
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -267,6 +297,12 @@
     "%@ #%lld" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ #%lld"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ #%lld"
@@ -324,6 +360,12 @@
             "value" : "%lf"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lf"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -371,6 +413,12 @@
     "%lld" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld"
@@ -428,6 +476,12 @@
             "value" : "1. Use of the App"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Nutzung der App"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -478,6 +532,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "2. Content Ownership"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Inhaltseigentum"
           }
         },
         "el" : {
@@ -816,6 +876,12 @@
             "value" : "Account Income Summary"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusammenfassung der Kontoeinnahmen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -866,6 +932,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Account Name"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account-Name"
           }
         },
         "el" : {
@@ -924,6 +996,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Account:"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konto:"
           }
         },
         "el" : {
@@ -1090,6 +1168,12 @@
             "value" : "Add Note"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz hinzufügen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1136,6 +1220,12 @@
             "value" : "Add split"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Split hinzufügen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1180,6 +1270,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweitert"
           }
         },
         "el" : {
@@ -1232,6 +1328,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "All content provided by the app is owned by the app developers or its licensors. You are not allowed to copy, reproduce, or distribute any content without permission."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle von der App bereitgestellten Inhalte gehören den App-Entwicklern oder ihren Lizenzgebern. Sie sind nicht berechtigt, Inhalte ohne Erlaubnis zu kopieren, zu reproduzieren oder zu verbreiten."
           }
         },
         "el" : {
@@ -1434,6 +1536,12 @@
             "value" : "App Info"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Info"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1486,6 +1594,12 @@
             "value" : "App Settings"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Einstellungen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1536,6 +1650,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Appearance"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aussehen"
           }
         },
         "el" : {
@@ -1701,6 +1821,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auxiliary Data"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ergänzende Daten"
           }
         },
         "el" : {
@@ -1889,6 +2015,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Build"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
           }
         },
         "el" : {
@@ -2476,6 +2608,12 @@
             "value" : "Category:"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorie:"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2522,6 +2660,12 @@
             "value" : "Coming soon ..."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demnächst..."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2566,6 +2710,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contact"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt"
           }
         },
         "el" : {
@@ -2738,6 +2888,12 @@
             "value" : "Copy to Clipboard"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Zwischenablage kopieren"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2790,6 +2946,12 @@
             "value" : "Create"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erstellen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2836,6 +2998,12 @@
             "value" : "Create New Database"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Datenbank erstellen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2880,6 +3048,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create Sample Database"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beispieldatenbank erstellen"
           }
         },
         "el" : {
@@ -3045,6 +3219,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Credits"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kredite"
           }
         },
         "el" : {
@@ -3293,6 +3473,12 @@
             "value" : "Database File"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenbankdatei"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3337,6 +3523,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Database Info"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenbank-Info"
           }
         },
         "el" : {
@@ -3385,6 +3577,12 @@
             "value" : "Database Maintenance"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenbank Wartung"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3429,6 +3627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Database Settings"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenbank Einstellungen"
           }
         },
         "el" : {
@@ -3849,6 +4053,12 @@
             "value" : "Default Account"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standardkonto"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3899,6 +4109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Default is ':'"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard ist ':'"
           }
         },
         "el" : {
@@ -3953,6 +4169,12 @@
             "value" : "Default is 0"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Standardwert ist 0"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4005,6 +4227,12 @@
             "value" : "Default is 1"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Standardwert ist 1"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4055,6 +4283,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Default Transaction Status"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard Transaktionsstatus"
           }
         },
         "el" : {
@@ -4215,6 +4449,12 @@
             "value" : "Delete %@"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ löschen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4265,6 +4505,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete Transaction"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transaktion löschen"
           }
         },
         "el" : {
@@ -4455,6 +4701,12 @@
             "value" : "Developed by Lisheng Guan, George Ef"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entwickelt von Lisheng Guan, George Ef"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4509,6 +4761,12 @@
             "value" : "Dismiss"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwerfen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4559,6 +4817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertig"
           }
         },
         "el" : {
@@ -4613,6 +4877,12 @@
             "value" : "Edit"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editieren"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4663,6 +4933,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email Support"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail Support"
           }
         },
         "el" : {
@@ -4717,6 +4993,12 @@
             "value" : "End Date"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Datum"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4769,6 +5051,12 @@
             "value" : "Enter"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingabe"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4819,6 +5107,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter password"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort eingeben"
           }
         },
         "el" : {
@@ -4997,6 +5291,12 @@
             "value" : "expenses"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kosten"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5049,6 +5349,12 @@
             "value" : "Export as JSON File"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als JSON-Datei exportieren"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5096,6 +5402,12 @@
     "Facebook" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facebook"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Facebook"
@@ -5153,6 +5465,12 @@
             "value" : "Failed to render release notes."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim rendern der Release-Notizen."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5203,6 +5521,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Field Layout"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feld-Layout"
           }
         },
         "el" : {
@@ -5257,6 +5581,12 @@
             "value" : "Field Value"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feld Wert"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5304,6 +5634,12 @@
     "Format" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Format"
@@ -5485,6 +5821,12 @@
             "value" : "Group Count"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anzahl Gruppen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5529,6 +5871,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Group Layout"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppenlayout"
           }
         },
         "el" : {
@@ -5581,6 +5929,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Group Name"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppenname"
           }
         },
         "el" : {
@@ -5765,6 +6119,12 @@
             "value" : "How to add a transaction?"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie füge ich eine Transaktion hinzu?"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5815,6 +6175,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How to generate reports?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie generiere ich Berichte?"
           }
         },
         "el" : {
@@ -5869,6 +6235,12 @@
             "value" : "How to import/export data?"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie kann ich Daten importieren/exportieren?"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5919,6 +6291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How to manage categories?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie verwalte ich Kategorien?"
           }
         },
         "el" : {
@@ -6109,6 +6487,12 @@
             "value" : "income"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einnahmen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6159,6 +6543,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Income vs Expense Over Time"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einkommen vs Ausgaben über die ganze Zeit"
           }
         },
         "el" : {
@@ -6213,6 +6603,12 @@
             "value" : "Insights"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erkenntnisse"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6257,6 +6653,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Invalid password, please try again."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungültiges Passwort. Bitte versuchen Sie es erneut."
           }
         },
         "el" : {
@@ -6442,6 +6844,12 @@
             "value" : "Item Info"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item-Info"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6492,6 +6900,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item Layout"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitrags-Layout"
           }
         },
         "el" : {
@@ -6546,6 +6960,12 @@
             "value" : "Item Name"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Artikelname"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6593,6 +7013,12 @@
     "Journal" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journal"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Journal"
@@ -6650,6 +7076,12 @@
             "value" : "Last updated: September 18, 2024"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuletzt aktualisiert: 18. September 2024"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6700,6 +7132,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Legal"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechtlich"
           }
         },
         "el" : {
@@ -6754,6 +7192,12 @@
             "value" : "Legal Documents"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechtliche Dokumente"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6804,6 +7248,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Load data"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daten laden"
           }
         },
         "el" : {
@@ -6858,6 +7308,12 @@
             "value" : "Load error ..."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ladefehler..."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6910,6 +7366,12 @@
             "value" : "Load error ... "
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ladefehler... "
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6956,6 +7418,12 @@
             "value" : "Loading data ..."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lade Daten ..."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7000,6 +7468,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading data ... "
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lade Daten ... "
           }
         },
         "el" : {
@@ -7155,6 +7629,12 @@
             "value" : "Lua Content"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lua Inhalt"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7201,6 +7681,12 @@
             "value" : "Manage"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwalten"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7242,6 +7728,12 @@
     "MMEX4iOS" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MMEX4iOS"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "MMEX4iOS"
@@ -7291,6 +7783,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "More Insights Coming Soon..."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weitere Einblicke kommen bald..."
           }
         },
         "el" : {
@@ -7439,6 +7937,12 @@
             "value" : "Negative for outflow"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Negativ für Abfluss"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7477,6 +7981,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "New attachments can be created from the items that contain them."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus den Elementen, die sie enthalten, können neue Anhänge erstellt werden."
           }
         },
         "el" : {
@@ -7767,6 +8277,12 @@
             "value" : "NO"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nein"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7811,6 +8327,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Database Connected"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Datenbank verbunden"
           }
         },
         "el" : {
@@ -7995,6 +8517,12 @@
             "value" : "Numeric Keypad"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ziffernblock"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8048,6 +8576,12 @@
           }
         },
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -8283,6 +8817,12 @@
             "value" : "Password Required"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort erforderlich"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8465,6 +9005,12 @@
             "value" : "Payee:"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zahlungsempfänger/Zahler:"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8511,6 +9057,12 @@
             "value" : "Please open or create a database to get started."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte öffnen oder erstellen Sie eine Datenbank, um loszulegen."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8555,6 +9107,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Privacy Policy"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenschutzrichtlinie"
           }
         },
         "el" : {
@@ -8721,6 +9279,12 @@
             "value" : "Release Notes"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versionshinweise"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8765,6 +9329,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Report an Issue"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Problem melden"
           }
         },
         "el" : {
@@ -8819,6 +9389,12 @@
             "value" : "Reuse Last Payee"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederverwendung letzter Zahlungsempfänger"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8865,6 +9441,12 @@
             "value" : "Sample Database in Memory"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beispieldatenbank im Speicher"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8909,6 +9491,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Schema Version"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schemaversion"
           }
         },
         "el" : {
@@ -8963,6 +9551,12 @@
             "value" : "Search area"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchbereich"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9013,6 +9607,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search by notes"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach Notizen suchen"
           }
         },
         "el" : {
@@ -9551,6 +10151,12 @@
             "value" : "Select To Account"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empfängerkonto wählen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9595,6 +10201,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Send Anonymous Usage Data"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anonyme Nutzungsdaten übermitteln"
           }
         },
         "el" : {
@@ -9755,6 +10367,12 @@
             "value" : "Shall not be empty!"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soll nicht leer sein!"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9908,6 +10526,12 @@
             "value" : "Social Media"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social Media"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9952,6 +10576,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Special thanks to all open-source contributors!"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vielen Dank an alle Open-Source-Mitwirkenden!"
           }
         },
         "el" : {
@@ -10000,6 +10630,12 @@
             "value" : "split amount"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "geteilter Betrag"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10046,6 +10682,12 @@
             "value" : "split notes"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "geteilte Notizen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10087,6 +10729,12 @@
     "Splits" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Splits"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Splits"
@@ -10144,6 +10792,12 @@
             "value" : "SQL Content"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SQL-Inhalt"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10188,6 +10842,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SQLite Version"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SQLite-Version"
           }
         },
         "el" : {
@@ -10240,6 +10900,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start Date"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Datum"
           }
         },
         "el" : {
@@ -10298,6 +10964,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stav"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
           }
         },
         "el" : {
@@ -10406,6 +11078,12 @@
             "value" : "Status Choice"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statusauswahl"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10447,6 +11125,12 @@
     "Support" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Support"
@@ -10628,6 +11312,12 @@
             "value" : "Tab Icons"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tab Icons"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10666,6 +11356,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Template Content"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorlageninhalt"
           }
         },
         "el" : {
@@ -10833,6 +11529,12 @@
             "value" : "Terms of Service"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzungsbedingungen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10991,6 +11693,12 @@
             "value" : "These Terms of Service govern your use of our app. By using the app, you agree to comply with and be bound by these terms."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Nutzungsbedingungen regeln Ihre Nutzung unserer App. Indem Sie die App verwenden, stimmen Sie zu, diese Bedingungen einzuhalten und an sie gebunden zu sein."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11035,6 +11743,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "This app helps you manage your finances efficiently by tracking transactions, accounts, and generating insights."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App hilft Ihnen, Ihre Finanzen effizient zu verwalten, indem Sie Transaktionen, Konten und Einsichten verfolgen können."
           }
         },
         "el" : {
@@ -11083,6 +11797,12 @@
             "value" : "This Privacy Policy outlines how we handle your personal information while using the app."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Datenschutzrichtlinien beschreiben, wie wir Ihre persönlichen Daten während der Verwendung der App behandeln."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11127,6 +11847,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "To Account"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf Konto"
           }
         },
         "el" : {
@@ -11287,6 +12013,12 @@
             "value" : "Total: %@"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11339,6 +12071,12 @@
             "value" : "Transaction Amount"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betrag der Transaktion"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11383,6 +12121,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transaction Date"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transaktionsdatum"
           }
         },
         "el" : {
@@ -11431,6 +12175,12 @@
             "value" : "Transaction Status"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transaktionsstatus"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11477,6 +12227,12 @@
             "value" : "Transaction Type"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transaktionstyp"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11518,6 +12274,12 @@
     "Twitter" : {
       "localizations" : {
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twitter"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Twitter"
@@ -11569,6 +12331,12 @@
             "value" : "Upcoming Features"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zukünftige Funktionen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11613,6 +12381,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "User Forum"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzerforum"
           }
         },
         "el" : {
@@ -11671,6 +12445,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verze"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
           }
         },
         "el" : {
@@ -11777,6 +12557,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visit Official Website"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offizielle Webseite besuchen"
           }
         },
         "el" : {
@@ -12043,6 +12829,12 @@
             "value" : "YES"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JA"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12087,6 +12879,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You must use the app in compliance with all applicable laws. Any misuse or illegal activities related to the app may result in termination of your access."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sie müssen die App in Übereinstimmung mit allen anwendbaren Gesetzen verwenden. Jede missbräuchliche oder illegale Nutzung der App kann zu einer Kündigung Ihres Zugriffs führen."
           }
         },
         "el" : {
