@@ -159,10 +159,11 @@ struct EnterFormView: View {
                             Text("Category")
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             Text("Amount")
-                                .frame(width: 80, alignment: .center) // Centered with fixed width
+                                .frame(width: 60, alignment: .center) // Centered with fixed width
                             Text("Notes")
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         }
+                        .frame(maxWidth: .infinity)
                         .padding(.horizontal, 0)
 
                         ForEach(txn.splits.indices, id: \.self) { index in
@@ -175,7 +176,7 @@ struct EnterFormView: View {
                                         vm.accountList.data.readyValue?[txn.accountId]?.currencyId ?? .void
                                     ]?.formatter
                                 ))
-                                .frame(width: 80, alignment: .center) // Centered with fixed width
+                                .frame(width: 60, alignment: .center) // Centered with fixed width
                                 Text(split.notes)
                                     .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                             }
@@ -207,7 +208,7 @@ struct EnterFormView: View {
                                 .focused($focusState, equals: 3)
                                 .keyboardType(pref.theme.decimalPad)
                                 .multilineTextAlignment(.center) // Center the text for better UX
-                                .frame(width: 80, alignment: .center) // Centered with fixed width
+                                .frame(width: 60, alignment: .center) // Centered with fixed width
                             Spacer()
                             // split notes
                             TextField("split notes", text: $newSplit.notes)
@@ -229,6 +230,7 @@ struct EnterFormView: View {
                         }
                         .labelsHidden()
                     }
+                    .listRowInsets(EdgeInsets())
                 }
                 .padding(.vertical, 0)
             }
