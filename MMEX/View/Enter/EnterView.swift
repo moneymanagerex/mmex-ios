@@ -21,7 +21,7 @@ struct EnterView: View {
             focus: $focus,
             txn: $newTxn
         )
-        .padding()
+        .padding(.horizontal, 0)
 
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
