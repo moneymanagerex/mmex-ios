@@ -99,8 +99,8 @@ class ViewModel: ObservableObject {
     @Published var baseCurrency: CurrencyData?
     @Published var stats: [TransactionData] = [] // all transactions
     @Published var recentStats: [TransactionData] = []
-    @Published var startDate: Date = Date()
-    @Published var endDate: Date = Date()
+    @Published var startDate: Date = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date())
+    @Published var endDate: Date = Calendar.current.startOfDay(for: Date())
     @Published var flow = InsightsFlow()
     var cancellables = Set<AnyCancellable>()
 
