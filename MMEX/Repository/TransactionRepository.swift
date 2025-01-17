@@ -166,10 +166,10 @@ extension TransactionRepository {
             table = table.filter(Self.col_accountId == Int64(accountId) || Self.col_toAccountId == Int64(accountId))
         }
         if let startDate {
-            table = table.filter(Self.col_transDate >= String(startDate.ISO8601Format().dropLast()))
+            table = table.filter(Self.col_transDate >= DateTimeString(startDate).string)
         }
         if let endDate {
-            table = table.filter(Self.col_transDate <= String(endDate.ISO8601Format().dropLast()))
+            table = table.filter(Self.col_transDate < DateTimeString(Calendar.current.date(byAdding: .day, value: 1, to: endDate)!).string)
         }
 
         return select(from: table.order(Self.col_transDate.desc))

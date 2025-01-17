@@ -56,13 +56,27 @@ struct InsightsView: View {
                 } ) { if incomeExpenseIsExpanded {
                     // Date Range Filters
                     HStack {
-                        DatePicker("Start Date", selection: $vm.startDate, displayedComponents: .date)
+                        DatePicker("Start Date", selection:  Binding(
+                            get: {
+                                Calendar.current.startOfDay(for: vm.startDate)
+                            },
+                            set: { newValue in
+                                vm.startDate = Calendar.current.startOfDay(for: newValue)
+                            }
+                        ), displayedComponents: .date)
                             .labelsHidden()
                             .datePickerStyle(.compact)
                         
                         Spacer()
                         
-                        DatePicker("End Date", selection: $vm.endDate, displayedComponents: .date)
+                        DatePicker("End Date", selection: Binding(
+                            get: {
+                                Calendar.current.startOfDay(for: vm.endDate)
+                            },
+                            set: { newValue in
+                                vm.endDate = Calendar.current.startOfDay(for: newValue)
+                            }
+                        ), displayedComponents: .date)
                             .labelsHidden()
                             .datePickerStyle(.compact)
                     }

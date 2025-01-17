@@ -19,9 +19,6 @@ struct InsightsFlow {
 
 extension ViewModel {
     func loadInsights() {
-        self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
-        self.endDate = Date()
-
         if let baseCurrencyId = InfotableRepository(self.db)?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
             baseCurrency = CurrencyRepository(self.db)?.pluck(
                 key: InfoKey.baseCurrencyID.id,
