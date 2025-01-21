@@ -79,6 +79,44 @@ extension Repository {
         }
     }
 
+    func select(
+        rawQuery: String,
+        bindParams: [SQLite.Binding?] = []
+    ) -> (columnNames: [String], queryResult: [[String: String]]) {
+        do {
+            // Log the raw query for debugging
+            log.trace("DEBUG: Repository.select(rawQuery=\(rawQuery), bindParams=\(bindParams))")
+
+            // Prepare the raw SQL statement
+            let statement = try db.prepare(rawQuery)
+
+            // Get column names from the statement
+            let columnNames = statement.columnNames
+
+            // Initialize result storage
+            var queryResult: [[String: String]] = []
+
+            // Process each row
+            for row in statement {
+                var rowDict: [String: String] = [:]
+                for (index, value) in row.enumerated() {
+                    // Safely convert the value to String, or use an empty string for nil
+                    rowDict[columnNames[index]] = (value as? String) ?? "\(value ?? "")"
+                }
+                queryResult.append(rowDict)
+            }
+
+            // Log result count
+            log.info("INFO: Repository.select(resultCount=\(queryResult.count))")
+
+            return (columnNames, queryResult)
+        } catch {
+            // Log and rethrow the error
+            log.error("ERROR: Repository.select(rawQuery=\(rawQuery)): \(error)")
+            return ([], [])
+        }
+    }
+
     func execute(sql: String) -> Bool {
         do {
             log.trace("DEBUG: Repository.execute(main=\(Thread.isMainThread), sql:) \(sql)")
