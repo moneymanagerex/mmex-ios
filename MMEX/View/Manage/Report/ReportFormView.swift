@@ -67,6 +67,14 @@ struct ReportFormView: View {
                     .focused($focusState, equals: 6)
                     .keyboardType(pref.theme.textPad)
             }
+
+            Section("Report Preview") {
+                pref.theme.field.view(edit, "", editView: {}
+                                      , showView: {
+                    Text(vm.runReport(report: data))
+                }
+                )
+            }
         }
         .keyboardState(focus: $focus, focusState: $focusState)
     }

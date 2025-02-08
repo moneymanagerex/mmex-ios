@@ -111,3 +111,15 @@ extension ViewModel {
         }
     }
 }
+
+extension ViewModel {
+
+    // execute SQL and return its dataset
+    func runReport(report: ReportData) -> String {
+        if let repo = Repository(self.db) {
+            return "\(repo.select(rawQuery: report.sqlContent))"
+        } else {
+            return ""
+        }
+    }
+}
