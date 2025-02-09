@@ -9382,7 +9382,14 @@
       }
     },
     "Report Preview" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jelentés előnézete"
+          }
+        }
+      }
     },
     "Reuse Last Payee" : {
       "localizations" : {
