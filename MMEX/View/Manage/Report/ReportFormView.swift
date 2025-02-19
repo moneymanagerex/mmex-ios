@@ -71,12 +71,59 @@ struct ReportFormView: View {
             Section("Report Preview") {
                 pref.theme.field.view(edit, "", editView: {}
                                       , showView: {
-                    Text(vm.runReport(report: data))
-                }
-                )
+                    let reportResult = vm.runReport(report: data)
+                    ReportPreviewView(reportResult: reportResult)
+                })
             }
         }
         .keyboardState(focus: $focus, focusState: $focusState)
+    }
+}
+
+struct ReportPreviewView: View {
+    let reportResult: ReportResult
+
+    var body: some View {
+        if reportResult.columnNames.isEmpty {
+            Text("No data available")
+                .italic()
+        } else {
+            // Vertical scroll
+            ScrollView(.vertical) {
+                // Horizontal scroll container
+                ScrollView(.horizontal) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        // Header Row
+                        HStack(spacing: 0) {
+                            ForEach(reportResult.columnNames, id: \.self) { column in
+                                Text(column)
+                                    .font(.subheadline)
+                                    .padding(10)
+                                    .frame(minWidth: 120, maxWidth: .infinity, alignment: .leading)  // Fixed column width
+                                    .background(Color.gray.opacity(0.2))  // Header background
+                                    .border(Color.gray, width: 0.5)
+                                    .multilineTextAlignment(.leading)  // Align text to the left
+                            }
+                        }
+
+                        // Data Rows
+                        ForEach(reportResult.rows, id: \.self) { row in
+                            HStack(spacing: 0) {
+                                ForEach(reportResult.columnNames, id: \.self) { column in
+                                    Text(row[column] ?? "N/A")
+                                        .padding(10)
+                                        .frame(minWidth: 120, maxWidth: .infinity, alignment: .leading)  // Fixed column width
+                                        .border(Color.gray, width: 0.5)  // Cell border
+                                        .multilineTextAlignment(.leading)  // Align text to the left
+                                }
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity)  // Ensure the table stretches to full width
+                }
+                .padding(.vertical)
+            }
+        }
     }
 }
 

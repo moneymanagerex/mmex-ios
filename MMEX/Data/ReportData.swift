@@ -21,6 +21,11 @@ struct ReportData: DataProtocol {
     // unique(name)
 }
 
+struct ReportResult {
+    var columnNames: [String]
+    var rows: [[String: String]]
+}
+
 extension ReportData {
     static let dataName = ("Report", "Reports")
 
