@@ -8321,6 +8321,9 @@
         }
       }
     },
+    "No data available" : {
+
+    },
     "No Database Connected" : {
       "localizations" : {
         "cs" : {
