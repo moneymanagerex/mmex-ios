@@ -15,6 +15,20 @@ extension ViewModel {
         if let url {
             if url.startAccessingSecurityScopedResource() {
                 defer { url.stopAccessingSecurityScopedResource() }
+                let fileCoordinator = NSFileCoordinator()
+                var error: NSError?
+
+                fileCoordinator.coordinate(readingItemAt: url, options: .forUploading, error: &error) { fileURL in
+                    log.info("Redownloading the latest document: \(url)")
+                }
+
+                // Handle any errors from the coordination
+                if let coordinationError = error {
+                    log.error("Redownload error: \(coordinationError)")
+                } else {
+                    log.info("Successfully redownloaded: \(url)")
+                }
+
                 do {
                     db = try Connection(url.path)
                     if let password, let db {
@@ -176,7 +190,7 @@ extension ViewModel {
     func closeDatabase() {
         // Write any unsaved changes back to the original file
         if let databaseURL = databaseURL {
-            log.info("Attempting to write back changes to: \(databaseURL.path)")
+            log.info("Attempting to merge changes to: \(databaseURL.path)")
             // Ensure the file is a security-scoped resource
             if databaseURL.startAccessingSecurityScopedResource() {
                 defer { databaseURL.stopAccessingSecurityScopedResource() }
@@ -186,14 +200,16 @@ extension ViewModel {
                 var error: NSError?
 
                 // Perform coordinated write to ensure cloud compatibility
-                fileCoordinator.coordinate(writingItemAt: databaseURL, options: .forReplacing, error: &error) { newURL in
+                fileCoordinator.coordinate(writingItemAt: databaseURL, options: .forMerging, error: &error) { newURL in
                     // TODO: conflict handle?
-                    log.info("to: \(newURL.path)")
+                    log.info("Merging to: \(newURL.path)")
                 }
 
                 // Handle any errors from the coordination
                 if let coordinationError = error {
-                    log.error("File coordination error: \(coordinationError)")
+                    log.error("Merging error: \(coordinationError)")
+                } else {
+                    log.info("Successfully Merged to: \(databaseURL)")
                 }
             } else {
                 log.error("Failed to access security-scoped resource for writing: \(databaseURL.path)")
