@@ -8322,7 +8322,14 @@
       }
     },
     "No data available" : {
-
+      "localizations" : {
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nincsenek elérhető adatok."
+          }
+        }
+      }
     },
     "No Database Connected" : {
       "localizations" : {
