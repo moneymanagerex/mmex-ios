@@ -115,11 +115,13 @@ struct CurrencyInfo {
     let name         : String
     let baseConvRate : Double
     let formatter    : CurrencyFormatter
+    let symbol       : String
 
     init(_ data: CurrencyData) {
         self.name         = data.name
         self.baseConvRate = data.baseConvRate
         self.formatter    = data.formatter
+        self.symbol       = data.symbol
     }
 }
 

@@ -183,6 +183,7 @@
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
 		A33742882CA8E55400698466 /* IncomeExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742872CA8E55400698466 /* IncomeExpenseView.swift */; };
 		A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742892CA8E72C00698466 /* InsightsSummary.swift */; };
+		A33BA2AB2D6D8EE00075CE54 /* CurrencyRateFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BA2AA2D6D8EE00075CE54 /* CurrencyRateFetcher.swift */; };
 		A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F632C9426F500F79145 /* InsightsViewModel.swift */; };
 		A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F652C94854800F79145 /* ExportableEntity.swift */; };
 		A3462F6A2C948CDB00F79145 /* ExportableEntityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */; };
@@ -418,6 +419,7 @@
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
 		A33742872CA8E55400698466 /* IncomeExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeExpenseView.swift; sourceTree = "<group>"; };
 		A33742892CA8E72C00698466 /* InsightsSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsSummary.swift; sourceTree = "<group>"; };
+		A33BA2AA2D6D8EE00075CE54 /* CurrencyRateFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRateFetcher.swift; sourceTree = "<group>"; };
 		A3462F632C9426F500F79145 /* InsightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewModel.swift; sourceTree = "<group>"; };
 		A3462F652C94854800F79145 /* ExportableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntity.swift; sourceTree = "<group>"; };
 		A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntityDocument.swift; sourceTree = "<group>"; };
@@ -768,6 +770,7 @@
 			children = (
 				A3C142A72C906E0A00D3CEC0 /* Keyboard.swift */,
 				92F6862C2CF27C6B00171A6A /* BadgeCount.swift */,
+				A33BA2AA2D6D8EE00075CE54 /* CurrencyRateFetcher.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -1317,6 +1320,7 @@
 				A3C142A22C90267F00D3CEC0 /* CategoryRepository.swift in Sources */,
 				A37E7D862C9AC2D000B4ECFC /* InfoAboutView.swift in Sources */,
 				9208240C2CA4C31B00388AB2 /* BudgetData.swift in Sources */,
+				A33BA2AB2D6D8EE00075CE54 /* CurrencyRateFetcher.swift in Sources */,
 				924353472CCD353A0052E4BC /* ListProtocol.swift in Sources */,
 				A3C142A02C9025D600D3CEC0 /* CategoryData.swift in Sources */,
 				92F6862A2CF27AE800171A6A /* EnterPreference.swift in Sources */,
