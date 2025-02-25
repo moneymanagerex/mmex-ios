@@ -17,6 +17,13 @@ struct CurrencyFormView: View {
 
     @FocusState var focusState: Int?
 
+
+    var baseCurrencyId: DataId? { vm.infotableList.baseCurrencyId.readyValue }
+    var baseCurrencySymbol: String? { baseCurrencyId.map { vm.currencyList.info.readyValue?[$0]?.symbol } ?? nil }
+
+    @State private var isSyncing: Bool = false // To indicate syncing in progress
+    @State private var fetcher: CurrencyRateFetcher = .init(baseCurrency: "")
+
     var format: String {
         let amount: Double = 12345.67
         return amount.formatted(by: data.formatter)
@@ -73,6 +80,17 @@ struct CurrencyFormView: View {
                     TextField("Default is 1", value: $data.baseConvRate.defaultOne, format: .number)
                         .focused($focusState, equals: 5)
                         .keyboardType(pref.theme.decimalPad)
+                    Button(action: syncCurrencyRate) {
+                        if isSyncing {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                        } else {
+                            Image(systemName: "arrow.2.circlepath") // Sync icon
+                        }
+                    }
+                    .disabled(isSyncing || !fetcher.isValid)
+                    .padding(.top)
+                    .buttonStyle(BorderedButtonStyle())
                 }, showView: {
                     Text("\(data.baseConvRate)")
                 } )
@@ -118,8 +136,37 @@ struct CurrencyFormView: View {
                 }
             }
         }
+        .onAppear {
+            fetcher.setBaseCurrency(baseCurrencySymbol ?? "")
+        }
         .keyboardState(focus: $focus, focusState: $focusState)
     }
+    
+    func syncCurrencyRate() {
+        guard fetcher.isValid else {
+            // Handle invalid base currency here
+            print("Base currency is invalid. Sync disabled.")
+            return
+        }
+        
+        isSyncing = true
+        
+        Task {
+            do {
+                let updatedRate = try await fetcher.fetchConversionRate(for: data.symbol) // Replace "AED" with actual target currency
+                data.baseConvRate = updatedRate
+            } catch {
+                // Handle error here
+                print("Error fetching conversion rate: \(error)")
+            }
+            
+            isSyncing = false
+        }
+    }
+}
+
+struct ConversionRate {
+    var defaultOne: Double
 }
 
 #Preview("\(CurrencyData.sampleData[0].symbol) (read)") {
