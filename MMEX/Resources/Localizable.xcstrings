@@ -9621,6 +9621,9 @@
         }
       }
     },
+    "Search by keyword" : {
+
+    },
     "Search by notes" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -9673,9 +9676,6 @@
           }
         }
       }
-    },
-    "Search by notes, payee and category" : {
-
     },
     "Select account" : {
       "localizations" : {
