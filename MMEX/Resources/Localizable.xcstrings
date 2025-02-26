@@ -9621,7 +9621,11 @@
         }
       }
     },
+    "Search by keyword" : {
+
+    },
     "Search by notes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {

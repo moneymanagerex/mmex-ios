@@ -42,11 +42,35 @@ extension ViewModel {
 
     func filterTransactions(by query: String) {
         log.debug("DEBUG: ViewModel.filterTransactions(\(query)")
+
+        var payeeIdOffer: Set<DataId> = []
+        var categoryOffer: Set<DataId> = []
+
+        if query.isEmpty {
+            payeeIdOffer = Set(payeeList.order.readyValue ?? [])
+            categoryOffer = Set(categoryList.order.readyValue ?? [])
+        } else {
+            for (id, payee) in payeeList.data.readyValue ?? [:] {
+                if payee.name.localizedCaseInsensitiveContains(query) {
+                    payeeIdOffer.insert(id)
+                }
+            }
+
+            for (id, category) in categoryList.evalPath.readyValue ?? [:] {
+                if category.localizedCaseInsensitiveContains(query) {
+                    categoryOffer.insert(id)
+                }
+            }
+        }
+
         let filteredTxns = query.isEmpty ? txns : txns.filter { txn in
             txn.notes.localizedCaseInsensitiveContains(query) ||
             txn.splits.contains { split in
                 split.notes.localizedCaseInsensitiveContains(query)
+                || categoryOffer.contains(split.categId)
             }
+            || payeeIdOffer.contains(txn.payeeId)
+            || categoryOffer.contains(txn.categId)
         }
         self.txns_per_day = Dictionary(grouping: filteredTxns) { txn in
             String(txn.transDate.string.prefix(10))

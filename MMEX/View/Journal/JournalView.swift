@@ -65,7 +65,7 @@ struct JournalView: View {
                     }
                 }
             }
-            .searchable(text: $searchQuery, prompt: "Search by notes") // New: Search bar
+            .searchable(text: $searchQuery, prompt: "Search by keyword") // New: Search bar
             .onChange(of: searchQuery) { _, query in
                 vm.filterTransactions(by: query)
             }
