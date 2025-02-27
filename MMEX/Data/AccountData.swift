@@ -59,7 +59,7 @@ enum AccountType: String, ChoiceProtocol {
         case .asset:
             return "house.fill"
         case .shares:
-            return "person.3.fill"
+            return "chart.line.uptrend.xyaxis"
         }
     }
 }
@@ -164,7 +164,7 @@ extension AccountData {
         ),
         AccountData(
             id: 6, name: "Apple", type: AccountType.shares,
-            status: AccountStatus.open, notes: "like of Stock: Apple",
+            status: AccountStatus.open, notes: "links of Stock: Apple",
             initialDate: DateString(Date()),
             initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
         ),
