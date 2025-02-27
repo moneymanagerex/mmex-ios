@@ -47,7 +47,15 @@ extension StockData {
             id: 1, accountId: 3, name: "Apple", symbol: "AAPL",
             numShares: 2, purchaseDate: DateString("2022-01-14"),
             purchasePrice: 150.60, currentPrice: 200.00, purchaseValue: 301.20,
-            notes: "note"
+            commisison: 5,
+            notes: "initial buy"
+        ),
+        StockData(
+            id: 2, accountId: 3, name: "Apple", symbol: "AAPL",
+            numShares: 10, purchaseDate: DateString("2023-01-13"),
+            purchasePrice: 134.76, currentPrice: 200.00, purchaseValue: 1347.6,
+            commisison: 8,
+            notes: "increase holdings"
         ),
     ]
 }
