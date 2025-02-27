@@ -145,8 +145,26 @@ extension AccountData {
             initialBal: 200.0, favoriteAcct: .boolTrue, currencyId: 2
         ),
         AccountData(
-            id: 3, name: "Investment Account", type: AccountType.investment,
+            id: 3, name: "Inv Account", type: AccountType.investment,
             status: AccountStatus.open, notes: "",
+            initialDate: DateString(Date()),
+            initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
+        ),
+        AccountData(
+            id: 4, name: "House", type: AccountType.asset,
+            status: AccountStatus.open, notes: "",
+            initialDate: DateString(Date()),
+            initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
+        ),
+        AccountData(
+            id: 5, name: "Car", type: AccountType.asset,
+            status: AccountStatus.open, notes: "",
+            initialDate: DateString(Date()),
+            initialBal: 0.0, favoriteAcct: .boolFalse, currencyId: 1
+        ),
+        AccountData(
+            id: 6, name: "Apple", type: AccountType.shares,
+            status: AccountStatus.open, notes: "like of Stock: Apple",
             initialDate: DateString(Date()),
             initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
         ),

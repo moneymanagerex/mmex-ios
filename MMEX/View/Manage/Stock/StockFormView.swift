@@ -51,7 +51,9 @@ struct StockFormView: View {
                                 Text("(none)").tag(DataId.void)
                             }
                             ForEach(accountOrder, id: \.self) { id in
-                                Text(accountData[id]?.name ?? "").tag(id)
+                                if let account = accountData[id], account.type == AccountType.investment {
+                                    Text(accountData[id]?.name ?? "").tag(id)
+                                }
                             }
                         }
                     }, showView: {
