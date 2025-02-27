@@ -1,5 +1,5 @@
 //
-//  RpositoryListView.swift
+//  RepositoryListView.swift
 //  MMEX
 //
 //  2024-10-11: Created by George Ef (george.a.ef@gmail.com)
