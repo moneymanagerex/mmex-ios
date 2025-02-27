@@ -193,5 +193,25 @@ extension TransactionData {
             transAmount: Double.random(in: 5.0...50.0), status: TransactionStatus.reconciled, categId: 1,
             transDate: DateTimeString(Date().daysAgo(Int.random(in: 1...7)))
         ),
+        TransactionData(
+            id: 8, accountId: 6, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
+            transAmount: 306.20, status: TransactionStatus.reconciled, notes: "initial buy Apple", categId: 1,
+            transDate: DateTimeString("2022-01-14T00:00:00")
+        ),
+        TransactionData(
+            id: 9, accountId: 3, toAccountId: 6, transCode: TransactionType.transfer,
+            transAmount: 306.20, status: TransactionStatus.reconciled, notes: "tranfer for inital Appley buy", categId: 1,
+            transDate: DateTimeString("2022-01-14T00:00:00")
+        ),
+        TransactionData(
+            id: 10, accountId: 6, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
+            transAmount: 1355.6, status: TransactionStatus.reconciled, notes: "increase holdings of Apple", categId: 1,
+            transDate: DateTimeString("2023-01-13T00:00:00")
+        ),
+        TransactionData(
+            id: 11, accountId: 3, toAccountId: 6, transCode: TransactionType.transfer,
+            transAmount: 1355.6, status: TransactionStatus.reconciled, notes: "tranfer for increase holdings of Apple", categId: 1,
+            transDate: DateTimeString("2023-01-13T00:00:00")
+        ),
     ]
 }
