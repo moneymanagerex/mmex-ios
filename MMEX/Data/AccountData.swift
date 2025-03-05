@@ -148,7 +148,7 @@ extension AccountData {
             id: 3, name: "Inv Account", type: AccountType.investment,
             status: AccountStatus.open, notes: "",
             initialDate: DateString(Date()),
-            initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
+            initialBal: 2000.0, favoriteAcct: .boolTrue, currencyId: 1
         ),
         AccountData(
             id: 4, name: "House", type: AccountType.asset,
