@@ -165,14 +165,14 @@ extension TransactionData {
             transDate: DateTimeString(Date())
         ),
         TransactionData(
-            id: 3, accountId: 3, toAccountId: 2, transCode: TransactionType.transfer,
+            id: 3, accountId: 2, toAccountId: 3, transCode: TransactionType.transfer,
             transAmount: 30.03, status: TransactionStatus.followUp,
             notes: "transfer transacion data",
             categId: 1,
             transDate: DateTimeString(Date())
         ),
         TransactionData(
-            id: 4, accountId: 3, payeeId: 2, transCode: TransactionType.withdrawal,
+            id: 4, accountId: 2, payeeId: 2, transCode: TransactionType.withdrawal,
             transAmount: 40.04, status: TransactionStatus.duplicate,
             notes: "split transacion data",
             transDate: DateTimeString(Date()),

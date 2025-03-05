@@ -36,5 +36,7 @@ extension TransactionShareData {
 
 extension TransactionShareData {
     static let sampleData: [TransactionShareData] = [
+        TransactionShareData(id: 1, transId: 8, number: 2, price: 150.6, commission: 5, lot: ""),
+        TransactionShareData(id: 2, transId: 10, number: 10, price: 134.76, commission: 8, lot: ""),
     ]
 }
