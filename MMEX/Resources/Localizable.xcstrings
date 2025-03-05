@@ -4312,7 +4312,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stato Della Transazione Predefinito"
+            "value" : "Stato Predefinito della Transazione"
           }
         },
         "pt-BR" : {
@@ -8323,6 +8323,12 @@
     },
     "No data available" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Daten verfügbar"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9393,6 +9399,12 @@
     },
     "Report Preview" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berichtsvorschau"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9622,7 +9634,14 @@
       }
     },
     "Search by keyword" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stichwortsuche"
+          }
+        }
+      }
     },
     "Search by notes" : {
       "extractionState" : "stale",
