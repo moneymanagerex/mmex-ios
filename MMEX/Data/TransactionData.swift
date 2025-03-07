@@ -194,12 +194,12 @@ extension TransactionData {
             transDate: DateTimeString(Date().daysAgo(Int.random(in: 1...7)))
         ),
         TransactionData(
-            id: 8, accountId: 6, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
+            id: 8, accountId: 3, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
             transAmount: 306.20, status: TransactionStatus.reconciled, notes: "initial buy Apple", categId: 1,
             transDate: DateTimeString("2022-01-14T00:00:00")
         ),
         TransactionData(
-            id: 10, accountId: 6, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
+            id: 10, accountId: 3, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
             transAmount: 1355.6, status: TransactionStatus.reconciled, notes: "increase holdings of Apple", categId: 1,
             transDate: DateTimeString("2023-01-13T00:00:00")
         ),
