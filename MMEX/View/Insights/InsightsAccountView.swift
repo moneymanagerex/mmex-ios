@@ -13,7 +13,7 @@ struct InsightsAccountView: View {
     @Binding var statusChoice: Int
     @State private var expandedSections: [AccountType: Bool] = [:]
 
-    static let typeOrder: [AccountType] = [ .checking, .creditCard, .cash, .loan, .term, .asset, .shares ]
+    static let typeOrder: [AccountType] = [ .checking, .creditCard, .cash, .loan, .term, .asset, .investment ]
     static let statusChoices = [
         ("Account Balance", "Balance"),
         ("Account Balance", "Reconciled Balance"),

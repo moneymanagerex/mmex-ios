@@ -41,5 +41,7 @@ extension TransactionLinkData {
 
 extension TransactionLinkData {
     static let sampleData: [TransactionLinkData] = [
+        TransactionLinkData (id: 1, transId: 8, refType: .stock, refId: 1),
+        TransactionLinkData (id: 2, transId: 10, refType: .stock, refId: 2),
     ]
 }

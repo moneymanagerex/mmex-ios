@@ -162,12 +162,6 @@ extension AccountData {
             initialDate: DateString(Date()),
             initialBal: 0.0, favoriteAcct: .boolFalse, currencyId: 1
         ),
-        AccountData(
-            id: 6, name: "Apple", type: AccountType.shares,
-            status: AccountStatus.open, notes: "links of Stock: Apple",
-            initialDate: DateString(Date()),
-            initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
-        ),
     ]
 
     static var sampleDataIds : [DataId] {
