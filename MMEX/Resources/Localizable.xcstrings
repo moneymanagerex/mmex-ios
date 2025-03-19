@@ -9640,6 +9640,12 @@
             "state" : "translated",
             "value" : "Stichwortsuche"
           }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keresés kulcsszó szerint"
+          }
         }
       }
     },
@@ -9673,7 +9679,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keresés jegyzetek alapján"
+            "value" : "Keresés jegyzetek szerint"
           }
         },
         "it" : {
