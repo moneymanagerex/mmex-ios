@@ -48,6 +48,12 @@
             "value" : "'%@'"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "'%@'"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104,6 +110,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "(none)"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(vazio)"
           }
         },
         "ru" : {
@@ -164,6 +176,12 @@
             "value" : "(unknown)"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(desconhecido)"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -217,6 +235,12 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@"
@@ -280,6 +304,12 @@
             "value" : "%@ "
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ "
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -333,6 +363,12 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ #%lld"
+          }
+        },
+        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ #%lld"
@@ -396,6 +432,12 @@
             "value" : "%lf"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lf"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -449,6 +491,12 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        },
+        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld"
@@ -679,7 +727,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acerca"
+            "value" : "Sobre"
           }
         },
         "ro" : {
@@ -912,6 +960,12 @@
             "value" : "Account Income Summary"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo dos rendimentos da conta"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -968,6 +1022,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Account Name"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome da conta"
           }
         },
         "ru" : {
@@ -1032,6 +1092,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Account:"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conta:"
           }
         },
         "ru" : {
@@ -1204,6 +1270,12 @@
             "value" : "Add Note"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar nota"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1306,6 +1378,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avançado"
           }
         },
         "ru" : {
@@ -1572,6 +1650,12 @@
             "value" : "App Info"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informação da aplicação"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1630,6 +1714,12 @@
             "value" : "App Settings"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definições"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1686,6 +1776,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Appearance"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aparência"
           }
         },
         "ru" : {
@@ -1857,6 +1953,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auxiliary Data"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dados auxiliares"
           }
         },
         "ru" : {
@@ -2051,6 +2153,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Build"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compilação"
           }
         },
         "ru" : {
@@ -2644,6 +2752,12 @@
             "value" : "Category:"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categoria:"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2696,6 +2810,12 @@
             "value" : "Coming soon ..."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brevemente ..."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2746,6 +2866,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contact"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacto"
           }
         },
         "ru" : {
@@ -2924,6 +3050,12 @@
             "value" : "Copy to Clipboard"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar para a área de transferência"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2982,6 +3114,12 @@
             "value" : "Create"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3034,6 +3172,12 @@
             "value" : "Create New Database"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar base de dados"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3084,6 +3228,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create Sample Database"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar base de dados de demonstração"
           }
         },
         "ru" : {
@@ -3255,6 +3405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Credits"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créditos"
           }
         },
         "ru" : {
@@ -3509,6 +3665,12 @@
             "value" : "Database File"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ficheiro da base de dados"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3559,6 +3721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Database Info"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informação da base de dados"
           }
         },
         "ru" : {
@@ -3613,6 +3781,12 @@
             "value" : "Database Maintenance"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manutenção da base de dados"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3663,6 +3837,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Database Settings"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definições da base de dados"
           }
         },
         "ru" : {
@@ -4089,6 +4269,12 @@
             "value" : "Default Account"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conta padrão"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4485,6 +4671,12 @@
             "value" : "Delete %@"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar %@"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4541,6 +4733,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete Transaction"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar transação"
           }
         },
         "ru" : {
@@ -4797,6 +4995,12 @@
             "value" : "Dismiss"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispensar"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4853,6 +5057,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concluído"
           }
         },
         "ru" : {
@@ -4913,6 +5123,12 @@
             "value" : "Edit"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4969,6 +5185,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email Support"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail de suporte"
           }
         },
         "ru" : {
@@ -5029,6 +5251,12 @@
             "value" : "End Date"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data final"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5087,6 +5315,12 @@
             "value" : "Enter"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrar"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5143,6 +5377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter password"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserir password"
           }
         },
         "ru" : {
@@ -5327,6 +5567,12 @@
             "value" : "expenses"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "despesas"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5438,6 +5684,12 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facebook"
+          }
+        },
+        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Facebook"
@@ -5673,6 +5925,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Format"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato"
           }
         },
         "ru" : {
@@ -6155,6 +6413,12 @@
             "value" : "How to add a transaction?"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como adicionar uma transação?"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6211,6 +6475,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How to generate reports?"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como gerar relatórios?"
           }
         },
         "ru" : {
@@ -6271,6 +6541,12 @@
             "value" : "How to import/export data?"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como importar/exportar dados?"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6327,6 +6603,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How to manage categories?"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como gerir as categorias?"
           }
         },
         "ru" : {
@@ -6523,6 +6805,12 @@
             "value" : "income"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "receitas"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6579,6 +6867,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Income vs Expense Over Time"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rendimentos vs Despesas ao longo do tempo"
           }
         },
         "ru" : {
@@ -6639,6 +6933,12 @@
             "value" : "Insights"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visão"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6689,6 +6989,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Invalid password, please try again."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palavra-passe inválida. Por favor, tente novamente."
           }
         },
         "ru" : {
@@ -7112,6 +7418,12 @@
             "value" : "Last updated: September 18, 2024"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última atualização: 18 de setembro de 2024"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7170,6 +7482,12 @@
             "value" : "Legal"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informações legais"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7226,6 +7544,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Legal Documents"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documentos legais"
           }
         },
         "ru" : {
@@ -7454,6 +7778,12 @@
             "value" : "Loading data ..."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A carregar dados..."
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7504,6 +7834,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading data ... "
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A carregar dados... "
           }
         },
         "zh-Hant" : {
@@ -7769,6 +8105,12 @@
             "value" : "MMEX4iOS"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MMEX4iOS"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7907,6 +8249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "N/D"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N/A"
           }
         },
         "ru" : {
@@ -8122,7 +8470,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adicionar uma nova Transacção"
+            "value" : "Adicionar uma nova transação"
           }
         },
         "ro" : {
@@ -8313,6 +8661,12 @@
             "value" : "NO"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NÃO"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8333,6 +8687,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nincsenek elérhető adatok."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem dados disponíveis"
           }
         }
       }
@@ -8379,6 +8739,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Database Connected"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma base de dados conectada"
           }
         },
         "zh-Hant" : {
@@ -8569,6 +8935,12 @@
             "value" : "Numeric Keypad"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teclado numérico"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8646,6 +9018,12 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -8972,7 +9350,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beneficiário"
+            "value" : "Entidade"
           }
         },
         "ro" : {
@@ -9057,6 +9435,12 @@
             "value" : "Payee:"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entidade:"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9109,6 +9493,12 @@
             "value" : "Please open or create a database to get started."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, abra ou crie uma base de dados para começar."
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9159,6 +9549,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Privacy Policy"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de privacidade"
           }
         },
         "zh-Hant" : {
@@ -9331,6 +9727,12 @@
             "value" : "Release Notes"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notas de lançamento"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9383,6 +9785,12 @@
             "value" : "Report an Issue"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reportar um erro"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9409,6 +9817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jelentés előnézete"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pré-visualização do relatório"
           }
         }
       }
@@ -9891,7 +10305,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecionar a Conta"
+            "value" : "Selecionar Conta"
           }
         },
         "ro" : {
@@ -10151,7 +10565,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecione o Favorecido"
+            "value" : "Selecione a Entidade"
           }
         },
         "ro" : {
@@ -10544,7 +10958,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Títulos"
+            "value" : "Ações"
           }
         },
         "tr" : {
@@ -10611,6 +11025,12 @@
             "value" : "Social Media"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redes Sociais"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10663,6 +11083,12 @@
             "value" : "Special thanks to all open-source contributors!"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um especial agradecimento a todos os colaboradores de código aberto!"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10713,6 +11139,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "split amount"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dividir valor"
           }
         },
         "zh-Hant" : {
@@ -10877,6 +11309,12 @@
             "value" : "SQL Content"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conteúdo SQL"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10927,6 +11365,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SQLite Version"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versão do SQLite"
           }
         },
         "ru" : {
@@ -10985,6 +11429,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start Date"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data de início"
           }
         },
         "zh-Hant" : {
@@ -11213,6 +11663,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Support"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistência"
           }
         },
         "ru" : {
@@ -11612,6 +12068,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Terms of Service"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Termos de utilização"
           }
         },
         "zh-Hant" : {
@@ -12022,6 +12484,12 @@
             "value" : "Total"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12098,6 +12566,12 @@
             "value" : "Total: %@"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12156,6 +12630,12 @@
             "value" : "Transaction Amount"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valor da transação"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12206,6 +12686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transaction Date"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data da transação"
           }
         },
         "zh-Hant" : {
@@ -12260,6 +12746,12 @@
             "value" : "Transaction Status"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado da transação"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12310,6 +12802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transaction Type"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de transação"
           }
         },
         "zh-Hant" : {
@@ -12364,6 +12862,12 @@
             "value" : "Twitter"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12416,6 +12920,12 @@
             "value" : "Upcoming Features"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximas funcionalidades"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12466,6 +12976,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "User Forum"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fórum de utilizadores"
           }
         },
         "ru" : {
@@ -12642,6 +13158,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visit Official Website"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visite o site oficial"
           }
         },
         "zh-Hant" : {
@@ -12912,6 +13434,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "YES"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SIM"
           }
         },
         "zh-Hant" : {
