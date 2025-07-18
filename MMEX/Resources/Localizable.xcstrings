@@ -1328,6 +1328,12 @@
             "value" : "Add split"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar divisão"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5631,6 +5637,12 @@
             "value" : "Export as JSON File"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar como ficheiro JSON"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5811,6 +5823,12 @@
             "value" : "Field Layout"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disposição do campo"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5867,6 +5885,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Field Value"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valor do campo"
           }
         },
         "ru" : {
@@ -6109,6 +6133,12 @@
             "value" : "Group Count"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contador de grupo"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6167,6 +6197,12 @@
             "value" : "Group Layout"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disposição de grupo"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6223,6 +6259,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Group Name"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome do grupo"
           }
         },
         "ru" : {
@@ -7186,6 +7228,12 @@
             "value" : "Item Info"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informação do item"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7242,6 +7290,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item Layout"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disposição do item"
           }
         },
         "ru" : {
@@ -7302,6 +7356,12 @@
             "value" : "Item Name"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome do item"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7358,6 +7418,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Journal"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registos"
           }
         },
         "ru" : {
@@ -7610,6 +7676,12 @@
             "value" : "Load data"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carregar dados"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7668,6 +7740,12 @@
             "value" : "Load error ..."
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro ao carregar..."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7724,6 +7802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Load error ... "
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro ao carregar... "
           }
         },
         "zh-Hant" : {
@@ -8051,6 +8135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manage"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerir"
           }
         },
         "zh-Hant" : {
@@ -9247,6 +9337,12 @@
             "value" : "Password Required"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "É obrigatória palavra-passe"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10033,6 +10129,12 @@
             "value" : "Search area"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Área de procura"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10059,6 +10161,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keresés kulcsszó szerint"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Procurar por palavra-chave"
           }
         }
       }
@@ -10106,6 +10214,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search by notes"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Procurar por notas"
           }
         },
         "zh-Hant" : {
@@ -10702,6 +10816,12 @@
             "value" : "Send Anonymous Usage Data"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar dados anónimos de utilização da app"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11199,6 +11319,12 @@
             "value" : "split notes"
           }
         },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dividir notas"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11249,6 +11375,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Splits"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Divisões"
           }
         },
         "ru" : {
@@ -12394,6 +12526,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "To Account"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para a conta"
           }
         },
         "zh-Hant" : {
