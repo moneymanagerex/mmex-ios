@@ -9915,6 +9915,12 @@
             "value" : "Jelentés előnézete"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anteprima resoconto"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10161,6 +10167,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keresés kulcsszó szerint"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca per parola chiave"
           }
         },
         "pt-PT" : {
