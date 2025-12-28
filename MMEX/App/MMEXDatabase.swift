@@ -170,7 +170,7 @@ extension ViewModel {
         }
 
         let repository = Repository(db)
-        repository.setUserVersion (20)
+        repository.setUserVersion (21)
         guard repository.execute(url: tables) else {
             closeDatabase()
             return
