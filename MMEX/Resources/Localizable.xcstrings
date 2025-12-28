@@ -6340,7 +6340,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aiuto"
+            "value" : "Guida"
           }
         },
         "ja" : {
@@ -8777,6 +8777,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nincsenek elérhető adatok."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun dato disponibile"
           }
         },
         "pt-PT" : {
