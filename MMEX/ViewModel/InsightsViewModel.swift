@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import SQLite
+@preconcurrency import SQLite
 import Combine
 
 struct InsightsFlow {
