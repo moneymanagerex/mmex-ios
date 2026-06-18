@@ -19,7 +19,7 @@ struct SplitEditView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // 分类选择
+                // Category selection
                 Section("Category") {
                     Picker("Select Category", selection: $split.categId) {
                         if (split.categId.isVoid) {
@@ -34,19 +34,16 @@ struct SplitEditView: View {
                     .pickerStyle(.menu)
                 }
 
-                // 金额
                 Section("Amount") {
                     TextField("0.00", value: $split.amount, format: .number)
                         .keyboardType(pref.theme.decimalPad)
                 }
 
-                // 备注
                 Section("Notes") {
                     TextField("Notes", text: $split.notes)
                         .keyboardType(pref.theme.textPad)
                 }
 
-                // 删除按钮（仅编辑已有 split 时出现）
                 if let onDelete = onDelete {
                     Section {
                         Button(role: .destructive) {

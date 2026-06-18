@@ -232,10 +232,6 @@ struct EnterFormView: View {
         .onDisappear {
             focusState = nil
         }
-        .background(
-            // 必须将 sheet 放在某个视图上，可以是 VStack 或 body 最外层
-            EmptyView()
-        )
         .sheet(isPresented: $showingSplitEditor) {
             SplitEditView(
                 split: $editSplitData,
