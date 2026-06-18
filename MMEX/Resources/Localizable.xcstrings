@@ -516,6 +516,9 @@
         }
       }
     },
+    "0.00" : {
+
+    },
     "1. Use of the App" : {
       "localizations" : {
         "cs" : {
@@ -1285,6 +1288,7 @@
       }
     },
     "Add split" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1341,6 +1345,9 @@
           }
         }
       }
+    },
+    "Add Split" : {
+
     },
     "Advanced" : {
       "localizations" : {
@@ -4697,6 +4704,9 @@
         }
       }
     },
+    "Delete Split" : {
+
+    },
     "Delete Transaction" : {
       "localizations" : {
         "cs" : {
@@ -5148,6 +5158,9 @@
           }
         }
       }
+    },
+    "Edit Split" : {
+
     },
     "Email Support" : {
       "localizations" : {
@@ -8465,6 +8478,9 @@
         }
       }
     },
+    "New Split" : {
+
+    },
     "New Transaction" : {
       "localizations" : {
         "ar" : {
@@ -11236,6 +11252,7 @@
       }
     },
     "split amount" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -11294,6 +11311,7 @@
       }
     },
     "split notes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
