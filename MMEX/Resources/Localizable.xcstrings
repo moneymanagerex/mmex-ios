@@ -1288,7 +1288,6 @@
       }
     },
     "Add split" : {
-      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1345,9 +1344,6 @@
           }
         }
       }
-    },
-    "Add Split" : {
-
     },
     "Advanced" : {
       "localizations" : {

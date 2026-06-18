@@ -207,7 +207,7 @@ struct EnterFormView: View {
                                 .font(.title2)
                         }
                         .disabled(!txn.categId.isVoid)
-                        .accessibilityLabel("Add Split")   // 保证 VoiceOver 可用
+                        .accessibilityLabel("Add split")   // 保证 VoiceOver 可用
                     }
                     .listRowInsets(EdgeInsets())
                 }
