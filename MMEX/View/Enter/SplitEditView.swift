@@ -35,7 +35,7 @@ struct SplitEditView: View {
                 }
 
                 Section("Amount") {
-                    TextField("0.00", value: $split.amount, format: .number)
+                    TextField("Amount", value: $split.amount, format: .number)
                         .keyboardType(pref.theme.decimalPad)
                 }
 
