@@ -15,7 +15,10 @@ struct EnterFormView: View {
 
     @FocusState var focusState: Int?
     @State private var selectedDate = Date()
-    @State private var newSplit: TransactionSplitData = TransactionSplitData() // TODO: set default category ?
+
+    @State private var editSplitData = TransactionSplitData()
+    @State private var editingSplitIndex: Int? = nil
+    @State private var showingSplitEditor = false
 
     var body: some View {
         VStack {
@@ -163,72 +166,48 @@ struct EnterFormView: View {
                             Text("Notes")
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                         }
-                        .frame(maxWidth: .infinity)
                         .padding(.horizontal, 0)
 
                         ForEach(txn.splits.indices, id: \.self) { index in
                             let split = txn.splits[index]
-                            HStack {
-                                Text(vm.categoryList.evalPath.readyValue?[split.categId] ?? "")
-                                    .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
-                                Text(split.amount.formatted(
-                                    by: vm.currencyList.info.readyValue?[
-                                        vm.accountList.data.readyValue?[txn.accountId]?.currencyId ?? .void
-                                    ]?.formatter
-                                ))
-                                .frame(width: 60, alignment: .center) // Centered with fixed width
-                                Text(split.notes)
-                                    .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
+                            Button {
+                                editSplitData = split          // 复制当前值
+                                editingSplitIndex = index
+                                showingSplitEditor = true      // 显示 sheet
+                            } label: {
+                                HStack {
+                                    Text(vm.categoryList.evalPath.readyValue?[split.categId] ?? "")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .foregroundColor(.primary)
+                                    Text(split.amount.formatted(
+                                        by: vm.currencyList.info.readyValue?[
+                                            vm.accountList.data.readyValue?[txn.accountId]?.currencyId ?? .void
+                                        ]?.formatter
+                                    ))
+                                    .frame(width: 60, alignment: .center)
+                                    Text(split.notes)
+                                        .lineLimit(1)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                .contentShape(Rectangle())      // 扩大点击区域
                             }
+                            .buttonStyle(.plain)
                         }
                         .onDelete { indices in
                             txn.splits.remove(atOffsets: indices)
                             txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
                         }
 
-                        HStack {
-                            // Split Category picker
-                            Picker("Select Category", selection: $newSplit.categId) {
-                                if (newSplit.categId.isVoid) {
-                                    Text("Category:").tag(DataId.void)
-                                }
-                                ForEach(vm.categoryList.evalTree.readyValue?.order ?? [], id: \.dataId) { node in
-                                    if let path = vm.categoryList.evalPath.readyValue?[node.dataId] {
-                                        Text(path).tag(node.dataId)
-                                    }
-                                }
-                            }
-                            .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
-                            .labelsHidden()
-                            .disabled(!txn.categId.isVoid)
-                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
-                            Spacer()
-                            // Split amount
-                            TextField("split amount", value: $newSplit.amount, format: .number)
-                                .focused($focusState, equals: 3)
-                                .keyboardType(pref.theme.decimalPad)
-                                .multilineTextAlignment(.center) // Center the text for better UX
-                                .frame(width: 60, alignment: .center) // Centered with fixed width
-                            Spacer()
-                            // split notes
-                            TextField("split notes", text: $newSplit.notes)
-                                .focused($focusState, equals: 4)
-                                .keyboardType(pref.theme.textPad)
-                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
-                            Button(action: {
-                                withAnimation {
-                                    txn.splits.append(newSplit)
-                                    txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
-                                    newSplit = TransactionSplitData()
-                                }
-                            }) {
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.title2)
-                                    .accessibilityLabel("Add split")
-                            }
-                            .disabled(newSplit.categId.isVoid || !txn.categId.isVoid)
+                        Button {
+                            editSplitData = TransactionSplitData()
+                            editingSplitIndex = nil
+                            showingSplitEditor = true
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title2)
                         }
-                        .labelsHidden()
+                        .disabled(!txn.categId.isVoid)
+                        .accessibilityLabel("Add split")   // 保证 VoiceOver 可用
                     }
                     .listRowInsets(EdgeInsets())
                 }
@@ -252,6 +231,26 @@ struct EnterFormView: View {
         }
         .onDisappear {
             focusState = nil
+        }
+        .sheet(isPresented: $showingSplitEditor) {
+            SplitEditView(
+                split: $editSplitData,
+                onSave: { updatedSplit in
+                    if let idx = editingSplitIndex {
+                        txn.splits[idx] = updatedSplit
+                    } else {
+                        txn.splits.append(updatedSplit)
+                    }
+                    txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
+                    // dismiss 会在 SplitEditView 内部调用，这里不需要
+                },
+                onDelete: editingSplitIndex != nil ? {
+                    if let idx = editingSplitIndex {
+                        txn.splits.remove(at: idx)
+                        txn.transAmount = txn.splits.reduce(0.0) { $0 + $1.amount }
+                    }
+                } : nil
+            )
         }
     }
 }

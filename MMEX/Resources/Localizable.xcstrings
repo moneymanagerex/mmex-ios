@@ -4697,6 +4697,9 @@
         }
       }
     },
+    "Delete Split" : {
+
+    },
     "Delete Transaction" : {
       "localizations" : {
         "cs" : {
@@ -5148,6 +5151,9 @@
           }
         }
       }
+    },
+    "Edit Split" : {
+
     },
     "Email Support" : {
       "localizations" : {
@@ -8465,6 +8471,9 @@
         }
       }
     },
+    "New Split" : {
+
+    },
     "New Transaction" : {
       "localizations" : {
         "ar" : {
@@ -11236,6 +11245,7 @@
       }
     },
     "split amount" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -11294,6 +11304,7 @@
       }
     },
     "split notes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
