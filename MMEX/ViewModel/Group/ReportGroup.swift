@@ -47,7 +47,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadReportGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         reportGroup.choice = choice
-        stockGroup.search = false
+        reportGroup.search = false
         reportGroup.groupGroup = []
 
         switch choice {

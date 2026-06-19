@@ -50,6 +50,6 @@ extension ViewModel {
                 stockGroup.value[g].isExpanded = true
             }
         }
-        assetGroup.search = true
+        stockGroup.search = true
     }
 }
