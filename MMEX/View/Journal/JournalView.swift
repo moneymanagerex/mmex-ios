@@ -65,7 +65,7 @@ struct JournalView: View {
                     }
                 }
             }
-            .searchable(text: $debounce.input, prompt: "Search...")
+            .searchable(text: $debounce.input, prompt: "Search by keyword")
             .onChange(of: debounce.output) { _, query in
                 vm.filterTransactions(by: query)
             }
