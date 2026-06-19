@@ -11,7 +11,7 @@ struct JournalView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
 
-    @State private var searchQuery: String = "" // New: Search query
+    @StateObject private var debounce = RepositorySearchDebounce()
     @State private var accountId: DataId = .void
 
     var body: some View {
@@ -65,8 +65,8 @@ struct JournalView: View {
                     }
                 }
             }
-            .searchable(text: $searchQuery, prompt: "Search by keyword") // New: Search bar
-            .onChange(of: searchQuery) { _, query in
+            .searchable(text: $debounce.input, prompt: "Search...")
+            .onChange(of: debounce.output) { _, query in
                 vm.filterTransactions(by: query)
             }
         }
