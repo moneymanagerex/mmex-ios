@@ -67,7 +67,9 @@ extension ViewModel {
     }
 
     func loadInsightsFlow() {
-        self.flow.today = String(endDate.ISO8601Format().prefix(10))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        self.flow.today = formatter.string(from: endDate)
         let repository = AccountRepository(self.db)
         typealias A = AccountRepository
         let table = A.table
