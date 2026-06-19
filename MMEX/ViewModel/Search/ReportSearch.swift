@@ -36,7 +36,7 @@ extension ViewModel {
     }
 
     func searchReportGroup(search: ReportSearch, expand: Bool = false) {
-        if assetGroup.search { return }
+        if reportGroup.search { return }
         guard reportGroup.state == .ready else { return }
         log.trace("DEBUG: ViewModel.searchReportGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< reportGroup.value.count {
@@ -46,6 +46,6 @@ extension ViewModel {
                 reportGroup.value[g].isExpanded = true
             }
         }
-        assetGroup.search = true
+        reportGroup.search = true
     }
 }

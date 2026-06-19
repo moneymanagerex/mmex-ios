@@ -66,7 +66,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadScheduledGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         scheduledGroup.choice = choice
-        stockGroup.search = false
+        scheduledGroup.search = false
         scheduledGroup.groupCategory = []
 
         switch choice {

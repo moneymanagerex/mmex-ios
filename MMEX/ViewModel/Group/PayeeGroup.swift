@@ -55,7 +55,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadPayeeGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         payeeGroup.choice = choice
-        stockGroup.search = false
+        payeeGroup.search = false
         payeeGroup.groupCategory = []
 
         switch choice {

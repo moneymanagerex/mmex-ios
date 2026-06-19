@@ -52,7 +52,7 @@ extension ViewModel {
         log.trace("DEBUG: ViewModel.loadBudgetGroup(\(choice.rawValue), main=\(Thread.isMainThread))")
         
         budgetGroup.choice = choice
-        stockGroup.search = false
+        budgetGroup.search = false
         budgetGroup.groupPeriod = []
         budgetGroup.groupCategory = []
 

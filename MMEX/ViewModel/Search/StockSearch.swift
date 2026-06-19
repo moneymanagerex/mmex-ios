@@ -40,7 +40,7 @@ extension ViewModel {
     }
 
     func searchStockGroup(search: StockSearch, expand: Bool = false) {
-        if assetGroup.search { return }
+        if stockGroup.search { return }
         guard stockGroup.state == .ready else { return }
         log.trace("DEBUG: ViewModel.searchStockGroup(\(search.key), main=\(Thread.isMainThread))")
         for g in 0 ..< stockGroup.value.count {
@@ -50,6 +50,6 @@ extension ViewModel {
                 stockGroup.value[g].isExpanded = true
             }
         }
-        assetGroup.search = true
+        stockGroup.search = true
     }
 }
