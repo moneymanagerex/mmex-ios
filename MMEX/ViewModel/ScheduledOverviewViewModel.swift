@@ -30,7 +30,7 @@ class ScheduledOverviewViewModel: ObservableObject {
             return
         }
         
-        let today = Date()
+        let today = calendar.startOfDay(for: Date())
         var overdueItems: [ScheduledOverviewItem] = []
         var dueTodayItems: [ScheduledOverviewItem] = []
         var dueSoonItems: [ScheduledOverviewItem] = []
