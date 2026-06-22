@@ -45,10 +45,10 @@ class ScheduledOverviewViewModel: ObservableObject {
                 }
             }
             
-            guard let nextDate = scheduled.nextDueDate() else { continue }
+            guard let nextDateRaw = scheduled.nextDueDate() else { continue }
+            let nextDate = calendar.startOfDay(for: nextDateRaw)
             
             let daysUntil = calendar.dateComponents([.day], from: today, to: nextDate).day ?? 0
-            
             if daysUntil < -maxOverdueDays || daysUntil > maxUpcomingDays {
                 continue
             }
