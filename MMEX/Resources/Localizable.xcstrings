@@ -392,14 +392,7 @@
       }
     },
     "%@ • %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ • %2$@"
-          }
-        }
-      }
+
     },
     "%lf" : {
       "localizations" : {
@@ -530,14 +523,7 @@
       }
     },
     "💡 Daily avg: %@, total: %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "💡 Daily avg: %1$@, total: %2$@"
-          }
-        }
-      }
+
     },
     "0.00" : {
 
