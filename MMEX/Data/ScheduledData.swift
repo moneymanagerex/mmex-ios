@@ -240,7 +240,7 @@ extension ScheduledData {
     }
     
     var isRecurring: Bool {
-        repeatAuto != .none && repeatTypeNum != nil
+        repeatAuto != .none && repeatType != .once && repeatTypeNum != nil
     }
 }
 
