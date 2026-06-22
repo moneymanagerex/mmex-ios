@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -469,6 +469,11 @@
 		A3C142AB2C909C1C00D3CEC0 /* EnterFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterFormView.swift; sourceTree = "<group>"; };
 		A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A39C4EE22FE8C6E300CF8957 /* Context */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Context; sourceTree = "<group>"; };
+		A39C4EE52FE8C72900CF8957 /* Overview */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Overview; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A3C142242C89751500D3CEC0 /* Frameworks */ = {
@@ -973,6 +978,7 @@
 		A3C142292C89751500D3CEC0 /* MMEX */ = {
 			isa = PBXGroup;
 			children = (
+				A39C4EE22FE8C6E300CF8957 /* Context */,
 				92F686362CF5BECC00171A6A /* Primitive */,
 				A3C142422C89B83A00D3CEC0 /* Data */,
 				A39B1B3F2C9A6741003E5562 /* Repository */,
@@ -1034,6 +1040,7 @@
 		A3C142452C89CB1600D3CEC0 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A39C4EE52FE8C72900CF8957 /* Overview */,
 				924352F72CB2EA5C0052E4BC /* Journal */,
 				A3B51C072CA8E03100BB0681 /* Insights */,
 				924352F82CB2EAD40052E4BC /* Enter */,
@@ -1058,6 +1065,10 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A39C4EE22FE8C6E300CF8957 /* Context */,
+				A39C4EE52FE8C72900CF8957 /* Overview */,
 			);
 			name = MMEX;
 			packageProductDependencies = (
@@ -1505,7 +1516,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_ASSET_PATHS = "\"MMEX/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1528,7 +1539,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.32;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_CFLAGS = (
 					"-DSQLITE_HAS_CODEC",
 					"-DNDEBUG",
@@ -1553,7 +1564,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_ASSET_PATHS = "\"MMEX/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "SQLITE_HAS_CODEC=1";
@@ -1572,7 +1583,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.32;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_CFLAGS = (
 					"-DSQLITE_HAS_CODEC",
 					"-DNDEBUG",

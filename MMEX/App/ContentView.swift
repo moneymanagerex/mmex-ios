@@ -113,8 +113,9 @@ struct ContentView: View {
             }
         } else {
             TabView(selection: $selectedTab) {
-                journalTab()
-                insightsTab()
+                overviewTab()
+                // journalTab()
+                // insightsTab()
                 enterTab()
                 manageTab()
                 settingsTab()
@@ -174,6 +175,14 @@ struct ContentView: View {
         .onAppear {
             vm.unloadAll()
         }
+    }
+
+    private func overviewTab() -> some View {
+        OverviewView()
+            .tabItem {
+                pref.theme.tab.iconText(icon: "house.fill", text: "Overview")
+            }
+            .tag(0)
     }
 
     private func journalTab() -> some View {

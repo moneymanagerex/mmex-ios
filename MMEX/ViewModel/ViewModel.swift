@@ -103,6 +103,21 @@ class ViewModel: ObservableObject {
     @Published var endDate: Date = Calendar.current.startOfDay(for: Date())
     @Published var flow = InsightsFlow()
     var cancellables = Set<AnyCancellable>()
+    
+    // Overview KPI
+    @Published var overviewNetWorth: Double = 0
+    @Published var overviewIncome: Double = 0
+    @Published var overviewExpense: Double = 0
+    @Published var overviewIncomeChange: Double = 0
+    @Published var overviewExpenseChange: Double = 0
+    
+    @Published var overviewPreviousTransactions: [TransactionData] = []
+    @Published var overviewPreviousNetWorth: Double = 0
+    @Published var overviewNetWorthChange: Double = 0
+    @Published var accountBalances: [DataId: Double] = [:]
+
+    //
+    @Published var overviewTransactions: [TransactionData] = []
 
     init() {
     }

@@ -126,3 +126,89 @@ extension ViewModel {
         }
     }
 }
+
+
+extension ViewModel {
+    func refreshOverview() {
+        guard let context = AppContext.shared as? AppContext else { return }
+        
+        let accountId = context.selectedAccountId
+        let startDate = context.effectiveStartDate
+        let endDate = context.effectiveEndDate
+        
+        Task {
+            // 加载当前周期交易
+            let transactions = await loadTransactions(
+                db: db,
+                for: accountId.isVoid ? nil : accountId,
+                startDate: startDate,
+                endDate: endDate
+            )
+            
+            // 加载上一周期交易（用于对比）
+            let previousStart = context.previousPeriodStart
+            let previousEnd = context.previousPeriodEnd
+            let previousTransactions = await loadTransactions(
+                db: db,
+                for: accountId.isVoid ? nil : accountId,
+                startDate: previousStart,
+                endDate: previousEnd
+            )
+            
+            let balances = await loadAccountBalances()
+            
+            await MainActor.run {
+                self.overviewTransactions = transactions
+                self.overviewPreviousTransactions = previousTransactions
+                self.accountBalances = balances
+                calculateKPI(from: transactions, previousTransactions: previousTransactions, context: context)
+            }
+        }
+    }
+
+    private func calculateKPI(from transactions: [TransactionData], previousTransactions: [TransactionData], context: AppContext) {
+        let income = transactions.filter { $0.transCode == .deposit }.reduce(0) { $0 + $1.transAmount }
+        let expense = transactions.filter { $0.transCode == .withdrawal }.reduce(0) { $0 + $1.transAmount }
+        
+        let prevIncome = previousTransactions.filter { $0.transCode == .deposit }.reduce(0) { $0 + $1.transAmount }
+        let prevExpense = previousTransactions.filter { $0.transCode == .withdrawal }.reduce(0) { $0 + $1.transAmount }
+        
+        var netWorth: Double = 0
+        var prevNetWorth: Double = 0
+        
+        if !accountBalances.isEmpty {
+            netWorth = accountBalances.values.reduce(0, +)
+            prevNetWorth = netWorth - (income - expense - prevIncome + prevExpense)
+        } else {
+            let initialBalance = accountList.data.readyValue?.values.reduce(0) { $0 + $1.initialBal } ?? 0
+            netWorth = income - expense + initialBalance
+            prevNetWorth = prevIncome - prevExpense + initialBalance
+        }
+        
+        self.overviewIncome = income
+        self.overviewExpense = expense
+        self.overviewIncomeChange = calculateChange(current: income, previous: prevIncome)
+        self.overviewExpenseChange = calculateChange(current: expense, previous: prevExpense)
+        self.overviewNetWorth = netWorth
+        self.overviewPreviousNetWorth = prevNetWorth
+        self.overviewNetWorthChange = calculateChange(current: netWorth, previous: prevNetWorth)
+    }
+
+    private func calculateChange(current: Double, previous: Double) -> Double {
+        guard previous != 0 else { return 0 }
+        return ((current - previous) / abs(previous)) * 100
+    }
+
+    private func loadAccountBalances() async -> [DataId: Double] {
+        guard let repo = AccountRepository(db) else { return [:] }
+        var balances: [DataId: Double] = [:]
+        let today = DateString(Date()).string + "z"
+        for (id, account) in accountList.data.readyValue ?? [:] {
+            let flow = repo.dictFlowByStatus(from: AccountRepository.table, supDate: today)
+            let accountFlow = flow?[id] ?? [:]
+            let totalFlow = accountFlow.values.reduce(0) { $0 + ($1.inflow - $1.outflow) }
+            balances[id] = account.initialBal + totalFlow
+        }
+        return balances
+    }
+}

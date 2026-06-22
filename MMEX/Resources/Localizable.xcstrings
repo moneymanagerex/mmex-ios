@@ -516,6 +516,16 @@
         }
       }
     },
+    "💡 Daily avg: %@, total: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "💡 Daily avg: %1$@, total: %2$@"
+          }
+        }
+      }
+    },
     "1. Use of the App" : {
       "localizations" : {
         "cs" : {
@@ -1405,6 +1415,9 @@
           }
         }
       }
+    },
+    "All Accounts" : {
+
     },
     "All content provided by the app is owned by the app developers or its licensors. You are not allowed to copy, reproduce, or distribute any content without permission." : {
       "localizations" : {
@@ -2772,6 +2785,9 @@
         }
       }
     },
+    "Clear Filter" : {
+
+    },
     "Coming soon ..." : {
       "localizations" : {
         "cs" : {
@@ -3426,6 +3442,9 @@
           }
         }
       }
+    },
+    "Custom Range" : {
+
     },
     "Data" : {
       "localizations" : {
@@ -4132,6 +4151,7 @@
       }
     },
     "Day" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ca" : {
           "stringUnit" : {
@@ -4900,6 +4920,9 @@
         }
       }
     },
+    "Details" : {
+
+    },
     "Developed by Lisheng Guan, George Ef" : {
       "localizations" : {
         "cs" : {
@@ -5283,6 +5306,9 @@
         }
       }
     },
+    "End Dates" : {
+
+    },
     "Enter" : {
       "localizations" : {
         "cs" : {
@@ -5535,7 +5561,11 @@
         }
       }
     },
+    "Expense: %@" : {
+
+    },
     "expenses" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -6810,6 +6840,7 @@
       }
     },
     "income" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -6936,6 +6967,9 @@
           }
         }
       }
+    },
+    "Income: %@" : {
+
     },
     "Insights" : {
       "localizations" : {
@@ -7824,6 +7858,9 @@
         }
       }
     },
+    "Loading accounts..." : {
+
+    },
     "Loading data ..." : {
       "localizations" : {
         "cs" : {
@@ -8419,6 +8456,9 @@
         }
       }
     },
+    "Net Worth" : {
+
+    },
     "New attachments can be created from the items that contain them." : {
       "localizations" : {
         "cs" : {
@@ -8859,6 +8899,12 @@
           }
         }
       }
+    },
+    "No transactions in this period" : {
+
+    },
+    "No transactions in this period." : {
+
     },
     "Notes" : {
       "localizations" : {
@@ -9793,6 +9839,9 @@
           }
         }
       }
+    },
+    "Recent" : {
+
     },
     "Release Notes" : {
       "localizations" : {
@@ -12985,6 +13034,9 @@
         }
       }
     },
+    "Trend" : {
+
+    },
     "Twitter" : {
       "localizations" : {
         "cs" : {
@@ -13283,6 +13335,9 @@
         }
       }
     },
+    "View All (%lld)" : {
+
+    },
     "Visit Official Website" : {
       "localizations" : {
         "cs" : {
@@ -13340,6 +13395,9 @@
           }
         }
       }
+    },
+    "vs %@" : {
+
     },
     "Year" : {
       "localizations" : {
