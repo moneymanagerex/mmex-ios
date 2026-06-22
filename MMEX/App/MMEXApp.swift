@@ -18,6 +18,7 @@ let log = Logger(
 struct MMEXApp: App {
     @StateObject private var pref = Preference()
     @StateObject private var vm = ViewModel(withStoredDatabase: ())
+    @StateObject private var appContext = AppContext.shared
 
     func track(pref: Preference) {
         log.debug("DEBUG: MMEXApp.track()")
@@ -43,6 +44,7 @@ struct MMEXApp: App {
                 }
                 .environmentObject(pref)
                 .environmentObject(vm)
+                .environmentObject(appContext)
         }
     }
 }

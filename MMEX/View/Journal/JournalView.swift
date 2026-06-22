@@ -12,7 +12,7 @@ struct JournalView: View {
     @EnvironmentObject var vm: ViewModel
 
     @StateObject private var debounce = RepositorySearchDebounce()
-    @State private var accountId: DataId = .void
+    @EnvironmentObject var context: AppContext
 
     var body: some View {
         NavigationStack {
@@ -39,8 +39,8 @@ struct JournalView: View {
                         let accountOrder = vm.accountList.order.readyValue,
                         let accountData  = vm.accountList.data.readyValue
                     {
-                        Picker("Select Account", selection: $accountId) {
-                            if accountId.isVoid {
+                        Picker("Select Account", selection: $context.selectedAccountId) {
+                            if context.selectedAccountId.isVoid {
                                 Text("Select Account").tag(DataId.void)
                             }
                             ForEach(accountOrder) { id in
@@ -56,9 +56,9 @@ struct JournalView: View {
                             }
                         }
                         .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
-                        .onChange(of: accountId) {
+                        .onChange(of: context.selectedAccountId) {
                             Task {
-                                let data = await vm.loadTransactions(db: vm.db, for: accountId)
+                                let data = await vm.loadTransactions(db: vm.db, for: context.selectedAccountId)
                                 vm.groupTransactions(data)
                             }
                         }
@@ -73,11 +73,8 @@ struct JournalView: View {
         .task {
             log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
             await vm.loadTransactionList(pref)
-            if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
-                accountId = defaultAccountId
-            }
             Task {
-                let data = await vm.loadTransactions(db: vm.db, for: accountId)
+                let data = await vm.loadTransactions(db: vm.db, for: context.selectedAccountId)
                 vm.groupTransactions(data)
             }
         }
@@ -161,7 +158,7 @@ struct JournalView: View {
     func getPayeeName(for txn: TransactionData) -> String {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
-            if self.accountId == txn.accountId {
+            if self.context.selectedAccountId == txn.accountId {
                 if let toAccount = vm.accountList.data.readyValue?[txn.toAccountId] {
                     return String(format: "> \(toAccount.name)")
                 }
@@ -179,7 +176,7 @@ struct JournalView: View {
     func calculateTotal(for day: String) -> String {
         let transactions = vm.txns_per_day[day] ?? []
         let totalAmount = transactions.reduce(0.0) { $0 + $1.actual }
-        let account = vm.accountList.data.readyValue?[accountId]
+        let account = vm.accountList.data.readyValue?[context.selectedAccountId]
         let formatter = vm.currencyList.info.readyValue?[account?.currencyId ?? .void]?.formatter
         return totalAmount.formatted(by: formatter)
     }
