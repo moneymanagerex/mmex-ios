@@ -40,7 +40,6 @@ class ScheduledOverviewViewModel: ObservableObject {
         for id in order {
             guard let scheduled = scheduledData[id],
                   scheduled.status != .void else { continue }
-            print(scheduled)
             if let accountId = accountId, !accountId.isVoid {
                 guard scheduled.accountId == accountId || scheduled.toAccountId == accountId else {
                     continue
