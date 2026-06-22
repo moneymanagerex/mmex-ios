@@ -73,6 +73,12 @@ struct ManageView: View {
                     nameView: { Text(TransactionData.dataName.1) },
                     count: vm.transactionList.count
                 ) }
+                NavigationLink(
+                    destination: ScheduledListView()
+                ) { pref.theme.group.manageItem(
+                    nameView: { Text(ScheduledData.dataName.1) },
+                    count: vm.scheduledList.count
+                ) }
             }
 
             groupTheme.section(

@@ -130,14 +130,12 @@ extension ViewModel {
 
 extension ViewModel {
     func refreshOverview() {
-        guard let context = AppContext.shared as? AppContext else { return }
-        
+        let context = AppContext.shared
         let accountId = context.selectedAccountId
         let startDate = context.effectiveStartDate
         let endDate = context.effectiveEndDate
         
         Task {
-            // 加载当前周期交易
             let transactions = await loadTransactions(
                 db: db,
                 for: accountId.isVoid ? nil : accountId,
@@ -145,7 +143,6 @@ extension ViewModel {
                 endDate: endDate
             )
             
-            // 加载上一周期交易（用于对比）
             let previousStart = context.previousPeriodStart
             let previousEnd = context.previousPeriodEnd
             let previousTransactions = await loadTransactions(

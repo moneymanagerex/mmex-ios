@@ -208,6 +208,8 @@
 		A39B1B382C99A0D8003E5562 /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */; };
 		A3B374C52C96A23E00943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C42C96A23E00943FDB /* SQLite */; };
 		A3B374C72C96A27800943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C62C96A27800943FDB /* SQLite */; };
+		A3B7D5AE2FE92B3F00F87DE0 /* ScheduledOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */; };
+		A3B7D5B92FE977D400F87DE0 /* ScheduledValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5B82FE977CD00F87DE0 /* ScheduledValidation.swift */; };
 		A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */; };
 		A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422C2C89751500D3CEC0 /* ContentView.swift */; };
 		A3C1422F2C89751600D3CEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C1422E2C89751600D3CEC0 /* Assets.xcassets */; };
@@ -439,6 +441,8 @@
 		A37E7D952C9B219400B4ECFC /* InfotableRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfotableRepository.swift; sourceTree = "<group>"; };
 		A39B1B352C99A0C2003E5562 /* CurrencyFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormView.swift; sourceTree = "<group>"; };
 		A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListView.swift; sourceTree = "<group>"; };
+		A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledOverviewViewModel.swift; sourceTree = "<group>"; };
+		A3B7D5B82FE977CD00F87DE0 /* ScheduledValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledValidation.swift; sourceTree = "<group>"; };
 		A3C142272C89751500D3CEC0 /* MMEX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMEX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEXApp.swift; sourceTree = "<group>"; };
 		A3C1422C2C89751500D3CEC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -473,6 +477,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A39C4EE22FE8C6E300CF8957 /* Context */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Context; sourceTree = "<group>"; };
 		A39C4EE52FE8C72900CF8957 /* Overview */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Overview; sourceTree = "<group>"; };
+		A3B7D5B22FE9749F00F87DE0 /* Scheduled */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Scheduled; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -527,6 +532,7 @@
 		924352F62CB2EA3D0052E4BC /* Manage */ = {
 			isa = PBXGroup;
 			children = (
+				A3B7D5B22FE9749F00F87DE0 /* Scheduled */,
 				924352FD2CB6F5D80052E4BC /* Repository */,
 				A39B1B3D2C9A66F7003E5562 /* Currency */,
 				A39B1B392C9A668F003E5562 /* Account */,
@@ -682,6 +688,7 @@
 		925EABA42CCF8178003CEAB3 /* Validation */ = {
 			isa = PBXGroup;
 			children = (
+				A3B7D5B82FE977CD00F87DE0 /* ScheduledValidation.swift */,
 				925EABAF2CCF82E4003CEAB3 /* Validation.swift */,
 				927B12382CE0B20300AEA52F /* SettingsValidation.swift */,
 				925EABA22CCF8146003CEAB3 /* CurrencyValidation.swift */,
@@ -831,6 +838,7 @@
 		A350BDBF2CA26195006669D5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */,
 				924353132CC5181D0052E4BC /* Load */,
 				924353522CCD3C440052E4BC /* List */,
 				9243532A2CCD27BC0052E4BC /* Group */,
@@ -1069,6 +1077,7 @@
 			fileSystemSynchronizedGroups = (
 				A39C4EE22FE8C6E300CF8957 /* Context */,
 				A39C4EE52FE8C72900CF8957 /* Overview */,
+				A3B7D5B22FE9749F00F87DE0 /* Scheduled */,
 			);
 			name = MMEX;
 			packageProductDependencies = (
@@ -1301,6 +1310,7 @@
 				92F686072CF1010300171A6A /* BudgetReload.swift in Sources */,
 				9243534B2CCD37AE0052E4BC /* AccountList.swift in Sources */,
 				9243532F2CCD2C140052E4BC /* CurrencyGroup.swift in Sources */,
+				A3B7D5AE2FE92B3F00F87DE0 /* ScheduledOverviewViewModel.swift in Sources */,
 				A3C142542C8B381400D3CEC0 /* PayeeFormView.swift in Sources */,
 				92F686222CF153A500171A6A /* FieldReload.swift in Sources */,
 				920823F82CA498B500388AB2 /* CurrencyHistoryRepository.swift in Sources */,
@@ -1318,6 +1328,7 @@
 				92F685F32CEEA62C00171A6A /* BudgetPeriodList.swift in Sources */,
 				925EAC172CDA8EF5003CEAB3 /* TagFormView.swift in Sources */,
 				924353172CC51F8E0052E4BC /* StockReload.swift in Sources */,
+				A3B7D5B92FE977D400F87DE0 /* ScheduledValidation.swift in Sources */,
 				920824102CA4C5CD00388AB2 /* BudgetPeriodRepository.swift in Sources */,
 				925EABB62CD6E6EF003CEAB3 /* InfotableList.swift in Sources */,
 				920824202CA4E5C200388AB2 /* TagLinkData.swift in Sources */,
