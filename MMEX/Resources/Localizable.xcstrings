@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "-1 = infinite" : {
+
+    },
     "'%@'" : {
       "localizations" : {
         "cs" : {
@@ -388,6 +391,16 @@
         }
       }
     },
+    "%@ • %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ • %2$@"
+          }
+        }
+      }
+    },
     "%lf" : {
       "localizations" : {
         "cs" : {
@@ -525,6 +538,9 @@
           }
         }
       }
+    },
+    "0.00" : {
+
     },
     "1. Use of the App" : {
       "localizations" : {
@@ -6971,6 +6987,9 @@
     "Income: %@" : {
 
     },
+    "Infinite" : {
+
+    },
     "Insights" : {
       "localizations" : {
         "cs" : {
@@ -7977,6 +7996,9 @@
         }
       }
     },
+    "Loading scheduled transactions..." : {
+
+    },
     "Loan" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8906,6 +8928,9 @@
     "No transactions in this period." : {
 
     },
+    "No upcoming scheduled transactions" : {
+
+    },
     "Notes" : {
       "localizations" : {
         "ar" : {
@@ -9218,6 +9243,9 @@
         }
       }
     },
+    "One-time" : {
+
+    },
     "Open Database" : {
       "localizations" : {
         "ar" : {
@@ -9353,6 +9381,9 @@
           }
         }
       }
+    },
+    "Paid" : {
+
     },
     "Password Required" : {
       "localizations" : {
@@ -10096,6 +10127,12 @@
           }
         }
       }
+    },
+    "Schedule" : {
+
+    },
+    "Scheduled Transactions" : {
+
     },
     "Schema Version" : {
       "localizations" : {
@@ -11176,6 +11213,9 @@
           }
         }
       }
+    },
+    "Skip" : {
+
     },
     "Social Media" : {
       "localizations" : {
@@ -12917,6 +12957,9 @@
           }
         }
       }
+    },
+    "Transaction Details" : {
+
     },
     "Transaction Status" : {
       "localizations" : {

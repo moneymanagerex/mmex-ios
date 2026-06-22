@@ -56,6 +56,11 @@ struct OverviewView: View {
                     
                     Divider()
                     
+                    ScheduledOverviewView()
+                        .padding(.horizontal, 8)
+
+                    Divider()
+
                     RecentTransactionsView(
                         transactions: vm.overviewTransactions,
                         selectedFilter: $selectedFilter,
@@ -71,6 +76,7 @@ struct OverviewView: View {
                 Task {
                     await vm.loadAccountList(pref)
                     await vm.loadPayeeList(pref)
+                    await vm.loadScheduledList(pref)
                     vm.refreshOverview()
                 }
             }
