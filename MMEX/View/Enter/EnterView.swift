@@ -11,6 +11,7 @@ struct EnterView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var context: AppContext
     @Binding var selectedTab: Int
 
     @State private var focus = false
@@ -55,7 +56,9 @@ struct EnterView: View {
         await vm.loadEnterList(pref)
 
         if newTxn.accountId.isVoid {
-            if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
+            if !context.selectedAccountId.isVoid {
+                newTxn.accountId = context.selectedAccountId
+            } else if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                 newTxn.accountId = defaultAccountId
             } else if let accountOrder = vm.accountList.order.readyValue, accountOrder.count == 1 {
                 newTxn.accountId = accountOrder[0]

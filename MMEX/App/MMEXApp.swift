@@ -62,6 +62,7 @@ struct MMEXPreview {
         content(Self.pref, Self.vmWithoutData)
             .environmentObject(Self.pref)
             .environmentObject(Self.vmWithoutData)
+            .environmentObject(AppContext.shared)
     }
 
     @ViewBuilder
@@ -71,5 +72,6 @@ struct MMEXPreview {
         content(Self.pref, Self.vmWithSampleData)
             .environmentObject(Self.pref)
             .environmentObject(Self.vmWithSampleData)
+            .environmentObject(AppContext.shared)
     }
 }
