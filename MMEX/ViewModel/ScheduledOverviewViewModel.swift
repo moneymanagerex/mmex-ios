@@ -22,8 +22,7 @@ class ScheduledOverviewViewModel: ObservableObject {
     // MARK: - Loading
     
     func load(from vm: ViewModel, accountId: DataId? = nil) {
-        isLoading = true
-        defer { isLoading = false }
+        isLoading = (vm.scheduledList.state == .loading)
         
         guard let scheduledData = vm.scheduledList.data.readyValue,
               let order = vm.scheduledList.order.readyValue else {
