@@ -47,6 +47,9 @@ struct ScheduledOverviewView: View {
             let accountId = context.selectedAccountId
             viewModel.load(from: vm, accountId: accountId)
         }
+        .onChange(of: context.selectedAccountId) { _, _ in
+            viewModel.load(from: vm, accountId: context.selectedAccountId)
+        }
     }
     
     // MARK: - Subviews
