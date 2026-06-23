@@ -210,6 +210,7 @@
 		A3B374C72C96A27800943FDB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A3B374C62C96A27800943FDB /* SQLite */; };
 		A3B7D5AE2FE92B3F00F87DE0 /* ScheduledOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */; };
 		A3B7D5B92FE977D400F87DE0 /* ScheduledValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5B82FE977CD00F87DE0 /* ScheduledValidation.swift */; };
+		A3B7D5D72FEABB6000F87DE0 /* JournalSplitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5D62FEABB6000F87DE0 /* JournalSplitData.swift */; };
 		A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */; };
 		A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422C2C89751500D3CEC0 /* ContentView.swift */; };
 		A3C1422F2C89751600D3CEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C1422E2C89751600D3CEC0 /* Assets.xcassets */; };
@@ -443,6 +444,7 @@
 		A39B1B372C99A0D8003E5562 /* CurrencyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListView.swift; sourceTree = "<group>"; };
 		A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledOverviewViewModel.swift; sourceTree = "<group>"; };
 		A3B7D5B82FE977CD00F87DE0 /* ScheduledValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledValidation.swift; sourceTree = "<group>"; };
+		A3B7D5D62FEABB6000F87DE0 /* JournalSplitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalSplitData.swift; sourceTree = "<group>"; };
 		A3C142272C89751500D3CEC0 /* MMEX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMEX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEXApp.swift; sourceTree = "<group>"; };
 		A3C1422C2C89751500D3CEC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -1041,6 +1043,7 @@
 				9208240B2CA4C31B00388AB2 /* BudgetData.swift */,
 				9208240D2CA4C4FA00388AB2 /* ReportData.swift */,
 				925EABBB2CD78A65003CEAB3 /* JournalData.swift */,
+				A3B7D5D62FEABB6000F87DE0 /* JournalSplitData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1200,6 +1203,7 @@
 				927B12352CDE855600AEA52F /* SettingsList.swift in Sources */,
 				925EAC272CDAB134003CEAB3 /* AttachmentFormView.swift in Sources */,
 				925EAC1A2CDAA813003CEAB3 /* AttachmentList.swift in Sources */,
+				A3B7D5D72FEABB6000F87DE0 /* JournalSplitData.swift in Sources */,
 				A37E7D922C9AC60000B4ECFC /* InfoContactView.swift in Sources */,
 				9208240E2CA4C4FA00388AB2 /* ReportData.swift in Sources */,
 				92F685FB2CF0CBB800171A6A /* BudgetPeriodSearch.swift in Sources */,

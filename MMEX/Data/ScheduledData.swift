@@ -86,6 +86,8 @@ struct ScheduledData: DataProtocol {
     var repeatType        : RepeatType        = .defaultValue
     var repeatNum         : Int               = 0
     var color             : Int64             = 0
+
+    var splits            : [ScheduledSplitData] = []
 }
 
 extension ScheduledData {
