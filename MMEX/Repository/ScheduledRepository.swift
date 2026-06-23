@@ -154,4 +154,14 @@ extension ScheduledRepository {
     func load() -> [ScheduledData]? {
         return select(from: Self.table)
     }
+
+    // insert with its splits
+    func insertWithSplits(_ data: inout RepositoryData) -> Bool {
+        return insert(&data) && ScheduledSplitRepository(db).update(&data)
+    }
+
+    // update with its splits
+    func updateWithSplits(_ data: inout ScheduledData) -> Bool {
+        return update(data) && ScheduledSplitRepository(db).update(&data)
+    }
 }

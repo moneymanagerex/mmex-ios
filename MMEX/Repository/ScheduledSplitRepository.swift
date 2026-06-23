@@ -91,4 +91,32 @@ extension ScheduledSplitRepository {
     func load(for sched: ScheduledData) -> [ScheduledSplitData]? {
         return load(forScheduledId: sched.id)
     }
+
+    func delete(_ trans: ScheduledData) -> Bool {
+        let splits = load(for: trans)
+        guard let splits else { return false }
+        var success = true
+        splits.forEach { split in
+            success = success && delete(split)
+        }
+        return success
+    }
+
+    // FIXME: delete all old splits for the given transaction and then re-create all splits
+    func update(_ trans: inout ScheduledData) -> Bool {
+        let splits = load(for: trans)
+        guard let splits else { return false }
+        var success = true
+
+        // TODO: distintish to add/update/delete
+        splits.forEach { split in
+            success = success && delete(split)
+        }
+
+        for i in trans.splits.indices {
+            trans.splits[i].schedId = trans.id
+            success = success && insert(&trans.splits[i])
+        }
+        return success
+    }
 }
