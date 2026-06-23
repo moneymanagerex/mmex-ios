@@ -7,7 +7,7 @@
 
 struct JournalSplitData: Identifiable, Codable {
     var id: DataId = .void
-    var categoryId: DataId = .void
+    var categId: DataId = .void
     var amount: Double = 0.0
     var notes: String = ""
 

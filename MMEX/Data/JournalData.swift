@@ -99,7 +99,7 @@ extension JournalData {
         self.splits = data.splits.map { split in
             JournalSplitData(
                 id: split.id,
-                categoryId: split.categId,
+                categId: split.categId,
                 amount: split.amount,
                 notes: split.notes
             )
@@ -127,7 +127,7 @@ extension JournalData {
         self.splits = data.splits.map { split in
             JournalSplitData(
                 id: split.id,
-                categoryId: split.categId,
+                categId: split.categId,
                 amount: split.amount,
                 notes: split.notes
             )
@@ -158,7 +158,7 @@ extension JournalData {
         self.splits = data.splits.map { split in
             JournalSplitData(
                 id: split.id,
-                categoryId: split.categId,
+                categId: split.categId,
                 amount: split.amount,
                 notes: split.notes
             )
@@ -189,7 +189,7 @@ extension JournalData {
                 TransactionSplitData(
                     id: split.id,
                     transId: transactionId, // note: transId would be override
-                    categId: split.categoryId,
+                    categId: split.categId,
                     amount: split.amount,
                     notes: split.notes
                 )
@@ -221,7 +221,7 @@ extension JournalData {
                 ScheduledSplitData(
                     id: split.id,
                     schedId: scheduledId, // note: schedId would be override
-                    categId: split.categoryId,
+                    categId: split.categId,
                     amount: split.amount,
                     notes: split.notes
                 )
