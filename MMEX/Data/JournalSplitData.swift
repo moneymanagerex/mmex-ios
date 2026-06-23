@@ -10,6 +10,4 @@ struct JournalSplitData: Identifiable, Codable {
     var categId: DataId = .void
     var amount: Double = 0.0
     var notes: String = ""
-
-    // var parentId: DataId = .void
 }
