@@ -72,6 +72,8 @@ struct JournalData {
     var repeatAuto        : RepeatAuto        = .defaultValue
     var repeatType        : RepeatType        = .defaultValue
     var repeatNum         : Int               = 0
+
+    var splits: [JournalSplitData] = []
 }
 
 extension JournalData {
@@ -93,6 +95,15 @@ extension JournalData {
         self.color             = data.color
         self.lastUpdatedTime   = data.lastUpdatedTime
         self.deletedTime       = data.deletedTime
+
+        self.splits = data.splits.map { split in
+            JournalSplitData(
+                id: split.id,
+                categId: split.categId,
+                amount: split.amount,
+                notes: split.notes
+            )
+        }
     }
 
     init(_ data: ScheduledData, sequence: Int, at transDate: DateTimeString) {
@@ -112,6 +123,15 @@ extension JournalData {
         self.followUpId        = data.followUpId
         self.toTransAmount     = data.toTransAmount
         self.color             = data.color
+
+        self.splits = data.splits.map { split in
+            JournalSplitData(
+                id: split.id,
+                categId: split.categId,
+                amount: split.amount,
+                notes: split.notes
+            )
+        }
     }
 
     init(_ data: ScheduledData) {
@@ -134,6 +154,15 @@ extension JournalData {
         self.repeatAuto        = data.repeatAuto
         self.repeatType        = data.repeatType
         self.repeatNum         = data.repeatNum
+
+        self.splits = data.splits.map { split in
+            JournalSplitData(
+                id: split.id,
+                categId: split.categId,
+                amount: split.amount,
+                notes: split.notes
+            )
+        }
     }
 }
 
@@ -155,7 +184,16 @@ extension JournalData {
             deletedTime       : deletedTime,
             followUpId        : followUpId,
             toTransAmount     : toTransAmount,
-            color             : color
+            color             : color,
+            splits: splits.map { split in
+                TransactionSplitData(
+                    id: split.id,
+                    transId: transactionId, // note: transId would be override
+                    categId: split.categId,
+                    amount: split.amount,
+                    notes: split.notes
+                )
+            },
         ) : nil
     }
 
@@ -178,7 +216,16 @@ extension JournalData {
             repeatAuto        : repeatAuto,
             repeatType        : repeatType,
             repeatNum         : repeatNum,
-            color             : color
+            color             : color,
+            splits: splits.map { split in
+                ScheduledSplitData(
+                    id: split.id,
+                    schedId: scheduledId, // note: schedId would be override
+                    categId: split.categId,
+                    amount: split.amount,
+                    notes: split.notes
+                )
+            },
         ) : nil
     }
 }
