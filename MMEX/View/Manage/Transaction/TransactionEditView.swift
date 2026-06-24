@@ -12,12 +12,20 @@ struct TransactionEditView: View {
     @Binding var isPresented: Bool
     @Binding var journal: JournalData
 
+    @State private var editedJournal: JournalData  // local copy
+
     @State private var focus = false
+
+    init(isPresented: Binding<Bool>, journal: Binding<JournalData>) {
+        self._isPresented = isPresented
+        self._journal = journal
+        self._editedJournal = State(initialValue: journal.wrappedValue)
+    }
 
     var body: some View {
         EnterFormView(
             focus: $focus,
-            journal: $journal
+            journal: $editedJournal  // bind local copy
         )
 
         .toolbar {
@@ -28,14 +36,11 @@ struct TransactionEditView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    print("🟢 Done button tapped")
-                    print("  - Before save: journal.id = \(journal.id), amount = \(journal.transAmount)")
+                    journal = editedJournal
+                    _ = vm.saveJournal(&journal)
                     isPresented = false
-                    if (vm.saveJournal(&journal) == false) {
-                        // TODO
-                    }
                 }
-                .disabled(!journal.isValid)
+                .disabled(!editedJournal.isValid)
             }
             ToolbarItem(placement: .confirmationAction) {
                 KeyboardFocus(focus: $focus)
