@@ -1,5 +1,5 @@
 //
-//  CheckingView.swift
+//  JournalView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
@@ -17,7 +17,7 @@ struct JournalView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(vm.txns_per_day.keys.sorted(by: >), id: \.self) { day in
+                ForEach(vm.journals_per_day.keys.sorted(by: >), id: \.self) { day in
                     Section(
                         header: HStack {
                             Text(humanReadableDate(day))
@@ -27,8 +27,8 @@ struct JournalView: View {
                                 .font(.subheadline)
                         }
                     ) {
-                        ForEach(vm.txns_per_day[day]!, id: \.id) { txn in
-                            transactionView(txn, for: day)
+                        ForEach(vm.journals_per_day[day]!, id: \.id) { journal in
+                            transactionView(journal, for: day)
                         }
                     }
                 }
@@ -58,8 +58,7 @@ struct JournalView: View {
                         .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
                         .onChange(of: context.selectedAccountId) {
                             Task {
-                                let data = await vm.loadTransactions(db: vm.db, for: context.selectedAccountId)
-                                vm.groupTransactions(data)
+                                vm.loadJournals(accountId: context.selectedAccountId)
                             }
                         }
                     }
@@ -67,28 +66,28 @@ struct JournalView: View {
             }
             .searchable(text: $debounce.input, prompt: "Search by keyword")
             .onChange(of: debounce.output) { _, query in
-                vm.filterTransactions(by: query)
+                vm.filterJournals(by: query)
             }
         }
         .task {
             log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
             await vm.loadTransactionList(pref)
+            await vm.loadJournalList(pref)
             Task {
-                let data = await vm.loadTransactions(db: vm.db, for: context.selectedAccountId)
-                vm.groupTransactions(data)
+                vm.loadJournals(accountId: context.selectedAccountId)
             }
         }
     }
 
-    func transactionView(_ txn: TransactionData, for day: String) -> some View {
+    func transactionView(_ txn: JournalData, for day: String) -> some View {
         NavigationLink(destination: TransactionDetailView(
-            txn: Binding(
+            journal: Binding(
                 get: {
-                    self.vm.txns_per_day[day]?.first(where: { $0.id == txn.id }) ?? txn
+                    self.vm.journals_per_day[day]?.first(where: { $0.id == txn.id }) ?? txn
                 },
                 set: { newTxn in
-                    if let index = self.vm.txns_per_day[day]?.firstIndex(where: { $0.id == txn.id }) {
-                        self.vm.txns_per_day[day]?[index] = newTxn
+                    if let index = self.vm.journals_per_day[day]?.firstIndex(where: { $0.id == txn.id }) {
+                        self.vm.journals_per_day[day]?[index] = newTxn
                     }
                 }
             )
@@ -155,7 +154,7 @@ struct JournalView: View {
         }
     }
 
-    func getPayeeName(for txn: TransactionData) -> String {
+    func getPayeeName(for txn: JournalData) -> String {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
             if self.context.selectedAccountId == txn.accountId {
@@ -174,7 +173,7 @@ struct JournalView: View {
     }
 
     func calculateTotal(for day: String) -> String {
-        let transactions = vm.txns_per_day[day] ?? []
+        let transactions = vm.journals_per_day[day] ?? []
         let totalAmount = transactions.reduce(0.0) { $0 + $1.actual }
         let account = vm.accountList.data.readyValue?[context.selectedAccountId]
         let formatter = vm.currencyList.info.readyValue?[account?.currencyId ?? .void]?.formatter

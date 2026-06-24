@@ -62,7 +62,7 @@ struct OverviewView: View {
                     Divider()
 
                     RecentTransactionsView(
-                        transactions: vm.overviewTransactions,
+                        journals: vm.overviewTransactions.asJournals(),
                         selectedFilter: $selectedFilter,
                         showAccountLabel: context.isAllAccounts,
                         formatter: displayFormatter

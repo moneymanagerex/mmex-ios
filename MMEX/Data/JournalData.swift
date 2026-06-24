@@ -30,7 +30,7 @@ enum JournalType: Int, CaseIterable, Identifiable, Codable {
     var name: String { Self.names[self.rawValue] }
 }
 
-struct JournalData {
+struct JournalData: Identifiable {
     // type == .transaction:
     //   transactionId : same as TransactionData.id
     //   scheduledId   = .void
@@ -227,5 +227,59 @@ extension JournalData {
                 )
             },
         ) : nil
+    }
+    
+    var isValid: Bool {
+        return (
+            (!payeeId.isVoid && [.withdrawal, .deposit].contains(transCode)) ||
+            (!toAccountId.isVoid && transCode == .transfer)
+        ) && (!categId.isVoid || splits.count >= 2)
+    }
+    
+    var id: DataId {
+        return type == .transaction ? transactionId: scheduledId
+    }
+    
+    var actual: Double {
+        return switch transCode {
+        case .withdrawal: 0 - transAmount;
+        case .deposit: transAmount;
+        default: 0.0
+        }
+    }
+}
+
+extension JournalData {
+    static func newTransaction() -> JournalData {
+        JournalData(
+            type: .transaction,
+            transDate: DateTimeString(Date())
+        )
+    }
+
+    static func newScheduled() -> JournalData {
+        JournalData(
+            type: .scheduled,
+            transDate: DateTimeString(Date()),
+            dueDate: DateString(Date()),
+            repeatAuto: .none,
+            repeatType: .once,
+            repeatNum: 0
+        )
+    }
+}
+
+
+// 扩展 JournalData 数组 → TransactionData 数组
+extension Array where Element == JournalData {
+    func asTransactions() -> [TransactionData] {
+        compactMap { $0.toTransaction } // 只取成功转换的（type == .transaction/.future）
+    }
+}
+
+// 扩展 TransactionData 数组 → JournalData 数组
+extension Array where Element == TransactionData {
+    func asJournals() -> [JournalData] {
+        map { JournalData($0) }
     }
 }

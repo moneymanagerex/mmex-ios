@@ -15,39 +15,45 @@ struct EnterView: View {
     @Binding var selectedTab: Int
 
     @State private var focus = false
-    @State var newTxn: TransactionData = TransactionData()
+    @State var newJournal: JournalData = .newTransaction()
+    @State private var journalType: JournalType = .transaction
     
     var body: some View {
         EnterFormView(
             focus: $focus,
-            txn: $newTxn
+            journal: $newJournal
         )
         .padding(.horizontal, 0)
-
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
                     dismiss()
                     selectedTab = Preference.selectedTab
-                    newTxn = TransactionData()
+                    resetJournal()
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    vm.addTransaction(txn: &newTxn)
+                    _ = vm.saveJournal(&newJournal)
                     dismiss()
                     selectedTab = Preference.selectedTab
-                    newTxn = TransactionData()
+                    resetJournal()
                 }
-                .disabled(!newTxn.isValid)
+                .disabled(!newJournal.isValid)
             }
             ToolbarItem(placement: .confirmationAction) {
                 KeyboardFocus(focus: $focus)
             }
         }
-        // .navigationBarTitle("Add Transaction", displayMode: .inline)
-        .task {
+        task {
             await load()
+        }
+        .onChange(of: journalType) { _, newType in
+            if newType == .transaction {
+                newJournal = .newTransaction()
+            } else {
+                newJournal = .newScheduled()
+            }
         }
     }
 
@@ -55,33 +61,38 @@ struct EnterView: View {
         log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
         await vm.loadEnterList(pref)
 
-        if newTxn.accountId.isVoid {
+        if newJournal.accountId.isVoid {
             if !context.selectedAccountId.isVoid {
-                newTxn.accountId = context.selectedAccountId
+                newJournal.accountId = context.selectedAccountId
             } else if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
-                newTxn.accountId = defaultAccountId
+                newJournal.accountId = defaultAccountId
             } else if let accountOrder = vm.accountList.order.readyValue, accountOrder.count == 1 {
-                newTxn.accountId = accountOrder[0]
+                newJournal.accountId = accountOrder[0]
             }
         }
 
-        if newTxn.categId.isVoid {
+        if newJournal.categId.isVoid {
             if let categoryOrder = vm.categoryList.order.readyValue, categoryOrder.count == 1 {
-                newTxn.categId = categoryOrder[0]
+                newJournal.categId = categoryOrder[0]
             }
         }
 
-        if newTxn.payeeId.isVoid {
+        if newJournal.payeeId.isVoid {
             if let payeeOrder = vm.payeeList.order.readyValue, payeeOrder.count == 1 {
-                newTxn.payeeId = payeeOrder[0]
-            } else if pref.enter.reuseLastPayee == .boolTrue, !newTxn.accountId.isVoid {
-                loadLatestTxn(for: newTxn.accountId)
+                newJournal.payeeId = payeeOrder[0]
+            } else if pref.enter.reuseLastPayee == .boolTrue, !newJournal.accountId.isVoid {
+                loadLatestTxn(for: newJournal.accountId)
             }
         }
 
-        if newTxn.id.isVoid {
-            newTxn.status = pref.enter.defaultStatus
+        if newJournal.id.isVoid {
+            newJournal.status = pref.enter.defaultStatus
         }
+    }
+    
+    private func resetJournal() {
+        newJournal = .newTransaction()
+        journalType = .transaction
     }
 
     func loadLatestTxn(for accountId: DataId) {
@@ -89,8 +100,8 @@ struct EnterView: View {
         if let latestTxn = repository?.latest(accountID: accountId).toOptional() ?? repository?.latest().toOptional() {
             // Update UI on the main thread
             DispatchQueue.main.async {
-                if newTxn.payeeId.isVoid {
-                    newTxn.payeeId = latestTxn.payeeId
+                if newJournal.payeeId.isVoid {
+                    newJournal.payeeId = latestTxn.payeeId
                     // txn.categId = latestTxn.categId
                 }
             }
@@ -116,7 +127,7 @@ extension MMEXPreview {
         MMEXPreview.tab("Enter") { pref, vm in
             EnterView(
                 selectedTab: .constant(0),
-                newTxn: data
+                newJournal: JournalData(data)
             )
         }
     }

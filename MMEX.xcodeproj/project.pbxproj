@@ -211,6 +211,8 @@
 		A3B7D5AE2FE92B3F00F87DE0 /* ScheduledOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */; };
 		A3B7D5B92FE977D400F87DE0 /* ScheduledValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5B82FE977CD00F87DE0 /* ScheduledValidation.swift */; };
 		A3B7D5D72FEABB6000F87DE0 /* JournalSplitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5D62FEABB6000F87DE0 /* JournalSplitData.swift */; };
+		A3B7D5EE2FEAC5A400F87DE0 /* JournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5ED2FEAC5A400F87DE0 /* JournalViewModel.swift */; };
+		A3B7D5F22FEBBCBF00F87DE0 /* JournalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B7D5F12FEBBCBD00F87DE0 /* JournalRepository.swift */; };
 		A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */; };
 		A3C1422D2C89751500D3CEC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C1422C2C89751500D3CEC0 /* ContentView.swift */; };
 		A3C1422F2C89751600D3CEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3C1422E2C89751600D3CEC0 /* Assets.xcassets */; };
@@ -445,6 +447,8 @@
 		A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledOverviewViewModel.swift; sourceTree = "<group>"; };
 		A3B7D5B82FE977CD00F87DE0 /* ScheduledValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledValidation.swift; sourceTree = "<group>"; };
 		A3B7D5D62FEABB6000F87DE0 /* JournalSplitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalSplitData.swift; sourceTree = "<group>"; };
+		A3B7D5ED2FEAC5A400F87DE0 /* JournalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViewModel.swift; sourceTree = "<group>"; };
+		A3B7D5F12FEBBCBD00F87DE0 /* JournalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalRepository.swift; sourceTree = "<group>"; };
 		A3C142272C89751500D3CEC0 /* MMEX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMEX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C1422A2C89751500D3CEC0 /* MMEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEXApp.swift; sourceTree = "<group>"; };
 		A3C1422C2C89751500D3CEC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -840,7 +844,6 @@
 		A350BDBF2CA26195006669D5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */,
 				924353132CC5181D0052E4BC /* Load */,
 				924353522CCD3C440052E4BC /* List */,
 				9243532A2CCD27BC0052E4BC /* Group */,
@@ -850,6 +853,8 @@
 				924353042CC3B2E30052E4BC /* ViewModel.swift */,
 				A350BDC02CA26415006669D5 /* TransactionViewModel.swift */,
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
+				A3B7D5ED2FEAC5A400F87DE0 /* JournalViewModel.swift */,
+				A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -953,6 +958,7 @@
 				9208240F2CA4C5CD00388AB2 /* BudgetPeriodRepository.swift */,
 				920824112CA4C6A400388AB2 /* BudgetRepository.swift */,
 				920824152CA4C95F00388AB2 /* ReportRepository.swift */,
+				A3B7D5F12FEBBCBD00F87DE0 /* JournalRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1209,6 +1215,7 @@
 				92F685FB2CF0CBB800171A6A /* BudgetPeriodSearch.swift in Sources */,
 				92F6861C2CF1416B00171A6A /* ReportListView.swift in Sources */,
 				925EAB952CCD8341003CEAB3 /* RepositoryReadView.swift in Sources */,
+				A3B7D5F22FEBBCBF00F87DE0 /* JournalRepository.swift in Sources */,
 				92F6861E2CF1427400171A6A /* ReportFormView.swift in Sources */,
 				929EF6652C9FF3FB0051A3E6 /* StockRepository.swift in Sources */,
 				92F685FD2CF0CD7400171A6A /* BudgetPeriodValidation.swift in Sources */,
@@ -1238,6 +1245,7 @@
 				924352E02CA9CC5A0052E4BC /* InsightsAccountView.swift in Sources */,
 				927B124B2CE74E8300AEA52F /* Preference.swift in Sources */,
 				929EF65F2C9FF2DE0051A3E6 /* AssetData.swift in Sources */,
+				A3B7D5EE2FEAC5A400F87DE0 /* JournalViewModel.swift in Sources */,
 				920823FE2CA4A3F700388AB2 /* TagData.swift in Sources */,
 				A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */,
 				920824002CA4A4AA00388AB2 /* TagRepository.swift in Sources */,

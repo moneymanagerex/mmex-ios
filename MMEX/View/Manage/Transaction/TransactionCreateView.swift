@@ -10,15 +10,15 @@ import SwiftUI
 struct TransactionCreateView: View {
     @EnvironmentObject var vm: ViewModel
     @Binding var isPresented: Bool
-    @Binding var newTxn: TransactionData
-    var onSave: (inout TransactionData) -> Void
+    @Binding var newJournal: JournalData
+    var onSave: (inout JournalData) -> Void
 
     @State private var focus = false
 
     var body: some View {
         EnterFormView(
             focus: $focus,
-            txn: $newTxn
+            journal: $newJournal
         )
 
         .toolbar {
@@ -30,9 +30,9 @@ struct TransactionCreateView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
                     isPresented = false
-                    onSave(&newTxn)
+                    onSave(&newJournal)
                 }
-                .disabled(!newTxn.isValid)
+                .disabled(!newJournal.isValid)
             }
             ToolbarItem(placement: .confirmationAction) {
                 KeyboardFocus(focus: $focus)

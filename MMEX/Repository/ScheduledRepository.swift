@@ -151,7 +151,7 @@ struct ScheduledRepository: RepositoryProtocol {
 
 extension ScheduledRepository {
     // load all scheduled transactions
-    func load() -> [ScheduledData]? {
+    func load() -> [RepositoryData]? {
         return select(from: Self.table)
     }
 
@@ -161,7 +161,7 @@ extension ScheduledRepository {
     }
 
     // update with its splits
-    func updateWithSplits(_ data: inout ScheduledData) -> Bool {
+    func updateWithSplits(_ data: inout RepositoryData) -> Bool {
         return update(data) && ScheduledSplitRepository(db).update(&data)
     }
 }

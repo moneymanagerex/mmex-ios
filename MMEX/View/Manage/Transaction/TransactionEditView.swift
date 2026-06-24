@@ -10,15 +10,14 @@ import SwiftUI
 struct TransactionEditView: View {
     @EnvironmentObject var vm: ViewModel
     @Binding var isPresented: Bool
-    @Binding var txn: TransactionData
-    @Binding var editingTxn: TransactionData
+    @Binding var journal: JournalData
 
     @State private var focus = false
 
     var body: some View {
         EnterFormView(
             focus: $focus,
-            txn: $editingTxn
+            journal: $journal
         )
 
         .toolbar {
@@ -29,13 +28,14 @@ struct TransactionEditView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
+                    print("🟢 Done button tapped")
+                    print("  - Before save: journal.id = \(journal.id), amount = \(journal.transAmount)")
                     isPresented = false
-                    txn = editingTxn
-                    if (vm.updateTransaction(&txn) == false) {
+                    if (vm.saveJournal(&journal) == false) {
                         // TODO
                     }
                 }
-                .disabled(!editingTxn.isValid)
+                .disabled(!journal.isValid)
             }
             ToolbarItem(placement: .confirmationAction) {
                 KeyboardFocus(focus: $focus)

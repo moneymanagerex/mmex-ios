@@ -10,9 +10,8 @@ import SwiftUI
 struct TransactionDetailView: View {
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     @EnvironmentObject var vm: ViewModel
-    @Binding var txn: TransactionData
+    @Binding var journal: JournalData
 
-    @State private var editingTxn = TransactionData()
     @State private var focus = false
 
     @State private var editSheetIsPresented = false
@@ -21,42 +20,42 @@ struct TransactionDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Transaction Type")) {
-                Text("\(txn.transCode.name)")
+                Text("\(journal.transCode.name)")
             }
 
             Section(header: Text("Transaction Status")) {
-                Text("\(txn.status.fullName)")
+                Text("\(journal.status.fullName)")
             }
 
             Section(header: Text("Transaction Amount")) {
-                Text(txn.transAmount.formatted(
+                Text(journal.transAmount.formatted(
                     by: vm.currencyList.info.readyValue?[
-                        vm.accountList.data.readyValue?[txn.accountId]?.currencyId ?? .void
+                        vm.accountList.data.readyValue?[journal.accountId]?.currencyId ?? .void
                     ]?.formatter
                 ))
             }
 
             Section(header: Text("Transaction Date")) {
-                Text(txn.transDate.string)
+                Text(journal.transDate.string)
             }
 
             Section(header: Text("Account Name")) {
-                Text(vm.accountList.data.readyValue?[txn.accountId]?.name ?? "(unknown)")
+                Text(vm.accountList.data.readyValue?[journal.accountId]?.name ?? "(unknown)")
             }
 
-            if txn.transCode == .transfer {
+            if journal.transCode == .transfer {
                 Section(header: Text("To Account")) {
-                    Text(vm.accountList.data.readyValue?[txn.toAccountId]?.name ?? "(unknown)")
+                    Text(vm.accountList.data.readyValue?[journal.toAccountId]?.name ?? "(unknown)")
                 }
             } else {
                 Section(header: Text("Payee")) {
-                    Text(vm.payeeList.data.readyValue?[txn.payeeId]?.name ?? "(unknown)")
+                    Text(vm.payeeList.data.readyValue?[journal.payeeId]?.name ?? "(unknown)")
                 }
             }
 
-            if txn.splits.isEmpty {
+            if journal.splits.isEmpty {
                 Section(header: Text("Category")) {
-                    Text(vm.categoryList.evalPath.readyValue?[txn.categId] ?? "(unknown)")
+                    Text(vm.categoryList.evalPath.readyValue?[journal.categId] ?? "(unknown)")
                 }
             } else {
                 Section(header: Text("Splits")) {
@@ -70,14 +69,14 @@ struct TransactionDetailView: View {
                             .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
                     }
                     // rows
-                    ForEach(txn.splits) { split in
+                    ForEach(journal.splits) { split in
                         HStack {
                             Text(vm.categoryList.evalPath.readyValue?[split.categId] ?? "(unknown)")
                                 .frame(maxWidth: .infinity, alignment: .leading) // Align to the left
 
                             Text(split.amount.formatted(
                                 by: vm.currencyList.info.readyValue?[
-                                    vm.accountList.data.readyValue?[txn.accountId]?.currencyId ?? .void
+                                    vm.accountList.data.readyValue?[journal.accountId]?.currencyId ?? .void
                                 ]?.formatter
                             ))
                             .frame(width: 80, alignment: .center) // Centered with fixed width
@@ -90,12 +89,12 @@ struct TransactionDetailView: View {
             }
 
             Section(header: Text("Notes")) {
-                Text(txn.notes)
+                Text(journal.notes)
             }
 
             Section {
                 Button("Delete Transaction") {
-                    if vm.deleteTransaction(txn) {
+                    if vm.deleteJournal(journal) {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
@@ -108,7 +107,7 @@ struct TransactionDetailView: View {
             // Export button for pasteboard and external storage
             Menu {
                 Button("Copy to Clipboard") {
-                    txn.copyToPasteboard()
+                    // journal.copyToPasteboard()
                 }
                 Button("Export as JSON File") {
                     isExporting = true
@@ -119,7 +118,6 @@ struct TransactionDetailView: View {
             }
             Button {
                 editSheetIsPresented = true
-                editingTxn = txn
             } label: {
                 Image(systemName: "square.and.pencil")
                     .font(.footnote)
@@ -130,17 +128,16 @@ struct TransactionDetailView: View {
             NavigationView {
                 TransactionEditView(
                     isPresented: $editSheetIsPresented,
-                    txn: $txn,
-                    editingTxn: $editingTxn
+                    journal: $journal
                 )
             }
         }
-
+/*
         .fileExporter(
             isPresented: $isExporting,
-            document: ExportableEntityDocument(entity: txn),
+            document: ExportableEntityDocument(entity: journal),
             contentType: .json,
-            defaultFilename: String(format: "%d_Transaction", txn.id.value)
+            defaultFilename: String(format: "%d_Transaction", journal.id.value)
         ) { result in
             switch result {
             case .success(let url):
@@ -149,6 +146,7 @@ struct TransactionDetailView: View {
                 log.error("Error exporting file: \(error)")
             }
         }
+ */
     }
 }
 
