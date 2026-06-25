@@ -230,12 +230,25 @@ extension JournalData {
     }
     
     var isValid: Bool {
-        return (
-            (!payeeId.isVoid && [.withdrawal, .deposit].contains(transCode)) ||
-            (!toAccountId.isVoid && transCode == .transfer)
-        ) && (!categId.isVoid || splits.count >= 2)
+        guard [.withdrawal, .deposit, .transfer].contains(transCode) else { return false }
+
+        if transCode == .transfer {
+            guard !toAccountId.isVoid, toAccountId != accountId else { return false }
+        } else {
+            guard !payeeId.isVoid else { return false }
+        }
+        guard transAmount >= 0 else { return false }
+
+        if !categId.isVoid {
+            return splits.isEmpty
+        } else {
+            guard splits.count >= 2 else { return false }
+            let totalSplit = splits.reduce(0) { $0 + $1.amount }
+            let absTotal = abs(totalSplit)
+            return abs(absTotal - transAmount) < 0.000001
+        }
     }
-    
+
     var id: DataId {
         return type == .transaction ? transactionId: scheduledId
     }

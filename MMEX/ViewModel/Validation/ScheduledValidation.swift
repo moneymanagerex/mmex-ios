@@ -75,6 +75,20 @@ extension ScheduledData {
             }
         }
 
+        if transAmount == 0 { return "Amount cannot be zero" }
+
+        if transCode == .transfer {
+            guard !toAccountId.isVoid else { return "To Account is required for transfers" }
+            if toAccountId == accountId { return "To Account cannot be the same as Account" }
+        }
+
+        if !splits.isEmpty {
+            let total = splits.reduce(0) { $0 + $1.amount }
+            if abs(abs(total) - transAmount) > 0.000001 {
+                return "Split amounts must sum to the transaction amount"
+            }
+        }
+
         return nil
     }
 

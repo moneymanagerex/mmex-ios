@@ -34,10 +34,14 @@ struct EnterView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    _ = vm.saveJournal(&newJournal)
-                    dismiss()
-                    selectedTab = Preference.selectedTab
-                    resetJournal()
+                    if (vm.saveJournal(&newJournal)) {
+                        dismiss()
+                        selectedTab = Preference.selectedTab
+                        resetJournal()
+                    } else {
+                        // TODO
+                        log.warning("Failed to save journal: (newJournal)")
+                    }
                 }
                 .disabled(!newJournal.isValid)
             }
