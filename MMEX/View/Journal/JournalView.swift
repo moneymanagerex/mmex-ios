@@ -107,6 +107,15 @@ struct JournalView: View {
                         .foregroundColor(.blue)
                 }
 
+                // Add a small type badge
+                VStack {
+                    Image(systemName: txn.type == .transaction ? "checkmark.circle" :
+                            txn.type == .scheduled ? "clock.arrow.circlepath" :
+                            "clock")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                }
+
                 // Middle column (Payee Name & Time)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(getPayeeName(for: txn)) // Payee name

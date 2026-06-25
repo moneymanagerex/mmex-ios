@@ -40,6 +40,17 @@ struct RecentTransactionsView: View {
                     }
                     .font(.caption)
                 }
+                // "View All" link placed here
+                NavigationLink("View All") {
+                    JournalView()
+                }
+                .font(.caption)
+                .foregroundColor(.accentColor)
+
+                if journals.count > 0 {
+                    BadgeCount(count: journals.count)
+                        .padding(.leading, 4)
+                }
             }
             .padding(.horizontal)
             
@@ -66,15 +77,6 @@ struct RecentTransactionsView: View {
                     .padding(.vertical, 4)
                     Divider()
                 }
-            }
-            
-            NavigationLink {
-                JournalView()
-            } label: {
-                Text("View All (\(journals.count))")
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding()
-                    .font(.subheadline)
             }
         }
     }
