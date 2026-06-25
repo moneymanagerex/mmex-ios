@@ -62,6 +62,14 @@ struct ScheduledOverviewView: View {
             if viewModel.isLoading {
                 ProgressView().scaleEffect(0.7)
             }
+
+            // Add "View All" link
+            NavigationLink("View All") {
+                JournalView()  // opens the journal list
+            }
+            .font(.caption)
+            .foregroundColor(.accentColor)
+
             let count = viewModel.overdue.count + viewModel.dueToday.count +
                         viewModel.dueSoon.count + viewModel.upcoming.count
             if count > 0 {

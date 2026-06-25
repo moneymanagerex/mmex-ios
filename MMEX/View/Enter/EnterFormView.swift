@@ -187,10 +187,24 @@ struct EnterFormView: View {
                         HStack {
                             Text("Occurrences")
                             Spacer()
-                            TextField("-1 = infinite", value: $journal.repeatNum, format: .number)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.trailing)
-                                .frame(width: 100)
+                            HStack(spacing: 4) {
+                                TextField("", value: $journal.repeatNum, format: .number)
+                                    .frame(width: 50)
+                                    .multilineTextAlignment(.trailing)
+                                    .keyboardType(.numberPad)
+                                    .disabled(journal.repeatNum == -1)  // 无限时不可编辑
+
+                                Text(journal.repeatNum == -1 ? "∞" : "times")
+                                    .foregroundColor(journal.repeatNum == -1 ? .accentColor : .secondary)
+                                    .onTapGesture {
+                                        // 切换无限模式
+                                        if journal.repeatNum == -1 {
+                                            journal.repeatNum = 1
+                                        } else {
+                                            journal.repeatNum = -1
+                                        }
+                                    }
+                            }
                         }
                     }
                     DatePicker("Next Due Date", selection: $journal.dueDate.date, displayedComponents: [.date])

@@ -522,6 +522,9 @@
         }
       }
     },
+    "∞" : {
+
+    },
     "💡 Daily avg: %@, total: %@" : {
 
     },
@@ -8209,6 +8212,9 @@
         }
       }
     },
+    "Mark Paid" : {
+
+    },
     "MMEX4iOS" : {
       "localizations" : {
         "cs" : {
@@ -12613,6 +12619,9 @@
         }
       }
     },
+    "times" : {
+
+    },
     "To Account" : {
       "localizations" : {
         "cs" : {
@@ -13395,7 +13404,7 @@
         }
       }
     },
-    "View All (%lld)" : {
+    "View All" : {
 
     },
     "Visit Official Website" : {
