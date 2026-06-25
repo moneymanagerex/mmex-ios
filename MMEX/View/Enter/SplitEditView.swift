@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SplitEditView: View {
-    @Binding var split: TransactionSplitData
-    var onSave: (TransactionSplitData) -> Void
+    @Binding var split: JournalSplitData
+    var onSave: (JournalSplitData) -> Void
     var onDelete: (() -> Void)?
 
     @Environment(\.dismiss) private var dismiss

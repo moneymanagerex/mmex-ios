@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecentTransactionsView: View {
-    let transactions: [TransactionData]
+    let journals: [JournalData]
     @Binding var selectedFilter: TransactionType?
     let showAccountLabel: Bool
     let formatter: CurrencyFormatter?
@@ -16,11 +16,11 @@ struct RecentTransactionsView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     
-    private var filteredTransactions: [TransactionData] {
+    private var filteredTransactions: [JournalData] {
         guard let filter = selectedFilter else {
-            return Array(transactions.sorted { $0.transDate.string > $1.transDate.string }.prefix(7))
+            return Array(journals.sorted { $0.transDate.string > $1.transDate.string }.prefix(7))
         }
-        return transactions.filter { $0.transCode == filter }
+        return journals.filter { $0.transCode == filter }
             .sorted { $0.transDate.string > $1.transDate.string }
             .prefix(7)
             .map { $0 }
@@ -51,13 +51,13 @@ struct RecentTransactionsView: View {
             } else {
                 ForEach(filteredTransactions, id: \.id) { txn in
                     NavigationLink(
-                        destination: TransactionDetailView(txn: Binding(
+                        destination: TransactionDetailView(journal: Binding(
                             get: { txn },
                             set: { _ in } // readonly
                         ))
                     ) {
                         TransactionRow(
-                            txn: txn,
+                            journal: txn,
                             showAccountLabel: showAccountLabel,
                             formatter: formatter
                         )
@@ -71,7 +71,7 @@ struct RecentTransactionsView: View {
             NavigationLink {
                 JournalView()
             } label: {
-                Text("View All (\(transactions.count))")
+                Text("View All (\(journals.count))")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding()
                     .font(.subheadline)
@@ -83,7 +83,7 @@ struct RecentTransactionsView: View {
 // RecentTransactionsView.swift
 
 struct TransactionRow: View {
-    let txn: TransactionData
+    let journal: JournalData
     let showAccountLabel: Bool
     let formatter: CurrencyFormatter?
 
@@ -92,16 +92,16 @@ struct TransactionRow: View {
 
     // 计算 Payee 显示名称（与 JournalView 逻辑一致）
     private var payeeDisplayName: String {
-        if txn.transCode == .transfer {
+        if journal.transCode == .transfer {
             // 转账：显示目标账户名（带箭头方向）
-            if let toAccount = vm.accountList.data.readyValue?[txn.toAccountId] {
+            if let toAccount = vm.accountList.data.readyValue?[journal.toAccountId] {
                 return "> \(toAccount.name)"
             } else {
                 return "Transfer"
             }
         } else {
             // 普通交易：从 payeeList 获取名称
-            if let payee = vm.payeeList.data.readyValue?[txn.payeeId] {
+            if let payee = vm.payeeList.data.readyValue?[journal.payeeId] {
                 return payee.name
             } else {
                 return "(unknown)"
@@ -122,7 +122,7 @@ struct TransactionRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            let categoryName = vm.categoryList.data.readyValue?[txn.categId]?.name ?? ""
+            let categoryName = vm.categoryList.data.readyValue?[journal.categId]?.name ?? ""
             let symbol = pref.symbol.category2symbol[categoryName] ?? "tag.fill"
             Image(systemName: symbol)
                 .frame(width: 30, alignment: .leading)
@@ -133,7 +133,7 @@ struct TransactionRow: View {
                 Text(payeeDisplayName)
                     .font(.system(size: 16))
                     .lineLimit(1)
-                Text(formatTime(txn.transDate.string))
+                Text(formatTime(journal.transDate.string))
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
             }
@@ -141,10 +141,10 @@ struct TransactionRow: View {
 
             Spacer()
 
-            Text(txn.transAmount.formatted(by: formatter))
+            Text(journal.transAmount.formatted(by: formatter))
                 .frame(alignment: .trailing)
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(txn.transCode == .deposit ? .green : .red)
+                .foregroundColor(journal.transCode == .deposit ? .green : .red)
         }
         .padding(.vertical, 2)
     }

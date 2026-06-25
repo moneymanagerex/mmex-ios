@@ -1,5 +1,5 @@
 //
-//  CheckingListView.swift
+//  TransactionListView.swift
 //  MMEX
 //
 //  Created by Lisheng Guan on 2024/9/10.
@@ -11,21 +11,20 @@ struct TransactionListView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
 
-    @State private var txns: [TransactionData] = []
-    @State private var newTxn = TransactionData()
+    @State private var newTxn = JournalData()
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
 
     @State private var createSheetIsPresented = false
 
     var body: some View {
         Group {
-            List($vm.txns) { $txn in
+            List($vm.journals) { $journal in
                 NavigationLink(
-                    destination: TransactionDetailView(txn: $txn)
+                    destination: TransactionDetailView(journal: $journal)
                 ) {
                     HStack {
                         // Left column: Date (truncated to day)
-                        Text(formatDate(from: txn.transDate.string))
+                        Text(formatDate(from: journal.transDate.string))
                             .frame(width: 90, alignment: .leading)
                             .font(.system(size: 16))
                             .foregroundColor(.gray)
@@ -35,10 +34,10 @@ struct TransactionListView: View {
 
                         // Middle column: Payee name and Category icon (or ID)
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(getPayeeName(for: txn))
+                            Text(getPayeeName(for: journal))
                                 .font(.system(size: 16))
                                 .lineLimit(1) // Prevent wrapping
-                            Text("\(txn.transCode.rawValue)") // Replace with transcode name if available
+                            Text("\(journal.transCode.rawValue)") // Replace with transcode name if available
                                 .font(.system(size: 14))
                                 .foregroundColor(.gray)
                         }
@@ -48,10 +47,10 @@ struct TransactionListView: View {
                         Spacer()
 
                         // Right column: Amount
-                        Text(String(format: "%.2f", txn.transAmount))
+                        Text(String(format: "%.2f", journal.transAmount))
                             .frame(alignment: .trailing)
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(txn.transAmount >= 0 ? .green : .red)
+                            .foregroundColor(journal.transAmount >= 0 ? .green : .red)
                     }
                 }
             }
@@ -85,10 +84,10 @@ struct TransactionListView: View {
             NavigationView {
                 TransactionCreateView(
                     isPresented: $createSheetIsPresented,
-                    newTxn: $newTxn
+                    newJournal: $newTxn
                 ) { newTxn in
-                    vm.addTransaction(txn: &newTxn)
-                    newTxn = TransactionData()
+                    _ = vm.saveJournal(&newTxn)
+                    newTxn = JournalData()
                 }
             }
         }
@@ -96,6 +95,8 @@ struct TransactionListView: View {
         .onAppear {
             log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
             Task {
+                await vm.loadTransactionList(pref)
+                await vm.loadJournalList(pref)
                 await vm.loadEnterList(pref)
                 if let defaultAccountId = vm.infotableList.defaultAccountId.readyValue {
                     newTxn.accountId = defaultAccountId
@@ -105,7 +106,7 @@ struct TransactionListView: View {
         }
     }
 
-    func getPayeeName(for txn: TransactionData) -> String {
+    func getPayeeName(for txn: JournalData) -> String {
         if txn.transCode == .transfer {
             if let toAccount = vm.accountList.data.readyValue?[txn.toAccountId] {
                 String(format: "> \(toAccount.name)")
@@ -135,9 +136,8 @@ struct TransactionListView: View {
     func loadSelectedTransactions() {
         let startDate = Calendar.current.date(from: DateComponents(year: selectedYear, month: 1, day: 1)) ?? Date()
         let endDate = Calendar.current.date(from: DateComponents(year: selectedYear + 1, month: 1, day: 1))?.addingTimeInterval(-1) ?? Date()
-        Task {
-            let data = await vm.loadTransactions(db: vm.db, for: nil, startDate: startDate, endDate: endDate)
-            vm.groupTransactions(data)
+        Task {            
+            vm.loadJournals(accountId: nil, startDate: startDate, endDate: endDate)
         }
     }
 }

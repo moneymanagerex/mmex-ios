@@ -4719,10 +4719,14 @@
         }
       }
     },
+    "Delete Journal" : {
+
+    },
     "Delete Split" : {
 
     },
     "Delete Transaction" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -6008,6 +6012,9 @@
           }
         }
       }
+    },
+    "Frequency" : {
+
     },
     "General" : {
       "localizations" : {
@@ -8658,6 +8665,9 @@
         }
       }
     },
+    "Next Due Date" : {
+
+    },
     "No" : {
       "localizations" : {
         "ar" : {
@@ -8908,6 +8918,9 @@
         }
       }
     },
+    "No splits" : {
+
+    },
     "No transactions in this period" : {
 
     },
@@ -9110,6 +9123,9 @@
           }
         }
       }
+    },
+    "Occurrences" : {
+
     },
     "OK" : {
       "localizations" : {
@@ -9860,6 +9876,9 @@
     "Recent" : {
 
     },
+    "Recurring Settings" : {
+
+    },
     "Release Notes" : {
       "localizations" : {
         "cs" : {
@@ -9917,6 +9936,9 @@
           }
         }
       }
+    },
+    "Repeat" : {
+
     },
     "Report an Issue" : {
       "localizations" : {
@@ -10115,6 +10137,9 @@
       }
     },
     "Schedule" : {
+
+    },
+    "Scheduled" : {
 
     },
     "Scheduled Transactions" : {
@@ -12828,6 +12853,9 @@
         }
       }
     },
+    "Transaction" : {
+
+    },
     "Transaction Amount" : {
       "localizations" : {
         "cs" : {
@@ -13123,6 +13151,9 @@
           }
         }
       }
+    },
+    "Type" : {
+
     },
     "Upcoming Features" : {
       "localizations" : {
