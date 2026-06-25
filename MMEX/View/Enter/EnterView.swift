@@ -39,7 +39,9 @@ struct EnterView: View {
                         selectedTab = Preference.selectedTab
                         resetJournal()
                     } else {
-                        log.warning("Failed to save journal (type=\(newJournal.type), code=\(newJournal.transCode), amount=\(newJournal.transAmount))")
+                        // TODO
+                        log.warning("Failed to save journal: (newJournal)")
+                    }
                 }
                 .disabled(!newJournal.isValid)
             }
