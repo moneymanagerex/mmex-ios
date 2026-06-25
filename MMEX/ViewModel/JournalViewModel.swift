@@ -17,7 +17,7 @@ extension ViewModel {
     }
     
     func filterJournals(by query: String) {
-        log.debug("DEBUG: ViewModel.filterTransactions(\(query)")
+        log.debug("DEBUG: ViewModel.filterJournals(\(query))")
 
         var payeeIdOffer: Set<DataId> = []
         var categoryOffer: Set<DataId> = []

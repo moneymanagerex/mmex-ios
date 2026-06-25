@@ -45,7 +45,7 @@ struct EnterView: View {
                 KeyboardFocus(focus: $focus)
             }
         }
-        task {
+        .task {
             await load()
         }
         .onChange(of: journalType) { _, newType in

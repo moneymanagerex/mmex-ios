@@ -93,7 +93,7 @@ struct TransactionDetailView: View {
             }
 
             Section {
-                Button("Delete Transaction") {
+                Button("Delete Journal") {
                     if vm.deleteJournal(journal) {
                         presentationMode.wrappedValue.dismiss()
                     }
@@ -107,7 +107,7 @@ struct TransactionDetailView: View {
             // Export button for pasteboard and external storage
             Menu {
                 Button("Copy to Clipboard") {
-                    // journal.copyToPasteboard()
+                    journal.copyToPasteboard()
                 }
                 Button("Export as JSON File") {
                     isExporting = true
@@ -132,7 +132,6 @@ struct TransactionDetailView: View {
                 )
             }
         }
-/*
         .fileExporter(
             isPresented: $isExporting,
             document: ExportableEntityDocument(entity: journal),
@@ -146,7 +145,6 @@ struct TransactionDetailView: View {
                 log.error("Error exporting file: \(error)")
             }
         }
- */
     }
 }
 

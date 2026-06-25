@@ -30,7 +30,7 @@ enum JournalType: Int, CaseIterable, Identifiable, Codable {
     var name: String { Self.names[self.rawValue] }
 }
 
-struct JournalData: Identifiable {
+struct JournalData: ExportableEntity {
     // type == .transaction:
     //   transactionId : same as TransactionData.id
     //   scheduledId   = .void

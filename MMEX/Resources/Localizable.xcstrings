@@ -4733,10 +4733,14 @@
         }
       }
     },
+    "Delete Journal" : {
+
+    },
     "Delete Split" : {
 
     },
     "Delete Transaction" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
