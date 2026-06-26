@@ -90,9 +90,6 @@ class ViewModel: ObservableObject {
     typealias R = ReportRepository
     @Published var reportList  : ReportList  = .init()
     @Published var reportGroup : ReportGroup = .init()
-
-    // moved from TransactionViewModel.swift
-    @Published var txns: [TransactionData] = []
     
     // moved from JournalDataViewModel.swift
     @Published var journals: [JournalData] = []
