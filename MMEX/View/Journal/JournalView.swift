@@ -15,7 +15,12 @@ struct JournalView: View {
     @StateObject private var debounce = RepositorySearchDebounce()
 
     @State private var typeFilter: JournalType? = nil
-    var initialTypeFilter: JournalType? = nil
+    let initialTypeFilter: JournalType?
+
+    init(initialTypeFilter: JournalType? = nil) {
+        self.initialTypeFilter = initialTypeFilter
+        _typeFilter = State(initialValue: initialTypeFilter)
+    }
 
     private var filteredJournals: [JournalData] {
         guard let type = typeFilter else { return vm.journals }
@@ -110,11 +115,6 @@ struct JournalView: View {
             await vm.loadJournalList(pref)
             Task {
                 vm.loadJournals(accountId: context.selectedAccountId)
-            }
-        }
-        .onAppear {
-            if let initial = initialTypeFilter {
-                typeFilter = initial
             }
         }
     }
