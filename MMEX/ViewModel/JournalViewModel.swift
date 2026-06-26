@@ -12,43 +12,36 @@ extension ViewModel {
         guard let repo = JournalRepository(db) else { return }
         let journals = repo.loadJournals(accountId: accountId, startDate: startDate, endDate: endDate, includeScheduled: includeScheduled)
         self.journals = journals
-        // 按天分组
-        self.journals_per_day = Dictionary(grouping: journals) { $0.transDate.string.prefix(10).description }
     }
     
-    func filterJournals(by query: String) {
-        log.debug("DEBUG: ViewModel.filterJournals(\(query))")
+    func groupJournals(searchQuery: String, typeFilter: JournalType? = nil) -> [String: [JournalData]] {
+        var result = journals
 
-        var payeeIdOffer: Set<DataId> = []
-        var categoryOffer: Set<DataId> = []
+        if let type = typeFilter {
+            result = result.filter { $0.type == type }
+        }
 
-        if query.isEmpty {
-            payeeIdOffer = Set(payeeList.order.readyValue ?? [])
-            categoryOffer = Set(categoryList.order.readyValue ?? [])
-        } else {
-            for (id, payee) in payeeList.data.readyValue ?? [:] {
-                if payee.name.localizedCaseInsensitiveContains(query) {
-                    payeeIdOffer.insert(id)
+        if !searchQuery.isEmpty {
+            result = result.filter { journal in
+                // Payee
+                let payeeMatch = payeeList.data.readyValue?[journal.payeeId]?.name
+                    .localizedCaseInsensitiveContains(searchQuery) ?? false
+                // Notes
+                let notesMatch = journal.notes.localizedCaseInsensitiveContains(searchQuery)
+                // Category
+                let categoryMatch = categoryList.evalPath.readyValue?[journal.categId]?
+                    .localizedCaseInsensitiveContains(searchQuery) ?? false
+                // Splits
+                let splitMatch = journal.splits.contains { split in
+                    split.notes.localizedCaseInsensitiveContains(searchQuery) ||
+                    categoryList.evalPath.readyValue?[split.categId]?
+                        .localizedCaseInsensitiveContains(searchQuery) ?? false
                 }
-            }
-
-            for (id, category) in categoryList.evalPath.readyValue ?? [:] {
-                if category.localizedCaseInsensitiveContains(query) {
-                    categoryOffer.insert(id)
-                }
+                return payeeMatch || notesMatch || categoryMatch || splitMatch
             }
         }
 
-        let filteredJournals = query.isEmpty ? journals : journals.filter { journal in
-            journal.notes.localizedCaseInsensitiveContains(query) ||
-            journal.splits.contains { split in
-                split.notes.localizedCaseInsensitiveContains(query)
-                || categoryOffer.contains(split.categId)
-            }
-            || payeeIdOffer.contains(journal.payeeId)
-            || categoryOffer.contains(journal.categId)
-        }
-        self.journals_per_day = Dictionary(grouping: filteredJournals) { journal in
+        return Dictionary(grouping: result) { journal in
             String(journal.transDate.string.prefix(10))
         }
     }
