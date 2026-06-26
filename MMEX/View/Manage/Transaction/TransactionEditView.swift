@@ -36,9 +36,12 @@ struct TransactionEditView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    journal = editedJournal
-                    _ = vm.saveJournal(&journal)
-                    isPresented = false
+                    if (vm.saveJournal(&editedJournal)) {
+                        journal = editedJournal
+                        isPresented = false
+                    } else {
+                        log.warning("Failed to save journal: (newJournal)")
+                    }
                 }
                 .disabled(!editedJournal.isValid)
             }
