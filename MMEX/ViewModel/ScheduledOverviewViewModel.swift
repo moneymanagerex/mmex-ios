@@ -98,10 +98,34 @@ class ScheduledOverviewViewModel: ObservableObject {
         }
         
         guard let nextDate = item.scheduled.nextDueDate(from: item.nextDueDate) else {
-            return true
+            var completed = item.scheduled
+            completed.status = .void
+            completed.repeatAuto = .none
+            completed.repeatType = .once
+            completed.repeatNum = 0
+
+            return updateScheduled(completed, in: vm)
         }
         var updated = item.scheduled
         updated.dueDate = DateString(nextDate)
+
+        if let typeNum = item.scheduled.repeatTypeNum {
+            switch typeNum {
+            case .times(let type, let remaining):
+                if remaining.value > 1 {
+                    updated.repeatNum = remaining.value - 1
+                    updated.repeatType = type
+                } else {
+                    updated.status = .void
+                    updated.repeatAuto = .none
+                    updated.repeatType = .once
+                    updated.repeatNum = 0
+                }
+            default:
+                break
+            }
+        }
+
         return updateScheduled(updated, in: vm)
     }
     
@@ -119,7 +143,7 @@ class ScheduledOverviewViewModel: ObservableObject {
             payeeId: scheduled.payeeId,
             transCode: scheduled.transCode,
             transAmount: scheduled.transAmount,
-            status: .reconciled,
+            status: scheduled.status,
             transactionNumber: scheduled.transactionNumber,
             notes: scheduled.notes,
             categId: scheduled.categId,
@@ -143,7 +167,7 @@ class ScheduledOverviewViewModel: ObservableObject {
         
         guard let repo = TransactionRepository(vm.db) else { return false }
         var txn = transaction
-        return repo.insert(&txn)
+        return repo.insertWithSplits(&txn)
     }
 }
 

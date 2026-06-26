@@ -77,18 +77,6 @@ struct TransactionDetailView: View {
                             Text(journal.repeatNum == -1 ? "Infinite" : "\(journal.repeatNum)")
                         }
                     }
-                    // Action buttons (only if not void?)
-                    HStack {
-                        Button("Skip") {
-                            // Implement skip logic (update nextDueDate)
-                        }
-                        .buttonStyle(.bordered)
-                        Button("Mark Paid") {
-                            // Create a transaction from this scheduled entry and advance due date
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.green)
-                    }
                 }
             }
 
