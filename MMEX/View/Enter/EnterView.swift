@@ -16,7 +16,6 @@ struct EnterView: View {
 
     @State private var focus = false
     @State var newJournal: JournalData = .newTransaction()
-    @State private var journalType: JournalType = .transaction
     
     var body: some View {
         EnterFormView(
@@ -51,13 +50,6 @@ struct EnterView: View {
         }
         .task {
             await load()
-        }
-        .onChange(of: journalType) { _, newType in
-            if newType == .transaction {
-                newJournal = .newTransaction()
-            } else {
-                newJournal = .newScheduled()
-            }
         }
     }
 
@@ -96,7 +88,6 @@ struct EnterView: View {
     
     private func resetJournal() {
         newJournal = .newTransaction()
-        journalType = .transaction
     }
 
     func loadLatestTxn(for accountId: DataId) {
