@@ -116,7 +116,7 @@ struct TransactionRow: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         if let dateTime = formatter.date(from: dateTimeString) {
-            formatter.dateFormat = "h:mm a"
+            formatter.dateFormat = "yyyy-MM-dd h:mm a"
             return formatter.string(from: dateTime)
         }
         return dateTimeString
@@ -138,8 +138,9 @@ struct TransactionRow: View {
                 Text(formatTime(journal.transDate.string))
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
+                    .lineLimit(1)
             }
-            .frame(minWidth: 100, alignment: .leading)
+            .frame(minWidth: 150, alignment: .leading)
 
             Spacer()
 
