@@ -10,25 +10,45 @@ import SwiftUI
 struct JournalView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var context: AppContext
 
     @StateObject private var debounce = RepositorySearchDebounce()
-    @EnvironmentObject var context: AppContext
+
+    @State private var typeFilter: JournalType? = nil
+    var initialTypeFilter: JournalType? = nil
+
+    private var filteredJournals: [JournalData] {
+        guard let type = typeFilter else { return vm.journals }
+        return vm.journals.filter { $0.type == type }
+    }
+
+    private var groupedJournals: [String: [JournalData]] {
+        Dictionary(grouping: filteredJournals) { journal in
+            String(journal.transDate.string.prefix(10))
+        }
+    }
+
+    private var sortedDays: [String] {
+        groupedJournals.keys.sorted(by: >)
+    }
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(vm.journals_per_day.keys.sorted(by: >), id: \.self) { day in
-                    Section(
-                        header: HStack {
-                            Text(humanReadableDate(day))
-                                .font(.headline)
-                            Spacer()
-                            Text("Total: \(calculateTotal(for: day))")
-                                .font(.subheadline)
-                        }
-                    ) {
-                        ForEach(vm.journals_per_day[day]!, id: \.id) { journal in
-                            transactionView(journal, for: day)
+                ForEach(sortedDays, id: \.self) { day in
+                    if let journals = groupedJournals[day] {
+                        Section(
+                            header: HStack {
+                                Text(humanReadableDate(day))
+                                    .font(.headline)
+                                Spacer()
+                                Text("Total: \(calculateTotal(for: journals))")
+                                    .font(.subheadline)
+                            }
+                        ) {
+                            ForEach(journals, id: \.id) { journal in
+                                transactionView(journal, for: day)
+                            }
                         }
                     }
                 }
@@ -63,6 +83,21 @@ struct JournalView: View {
                         }
                     }
                 }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu {
+                        Button("All") { typeFilter = nil }
+                        Button("Transactions") { typeFilter = .transaction }
+                        Button("Future") { typeFilter = .future }
+                        Button("Scheduled") { typeFilter = .scheduled }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "line.3.horizontal.decrease.circle")
+                            Text(typeFilter?.name ?? "All")
+                                .font(.caption)
+                        }
+                    }
+                }
             }
             .searchable(text: $debounce.input, prompt: "Search by keyword")
             .onChange(of: debounce.output) { _, query in
@@ -77,17 +112,22 @@ struct JournalView: View {
                 vm.loadJournals(accountId: context.selectedAccountId)
             }
         }
+        .onAppear {
+            if let initial = initialTypeFilter {
+                typeFilter = initial
+            }
+        }
     }
 
     func transactionView(_ txn: JournalData, for day: String) -> some View {
         NavigationLink(destination: TransactionDetailView(
             journal: Binding(
                 get: {
-                    self.vm.journals_per_day[day]?.first(where: { $0.id == txn.id }) ?? txn
+                    self.groupedJournals[day]?.first(where: { $0.id == txn.id }) ?? txn
                 },
                 set: { newTxn in
-                    if let index = self.vm.journals_per_day[day]?.firstIndex(where: { $0.id == txn.id }) {
-                        self.vm.journals_per_day[day]?[index] = newTxn
+                    if let index = vm.journals.firstIndex(where: { $0.id == txn.id }) {
+                        vm.journals[index] = newTxn
                     }
                 }
             )
@@ -181,9 +221,8 @@ struct JournalView: View {
         return "(uknown)"
     }
 
-    func calculateTotal(for day: String) -> String {
-        let transactions = vm.journals_per_day[day] ?? []
-        let totalAmount = transactions.reduce(0.0) { $0 + $1.actual }
+    func calculateTotal(for journals: [JournalData]) -> String {
+        let totalAmount = journals.reduce(0.0) { $0 + $1.actual }
         let account = vm.accountList.data.readyValue?[context.selectedAccountId]
         let formatter = vm.currencyList.info.readyValue?[account?.currencyId ?? .void]?.formatter
         return totalAmount.formatted(by: formatter)

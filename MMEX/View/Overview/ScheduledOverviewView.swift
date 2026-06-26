@@ -65,7 +65,7 @@ struct ScheduledOverviewView: View {
 
             // Add "View All" link
             NavigationLink("View All") {
-                JournalView()  // opens the journal list
+                JournalView(initialTypeFilter: .scheduled)  // opens the journal list
             }
             .font(.caption)
             .foregroundColor(.accentColor)

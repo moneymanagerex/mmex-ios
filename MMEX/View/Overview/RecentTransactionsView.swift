@@ -42,7 +42,7 @@ struct RecentTransactionsView: View {
                 }
                 // "View All" link placed here
                 NavigationLink("View All") {
-                    JournalView()
+                    JournalView(initialTypeFilter: .transaction)
                 }
                 .font(.caption)
                 .foregroundColor(.accentColor)
