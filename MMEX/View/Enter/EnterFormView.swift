@@ -14,8 +14,6 @@ struct EnterFormView: View {
     @Binding var journal: JournalData
 
     @FocusState var focusState: Int?
-    @State private var selectedDate = Date()
-    @State private var selectedDueDate = Date()
 
     @State private var editSplitData = JournalSplitData()
     @State private var editingSplitIndex: Int? = nil
@@ -93,10 +91,6 @@ struct EnterFormView: View {
                 DatePicker("Date", selection: $journal.transDate.date, displayedComponents: [.date, .hourAndMinute])
                     .labelsHidden() // Hide the default label to save space
                     .onChange(of: journal.transDate.date) { _, newDate in
-                        // Format the date as 'YYYY-MM-DDTHH:MM:SS'
-                        //let formatter = DateFormatter()
-                        //formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-                        //journal.transDate.string = formatter.string(from: newDate) // Save as ISO-8601 formatted string without TZ
                     }
                 
                 Spacer()
@@ -210,10 +204,7 @@ struct EnterFormView: View {
                     }
                     DatePicker("Next Due Date", selection: $journal.dueDate.date, displayedComponents: [.date])
                         .onChange(of: journal.dueDate.date) { _, newDate in
-                            //journal.transDate.date = newDate
-                            //journal.dueDate.date = newDate
-
-                            //selectedDate = newDate
+                            journal.transDate.date = newDate
                         }
                 }
             }
@@ -285,8 +276,6 @@ struct EnterFormView: View {
 
         .onAppear {
             // Initialize state variables from the journal object when the view appears
-            selectedDate = journal.transDate.optDate ?? Date()
-            selectedDueDate = journal.dueDate.optDate ?? Date()
             Task {
                 try? await Task.sleep(nanoseconds: 300_000_000)
                 focusState = 1
