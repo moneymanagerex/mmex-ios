@@ -28,9 +28,7 @@ struct JournalView: View {
     }
 
     private var groupedJournals: [String: [JournalData]] {
-        Dictionary(grouping: filteredJournals) { journal in
-            String(journal.transDate.string.prefix(10))
-        }
+        vm.groupJournals(searchQuery: debounce.output, typeFilter: typeFilter)
     }
 
     private var sortedDays: [String] {
@@ -105,9 +103,9 @@ struct JournalView: View {
                 }
             }
             .searchable(text: $debounce.input, prompt: "Search by keyword")
-            .onChange(of: debounce.output) { _, query in
-                vm.filterJournals(by: query)
-            }
+ //           .onChange(of: debounce.output) { _, query in
+//              vm.filterJournals(by: query)
+//            }
         }
         .task {
             log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
