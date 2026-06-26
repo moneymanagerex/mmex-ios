@@ -87,9 +87,9 @@ struct JournalView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
                         Button("All") { typeFilter = nil }
-                        Button("Transactions") { typeFilter = .transaction }
-                        Button("Future") { typeFilter = .future }
-                        Button("Scheduled") { typeFilter = .scheduled }
+                        ForEach(JournalType.allCases, id: \.self) { type in
+                            Button(type.name) { typeFilter = type }
+                        }
                     } label: {
                         HStack(spacing: 4) {
                             Image(systemName: "line.3.horizontal.decrease.circle")
