@@ -3158,6 +3158,12 @@
         }
       }
     },
+    "Create Account" : {
+
+    },
+    "Create Category" : {
+
+    },
     "Create New Database" : {
       "localizations" : {
         "cs" : {
@@ -3215,6 +3221,9 @@
           }
         }
       }
+    },
+    "Create Payee" : {
+
     },
     "Create Sample Database" : {
       "localizations" : {
@@ -8272,6 +8281,9 @@
           }
         }
       }
+    },
+    "More create actions" : {
+
     },
     "More Insights Coming Soon..." : {
       "localizations" : {
