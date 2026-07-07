@@ -44,6 +44,9 @@ struct EnterView: View {
                 }
                 .disabled(!newJournal.isValid)
             }
+            ToolbarItem(placement: .confirmationAction) {
+                KeyboardFocus(focus: $focus)
+            }
         }
         .task {
             await load()
