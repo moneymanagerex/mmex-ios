@@ -8,11 +8,6 @@
 import SwiftUI
 
 struct EnterFormView: View {
-    private enum AccountSelectionTarget {
-        case account
-        case toAccount
-    }
-
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @Binding var focus: Bool
@@ -35,8 +30,6 @@ struct EnterFormView: View {
     @State private var newAccountData: AccountData? = nil
     @State private var newPayeeData: PayeeData? = nil
     @State private var newCategoryData: CategoryData? = nil
-
-    @State private var createAccountTarget: AccountSelectionTarget = .account
 
     var body: some View {
         VStack {
@@ -349,12 +342,7 @@ struct EnterFormView: View {
                 guard let created = newAccountData else { return }
                 Task { @MainActor in
                     await vm.reloadAccount(pref, nil as AccountData?, created)
-                    switch createAccountTarget {
-                    case .account:
-                        journal.accountId = created.id
-                    case .toAccount:
-                        journal.toAccountId = created.id
-                    }
+                    journal.accountId = created.id
                     newAccountData = nil
                 }
             }
