@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct EnterFormView: View {
+    private enum AccountSelectionTarget {
+        case account
+        case toAccount
+    }
+
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @Binding var focus: Bool
@@ -18,6 +23,20 @@ struct EnterFormView: View {
     @State private var editSplitData = JournalSplitData()
     @State private var editingSplitIndex: Int? = nil
     @State private var showingSplitEditor = false
+
+    @State private var showingCreateAccount = false
+    @State private var showingCreatePayee = false
+    @State private var showingCreateCategory = false
+
+    @State private var createAccountData = AccountListView.initData
+    @State private var createPayeeData = PayeeListView.initData
+    @State private var createCategoryData = CategoryListView.initData
+
+    @State private var newAccountData: AccountData? = nil
+    @State private var newPayeeData: PayeeData? = nil
+    @State private var newCategoryData: CategoryData? = nil
+
+    @State private var createAccountTarget: AccountSelectionTarget = .account
 
     var body: some View {
         VStack {
@@ -43,13 +62,15 @@ struct EnterFormView: View {
 
                 Spacer()
 
-                Picker("Select account", selection: $journal.accountId) {
-                    if (journal.accountId.isVoid) {
-                        Text("Account:").tag(DataId.void)
-                    }
-                    ForEach(vm.accountList.order.readyValue ?? [], id: \.self) { id in
-                        if let account = vm.accountList.data.readyValue?[id] {
-                            Text(account.name).tag(id)
+                HStack(spacing: 6) {
+                    Picker("Select account", selection: $journal.accountId) {
+                        if (journal.accountId.isVoid) {
+                            Text("Account:").tag(DataId.void)
+                        }
+                        ForEach(vm.accountList.order.readyValue ?? [], id: \.self) { id in
+                            if let account = vm.accountList.data.readyValue?[id] {
+                                Text(account.name).tag(id)
+                            }
                         }
                     }
                 }
@@ -273,6 +294,33 @@ struct EnterFormView: View {
         }
         .keyboardState(focus: $focus, focusState: $focusState)
         .padding(.horizontal)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button {
+                        prepareCreateAccount()
+                    } label: {
+                        Label("Create Account", systemImage: "plus")
+                    }
+
+                    Button {
+                        prepareCreatePayee()
+                    } label: {
+                        Label("Create Payee", systemImage: "plus")
+                    }
+
+                    Button {
+                        prepareCreateCategory()
+                    } label: {
+                        Label("Create Category", systemImage: "plus")
+                    }
+                    .disabled(!journal.splits.isEmpty)
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+                .accessibilityLabel("More create actions")
+            }
+        }
 
         .onAppear {
             // Initialize state variables from the journal object when the view appears
@@ -283,6 +331,77 @@ struct EnterFormView: View {
         }
         .onDisappear {
             focusState = nil
+        }
+        .sheet(isPresented: $showingCreateAccount) {
+            NavigationView {
+                RepositoryCreateView(
+                    isPresented: $showingCreateAccount,
+                    features: AccountListView.features,
+                    data: createAccountData,
+                    newData: $newAccountData,
+                    formView: { focus, data, edit in
+                        AccountFormView(focus: focus, data: data, edit: edit)
+                    }
+                )
+                .navigationBarTitle("Create Account", displayMode: .inline)
+            }
+            .onDisappear {
+                guard let created = newAccountData else { return }
+                Task { @MainActor in
+                    await vm.reloadAccount(pref, nil as AccountData?, created)
+                    switch createAccountTarget {
+                    case .account:
+                        journal.accountId = created.id
+                    case .toAccount:
+                        journal.toAccountId = created.id
+                    }
+                    newAccountData = nil
+                }
+            }
+        }
+        .sheet(isPresented: $showingCreatePayee) {
+            NavigationView {
+                RepositoryCreateView(
+                    isPresented: $showingCreatePayee,
+                    features: PayeeListView.features,
+                    data: createPayeeData,
+                    newData: $newPayeeData,
+                    formView: { focus, data, edit in
+                        PayeeFormView(focus: focus, data: data, edit: edit)
+                    }
+                )
+                .navigationBarTitle("Create Payee", displayMode: .inline)
+            }
+            .onDisappear {
+                guard let created = newPayeeData else { return }
+                Task { @MainActor in
+                    await vm.reloadPayee(pref, nil as PayeeData?, created)
+                    journal.payeeId = created.id
+                    newPayeeData = nil
+                }
+            }
+        }
+        .sheet(isPresented: $showingCreateCategory) {
+            NavigationView {
+                RepositoryCreateView(
+                    isPresented: $showingCreateCategory,
+                    features: CategoryListView.features,
+                    data: createCategoryData,
+                    newData: $newCategoryData,
+                    formView: { focus, data, edit in
+                        CategoryFormView(focus: focus, data: data, edit: edit)
+                    }
+                )
+                .navigationBarTitle("Create Category", displayMode: .inline)
+            }
+            .onDisappear {
+                guard let created = newCategoryData else { return }
+                Task { @MainActor in
+                    await vm.reloadCategory(pref, nil as CategoryData?, created)
+                    journal.categId = created.id
+                    newCategoryData = nil
+                }
+            }
         }
         .sheet(isPresented: $showingSplitEditor) {
             SplitEditView(
@@ -304,6 +423,30 @@ struct EnterFormView: View {
                 } : nil
             )
         }
+    }
+
+    private func prepareCreateAccount() {
+        createAccountTarget = .account
+        var data = AccountListView.initData
+        data.currencyId = vm.accountList.data.readyValue?[journal.accountId]?.currencyId
+            ?? vm.accountList.order.readyValue?.first.flatMap { vm.accountList.data.readyValue?[$0]?.currencyId }
+            ?? .void
+        createAccountData = data
+        showingCreateAccount = true
+    }
+
+    private func prepareCreatePayee() {
+        var data = PayeeListView.initData
+        if !journal.categId.isVoid {
+            data.categoryId = journal.categId
+        }
+        createPayeeData = data
+        showingCreatePayee = true
+    }
+
+    private func prepareCreateCategory() {
+        createCategoryData = CategoryListView.initData
+        showingCreateCategory = true
     }
 }
 
