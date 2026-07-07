@@ -414,7 +414,6 @@ struct EnterFormView: View {
     }
 
     private func prepareCreateAccount() {
-        createAccountTarget = .account
         var data = AccountListView.initData
         data.currencyId = vm.accountList.data.readyValue?[journal.accountId]?.currencyId
             ?? vm.accountList.order.readyValue?.first.flatMap { vm.accountList.data.readyValue?[$0]?.currencyId }
