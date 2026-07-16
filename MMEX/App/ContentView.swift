@@ -114,12 +114,12 @@ struct ContentView: View {
                     isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
                 )
+                .id(detailTabSelection)
             }
             .sheet(isPresented: $isPresentingTransactionAddView) {
                 NavigationStack {
                     EnterView(
-                        selectedTab: $selectedTab,
-                        dismissSelection: iPadReturnTab
+                        selectedTab: iPadEnterSelectionBinding
                     )
                 }
             }
@@ -225,10 +225,7 @@ struct ContentView: View {
 
     private func enterTab() -> some View {
         NavigationView {
-            EnterView(
-                selectedTab: $selectedTab,
-                dismissSelection: Preference.selectedTab
-            )
+            EnterView(selectedTab: $selectedTab)
                 .navigationBarTitle("Enter", displayMode: .inline)
         }
         .tabItem {
@@ -352,9 +349,26 @@ struct SidebarView: View {
 }
 
 extension ContentView {
+    private var detailTabSelection: Int {
+        selectedTab == 2 ? iPadReturnTab : selectedTab
+    }
+
+    private var iPadEnterSelectionBinding: Binding<Int> {
+        Binding(
+            get: { selectedTab },
+            set: { newValue in
+                if newValue == Preference.selectedTab {
+                    selectedTab = iPadReturnTab
+                } else {
+                    selectedTab = newValue
+                }
+            }
+        )
+    }
+
     private var detailTabBinding: Binding<Int> {
         Binding(
-            get: { selectedTab == 2 ? iPadReturnTab : selectedTab },
+            get: { detailTabSelection },
             set: { selectedTab = $0 }
         )
     }
@@ -382,10 +396,7 @@ struct TabContentView: View {
                 InsightsView()
                     .navigationBarTitle("Insights", displayMode: .inline)
             case 2:
-                EnterView(
-                    selectedTab: $selectedTab,
-                    dismissSelection: Preference.selectedTab
-                )
+                EnterView(selectedTab: $selectedTab)
                     .navigationBarTitle("Enter", displayMode: .inline)
             case 3:
                 ManageView(
