@@ -23,6 +23,7 @@ struct ContentView: View {
     @State private var password = ""
     @State private var fileURL: URL?
     @State private var isPasswordValid = true // Flag to validate password
+    @State private var iPadReturnTab = Preference.selectedTab
 
     var body: some View {
         ZStack {
@@ -101,15 +102,26 @@ struct ContentView: View {
     private var connectedView: some View {
         if horizontalSizeClass == .regular {
             NavigationSplitView {
-                SidebarView(selectedTab: $selectedTab)
+                SidebarView(selectedTab: $selectedTab) {
+                    iPadReturnTab = selectedTab == 2 ? Preference.selectedTab : selectedTab
+                    isPresentingTransactionAddView = true
+                }
             } detail: {
                 TabContentView(
-                    selectedTab: $selectedTab,
+                    selectedTab: detailTabBinding,
                     isDocumentPickerPresented: $isDocumentPickerPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                     isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
                 )
+            }
+            .sheet(isPresented: $isPresentingTransactionAddView) {
+                NavigationStack {
+                    EnterView(
+                        selectedTab: $selectedTab,
+                        dismissSelection: iPadReturnTab
+                    )
+                }
             }
         } else {
             TabView(selection: $selectedTab) {
@@ -213,7 +225,10 @@ struct ContentView: View {
 
     private func enterTab() -> some View {
         NavigationView {
-            EnterView(selectedTab: $selectedTab)
+            EnterView(
+                selectedTab: $selectedTab,
+                dismissSelection: Preference.selectedTab
+            )
                 .navigationBarTitle("Enter", displayMode: .inline)
         }
         .tabItem {
@@ -313,26 +328,35 @@ struct ContentView: View {
 
 struct SidebarView: View {
     @Binding var selectedTab: Int
+    let onAddTransaction: () -> Void
 
     var body: some View {
-        List {
-            Button(action: { selectedTab = 0 }) {
-                Label("Journal", systemImage: "list.bullet")
+        VStack(spacing: 0) {
+            List {
+                Button(action: { selectedTab = 0 }) {
+                    Label("Overview", systemImage: "house.fill")
+                }
+                Button(action: onAddTransaction) {
+                    Label("Enter", systemImage: "plus.circle")
+                }
+                Button(action: { selectedTab = 3 }) {
+                    Label("Manage", systemImage: "folder")
+                }
+                Button(action: { selectedTab = 4 }) {
+                    Label("Settings", systemImage: "gearshape")
+                }
             }
-            Button(action: { selectedTab = 1 }) {
-                Label("Insights", systemImage: "arrow.up.right")
-            }
-            Button(action: { selectedTab = 2 }) {
-                Label("Enter", systemImage: "plus.circle")
-            }
-            Button(action: { selectedTab = 3 }) {
-                Label("Manage", systemImage: "folder")
-            }
-            Button(action: { selectedTab = 4 }) {
-                Label("Settings", systemImage: "gearshape")
-            }
+            .listStyle(SidebarListStyle())
         }
-        .listStyle(SidebarListStyle()) // Ensure it's displayed as a proper sidebar
+    }
+}
+
+extension ContentView {
+    private var detailTabBinding: Binding<Int> {
+        Binding(
+            get: { selectedTab == 2 ? iPadReturnTab : selectedTab },
+            set: { selectedTab = $0 }
+        )
     }
 }
 
@@ -352,13 +376,16 @@ struct TabContentView: View {
         return Group {
             switch selectedTab {
             case 0:
-                JournalView() // Summary and Edit feature
-                    .navigationBarTitle("Journal", displayMode: .inline)
+                OverviewView()
+                    .navigationBarTitle("Overview", displayMode: .inline)
             case 1:
                 InsightsView()
                     .navigationBarTitle("Insights", displayMode: .inline)
             case 2:
-                EnterView(selectedTab: $selectedTab)
+                EnterView(
+                    selectedTab: $selectedTab,
+                    dismissSelection: Preference.selectedTab
+                )
                     .navigationBarTitle("Enter", displayMode: .inline)
             case 3:
                 ManageView(
