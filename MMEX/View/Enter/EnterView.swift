@@ -13,6 +13,7 @@ struct EnterView: View {
     @EnvironmentObject var vm: ViewModel
     @EnvironmentObject var context: AppContext
     @Binding var selectedTab: Int
+    let dismissSelection: Int?
 
     @State private var focus = false
     @State var newJournal: JournalData = .newTransaction()
@@ -27,7 +28,9 @@ struct EnterView: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
                     dismiss()
-                    selectedTab = Preference.selectedTab
+                    if let dismissSelection {
+                        selectedTab = dismissSelection
+                    }
                     resetJournal()
                 }
             }
@@ -35,7 +38,9 @@ struct EnterView: View {
                 Button("Done") {
                     if (vm.saveJournal(&newJournal)) {
                         dismiss()
-                        selectedTab = Preference.selectedTab
+                        if let dismissSelection {
+                            selectedTab = dismissSelection
+                        }
                         resetJournal()
                     } else {
                         // TODO
@@ -107,7 +112,8 @@ struct EnterView: View {
 #Preview {
     MMEXPreview.tab("Enter") { pref, vm in
         EnterView(
-            selectedTab: .constant(0)
+            selectedTab: .constant(0),
+            dismissSelection: Preference.selectedTab
         )
     }
 }
@@ -122,6 +128,7 @@ extension MMEXPreview {
         MMEXPreview.tab("Enter") { pref, vm in
             EnterView(
                 selectedTab: .constant(0),
+                dismissSelection: Preference.selectedTab,
                 newJournal: JournalData(data)
             )
         }
