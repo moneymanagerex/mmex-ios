@@ -114,7 +114,7 @@ struct ScheduledOverviewView: View {
     
     private var sections: [(title: String, color: Color, items: [ScheduledOverviewItem])] {
         [
-            ("Overdue", .red, viewModel.overdue),
+            ("Overdue", pref.theme.expenseColor, viewModel.overdue),
             ("Due Today", .orange, viewModel.dueToday),
             ("Due Soon", .blue, viewModel.dueSoon),
             ("Upcoming", .secondary, viewModel.upcoming)
@@ -162,13 +162,13 @@ struct ScheduledOverviewView: View {
                     Text(item.scheduled.transAmount.formatted(by: formatter))
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundColor(item.status == .overdue ? .red : .primary)
+                        .foregroundColor(item.status == .overdue ? pref.theme.expenseColor : .primary)
                 }
                 
                 HStack {
                     Text(item.daysText)
                         .font(.caption)
-                        .foregroundColor(item.status == .overdue ? .red : .secondary)
+                        .foregroundColor(item.status == .overdue ? pref.theme.expenseColor : .secondary)
                     
                     Spacer()
                     
@@ -188,7 +188,7 @@ struct ScheduledOverviewView: View {
                             .font(.caption)
                             .buttonStyle(.borderedProminent)
                             .controlSize(.mini)
-                            .tint(.green)
+                            .tint(pref.theme.incomeColor)
                         }
                     } else {
                         Text("One-time")

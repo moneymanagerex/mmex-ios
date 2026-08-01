@@ -50,7 +50,7 @@ struct TransactionListView: View {
                         Text(String(format: "%.2f", journal.transAmount))
                             .frame(alignment: .trailing)
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(journal.transAmount >= 0 ? .green : .red)
+                            .foregroundColor(pref.theme.changeColor(for: journal.transAmount))
                     }
                 }
             }

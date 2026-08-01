@@ -177,7 +177,7 @@ struct JournalView: View {
                         Text(txn.transAmount.formatted(by: currencyInfo.formatter))
                         .frame(alignment: .trailing) // Ensure it's aligned to the right
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                        .foregroundColor(pref.theme.amountColor(for: txn.transCode))
                         // amount in base currency
                         if let baseCurrencyId = vm.infotableList.baseCurrencyId.readyValue,
                            baseCurrencyId != currencyId
@@ -187,7 +187,7 @@ struct JournalView: View {
                             )
                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                            .foregroundColor(pref.theme.amountColor(for: txn.transCode))
                         }
                     }
                 } else {
@@ -195,7 +195,7 @@ struct JournalView: View {
                     Text(String(format: "%.2f", txn.transAmount))
                         .frame(alignment: .trailing) // Ensure it's aligned to the right
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(txn.transCode == TransactionType.deposit ? .green : .red) // Positive/negative amount color
+                        .foregroundColor(pref.theme.amountColor(for: txn.transCode))
                 }
             }
         }

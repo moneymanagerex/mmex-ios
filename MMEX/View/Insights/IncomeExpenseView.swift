@@ -11,6 +11,7 @@ import Charts
 struct IncomeExpenseView: View {
     @Binding var stats: [TransactionData]
     @State private var selectedDate: String?
+    @EnvironmentObject var pref: Preference
     
     var body: some View {
         Chart {
@@ -21,7 +22,7 @@ struct IncomeExpenseView: View {
                 )
                 .foregroundStyle(
                     LinearGradient(
-                        gradient: Gradient(colors: [.green.opacity(0.4), .green.opacity(0.9)]),
+                        gradient: Gradient(colors: [pref.theme.incomeColor.opacity(0.4), pref.theme.incomeColor.opacity(0.9)]),
                         startPoint: .top,
                         endPoint: .bottom
                     )
@@ -35,7 +36,7 @@ struct IncomeExpenseView: View {
                 )
                 .foregroundStyle(
                     LinearGradient(
-                        gradient: Gradient(colors: [.red.opacity(0.4), .red.opacity(0.9)]),
+                        gradient: Gradient(colors: [pref.theme.expenseColor.opacity(0.4), pref.theme.expenseColor.opacity(0.9)]),
                         startPoint: .bottom,
                         endPoint: .top
                     )
