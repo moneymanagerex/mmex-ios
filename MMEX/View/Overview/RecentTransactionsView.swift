@@ -147,7 +147,7 @@ struct TransactionRow: View {
             Text(journal.transAmount.formatted(by: formatter))
                 .frame(alignment: .trailing)
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(journal.transCode == .deposit ? .green : .red)
+                .foregroundColor(pref.theme.amountColor(for: journal.transCode))
         }
         .padding(.vertical, 2)
     }

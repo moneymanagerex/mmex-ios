@@ -8,8 +8,29 @@
 import Foundation
 import SwiftUI
 
+enum FinancialColorScheme: String, ChoiceProtocol {
+    case classic = "Classic"
+    case colorBlindFriendly = "Blue/Orange"
+    static let defaultValue = Self.classic
+
+    var incomeColor: Color {
+        switch self {
+        case .classic: .green
+        case .colorBlindFriendly: .blue
+        }
+    }
+
+    var expenseColor: Color {
+        switch self {
+        case .classic: .red
+        case .colorBlindFriendly: .orange
+        }
+    }
+}
+
 struct Theme {
     @StoredPreference var appearance: Appearance = .defaultValue
+    @StoredPreference var financialColorScheme: FinancialColorScheme = .defaultValue
     @StoredPreference var numericKeypad: BoolChoice = .boolTrue
     @StoredPreference var categoryDelimiter: String = ":"
     @StoredPreferenceDictionary(key: "CategorySymbols") var symbols: [String: String]
@@ -23,6 +44,7 @@ struct Theme {
 extension Theme {
     init(prefix: String?) {
         self.$appearance        = prefix?.appending("appearance")
+        self.$financialColorScheme = prefix?.appending("financialColorScheme")
         self.$numericKeypad     = prefix?.appending("numericKeypad")
         self.$categoryDelimiter = prefix?.appending("categoryDelimiter")
 
@@ -34,6 +56,22 @@ extension Theme {
 }
 
 extension Theme {
+    var incomeColor: Color {
+        financialColorScheme.incomeColor
+    }
+
+    var expenseColor: Color {
+        financialColorScheme.expenseColor
+    }
+
+    func amountColor(for transactionType: TransactionType) -> Color {
+        transactionType == .deposit ? incomeColor : expenseColor
+    }
+
+    func changeColor(for amount: Double) -> Color {
+        amount >= 0 ? incomeColor : expenseColor
+    }
+
     var decimalPad: UIKeyboardType {
         switch numericKeypad {
         case .boolTrue: .decimalPad

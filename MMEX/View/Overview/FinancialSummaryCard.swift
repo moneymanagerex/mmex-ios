@@ -18,6 +18,7 @@ struct FinancialSummaryCard: View {
     @Binding var selectedFilter: TransactionType?
     let formatter: CurrencyFormatter?
     
+    @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     
     var body: some View {
@@ -84,7 +85,7 @@ struct FinancialSummaryCard: View {
                 Text(netWorth.formatted(by: formatter))
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(netWorth >= 0 ? .primary : .red)
+                    .foregroundColor(netWorth >= 0 ? .primary : pref.theme.expenseColor)
             }
             
             Spacer()
@@ -98,7 +99,7 @@ struct FinancialSummaryCard: View {
                             .font(.caption)
                             .fontWeight(.medium)
                     }
-                    .foregroundColor(netWorthChange >= 0 ? .green : .red)
+                    .foregroundColor(pref.theme.changeColor(for: netWorthChange))
                     
                     if previousNetWorth != 0 {
                         Text("vs \(previousNetWorth.formatted(by: formatter))")
@@ -116,7 +117,7 @@ struct FinancialSummaryCard: View {
                 let isPositive = txn.transCode == .deposit
                 let height = CGFloat(min(abs(txn.transAmount) / 100 + 2, 20))
                 Rectangle()
-                    .fill(isPositive ? Color.green : Color.red)
+                    .fill(isPositive ? pref.theme.incomeColor : pref.theme.expenseColor)
                     .frame(width: 4, height: height)
             }
         }
@@ -136,13 +137,15 @@ struct MetricCard: View {
     let isSelected: Bool
     let formatter: CurrencyFormatter?
     let onTap: () -> Void
+
+    @EnvironmentObject var pref: Preference
     
     private var amountColor: Color {
-        filterType == .deposit ? .green : .red
+        filterType == .deposit ? pref.theme.incomeColor : pref.theme.expenseColor
     }
     
     private var changeColor: Color {
-        change >= 0 ? .green : .red
+        pref.theme.changeColor(for: change)
     }
     
     var body: some View {

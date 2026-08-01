@@ -49,6 +49,16 @@ struct ThemeView: View {
                 }
 
                 HStack {
+                    Text("Financial Colors")
+                    Spacer()
+                    Picker("", selection: $pref.theme.financialColorScheme) {
+                        ForEach(FinancialColorScheme.allCases) { choice in
+                            Text(choice.rawValue).tag(choice)
+                        }
+                    }
+                }
+
+                HStack {
                     Text("Date Format")
                     Spacer()
                     Text("\(dateFormat)")
