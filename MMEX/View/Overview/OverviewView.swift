@@ -15,86 +15,84 @@ struct OverviewView: View {
     @State private var selectedFilter: TransactionType? = nil
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 16) {
-                    OverviewHeader(formatter: displayFormatter)
-                    
-                    FinancialSummaryCard(
-                        netWorth: vm.overviewNetWorth,
-                        previousNetWorth: vm.overviewPreviousNetWorth,
-                        netWorthChange: vm.overviewNetWorthChange,
-                        income: vm.overviewIncome,
-                        expense: vm.overviewExpense,
-                        incomeChange: vm.overviewIncomeChange,
-                        expenseChange: vm.overviewExpenseChange,
-                        selectedFilter: $selectedFilter,
-                        formatter: displayFormatter
-                    )
-                    
-                    Divider()
-                    
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text("Trend")
-                                .font(.headline)
-                            Spacer()
-                            NavigationLink("Details") {
-                                InsightsView()
-                            }
-                            .font(.subheadline)
+        ScrollView {
+            VStack(spacing: 16) {
+                OverviewHeader(formatter: displayFormatter)
+                
+                FinancialSummaryCard(
+                    netWorth: vm.overviewNetWorth,
+                    previousNetWorth: vm.overviewPreviousNetWorth,
+                    netWorthChange: vm.overviewNetWorthChange,
+                    income: vm.overviewIncome,
+                    expense: vm.overviewExpense,
+                    incomeChange: vm.overviewIncomeChange,
+                    expenseChange: vm.overviewExpenseChange,
+                    selectedFilter: $selectedFilter,
+                    formatter: displayFormatter
+                )
+                
+                Divider()
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text("Trend")
+                            .font(.headline)
+                        Spacer()
+                        NavigationLink("Details") {
+                            InsightsView()
                         }
-                        .padding(.horizontal)
-                        
-                        IncomeExpenseView(stats: $vm.overviewTransactions)
-                            .frame(height: 150)
-                            .padding(.horizontal, 4)
-                        
-                        InsightsCaptionView(transactions: vm.overviewTransactions)
-                            .padding(.horizontal)
+                        .font(.subheadline)
                     }
+                    .padding(.horizontal)
                     
-                    Divider()
+                    IncomeExpenseView(stats: $vm.overviewTransactions)
+                        .frame(height: 150)
+                        .padding(.horizontal, 4)
                     
-                    ScheduledOverviewView()
-                        .padding(.horizontal, 8)
-
-                    Divider()
-
-                    RecentTransactionsView(
-                        journals: vm.overviewTransactions.asJournals(),
-                        selectedFilter: $selectedFilter,
-                        showAccountLabel: context.isAllAccounts,
-                        formatter: displayFormatter
-                    )
+                    InsightsCaptionView(transactions: vm.overviewTransactions)
+                        .padding(.horizontal)
                 }
-                .padding(.vertical, 8)
+                
+                Divider()
+                
+                ScheduledOverviewView()
+                    .padding(.horizontal, 8)
+
+                Divider()
+
+                RecentTransactionsView(
+                    journals: vm.overviewTransactions.asJournals(),
+                    selectedFilter: $selectedFilter,
+                    showAccountLabel: context.isAllAccounts,
+                    formatter: displayFormatter
+                )
             }
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                Task {
-                    await vm.loadAccountList(pref)
-                    await vm.loadPayeeList(pref)
-                    await vm.loadScheduledList(pref)
-                    vm.refreshOverview()
-                }
-            }
-            .onChange(of: context.selectedAccountId) { _, _ in
+            .padding(.vertical, 8)
+        }
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            Task {
+                await vm.loadAccountList(pref)
+                await vm.loadPayeeList(pref)
+                await vm.loadScheduledList(pref)
                 vm.refreshOverview()
             }
-            .onChange(of: context.dateRangePreset) { _, _ in
-                vm.refreshOverview()
-            }
-            .onChange(of: context.customStartDate) { _, _ in
-                vm.refreshOverview()
-            }
-            .onChange(of: context.customEndDate) { _, _ in
-                vm.refreshOverview()
-            }
-            .onChange(of: vm.infotableList.baseCurrencyId.value) {_, _ in
-                vm.refreshOverview()
-            }
+        }
+        .onChange(of: context.selectedAccountId) { _, _ in
+            vm.refreshOverview()
+        }
+        .onChange(of: context.dateRangePreset) { _, _ in
+            vm.refreshOverview()
+        }
+        .onChange(of: context.customStartDate) { _, _ in
+            vm.refreshOverview()
+        }
+        .onChange(of: context.customEndDate) { _, _ in
+            vm.refreshOverview()
+        }
+        .onChange(of: vm.infotableList.baseCurrencyId.value) {_, _ in
+            vm.refreshOverview()
         }
     }
 }
