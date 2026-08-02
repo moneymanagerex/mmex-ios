@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    private static let overviewTab = 0
+
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @State private var isDocumentPickerPresented = false
@@ -23,7 +25,8 @@ struct ContentView: View {
     @State private var password = ""
     @State private var fileURL: URL?
     @State private var isPasswordValid = true // Flag to validate password
-    @State private var iPadReturnTab = Preference.selectedTab
+    @State private var iPadReturnTab = ContentView.overviewTab
+    @State private var iPadDetailResetKey = 0
 
     var body: some View {
         ZStack {
@@ -102,25 +105,33 @@ struct ContentView: View {
     private var connectedView: some View {
         if horizontalSizeClass == .regular {
             NavigationSplitView {
-                SidebarView(selectedTab: $selectedTab) {
-                    iPadReturnTab = selectedTab == 2 ? Preference.selectedTab : selectedTab
+                SidebarView(selectedTab: $selectedTab, onSelectTab: selectIpadTab) {
+                    iPadReturnTab = selectedTab == 2 ? ContentView.overviewTab : selectedTab
                     isPresentingTransactionAddView = true
                 }
             } detail: {
-                TabContentView(
-                    selectedTab: detailTabBinding,
-                    isDocumentPickerPresented: $isDocumentPickerPresented,
-                    isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
-                    isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
-                    isSampleDocument: $isSampleDocument
-                )
-                .id(detailTabSelection)
+                NavigationStack {
+                    TabContentView(
+                        selectedTab: detailTabBinding,
+                        isDocumentPickerPresented: $isDocumentPickerPresented,
+                        isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                        isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
+                        isSampleDocument: $isSampleDocument
+                    )
+                }
+                .id("\(detailTabSelection)-\(iPadDetailResetKey)")
             }
             .sheet(isPresented: $isPresentingTransactionAddView) {
                 NavigationStack {
                     EnterView(
                         selectedTab: iPadEnterSelectionBinding
                     )
+                }
+            }
+            .onAppear {
+                if selectedTab == Preference.selectedTab {
+                    selectedTab = ContentView.overviewTab
+                    iPadReturnTab = ContentView.overviewTab
                 }
             }
         } else {
@@ -175,7 +186,7 @@ struct ContentView: View {
                 guard vm.isDatabaseConnected else { return }
                 log.info("Successfully created sample database in memory")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    selectedTab = Preference.selectedTab
+                    selectedTab = horizontalSizeClass == .regular ? ContentView.overviewTab : Preference.selectedTab
                 }
             }) {
                 Label("Sample Database in Memory", systemImage: "memorychip.fill")
@@ -190,11 +201,14 @@ struct ContentView: View {
     }
 
     private func overviewTab() -> some View {
-        OverviewView()
-            .tabItem {
-                pref.theme.tab.iconText(icon: "house.fill", text: "Overview")
-            }
-            .tag(0)
+        NavigationStack {
+            OverviewView()
+                .navigationBarTitle("Overview", displayMode: .inline)
+        }
+        .tabItem {
+            pref.theme.tab.iconText(icon: "house.fill", text: "Overview")
+        }
+        .tag(0)
     }
 
     private func journalTab() -> some View {
@@ -280,7 +294,7 @@ struct ContentView: View {
                 }
                 log.info("Successfully opened database: \(url)")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    selectedTab = Preference.selectedTab
+                    selectedTab = horizontalSizeClass == .regular ? ContentView.overviewTab : Preference.selectedTab
                 }
             }
         case .failure(let error):
@@ -315,7 +329,7 @@ struct ContentView: View {
             guard vm.isDatabaseConnected else { return }
             log.info("Successfully created database: \(url)")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                selectedTab = Preference.selectedTab
+                selectedTab = horizontalSizeClass == .regular ? ContentView.overviewTab : Preference.selectedTab
             }
         case .failure(let error):
             log.error("Failed to pick a document: \(error.localizedDescription)")
@@ -325,30 +339,57 @@ struct ContentView: View {
 
 struct SidebarView: View {
     @Binding var selectedTab: Int
+    let onSelectTab: (Int) -> Void
     let onAddTransaction: () -> Void
+
+    private let selectableTabs: [(tab: Int, title: String, systemImage: String)] = [
+        (0, "Overview", "house.fill"),
+        (3, "Manage", "folder"),
+        (4, "Settings", "gearshape")
+    ]
 
     var body: some View {
         VStack(spacing: 0) {
-            List {
-                Button(action: { selectedTab = 0 }) {
-                    Label("Overview", systemImage: "house.fill")
-                }
-                Button(action: onAddTransaction) {
-                    Label("Enter", systemImage: "plus.circle")
-                }
-                Button(action: { selectedTab = 3 }) {
-                    Label("Manage", systemImage: "folder")
-                }
-                Button(action: { selectedTab = 4 }) {
-                    Label("Settings", systemImage: "gearshape")
+            List(selection: sidebarSelection) {
+                ForEach(selectableTabs, id: \.tab) { item in
+                    Label(item.title, systemImage: item.systemImage)
+                        .tag(item.tab)
                 }
             }
             .listStyle(SidebarListStyle())
+
+            Divider()
+                .padding(.vertical, 8)
+
+            Button(action: onAddTransaction) {
+                Label("Enter", systemImage: "plus.circle")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+            }
+            .buttonStyle(.plain)
+
+            Spacer(minLength: 0)
         }
+    }
+
+    private var sidebarSelection: Binding<Int?> {
+        Binding(
+            get: { selectedTab },
+            set: { newValue in
+                guard let newValue else { return }
+                onSelectTab(newValue)
+            }
+        )
     }
 }
 
 extension ContentView {
+    private func selectIpadTab(_ tab: Int) {
+        selectedTab = tab
+        iPadDetailResetKey += 1
+    }
+
     private var detailTabSelection: Int {
         selectedTab == 2 ? iPadReturnTab : selectedTab
     }

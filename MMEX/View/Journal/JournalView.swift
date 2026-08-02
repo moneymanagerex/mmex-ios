@@ -36,77 +36,76 @@ struct JournalView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(sortedDays, id: \.self) { day in
-                    if let journals = groupedJournals[day] {
-                        Section(
-                            header: HStack {
-                                Text(humanReadableDate(day))
-                                    .font(.headline)
-                                Spacer()
-                                Text("Total: \(calculateTotal(for: journals))")
-                                    .font(.subheadline)
-                            }
-                        ) {
-                            ForEach(journals, id: \.id) { journal in
-                                transactionView(journal, for: day)
-                            }
+        List {
+            ForEach(sortedDays, id: \.self) { day in
+                if let journals = groupedJournals[day] {
+                    Section(
+                        header: HStack {
+                            Text(humanReadableDate(day))
+                                .font(.headline)
+                            Spacer()
+                            Text("Total: \(calculateTotal(for: journals))")
+                                .font(.subheadline)
+                        }
+                    ) {
+                        ForEach(journals, id: \.id) { journal in
+                            transactionView(journal, for: day)
                         }
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if
-                        let accountOrder = vm.accountList.order.readyValue,
-                        let accountData  = vm.accountList.data.readyValue
-                    {
-                        Picker("Select Account", selection: $context.selectedAccountId) {
-                            if context.selectedAccountId.isVoid {
-                                Text("Select Account").tag(DataId.void)
-                            }
-                            ForEach(accountOrder) { id in
-                                if let account = accountData[id] {
-                                    HStack{
-                                        Image(systemName: account.type.symbolName)
-                                            .frame(width: 5, alignment: .leading) // Adjust width as needed
-                                            .font(.system(size: 16, weight: .bold)) // Customize size and weight
-                                            .foregroundColor(.blue) // Customize icon style
-                                        Text(account.name)
-                                    }.tag(account.id)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if
+                    let accountOrder = vm.accountList.order.readyValue,
+                    let accountData  = vm.accountList.data.readyValue
+                {
+                    Picker("Select Account", selection: $context.selectedAccountId) {
+                        if context.selectedAccountId.isVoid {
+                            Text("Select Account").tag(DataId.void)
+                        }
+                        ForEach(accountOrder) { id in
+                            if let account = accountData[id] {
+                                HStack {
+                                    Image(systemName: account.type.symbolName)
+                                        .frame(width: 5, alignment: .leading)
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(.blue)
+                                    Text(account.name)
                                 }
-                            }
-                        }
-                        .pickerStyle(MenuPickerStyle()) // Makes it appear as a dropdown
-                        .onChange(of: context.selectedAccountId) {
-                            Task {
-                                vm.loadJournals(accountId: context.selectedAccountId)
+                                .tag(account.id)
                             }
                         }
                     }
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button("All") { typeFilter = nil }
-                        ForEach(JournalType.allCases, id: \.self) { type in
-                            Button(type.name) { typeFilter = type }
-                        }
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "line.3.horizontal.decrease.circle")
-                            Text(typeFilter?.name ?? "All")
-                                .font(.caption)
+                    .pickerStyle(MenuPickerStyle())
+                    .onChange(of: context.selectedAccountId) {
+                        Task {
+                            vm.loadJournals(accountId: context.selectedAccountId)
                         }
                     }
                 }
             }
-            .searchable(text: $debounce.input, prompt: "Search by keyword")
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button("All") { typeFilter = nil }
+                    ForEach(JournalType.allCases, id: \.self) { type in
+                        Button(type.name) { typeFilter = type }
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                        Text(typeFilter?.name ?? "All")
+                            .font(.caption)
+                    }
+                }
+            }
+        }
+        .searchable(text: $debounce.input, prompt: "Search by keyword")
  //           .onChange(of: debounce.output) { _, query in
 //              vm.filterJournals(by: query)
 //            }
-        }
         .task {
             log.debug("DEBUG: JournalView.onAppear(main=\(Thread.isMainThread))")
             await vm.loadTransactionList(pref)
