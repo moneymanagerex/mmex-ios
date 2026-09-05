@@ -1422,10 +1422,24 @@
       }
     },
     "All" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutti"
+          }
+        }
+      }
     },
     "All Accounts" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutti i Conti"
+          }
+        }
+      }
     },
     "All content provided by the app is owned by the app developers or its licensors. You are not allowed to copy, reproduce, or distribute any content without permission." : {
       "localizations" : {
@@ -2794,7 +2808,14 @@
       }
     },
     "Clear Filter" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rimuovi Filtri"
+          }
+        }
+      }
     },
     "Coming soon ..." : {
       "localizations" : {
@@ -3159,10 +3180,24 @@
       }
     },
     "Create Account" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea Conto"
+          }
+        }
+      }
     },
     "Create Category" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea Categoria"
+          }
+        }
+      }
     },
     "Create New Database" : {
       "localizations" : {
@@ -3698,7 +3733,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "File Del Database"
+            "value" : "File del Database"
           }
         },
         "pt-BR" : {
@@ -4942,7 +4977,14 @@
       }
     },
     "Details" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dettagli"
+          }
+        }
+      }
     },
     "Developed by Lisheng Guan, George Ef" : {
       "localizations" : {
@@ -6032,7 +6074,14 @@
       }
     },
     "Frequency" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frequenza"
+          }
+        }
+      }
     },
     "General" : {
       "localizations" : {
@@ -7889,7 +7938,14 @@
       }
     },
     "Loading accounts..." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caricamento conti..."
+          }
+        }
+      }
     },
     "Loading data ..." : {
       "localizations" : {
@@ -8008,7 +8064,14 @@
       }
     },
     "Loading scheduled transactions..." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caricamento transazioni ricorrenti..."
+          }
+        }
+      }
     },
     "Loan" : {
       "extractionState" : "manual",
@@ -8943,13 +9006,34 @@
 
     },
     "No transactions in this period" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna transazione in questo periodo"
+          }
+        }
+      }
     },
     "No transactions in this period." : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna transazione in questo periodo."
+          }
+        }
+      }
     },
     "No upcoming scheduled transactions" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna transazione pianificata imminente"
+          }
+        }
+      }
     },
     "Notes" : {
       "localizations" : {
@@ -10167,7 +10251,14 @@
 
     },
     "Scheduled Transactions" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transazioni Pianificate"
+          }
+        }
+      }
     },
     "Schema Version" : {
       "localizations" : {
@@ -11250,7 +11341,14 @@
       }
     },
     "Skip" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salta"
+          }
+        }
+      }
     },
     "Social Media" : {
       "localizations" : {
@@ -12881,7 +12979,14 @@
       }
     },
     "Transaction" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transazione"
+          }
+        }
+      }
     },
     "Transaction Amount" : {
       "localizations" : {
@@ -13000,7 +13105,14 @@
       }
     },
     "Transaction Details" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dettagli Transazione"
+          }
+        }
+      }
     },
     "Transaction Status" : {
       "localizations" : {
@@ -13119,7 +13231,14 @@
       }
     },
     "Trend" : {
-
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trend"
+          }
+        }
+      }
     },
     "Twitter" : {
       "localizations" : {
