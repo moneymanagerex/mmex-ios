@@ -10,6 +10,7 @@ import SwiftUI
 struct TransactionListView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var journalViewModel: JournalViewModel
 
     @State private var newTxn = JournalData()
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
@@ -18,7 +19,7 @@ struct TransactionListView: View {
 
     var body: some View {
         Group {
-            List($vm.journals) { $journal in
+            List($journalViewModel.journals) { $journal in
                 NavigationLink(
                     destination: TransactionDetailView(journal: $journal)
                 ) {
@@ -86,7 +87,7 @@ struct TransactionListView: View {
                     isPresented: $createSheetIsPresented,
                     newJournal: $newTxn
                 ) { newTxn in
-                    _ = vm.saveJournal(&newTxn)
+                    _ = journalViewModel.save(&newTxn, to: vm.db)
                     newTxn = JournalData()
                 }
             }
@@ -137,7 +138,7 @@ struct TransactionListView: View {
         let startDate = Calendar.current.date(from: DateComponents(year: selectedYear, month: 1, day: 1)) ?? Date()
         let endDate = Calendar.current.date(from: DateComponents(year: selectedYear + 1, month: 1, day: 1))?.addingTimeInterval(-1) ?? Date()
         Task {            
-            vm.loadJournals(accountId: nil, startDate: startDate, endDate: endDate)
+            journalViewModel.load(from: vm.db, accountId: nil, startDate: startDate, endDate: endDate)
         }
     }
 }

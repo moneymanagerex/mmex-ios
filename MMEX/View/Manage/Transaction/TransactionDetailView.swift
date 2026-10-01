@@ -10,6 +10,7 @@ import SwiftUI
 struct TransactionDetailView: View {
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var journalViewModel: JournalViewModel
     @Binding var journal: JournalData
 
     @State private var focus = false
@@ -121,7 +122,7 @@ struct TransactionDetailView: View {
 
             Section {
                 Button("Delete Journal") {
-                    if vm.deleteJournal(journal) {
+                    if journalViewModel.delete(journal, from: vm.db) {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }

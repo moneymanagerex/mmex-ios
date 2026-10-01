@@ -10,15 +10,10 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @StateObject private var viewModel = SettingsViewModel()
 
     let groupTheme = GroupTheme(layout: .nameFold)
     @State var dbSettingsIsExpanded = false
-
-    @State var baseCurrencyId    : DataId = .void
-    @State var defaultAccountId  : DataId = .void
-
-    @State private var alertIsPresented = false
-    @State private var alertMessage: String?
     
     var body: some View {
         List {
@@ -69,8 +64,8 @@ struct SettingsView: View {
                 //isExpanded: $dbSettingsIsExpanded
             ) {
                 if let currencyName = vm.currencyList.name.readyValue {
-                    Picker("Base Currency", selection: $baseCurrencyId) {
-                        ForEach(baseCurrencyOffer) { id in
+                    Picker("Base Currency", selection: $viewModel.baseCurrencyId) {
+                        ForEach(viewModel.currencyOptions(from: vm.currencyList)) { id in
                             if id.isVoid {
                                 Text("(none)").tag(id)
                             } else if let name = currencyName[id] {
@@ -78,14 +73,14 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    .onChange(of: baseCurrencyId) {
-                        baseCurrencyUpdate()
+                    .onChange(of: viewModel.baseCurrencyId) {
+                        Task { await viewModel.updateBaseCurrency(using: vm) }
                     }
                 }
 
                 if let accountData = vm.accountList.data.readyValue {
-                    Picker("Default Account", selection: $defaultAccountId) {
-                        ForEach(defaultAccountOffer) { id in
+                    Picker("Default Account", selection: $viewModel.defaultAccountId) {
+                        ForEach(viewModel.accountOptions(from: vm.accountList)) { id in
                             if id.isVoid {
                                 Text("(none)").tag(id)
                             } else if let name = accountData[id]?.name {
@@ -93,8 +88,8 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    .onChange(of: defaultAccountId) {
-                        defaultAccountUpdate()
+                    .onChange(of: viewModel.defaultAccountId) {
+                        Task { await viewModel.updateDefaultAccount(using: vm) }
                     }
                 }
             }
@@ -168,91 +163,23 @@ struct SettingsView: View {
 
         .task {
             log.trace("DEBUG: SettingsView.task(main=\(Thread.isMainThread))")
-            await vm.loadSettingsList(pref)
-            baseCurrencyId    = vm.infotableList.baseCurrencyId.value
-            defaultAccountId  = vm.infotableList.defaultAccountId.value
+            await viewModel.load(from: vm, preference: pref)
         }
 
         .refreshable {
             log.trace("DEBUG: SettingsView.refreshable(main=\(Thread.isMainThread))")
-            vm.unloadAll()
-            await vm.loadSettingsList(pref)
-            baseCurrencyId    = vm.infotableList.baseCurrencyId.value
-            defaultAccountId  = vm.infotableList.defaultAccountId.value
+            await viewModel.refresh(from: vm, preference: pref)
         }
 
-        .alert(isPresented: $alertIsPresented) {
+        .alert(isPresented: Binding(
+            get: { viewModel.isAlertPresented },
+            set: { if !$0 { viewModel.dismissAlert() } }
+        )) {
             Alert(
                 title: Text("Error"),
-                message: Text(alertMessage!),
+                message: Text(viewModel.alertMessage ?? ""),
                 dismissButton: .default(Text("OK"))
             )
-        }
-    }
-    
-    var baseCurrencyOffer: [DataId] {
-        var offer: [DataId] = []
-        var isAppended = baseCurrencyId.isVoid
-        // always offer .void
-        if true || baseCurrencyId.isVoid {
-            offer.append(.void)
-        }
-        for id in vm.currencyList.order.readyValue ?? [] {
-            // offer used currencies
-            if id == baseCurrencyId || vm.currencyList.used.readyValue?.contains(id) == true {
-                offer.append(id)
-                if id == baseCurrencyId { isAppended = true }
-            }
-        }
-        // offer currentId
-        if !isAppended { offer.append(baseCurrencyId) }
-        return offer
-    }
-
-    func baseCurrencyUpdate() {
-        guard baseCurrencyId != vm.infotableList.baseCurrencyId.value else { return }
-        let updateError = vm.updateSettings(baseCurrencyId: baseCurrencyId)
-        if updateError != nil {
-            baseCurrencyId = vm.infotableList.baseCurrencyId.value
-            alertMessage = updateError
-            alertIsPresented = true
-        } else {
-            Task {
-                await vm.reloadSettings(baseCurrencyId: baseCurrencyId)
-            }
-        }
-    }
-    
-    var defaultAccountOffer: [DataId] {
-        var offer: [DataId] = []
-        var isAppended = defaultAccountId.isVoid
-        // always offer .void
-        if true || defaultAccountId.isVoid {
-            offer.append(.void)
-        }
-        for id in vm.accountList.order.readyValue ?? [] {
-            // offer open accounts
-            if id == defaultAccountId || vm.accountList.data.readyValue?[id]?.status == .open {
-                offer.append(id)
-                if id == defaultAccountId { isAppended = true }
-            }
-        }
-        // offer defaultAccountId
-        if !isAppended { offer.append(defaultAccountId) }
-        return offer
-    }
-
-    func defaultAccountUpdate() {
-        guard defaultAccountId != vm.infotableList.defaultAccountId.value else { return }
-        let updateError = vm.updateSettings(defaultAccountId: defaultAccountId)
-        if updateError != nil {
-            defaultAccountId = vm.infotableList.defaultAccountId.value
-            alertMessage = updateError
-            alertIsPresented = true
-        } else {
-            Task {
-                await vm.reloadSettings(defaultAccountId: defaultAccountId)
-            }
         }
     }
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionEditView: View {
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var journalViewModel: JournalViewModel
     @Binding var isPresented: Bool
     @Binding var journal: JournalData
 
@@ -36,7 +37,7 @@ struct TransactionEditView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    if (vm.saveJournal(&editedJournal)) {
+                    if journalViewModel.save(&editedJournal, to: vm.db) {
                         journal = editedJournal
                         isPresented = false
                     } else {

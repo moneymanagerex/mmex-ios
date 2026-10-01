@@ -9,6 +9,7 @@ import SwiftUI
 
 struct InsightsAccountView: View {
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var viewModel: InsightsViewModel
 
     @Binding var statusChoice: Int
     @State private var expandedSections: [AccountType: Bool] = [:]
@@ -46,9 +47,9 @@ struct InsightsAccountView: View {
                     let totalBalance: Double = {
                         var total: Double = 0.0
                         for type in Self.typeOrder {
-                            guard let accounts = vm.flow.dataByType[type] else { continue }
+                            guard let accounts = viewModel.flow.dataByType[type] else { continue }
                             for account in accounts {
-                                let flowByStatus = vm.flow.flowUntilToday[account.id]
+                                let flowByStatus = viewModel.flow.flowUntilToday[account.id]
                                 let value: Double = switch Self.statusChoices[statusChoice].1 {
                                 case "Balance"            : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
                                 case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal
@@ -62,7 +63,7 @@ struct InsightsAccountView: View {
                     } ()
 
                     Text(totalBalance.formatted(
-                        by: vm.currencyList.info.readyValue?[vm.baseCurrency?.id ?? .void]?.formatter
+                        by: vm.currencyList.info.readyValue?[viewModel.baseCurrency?.id ?? .void]?.formatter
                     ))
                     .font(.subheadline)
                 }
@@ -70,7 +71,7 @@ struct InsightsAccountView: View {
             }
 
             ForEach(Self.typeOrder) { accountType in
-                if let accounts = vm.flow.dataByType[accountType] {
+                if let accounts = viewModel.flow.dataByType[accountType] {
                     Spacer(minLength: 8)
                     Section(
                         header: HStack {
@@ -107,7 +108,7 @@ struct InsightsAccountView: View {
                                         
                                         Spacer(minLength: 10)
                                         
-                                        let flowByStatus = vm.flow.flowUntilToday[account.id]
+                                        let flowByStatus = viewModel.flow.flowUntilToday[account.id]
                                         let value: Double? = switch Self.statusChoices[statusChoice].1 {
                                         case "Balance"            : (flowByStatus?.diffTotal         ?? 0.0) + account.initialBal
                                         case "Reconciled Balance" : (flowByStatus?.diffReconciled    ?? 0.0) + account.initialBal

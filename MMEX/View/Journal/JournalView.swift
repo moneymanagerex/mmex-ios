@@ -10,6 +10,7 @@ import SwiftUI
 struct JournalView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var journalViewModel: JournalViewModel
     @EnvironmentObject var context: AppContext
 
     @StateObject private var debounce = RepositorySearchDebounce()
@@ -22,13 +23,13 @@ struct JournalView: View {
         _typeFilter = State(initialValue: initialTypeFilter)
     }
 
-    private var filteredJournals: [JournalData] {
-        guard let type = typeFilter else { return vm.journals }
-        return vm.journals.filter { $0.type == type }
-    }
-
     private var groupedJournals: [String: [JournalData]] {
-        vm.groupJournals(searchQuery: debounce.output, typeFilter: typeFilter)
+        journalViewModel.grouped(
+            searchQuery: debounce.output,
+            typeFilter: typeFilter,
+            payeeNames: vm.payeeList.data.readyValue?.mapValues(\.name) ?? [:],
+            categoryPaths: vm.categoryList.evalPath.readyValue ?? [:]
+        )
     }
 
     private var sortedDays: [String] {
@@ -81,7 +82,7 @@ struct JournalView: View {
                     .pickerStyle(MenuPickerStyle())
                     .onChange(of: context.selectedAccountId) {
                         Task {
-                            vm.loadJournals(accountId: context.selectedAccountId)
+                            journalViewModel.load(from: vm.db, accountId: context.selectedAccountId)
                         }
                     }
                 }
@@ -111,7 +112,7 @@ struct JournalView: View {
             await vm.loadTransactionList(pref)
             await vm.loadJournalList(pref)
             Task {
-                vm.loadJournals(accountId: context.selectedAccountId)
+                journalViewModel.load(from: vm.db, accountId: context.selectedAccountId)
             }
         }
     }
@@ -123,8 +124,8 @@ struct JournalView: View {
                     self.groupedJournals[day]?.first(where: { $0.id == txn.id }) ?? txn
                 },
                 set: { newTxn in
-                    if let index = vm.journals.firstIndex(where: { $0.id == txn.id }) {
-                        vm.journals[index] = newTxn
+                    if let index = journalViewModel.journals.firstIndex(where: { $0.id == txn.id }) {
+                        journalViewModel.journals[index] = newTxn
                     }
                 }
             )

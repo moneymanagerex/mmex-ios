@@ -17,9 +17,9 @@ struct FinancialSummaryCard: View {
     let expenseChange: Double
     @Binding var selectedFilter: TransactionType?
     let formatter: CurrencyFormatter?
+    let transactions: [TransactionData]
     
     @EnvironmentObject var pref: Preference
-    @EnvironmentObject var vm: ViewModel
     
     var body: some View {
         VStack(spacing: 0) {
@@ -52,7 +52,7 @@ struct FinancialSummaryCard: View {
                 )
             }
             
-            if !vm.overviewTransactions.isEmpty {
+            if !transactions.isEmpty {
                 Divider()
                     .padding(.vertical, 8)
                 
@@ -113,7 +113,7 @@ struct FinancialSummaryCard: View {
     
     private var miniTrendChart: some View {
         HStack(spacing: 2) {
-            ForEach(Array(vm.overviewTransactions.prefix(30)), id: \.id) { txn in
+            ForEach(Array(transactions.prefix(30)), id: \.id) { txn in
                 let isPositive = txn.transCode == .deposit
                 let height = CGFloat(min(abs(txn.transAmount) / 100 + 2, 20))
                 Rectangle()
