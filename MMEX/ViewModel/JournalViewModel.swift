@@ -2,57 +2,64 @@
 //  JournalViewModel.swift
 //  MMEX
 //
-//  Created by Lisheng Guan on 2026/6/23.
-//
 
-import Foundation
+import SwiftUI
+@preconcurrency import SQLite
 
-extension ViewModel {
-    func loadJournals(accountId: DataId? = nil, startDate: Date? = nil, endDate: Date? = nil, includeScheduled: Bool = true) {
-        guard let repo = JournalRepository(db) else { return }
-        let journals = repo.loadJournals(accountId: accountId, startDate: startDate, endDate: endDate, includeScheduled: includeScheduled)
-        self.journals = journals
+@MainActor
+final class JournalViewModel: ObservableObject {
+    @Published var journals: [JournalData] = []
+
+    func load(
+        from db: SQLite.Connection?,
+        accountId: DataId? = nil,
+        startDate: Date? = nil,
+        endDate: Date? = nil,
+        includeScheduled: Bool = true
+    ) {
+        guard let repository = JournalRepository(db) else { return }
+        journals = repository.loadJournals(
+            accountId: accountId,
+            startDate: startDate,
+            endDate: endDate,
+            includeScheduled: includeScheduled
+        )
     }
-    
-    func groupJournals(searchQuery: String, typeFilter: JournalType? = nil) -> [String: [JournalData]] {
+
+    func grouped(
+        searchQuery: String,
+        typeFilter: JournalType? = nil,
+        payeeNames: [DataId: String],
+        categoryPaths: [DataId: String]
+    ) -> [String: [JournalData]] {
         var result = journals
 
-        if let type = typeFilter {
-            result = result.filter { $0.type == type }
+        if let typeFilter {
+            result = result.filter { $0.type == typeFilter }
         }
-
         if !searchQuery.isEmpty {
             result = result.filter { journal in
-                // Payee
-                let payeeMatch = payeeList.data.readyValue?[journal.payeeId]?.name
-                    .localizedCaseInsensitiveContains(searchQuery) ?? false
-                // Notes
+                let payeeMatch = payeeNames[journal.payeeId]?.localizedCaseInsensitiveContains(searchQuery) ?? false
                 let notesMatch = journal.notes.localizedCaseInsensitiveContains(searchQuery)
-                // Category
-                let categoryMatch = categoryList.evalPath.readyValue?[journal.categId]?
-                    .localizedCaseInsensitiveContains(searchQuery) ?? false
-                // Splits
+                let categoryMatch = categoryPaths[journal.categId]?.localizedCaseInsensitiveContains(searchQuery) ?? false
                 let splitMatch = journal.splits.contains { split in
                     split.notes.localizedCaseInsensitiveContains(searchQuery) ||
-                    categoryList.evalPath.readyValue?[split.categId]?
-                        .localizedCaseInsensitiveContains(searchQuery) ?? false
+                    (categoryPaths[split.categId]?.localizedCaseInsensitiveContains(searchQuery) ?? false)
                 }
                 return payeeMatch || notesMatch || categoryMatch || splitMatch
             }
         }
 
-        return Dictionary(grouping: result) { journal in
-            String(journal.transDate.string.prefix(10))
-        }
+        return Dictionary(grouping: result) { String($0.transDate.string.prefix(10)) }
     }
 
-    func saveJournal(_ journal: inout JournalData) -> Bool {
-        guard let repo = JournalRepository(db) else { return false }
-        return repo.saveJournal(&journal)
+    func save(_ journal: inout JournalData, to db: SQLite.Connection?) -> Bool {
+        guard let repository = JournalRepository(db) else { return false }
+        return repository.saveJournal(&journal)
     }
 
-    func deleteJournal(_ journal: JournalData) -> Bool {
-        guard let repo = JournalRepository(db) else { return false }
-        return repo.deleteJournal(journal)
+    func delete(_ journal: JournalData, from db: SQLite.Connection?) -> Bool {
+        guard let repository = JournalRepository(db) else { return false }
+        return repository.deleteJournal(journal)
     }
 }

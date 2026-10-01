@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SQLite
-import Combine
 
 @MainActor
 class ViewModel: ObservableObject {
@@ -91,33 +90,6 @@ class ViewModel: ObservableObject {
     @Published var reportList  : ReportList  = .init()
     @Published var reportGroup : ReportGroup = .init()
     
-    // moved from JournalDataViewModel.swift
-    @Published var journals: [JournalData] = []
-
-    // moved from InsightsViewModel
-    @Published var baseCurrency: CurrencyData?
-    @Published var stats: [TransactionData] = [] // all transactions
-    @Published var recentStats: [TransactionData] = []
-    @Published var startDate: Date = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date())
-    @Published var endDate: Date = Calendar.current.startOfDay(for: Date())
-    @Published var flow = InsightsFlow()
-    var cancellables = Set<AnyCancellable>()
-    
-    // Overview KPI
-    @Published var overviewNetWorth: Double = 0
-    @Published var overviewIncome: Double = 0
-    @Published var overviewExpense: Double = 0
-    @Published var overviewIncomeChange: Double = 0
-    @Published var overviewExpenseChange: Double = 0
-    
-    @Published var overviewPreviousTransactions: [TransactionData] = []
-    @Published var overviewPreviousNetWorth: Double = 0
-    @Published var overviewNetWorthChange: Double = 0
-    @Published var accountBalances: [DataId: Double] = [:]
-
-    //
-    @Published var overviewTransactions: [TransactionData] = []
-
     init() {
     }
 

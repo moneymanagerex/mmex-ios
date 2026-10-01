@@ -11,24 +11,26 @@ struct OverviewView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @EnvironmentObject var context: AppContext
+    @StateObject private var viewModel = OverviewViewModel()
     
     @State private var selectedFilter: TransactionType? = nil
     
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                OverviewHeader(formatter: displayFormatter)
+                OverviewHeader(formatter: displayFormatter, accountBalances: viewModel.accountBalances)
                 
                 FinancialSummaryCard(
-                    netWorth: vm.overviewNetWorth,
-                    previousNetWorth: vm.overviewPreviousNetWorth,
-                    netWorthChange: vm.overviewNetWorthChange,
-                    income: vm.overviewIncome,
-                    expense: vm.overviewExpense,
-                    incomeChange: vm.overviewIncomeChange,
-                    expenseChange: vm.overviewExpenseChange,
+                    netWorth: viewModel.netWorth,
+                    previousNetWorth: viewModel.previousNetWorth,
+                    netWorthChange: viewModel.netWorthChange,
+                    income: viewModel.income,
+                    expense: viewModel.expense,
+                    incomeChange: viewModel.incomeChange,
+                    expenseChange: viewModel.expenseChange,
                     selectedFilter: $selectedFilter,
-                    formatter: displayFormatter
+                    formatter: displayFormatter,
+                    transactions: viewModel.transactions
                 )
                 
                 Divider()
@@ -45,11 +47,11 @@ struct OverviewView: View {
                     }
                     .padding(.horizontal)
                     
-                    IncomeExpenseView(stats: $vm.overviewTransactions)
+                    IncomeExpenseView(stats: viewModel.transactions)
                         .frame(height: 150)
                         .padding(.horizontal, 4)
                     
-                    InsightsCaptionView(transactions: vm.overviewTransactions)
+                    InsightsCaptionView(transactions: viewModel.transactions)
                         .padding(.horizontal)
                 }
                 
@@ -61,7 +63,7 @@ struct OverviewView: View {
                 Divider()
 
                 RecentTransactionsView(
-                    journals: vm.overviewTransactions.asJournals(),
+                    journals: viewModel.transactions.asJournals(),
                     selectedFilter: $selectedFilter,
                     showAccountLabel: context.isAllAccounts,
                     formatter: displayFormatter
@@ -76,23 +78,23 @@ struct OverviewView: View {
                 await vm.loadAccountList(pref)
                 await vm.loadPayeeList(pref)
                 await vm.loadScheduledList(pref)
-                vm.refreshOverview()
+                viewModel.refresh(db: vm.db, accounts: vm.accountList.data.readyValue ?? [:], context: context)
             }
         }
         .onChange(of: context.selectedAccountId) { _, _ in
-            vm.refreshOverview()
+            viewModel.refresh(db: vm.db, accounts: vm.accountList.data.readyValue ?? [:], context: context)
         }
         .onChange(of: context.dateRangePreset) { _, _ in
-            vm.refreshOverview()
+            viewModel.refresh(db: vm.db, accounts: vm.accountList.data.readyValue ?? [:], context: context)
         }
         .onChange(of: context.customStartDate) { _, _ in
-            vm.refreshOverview()
+            viewModel.refresh(db: vm.db, accounts: vm.accountList.data.readyValue ?? [:], context: context)
         }
         .onChange(of: context.customEndDate) { _, _ in
-            vm.refreshOverview()
+            viewModel.refresh(db: vm.db, accounts: vm.accountList.data.readyValue ?? [:], context: context)
         }
         .onChange(of: vm.infotableList.baseCurrencyId.value) {_, _ in
-            vm.refreshOverview()
+            viewModel.refresh(db: vm.db, accounts: vm.accountList.data.readyValue ?? [:], context: context)
         }
     }
 }

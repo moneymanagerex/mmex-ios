@@ -14,6 +14,7 @@ struct OverviewHeader: View {
     
     @State private var showingCustomDatePicker = false
     let formatter: CurrencyFormatter?
+    let accountBalances: [DataId: Double]
     
     var body: some View {
         VStack(spacing: 8) {
@@ -100,7 +101,7 @@ struct OverviewHeader: View {
                                 
                                 Spacer()
                                 
-                                if let balance = vm.accountBalances[id] {
+                                if let balance = accountBalances[id] {
                                     Text(balance.formatted(by: formatter))
                                         .font(.caption)
                                         .foregroundColor(.secondary)

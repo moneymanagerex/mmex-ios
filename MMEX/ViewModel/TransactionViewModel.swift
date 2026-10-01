@@ -10,14 +10,14 @@ import Combine
 import SwiftUI
 import SQLite
 
-extension ViewModel {
-    nonisolated func loadTransactions(
+enum TransactionLoader {
+    static func load(
         db: SQLite.Connection?,
         for accountId: DataId? = nil,
         startDate: Date? = nil,
         endDate: Date? = nil
     ) async -> [TransactionData] {
-        log.debug("DEBUG: ViewModel.loadTransactions()")
+        log.debug("DEBUG: TransactionLoader.load()")
         guard
             let t  = TransactionRepository(db),
             let tp = TransactionSplitRepository(db)

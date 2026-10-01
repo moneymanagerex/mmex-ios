@@ -11,6 +11,7 @@ struct EnterView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var journalViewModel: JournalViewModel
     @EnvironmentObject var context: AppContext
     @Binding var selectedTab: Int
 
@@ -33,7 +34,7 @@ struct EnterView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    if (vm.saveJournal(&newJournal)) {
+                    if (journalViewModel.save(&newJournal, to: vm.db)) {
                         dismiss()
                         selectedTab = Preference.selectedTab
                         resetJournal()

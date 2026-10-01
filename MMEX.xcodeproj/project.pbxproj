@@ -241,6 +241,8 @@
 		A3C142AA2C90721800D3CEC0 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142A92C90721800D3CEC0 /* JournalView.swift */; };
 		A3C142AC2C909C1C00D3CEC0 /* EnterFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AB2C909C1C00D3CEC0 /* EnterFormView.swift */; };
 		A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */; };
+		A7E6C2000000000000000001 /* OverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6C2000000000000000002 /* OverviewViewModel.swift */; };
+		A7E6C2000000000000000003 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6C2000000000000000004 /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -478,6 +480,8 @@
 		A3C142A92C90721800D3CEC0 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
 		A3C142AB2C909C1C00D3CEC0 /* EnterFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterFormView.swift; sourceTree = "<group>"; };
 		A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
+		A7E6C2000000000000000002 /* OverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewModel.swift; sourceTree = "<group>"; };
+		A7E6C2000000000000000004 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -853,6 +857,8 @@
 				924353042CC3B2E30052E4BC /* ViewModel.swift */,
 				A350BDC02CA26415006669D5 /* TransactionViewModel.swift */,
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
+				A7E6C2000000000000000002 /* OverviewViewModel.swift */,
+				A7E6C2000000000000000004 /* SettingsViewModel.swift */,
 				A3B7D5ED2FEAC5A400F87DE0 /* JournalViewModel.swift */,
 				A3B7D5AD2FE92B3E00F87DE0 /* ScheduledOverviewViewModel.swift */,
 			);
@@ -1238,6 +1244,8 @@
 				925EABA62CCF81C9003CEAB3 /* AccountValidation.swift in Sources */,
 				92F685F12CEA8D0E00171A6A /* CategoryFormView.swift in Sources */,
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
+				A7E6C2000000000000000001 /* OverviewViewModel.swift in Sources */,
+				A7E6C2000000000000000003 /* SettingsViewModel.swift in Sources */,
 				925EAC1C2CDAA900003CEAB3 /* AttachmentGroup.swift in Sources */,
 				A3C142AC2C909C1C00D3CEC0 /* EnterFormView.swift in Sources */,
 				A3C142962C8FE15E00D3CEC0 /* TransactionRepository.swift in Sources */,

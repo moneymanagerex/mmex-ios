@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SQLite
 
 @MainActor
 class ScheduledOverviewViewModel: ObservableObject {
@@ -21,11 +22,15 @@ class ScheduledOverviewViewModel: ObservableObject {
     
     // MARK: - Loading
     
-    func load(from vm: ViewModel, accountId: DataId? = nil) {
-        isLoading = (vm.scheduledList.state == .loading)
-        
-        guard let scheduledData = vm.scheduledList.data.readyValue,
-              let order = vm.scheduledList.order.readyValue else {
+    func load(
+        scheduledData: [DataId: ScheduledData]?,
+        order: [DataId]?,
+        isLoading: Bool,
+        accountId: DataId? = nil
+    ) {
+        self.isLoading = isLoading
+
+        guard let scheduledData, let order else {
             clearAll()
             return
         }
@@ -83,17 +88,17 @@ class ScheduledOverviewViewModel: ObservableObject {
     
     // MARK: - Actions
     
-    func skip(_ item: ScheduledOverviewItem, in vm: ViewModel) async -> Bool {
+    func skip(_ item: ScheduledOverviewItem, db: SQLite.Connection?) async -> Bool {
         guard let nextDate = item.scheduled.nextDueDate(from: item.nextDueDate) else {
             return false
         }
         var updated = item.scheduled
         updated.dueDate = DateString(nextDate)
-        return updateScheduled(updated, in: vm)
+        return updateScheduled(updated, db: db)
     }
-    
-    func markAsPaid(_ item: ScheduledOverviewItem, in vm: ViewModel) async -> Bool {
-        guard createTransaction(from: item.scheduled, using: item.nextDueDate, in: vm) else {
+
+    func markAsPaid(_ item: ScheduledOverviewItem, splits: [DataId: [ScheduledSplitData]], db: SQLite.Connection?) async -> Bool {
+        guard createTransaction(from: item.scheduled, using: item.nextDueDate, splits: splits[item.id] ?? [], db: db) else {
             return false
         }
         
@@ -104,7 +109,7 @@ class ScheduledOverviewViewModel: ObservableObject {
             completed.repeatType = .once
             completed.repeatNum = 0
 
-            return updateScheduled(completed, in: vm)
+            return updateScheduled(completed, db: db)
         }
         var updated = item.scheduled
         updated.dueDate = DateString(nextDate)
@@ -126,17 +131,17 @@ class ScheduledOverviewViewModel: ObservableObject {
             }
         }
 
-        return updateScheduled(updated, in: vm)
+        return updateScheduled(updated, db: db)
     }
     
     // MARK: - Helpers
     
-    private func updateScheduled(_ data: ScheduledData, in vm: ViewModel) -> Bool {
-        guard let repo = ScheduledRepository(vm.db) else { return false }
+    private func updateScheduled(_ data: ScheduledData, db: SQLite.Connection?) -> Bool {
+        guard let repo = ScheduledRepository(db) else { return false }
         return repo.update(data)
     }
-    
-    private func createTransaction(from scheduled: ScheduledData, using dueDate: Date, in vm: ViewModel) -> Bool {
+
+    private func createTransaction(from scheduled: ScheduledData, using dueDate: Date, splits: [ScheduledSplitData], db: SQLite.Connection?) -> Bool {
         var transaction = TransactionData(
             accountId: scheduled.accountId,
             toAccountId: scheduled.toAccountId,
@@ -153,7 +158,7 @@ class ScheduledOverviewViewModel: ObservableObject {
             color: scheduled.color
         )
         
-        if let splits = vm.scheduledList.split.readyValue?[scheduled.id] {
+        if !splits.isEmpty {
             transaction.splits = splits.map { split in
                 TransactionSplitData(
                     id: .void,
@@ -165,7 +170,7 @@ class ScheduledOverviewViewModel: ObservableObject {
             }
         }
         
-        guard let repo = TransactionRepository(vm.db) else { return false }
+        guard let repo = TransactionRepository(db) else { return false }
         var txn = transaction
         return repo.insertWithSplits(&txn)
     }

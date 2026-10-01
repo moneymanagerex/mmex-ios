@@ -38,17 +38,16 @@ struct ScheduledOverviewView: View {
             if vm.scheduledList.state != .ready {
                 Task {
                     await vm.loadScheduledList(pref)
+                    refreshOverviewItems()
                 }
             }
-            let accountId = context.selectedAccountId
-            viewModel.load(from: vm, accountId: accountId)
+            refreshOverviewItems()
         }
         .onChange(of: vm.scheduledList.state) { _, _ in
-            let accountId = context.selectedAccountId
-            viewModel.load(from: vm, accountId: accountId)
+            refreshOverviewItems()
         }
         .onChange(of: context.selectedAccountId) { _, _ in
-            viewModel.load(from: vm, accountId: context.selectedAccountId)
+            refreshOverviewItems()
         }
     }
     
@@ -208,14 +207,18 @@ struct ScheduledOverviewView: View {
     // MARK: - Action Handlers
     
     private func handleSkip(_ item: ScheduledOverviewItem) async {
-        let success = await viewModel.skip(item, in: vm)
+        let success = await viewModel.skip(item, db: vm.db)
         toastMessage = success ? "Skipped to next occurrence" : "Failed to skip"
         showingToast = true
         if success { refresh() }
     }
     
     private func handleMarkPaid(_ item: ScheduledOverviewItem) async {
-        let success = await viewModel.markAsPaid(item, in: vm)
+        let success = await viewModel.markAsPaid(
+            item,
+            splits: vm.scheduledList.split.readyValue ?? [:],
+            db: vm.db
+        )
         toastMessage = success ? "Transaction created ✓" : "Failed to mark as paid"
         showingToast = true
         if success { refresh() }
@@ -225,10 +228,17 @@ struct ScheduledOverviewView: View {
         Task {
             vm.unloadList(ScheduledList.self)
             await vm.loadScheduledList(pref)
-            let accountId = context.selectedAccountId
-            viewModel.load(from: vm, accountId: accountId)
-            vm.objectWillChange.send()
+            refreshOverviewItems()
         }
+    }
+
+    private func refreshOverviewItems() {
+        viewModel.load(
+            scheduledData: vm.scheduledList.data.readyValue,
+            order: vm.scheduledList.order.readyValue,
+            isLoading: vm.scheduledList.state == .loading,
+            accountId: context.selectedAccountId
+        )
     }
     
     // MARK: - Helpers

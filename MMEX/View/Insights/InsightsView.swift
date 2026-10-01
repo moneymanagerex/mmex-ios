@@ -11,6 +11,7 @@ import Charts
 struct InsightsView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @StateObject private var viewModel = InsightsViewModel()
 
     @State var statusChoice: Int = 0
     @State var accountBalanceIsExpanded = true
@@ -42,7 +43,8 @@ struct InsightsView: View {
                     }
                 } ) { if accountIncomeIsExpanded {
                     InsightsSummaryView(
-                        stats: $vm.stats
+                        stats: viewModel.stats,
+                        accountNames: vm.accountList.data.readyValue?.mapValues(\.name) ?? [:]
                     )
                 } }
                 
@@ -58,10 +60,10 @@ struct InsightsView: View {
                     HStack {
                         DatePicker("Start Date", selection:  Binding(
                             get: {
-                                Calendar.current.startOfDay(for: vm.startDate)
+                                Calendar.current.startOfDay(for: viewModel.startDate)
                             },
                             set: { newValue in
-                                vm.startDate = Calendar.current.startOfDay(for: newValue)
+                                viewModel.startDate = Calendar.current.startOfDay(for: newValue)
                             }
                         ), displayedComponents: .date)
                             .labelsHidden()
@@ -71,10 +73,10 @@ struct InsightsView: View {
                         
                         DatePicker("End Date", selection: Binding(
                             get: {
-                                Calendar.current.startOfDay(for: vm.endDate)
+                                Calendar.current.startOfDay(for: viewModel.endDate)
                             },
                             set: { newValue in
-                                vm.endDate = Calendar.current.startOfDay(for: newValue)
+                                viewModel.endDate = Calendar.current.startOfDay(for: newValue)
                             }
                         ), displayedComponents: .date)
                             .labelsHidden()
@@ -85,7 +87,7 @@ struct InsightsView: View {
                     .cornerRadius(10)
                     .shadow(radius: 2)
                     
-                    IncomeExpenseView(stats: $vm.recentStats)
+                    IncomeExpenseView(stats: viewModel.recentStats)
                 } }
                 
                 // Placeholder for Future Sections
@@ -116,8 +118,9 @@ struct InsightsView: View {
         .task {
             log.debug("DEBUG: InsightsView.onAppear(main=\(Thread.isMainThread))")
             await vm.loadInsightsList(pref)
-            vm.loadInsights()
+            viewModel.load(db: vm.db)
         }
+        .environmentObject(viewModel)
     }
 }
 
@@ -148,10 +151,7 @@ extension MMEXPreview {
                 .padding(.horizontal)
                 .padding(.top, 10)
             }
-            .task {
-                await vm.loadInsightsList(pref)
-                vm.loadInsights()
-            }
+            .environmentObject(InsightsViewModel())
         }
     }
 }

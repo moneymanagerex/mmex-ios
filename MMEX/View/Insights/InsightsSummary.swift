@@ -9,14 +9,14 @@ import SwiftUI
 import Charts
 
 struct InsightsSummaryView: View {
-    @EnvironmentObject var vm: ViewModel
-    @Binding var stats: [TransactionData]
+    let stats: [TransactionData]
+    let accountNames: [DataId: String]
 
     var body: some View {
         Chart(stats) {
             BarMark(
                 x: .value("Amount", $0.income),
-                y: .value("Account", vm.accountList.data.readyValue?[$0.accountId]?.name ?? "#\($0.accountId.value)")
+                y: .value("Account", accountNames[$0.accountId] ?? "#\($0.accountId.value)")
             )
             .foregroundStyle(by: .value("Status", $0.status.fullName))
         }
@@ -32,7 +32,8 @@ struct InsightsSummaryView: View {
         var body: some View {
             MMEXPreview.insights("Account Income Summary") { pref, vm in
                 InsightsSummaryView(
-                    stats: .constant(vm.stats)
+                    stats: [],
+                    accountNames: [:]
                 )
             }
         }

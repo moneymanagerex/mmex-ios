@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct IncomeExpenseView: View {
-    @Binding var stats: [TransactionData]
+    let stats: [TransactionData]
     @State private var selectedDate: String?
     @EnvironmentObject var pref: Preference
     
@@ -125,7 +125,7 @@ struct DailyIncomeExpense {
         var body: some View {
             MMEXPreview.insights("Account Income Summary") { pref, vm in
                 IncomeExpenseView(
-                    stats: .constant(vm.recentStats)
+                    stats: []
                 )
             }
         }
