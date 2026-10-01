@@ -13,6 +13,9 @@ Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance ap
 - [SQLite3MultipleCiphers](https://github.com/utelle/SQLite3MultipleCiphers) for data encryption
 - [Dime](https://github.com/rarfell/dimeApp) for inspiration
 
+## Architecture
+- [Architecture and MVVM roadmap](docs/architecture.md)
+
 ## Screenshots
 
 <p align="center">
