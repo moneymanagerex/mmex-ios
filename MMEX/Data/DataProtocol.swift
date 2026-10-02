@@ -11,6 +11,7 @@ protocol DataProtocol: ExportableEntity {
     static var dataName: (String, String) { get }
 
     var id: DataId { get set }
+    var displayName: String { get }
     func shortDesc() -> String
 
     mutating func copy()
@@ -21,6 +22,12 @@ protocol DataProtocol: ExportableEntity {
 }
 
 extension DataProtocol {
+    var displayName: String { shortDesc() }
+
+    var exportFilename: String {
+        "\(displayName)_\(Self.dataName.0)"
+    }
+
     static func copy(of s: String) -> String {
         return s + " (Copy)"
     }

@@ -243,6 +243,7 @@
 		A3C142AE2C9134DD00D3CEC0 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */; };
 		A7E6C2000000000000000001 /* OverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6C2000000000000000002 /* OverviewViewModel.swift */; };
 		A7E6C2000000000000000003 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6C2000000000000000004 /* SettingsViewModel.swift */; };
+		A7E6C2000000000000000005 /* DataDisplayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6C2000000000000000006 /* DataDisplayName.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -482,6 +483,7 @@
 		A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
 		A7E6C2000000000000000002 /* OverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewModel.swift; sourceTree = "<group>"; };
 		A7E6C2000000000000000004 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		A7E6C2000000000000000006 /* DataDisplayName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDisplayName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1031,6 +1033,7 @@
 			isa = PBXGroup;
 			children = (
 				929EF66A2CA03AF90051A3E6 /* DataProtocol.swift */,
+				A7E6C2000000000000000006 /* DataDisplayName.swift */,
 				A37E7D932C9B217500B4ECFC /* InfotableData.swift */,
 				A3C1424B2C8AB52600D3CEC0 /* CurrencyData.swift */,
 				920823F52CA498A200388AB2 /* CurrencyHistoryData.swift */,
@@ -1246,6 +1249,7 @@
 				A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */,
 				A7E6C2000000000000000001 /* OverviewViewModel.swift in Sources */,
 				A7E6C2000000000000000003 /* SettingsViewModel.swift in Sources */,
+				A7E6C2000000000000000005 /* DataDisplayName.swift in Sources */,
 				925EAC1C2CDAA900003CEAB3 /* AttachmentGroup.swift in Sources */,
 				A3C142AC2C909C1C00D3CEC0 /* EnterFormView.swift in Sources */,
 				A3C142962C8FE15E00D3CEC0 /* TransactionRepository.swift in Sources */,

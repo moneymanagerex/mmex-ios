@@ -8,7 +8,7 @@ Money Manager Ex for iOS (MMEX4iOS) is a mobile companion to personal finance ap
 ## Tech Stacks
 - [SwiftUI](https://developer.apple.com/xcode/swiftui/)
 - [Swift Chart](https://developer.apple.com/documentation/charts) for reports and insights
-- [SQLite.swift](https://github.com/stephencelis/SQLite.swift) for orm and data access
+- [SQLite.swift](https://github.com/stephencelis/SQLite.swift) for the current ORM and data access layer; see the [SQLite.swift to GRDB migration plan](docs/sqlite-to-grdb-migration.md)
 - [MMEX Data Model](https://github.com/moneymanagerex/database) for data compatibility
 - [SQLite3MultipleCiphers](https://github.com/utelle/SQLite3MultipleCiphers) for data encryption
 - [Dime](https://github.com/rarfell/dimeApp) for inspiration
