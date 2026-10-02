@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Clone SQLite.swift from GitHub
         run: |
-          git clone --branch 0.15.3 --single-branch https://github.com/stephencelis/SQLite.swift.git ../SQLite.swift
+          git clone --branch 0.15.5 --single-branch https://github.com/stephencelis/SQLite.swift.git ../SQLite.swift
       - name: Clone Amplitude-iOS from GitHub
         run: |
           git clone --branch v8.21.0 --single-branch https://github.com/amplitude/Amplitude-iOS.git ../Amplitude-iOS
