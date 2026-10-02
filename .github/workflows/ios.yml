@@ -22,7 +22,7 @@ jobs:
           git clone --branch 0.15.5 --single-branch https://github.com/stephencelis/SQLite.swift.git ../SQLite.swift
       - name: Clone GRDB.swift from GitHub
         run: |
-          git clone --branch v7.11.1 --single-branch git@github.com:groue/GRDB.swift.git ../GRDB.swift
+          git clone --branch v7.11.1 --single-branch https://github.com/groue/GRDB.swift.git ../GRDB.swift
 
       - name: Clone Amplitude-iOS from GitHub
         run: |
