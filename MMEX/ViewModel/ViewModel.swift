@@ -103,48 +103,6 @@ class ViewModel: ObservableObject {
 }
 
 extension ViewModel {
-    func name<DataType: DataProtocol>(_ data: DataType) -> String {
-        if let data = data as? InfotableData {
-            return data.name
-        } else if let data = data as? CurrencyData {
-            return data.name
-        } else if let data = data as? AccountData {
-            return data.name
-        } else if let data = data as? AssetData {
-            return data.name
-        } else if let data = data as? StockData {
-            return data.name
-        } else if let data = data as? CategoryData {
-            // TODO: name -> path
-            return data.name
-        } else if let data = data as? PayeeData {
-            return data.name
-        } else if let data = data as? TransactionData {
-            return data.shortDesc()
-        } else if let data = data as? ScheduledData {
-            return data.shortDesc()
-        } else if let data = data as? TagData {
-            return data.name
-        } else if let data = data as? FieldData {
-            return data.shortDesc()
-        } else if let data = data as? AttachmentData {
-            return data.shortDesc()
-        } else if let data = data as? BudgetPeriodData {
-            return data.name
-        } else if let data = data as? BudgetData {
-            return data.shortDesc()
-        } else if let data = data as? ReportData {
-            return data.name
-        }
-        return ""
-    }
-
-    func filename<DataType: DataProtocol>(_ data: DataType) -> String {
-        return "\(name(data))_\(DataType.dataName.0)"
-    }
-}
-
-extension ViewModel {
     static var withoutData: ViewModel {
         ViewModel()
     }

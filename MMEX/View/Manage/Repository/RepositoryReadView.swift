@@ -112,7 +112,7 @@ struct RepositoryReadView<
             isPresented: $exporterIsPresented,
             document: ExportableEntityDocument(entity: data),
             contentType: .json,
-            defaultFilename: vm.filename(data)
+            defaultFilename: data.exportFilename
         ) { result in
             switch result {
             case .success(let url):

@@ -25,8 +25,10 @@ Data value types represent database records. Preference and AppContext provide u
 ### Data and persistence
 
 - MMEX/Data/ maps database records to Swift value types.
+- DataProtocol provides a default display name and export filename; individual data types override the display name when their user-facing name differs from their short description.
 - MMEX/Repository/ encapsulates SQLite queries and writes. Views should not build SQL or access SQLite.swift directly.
 - The existing SQLite layer handles database compatibility and encryption. Page ViewModels may coordinate Repositories, but database implementation details should not leak into Views.
+- A planned SQLite.swift to GRDB.swift migration is tracked in [sqlite-to-grdb-migration.md](sqlite-to-grdb-migration.md). The current Repository protocol exposes SQLite.swift query types, so the driver change requires a deliberate repository/data-access migration.
 
 ### Application dependencies
 
@@ -62,7 +64,7 @@ Work from lower-dependency areas toward higher-dependency areas. Preserve behavi
 ### 1. Audit and reduce the shared ViewModel
 
 - [ ] Inventory the shared ViewModel's public properties, extension methods, and actual View dependencies. Map cross-domain reads and writes.
-- [ ] Move stateless formatting, naming, sorting, and filtering into pure functions or domain-specific types instead of continuing to grow the app-level object.
+- [ ] Move remaining stateless formatting, sorting, and filtering into pure functions or domain-specific types instead of continuing to grow the app-level object.
 - [ ] Move feature-specific validation and command orchestration into feature ViewModels or use cases. Keep the application layer focused on shared data and session capabilities.
 - [ ] Define clear ownership for shared account, currency, category, payee, transaction, and budget caches. Start with lower-dependency domains before highly connected domains such as categories and accounts.
 - [ ] Converge the shared ViewModel into a clearly named AppDataStore/database-session coordinator, or split it into domain stores based on the dependency audit. Avoid a repository-wide mechanical rename before the responsibilities are decided.
@@ -70,6 +72,7 @@ Work from lower-dependency areas toward higher-dependency areas. Preserve behavi
 ### 2. Standardize database concurrency and loading
 
 - [ ] Define thread or actor ownership for SQLite Connection; do not share a connection across concurrent tasks without a clear policy.
+- [ ] Before replacing SQLite.swift, settle the GRDB connection owner (`DatabaseQueue` or `DatabasePool`) and make repositories execute inside its read/write closures.
 - [ ] Replace ad hoc DispatchQueue and main-thread callbacks with structured concurrency, consistent cancellation, error handling, and stale-result protection.
 - [ ] Standardize Repository error results and list LoadState. An empty array should not represent both “no data” and “query failed.”
 - [ ] Define load-task lifecycles so work is cancelled or replaced when a page disappears, the database changes, or filters change.
