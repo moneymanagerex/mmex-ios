@@ -63,13 +63,12 @@ struct ScheduledListView: View {
     @ViewBuilder
     func itemInfoView(_ data: ScheduledData) -> some View {
         let dueDate = data.dueDate.string
-        let status = data.status.fullName
+        let accountName = vm.accountList.data.readyValue?[data.accountId]?.name ?? "(unknown)"
         VStack(alignment: .trailing) {
             Text(dueDate)
                 .font(.caption)
-            Text(status)
+            Text(accountName)
                 .font(.caption)
-                .foregroundColor(status == "(none)" ? .secondary : .accentColor)
         }
     }
 
