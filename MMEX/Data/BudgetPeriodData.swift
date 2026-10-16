@@ -35,9 +35,15 @@ extension BudgetPeriodData {
 }
 
 extension BudgetPeriodData {
-    static let sampleData: [BudgetPeriodData] = [
-        BudgetPeriodData(id: 1, name: "2024"),
-        BudgetPeriodData(id: 2, name: "2024-01"),
-        BudgetPeriodData(id: 3, name: "2025"),
-    ]
+    static let sampleData: [BudgetPeriodData] = {
+        let year = Calendar.current.component(.year, from: Date())
+        let monthFormatter = DateFormatter()
+        monthFormatter.dateFormat = "yyyy-MM"
+
+        return [
+            BudgetPeriodData(id: 1, name: "\(year)"),
+            BudgetPeriodData(id: 2, name: monthFormatter.string(from: Date())),
+            BudgetPeriodData(id: 3, name: "\(year + 1)"),
+        ]
+    }()
 }

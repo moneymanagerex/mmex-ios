@@ -48,11 +48,11 @@ extension ReportData {
 extension ReportData {
     static let sampleData: [ReportData] = [
         ReportData(
-            id: 1, name: "report 1", active: true
+            id: 1, name: "Asset overview", active: true
             , sqlContent: "SELECT STARTDATE, ASSETNAME, ASSETTYPE, VALUE, NOTES, VALUECHANGE, VALUECHANGERATE FROM ASSETS_V1"
         ),
         ReportData(
-            id: 2, name: "report 2", active: true
+            id: 2, name: "Database snapshot", active: true
             , sqlContent: "SELECT * FROM REPORT_V1"
         ),
     ]

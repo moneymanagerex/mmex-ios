@@ -79,12 +79,12 @@ extension BudgetData {
 extension BudgetData {
     static let sampleData: [BudgetData] = [
         BudgetData(
-            id: 1, periodId: 1, categoryId: 1, frequency: .halfyearly,
-            flow: -20, active: true
+            id: 1, periodId: 2, categoryId: 8, frequency: .monthly,
+            flow: -450, notes: "Groceries", active: true
         ),
         BudgetData(
-            id: 2, periodId: 1, categoryId: 2, frequency: .monthly,
-            flow: -10, active: true
+            id: 2, periodId: 2, categoryId: 5, frequency: .monthly,
+            flow: -180, notes: "Utilities", active: true
         ),
     ]
 }

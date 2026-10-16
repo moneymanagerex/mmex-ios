@@ -9,6 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     private static let overviewTab = 0
+    private static let screenshotSampleDataKey = "MMEX_SCREENSHOT_SAMPLE_DATA"
+    private static let screenshotScreenKey = "MMEX_SCREENSHOT_SCREEN"
+
+    enum ScreenshotScreen: String {
+        case overview
+        case journal
+        case insights
+        case enter
+        case manage
+        case settings
+    }
 
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
@@ -28,10 +39,23 @@ struct ContentView: View {
     @State private var iPadReturnTab = ContentView.overviewTab
     @State private var iPadDetailResetKey = 0
 
+    private var screenshotScreen: ScreenshotScreen? {
+        ProcessInfo.processInfo.environment[Self.screenshotScreenKey]
+            .flatMap(ScreenshotScreen.init(rawValue:))
+    }
+
+    private var shouldAutoLoadSampleData: Bool {
+        ProcessInfo.processInfo.environment[Self.screenshotSampleDataKey] == "1"
+    }
+
     var body: some View {
         ZStack {
             if vm.isDatabaseConnected {
-                connectedView
+                if let screenshotScreen {
+                    screenshotConnectedView(screen: screenshotScreen)
+                } else {
+                    connectedView
+                }
             } else {
                 disconnectedView
             }
@@ -99,6 +123,12 @@ struct ContentView: View {
         }
 
         .autocorrectionDisabled()
+        .onAppear {
+            guard shouldAutoLoadSampleData, !vm.isDatabaseConnected else { return }
+            vm.createDatabase(at: nil, sampleData: true)
+            guard vm.isDatabaseConnected else { return }
+            selectedTab = horizontalSizeClass == .regular ? ContentView.overviewTab : Preference.selectedTab
+        }
     }
 
     @ViewBuilder
@@ -197,6 +227,37 @@ struct ContentView: View {
         .padding()
         .onAppear {
             vm.unloadAll()
+        }
+    }
+
+    @ViewBuilder
+    private func screenshotConnectedView(screen: ScreenshotScreen) -> some View {
+        NavigationStack {
+            switch screen {
+            case .overview:
+                OverviewView()
+                    .navigationBarTitle("Overview", displayMode: .inline)
+            case .journal:
+                JournalView()
+                    .navigationBarTitle("Journal", displayMode: .inline)
+            case .insights:
+                InsightsView()
+                    .navigationBarTitle("Insights", displayMode: .inline)
+            case .enter:
+                EnterView(selectedTab: $selectedTab)
+                    .navigationBarTitle("Enter", displayMode: .inline)
+            case .manage:
+                ManageView(
+                    isDocumentPickerPresented: $isDocumentPickerPresented,
+                    isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                    isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
+                    isSampleDocument: $isSampleDocument
+                )
+                .navigationBarTitle("Manage", displayMode: .inline)
+            case .settings:
+                SettingsView()
+                    .navigationBarTitle("Settings", displayMode: .inline)
+            }
         }
     }
 
