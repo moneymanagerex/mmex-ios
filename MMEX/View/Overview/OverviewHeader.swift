@@ -87,7 +87,7 @@ struct OverviewHeader: View {
             Divider()
             if let accounts = vm.accountList.data.readyValue {
                 ForEach(vm.accountList.order.readyValue ?? [], id: \.self) { id in
-                    if let account = accounts[id] {
+                    if let account = accounts[id], account.status.isOpen {
                         Button {
                             context.selectedAccountId = id
                         } label: {
