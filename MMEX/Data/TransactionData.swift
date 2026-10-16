@@ -153,55 +153,72 @@ extension TransactionData {
 }
 
 extension TransactionData {
-    static let sampleData : [TransactionData] = [
-        TransactionData(
-            id: 1, accountId: 1, payeeId: 1, transCode: TransactionType.withdrawal,
-            transAmount: 10.01, status: TransactionStatus.reconciled, categId: 1,
-            transDate: DateTimeString(Date())
-        ),
-        TransactionData(
-            id: 2, accountId: 2, payeeId: 2, transCode: TransactionType.deposit,
-            transAmount: 20.02, status: TransactionStatus.void, categId: 1,
-            transDate: DateTimeString(Date())
-        ),
-        TransactionData(
-            id: 3, accountId: 2, toAccountId: 3, transCode: TransactionType.transfer,
-            transAmount: 30.03, status: TransactionStatus.followUp,
-            notes: "transfer transacion data",
-            categId: 1,
-            transDate: DateTimeString(Date())
-        ),
-        TransactionData(
-            id: 4, accountId: 2, payeeId: 2, transCode: TransactionType.withdrawal,
-            transAmount: 40.04, status: TransactionStatus.duplicate,
-            notes: "split transacion data",
-            transDate: DateTimeString(Date()),
-            splits: TransactionSplitData.sampleData
-        ),
-        TransactionData(
-            id: 5, accountId: 1, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
-            transAmount: Double.random(in: 5.0...50.0), status: TransactionStatus.reconciled, categId: 1,
-            transDate: DateTimeString(Date().daysAgo(Int.random(in: 1...7)))
-        ),
-        TransactionData(
-            id: 6, accountId: 1, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.deposit,
-            transAmount: Double.random(in: 5.0...50.0), status: TransactionStatus.reconciled, categId: 1,
-            transDate: DateTimeString(Date().daysAgo(Int.random(in: 1...7)))
-        ),
-        TransactionData(
-            id: 7, accountId: 1, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.deposit,
-            transAmount: Double.random(in: 5.0...50.0), status: TransactionStatus.reconciled, categId: 1,
-            transDate: DateTimeString(Date().daysAgo(Int.random(in: 1...7)))
-        ),
-        TransactionData(
-            id: 8, accountId: 3, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
-            transAmount: 306.20, status: TransactionStatus.reconciled, notes: "initial buy Apple", categId: 1,
-            transDate: DateTimeString("2022-01-14T00:00:00")
-        ),
-        TransactionData(
-            id: 10, accountId: 3, payeeId: PayeeData.sampleDataIds.randomElement() ?? 1, transCode: TransactionType.withdrawal,
-            transAmount: 1355.6, status: TransactionStatus.reconciled, notes: "increase holdings of Apple", categId: 1,
-            transDate: DateTimeString("2023-01-13T00:00:00")
-        ),
-    ]
+    static let sampleData : [TransactionData] = {
+        let calendar = Calendar.current
+        let startOfToday = calendar.startOfDay(for: Date())
+
+        func timestamp(daysFromToday: Int, hour: Int, minute: Int) -> Date {
+            let day = calendar.date(byAdding: .day, value: daysFromToday, to: startOfToday) ?? startOfToday
+            return calendar.date(
+                bySettingHour: hour, minute: minute, second: 0, of: day
+            ) ?? day
+        }
+
+        return [
+            TransactionData(
+                id: 1, accountId: 1, payeeId: 1, transCode: .deposit,
+                transAmount: 3_200.00, status: .reconciled, categId: 2,
+                transDate: DateTimeString(timestamp(daysFromToday: -12, hour: 9, minute: 0))
+            ),
+            TransactionData(
+                id: 2, accountId: 1, payeeId: 2, transCode: .withdrawal,
+                transAmount: 86.45, status: .reconciled, categId: 8,
+                transDate: DateTimeString(timestamp(daysFromToday: -9, hour: 18, minute: 20))
+            ),
+            TransactionData(
+                id: 3, accountId: 1, payeeId: 3, transCode: .withdrawal,
+                transAmount: 72.40, status: .reconciled, categId: 5,
+                transDate: DateTimeString(timestamp(daysFromToday: -7, hour: 8, minute: 45))
+            ),
+            TransactionData(
+                id: 4, accountId: 1, toAccountId: 2, transCode: .transfer,
+                transAmount: 450.00, status: .reconciled,
+                notes: "Move money into travel savings",
+                categId: 16,
+                transDate: DateTimeString(timestamp(daysFromToday: -5, hour: 20, minute: 15))
+            ),
+            TransactionData(
+                id: 5, accountId: 1, payeeId: 6, transCode: .withdrawal,
+                transAmount: 58.20, status: .reconciled,
+                notes: "Weekend outing",
+                transDate: DateTimeString(timestamp(daysFromToday: -3, hour: 12, minute: 10)),
+                splits: TransactionSplitData.sampleData
+            ),
+            TransactionData(
+                id: 6, accountId: 1, payeeId: 5, transCode: .withdrawal,
+                transAmount: 18.50, status: .reconciled, categId: 10,
+                transDate: DateTimeString(timestamp(daysFromToday: -2, hour: 7, minute: 50))
+            ),
+            TransactionData(
+                id: 7, accountId: 1, payeeId: 8, transCode: .deposit,
+                transAmount: 420.00, status: .reconciled, categId: 3,
+                transDate: DateTimeString(timestamp(daysFromToday: -1, hour: 15, minute: 25))
+            ),
+            TransactionData(
+                id: 8, accountId: 1, payeeId: 6, transCode: .withdrawal,
+                transAmount: 14.20, status: .reconciled, categId: 12,
+                transDate: DateTimeString(timestamp(daysFromToday: 0, hour: 9, minute: 35))
+            ),
+            TransactionData(
+                id: 9, accountId: 3, payeeId: 7, transCode: .withdrawal,
+                transAmount: 306.20, status: .reconciled, notes: "Initial ETF purchase", categId: 14,
+                transDate: DateTimeString(timestamp(daysFromToday: -45, hour: 10, minute: 0))
+            ),
+            TransactionData(
+                id: 10, accountId: 3, payeeId: 7, transCode: .withdrawal,
+                transAmount: 1_355.60, status: .reconciled, notes: "Increase long-term holdings", categId: 14,
+                transDate: DateTimeString(timestamp(daysFromToday: -15, hour: 14, minute: 40))
+            ),
+        ]
+    }()
 }

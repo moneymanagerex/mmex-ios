@@ -36,7 +36,7 @@ extension TransactionSplitData {
 extension TransactionSplitData {
     static let sampleData: [TransactionSplitData] = [
         // for transId = 4
-        TransactionSplitData(id:1, transId: 4, categId: 1, amount: 10.01, notes: "note for 4.1st split"),
-        TransactionSplitData(id:2, transId: 4, categId: 2, amount: 30.03, notes: "note for 4.2nd split")
+        TransactionSplitData(id: 1, transId: 5, categId: 12, amount: 34.20, notes: "Brunch"),
+        TransactionSplitData(id: 2, transId: 5, categId: 10, amount: 24.00, notes: "Train tickets")
     ]
 }

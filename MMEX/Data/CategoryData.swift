@@ -104,8 +104,22 @@ extension CategoryData {
 
 extension CategoryData {
     static let sampleData: [CategoryData] = [
-        CategoryData(id: 1, name: "Bills",     active: true, parentId: .void),
-        CategoryData(id: 2, name: "Telephone", active: true, parentId: 1),
+        CategoryData(id: 1, name: "Income", active: true, parentId: .void),
+        CategoryData(id: 2, name: "Salary", active: true, parentId: 1),
+        CategoryData(id: 3, name: "Freelance", active: true, parentId: 1),
+        CategoryData(id: 4, name: "Home", active: true, parentId: .void),
+        CategoryData(id: 5, name: "Utilities", active: true, parentId: 4),
+        CategoryData(id: 6, name: "Internet", active: true, parentId: 4),
+        CategoryData(id: 7, name: "Food", active: true, parentId: .void),
+        CategoryData(id: 8, name: "Groceries", active: true, parentId: 7),
+        CategoryData(id: 9, name: "Transport", active: true, parentId: .void),
+        CategoryData(id: 10, name: "Transit", active: true, parentId: 9),
+        CategoryData(id: 11, name: "Leisure", active: true, parentId: .void),
+        CategoryData(id: 12, name: "Dining", active: true, parentId: 11),
+        CategoryData(id: 13, name: "Investments", active: true, parentId: .void),
+        CategoryData(id: 14, name: "Brokerage", active: true, parentId: 13),
+        CategoryData(id: 15, name: "Transfers", active: true, parentId: .void),
+        CategoryData(id: 16, name: "Savings Move", active: true, parentId: 15),
     ]
     static var sampleDataIds : [DataId] {
         sampleData.map { $0.id }

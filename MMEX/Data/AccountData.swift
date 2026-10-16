@@ -133,34 +133,39 @@ extension AccountFlowByStatus {
 extension AccountData {
     static let sampleData : [AccountData] = [
         AccountData(
-            id: 1, name: "Account A", type: AccountType.cash,
-            status: AccountStatus.open, notes: "line 1\nline 2",
-            initialDate: DateString(Date()),
-            initialBal: 100.0, favoriteAcct: .boolTrue, currencyId: 1
+            id: 1, name: "Everyday Checking", type: .checking,
+            status: .open, notes: "Main spending account",
+            heldAt: "Riverbank", website: "riverbank.app",
+            initialDate: DateString(Date().daysAgo(120)),
+            initialBal: 3_850.42, favoriteAcct: .boolTrue, currencyId: 1
         ),
         AccountData(
-            id: 2, name: "Account B", type: AccountType.cash,
-            status: AccountStatus.open, notes: "note",
-            initialDate: DateString(Date()),
-            initialBal: 200.0, favoriteAcct: .boolTrue, currencyId: 2
+            id: 2, name: "Travel Savings", type: .term,
+            status: .open, notes: "Short-term savings for trips",
+            heldAt: "Riverbank", website: "riverbank.app",
+            initialDate: DateString(Date().daysAgo(180)),
+            initialBal: 5_200.00, favoriteAcct: .boolTrue, currencyId: 1
         ),
         AccountData(
-            id: 3, name: "Inv Account", type: AccountType.investment,
-            status: AccountStatus.open, notes: "",
-            initialDate: DateString(Date()),
-            initialBal: 2000.0, favoriteAcct: .boolTrue, currencyId: 1
+            id: 3, name: "Brokerage Portfolio", type: .investment,
+            status: .open, notes: "Long-term investments",
+            heldAt: "Northstar Investments", website: "northstarinvest.example",
+            initialDate: DateString(Date().daysAgo(365)),
+            initialBal: 2_400.00, favoriteAcct: .boolTrue, currencyId: 1
         ),
         AccountData(
-            id: 4, name: "House", type: AccountType.asset,
-            status: AccountStatus.open, notes: "",
-            initialDate: DateString(Date()),
-            initialBal: 0.0, favoriteAcct: .boolTrue, currencyId: 1
+            id: 4, name: "Cash Wallet", type: .cash,
+            status: .open, notes: "Cash on hand",
+            initialDate: DateString(Date().daysAgo(60)),
+            initialBal: 180.00, favoriteAcct: .boolFalse, currencyId: 1
         ),
         AccountData(
-            id: 5, name: "Car", type: AccountType.asset,
-            status: AccountStatus.open, notes: "",
-            initialDate: DateString(Date()),
-            initialBal: 0.0, favoriteAcct: .boolFalse, currencyId: 1
+            id: 5, name: "Rewards Card", type: .creditCard,
+            status: .open, notes: "Monthly card spending",
+            heldAt: "Riverbank", website: "riverbank.app",
+            initialDate: DateString(Date().daysAgo(240)),
+            initialBal: -640.30, favoriteAcct: .boolFalse, currencyId: 1,
+            creditLimit: 5_000.00, minimumPayment: 50.00
         ),
     ]
 
