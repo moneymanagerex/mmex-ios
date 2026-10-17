@@ -7,7 +7,6 @@
 
 import OSLog
 import SwiftUI
-import Amplitude
 
 let log = Logger(
     subsystem: Bundle.main.bundleIdentifier!,
@@ -28,11 +27,7 @@ struct MMEXApp: App {
         }
 
         if pref.track.sendUsage == .boolTrue {
-            Amplitude.instance().setUserId(pref.track.userId) // copy from/to Infotable.UID
-            Amplitude.instance().defaultTracking = AMPDefaultTrackingOptions.initWithSessions(
-                true, appLifecycles: true, deepLinks: false, screenViews: false
-            )
-            Amplitude.instance().initializeApiKey("1e1fbc10354400d9c3392a89558d693d")
+            // TODO?
         }
     }
 
