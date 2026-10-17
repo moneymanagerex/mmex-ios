@@ -24,12 +24,6 @@ jobs:
         run: |
           git clone --branch v7.11.1 --single-branch https://github.com/groue/GRDB.swift.git ../GRDB.swift
 
-      - name: Clone Amplitude-iOS from GitHub
-        run: |
-          git clone --branch v8.22.2 --single-branch https://github.com/amplitude/Amplitude-iOS.git ../Amplitude-iOS
-      - name: Clone analytics-connector-ios from GitHub
-        run: |
-          git clone --branch v1.0.3 --single-branch https://github.com/amplitude/analytics-connector-ios.git ../analytics-connector-ios
       - name: Reset SDK Cache
         run: |
           echo "Resetting SDK cache..."
