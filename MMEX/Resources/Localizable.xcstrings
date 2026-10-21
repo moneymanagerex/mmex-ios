@@ -327,6 +327,16 @@
         }
       }
     },
+    "%@ / %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ / %2$@"
+          }
+        }
+      }
+    },
     "%@ #%lld" : {
       "localizations" : {
         "cs" : {
@@ -392,6 +402,9 @@
       }
     },
     "%@ • %@" : {
+
+    },
+    "%@ left" : {
 
     },
     "%lf" : {
@@ -522,6 +535,9 @@
         }
       }
     },
+    "%lld over" : {
+
+    },
     "∞" : {
 
     },
@@ -646,6 +662,15 @@
           }
         }
       }
+    },
+    "30 days" : {
+
+    },
+    "60 days" : {
+
+    },
+    "90 days" : {
+
     },
     "About" : {
       "localizations" : {
@@ -790,6 +815,7 @@
       }
     },
     "Account" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -932,6 +958,7 @@
       }
     },
     "Account Income Summary" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -2016,6 +2043,9 @@
         }
       }
     },
+    "Balance" : {
+
+    },
     "Base Currency" : {
       "localizations" : {
         "ar" : {
@@ -2151,6 +2181,9 @@
           }
         }
       }
+    },
+    "Budget vs Actual" : {
+
     },
     "Build" : {
       "localizations" : {
@@ -2494,6 +2527,9 @@
           }
         }
       }
+    },
+    "Cash Flow Forecast" : {
+
     },
     "Category" : {
       "localizations" : {
@@ -5174,6 +5210,9 @@
         }
       }
     },
+    "Earned" : {
+
+    },
     "Edit" : {
       "localizations" : {
         "cs" : {
@@ -6007,6 +6046,9 @@
       }
     },
     "Financial Colors" : {
+
+    },
+    "Forecasting..." : {
 
     },
     "Format" : {
@@ -7947,6 +7989,9 @@
         }
       }
     },
+    "Loading budgets..." : {
+
+    },
     "Loading data ..." : {
       "localizations" : {
         "cs" : {
@@ -8352,6 +8397,7 @@
 
     },
     "More Insights Coming Soon..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -8752,6 +8798,9 @@
     "Next Due Date" : {
 
     },
+    "Next scheduled" : {
+
+    },
     "No" : {
       "localizations" : {
         "ar" : {
@@ -8916,6 +8965,9 @@
         }
       }
     },
+    "No budgets defined for the current period." : {
+
+    },
     "No data available" : {
       "localizations" : {
         "de" : {
@@ -9002,6 +9054,9 @@
         }
       }
     },
+    "No open accounts to display." : {
+
+    },
     "No splits" : {
 
     },
@@ -9034,6 +9089,9 @@
           }
         }
       }
+    },
+    "No upcoming scheduled transactions in this window." : {
+
     },
     "Notes" : {
       "localizations" : {
@@ -9350,6 +9408,9 @@
         }
       }
     },
+    "On track" : {
+
+    },
     "One-time" : {
 
     },
@@ -9488,6 +9549,9 @@
           }
         }
       }
+    },
+    "Over by %@" : {
+
     },
     "Overview" : {
 
@@ -9862,6 +9926,9 @@
           }
         }
       }
+    },
+    "Projected balance" : {
+
     },
     "Properties" : {
       "localizations" : {
@@ -11466,6 +11533,9 @@
         }
       }
     },
+    "Spent" : {
+
+    },
     "split amount" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -11829,6 +11899,7 @@
       }
     },
     "Status" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -13302,6 +13373,7 @@
 
     },
     "Upcoming Features" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -13603,6 +13675,9 @@
       }
     },
     "vs %@" : {
+
+    },
+    "Window" : {
 
     },
     "Year" : {
@@ -13932,6 +14007,9 @@
           }
         }
       }
+    },
+    "Zero" : {
+
     }
   },
   "version" : "1.0"

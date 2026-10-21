@@ -10,13 +10,21 @@ import SwiftUI
 extension ViewModel {
     func loadInsightsList(_ pref: Preference) async {
         guard insightsList.reloading() else { return }
-        let ok = await withTaskGroup(of: Bool.self) { taskGroup -> Bool in
-            let ok = [
-                load(pref, &taskGroup, keyPath: \Self.currencyList.info),
-                load(pref, &taskGroup, keyPath: \Self.accountList.data),
-            ].allSatisfy { $0 }
-            return await taskGroupOk(taskGroup, ok)
-        }
+        await loadAccountList(pref)
+        await loadPayeeList(pref)
+        await loadBudgetList(pref)
+        await loadScheduledList(pref)
+        
+        let ok = [
+            accountList.state,
+            payeeList.state,
+            budgetList.state,
+            budgetPeriodList.state,
+            scheduledList.state,
+            categoryList.state,
+            currencyList.state,
+        ].allSatisfy { $0 == .ready }
+        
         insightsList.loaded(ok: ok)
     }
 }

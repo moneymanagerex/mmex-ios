@@ -182,7 +182,6 @@
 		A3356D562D11A75A003A859F /* SQLite3MC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3356D552D11A75A003A859F /* SQLite3MC.swift */; };
 		A3363EEB2C93BF62004696C7 /* CurrencyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */; };
 		A33742882CA8E55400698466 /* IncomeExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742872CA8E55400698466 /* IncomeExpenseView.swift */; };
-		A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33742892CA8E72C00698466 /* InsightsSummary.swift */; };
 		A33BA2AB2D6D8EE00075CE54 /* CurrencyRateFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BA2AA2D6D8EE00075CE54 /* CurrencyRateFetcher.swift */; };
 		A3462F642C9426F500F79145 /* InsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F632C9426F500F79145 /* InsightsViewModel.swift */; };
 		A3462F662C94854800F79145 /* ExportableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3462F652C94854800F79145 /* ExportableEntity.swift */; };
@@ -190,6 +189,9 @@
 		A350BDC12CA26415006669D5 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350BDC02CA26415006669D5 /* TransactionViewModel.swift */; };
 		A35E55252FE3CB4E00A4529C /* SplitEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35E55242FE3CB4D00A4529C /* SplitEditView.swift */; };
 		A3680E67306FEB6000D71862 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = A3680E66306FEB6000D71862 /* GRDB */; };
+		A36BECED3088FBF700BE6CEB /* InsightsViewModel+Extended.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36BECEC3088FBF600BE6CEB /* InsightsViewModel+Extended.swift */; };
+		A36BECEF3088FC3200BE6CEB /* BudgetProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36BECEE3088FC3000BE6CEB /* BudgetProgressSection.swift */; };
+		A36BECF13088FC3F00BE6CEB /* CashFlowForecastSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36BECF03088FC3E00BE6CEB /* CashFlowForecastSection.swift */; };
 		A379C1A92CA3B9EB00CC8E2C /* AssetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */; };
 		A37E7D842C9AC14800B4ECFC /* ManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D832C9AC14800B4ECFC /* ManageView.swift */; };
 		A37E7D862C9AC2D000B4ECFC /* InfoAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37E7D852C9AC2D000B4ECFC /* InfoAboutView.swift */; };
@@ -424,13 +426,15 @@
 		A3356D552D11A75A003A859F /* SQLite3MC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite3MC.swift; sourceTree = "<group>"; };
 		A3363EEA2C93BF62004696C7 /* CurrencyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRepository.swift; sourceTree = "<group>"; };
 		A33742872CA8E55400698466 /* IncomeExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeExpenseView.swift; sourceTree = "<group>"; };
-		A33742892CA8E72C00698466 /* InsightsSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsSummary.swift; sourceTree = "<group>"; };
 		A33BA2AA2D6D8EE00075CE54 /* CurrencyRateFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRateFetcher.swift; sourceTree = "<group>"; };
 		A3462F632C9426F500F79145 /* InsightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewModel.swift; sourceTree = "<group>"; };
 		A3462F652C94854800F79145 /* ExportableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntity.swift; sourceTree = "<group>"; };
 		A3462F692C948CDB00F79145 /* ExportableEntityDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableEntityDocument.swift; sourceTree = "<group>"; };
 		A350BDC02CA26415006669D5 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		A35E55242FE3CB4D00A4529C /* SplitEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitEditView.swift; sourceTree = "<group>"; };
+		A36BECEC3088FBF600BE6CEB /* InsightsViewModel+Extended.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InsightsViewModel+Extended.swift"; sourceTree = "<group>"; };
+		A36BECEE3088FC3000BE6CEB /* BudgetProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetProgressSection.swift; sourceTree = "<group>"; };
+		A36BECF03088FC3E00BE6CEB /* CashFlowForecastSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowForecastSection.swift; sourceTree = "<group>"; };
 		A379C1A82CA3B9EB00CC8E2C /* AssetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListView.swift; sourceTree = "<group>"; };
 		A37E7D832C9AC14800B4ECFC /* ManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageView.swift; sourceTree = "<group>"; };
 		A37E7D852C9AC2D000B4ECFC /* InfoAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAboutView.swift; sourceTree = "<group>"; };
@@ -853,6 +857,7 @@
 				924353042CC3B2E30052E4BC /* ViewModel.swift */,
 				A350BDC02CA26415006669D5 /* TransactionViewModel.swift */,
 				A3462F632C9426F500F79145 /* InsightsViewModel.swift */,
+				A36BECEC3088FBF600BE6CEB /* InsightsViewModel+Extended.swift */,
 				A7E6C2000000000000000002 /* OverviewViewModel.swift */,
 				A7E6C2000000000000000004 /* SettingsViewModel.swift */,
 				A3B7D5ED2FEAC5A400F87DE0 /* JournalViewModel.swift */,
@@ -968,9 +973,10 @@
 		A3B51C072CA8E03100BB0681 /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				A36BECF03088FC3E00BE6CEB /* CashFlowForecastSection.swift */,
+				A36BECEE3088FC3000BE6CEB /* BudgetProgressSection.swift */,
 				A3C142AD2C9134DD00D3CEC0 /* InsightsView.swift */,
 				924352DF2CA9CC5A0052E4BC /* InsightsAccountView.swift */,
-				A33742892CA8E72C00698466 /* InsightsSummary.swift */,
 				A33742872CA8E55400698466 /* IncomeExpenseView.swift */,
 			);
 			path = Insights;
@@ -1222,9 +1228,9 @@
 				925EABB82CD6FAC7003CEAB3 /* TransactionList.swift in Sources */,
 				A3C142502C8B366400D3CEC0 /* PayeeListView.swift in Sources */,
 				925EABBA2CD6FBF7003CEAB3 /* ScheduledList.swift in Sources */,
+				A36BECF13088FC3F00BE6CEB /* CashFlowForecastSection.swift in Sources */,
 				925EAC2D2CDAC36F003CEAB3 /* FieldSearch.swift in Sources */,
 				925EABB22CCFFC2E003CEAB3 /* Reload.swift in Sources */,
-				A337428A2CA8E72C00698466 /* InsightsSummary.swift in Sources */,
 				A3C142672C8F2AF500D3CEC0 /* TransactionData.swift in Sources */,
 				925EAC0F2CDA8B1A003CEAB3 /* TagSearch.swift in Sources */,
 				92F686032CF0EE7700171A6A /* BudgetSearch.swift in Sources */,
@@ -1265,6 +1271,7 @@
 				92F685FF2CF0D55A00171A6A /* BudgetPeriodReload.swift in Sources */,
 				A3C142942C8FE13E00D3CEC0 /* PayeeRepository.swift in Sources */,
 				9243533F2CCD2FC90052E4BC /* StockSearch.swift in Sources */,
+				A36BECEF3088FC3200BE6CEB /* BudgetProgressSection.swift in Sources */,
 				A3C1429E2C8FFCF100D3CEC0 /* TransactionCreateView.swift in Sources */,
 				920824282CA60E8400388AB2 /* FieldData.swift in Sources */,
 				929EF66B2CA03AF90051A3E6 /* DataProtocol.swift in Sources */,
@@ -1273,6 +1280,7 @@
 				924353272CCAD2780052E4BC /* LoadState.swift in Sources */,
 				A3C1422B2C89751500D3CEC0 /* MMEXApp.swift in Sources */,
 				92F686272CF1595800171A6A /* FieldFormView.swift in Sources */,
+				A36BECED3088FBF700BE6CEB /* InsightsViewModel+Extended.swift in Sources */,
 				A39B1B362C99A0C2003E5562 /* CurrencyFormView.swift in Sources */,
 				920824222CA4E67200388AB2 /* TagLinkRepository.swift in Sources */,
 				A37E7D962C9B219400B4ECFC /* InfotableRepository.swift in Sources */,

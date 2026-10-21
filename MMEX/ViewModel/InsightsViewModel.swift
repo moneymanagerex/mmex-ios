@@ -11,130 +11,140 @@ import SwiftUI
 
 struct InsightsFlow {
     var dataByType: [AccountType: [AccountData]] = [:]
-    var today: String = ""
     var flowUntilToday: [DataId: AccountFlowByStatus] = [:]
     var flowAfterToday: [DataId: AccountFlowByStatus] = [:]
 }
+
 @MainActor
 final class InsightsViewModel: ObservableObject {
     @Published var baseCurrency: CurrencyData?
-    @Published var stats: [TransactionData] = []
     @Published var recentStats: [TransactionData] = []
-    @Published var startDate: Date = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()) {
-        didSet { loadInsightsRecentTransactions() }
+
+    @Published var startDate: Date {
+        didSet { guard !isBatchUpdating else { return }; reloadRecent() }
     }
-    @Published var endDate: Date = Calendar.current.startOfDay(for: Date()) {
-        didSet {
-            loadInsightsRecentTransactions()
-            loadInsightsFlow()
-        }
+    @Published var endDate: Date {
+        didSet { guard !isBatchUpdating else { return }; reloadRecent(); reloadFlow() }
     }
     @Published var flow = InsightsFlow()
 
+    // P0 入口
+    @Published var budgetSummary: BudgetProgressSummary? = nil
+    @Published var budgetIsLoading: Bool = false
+    @Published var forecastSummary: CashFlowForecastSummary? = nil
+    @Published var forecastIsLoading: Bool = false
+
     private var database: SQLite.Connection?
-    private var recentRequestID = UUID()
+    private var recentTask: Task<Void, Never>?
+    private var flowTask: Task<Void, Never>?
+    private var isBatchUpdating = false
 
-    func load(db: SQLite.Connection?) {
+    init() {
+        let cal = Calendar.current
+        let end = cal.startOfDay(for: Date())
+        let start = cal.date(byAdding: .month, value: -1, to: end) ?? end
+        self.startDate = start
+        self.endDate = end
+    }
+
+    /// 从 AppContext 批量设置，只触发一次重算
+    func setDateRange(start: Date, end: Date) {
+        let cal = Calendar.current
+        let s = cal.startOfDay(for: start)
+        let e = cal.startOfDay(for: end)
+        guard s != startDate || e != endDate else { return }
+        isBatchUpdating = true
+        startDate = s
+        endDate = e
+        isBatchUpdating = false
+        reloadRecent()
+        reloadFlow()
+    }
+
+    func load(db: SQLite.Connection?, baseCurrencyId: DataId?, currencyInfo: [DataId: CurrencyInfo]?) {
         database = db
-        if let baseCurrencyId = InfotableRepository(db)?.getValue(for: InfoKey.baseCurrencyID.id, as: DataId.self) {
-            baseCurrency = CurrencyRepository(db)?.pluck(
-                key: InfoKey.baseCurrencyID.id,
-                from: CurrencyRepository.table.filter(CurrencyRepository.col_id == Int64(baseCurrencyId))
-            ).toOptional()
+        // 不再重复查库，从 vm 已加载的缓存拿
+        if let baseCurrencyId, let info = currencyInfo?[baseCurrencyId] {
+            baseCurrency = CurrencyData(
+                id: baseCurrencyId, name: info.name, prefixSymbol: "", suffixSymbol: "",
+                decimalPoint: "", groupSeparator: "", unitName: "", centName: "",
+                scale: 0, baseConvRate: info.baseConvRate, symbol: info.symbol,
+                type: .fiat
+            )
+        } else {
+            baseCurrency = nil
         }
-        loadInsightsFlow()
-        loadInsightsRecentTransactions()
-        loadInsightsTransactions()
+        reloadFlow()
+        reloadRecent()
     }
-    
-    func loadInsightsRecentTransactions() {
+
+    // MARK: - Private
+
+    private func reloadRecent() {
         guard let database else { return }
-        let requestID = UUID()
-        recentRequestID = requestID
-        let repository = TransactionRepository(database)
-        let startDate = self.startDate
-        let endDate = self.endDate
-        // Fetch transactions asynchronously
-        DispatchQueue.global(qos: .background).async {
-            let transactions = repository.loadRecent(startDate: startDate, endDate: endDate) ?? []
-            DispatchQueue.main.async {
-                guard self.recentRequestID == requestID else { return }
-                self.recentStats = transactions
-            }
-        }
-    }
-    
-    func loadInsightsTransactions() {
-        guard let database else { return }
-        let repository = TransactionRepository(database)
-        // Fetch transactions asynchronously
-        DispatchQueue.global(qos: .background).async {
-            let transactions = repository.load() ?? []
-            // Update the published stats on the main thread
-            DispatchQueue.main.async {
-                self.stats = transactions
-            }
+        recentTask?.cancel()
+        let start = startDate
+        let end = endDate
+        recentTask = Task { [weak self] in
+            let txns = await Task.detached(priority: .userInitiated) { () -> [TransactionData] in
+                let repo = TransactionRepository(database)
+                return repo.loadRecent(startDate: start, endDate: end) ?? []
+            }.value
+            guard !Task.isCancelled else { return }
+            self?.recentStats = txns
         }
     }
 
-    private func loadInsightsFlow() {
+    private func reloadFlow() {
         guard let database else { return }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        self.flow.today = formatter.string(from: endDate)
-        let repository = AccountRepository(database)
-        typealias A = AccountRepository
-        let table = A.table
-            .filter(A.table[A.col_status] == AccountStatus.open.rawValue)
+        flowTask?.cancel()
+        let end = endDate
+        let today = DateString(end).string
+        flowTask = Task { [weak self] in
+            typealias A = AccountRepository
+            let table = A.table.filter(A.table[A.col_status] == AccountStatus.open.rawValue)
 
-        // fetch open accounts
-        DispatchQueue.global(qos: .background).async {
-            let dataByType: [AccountType: [AccountData]] = repository.selectBy(
-                property: { row in
-                    AccountType(collateNoCase: row[AccountRepository.col_type])
-                },
-                from: table.order(AccountRepository.col_name)
-            ) ?? [:]
-            // Update the published stats on the main thread
-            DispatchQueue.main.async {
-                self.flow.dataByType = dataByType
-            }
-        }
+            let dataByType = await Task.detached(priority: .userInitiated) {
+                () -> [AccountType: [AccountData]] in
+                let repo = AccountRepository(database)
+                return repo.selectBy(
+                    property: { row in
+                        AccountType(collateNoCase: row[AccountRepository.col_type])
+                    },
+                    from: table.order(AccountRepository.col_name),
+                    with: AccountRepository.fetchData
+                ) ?? [:]
+            }.value
+            guard !Task.isCancelled else { return }
 
-        // fetch flow of open accounts until today
-        let today = self.flow.today
-        DispatchQueue.global(qos: .background).async {
-            let flowByStatus = repository.dictFlowByStatus(
-                from: table,
-                supDate: today + "z"
-            ) ?? [:]
-            DispatchQueue.main.async {
-                self.flow.flowUntilToday = flowByStatus
-            }
-        }
+            let until = await Task.detached(priority: .userInitiated) {
+                () -> [DataId: AccountFlowByStatus] in
+                let repo = AccountRepository(database)
+                return repo.dictFlowByStatus(from: table, supDate: today + "z") ?? [:]
+            }.value
+            guard !Task.isCancelled else { return }
 
-        // fetch flow of open accounts after today
-        DispatchQueue.global(qos: .background).async {
-            let flowByStatus = repository.dictFlowByStatus(
-                from: table,
-                minDate: today + "z"
-            ) ?? [:]
-            DispatchQueue.main.async {
-                self.flow.flowAfterToday = flowByStatus
-            }
+            let after = await Task.detached(priority: .userInitiated) {
+                () -> [DataId: AccountFlowByStatus] in
+                let repo = AccountRepository(database)
+                return repo.dictFlowByStatus(from: table, minDate: today + "z") ?? [:]
+            }.value
+            guard !Task.isCancelled else { return }
+
+            guard let self else { return }
+            self.flow.dataByType = dataByType
+            self.flow.flowUntilToday = until
+            self.flow.flowAfterToday = after
         }
     }
 }
 
 extension ViewModel {
-
-    // execute SQL and return its dataset
     func runReport(report: ReportData) -> ReportResult {
         if let repo = Repository(self.db) {
             let (columns, result) = repo.select(rawQuery: report.sqlContent)
             return ReportResult(columnNames: columns, rows: result)
-        } else {
-            return ReportResult(columnNames: [], rows: [])
         }
+        return ReportResult(columnNames: [], rows: [])
     }
 }

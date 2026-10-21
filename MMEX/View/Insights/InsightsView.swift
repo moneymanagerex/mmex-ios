@@ -11,43 +11,51 @@ import Charts
 struct InsightsView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var context: AppContext
     @StateObject private var viewModel = InsightsViewModel()
 
-    @State var statusChoice: Int = 0
+    @State var statusChoice: InsightsAccountMode = .balance
     @State var accountBalanceIsExpanded = true
-    @State var accountIncomeIsExpanded = true
+    @State var budgetIsExpanded = true
+    @State var forecastIsExpanded = true
     @State var incomeExpenseIsExpanded = true
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 Section(header: HStack {
                     Button(action: { accountBalanceIsExpanded.toggle() }) {
                         pref.theme.group.view(
-                            nameView: { Text(InsightsAccountView.statusChoices[statusChoice].0) },
+                            nameView: { Text(statusChoice.sectionTitle) },
                             isExpanded: accountBalanceIsExpanded
                         )
                     }
-                } ) { if accountBalanceIsExpanded {
-                    InsightsAccountView(
-                        statusChoice: $statusChoice
-                    )
+                }) { if accountBalanceIsExpanded {
+                    InsightsAccountView(statusChoice: $statusChoice)
                 } }
-                
+
                 Section(header: HStack {
-                    Button(action: { accountIncomeIsExpanded.toggle() }) {
+                    Button(action: { budgetIsExpanded.toggle() }) {
                         pref.theme.group.view(
-                            nameView: { Text("Account Income Summary") },
-                            isExpanded: accountIncomeIsExpanded
+                            nameView: { Text("Budget vs Actual") },
+                            isExpanded: budgetIsExpanded
                         )
                     }
-                } ) { if accountIncomeIsExpanded {
-                    InsightsSummaryView(
-                        stats: viewModel.stats,
-                        accountNames: vm.accountList.data.readyValue?.mapValues(\.name) ?? [:]
-                    )
+                }) { if budgetIsExpanded {
+                    BudgetProgressSection(formatter: displayFormatter)
                 } }
-                
+
+                Section(header: HStack {
+                    Button(action: { forecastIsExpanded.toggle() }) {
+                        pref.theme.group.view(
+                            nameView: { Text("Cash Flow Forecast") },
+                            isExpanded: forecastIsExpanded
+                        )
+                    }
+                }) { if forecastIsExpanded {
+                    CashFlowForecastSection(formatter: displayFormatter)
+                } }
+
                 Section(header: HStack {
                     Button(action: { incomeExpenseIsExpanded.toggle() }) {
                         pref.theme.group.view(
@@ -55,72 +63,59 @@ struct InsightsView: View {
                             isExpanded: incomeExpenseIsExpanded
                         )
                     }
-                } ) { if incomeExpenseIsExpanded {
-                    // Date Range Filters
+                }) { if incomeExpenseIsExpanded {
                     HStack {
-                        DatePicker("Start Date", selection:  Binding(
-                            get: {
-                                Calendar.current.startOfDay(for: viewModel.startDate)
-                            },
-                            set: { newValue in
-                                viewModel.startDate = Calendar.current.startOfDay(for: newValue)
-                            }
-                        ), displayedComponents: .date)
-                            .labelsHidden()
-                            .datePickerStyle(.compact)
-                        
+                        DatePicker("Start Date", selection: Binding(
+                            get: { Calendar.current.startOfDay(for: viewModel.startDate) },
+                            set: { viewModel.startDate = Calendar.current.startOfDay(for: $0) }
+                        ), displayedComponents: .date).labelsHidden().datePickerStyle(.compact)
                         Spacer()
-                        
                         DatePicker("End Date", selection: Binding(
-                            get: {
-                                Calendar.current.startOfDay(for: viewModel.endDate)
-                            },
-                            set: { newValue in
-                                viewModel.endDate = Calendar.current.startOfDay(for: newValue)
-                            }
-                        ), displayedComponents: .date)
-                            .labelsHidden()
-                            .datePickerStyle(.compact)
+                            get: { Calendar.current.startOfDay(for: viewModel.endDate) },
+                            set: { viewModel.endDate = Calendar.current.startOfDay(for: $0) }
+                        ), displayedComponents: .date).labelsHidden().datePickerStyle(.compact)
                     }
                     .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(10)
-                    .shadow(radius: 2)
-                    
+                    .background(Color(.systemGray6)).cornerRadius(10).shadow(radius: 2)
+
                     IncomeExpenseView(stats: viewModel.recentStats)
+
+                    InsightsCaptionView(
+                        transactions: viewModel.recentStats,
+                        startDate: viewModel.startDate,
+                        endDate: viewModel.endDate
+                    )
+                    .padding(.horizontal)
                 } }
-                
-                // Placeholder for Future Sections
-                Section {
-                    VStack {
-                        Text("More Insights Coming Soon...")
-                            .foregroundColor(.gray)
-                            .padding()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(10)
-                    .shadow(radius: 2)
-                } header: {
-                    Text("Upcoming Features")
-                        .font(.headline)
-                        .padding(.horizontal)
-                }
-                
             }
             .padding(.horizontal)
-            .padding(.top, 10) // Reduce the top padding for less space at the top
+            .padding(.top, 10)
         }
-
-        //.navigationBarTitleDisplayMode(.inline) // Ensure title is inline to reduce top space
-
         .task {
-            log.debug("DEBUG: InsightsView.onAppear(main=\(Thread.isMainThread))")
+            log.debug("DEBUG: InsightsView.task(main=\(Thread.isMainThread))")
             await vm.loadInsightsList(pref)
-            viewModel.load(db: vm.db)
+            syncDatesFromContext()
+            viewModel.load(
+                db: vm.db,
+                baseCurrencyId: vm.infotableList.baseCurrencyId.readyValue,
+                currencyInfo: vm.currencyList.info.readyValue
+            )
+            viewModel.loadBudget(from: vm)
+            viewModel.loadForecast(from: vm, days: 30)
         }
+        .onChange(of: context.effectiveStartDate) { _, _ in syncDatesFromContext() }
+        .onChange(of: context.effectiveEndDate)   { _, _ in syncDatesFromContext() }
         .environmentObject(viewModel)
+    }
+
+    private func syncDatesFromContext() {
+        guard let s = context.effectiveStartDate, let e = context.effectiveEndDate else { return }
+        viewModel.setDateRange(start: s, end: e)
+    }
+
+    private var displayFormatter: CurrencyFormatter? {
+        guard let baseId = vm.infotableList.baseCurrencyId.readyValue else { return nil }
+        return vm.currencyList.info.readyValue?[baseId]?.formatter
     }
 }
 
