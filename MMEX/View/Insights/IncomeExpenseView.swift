@@ -14,6 +14,45 @@ struct IncomeExpenseView: View {
     @EnvironmentObject var pref: Preference
     
     var body: some View {
+        Group {
+            if aggregatedStats.isEmpty {
+                VStack(spacing: 6) {
+                    Image(systemName: "chart.bar.xaxis")
+                        .font(.title3)
+                        .foregroundColor(.secondary)
+                    Text("No income or expense data for this period")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text("Try a wider date range or add a transaction.")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 150)
+            } else {
+                VStack(spacing: 8) {
+                    HStack(spacing: 14) {
+                        legendItem("Income", color: pref.theme.incomeColor)
+                        legendItem("Expense", color: pref.theme.expenseColor)
+                        Spacer()
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 8)
+                    chart
+                }
+            }
+        }
+    }
+
+    private func legendItem(_ title: String, color: Color) -> some View {
+        HStack(spacing: 5) {
+            Circle().fill(color).frame(width: 7, height: 7)
+            Text(title)
+        }
+    }
+
+    private var chart: some View {
         Chart {
             ForEach(aggregatedStats, id: \.date) { item in
                 BarMark(
@@ -75,9 +114,7 @@ struct IncomeExpenseView: View {
         // .animation(.easeInOut(duration: 0.3), value: stats)
         .frame(height: 150)
         .padding(.horizontal, 4)
-        .onTapGesture {
-            // TODO
-        }
+        .accessibilityElement(children: .combine)
     }
     
     private var aggregatedStats: [DailyIncomeExpense] {

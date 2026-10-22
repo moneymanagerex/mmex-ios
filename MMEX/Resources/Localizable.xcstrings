@@ -663,14 +663,46 @@
         }
       }
     },
+    "12 months" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 ay"
+          }
+        }
+      }
+    },
     "30 days" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 gün"
+          }
+        }
+      }
     },
     "60 days" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "60 gün"
+          }
+        }
+      }
     },
     "90 days" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "90 gün"
+          }
+        }
+      }
     },
     "About" : {
       "localizations" : {
@@ -953,6 +985,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "帳戶"
+          }
+        }
+      }
+    },
+    "Account Balance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap Bakiyesi"
+          }
+        }
+      }
+    },
+    "Account Flow" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap Hareketleri"
           }
         }
       }
@@ -1465,6 +1519,12 @@
             "state" : "translated",
             "value" : "Tutti i Conti"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm Hesaplar"
+          }
         }
       }
     },
@@ -1522,6 +1582,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "应用程序提供的所有内容都由应用程序开发者或其许可人拥有。 未经许可，您不得复制、复制或分发任何内容。"
+          }
+        }
+      }
+    },
+    "All Time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm Zamanlar"
           }
         }
       }
@@ -2044,7 +2115,14 @@
       }
     },
     "Balance" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bakiye"
+          }
+        }
+      }
     },
     "Base Currency" : {
       "localizations" : {
@@ -2183,7 +2261,14 @@
       }
     },
     "Budget vs Actual" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bütçe ve Gerçekleşen"
+          }
+        }
+      }
     },
     "Build" : {
       "localizations" : {
@@ -2529,7 +2614,14 @@
       }
     },
     "Cash Flow Forecast" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nakit Akışı Tahmini"
+          }
+        }
+      }
     },
     "Category" : {
       "localizations" : {
@@ -2849,6 +2941,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rimuovi Filtri"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtreyi Temizle"
           }
         }
       }
@@ -3527,6 +3625,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Благодарности"
+          }
+        }
+      }
+    },
+    "Custom" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel"
           }
         }
       }
@@ -5019,6 +5128,12 @@
             "state" : "translated",
             "value" : "Dettagli"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayrıntılar"
+          }
         }
       }
     },
@@ -5210,6 +5325,28 @@
         }
       }
     },
+    "Due Soon" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakında Vadesi Dolacak"
+          }
+        }
+      }
+    },
+    "Due Today" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün Vadesi Doluyor"
+          }
+        }
+      }
+    },
     "Earned" : {
 
     },
@@ -5345,6 +5482,7 @@
       }
     },
     "End Date" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -5398,6 +5536,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Дата окончания"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitiş Tarihi"
           }
         },
         "zh-Hant" : {
@@ -5663,8 +5807,26 @@
         }
       }
     },
+    "Expense" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gider"
+          }
+        }
+      }
+    },
     "Expense: %@" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gider: %@"
+          }
+        }
+      }
     },
     "expenses" : {
       "extractionState" : "stale",
@@ -5859,6 +6021,17 @@
         }
       }
     },
+    "Failed to mark as paid" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ödendi olarak işaretlenemedi"
+          }
+        }
+      }
+    },
     "Failed to render release notes." : {
       "localizations" : {
         "cs" : {
@@ -5913,6 +6086,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Failed to render release notes."
+          }
+        }
+      }
+    },
+    "Failed to skip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ertelenemedi"
           }
         }
       }
@@ -6049,7 +6233,14 @@
 
     },
     "Forecasting..." : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tahmin hesaplanıyor..."
+          }
+        }
+      }
     },
     "Format" : {
       "localizations" : {
@@ -6121,6 +6312,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Frequenza"
+          }
+        }
+      }
+    },
+    "From" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlangıç"
           }
         }
       }
@@ -6821,6 +7022,17 @@
         }
       }
     },
+    "In" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giriş"
+          }
+        }
+      }
+    },
     "Inactive" : {
       "localizations" : {
         "ar" : {
@@ -7022,6 +7234,17 @@
         }
       }
     },
+    "Income" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelir"
+          }
+        }
+      }
+    },
     "Income vs Expense Over Time" : {
       "localizations" : {
         "cs" : {
@@ -7078,6 +7301,12 @@
             "value" : "Доходы и расходы за время"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamana Göre Gelir ve Gider"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7087,7 +7316,14 @@
       }
     },
     "Income: %@" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelir: %@"
+          }
+        }
+      }
     },
     "Infinite" : {
 
@@ -8115,6 +8351,12 @@
             "state" : "translated",
             "value" : "Caricamento transazioni ricorrenti..."
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planlanmış işlemler yükleniyor..."
+          }
         }
       }
     },
@@ -8601,8 +8843,26 @@
         }
       }
     },
+    "Net" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net"
+          }
+        }
+      }
+    },
     "Net Worth" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net Varlık"
+          }
+        }
+      }
     },
     "New attachments can be created from the items that contain them." : {
       "localizations" : {
@@ -8799,7 +9059,14 @@
 
     },
     "Next scheduled" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sıradaki Planlanmış İşlem"
+          }
+        }
+      }
     },
     "No" : {
       "localizations" : {
@@ -9054,8 +9321,25 @@
         }
       }
     },
+    "No income or expense data for this period" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dönemde gelir veya gider verisi yok."
+          }
+        }
+      }
+    },
     "No open accounts to display." : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gösterilecek açık hesap yok."
+          }
+        }
+      }
     },
     "No splits" : {
 
@@ -9066,6 +9350,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessuna transazione in questo periodo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dönemde işlem yok"
           }
         }
       }
@@ -9087,11 +9377,24 @@
             "state" : "translated",
             "value" : "Nessuna transazione pianificata imminente"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yaklaşan planlanmış işlem yok"
+          }
         }
       }
     },
     "No upcoming scheduled transactions in this window." : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dönemde yaklaşan planlanmış işlem yok."
+          }
+        }
+      }
     },
     "Notes" : {
       "localizations" : {
@@ -9412,7 +9715,14 @@
 
     },
     "One-time" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tek Seferlik"
+          }
+        }
+      }
     },
     "Open Database" : {
       "localizations" : {
@@ -9550,14 +9860,43 @@
         }
       }
     },
+    "Out" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çıkış"
+          }
+        }
+      }
+    },
     "Over by %@" : {
 
+    },
+    "Overdue" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vadesi Geçmiş"
+          }
+        }
+      }
     },
     "Overview" : {
 
     },
     "Paid" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ödendi"
+          }
+        }
+      }
     },
     "Password Required" : {
       "localizations" : {
@@ -9928,7 +10267,14 @@
       }
     },
     "Projected balance" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öngörülen Bakiye"
+          }
+        }
+      }
     },
     "Properties" : {
       "localizations" : {
@@ -10049,7 +10395,25 @@
       }
     },
     "Recent" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son İşlemler"
+          }
+        }
+      }
+    },
+    "Reconciled Balance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mutabık Bakiye"
+          }
+        }
+      }
     },
     "Recurring Settings" : {
 
@@ -10323,6 +10687,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transazioni Pianificate"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planlanmış İşlemler"
           }
         }
       }
@@ -11414,6 +11784,23 @@
             "state" : "translated",
             "value" : "Salta"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atla"
+          }
+        }
+      }
+    },
+    "Skipped to next occurrence" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonraki tarihe ertelendi"
+          }
         }
       }
     },
@@ -11888,6 +12275,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data de início"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlangıç Tarihi"
           }
         },
         "zh-Hant" : {
@@ -12754,6 +13147,17 @@
         }
       }
     },
+    "This Month" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu Ay"
+          }
+        }
+      }
+    },
     "This Privacy Policy outlines how we handle your personal information while using the app." : {
       "localizations" : {
         "cs" : {
@@ -12806,8 +13210,40 @@
         }
       }
     },
+    "This Week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu Hafta"
+          }
+        }
+      }
+    },
+    "This Year" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu Yıl"
+          }
+        }
+      }
+    },
     "times" : {
 
+    },
+    "To" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitiş"
+          }
+        }
+      }
     },
     "To Account" : {
       "localizations" : {
@@ -12863,6 +13299,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "To Account"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün"
           }
         }
       }
@@ -13117,6 +13564,17 @@
         }
       }
     },
+    "Transaction created ✓" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşlem oluşturuldu ✓"
+          }
+        }
+      }
+    },
     "Transaction Date" : {
       "localizations" : {
         "cs" : {
@@ -13308,6 +13766,22 @@
             "state" : "translated",
             "value" : "Trend"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eğilim"
+          }
+        }
+      }
+    },
+    "Try a wider date range or add a transaction." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha geniş bir tarih aralığı seçin veya işlem ekleyin."
+          }
         }
       }
     },
@@ -13371,6 +13845,17 @@
     },
     "Type" : {
 
+    },
+    "Upcoming" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yaklaşan"
+          }
+        }
+      }
     },
     "Upcoming Features" : {
       "extractionState" : "stale",
@@ -13614,7 +14099,14 @@
       }
     },
     "View All" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tümünü Gör"
+          }
+        }
+      }
     },
     "Visit Official Website" : {
       "localizations" : {
@@ -13678,7 +14170,14 @@
 
     },
     "Window" : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dönem"
+          }
+        }
+      }
     },
     "Year" : {
       "localizations" : {

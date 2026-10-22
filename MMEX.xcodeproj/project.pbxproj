@@ -1141,6 +1141,7 @@
 				hr,
 				nl,
 				fr,
+				tr,
 			);
 			mainGroup = A3C1421E2C89751500D3CEC0;
 			packageReferences = (

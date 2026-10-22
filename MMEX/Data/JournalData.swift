@@ -260,6 +260,21 @@ extension JournalData {
         default: 0.0
         }
     }
+
+    /// Net effect of this journal on a specific account. Transfers are outflow
+    /// from their source and inflow to their destination; across all accounts
+    /// they cancel out.
+    func actual(for accountId: DataId?) -> Double {
+        switch transCode {
+        case .withdrawal: return -transAmount
+        case .deposit: return transAmount
+        case .transfer:
+            guard let accountId else { return 0 }
+            if accountId == self.accountId { return -transAmount }
+            if accountId == toAccountId { return toTransAmount == 0 ? transAmount : toTransAmount }
+            return 0
+        }
+    }
 }
 
 extension JournalData {

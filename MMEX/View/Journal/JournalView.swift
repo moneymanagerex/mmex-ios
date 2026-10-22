@@ -167,32 +167,35 @@ struct JournalView: View {
 
                 Spacer() // To push the amount to the right side
 
+                let displayAccountId = context.selectedAccountId.isVoid ? txn.accountId : context.selectedAccountId
+                let displayAmount = txn.transCode == .transfer && displayAccountId == txn.toAccountId && txn.toTransAmount > 0
+                    ? txn.toTransAmount : txn.transAmount
                 if
-                    let currencyId   = vm.accountList.data.readyValue?[txn.accountId]?.currencyId,
+                    let currencyId   = vm.accountList.data.readyValue?[displayAccountId]?.currencyId,
                     let currencyInfo = vm.currencyList.info.readyValue?[currencyId]
                 {
                     // Right column (Transaction Amount)
                     VStack {
                         // amount in account currency
-                        Text(txn.transAmount.formatted(by: currencyInfo.formatter))
+                        Text(displayAmount.formatted(by: currencyInfo.formatter))
                         .frame(alignment: .trailing) // Ensure it's aligned to the right
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(pref.theme.amountColor(for: txn.transCode))
+                        .foregroundColor(pref.theme.changeColor(for: txn.actual(for: context.selectedAccountId.isVoid ? nil : context.selectedAccountId)))
                         // amount in base currency
                         if let baseCurrencyId = vm.infotableList.baseCurrencyId.readyValue,
                            baseCurrencyId != currencyId
                         {
-                            Text((txn.transAmount * currencyInfo.baseConvRate)
+                            Text((displayAmount * currencyInfo.baseConvRate)
                                 .formatted(by: vm.currencyList.info.readyValue?[baseCurrencyId]?.formatter)
                             )
                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(pref.theme.amountColor(for: txn.transCode))
+                            .foregroundColor(pref.theme.changeColor(for: txn.actual(for: context.selectedAccountId.isVoid ? nil : context.selectedAccountId)))
                         }
                     }
                 } else {
                     // Right column (Transaction Amount)
-                    Text(String(format: "%.2f", txn.transAmount))
+                    Text(String(format: "%.2f", displayAmount))
                         .frame(alignment: .trailing) // Ensure it's aligned to the right
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(pref.theme.amountColor(for: txn.transCode))
@@ -216,11 +219,18 @@ struct JournalView: View {
         } else if let payee = vm.payeeList.data.readyValue?[txn.payeeId] {
             return payee.name
         }
-        return "(uknown)"
+        if txn.transCode == .transfer {
+            let fromName = vm.accountList.data.readyValue?[txn.accountId]?.name ?? "Account"
+            let toName = vm.accountList.data.readyValue?[txn.toAccountId]?.name ?? "Account"
+            return context.selectedAccountId.isVoid ? "\(fromName) → \(toName)" : "→ \(toName)"
+        }
+        return "(unknown)"
     }
 
     func calculateTotal(for journals: [JournalData]) -> String {
-        let totalAmount = journals.reduce(0.0) { $0 + $1.actual }
+        let totalAmount = journals.reduce(0.0) {
+            $0 + $1.actual(for: context.selectedAccountId.isVoid ? nil : context.selectedAccountId)
+        }
         let account = vm.accountList.data.readyValue?[context.selectedAccountId]
         let formatter = vm.currencyList.info.readyValue?[account?.currencyId ?? .void]?.formatter
         return totalAmount.formatted(by: formatter)

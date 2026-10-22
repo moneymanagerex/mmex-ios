@@ -64,16 +64,17 @@ struct InsightsView: View {
                         )
                     }
                 }) { if incomeExpenseIsExpanded {
+                    quickRanges
                     HStack {
-                        DatePicker("Start Date", selection: Binding(
+                        DatePicker("From", selection: Binding(
                             get: { Calendar.current.startOfDay(for: viewModel.startDate) },
-                            set: { viewModel.startDate = Calendar.current.startOfDay(for: $0) }
-                        ), displayedComponents: .date).labelsHidden().datePickerStyle(.compact)
+                            set: { viewModel.startDate = min(Calendar.current.startOfDay(for: $0), viewModel.endDate) }
+                        ), displayedComponents: .date).datePickerStyle(.compact)
                         Spacer()
-                        DatePicker("End Date", selection: Binding(
+                        DatePicker("To", selection: Binding(
                             get: { Calendar.current.startOfDay(for: viewModel.endDate) },
-                            set: { viewModel.endDate = Calendar.current.startOfDay(for: $0) }
-                        ), displayedComponents: .date).labelsHidden().datePickerStyle(.compact)
+                            set: { viewModel.endDate = max(Calendar.current.startOfDay(for: $0), viewModel.startDate) }
+                        ), displayedComponents: .date).datePickerStyle(.compact)
                     }
                     .padding()
                     .background(Color(.systemGray6)).cornerRadius(10).shadow(radius: 2)
@@ -101,7 +102,7 @@ struct InsightsView: View {
                 currencyInfo: vm.currencyList.info.readyValue
             )
             viewModel.loadBudget(from: vm)
-            viewModel.loadForecast(from: vm, days: 30)
+            viewModel.loadForecast(from: vm, days: 30, accountId: context.selectedAccountId)
         }
         .onChange(of: context.effectiveStartDate) { _, _ in syncDatesFromContext() }
         .onChange(of: context.effectiveEndDate)   { _, _ in syncDatesFromContext() }
@@ -111,6 +112,29 @@ struct InsightsView: View {
     private func syncDatesFromContext() {
         guard let s = context.effectiveStartDate, let e = context.effectiveEndDate else { return }
         viewModel.setDateRange(start: s, end: e)
+    }
+
+    private var quickRanges: some View {
+        HStack(spacing: 8) {
+            quickRangeButton("30 days", days: 30)
+            quickRangeButton("90 days", days: 90)
+            quickRangeButton("12 months", days: 365)
+            Spacer(minLength: 0)
+        }
+    }
+
+    private func quickRangeButton(_ title: String, days: Int) -> some View {
+        Button(title) {
+            let calendar = Calendar.current
+            let end = calendar.startOfDay(for: Date())
+            let start = calendar.date(byAdding: .day, value: -days + 1, to: end) ?? end
+            viewModel.setDateRange(start: start, end: end)
+        }
+        .font(.caption)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(Color.accentColor.opacity(0.1), in: Capsule())
+        .buttonStyle(.plain)
     }
 
     private var displayFormatter: CurrencyFormatter? {

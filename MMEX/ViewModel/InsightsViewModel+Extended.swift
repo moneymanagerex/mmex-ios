@@ -286,16 +286,39 @@ extension InsightsViewModel {
 
         var items: [CashFlowForecastItem] = []
         for s in scheduled {
-            if s.transCode == .transfer { continue }   // 避免双账户重复计入
-            let payeeName = payeeData[s.payeeId]?.name ?? "(unknown)"
+            let isTransfer = s.transCode == .transfer
+            let payeeName = isTransfer
+                ? "\(accountData[s.accountId]?.name ?? "Account") → \(accountData[s.toAccountId]?.name ?? "Account")"
+                : (payeeData[s.payeeId]?.name ?? "(unknown)")
             let catPath = categoryPath[s.categId] ?? ""
             for date in Self.forecastOccurrences(of: s, from: windowStart, to: windowEnd) {
-                items.append(CashFlowForecastItem(
-                    id: "\(s.id.value)-\(Int(date.timeIntervalSince1970))",
-                    scheduledId: s.id, date: date, amount: s.transAmount,
-                    isInflow: s.transCode == .deposit,
-                    payeeName: payeeName, categoryPath: catPath
-                ))
+                if isTransfer {
+                    // A transfer is an outflow in its source account and an
+                    // inflow in its target account. Keep both sides in the
+                    // all-account forecast so they cancel in the total.
+                    if filterAccountId == nil || filterAccountId == s.accountId {
+                        items.append(CashFlowForecastItem(
+                            id: "\(s.id.value)-\(Int(date.timeIntervalSince1970))-out",
+                            scheduledId: s.id, date: date, amount: s.transAmount,
+                            isInflow: false, payeeName: payeeName, categoryPath: catPath
+                        ))
+                    }
+                    if filterAccountId == nil || filterAccountId == s.toAccountId {
+                        items.append(CashFlowForecastItem(
+                            id: "\(s.id.value)-\(Int(date.timeIntervalSince1970))-in",
+                            scheduledId: s.id, date: date,
+                            amount: s.toTransAmount > 0 ? s.toTransAmount : s.transAmount,
+                            isInflow: true, payeeName: payeeName, categoryPath: catPath
+                        ))
+                    }
+                } else {
+                    items.append(CashFlowForecastItem(
+                        id: "\(s.id.value)-\(Int(date.timeIntervalSince1970))",
+                        scheduledId: s.id, date: date, amount: s.transAmount,
+                        isInflow: s.transCode == .deposit,
+                        payeeName: payeeName, categoryPath: catPath
+                    ))
+                }
             }
         }
         items.sort { $0.date < $1.date }

@@ -45,7 +45,14 @@ struct ScheduledListView: View {
 
     @ViewBuilder
     func itemNameView(_ data: ScheduledData) -> some View {
-        let payeeName = vm.payeeList.data.readyValue?[data.payeeId]?.name ?? "(unknown)"
+        let payeeName = {
+            if data.transCode == .transfer {
+                let source = vm.accountList.data.readyValue?[data.accountId]?.name ?? "Account"
+                let target = vm.accountList.data.readyValue?[data.toAccountId]?.name ?? "Account"
+                return "\(source) → \(target)"
+            }
+            return vm.payeeList.data.readyValue?[data.payeeId]?.name ?? "(unknown)"
+        }()
         let amount = data.transAmount.formatted(
             by: vm.currencyList.info.readyValue?[
                 vm.accountList.data.readyValue?[data.accountId]?.currencyId ?? .void
@@ -87,7 +94,11 @@ struct ScheduledListView: View {
 struct ScheduledSearch: SearchProtocol {
     var area: [SearchArea<ScheduledData>] = [
         ("Payee", true, nil, { vm, data in
-            vm.payeeList.data.readyValue?[data.payeeId].map { [$0.name] } ?? []
+            if data.transCode == .transfer {
+                let accounts = vm.accountList.data.readyValue ?? [:]
+                return [accounts[data.accountId]?.name, accounts[data.toAccountId]?.name].compactMap { $0 }
+            }
+            return vm.payeeList.data.readyValue?[data.payeeId].map { [$0.name] } ?? []
         }),
         ("Account", false, nil, { vm, data in
             vm.accountList.data.readyValue?[data.accountId].map { [$0.name] } ?? []

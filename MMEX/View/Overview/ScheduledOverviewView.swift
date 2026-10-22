@@ -156,9 +156,13 @@ struct ScheduledOverviewView: View {
                     
                     Spacer()
                     
-                    let currencyId = vm.accountList.data.readyValue?[item.scheduled.accountId]?.currencyId ?? .void
+                    let isTargetAccount = context.selectedAccountId == item.scheduled.toAccountId
+                    let displayAccountId = context.selectedAccountId.isVoid ? item.scheduled.accountId : context.selectedAccountId
+                    let amount = isTargetAccount && item.scheduled.toTransAmount > 0
+                        ? item.scheduled.toTransAmount : item.scheduled.transAmount
+                    let currencyId = vm.accountList.data.readyValue?[displayAccountId]?.currencyId ?? .void
                     let formatter = vm.currencyList.info.readyValue?[currencyId]?.formatter
-                    Text(item.scheduled.transAmount.formatted(by: formatter))
+                    Text(amount.formatted(by: formatter))
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundColor(item.status == .overdue ? pref.theme.expenseColor : .primary)
@@ -250,7 +254,11 @@ struct ScheduledOverviewView: View {
     
     private func payeeName(for item: ScheduledOverviewItem) -> String {
         if item.scheduled.transCode == .transfer {
-            return vm.accountList.data.readyValue?[item.scheduled.toAccountId]?.name ?? "Transfer"
+            let accounts = vm.accountList.data.readyValue ?? [:]
+            let source = accounts[item.scheduled.accountId]?.name ?? "Account"
+            let target = accounts[item.scheduled.toAccountId]?.name ?? "Account"
+            if context.selectedAccountId.isVoid { return "\(source) → \(target)" }
+            return context.selectedAccountId == item.scheduled.toAccountId ? "← \(source)" : "→ \(target)"
         } else {
             return vm.payeeList.data.readyValue?[item.scheduled.payeeId]?.name ?? "(unknown)"
         }
@@ -272,7 +280,7 @@ struct ToastModifier: ViewModifier {
         content
             .overlay(alignment: .bottom) {
                 if isPresented, let message {
-                    Text(message)
+                    Text(LocalizedStringKey(message))
                         .font(.subheadline)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 12)

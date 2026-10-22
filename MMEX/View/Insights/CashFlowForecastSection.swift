@@ -12,6 +12,7 @@ struct CashFlowForecastSection: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @EnvironmentObject var insights: InsightsViewModel
+    @EnvironmentObject var context: AppContext
     let formatter: CurrencyFormatter?
 
     @State private var windowDays: Int = 30
@@ -43,10 +44,11 @@ struct CashFlowForecastSection: View {
         .onChange(of: vm.scheduledList.state) { _, newState in
             if newState == .ready { reload() }
         }
+        .onChange(of: context.selectedAccountId) { _, _ in reload() }
     }
 
     private func reload() {
-        insights.loadForecast(from: vm, days: windowDays)
+        insights.loadForecast(from: vm, days: windowDays, accountId: context.selectedAccountId)
     }
 
     @ViewBuilder private func metrics(_ s: CashFlowForecastSummary) -> some View {
