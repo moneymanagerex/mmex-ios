@@ -992,22 +992,10 @@
     "Account Balance" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hesap Bakiyesi"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Saldo de cuenta"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "账户余额"
           }
         },
         "nl" : {
@@ -1015,34 +1003,46 @@
             "state" : "translated",
             "value" : "Rekeningsaldo"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap Bakiyesi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账户余额"
+          }
         }
       }
     },
     "Account Flow" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hesap Hareketleri"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Movimientos de cuenta"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "账户流水"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rekeningmutaties"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap Hareketleri"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账户流水"
           }
         }
       }
@@ -1068,6 +1068,12 @@
             "value" : "Account Income Summary"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen de ingresos de la cuenta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1084,6 +1090,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sommario conti in entrata"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inkomstenoverzicht rekening"
           }
         },
         "pt-BR" : {
@@ -1110,22 +1122,10 @@
             "value" : "Hesap Gelir Özeti"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Resumen de ingresos de la cuenta"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "账户收入摘要"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inkomstenoverzicht rekening"
           }
         }
       }
@@ -1156,6 +1156,12 @@
             "value" : "Account Name"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la cuenta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1172,6 +1178,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nome Conto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekeningnaam"
           }
         },
         "pt-BR" : {
@@ -1192,28 +1204,16 @@
             "value" : "Имя счёта"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "帐户名称"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesap Adı"
           }
         },
-        "es" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nombre de la cuenta"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rekeningnaam"
+            "value" : "帐户名称"
           }
         }
       }
@@ -1392,16 +1392,16 @@
             "value" : "Aktif"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "啟用"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "启用"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用"
           }
         }
       }
@@ -1426,6 +1426,12 @@
             "value" : "Add Note"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir nota"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1442,6 +1448,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi Nota"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notitie toevoegen"
           }
         },
         "pt-BR" : {
@@ -1468,22 +1480,10 @@
             "value" : "Not Ekle"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir nota"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "添加备注"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notitie toevoegen"
           }
         }
       }
@@ -1508,6 +1508,12 @@
             "value" : "Add split"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir desglose"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1524,6 +1530,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi suddivisione"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Splitsing toevoegen"
           }
         },
         "pt-BR" : {
@@ -1550,22 +1562,10 @@
             "value" : "Bölme Ekle"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir desglose"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "添加拆分"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Splitsing toevoegen"
           }
         }
       }
@@ -1636,10 +1636,22 @@
     },
     "All" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todo"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tutti"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles"
           }
         },
         "tr" : {
@@ -1648,32 +1660,32 @@
             "value" : "Tümü"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Todo"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "全部"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alles"
           }
         }
       }
     },
     "All Accounts" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las cuentas"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tutti i Conti"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle rekeningen"
           }
         },
         "tr" : {
@@ -1682,22 +1694,10 @@
             "value" : "Tüm Hesaplar"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Todas las cuentas"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "所有账户"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alle rekeningen"
           }
         }
       }
@@ -1939,6 +1939,12 @@
             "value" : "App Info"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Información de la app"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1955,6 +1961,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info App"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-info"
           }
         },
         "pt-BR" : {
@@ -1975,28 +1987,16 @@
             "value" : "О приложении"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "应用信息"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uygulama Bilgisi"
           }
         },
-        "es" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Información de la app"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App-info"
+            "value" : "应用信息"
           }
         }
       }
@@ -2021,6 +2021,12 @@
             "value" : "App Settings"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración de la app"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2037,6 +2043,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impostazioni App"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-instellingen"
           }
         },
         "pt-BR" : {
@@ -2057,28 +2069,16 @@
             "value" : "Настройки"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App 设置"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uygulama Ayarları"
           }
         },
-        "es" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Configuración de la app"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App-instellingen"
+            "value" : "App 设置"
           }
         }
       }
@@ -2103,6 +2103,12 @@
             "value" : "Appearance"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apariencia"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2119,6 +2125,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aspetto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weergave"
           }
         },
         "pt-BR" : {
@@ -2139,28 +2151,16 @@
             "value" : "Внешний вид"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "外观样式"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Görünüm"
           }
         },
-        "es" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apariencia"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Weergave"
+            "value" : "外观样式"
           }
         }
       }
@@ -2298,6 +2298,12 @@
             "value" : "Auxiliary Data"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos auxiliares"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2314,6 +2320,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dati Ausiliari"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aanvullende gegevens"
           }
         },
         "pt-BR" : {
@@ -2334,56 +2346,44 @@
             "value" : "Вспомогательные данные"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "辅助数据"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yardımcı Veriler"
           }
         },
-        "es" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Datos auxiliares"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aanvullende gegevens"
+            "value" : "辅助数据"
           }
         }
       }
     },
     "Balance" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bakiye"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Saldo"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "余额"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Saldo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bakiye"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "余额"
           }
         }
       }
@@ -2526,28 +2526,28 @@
     },
     "Budget vs Actual" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bütçe ve Gerçekleşen"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Presupuesto y gasto real"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "预算与实际"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Budget versus werkelijk"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bütçe ve Gerçekleşen"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "预算与实际"
           }
         }
       }
@@ -2897,28 +2897,28 @@
     },
     "Cash Flow Forecast" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nakit Akışı Tahmini"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Previsión del flujo de caja"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "现金流预测"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasstroomprognose"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nakit Akışı Tahmini"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "现金流预测"
           }
         }
       }
@@ -3237,10 +3237,22 @@
     },
     "Clear Filter" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar filtro"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rimuovi Filtri"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter wissen"
           }
         },
         "tr" : {
@@ -3249,22 +3261,10 @@
             "value" : "Filtreyi Temizle"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Borrar filtro"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "清除筛选"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filter wissen"
           }
         }
       }
@@ -3289,6 +3289,12 @@
             "value" : "Coming soon ..."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximamente ..."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3305,6 +3311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prossimamente..."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Binnenkort ..."
           }
         },
         "pt-BR" : {
@@ -3331,22 +3343,10 @@
             "value" : "Yakında ..."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Próximamente ..."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "即将推出…"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Binnenkort ..."
           }
         }
       }
@@ -3371,6 +3371,12 @@
             "value" : "Contact"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacto"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3387,6 +3393,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contatto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact"
           }
         },
         "pt-BR" : {
@@ -3413,22 +3425,10 @@
             "value" : "İletişim"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contacto"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "联系"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contact"
           }
         }
       }
@@ -3641,6 +3641,12 @@
             "value" : "Create"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3657,6 +3663,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aanmaken"
           }
         },
         "pt-BR" : {
@@ -3683,32 +3695,32 @@
             "value" : "Oluştur"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crear"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aanmaken"
           }
         }
       }
     },
     "Create Account" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear cuenta"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea Conto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekening aanmaken"
           }
         },
         "tr" : {
@@ -3717,32 +3729,32 @@
             "value" : "Hesap Oluştur"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crear cuenta"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建账户"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rekening aanmaken"
           }
         }
       }
     },
     "Create Category" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear categoría"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea Categoria"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categorie aanmaken"
           }
         },
         "tr" : {
@@ -3751,22 +3763,10 @@
             "value" : "Kategori Oluştur"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crear categoría"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建分类"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Categorie aanmaken"
           }
         }
       }
@@ -3791,6 +3791,12 @@
             "value" : "Create New Database"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear una base de datos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3807,6 +3813,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea Nuovo Database"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieuwe database aanmaken"
           }
         },
         "pt-BR" : {
@@ -3833,50 +3845,38 @@
             "value" : "Yeni Veritabanı Oluştur"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crear una base de datos"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建新数据库"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nieuwe database aanmaken"
           }
         }
       }
     },
     "Create Payee" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alacaklı Oluştur"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crear beneficiario"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "创建收款方"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Begunstigde aanmaken"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alacaklı Oluştur"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "创建收款方"
           }
         }
       }
@@ -3901,6 +3901,12 @@
             "value" : "Create Sample Database"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear base de datos de ejemplo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3917,6 +3923,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea Database Di Esempio"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voorbeeld database aanmaken"
           }
         },
         "pt-BR" : {
@@ -3943,22 +3955,10 @@
             "value" : "Örnek Veritabanı Oluştur"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crear base de datos de ejemplo"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建示例数据库"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Voorbeeld database aanmaken"
           }
         }
       }
@@ -4143,22 +4143,10 @@
     "Custom" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Özel"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personalizado"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "自定义"
           }
         },
         "nl" : {
@@ -4166,33 +4154,45 @@
             "state" : "translated",
             "value" : "Aangepast"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自定义"
+          }
         }
       }
     },
     "Custom Range" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Özel Aralık"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Intervalo personalizado"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "自定义范围"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aangepast bereik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel Aralık"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自定义范围"
           }
         }
       }
@@ -4307,16 +4307,16 @@
             "value" : "Veri"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "資料"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "数据"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "資料"
           }
         }
       }
@@ -4371,6 +4371,12 @@
             "value" : "데이터베이스"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4395,12 +4401,6 @@
             "value" : "База Данных"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "資料庫"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4413,10 +4413,10 @@
             "value" : "数据库"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Database"
+            "value" : "資料庫"
           }
         }
       }
@@ -4441,6 +4441,12 @@
             "value" : "Database File"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archivo de base de datos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4457,6 +4463,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "File del Database"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Databasebestand"
           }
         },
         "pt-BR" : {
@@ -4483,22 +4495,10 @@
             "value" : "Veritabanı Dosyası"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Archivo de base de datos"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "数据库文件"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Databasebestand"
           }
         }
       }
@@ -4523,6 +4523,12 @@
             "value" : "Database Info"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Información de la base de datos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4539,6 +4545,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Infol Database"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Databasegegevens"
           }
         },
         "pt-BR" : {
@@ -4565,22 +4577,10 @@
             "value" : "Veritabanı Bilgisi"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Información de la base de datos"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "数据库信息"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Databasegegevens"
           }
         }
       }
@@ -4605,6 +4605,12 @@
             "value" : "Database Maintenance"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenimiento de la base de datos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4621,6 +4627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manutenzione del database"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Databaseonderhoud"
           }
         },
         "pt-BR" : {
@@ -4647,22 +4659,10 @@
             "value" : "Veritabanı Bakımı"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mantenimiento de la base de datos"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "数据库维护"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Databaseonderhoud"
           }
         }
       }
@@ -4687,6 +4687,12 @@
             "value" : "Database Settings"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración de la base de datos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4703,6 +4709,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impostazioni Database"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database-instellingen"
           }
         },
         "pt-BR" : {
@@ -4729,22 +4741,10 @@
             "value" : "Veritabanı Ayarları"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuración de la base de datos"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "数据库设置"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Database-instellingen"
           }
         }
       }
@@ -4877,13 +4877,13 @@
             "value" : "Ngày"
           }
         },
-        "zh-Hant" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "日期"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "日期"
@@ -5019,13 +5019,13 @@
             "value" : "Kiểu ngày"
           }
         },
-        "zh-Hant" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "日期格式"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "日期格式"
@@ -5126,12 +5126,6 @@
             "value" : "день"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "日"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5142,6 +5136,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "天"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日"
           }
         }
       }
@@ -5166,6 +5166,12 @@
             "value" : "Default Account"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuenta predeterminada"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5182,6 +5188,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conto Predefinito"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaardrekening"
           }
         },
         "pt-BR" : {
@@ -5202,22 +5214,10 @@
             "value" : "Счёт по умолчанию"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Default Account"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Varsayılan Hesap"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cuenta predeterminada"
           }
         },
         "zh-Hans" : {
@@ -5226,10 +5226,10 @@
             "value" : "默认账户"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Standaardrekening"
+            "value" : "Default Account"
           }
         }
       }
@@ -5428,6 +5428,12 @@
             "value" : "Default Transaction Status"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado predeterminado de la transacción"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5446,6 +5452,12 @@
             "value" : "Stato Predefinito della Transazione"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaard transactiestatus"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5458,22 +5470,10 @@
             "value" : "Статус транзакции по умолчанию"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Default Transaction Status"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Varsayılan İşlem Durumu"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Estado predeterminado de la transacción"
           }
         },
         "zh-Hans" : {
@@ -5482,10 +5482,10 @@
             "value" : "默认交易状态"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Standaard transactiestatus"
+            "value" : "Default Transaction Status"
           }
         }
       }
@@ -5588,16 +5588,16 @@
             "value" : "Sil"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "刪除"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "删除"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除"
           }
         }
       }
@@ -5865,26 +5865,38 @@
             "value" : "Mô tả"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "詳細資訊"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "描述"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "詳細資訊"
           }
         }
       }
     },
     "Details" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dettagli"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
           }
         },
         "tr" : {
@@ -5893,22 +5905,10 @@
             "value" : "Ayrıntılar"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detalles"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "详情"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Details"
           }
         }
       }
@@ -5993,6 +5993,12 @@
             "value" : "Dismiss"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6009,6 +6015,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancella"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sluiten"
           }
         },
         "pt-BR" : {
@@ -6029,22 +6041,10 @@
             "value" : "Отклонить"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dismiss"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kapat"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cerrar"
           }
         },
         "zh-Hans" : {
@@ -6053,10 +6053,10 @@
             "value" : "关闭"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sluiten"
+            "value" : "Dismiss"
           }
         }
       }
@@ -6081,6 +6081,12 @@
             "value" : "Done"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6097,6 +6103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Completato"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gereed"
           }
         },
         "pt-BR" : {
@@ -6117,22 +6129,10 @@
             "value" : "Готово"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Done"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bitti"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Listo"
           }
         },
         "zh-Hans" : {
@@ -6141,10 +6141,10 @@
             "value" : "完成"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gereed"
+            "value" : "Done"
           }
         }
       }
@@ -6152,22 +6152,10 @@
     "Due Soon" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yakında Vadesi Dolacak"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vence pronto"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "即将到期"
           }
         },
         "nl" : {
@@ -6175,34 +6163,46 @@
             "state" : "translated",
             "value" : "Vervalt binnenkort"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakında Vadesi Dolacak"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "即将到期"
+          }
         }
       }
     },
     "Due Today" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bugün Vadesi Doluyor"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vence hoy"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "今日到期"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vervalt vandaag"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün Vadesi Doluyor"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日到期"
           }
         }
       }
@@ -6230,6 +6230,12 @@
             "value" : "Edit"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6246,6 +6252,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modifica"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewerken"
           }
         },
         "pt-BR" : {
@@ -6266,22 +6278,10 @@
             "value" : "Редактирование"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Düzenle"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar"
           }
         },
         "zh-Hans" : {
@@ -6290,10 +6290,10 @@
             "value" : "编辑"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bewerken"
+            "value" : "Edit"
           }
         }
       }
@@ -6593,6 +6593,12 @@
             "value" : "Σφάλμα"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6683,22 +6689,16 @@
             "value" : "Lỗi"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "錯誤"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "错误"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "錯誤"
           }
         }
       }
@@ -6706,28 +6706,28 @@
     "Expense" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gider"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gasto"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "支出"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uitgaven"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gider"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支出"
           }
         }
       }
@@ -6827,6 +6827,12 @@
             "value" : "Export as JSON File"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar como archivo JSON"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6843,6 +6849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esporta come file JSON"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporteren als JSON-bestand"
           }
         },
         "pt-BR" : {
@@ -6863,22 +6875,10 @@
             "value" : "Экспорт в JSON файл"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export as JSON File"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "JSON Dosyası Olarak Dışa Aktar"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar como archivo JSON"
           }
         },
         "zh-Hans" : {
@@ -6887,10 +6887,10 @@
             "value" : "导出为 JSON 文件"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporteren als JSON-bestand"
+            "value" : "Export as JSON File"
           }
         }
       }
@@ -7246,10 +7246,22 @@
     },
     "Frequency" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frecuencia"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Frequenza"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frequentie"
           }
         },
         "tr" : {
@@ -7258,44 +7270,20 @@
             "value" : "Sıklık"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Frecuencia"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "频率"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Frequentie"
           }
         }
       }
     },
     "From" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Başlangıç"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desde"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "开始"
           }
         },
         "nl" : {
@@ -7308,6 +7296,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "С"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlangıç"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始"
           }
         }
       }
@@ -7336,6 +7336,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Γενικές"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
           }
         },
         "fr" : {
@@ -7428,22 +7434,16 @@
             "value" : "Tổng quát"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "一般"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "General"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "常规"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一般"
           }
         }
       }
@@ -7708,6 +7708,12 @@
             "value" : "도움말"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Help"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7756,22 +7762,16 @@
             "value" : "Trợ giúp"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "輔助說明"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "帮助"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Help"
+            "value" : "輔助說明"
           }
         }
       }
@@ -8035,22 +8035,10 @@
     "In" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Giriş"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Entrada"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "流入"
           }
         },
         "nl" : {
@@ -8063,6 +8051,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Приход"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giriş"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "流入"
           }
         }
       }
@@ -8271,28 +8271,28 @@
     "Income" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gelir"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ingreso"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "收入"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inkomsten"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelir"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收入"
           }
         }
       }
@@ -8317,6 +8317,12 @@
             "value" : "Income vs Expense Over Time"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresos y gastos a lo largo del tiempo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8333,6 +8339,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Entrate vs uscite nel tempo"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inkomsten en uitgaven in de tijd"
           }
         },
         "pt-BR" : {
@@ -8359,28 +8371,16 @@
             "value" : "Zamana Göre Gelir ve Gider"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Income vs Expense Over Time"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ingresos y gastos a lo largo del tiempo"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "收支趋势"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inkomsten en uitgaven in de tijd"
+            "value" : "Income vs Expense Over Time"
           }
         }
       }
@@ -8418,6 +8418,12 @@
             "value" : "Insights"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8436,6 +8442,12 @@
             "value" : "Statistiche"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inzichten"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8448,22 +8460,10 @@
             "value" : "Visão"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Insights"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Analizler"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Análisis"
           }
         },
         "zh-Hans" : {
@@ -8472,10 +8472,10 @@
             "value" : "洞察"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inzichten"
+            "value" : "Insights"
           }
         }
       }
@@ -8667,16 +8667,16 @@
             "value" : "Đầu tư"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "投資"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "投资"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投資"
           }
         }
       }
@@ -8893,6 +8893,12 @@
             "value" : "Journal"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diario"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8909,6 +8915,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Diario"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journaal"
           }
         },
         "pt-BR" : {
@@ -8929,22 +8941,10 @@
             "value" : "Журнал"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Journal"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "İşlem Defteri"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diario"
           }
         },
         "zh-Hans" : {
@@ -8953,10 +8953,10 @@
             "value" : "交易记录"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Journaal"
+            "value" : "Journal"
           }
         }
       }
@@ -9045,6 +9045,12 @@
             "value" : "Legal"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legal"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9061,6 +9067,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info legali"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juridisch"
           }
         },
         "pt-BR" : {
@@ -9081,22 +9093,10 @@
             "value" : "Правила"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Legal"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yasal"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Legal"
           }
         },
         "zh-Hans" : {
@@ -9105,10 +9105,10 @@
             "value" : "法律信息"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Juridisch"
+            "value" : "Legal"
           }
         }
       }
@@ -9197,6 +9197,12 @@
             "value" : "Load data"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargar datos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9213,6 +9219,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Carica dati"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gegevens laden"
           }
         },
         "pt-BR" : {
@@ -9233,22 +9245,10 @@
             "value" : "Загрузить данные"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Load data"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verileri Yükle"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cargar datos"
           }
         },
         "zh-Hans" : {
@@ -9257,10 +9257,10 @@
             "value" : "加载数据"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gegevens laden"
+            "value" : "Load data"
           }
         }
       }
@@ -9389,10 +9389,22 @@
     },
     "Loading accounts..." : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando cuentas..."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Caricamento conti..."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загрузка счетов..."
           }
         },
         "tr" : {
@@ -9401,50 +9413,38 @@
             "value" : "Hesaplar yükleniyor..."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cargando cuentas..."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在加载账户…"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Загрузка счетов..."
           }
         }
       }
     },
     "Loading budgets..." : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bütçeler yükleniyor..."
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cargando presupuestos..."
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "正在加载预算…"
-          }
-        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Загрузка бюджетов..."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bütçeler yükleniyor..."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在加载预算…"
           }
         }
       }
@@ -9567,10 +9567,22 @@
     },
     "Loading scheduled transactions..." : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando transacciones programadas..."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Caricamento transazioni ricorrenti..."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загрузка запланированных операций..."
           }
         },
         "tr" : {
@@ -9579,22 +9591,10 @@
             "value" : "Planlanmış işlemler yükleniyor..."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cargando transacciones programadas..."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在加载计划交易…"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Загрузка запланированных операций..."
           }
         }
       }
@@ -9778,6 +9778,12 @@
             "value" : "Manage"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrar"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9796,6 +9802,12 @@
             "value" : "Gestione"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beheren"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9808,22 +9820,10 @@
             "value" : "Gerir"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Manage"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yönet"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Administrar"
           }
         },
         "zh-Hans" : {
@@ -9832,10 +9832,10 @@
             "value" : "管理"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beheren"
+            "value" : "Manage"
           }
         }
       }
@@ -9898,6 +9898,35 @@
         }
       }
     },
+    "More coming soon ..." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximamente habrá más ..."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Binnenkort meer ..."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha fazlası yakında ..."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更多内容即将推出…"
+          }
+        }
+      }
+    },
     "More create actions" : {
 
     },
@@ -9920,6 +9949,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "More Insights Coming Soon..."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximamente habrá más análisis..."
           }
         },
         "fr" : {
@@ -9952,28 +9987,22 @@
             "value" : "Скоро появится больше идей..."
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "More Insights Coming Soon..."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Daha fazla analiz yakında..."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Próximamente habrá más análisis..."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "更多分析即将推出…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More Insights Coming Soon..."
           }
         }
       }
@@ -10127,22 +10156,10 @@
     "Net" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Net"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neto"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "净额"
           }
         },
         "nl" : {
@@ -10150,33 +10167,45 @@
             "state" : "translated",
             "value" : "Netto"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "净额"
+          }
         }
       }
     },
     "Net Worth" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Net Varlık"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Patrimonio neto"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "净资产"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vermogen"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net Varlık"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "净资产"
           }
         }
       }
@@ -10364,44 +10393,44 @@
             "value" : "Giao dịch mới"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "新增交易"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "新建交易"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增交易"
           }
         }
       }
     },
     "Next Due Date" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sonraki Vade Tarihi"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Próximo vencimiento"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "下次到期日"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Volgende vervaldatum"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonraki Vade Tarihi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下次到期日"
           }
         }
       }
@@ -10582,22 +10611,10 @@
     },
     "No budgets defined for the current period." : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu dönem için bütçe tanımlanmamış."
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay presupuestos definidos para este período."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "当前期间未设置预算。"
           }
         },
         "nl" : {
@@ -10611,6 +10628,18 @@
             "state" : "translated",
             "value" : "Для текущего периода бюджеты не заданы."
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dönem için bütçe tanımlanmamış."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当前期间未设置预算。"
+          }
         }
       }
     },
@@ -10620,6 +10649,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keine Daten verfügbar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay datos disponibles"
           }
         },
         "hu" : {
@@ -10634,10 +10669,22 @@
             "value" : "Nessun dato disponibile"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen gegevens beschikbaar"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sem dados disponíveis"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет доступных данных"
           }
         },
         "tr" : {
@@ -10646,28 +10693,10 @@
             "value" : "Kullanılabilir veri yok"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hay datos disponibles"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "暂无数据"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geen gegevens beschikbaar"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Нет доступных данных"
           }
         }
       }
@@ -10692,6 +10721,12 @@
             "value" : "No Database Connected"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ninguna base de datos conectada"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10710,6 +10745,12 @@
             "value" : "Nessun Database Connesso"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen database verbonden"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10722,10 +10763,10 @@
             "value" : "Nenhuma base de dados conectada"
           }
         },
-        "zh-Hant" : {
+        "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No Database Connected"
+            "value" : "База данных не подключена"
           }
         },
         "tr" : {
@@ -10734,50 +10775,26 @@
             "value" : "Veritabanına Bağlı Değil"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hay ninguna base de datos conectada"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "未连接数据库"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Geen database verbonden"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "База данных не подключена"
+            "value" : "No Database Connected"
           }
         }
       }
     },
     "No income or expense data for this period" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu dönemde gelir veya gider verisi yok."
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay datos de ingresos ni gastos para este período"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此期间没有收入或支出数据"
           }
         },
         "nl" : {
@@ -10785,21 +10802,33 @@
             "state" : "translated",
             "value" : "Geen inkomsten- of uitgavengegevens voor deze periode"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dönemde gelir veya gider verisi yok."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此期间没有收入或支出数据"
+          }
         }
       }
     },
     "No open accounts to display." : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gösterilecek açık hesap yok."
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay cuentas abiertas para mostrar."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gösterilecek açık hesap yok."
           }
         },
         "zh-Hans" : {
@@ -10831,10 +10860,22 @@
     },
     "No transactions in this period." : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay transacciones en este período."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessuna transazione in questo periodo."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen transacties in deze periode."
           }
         },
         "tr" : {
@@ -10843,50 +10884,26 @@
             "value" : "Bu dönemde işlem yok."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hay transacciones en este período."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "此期间没有交易。"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geen transacties in deze periode."
           }
         }
       }
     },
     "No upcoming scheduled transactions" : {
       "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessuna transazione pianificata imminente"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yaklaşan planlanmış işlem yok"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay transacciones programadas próximas"
           }
         },
-        "zh-Hans" : {
+        "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "没有即将发生的计划交易"
+            "value" : "Nessuna transazione pianificata imminente"
           }
         },
         "nl" : {
@@ -10899,6 +10916,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нет предстоящих запланированных операций"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yaklaşan planlanmış işlem yok"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有即将发生的计划交易"
           }
         }
       }
@@ -11041,16 +11070,16 @@
             "value" : "Ghi chú"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "註記"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "备注"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "註記"
           }
         }
       }
@@ -11184,6 +11213,12 @@
             "value" : "확인"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11226,22 +11261,16 @@
             "value" : "Xong"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "確定"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "好"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OK"
+            "value" : "確定"
           }
         }
       }
@@ -11387,16 +11416,16 @@
             "value" : "Mở CSDL"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "開啟資料庫"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "打开数据库"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟資料庫"
           }
         }
       }
@@ -11404,22 +11433,10 @@
     "Out" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Çıkış"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Salida"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "流出"
           }
         },
         "nl" : {
@@ -11432,6 +11449,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Расход"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çıkış"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "流出"
           }
         }
       }
@@ -11452,22 +11481,10 @@
     },
     "Overview" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Genel Bakış"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resumen"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "概览"
           }
         },
         "nl" : {
@@ -11475,33 +11492,45 @@
             "state" : "translated",
             "value" : "Overzicht"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genel Bakış"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "概览"
+          }
         }
       }
     },
     "Paid" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ödendi"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pagado"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已支付"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Betaald"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ödendi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已支付"
           }
         }
       }
@@ -11526,6 +11555,12 @@
             "value" : "Password Required"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere contraseña"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11544,6 +11579,12 @@
             "value" : "Password Richiesta"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wachtwoord vereist"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11556,22 +11597,10 @@
             "value" : "É obrigatório palavra-passe"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Password Required"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parola Gerekli"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se requiere contraseña"
           }
         },
         "zh-Hans" : {
@@ -11580,10 +11609,10 @@
             "value" : "需要密码"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wachtwoord vereist"
+            "value" : "Password Required"
           }
         }
       }
@@ -11716,16 +11745,16 @@
             "value" : "Đối tượng giao dịch"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "受款人"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "收款方"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受款人"
           }
         }
       }
@@ -11866,6 +11895,12 @@
             "value" : "Privacy Policy"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de privacidad"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11884,6 +11919,12 @@
             "value" : "Informativa Privacy"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacybeleid"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11896,22 +11937,10 @@
             "value" : "Política de privacidade"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacy Policy"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gizlilik Politikası"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Política de privacidad"
           }
         },
         "zh-Hans" : {
@@ -11920,32 +11949,20 @@
             "value" : "隐私政策"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Privacybeleid"
+            "value" : "Privacy Policy"
           }
         }
       }
     },
     "Projected balance" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öngörülen Bakiye"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Saldo proyectado"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "预计余额"
           }
         },
         "nl" : {
@@ -11958,6 +11975,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Прогнозируемый баланс"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öngörülen Bakiye"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "预计余额"
           }
         }
       }
@@ -12082,22 +12111,10 @@
     },
     "Recent" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Son İşlemler"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recientes"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "最近交易"
           }
         },
         "nl" : {
@@ -12111,34 +12128,46 @@
             "state" : "translated",
             "value" : "Недавние операции"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son İşlemler"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近交易"
+          }
         }
       }
     },
     "Reconciled Balance" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mutabık Bakiye"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Saldo conciliado"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已对账余额"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Afgestemd saldo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mutabık Bakiye"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已对账余额"
           }
         }
       }
@@ -12166,6 +12195,12 @@
             "value" : "Release Notes"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notas de la versión"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12184,6 +12219,12 @@
             "value" : "Note Di Rilascio"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Releaseopmerkingen"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12196,22 +12237,10 @@
             "value" : "Notas de lançamento"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Release Notes"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sürüm Notları"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notas de la versión"
           }
         },
         "zh-Hans" : {
@@ -12220,38 +12249,38 @@
             "value" : "发行说明"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Releaseopmerkingen"
+            "value" : "Release Notes"
           }
         }
       }
     },
     "Repeat" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tekrarla"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Repetir"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重复"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhalen"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekrarla"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重复"
           }
         }
       }
@@ -12276,6 +12305,12 @@
             "value" : "Report an Issue"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informar de un problema"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12292,6 +12327,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Segnala un problema"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probleem melden"
           }
         },
         "pt-BR" : {
@@ -12312,22 +12353,10 @@
             "value" : "Сообщить о проблеме"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Report an Issue"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sorun Bildir"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Informar de un problema"
           }
         },
         "zh-Hans" : {
@@ -12336,10 +12365,10 @@
             "value" : "报告问题"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Probleem melden"
+            "value" : "Report an Issue"
           }
         }
       }
@@ -12368,6 +12397,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pré-visualização do relatório"
+          }
+        }
+      }
+    },
+    "Reuse Last Account" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reutilizar la última cuenta"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laatste rekening opnieuw gebruiken"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son Hesabı Kullan"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沿用上一个账户"
+          }
+        }
+      }
+    },
+    "Reuse Last Category" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reutilizar la última categoría"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laatste categorie opnieuw gebruiken"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son Kategoriyi Kullan"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沿用上一个分类"
           }
         }
       }
@@ -12478,22 +12565,10 @@
     },
     "Schedule" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Planla"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Programar"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "计划"
           }
         },
         "nl" : {
@@ -12501,27 +12576,27 @@
             "state" : "translated",
             "value" : "Plannen"
           }
-        }
-      }
-    },
-    "Scheduled" : {
-      "localizations" : {
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Planlanmış"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Programada"
+            "value" : "Planla"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已计划"
+            "value" : "计划"
+          }
+        }
+      }
+    },
+    "Scheduled" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programada"
           }
         },
         "nl" : {
@@ -12529,15 +12604,39 @@
             "state" : "translated",
             "value" : "Gepland"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planlanmış"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已计划"
+          }
         }
       }
     },
     "Scheduled Transactions" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transacciones programadas"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transazioni Pianificate"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geplande transacties"
           }
         },
         "tr" : {
@@ -12546,22 +12645,10 @@
             "value" : "Planlanmış İşlemler"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transacciones programadas"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "计划交易"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geplande transacties"
           }
         }
       }
@@ -12696,6 +12783,12 @@
             "value" : "Stichwortsuche"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar por palabra clave"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12706,6 +12799,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerca per parola chiave"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoeken op trefwoord"
           }
         },
         "pt-PT" : {
@@ -12720,22 +12819,10 @@
             "value" : "Anahtar Kelimeyle Ara"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buscar por palabra clave"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "按关键词搜索"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zoeken op trefwoord"
           }
         }
       }
@@ -12885,16 +12972,16 @@
             "value" : "Hesap seçin"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "選擇帳戶"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "选择账户"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇帳戶"
           }
         }
       }
@@ -13027,16 +13114,16 @@
             "value" : "Chọn tài khoản"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "選擇帳目"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "选择账户"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇帳目"
           }
         }
       }
@@ -13163,16 +13250,16 @@
             "value" : "Chọn hạng mục"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "選擇類型"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "选择分类"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇類型"
           }
         }
       }
@@ -13299,16 +13386,16 @@
             "value" : "Chọn đối tượng giao dịch"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "選擇受帳人"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "选择收款方"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇受帳人"
           }
         }
       }
@@ -13331,6 +13418,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select To Account"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccionar cuenta de destino"
           }
         },
         "fr" : {
@@ -13357,10 +13450,10 @@
             "value" : "Select To Account"
           }
         },
-        "zh-Hant" : {
+        "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select To Account"
+            "value" : "Выберите счёт получателя"
           }
         },
         "tr" : {
@@ -13369,22 +13462,16 @@
             "value" : "Hedef Hesap Seçin"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleccionar cuenta de destino"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "选择目标账户"
           }
         },
-        "ru" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выберите счёт получателя"
+            "value" : "Select To Account"
           }
         }
       }
@@ -13551,16 +13638,16 @@
             "value" : "Ayarlar"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "設定"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "设置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
           }
         }
       }
@@ -13716,26 +13803,38 @@
             "value" : "Cổ phần"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "股票"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "股份"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "股票"
           }
         }
       }
     },
     "Skip" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omitir"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Salta"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overslaan"
           }
         },
         "tr" : {
@@ -13744,22 +13843,10 @@
             "value" : "Atla"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Omitir"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "跳过"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Overslaan"
           }
         }
       }
@@ -14032,6 +14119,12 @@
             "value" : "Splits"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desgloses"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14048,6 +14141,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dividi"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Splitsingen"
           }
         },
         "pt-BR" : {
@@ -14068,22 +14167,10 @@
             "value" : "Разделить"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Splits"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bölmeler"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desgloses"
           }
         },
         "zh-Hans" : {
@@ -14092,10 +14179,10 @@
             "value" : "拆分"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Splitsingen"
+            "value" : "Splits"
           }
         }
       }
@@ -14361,6 +14448,12 @@
             "value" : "상태"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14403,22 +14496,16 @@
             "value" : "Tình trạng"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "狀態"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "状态"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Status"
+            "value" : "狀態"
           }
         }
       }
@@ -14495,6 +14582,12 @@
             "value" : "Support"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soporte"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14511,6 +14604,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supporto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ondersteuning"
           }
         },
         "pt-BR" : {
@@ -14531,22 +14630,10 @@
             "value" : "Поддержка"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Support"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Destek"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Soporte"
           }
         },
         "zh-Hans" : {
@@ -14555,10 +14642,10 @@
             "value" : "支持"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ondersteuning"
+            "value" : "Support"
           }
         }
       }
@@ -14896,16 +14983,16 @@
             "value" : "Có kì hạn"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "定期戶口"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "定期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "定期戶口"
           }
         }
       }
@@ -15072,16 +15159,16 @@
             "value" : "Tema"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "主題"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "主题"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主題"
           }
         }
       }
@@ -15280,22 +15367,10 @@
     },
     "To" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bitiş"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hasta"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "结束"
           }
         },
         "nl" : {
@@ -15308,6 +15383,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "По"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitiş"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "结束"
           }
         }
       }
@@ -15373,28 +15460,28 @@
     "Today" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bugün"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hoy"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "今天"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vandaag"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天"
           }
         }
       }
@@ -15423,6 +15510,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Σύνολο"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
           }
         },
         "fr" : {
@@ -15509,22 +15602,16 @@
             "value" : "Tổng cộng"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "總計"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Total"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "合计"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "總計"
           }
         }
       }
@@ -15549,6 +15636,12 @@
             "value" : "Total: %@"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15565,6 +15658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Totale: %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totaal: %@"
           }
         },
         "pt-BR" : {
@@ -15585,22 +15684,10 @@
             "value" : "Всего: %@"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Total: %@"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toplam: %@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Total: %@"
           }
         },
         "zh-Hans" : {
@@ -15609,20 +15696,32 @@
             "value" : "合计：%@"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Totaal: %@"
+            "value" : "Total: %@"
           }
         }
       }
     },
     "Transaction" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transacción"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transazione"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transactie"
           }
         },
         "tr" : {
@@ -15631,22 +15730,10 @@
             "value" : "İşlem"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transacción"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "交易"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transactie"
           }
         }
       }
@@ -15671,6 +15758,12 @@
             "value" : "Transaction Amount"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importe de la transacción"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15689,6 +15782,12 @@
             "value" : "Importo della Transazione"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transactiebedrag"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15701,22 +15800,10 @@
             "value" : "Valor da transação"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transaction Amount"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "İşlem Tutarı"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Importe de la transacción"
           }
         },
         "zh-Hans" : {
@@ -15725,10 +15812,10 @@
             "value" : "交易金额"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Transactiebedrag"
+            "value" : "Transaction Amount"
           }
         }
       }
@@ -15764,6 +15851,12 @@
             "value" : "Transaction Date"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de la transacción"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15782,6 +15875,12 @@
             "value" : "Data Transazione"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transactiedatum"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15794,22 +15893,10 @@
             "value" : "Data da transação"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transaction Date"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "İşlem Tarihi"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fecha de la transacción"
           }
         },
         "zh-Hans" : {
@@ -15818,20 +15905,32 @@
             "value" : "交易日期"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Transactiedatum"
+            "value" : "Transaction Date"
           }
         }
       }
     },
     "Transaction Details" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles de la transacción"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dettagli Transazione"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transactiedetails"
           }
         },
         "tr" : {
@@ -15840,22 +15939,10 @@
             "value" : "İşlem Ayrıntıları"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detalles de la transacción"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "交易详情"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transactiedetails"
           }
         }
       }
@@ -15880,6 +15967,12 @@
             "value" : "Transaction Status"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado de la transacción"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15898,6 +15991,12 @@
             "value" : "Stato Transazione"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transactiestatus"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15910,22 +16009,10 @@
             "value" : "Estado da transação"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transaction Status"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "İşlem Durumu"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Estado de la transacción"
           }
         },
         "zh-Hans" : {
@@ -15934,10 +16021,10 @@
             "value" : "交易状态"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Transactiestatus"
+            "value" : "Transaction Status"
           }
         }
       }
@@ -15962,6 +16049,12 @@
             "value" : "Transaction Type"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de transacción"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15980,6 +16073,12 @@
             "value" : "Tipo Di Transazione"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transactietype"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15992,22 +16091,10 @@
             "value" : "Tipo de transação"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Transaction Type"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "İşlem Türü"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tipo de transacción"
           }
         },
         "zh-Hans" : {
@@ -16016,17 +16103,29 @@
             "value" : "交易类型"
           }
         },
-        "nl" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Transactietype"
+            "value" : "Transaction Type"
           }
         }
       }
     },
     "Trend" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendencia"
+          }
+        },
         "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trend"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trend"
@@ -16038,50 +16137,38 @@
             "value" : "Eğilim"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tendencia"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "趋势"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trend"
           }
         }
       }
     },
     "Try a wider date range or add a transaction." : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daha geniş bir tarih aralığı seçin veya işlem ekleyin."
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prueba un intervalo más amplio o añade una transacción."
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "请扩大日期范围或添加一笔交易。"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kies een ruimer datumbereik of voeg een transactie toe."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha geniş bir tarih aralığı seçin veya işlem ekleyin."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请扩大日期范围或添加一笔交易。"
           }
         }
       }
@@ -16146,22 +16233,10 @@
     },
     "Type" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tür"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tipo"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "类型"
           }
         },
         "nl" : {
@@ -16169,34 +16244,46 @@
             "state" : "translated",
             "value" : "Type"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tür"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "类型"
+          }
         }
       }
     },
     "Upcoming" : {
       "extractionState" : "stale",
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yaklaşan"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Próximas"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "即将到来"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aankomend"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yaklaşan"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "即将到来"
           }
         }
       }
@@ -16434,13 +16521,13 @@
             "value" : "Phiên bản"
           }
         },
-        "zh-Hant" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "版本"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "版本"
@@ -16450,28 +16537,28 @@
     },
     "View All" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tümünü Gör"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ver todo"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "查看全部"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alles bekijken"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tümünü Gör"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看全部"
           }
         }
       }
@@ -16539,28 +16626,28 @@
     },
     "Window" : {
       "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dönem"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Período"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "时间范围"
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Periode"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dönem"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "时间范围"
           }
         }
       }
@@ -16657,12 +16744,6 @@
             "value" : "год"
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "年份"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16673,6 +16754,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "年"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "年份"
           }
         }
       }
@@ -16907,90 +16994,6 @@
     },
     "Zero" : {
 
-    },
-    "Reuse Last Account" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Son Hesabı Kullan"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reutilizar la última cuenta"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "沿用上一个账户"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Laatste rekening opnieuw gebruiken"
-          }
-        }
-      }
-    },
-    "Reuse Last Category" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Son Kategoriyi Kullan"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reutilizar la última categoría"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "沿用上一个分类"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Laatste categorie opnieuw gebruiken"
-          }
-        }
-      }
-    },
-    "More coming soon ..." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daha fazlası yakında ..."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Próximamente habrá más ..."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "更多内容即将推出…"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Binnenkort meer ..."
-          }
-        }
-      }
     }
   },
   "version" : "1.0"
