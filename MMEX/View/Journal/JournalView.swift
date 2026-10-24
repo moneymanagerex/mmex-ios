@@ -207,7 +207,12 @@ struct JournalView: View {
     func getPayeeName(for txn: JournalData) -> String {
         // Find the payee with the given ID
         if txn.transCode == .transfer {
-            if self.context.selectedAccountId == txn.accountId {
+            if context.selectedAccountId.isVoid {
+                if let fromAccount = vm.accountList.data.readyValue?[txn.accountId],let toAccount = vm.accountList.data.readyValue?[txn.toAccountId] {
+                    return "\(fromAccount.name) → \(toAccount.name)"
+                }
+            }
+            else if self.context.selectedAccountId == txn.accountId {
                 if let toAccount = vm.accountList.data.readyValue?[txn.toAccountId] {
                     return String(format: "> \(toAccount.name)")
                 }
