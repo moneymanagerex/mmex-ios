@@ -11,6 +11,7 @@ struct RecentTransactionsView: View {
     let journals: [JournalData]
     @Binding var selectedFilter: TransactionType?
     let showAccountLabel: Bool
+    let selectedAccountId: DataId?
     let formatter: CurrencyFormatter?
     
     @EnvironmentObject var pref: Preference
@@ -70,6 +71,7 @@ struct RecentTransactionsView: View {
                         TransactionRow(
                             journal: txn,
                             showAccountLabel: showAccountLabel,
+                            selectedAccountId: selectedAccountId,
                             formatter: formatter
                         )
                     }
@@ -82,11 +84,11 @@ struct RecentTransactionsView: View {
     }
 }
 
-// RecentTransactionsView.swift
 
 struct TransactionRow: View {
     let journal: JournalData
     let showAccountLabel: Bool
+    let selectedAccountId: DataId?
     let formatter: CurrencyFormatter?
 
     @EnvironmentObject var pref: Preference
@@ -95,8 +97,14 @@ struct TransactionRow: View {
     // 计算 Payee 显示名称（与 JournalView 逻辑一致）
     private var payeeDisplayName: String {
         if journal.transCode == .transfer {
+            if let selectedAccountId = selectedAccountId, selectedAccountId.isVoid {
+                if let fromAccount = vm.accountList.data.readyValue?[journal.accountId], let toAccount = vm.accountList.data.readyValue?[journal.toAccountId]  {
+                    return "\(fromAccount.name) → \(toAccount.name)"
+                }
+                return "Transfer"
+            }
             // 转账：显示目标账户名（带箭头方向）
-            if let toAccount = vm.accountList.data.readyValue?[journal.toAccountId] {
+            else if let toAccount = vm.accountList.data.readyValue?[journal.toAccountId] {
                 return "> \(toAccount.name)"
             } else {
                 return "Transfer"

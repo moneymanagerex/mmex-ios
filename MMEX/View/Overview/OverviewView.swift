@@ -66,6 +66,7 @@ struct OverviewView: View {
                     journals: viewModel.transactions.asJournals(),
                     selectedFilter: $selectedFilter,
                     showAccountLabel: context.isAllAccounts,
+                    selectedAccountId: context.selectedAccountId,
                     formatter: displayFormatter
                 )
             }
