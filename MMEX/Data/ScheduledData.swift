@@ -226,6 +226,8 @@ extension ScheduledData {
             guard let date, date > Date() else { return nil }
             return date
         }
+
+        guard repeatTypeNum.next != nil else { return nil }
         
         var current = baseDate
         var iterations = 0

@@ -166,9 +166,9 @@ struct AccountRepository: RepositoryProtocol {
         ) ).union(T.table.select(1).where(
             T.table[T.col_toAccountId] == Self.table[Self.col_id]
         ) ).union(Q.table.select(1).where(
-            Q.table[T.col_accountId] == Self.table[Self.col_id]
+            Q.table[Q.col_accountId] == Self.table[Self.col_id]
         ) ).union(Q.table.select(1).where(
-            Q.table[T.col_toAccountId] == Self.table[Self.col_id]
+            Q.table[Q.col_toAccountId] == Self.table[Self.col_id]
         ) ).expression.description + ")"
         return table.filter(SQLite.Expression<Bool>(literal: cond))
     }

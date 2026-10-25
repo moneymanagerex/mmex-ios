@@ -89,7 +89,16 @@ extension ViewModel {
                 scheduledGroup.append(g.fullName, dict[g] ?? [], dict[g] != nil, true)
             }
         case .account:
-            let dict = Dictionary(grouping: listOrder) { listData[$0]!.accountId }
+            var dict: [DataId: [DataId]] = [:]
+            for id in listOrder {
+                guard let s = listData[id] else { continue }
+                dict[s.accountId, default: []].append(id)
+                if s.transCode == .transfer,
+                   !s.toAccountId.isVoid,
+                   s.toAccountId != s.accountId {
+                    dict[s.toAccountId, default: []].append(id)
+                }
+            }
             scheduledGroup.groupAccount = accountOrder.compactMap {
                 dict[$0] != nil ? $0 : nil
             }

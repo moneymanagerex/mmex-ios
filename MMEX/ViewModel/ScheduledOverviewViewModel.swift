@@ -50,10 +50,10 @@ class ScheduledOverviewViewModel: ObservableObject {
                 }
             }
             
-            guard let nextDateRaw = scheduled.nextDueDate() else { continue }
-            let nextDate = calendar.startOfDay(for: nextDateRaw)
+            guard let dueDateRaw = scheduled.dueDate.optDate else { continue }
+            let currentDue = calendar.startOfDay(for: dueDateRaw)
             
-            let daysUntil = calendar.dateComponents([.day], from: today, to: nextDate).day ?? 0
+            let daysUntil = calendar.dateComponents([.day], from: today, to: currentDue).day ?? 0
             if daysUntil < -maxOverdueDays || daysUntil > maxUpcomingDays {
                 continue
             }
@@ -61,7 +61,7 @@ class ScheduledOverviewViewModel: ObservableObject {
             let item = ScheduledOverviewItem(
                 id: id,
                 scheduled: scheduled,
-                nextDueDate: nextDate,
+                dueDate: currentDue,
                 daysUntil: daysUntil
             )
             
@@ -73,10 +73,10 @@ class ScheduledOverviewViewModel: ObservableObject {
             }
         }
         
-        self.overdue = overdueItems.sorted { $0.nextDueDate < $1.nextDueDate }
+        self.overdue = overdueItems.sorted { $0.dueDate < $1.dueDate }
         self.dueToday = dueTodayItems.sorted { $0.scheduled.transAmount > $1.scheduled.transAmount }
-        self.dueSoon = dueSoonItems.sorted { $0.nextDueDate < $1.nextDueDate }
-        self.upcoming = upcomingItems.sorted { $0.nextDueDate < $1.nextDueDate }
+        self.dueSoon = dueSoonItems.sorted { $0.dueDate < $1.dueDate }
+        self.upcoming = upcomingItems.sorted { $0.dueDate < $1.dueDate }
     }
     
     private func clearAll() {
@@ -89,48 +89,53 @@ class ScheduledOverviewViewModel: ObservableObject {
     // MARK: - Actions
     
     func skip(_ item: ScheduledOverviewItem, db: SQLite.Connection?) async -> Bool {
-        guard let nextDate = item.scheduled.nextDueDate(from: item.nextDueDate) else {
-            return false
+        let scheduled = item.scheduled
+        guard let dueDate = scheduled.dueDate.optDate else { return false }
+
+        var updated = scheduled
+        if let next = scheduled.nextDueDate(from: dueDate) {
+            updated.dueDate = DateString(next)
+            if case .times(let type, let remaining) = scheduled.repeatTypeNum, remaining.value > 1 {
+                updated.repeatNum = remaining.value - 1
+                updated.repeatType = type
+            }
+        } else {
+            // 没有下一次（.once 或 .times 最后一次）：跳过即作废
+            updated.status = .void
+            updated.repeatAuto = .none
+            updated.repeatType = .once
+            updated.repeatNum = 0
         }
-        var updated = item.scheduled
-        updated.dueDate = DateString(nextDate)
         return updateScheduled(updated, db: db)
     }
 
     func markAsPaid(_ item: ScheduledOverviewItem, splits: [DataId: [ScheduledSplitData]], db: SQLite.Connection?) async -> Bool {
-        guard createTransaction(from: item.scheduled, using: item.nextDueDate, splits: splits[item.id] ?? [], db: db) else {
+        let scheduled = item.scheduled
+        guard let dueDate = scheduled.dueDate.optDate else { return false }
+
+        guard createTransaction(from: item.scheduled, using: item.dueDate, splits: splits[item.id] ?? [], db: db) else {
             return false
         }
         
-        guard let nextDate = item.scheduled.nextDueDate(from: item.nextDueDate) else {
-            var completed = item.scheduled
-            completed.status = .void
-            completed.repeatAuto = .none
-            completed.repeatType = .once
-            completed.repeatNum = 0
-
-            return updateScheduled(completed, db: db)
+        // 在“当前到期日”生成交易，而不是 item.nextDueDate
+        guard createTransaction(from: scheduled, using: dueDate,
+                                splits: splits[item.id] ?? [], db: db) else {
+            return false
         }
-        var updated = item.scheduled
-        updated.dueDate = DateString(nextDate)
 
-        if let typeNum = item.scheduled.repeatTypeNum {
-            switch typeNum {
-            case .times(let type, let remaining):
-                if remaining.value > 1 {
-                    updated.repeatNum = remaining.value - 1
-                    updated.repeatType = type
-                } else {
-                    updated.status = .void
-                    updated.repeatAuto = .none
-                    updated.repeatType = .once
-                    updated.repeatNum = 0
-                }
-            default:
-                break
+        var updated = scheduled
+        if let next = scheduled.nextDueDate(from: dueDate) {
+            updated.dueDate = DateString(next)
+            if case .times(let type, let remaining) = scheduled.repeatTypeNum, remaining.value > 1 {
+                updated.repeatNum = remaining.value - 1
+                updated.repeatType = type
             }
+        } else {
+            updated.status = .void
+            updated.repeatAuto = .none
+            updated.repeatType = .once
+            updated.repeatNum = 0
         }
-
         return updateScheduled(updated, db: db)
     }
     
@@ -181,10 +186,12 @@ class ScheduledOverviewViewModel: ObservableObject {
 struct ScheduledOverviewItem: Identifiable {
     let id: DataId
     let scheduled: ScheduledData
-    let nextDueDate: Date
+    /// `scheduled.dueDate` 解析后的 Date，用于分类和排序
+    let dueDate: Date
     let daysUntil: Int
     
     var isRecurring: Bool { scheduled.isRecurring }
+    var isOneTime: Bool { scheduled.repeatType == .once }
     
     enum Status {
         case overdue, dueToday, dueSoon, upcoming
