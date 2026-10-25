@@ -175,8 +175,16 @@ struct ScheduledOverviewView: View {
                     
                     Spacer()
                     
-                    // 操作按钮
-                    if item.isRecurring {
+                    if item.isOneTime {
+                        // 一次性：只显示 Paid（没有 Skip 的意义）
+                        Button("Paid") {
+                            Task { await handleMarkPaid(item) }
+                        }
+                        .font(.caption)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.mini)
+                        .tint(pref.theme.incomeColor)
+                    } else if item.isRecurring {
                         HStack(spacing: 8) {
                             Button("Skip") {
                                 Task { await handleSkip(item) }
