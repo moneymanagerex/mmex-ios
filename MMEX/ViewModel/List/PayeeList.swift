@@ -15,7 +15,7 @@ struct PayeeList: ListProtocol {
     var count : LoadMainCount<MainRepository>     = .init()
     var data  : LoadMainData<MainRepository>      = .init()
     var used  : LoadMainUsed<MainRepository>      = .init()
-    var order : LoadMainOrder<MainRepository>     = .init(order: [MainRepository.col_name])
+    var order : LoadMainOrder<MainRepository>     = .init(order: [MainRepository.col_name.collate(.nocase)])
 
     var attachment : LoadAuxAttachment<MainRepository> = .init()
 }
