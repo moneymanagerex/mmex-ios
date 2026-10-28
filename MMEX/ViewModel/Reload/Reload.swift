@@ -22,6 +22,8 @@ extension ViewModel {
             await reloadCategory(pref, oldData as! CategoryData?, newData as! CategoryData?)
         } else if MainData.self == P.RepositoryData.self {
             await reloadPayee(pref, oldData as! PayeeData?, newData as! PayeeData?)
+        } else if MainData.self == Q.RepositoryData.self {
+            await reloadScheduled(pref, oldData as! ScheduledData?, newData as! ScheduledData?)
         } else if MainData.self == G.RepositoryData.self {
             await reloadTag(pref, oldData as! TagData?, newData as! TagData?)
         } else if MainData.self == F.RepositoryData.self {
