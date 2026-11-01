@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Secure personal finance on iPhone with local, encrypted, MMEX-compatible data.</strong>
+  <strong>Secure personal finance on iPhone with local, MMEX-compatible data.</strong>
 </p>
 
 <p align="center">
@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="https://apps.apple.com/us/app/money-manager-ex/id6683300571">Download on the App Store</a>
+  <a href="https://apps.apple.com/cn/app/money-manager-ex/id6683300571">China mainland App Store</a>
   ·
   <a href="https://testflight.apple.com/join/SYakQaAv">Join TestFlight</a>
   ·
@@ -26,7 +26,7 @@ Money Manager Ex for iOS (MMEX4iOS) is the mobile companion to the Money Manager
 
 ### Highlights
 
-- **Private by default** — manage your finances with local storage and AES-256 database encryption.
+- **Private by default** — manage your finances with local storage and support for AES-256 encrypted databases.
 - **MMEX-compatible workflow** — work with the same data model used by [MMEX Desktop](https://github.com/moneymanagerex/moneymanagerex) and [MMEX Android](https://github.com/moneymanagerex/android-money-manager-ex/).
 - **Useful day-to-day finance tools** — record regular, split, and transfer transactions; manage accounts, categories, payees, and more.
 - **Clear insights** — review balances, trends, and recent activity with SwiftUI-based dashboards and charts.
@@ -40,12 +40,12 @@ The repository now includes a fresh screenshot set captured from the current sim
 
 <p align="center">
   <img src="./docs/assets/app-store/01-overview.png" width="230" alt="Overview screenshot" />
-  <img src="./docs/assets/app-store/02-entry.png" width="230" alt="Entry screenshot" />
-  <img src="./docs/assets/app-store/03-journal.png" width="230" alt="Journal screenshot" />
+  <img src="./docs/assets/app-store/02-journal.png" width="230" alt="Journal screenshot" />
+  <img src="./docs/assets/app-store/03-insights.png" width="230" alt="Insights screenshot" />
 </p>
 
 <p align="center">
-  <img src="./docs/assets/app-store/04-insights.png" width="230" alt="Insights screenshot" />
+  <img src="./docs/assets/app-store/04-entry.png" width="230" alt="Entry screenshot" />
   <img src="./docs/assets/app-store/05-manage.png" width="230" alt="Manage screenshot" />
   <img src="./docs/assets/app-store/06-start.png" width="230" alt="Start screenshot" />
 </p>
@@ -58,6 +58,7 @@ The repository now includes a fresh screenshot set captured from the current sim
 
 - Fresh raw captures: [Screenshots/2026-refresh/raw/](./Screenshots/2026-refresh/raw/)
 - Generated marketing set: [docs/assets/app-store/](./docs/assets/app-store/)
+- Large-display App Store exports (iPhone 17 Pro Max): [docs/assets/app-store/6.9-inch/](./docs/assets/app-store/6.9-inch/)
 - Generator script: [scripts/generate_app_store_screenshots.py](./scripts/generate_app_store_screenshots.py)
 - Screenshot-mode app entry: [ContentView.swift](./MMEX/App/ContentView.swift)
 
@@ -66,9 +67,9 @@ The repository now includes a fresh screenshot set captured from the current sim
 For the next App Store recapture, the recommended order is:
 
 1. Overview hero
-2. Transaction entry
-3. Journal / recent activity
-4. Insights / charts
+2. Journal / recent activity
+3. Insights / charts
+4. Transaction entry
 5. Manage / organization
 6. Database ownership and onboarding
 7. Settings / personalization
