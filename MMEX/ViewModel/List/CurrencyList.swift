@@ -14,7 +14,9 @@ struct CurrencyList: ListProtocol {
     var state : LoadState                     = .init()
     var count : LoadMainCount<MainRepository> = .init()
     var data  : LoadMainData<MainRepository>  = .init()
-    var name  : LoadMainName<MainRepository>  = .init { $0[MainRepository.col_name] }
+    var name  : LoadMainName<MainRepository>  = .init {
+        MainRepository.fetchData($0).localizedName()
+    }
     var used  : LoadMainUsed<MainRepository>  = .init()
     var order : LoadMainOrder<MainRepository> = .init(order: [MainRepository.col_name])
 
