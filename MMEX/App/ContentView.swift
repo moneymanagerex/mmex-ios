@@ -25,6 +25,10 @@ struct ContentView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @State private var isDocumentPickerPresented = false
+    @State private var isRecentDatabasesPresented = false
+    @State private var databaseOpenError = false
+    @State private var pendingRecentDatabaseURL: URL?
+    @State private var pendingRecentDatabaseError = false
     @State private var isSetupPresented = false
     @State private var stagedDatabaseURL: URL?
     @State private var saveRequest: DatabaseSaveRequest?
@@ -60,6 +64,7 @@ struct ContentView: View {
                     screenshotConnectedView(screen: screenshotScreen)
                 } else {
                     connectedView
+                        .id(vm.databaseSessionID)
                 }
             } else {
                 disconnectedView
@@ -68,13 +73,7 @@ struct ContentView: View {
         
         .handlesExternalEvents(preferring: Set(["mmb", "emb"]), allowing: Set(["*"]))
         .onOpenURL { url in
-            if url.pathExtension.lowercased() == "mmb" {
-                vm.openDatabase(at: url)
-            } else {
-                // If the file is emb, prompt for password
-                fileURL = url
-                isPasswordPromptVisible = true
-            }
+            openDatabase(url)
         }
 
         .fileImporter(
@@ -83,6 +82,63 @@ struct ContentView: View {
             allowsMultipleSelection: false
         ) {
             handleFileImport($0)
+        }
+        .sheet(isPresented: $isRecentDatabasesPresented, onDismiss: {
+            if let url = pendingRecentDatabaseURL {
+                pendingRecentDatabaseURL = nil
+                openDatabase(url)
+            } else if pendingRecentDatabaseError {
+                pendingRecentDatabaseError = false
+                databaseOpenError = true
+            }
+        }) {
+            NavigationStack {
+                List {
+                    Section {
+                        ForEach(vm.recentDatabases) { recent in
+                            Button {
+                                do {
+                                    pendingRecentDatabaseURL = try vm.resolveRecentDatabase(recent)
+                                } catch {
+                                    log.error("Failed to resolve recent database: \(error)")
+                                    pendingRecentDatabaseError = true
+                                }
+                                isRecentDatabasesPresented = false
+                            } label: {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(recent.name).foregroundStyle(.primary)
+                                    HStack {
+                                        Text(recent.location)
+                                        Text(recent.lastOpened, style: .relative)
+                                    }
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                }
+                            }
+                            .swipeActions {
+                                Button("Remove", role: .destructive) {
+                                    vm.removeRecentDatabase(recent)
+                                }
+                            }
+                        }
+                    } footer: {
+                        Text("Removing a recent entry does not delete the file.")
+                    }
+                }
+                .navigationTitle("Recent Databases")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Done") { isRecentDatabasesPresented = false }
+                    }
+                }
+            }
+        }
+        .alert("Could not open database", isPresented: $databaseOpenError) {
+            Button("Choose File") { isDocumentPickerPresented = true }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("The file may have moved, been deleted, or no longer be accessible. Choose it again in Files.")
         }
         .sheet(isPresented: $isPasswordPromptVisible) {
             // Password input sheet
@@ -188,6 +244,7 @@ struct ContentView: View {
                     TabContentView(
                         selectedTab: detailTabBinding,
                         isDocumentPickerPresented: $isDocumentPickerPresented,
+                        isRecentDatabasesPresented: $isRecentDatabasesPresented,
                         isNewDocumentPickerPresented: $isSetupPresented,
                         isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                         isSampleDocument: $isSampleDocument
@@ -249,6 +306,14 @@ struct ContentView: View {
             .buttonStyle(.bordered)
             .controlSize(.large)
 
+            if !vm.recentDatabases.isEmpty {
+                Button {
+                    isRecentDatabasesPresented = true
+                } label: {
+                    Label("Recent Databases", systemImage: "clock")
+                }
+            }
+
             Menu {
                 Button("Create Sample Database") {
                     do {
@@ -296,6 +361,7 @@ struct ContentView: View {
             case .manage:
                 ManageView(
                     isDocumentPickerPresented: $isDocumentPickerPresented,
+                    isRecentDatabasesPresented: $isRecentDatabasesPresented,
                     isNewDocumentPickerPresented: $isSetupPresented,
                     isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
@@ -361,6 +427,7 @@ struct ContentView: View {
         NavigationView {
             ManageView(
                 isDocumentPickerPresented: $isDocumentPickerPresented,
+                isRecentDatabasesPresented: $isRecentDatabasesPresented,
                 isNewDocumentPickerPresented: $isSetupPresented,
                 isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
@@ -392,21 +459,23 @@ struct ContentView: View {
         switch result {
         case .success(let urls):
             if let url = urls.first {
-                if url.pathExtension.lowercased() == "mmb" {
-                    vm.openDatabase(at: url)
-                    guard vm.isDatabaseConnected else { return }
-                } else {
-                    // Prompt for password if it's an emb file
-                    fileURL = url
-                    isPasswordPromptVisible = true
-                }
-                log.info("Successfully opened database: \(url)")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    selectedTab = horizontalSizeClass == .regular ? ContentView.overviewTab : Preference.selectedTab
-                }
+                openDatabase(url)
             }
         case .failure(let error):
             log.error("Failed to pick a document: \(error.localizedDescription)")
+        }
+    }
+
+    private func openDatabase(_ url: URL) {
+        if url.pathExtension.lowercased() == "emb" {
+            fileURL = url
+            password = ""
+            isPasswordValid = true
+            isPasswordPromptVisible = true
+        } else if vm.openDatabase(at: url) {
+            selectedTab = ContentView.overviewTab
+        } else {
+            databaseOpenError = true
         }
     }
 
@@ -419,13 +488,14 @@ struct ContentView: View {
         }
         // Open the database with the provided password
         if let url = fileURL {
-            vm.openDatabase(at: url, password: password)
-            guard vm.isDatabaseConnected else {
+            guard vm.openDatabase(at: url, password: password) else {
                 isPasswordValid = false
                 return
             }
             // Hide the password prompt
             isPasswordPromptVisible = false
+            password = ""
+            selectedTab = ContentView.overviewTab
         }
     }
     
@@ -663,6 +733,7 @@ struct TabContentView: View {
     @EnvironmentObject var vm: ViewModel
     @Binding var selectedTab: Int
     @Binding var isDocumentPickerPresented: Bool
+    @Binding var isRecentDatabasesPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isAttachDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
@@ -685,6 +756,7 @@ struct TabContentView: View {
             case 3:
                 ManageView(
                     isDocumentPickerPresented: $isDocumentPickerPresented,
+                    isRecentDatabasesPresented: $isRecentDatabasesPresented,
                     isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
                     isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
