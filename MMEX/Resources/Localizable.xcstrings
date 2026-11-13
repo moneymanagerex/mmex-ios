@@ -1,6 +1,36 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Database filename" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账本文件名"
+          }
+        }
+      }
+    },
+    "Enter a filename without slashes or control characters." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请输入不含斜杠或控制字符的文件名。"
+          }
+        }
+      }
+    },
+    "The .mmb extension is added automatically." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会自动添加 .mmb 扩展名。"
+          }
+        }
+      }
+    },
     "" : {
 
     },
@@ -1249,6 +1279,7 @@
       }
     },
     "Account:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -1436,6 +1467,16 @@
         }
       }
     },
+    "Add at least two splits to continue." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请至少添加两项拆分后继续。"
+          }
+        }
+      }
+    },
     "Add Note" : {
       "localizations" : {
         "cs" : {
@@ -1514,16 +1555,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "添加备注"
-          }
-        }
-      }
-    },
-    "Add at least two splits to continue." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "请至少添加两项拆分后继续。"
           }
         }
       }
@@ -3412,12 +3443,72 @@
         }
       }
     },
+    "Choose a different destination account." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择不同的转入账户。"
+          }
+        }
+      }
+    },
+    "Choose a payee to continue." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择交易对象后继续。"
+          }
+        }
+      }
+    },
     "Choose a save location" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "选择保存位置"
+          }
+        }
+      }
+    },
+    "Choose account" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择账户"
+          }
+        }
+      }
+    },
+    "Choose an account to continue." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择账户后继续。"
+          }
+        }
+      }
+    },
+    "Choose category" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择分类"
+          }
+        }
+      }
+    },
+    "Choose destination account" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择转入账户"
           }
         }
       }
@@ -3432,12 +3523,12 @@
         }
       }
     },
-    "Choose category" : {
+    "Choose payee" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "选择分类"
+            "value" : "选择交易对象"
           }
         }
       }
@@ -3784,6 +3875,16 @@
         }
       }
     },
+    "Copy the amount too?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同时复制金额吗？"
+          }
+        }
+      }
+    },
     "Copy to Clipboard" : {
       "localizations" : {
         "cs" : {
@@ -3848,6 +3949,26 @@
         }
       }
     },
+    "Copy with Amount" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制金额"
+          }
+        }
+      }
+    },
+    "Copy without Amount" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不复制金额"
+          }
+        }
+      }
+    },
     "Could not create database" : {
       "localizations" : {
         "zh-Hans" : {
@@ -3864,6 +3985,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "无法打开账本"
+          }
+        }
+      }
+    },
+    "Could not rename database" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法修改账本名称"
+          }
+        }
+      }
+    },
+    "Could not save transaction" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法保存交易"
           }
         }
       }
@@ -4217,6 +4358,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建示例数据库"
+          }
+        }
+      }
+    },
+    "Create Similar Transaction" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "记一笔类似交易"
           }
         }
       }
@@ -6249,6 +6400,26 @@
         }
       }
     },
+    "Discard Changes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放弃更改"
+          }
+        }
+      }
+    },
+    "Discard changes?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放弃未保存的更改？"
+          }
+        }
+      }
+    },
     "Dismiss" : {
       "comment" : "Button to dismiss the current screen",
       "extractionState" : "manual",
@@ -6335,6 +6506,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dismiss"
+          }
+        }
+      }
+    },
+    "Display name" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示名称"
           }
         }
       }
@@ -6579,6 +6760,16 @@
     "Edit Split" : {
 
     },
+    "Edit transaction" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑交易"
+          }
+        }
+      }
+    },
     "Email Support" : {
       "localizations" : {
         "cs" : {
@@ -6777,6 +6968,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter"
+          }
+        }
+      }
+    },
+    "Enter an amount of zero or more." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请输入大于或等于零的金额。"
           }
         }
       }
@@ -9286,6 +9487,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Journal"
+          }
+        }
+      }
+    },
+    "Keep Editing" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "继续编辑"
           }
         }
       }
@@ -12101,6 +12312,7 @@
       }
     },
     "Payee:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -12451,6 +12663,16 @@
         }
       }
     },
+    "Quick date" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷日期"
+          }
+        }
+      }
+    },
     "Recent" : {
       "localizations" : {
         "es" : {
@@ -12481,6 +12703,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最近交易"
+          }
+        }
+      }
+    },
+    "Recent Databases" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近打开的账本"
           }
         }
       }
@@ -12599,16 +12831,6 @@
         }
       }
     },
-    "Recent Databases" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "最近打开的账本"
-          }
-        }
-      }
-    },
     "Remove" : {
       "localizations" : {
         "zh-Hans" : {
@@ -12635,6 +12857,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "移除记录不会删除文件。"
+          }
+        }
+      }
+    },
+    "Rename" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "修改名称"
+          }
+        }
+      }
+    },
+    "Rename Database" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "修改账本名称"
           }
         }
       }
@@ -12942,6 +13184,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sample Database in Memory"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
+          }
+        }
+      }
+    },
+    "Save and Add Another" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存并继续记账"
+          }
+        }
+      }
+    },
+    "Saved. Ready for another transaction." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已保存，可以继续记账。"
           }
         }
       }
@@ -14433,6 +14705,16 @@
         }
       }
     },
+    "Split amounts must match the transaction amount." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拆分金额合计须与交易金额一致。"
+          }
+        }
+      }
+    },
     "split notes" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -14488,16 +14770,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "split notes"
-          }
-        }
-      }
-    },
-    "Split amounts must match the transaction amount." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "拆分金额合计须与交易金额一致。"
           }
         }
       }
@@ -14971,6 +15243,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Status Choice"
+          }
+        }
+      }
+    },
+    "Suggested category: %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "推荐分类：%@"
           }
         }
       }
@@ -15468,22 +15750,22 @@
         }
       }
     },
-    "The file may have moved, been deleted, or no longer be accessible. Choose it again in Files." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "文件可能已移动、删除或无法访问。请在“文件”中重新选择。"
-          }
-        }
-      }
-    },
     "The database was saved, but could not be opened. Open it from Files." : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "账本已保存，但无法打开。请从“文件”中打开它。"
+          }
+        }
+      }
+    },
+    "The file may have moved, been deleted, or no longer be accessible. Choose it again in Files." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件可能已移动、删除或无法访问。请在“文件”中重新选择。"
           }
         }
       }
@@ -15710,6 +15992,16 @@
         }
       }
     },
+    "This changes only the display name, not the file name. Leave blank to use the file name." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "仅修改显示名称，不会修改文件名。留空则使用文件名。"
+          }
+        }
+      }
+    },
     "This Month" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -15891,7 +16183,6 @@
       }
     },
     "Today" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -16167,6 +16458,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "交易"
+          }
+        }
+      }
+    },
+    "Transaction actions" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "交易操作"
           }
         }
       }
@@ -17393,6 +17694,16 @@
         }
       }
     },
+    "Yesterday" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "昨天"
+          }
+        }
+      }
+    },
     "You must use the app in compliance with all applicable laws. Any misuse or illegal activities related to the app may result in termination of your access." : {
       "localizations" : {
         "cs" : {
@@ -17441,6 +17752,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You must use the app in compliance with all applicable laws. Any misuse or illegal activities related to the app may result in termination of your access."
+          }
+        }
+      }
+    },
+    "Your changes are still here. Please try again." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "输入内容仍然保留，请重试。"
           }
         }
       }

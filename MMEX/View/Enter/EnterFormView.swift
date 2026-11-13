@@ -19,17 +19,36 @@ struct EnterFormView: View {
     @State private var editingSplitIndex: Int? = nil
     @State private var showingSplitEditor = false
 
-    @State private var showingCreateAccount = false
-    @State private var showingCreatePayee = false
+    @State private var accountCreation: AccountCreation?
+    @State private var payeeCreation: PayeeData?
     @State private var showingCreateCategory = false
 
-    @State private var createAccountData = AccountListView.initData
-    @State private var createPayeeData = PayeeListView.initData
     @State private var createCategoryData = CategoryListView.initData
 
     @State private var newAccountData: AccountData? = nil
     @State private var newPayeeData: PayeeData? = nil
     @State private var newCategoryData: CategoryData? = nil
+    @State private var selector: EntrySelector?
+    @State private var createAfterSelector: EntrySelector?
+
+    private enum EntrySelector: String, Identifiable {
+        case account, toAccount, payee, category
+        var id: String { rawValue }
+    }
+
+    private struct AccountCreation: Identifiable {
+        let id = UUID()
+        let data: AccountData
+        let forDestination: Bool
+    }
+
+    private var suggestedCategory: (DataId, String)? {
+        guard journal.transCode != .transfer, journal.categId.isVoid, journal.splits.isEmpty,
+              let payee = vm.payeeList.data.readyValue?[journal.payeeId],
+              !payee.categoryId.isVoid,
+              let path = vm.categoryList.evalPath.readyValue?[payee.categoryId] else { return nil }
+        return (payee.categoryId, path)
+    }
 
     var body: some View {
         VStack {
@@ -56,16 +75,13 @@ struct EnterFormView: View {
                 Spacer()
 
                 HStack(spacing: 6) {
-                    Picker("Select account", selection: $journal.accountId) {
-                        if (journal.accountId.isVoid) {
-                            Text("Account:").tag(DataId.void)
-                        }
-                        ForEach(vm.accountList.order.readyValue ?? [], id: \.self) { id in
-                            if let account = vm.accountList.data.readyValue?[id] {
-                                Text(account.name).tag(id)
-                            }
-                        }
+                    Button {
+                        selector = .account
+                    } label: {
+                        Text(vm.accountList.data.readyValue?[journal.accountId]?.name ?? String(localized: "Choose account"))
                     }
+                    .accessibilityLabel("Select account")
+                    .accessibilityValue(vm.accountList.data.readyValue?[journal.accountId]?.name ?? String(localized: "Choose account"))
                 }
             }
             .padding(.horizontal, 0)
@@ -106,6 +122,17 @@ struct EnterFormView: View {
                     .labelsHidden() // Hide the default label to save space
                     .onChange(of: journal.transDate.date) { _, newDate in
                     }
+                Menu {
+                    Button("Today") { setEntryDate(Date()) }
+                    Button("Yesterday") {
+                        if let date = Calendar.current.date(byAdding: .day, value: -1, to: Date()) {
+                            setEntryDate(date)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "calendar.badge.clock")
+                }
+                .accessibilityLabel("Quick date")
                 
                 Spacer()
                 
@@ -127,50 +154,37 @@ struct EnterFormView: View {
             // 5. Horizontal stack for Payee and Category pickers
             HStack {
                 if journal.transCode == .transfer {
-                    // to Account picker
-                    Picker("Select To Account", selection: $journal.toAccountId) {
-                        if (journal.toAccountId.isVoid) {
-                            Text("Account:").tag(DataId.void)
-                        }
-                        ForEach(vm.accountList.order.readyValue ?? [], id: \.self) { id in
-                            if let account = vm.accountList.data.readyValue?[id],
-                               id != journal.accountId
-                            {
-                                Text(account.name).tag(id)
-                            }
-                        }
+                    Button {
+                        selector = .toAccount
+                    } label: {
+                        Text(vm.accountList.data.readyValue?[journal.toAccountId]?.name ?? String(localized: "Choose destination account"))
                     }
+                    .accessibilityLabel("Select To Account")
+                    .accessibilityValue(vm.accountList.data.readyValue?[journal.toAccountId]?.name ?? String(localized: "Choose destination account"))
                 } else {
-                    // Payee picker
-                    Picker("Select Payee", selection: $journal.payeeId) {
-                        if (journal.payeeId.isVoid) {
-                            Text("Payee:").tag(DataId.void)
-                        }
-                        ForEach(vm.payeeList.order.readyValue ?? []) { id in
-                            if let payee = vm.payeeList.data.readyValue?[id] {
-                                Text(payee.name).tag(payee.id)
-                            }
-                        }
+                    Button {
+                        selector = .payee
+                    } label: {
+                        Text(vm.payeeList.data.readyValue?[journal.payeeId]?.name ?? String(localized: "Choose payee"))
                     }
-                    .pickerStyle(MenuPickerStyle()) // Show a menu for the payee picker
+                    .accessibilityLabel("Select Payee")
+                    .accessibilityValue(vm.payeeList.data.readyValue?[journal.payeeId]?.name ?? String(localized: "Choose payee"))
                 }
                 Spacer()
 
-                // Category picker
-                Picker("Select Category", selection: $journal.categId) {
-                    if (journal.categId.isVoid) {
-                        Text("Choose category").tag(DataId.void)
-                    }
-                    ForEach(vm.categoryList.evalTree.readyValue?.order ?? [], id: \.dataId) { node in
-                        if let path = vm.categoryList.evalPath.readyValue?[node.dataId] {
-                            Text(path).tag(node.dataId)
-                        }
-                    }
+                Button {
+                    selector = .category
+                } label: {
+                    Text(vm.categoryList.evalPath.readyValue?[journal.categId] ?? String(localized: "Choose category"))
+                        .lineLimit(1)
                 }
-                .pickerStyle(MenuPickerStyle()) // Show a menu for the category picker
+                .accessibilityLabel("Select Category")
+                .accessibilityValue(vm.categoryList.evalPath.readyValue?[journal.categId] ?? String(localized: "Choose category"))
                 .disabled(!journal.splits.isEmpty)
             }
             .padding(.horizontal, 0)
+
+            validationHint
 
             if let categories = vm.categoryList.data.readyValue,
                categories.isEmpty, journal.splits.isEmpty, journal.categId.isVoid {
@@ -182,6 +196,16 @@ struct EnterFormView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else if vm.categoryList.evalTree.readyValue != nil {
                 categoryHint
+            }
+
+            if let (id, name) = suggestedCategory {
+                Button {
+                    journal.categId = id
+                } label: {
+                    Text("Suggested category: \(name)")
+                        .font(.footnote)
+                }
+                .frame(maxWidth: .infinity, alignment: .trailing)
             }
 
             if journal.transCode != .transfer, vm.payeeList.order.readyValue?.isEmpty == true {
@@ -346,12 +370,46 @@ struct EnterFormView: View {
         .onDisappear {
             focusState = nil
         }
-        .sheet(isPresented: $showingCreateAccount) {
+        .sheet(item: $selector, onDismiss: {
+            guard let next = createAfterSelector else { return }
+            createAfterSelector = nil
+            switch next {
+            case .account: prepareCreateAccount()
+            case .toAccount: prepareCreateAccount(forDestination: true)
+            case .payee: prepareCreatePayee()
+            case .category: prepareCreateCategory()
+            }
+        }) { kind in
+            EntrySelectionView(
+                title: selectorTitle(kind),
+                createTitle: createTitle(kind),
+                choices: choices(for: kind),
+                recentIds: recentIds(for: kind),
+                selected: selectedId(kind),
+                onSelect: { id in
+                    switch kind {
+                    case .account: journal.accountId = id
+                    case .toAccount: journal.toAccountId = id
+                    case .payee: journal.payeeId = id
+                    case .category: journal.categId = id
+                    }
+                    selector = nil
+                },
+                onCreate: {
+                    createAfterSelector = kind
+                    selector = nil
+                }
+            )
+        }
+        .sheet(item: $accountCreation) { creation in
             NavigationView {
                 RepositoryCreateView(
-                    isPresented: $showingCreateAccount,
+                    isPresented: Binding(
+                        get: { accountCreation != nil },
+                        set: { if !$0 { accountCreation = nil } }
+                    ),
                     features: AccountListView.features,
-                    data: createAccountData,
+                    data: creation.data,
                     newData: $newAccountData,
                     formView: { focus, data, edit in
                         AccountFormView(focus: focus, data: data, edit: edit)
@@ -363,17 +421,24 @@ struct EnterFormView: View {
                 guard let created = newAccountData else { return }
                 Task { @MainActor in
                     await vm.reloadAccount(pref, nil as AccountData?, created)
-                    journal.accountId = created.id
+                    if creation.forDestination {
+                        journal.toAccountId = created.id
+                    } else {
+                        journal.accountId = created.id
+                    }
                     newAccountData = nil
                 }
             }
         }
-        .sheet(isPresented: $showingCreatePayee) {
+        .sheet(item: $payeeCreation) { data in
             NavigationView {
                 RepositoryCreateView(
-                    isPresented: $showingCreatePayee,
+                    isPresented: Binding(
+                        get: { payeeCreation != nil },
+                        set: { if !$0 { payeeCreation = nil } }
+                    ),
                     features: PayeeListView.features,
-                    data: createPayeeData,
+                    data: data,
                     newData: $newPayeeData,
                     formView: { focus, data, edit in
                         PayeeFormView(focus: focus, data: data, edit: edit)
@@ -435,6 +500,26 @@ struct EnterFormView: View {
     }
 
     @ViewBuilder
+    private var validationHint: some View {
+        if journal.accountId.isVoid {
+            Button("Choose an account to continue.") { selector = .account }
+                .font(.footnote)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        } else if journal.transCode == .transfer,
+                  journal.toAccountId.isVoid || journal.toAccountId == journal.accountId {
+            Button("Choose a different destination account.") { selector = .toAccount }
+                .font(.footnote)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        } else if journal.transCode != .transfer, journal.payeeId.isVoid {
+            Button("Choose a payee to continue.") { selector = .payee }
+                .font(.footnote)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        } else if !(journal.transAmount >= 0) {
+            hint("Enter an amount of zero or more.")
+        }
+    }
+
+    @ViewBuilder
     private var categoryHint: some View {
         switch journal.categoryIssue {
         case .missingCategory:
@@ -461,13 +546,12 @@ struct EnterFormView: View {
             .frame(maxWidth: .infinity, alignment: .trailing)
     }
 
-    private func prepareCreateAccount() {
+    private func prepareCreateAccount(forDestination: Bool = false) {
         var data = AccountListView.initData
         data.currencyId = vm.accountList.data.readyValue?[journal.accountId]?.currencyId
             ?? vm.accountList.order.readyValue?.first.flatMap { vm.accountList.data.readyValue?[$0]?.currencyId }
             ?? .void
-        createAccountData = data
-        showingCreateAccount = true
+        accountCreation = AccountCreation(data: data, forDestination: forDestination)
     }
 
     private func prepareCreatePayee() {
@@ -475,13 +559,142 @@ struct EnterFormView: View {
         if !journal.categId.isVoid {
             data.categoryId = journal.categId
         }
-        createPayeeData = data
-        showingCreatePayee = true
+        payeeCreation = data
     }
 
     private func prepareCreateCategory() {
         createCategoryData = CategoryListView.initData
         showingCreateCategory = true
+    }
+
+    private func setEntryDate(_ date: Date) {
+        journal.transDate.date = date
+        if journal.type == .scheduled { journal.dueDate.date = date }
+    }
+
+    private func choices(for kind: EntrySelector) -> [EntryChoice] {
+        switch kind {
+        case .account, .toAccount:
+            return (vm.accountList.order.readyValue ?? []).compactMap { id in
+                guard kind != .toAccount || id != journal.accountId else { return nil }
+                return vm.accountList.data.readyValue?[id].map { EntryChoice(id: id, name: $0.name) }
+            }
+        case .payee:
+            return (vm.payeeList.order.readyValue ?? []).compactMap { id in
+                vm.payeeList.data.readyValue?[id].map { EntryChoice(id: id, name: $0.name) }
+            }
+        case .category:
+            return (vm.categoryList.evalTree.readyValue?.order ?? []).compactMap { node in
+                vm.categoryList.evalPath.readyValue?[node.dataId].map { EntryChoice(id: node.dataId, name: $0) }
+            }
+        }
+    }
+
+    private func recentIds(for kind: EntrySelector) -> [DataId] {
+        guard let repository = TransactionRepository(vm.db) else { return [] }
+        guard let transactions = repository.recentForEntry() else { return [] }
+        var seen = Set<DataId>()
+        return transactions.compactMap { transaction in
+            let id: DataId
+            switch kind {
+            case .account: id = transaction.accountId
+            case .toAccount: id = transaction.toAccountId
+            case .payee: id = transaction.payeeId
+            case .category: id = transaction.categId
+            }
+            return !id.isVoid && seen.insert(id).inserted ? id : nil
+        }.prefix(5).map { $0 }
+    }
+
+    private func selectorTitle(_ kind: EntrySelector) -> LocalizedStringKey {
+        switch kind {
+        case .account: "Select account"
+        case .toAccount: "Select To Account"
+        case .payee: "Select Payee"
+        case .category: "Select Category"
+        }
+    }
+
+    private func createTitle(_ kind: EntrySelector) -> LocalizedStringKey {
+        switch kind {
+        case .account, .toAccount: "Create Account"
+        case .payee: "Create Payee"
+        case .category: "Create Category"
+        }
+    }
+
+    private func selectedId(_ kind: EntrySelector) -> DataId {
+        switch kind {
+        case .account: journal.accountId
+        case .toAccount: journal.toAccountId
+        case .payee: journal.payeeId
+        case .category: journal.categId
+        }
+    }
+}
+
+private struct EntryChoice: Identifiable {
+    let id: DataId
+    let name: String
+}
+
+private struct EntrySelectionView: View {
+    @Environment(\.dismiss) private var dismiss
+    let title: LocalizedStringKey
+    let createTitle: LocalizedStringKey
+    let choices: [EntryChoice]
+    let recentIds: [DataId]
+    let selected: DataId
+    let onSelect: (DataId) -> Void
+    let onCreate: () -> Void
+    @State private var search = ""
+
+    private var filtered: [EntryChoice] {
+        search.isEmpty ? choices : choices.filter { $0.name.localizedCaseInsensitiveContains(search) }
+    }
+
+    var body: some View {
+        NavigationStack {
+            List {
+                if search.isEmpty {
+                    let recent = recentIds.compactMap { id in choices.first { $0.id == id } }
+                    if !recent.isEmpty {
+                        Section("Recent") {
+                            ForEach(recent) { choice in choiceButton(choice) }
+                        }
+                    }
+                }
+                Section("All") {
+                    ForEach(filtered) { choice in choiceButton(choice) }
+                }
+            }
+            .searchable(text: $search, prompt: "Search by keyword")
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: onCreate) {
+                        Image(systemName: "plus")
+                    }
+                    .accessibilityLabel(createTitle)
+                }
+            }
+        }
+    }
+
+    private func choiceButton(_ choice: EntryChoice) -> some View {
+        Button {
+            onSelect(choice.id)
+        } label: {
+            HStack {
+                Text(choice.name).foregroundStyle(.primary)
+                Spacer()
+                if choice.id == selected { Image(systemName: "checkmark") }
+            }
+        }
     }
 }
 

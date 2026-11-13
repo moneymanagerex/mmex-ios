@@ -29,6 +29,10 @@ struct ContentView: View {
     @State private var databaseOpenError = false
     @State private var pendingRecentDatabaseURL: URL?
     @State private var pendingRecentDatabaseError = false
+    @State private var renamingRecent: RecentDatabase?
+    @State private var recentDisplayName = ""
+    @State private var showingRenameError = false
+    @State private var enterHasChanges = false
     @State private var isSetupPresented = false
     @State private var stagedDatabaseURL: URL?
     @State private var saveRequest: DatabaseSaveRequest?
@@ -106,7 +110,10 @@ struct ContentView: View {
                                 isRecentDatabasesPresented = false
                             } label: {
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(recent.name).foregroundStyle(.primary)
+                                    Text(recent.displayName ?? recent.name).foregroundStyle(.primary)
+                                    if recent.displayName != nil {
+                                        Text(recent.name).font(.caption).foregroundStyle(.secondary)
+                                    }
                                     HStack {
                                         Text(recent.location)
                                         Text(recent.lastOpened, style: .relative)
@@ -119,6 +126,11 @@ struct ContentView: View {
                                 Button("Remove", role: .destructive) {
                                     vm.removeRecentDatabase(recent)
                                 }
+                                Button("Rename") {
+                                    renamingRecent = recent
+                                    recentDisplayName = recent.displayName ?? ""
+                                }
+                                .tint(.blue)
                             }
                         }
                     } footer: {
@@ -131,6 +143,28 @@ struct ContentView: View {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Done") { isRecentDatabasesPresented = false }
                     }
+                }
+                .alert("Rename Database", isPresented: Binding(
+                    get: { renamingRecent != nil },
+                    set: { if !$0 { renamingRecent = nil } }
+                )) {
+                    TextField("Display name", text: $recentDisplayName)
+                    Button("Save") {
+                        guard let recent = renamingRecent else { return }
+                        do {
+                            try vm.renameRecentDatabase(recent, to: recentDisplayName)
+                        } catch {
+                            log.error("Failed to rename recent database: \(error)")
+                            showingRenameError = true
+                        }
+                        renamingRecent = nil
+                    }
+                    Button("Cancel", role: .cancel) { renamingRecent = nil }
+                } message: {
+                    Text("This changes only the display name, not the file name. Leave blank to use the file name.")
+                }
+                .alert("Could not rename database", isPresented: $showingRenameError) {
+                    Button("OK", role: .cancel) { }
                 }
             }
         }
@@ -179,9 +213,9 @@ struct ContentView: View {
                 saveRequest = DatabaseSaveRequest(url: url)
             }
         }) {
-            NewDatabaseSetupView { setup, chooseLocation in
+            NewDatabaseSetupView { setup, chooseLocation, filename in
                 if chooseLocation {
-                    stagedDatabaseURL = try vm.prepareDatabaseForExport(setup)
+                    stagedDatabaseURL = try vm.prepareDatabaseForExport(setup, name: filename)
                 } else {
                     try vm.createConfiguredDatabase(setup)
                     selectedTab = ContentView.overviewTab
@@ -255,9 +289,12 @@ struct ContentView: View {
             .sheet(isPresented: $isPresentingTransactionAddView) {
                 NavigationStack {
                     EnterView(
-                        selectedTab: iPadEnterSelectionBinding
+                        selectedTab: iPadEnterSelectionBinding,
+                        hasChanges: $enterHasChanges
                     )
                 }
+                .interactiveDismissDisabled(enterHasChanges)
+                .onAppear { enterHasChanges = false }
             }
             .onAppear {
                 if selectedTab == Preference.selectedTab {
@@ -549,7 +586,7 @@ private struct DatabaseSavePicker: UIViewControllerRepresentable {
 private struct NewDatabaseSetupView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var vm: ViewModel
-    let onCreate: (NewDatabaseSetup, Bool) throws -> Void
+    let onCreate: (NewDatabaseSetup, Bool, String) throws -> Void
 
     @State private var currencies: [CurrencyData] = []
     @State private var currencyId: DataId = .void
@@ -557,6 +594,7 @@ private struct NewDatabaseSetupView: View {
     @State private var accountType: AccountType = .checking
     @State private var initialBalance = 0.0
     @State private var chooseLocation = false
+    @State private var filename = NewDatabaseSetup.defaultDatabaseName()
     @State private var errorMessage: String?
 
     var body: some View {
@@ -591,8 +629,26 @@ private struct NewDatabaseSetupView: View {
                 }
                 Section {
                     Toggle("Choose a save location", isOn: $chooseLocation)
+                    if chooseLocation {
+                        VStack(alignment: .leading) {
+                            Text("Database filename")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            TextField("Database filename", text: $filename)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                        }
+                    }
                 } footer: {
-                    Text("By default, the database is saved on this device in Files under On My iPhone or On My iPad. It is not automatically synced. Back it up before deleting the app.")
+                    if chooseLocation {
+                        if NewDatabaseSetup.exportFilename(filename) == nil {
+                            Text("Enter a filename without slashes or control characters.")
+                        } else {
+                            Text("The .mmb extension is added automatically.")
+                        }
+                    } else {
+                        Text("By default, the database is saved on this device in Files under On My iPhone or On My iPad. It is not automatically synced. Back it up before deleting the app.")
+                    }
                 }
                 Section {
                     Label("Common categories are included. No sample transactions are added.", systemImage: "checkmark.circle")
@@ -614,7 +670,7 @@ private struct NewDatabaseSetupView: View {
                             initialBalance: initialBalance
                         )
                         do {
-                            try onCreate(setup, chooseLocation)
+                            try onCreate(setup, chooseLocation, filename)
                             dismiss()
                         } catch {
                             log.error("Failed to create database: \(error)")
@@ -623,7 +679,8 @@ private struct NewDatabaseSetupView: View {
                     } label: {
                         if chooseLocation { Text("Continue") } else { Text("Create") }
                     }
-                    .disabled(currencyId.isVoid || accountName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(currencyId.isVoid || accountName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                              || (chooseLocation && NewDatabaseSetup.exportFilename(filename) == nil))
                 }
             }
             .task {
