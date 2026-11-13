@@ -15,12 +15,34 @@ struct NewDatabaseSetup {
     let initialBalance: Double
 }
 
+struct RecentDatabase: Codable, Identifiable {
+    let id: UUID
+    let name: String
+    let location: String
+    let path: String
+    let bookmark: Data
+    let lastOpened: Date
+
+    static let defaultsKey = "RecentDatabases"
+
+    static func load() -> [RecentDatabase] {
+        guard let data = UserDefaults.standard.data(forKey: defaultsKey) else { return [] }
+        do {
+            return try JSONDecoder().decode([RecentDatabase].self, from: data)
+        } catch {
+            log.error("Failed to load recent databases: \(error)")
+            return []
+        }
+    }
+}
+
 extension ViewModel {
-    func openDatabase(at url: URL?, isNew: Bool = false, password: String? = nil) {
-        unloadAll()
-        db = nil
-        releaseDatabaseAccess()
+    @discardableResult
+    func openDatabase(at url: URL?, isNew: Bool = false, password: String? = nil) -> Bool {
         if let url {
+            if !isNew, databaseURL?.standardizedFileURL == url.standardizedFileURL, password == nil {
+                return true
+            }
             let hasScopedAccess = url.startAccessingSecurityScopedResource()
             if hasScopedAccess || isLocalDocument(url) {
                 let fileCoordinator = NSFileCoordinator()
@@ -38,36 +60,20 @@ extension ViewModel {
                 }
 
                 do {
-                    db = try Connection(url.path)
-                    if let password, let db {
-                        let cipherMethods: [(Connection) -> Void] = [
-                            { $0.initSQLCipher() },    // SQLCipher
-                            { $0.initAES128CBC() } // Custom AES-128 Cipher
-                            // Add more cipher methods here as needed
-                        ]
-
-                        var cipherInitialized = false
-                        for initCipher in cipherMethods {
-                            do {
-                                initCipher(db) // Try initializing the cipher
-                                try db.key(password)
-                                cipherInitialized = true
-                                break // Exit loop if successful
-                            } catch {
-                                log.warning("Failed to initialize cipher with method: \(error)")
-                                continue
-                            }
-                        }
-
-                        if !cipherInitialized {
-                            throw NSError(domain: "CipherInitialization", code: 1, userInfo: [NSLocalizedDescriptionKey: "All cipher methods failed"])
-                        }
-                    }
-                    saveBookmark(for: url)
-                    if hasScopedAccess { securityScopedDatabaseURL = url }
-                    log.info("Successfully connected to database: \(url.path)")
-                } catch {
+                    let connection = try isNew ? Connection(url.path) : openExistingConnection(at: url, password: password)
+                    unloadAll()
                     db = nil
+                    releaseDatabaseAccess()
+                    db = connection
+                    if hasScopedAccess { securityScopedDatabaseURL = url }
+                    databaseURL = url
+                    isDatabaseConnected = true
+                    databaseSessionID = UUID()
+                    _ = Repository(connection).setPragma(name: "journal_mode", value: "MEMORY")
+                    saveBookmark(for: url)
+                    log.info("Successfully connected to database: \(url.path)")
+                    return true
+                } catch {
                     if hasScopedAccess { url.stopAccessingSecurityScopedResource() }
                     log.error("Failed to connect to database: \(error)")
                 }
@@ -76,21 +82,45 @@ extension ViewModel {
             }
         } else if isNew {
             do {
-                db = try Connection()
+                let connection = try Connection()
+                unloadAll()
+                db = nil
+                releaseDatabaseAccess()
+                db = connection
+                isDatabaseConnected = true
+                databaseURL = nil
+                databaseSessionID = UUID()
+                _ = Repository(connection).setPragma(name: "journal_mode", value: "MEMORY")
                 log.info("Successfully created database in memory")
+                return true
             } catch {
                 log.error("Failed to create database in memory: \(error)")
             }
         }
+        return false
+    }
 
-        if let db {
-            isDatabaseConnected = true
-            databaseURL = url
-            _ = Repository(db).setPragma(name: "journal_mode", value: "MEMORY")
-        } else {
-            isDatabaseConnected = false
-            databaseURL = nil
+    private func openExistingConnection(at url: URL, password: String?) throws -> Connection {
+        let ciphers: [(Connection) -> Void] = password == nil ? [{ _ in }] : [
+            { $0.initSQLCipher() },
+            { $0.initAES128CBC() }
+        ]
+        var lastError: Error?
+        for cipher in ciphers {
+            do {
+                let connection = try Connection(.uri(url.absoluteString, parameters: [.mode(.readWrite)]))
+                if let password {
+                    cipher(connection)
+                    try connection.key(password)
+                }
+                let count = try connection.scalar("SELECT count(*) FROM sqlite_master WHERE type = 'table' AND upper(name) = 'ACCOUNTLIST_V1'") as? Int64
+                guard count == 1 else { throw setupError("Invalid database") }
+                return connection
+            } catch {
+                lastError = error
+            }
         }
+        throw lastError ?? setupError("Invalid database")
     }
 
     func attachDatabase(at url: URL?, alias: String? = nil) {
@@ -156,8 +186,9 @@ extension ViewModel {
             let storedURL = try URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
 
             if isStale {
-                log.error("Bookmark is stale. \(bookmarkData)")
+                log.warning("Stored database bookmark is stale.")
             }
+            if recentDatabases.isEmpty { saveBookmark(for: storedURL) }
             if storedURL.pathExtension.lowercased() == "mmb" {
                 openDatabase(at: storedURL)
             } else {
@@ -170,7 +201,7 @@ extension ViewModel {
     }
 
     func createDatabase(at url: URL?, sampleData: Bool) {
-        openDatabase(at: url, isNew: true)
+        guard openDatabase(at: url, isNew: true) else { return }
         guard let db else { return }
 
         guard let tables = Bundle.main.url(forResource: "tables", withExtension: "sql") else {
@@ -222,6 +253,7 @@ extension ViewModel {
             db = connection
             databaseURL = url
             isDatabaseConnected = true
+            databaseSessionID = UUID()
         } catch {
             log.error("Failed to create configured database: \(error)")
             if FileManager.default.fileExists(atPath: url.path) {
@@ -288,6 +320,7 @@ extension ViewModel {
             databaseURL = url
             if hasScopedAccess { securityScopedDatabaseURL = url }
             isDatabaseConnected = true
+            databaseSessionID = UUID()
         } catch {
             if hasScopedAccess { url.stopAccessingSecurityScopedResource() }
             throw error
@@ -403,11 +436,49 @@ extension ViewModel {
         return self.db?.sqliteVersion
     }
 
+    func resolveRecentDatabase(_ recent: RecentDatabase) throws -> URL {
+        var isStale = false
+        return try URL(resolvingBookmarkData: recent.bookmark, bookmarkDataIsStale: &isStale)
+    }
+
+    func removeRecentDatabase(_ recent: RecentDatabase) {
+        let updated = recentDatabases.filter { $0.id != recent.id }
+        do {
+            let data = try JSONEncoder().encode(updated)
+            UserDefaults.standard.set(data, forKey: RecentDatabase.defaultsKey)
+            recentDatabases = updated
+            if let bookmark = UserDefaults.standard.data(forKey: "DatabaseBookmark") {
+                var stale = false
+                if let url = try? URL(resolvingBookmarkData: bookmark, bookmarkDataIsStale: &stale),
+                   url.standardizedFileURL.path == recent.path {
+                    UserDefaults.standard.removeObject(forKey: "DatabaseBookmark")
+                }
+            }
+        } catch {
+            log.error("Failed to remove recent database: \(error)")
+        }
+    }
+
     @discardableResult
     private func saveBookmark(for url: URL) -> Bool {
         do {
             let bookmarkData = try url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: nil, relativeTo: nil)
+            let path = url.standardizedFileURL.path
+            let matches: (RecentDatabase) -> Bool = { recent in
+                if recent.path == path { return true }
+                return (try? self.resolveRecentDatabase(recent).standardizedFileURL.path) == path
+            }
+            let previous = recentDatabases.first(where: matches)
+            let recent = RecentDatabase(
+                id: previous?.id ?? UUID(), name: url.lastPathComponent,
+                location: url.deletingLastPathComponent().lastPathComponent,
+                path: path, bookmark: bookmarkData, lastOpened: Date()
+            )
+            let updated = Array(([recent] + recentDatabases.filter { !matches($0) }).prefix(10))
+            let recentData = try JSONEncoder().encode(updated)
             UserDefaults.standard.set(bookmarkData, forKey: "DatabaseBookmark")
+            UserDefaults.standard.set(recentData, forKey: RecentDatabase.defaultsKey)
+            recentDatabases = updated
             log.info("Bookmark saved successfully.")
             return true
         } catch {

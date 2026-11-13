@@ -13,6 +13,8 @@ class ViewModel: ObservableObject {
     // for file database: db != nil && databaseURL != nil
     // for in-memmory database: db != nil && databaseURL == nil
     @Published var isDatabaseConnected = false
+    @Published var recentDatabases = RecentDatabase.load()
+    @Published var databaseSessionID = UUID()
     var db: Connection?
     var databaseURL: URL?
     var securityScopedDatabaseURL: URL?

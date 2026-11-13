@@ -104,6 +104,8 @@ Choose **Get Started**, select a base currency, and create your first account. C
 
 By default, the database is stored locally in the app's folder in Files under **On My iPhone/iPad**. It is not automatically synced. Copy it to a safe location for backup before deleting the app. You can instead choose a save location during setup, or open an existing MMEX database from Files.
 
+Use **Recent Databases** on the welcome screen or under **Manage** to reopen one of the ten most recently opened files. Swipe left to remove an entry; this does not delete the file. If a file has moved or access has expired, choose it again in Files. Encrypted files still require their password.
+
 ## App Store release assets
 
 Use [docs/app-store-release-assets.md](./docs/app-store-release-assets.md) for:

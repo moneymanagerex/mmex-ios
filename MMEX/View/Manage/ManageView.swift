@@ -11,6 +11,7 @@ struct ManageView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @Binding var isDocumentPickerPresented: Bool
+    @Binding var isRecentDatabasesPresented: Bool
     @Binding var isNewDocumentPickerPresented: Bool
     @Binding var isAttachDocumentPickerPresented: Bool
     @Binding var isSampleDocument: Bool
@@ -141,6 +142,11 @@ struct ManageView: View {
                 databaseButton("Open Database", fg: .white, bg: .blue) {
                     isDocumentPickerPresented = true
                 }
+                if !vm.recentDatabases.isEmpty {
+                    databaseButton("Recent Databases", fg: .white, bg: .blue) {
+                        isRecentDatabasesPresented = true
+                    }
+                }
                 databaseButton("New Database", fg: .white, bg: .green) {
                     isNewDocumentPickerPresented = true
                     isSampleDocument = false
@@ -231,6 +237,7 @@ struct ManageView: View {
     MMEXPreview.tab("Manage") { pref, vm in
         ManageView(
             isDocumentPickerPresented: .constant(false),
+            isRecentDatabasesPresented: .constant(false),
             isNewDocumentPickerPresented: .constant(false),
             isAttachDocumentPickerPresented: .constant(false),
             isSampleDocument: .constant(false)

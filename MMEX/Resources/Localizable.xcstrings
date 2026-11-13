@@ -3422,6 +3422,16 @@
         }
       }
     },
+    "Choose File" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择文件"
+          }
+        }
+      }
+    },
     "Choose category" : {
       "localizations" : {
         "zh-Hans" : {
@@ -3844,6 +3854,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "无法创建数据库"
+          }
+        }
+      }
+    },
+    "Could not open database" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法打开账本"
           }
         }
       }
@@ -12579,12 +12599,42 @@
         }
       }
     },
+    "Recent Databases" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近打开的账本"
+          }
+        }
+      }
+    },
+    "Remove" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除记录"
+          }
+        }
+      }
+    },
     "Remove the splits to use the selected category." : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "请移除拆分以使用所选分类。"
+          }
+        }
+      }
+    },
+    "Removing a recent entry does not delete the file." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除记录不会删除文件。"
           }
         }
       }
@@ -15414,6 +15464,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Terms of Service"
+          }
+        }
+      }
+    },
+    "The file may have moved, been deleted, or no longer be accessible. Choose it again in Files." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件可能已移动、删除或无法访问。请在“文件”中重新选择。"
           }
         }
       }
