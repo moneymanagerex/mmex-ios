@@ -12,7 +12,7 @@ extension ViewModel {
     func reloadCurrency(_ pref: Preference, _ oldData: CurrencyData?, _ newData: CurrencyData?) async {
         log.trace("DEBUG: ViewModel.reloadCurrency(main=\(Thread.isMainThread))")
 
-        if oldData?.name != newData?.name {
+        if oldData?.localizedName() != newData?.localizedName() {
             if accountGroup.choice == .currency { accountGroup.unload() }
             if assetGroup.choice == .currency { assetGroup.unload() }
         }
@@ -48,7 +48,7 @@ extension ViewModel {
 
         if currencyList.name.state.unloading() {
             if let newData {
-                currencyList.name.value[newData.id] = newData.name
+                currencyList.name.value[newData.id] = newData.localizedName()
             } else if let oldData {
                 currencyList.name.value[oldData.id] = nil
             }

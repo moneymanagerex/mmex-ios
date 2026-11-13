@@ -47,7 +47,7 @@ struct CurrencyListView: View {
     
     @ViewBuilder
     func itemNameView(_ data: CurrencyData) -> some View {
-        Text(data.name)
+        Text(data.localizedName())
     }
     
     @ViewBuilder

@@ -35,6 +35,16 @@ struct CurrencyData: DataProtocol {
 extension CurrencyData {
     static let dataName = ("Currency", "Currencies")
 
+    func localizedName(for locale: Locale = .current) -> String {
+        guard
+            let localizedName = locale.localizedString(forCurrencyCode: symbol),
+            let englishName = Locale(identifier: "en").localizedString(forCurrencyCode: symbol),
+            englishName.compare(name, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
+        else { return name }
+
+        return localizedName
+    }
+
     func shortDesc() -> String {
         "\(self.name)"
     }
@@ -118,7 +128,7 @@ struct CurrencyInfo {
     let symbol       : String
 
     init(_ data: CurrencyData) {
-        self.name         = data.name
+        self.name         = data.localizedName()
         self.baseConvRate = data.baseConvRate
         self.formatter    = data.formatter
         self.symbol       = data.symbol
