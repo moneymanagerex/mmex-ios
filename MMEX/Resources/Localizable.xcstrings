@@ -327,6 +327,16 @@
         }
       }
     },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
     "%@ / %@" : {
       "localizations" : {
         "en" : {
@@ -1130,6 +1140,16 @@
         }
       }
     },
+    "Account name" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账户名称"
+          }
+        }
+      }
+    },
     "Account Name" : {
       "localizations" : {
         "af" : {
@@ -1214,6 +1234,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "帐户名称"
+          }
+        }
+      }
+    },
+    "Account type" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账户类型"
           }
         }
       }
@@ -1488,6 +1518,16 @@
         }
       }
     },
+    "Add at least two splits to continue." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请至少添加两项拆分后继续。"
+          }
+        }
+      }
+    },
     "Add split" : {
       "localizations" : {
         "cs" : {
@@ -1566,6 +1606,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "添加拆分"
+          }
+        }
+      }
+    },
+    "Add your first category" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加第一个分类"
+          }
+        }
+      }
+    },
+    "Add your first payee" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加第一个交易对象"
           }
         }
       }
@@ -2616,6 +2676,16 @@
         }
       }
     },
+    "By default, the database is saved on this device in Files under On My iPhone or On My iPad. It is not automatically synced. Back it up before deleting the app." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "默认保存在本机“文件”App 的“我的 iPhone”或“我的 iPad”中，不会自动同步。删除 App 前请备份。"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "af" : {
@@ -2754,6 +2824,83 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "取消"
+          }
+        }
+      }
+    },
+    "Cannot access the selected location" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法访问所选位置"
+          }
+        }
+      }
+    },
+    "Cannot find tables.sql" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到数据库初始化文件"
+          }
+        }
+      }
+    },
+    "Cannot find the selected currency" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到所选货币"
+          }
+        }
+      }
+    },
+    "Cannot initialize database" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法初始化数据库"
+          }
+        }
+      }
+    },
+    "Cannot initialize the first account or database settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法初始化首个账户或数据库设置"
+          }
+        }
+      }
+    },
+    "Cannot load currencies" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法加载货币"
+          }
+        }
+      }
+    },
+    "Cannot save database access" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法保存数据库访问权限"
           }
         }
       }
@@ -3235,6 +3382,56 @@
         }
       }
     },
+    "Checking" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "活期账户"
+          }
+        }
+      }
+    },
+    "Choose a category or add splits to continue." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择分类或添加拆分后继续。"
+          }
+        }
+      }
+    },
+    "Choose a category to continue." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择分类后继续。"
+          }
+        }
+      }
+    },
+    "Choose a save location" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择保存位置"
+          }
+        }
+      }
+    },
+    "Choose category" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择分类"
+          }
+        }
+      }
+    },
     "Clear Filter" : {
       "localizations" : {
         "es" : {
@@ -3351,6 +3548,16 @@
         }
       }
     },
+    "Common categories are included. No sample transactions are added." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已包含常用分类，不会添加示例交易。"
+          }
+        }
+      }
+    },
     "Contact" : {
       "localizations" : {
         "cs" : {
@@ -3429,6 +3636,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "联系"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "继续"
           }
         }
       }
@@ -3621,6 +3838,16 @@
         }
       }
     },
+    "Could not create database" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法创建数据库"
+          }
+        }
+      }
+    },
     "Create" : {
       "localizations" : {
         "cs" : {
@@ -3703,6 +3930,16 @@
         }
       }
     },
+    "Create a personal database or open an existing MMEX file." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "创建个人账本，或打开已有的 MMEX 文件。"
+          }
+        }
+      }
+    },
     "Create Account" : {
       "localizations" : {
         "es" : {
@@ -3772,6 +4009,7 @@
       }
     },
     "Create New Database" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -3963,6 +4201,16 @@
         }
       }
     },
+    "Create Your Database" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "创建账本"
+          }
+        }
+      }
+    },
     "Credit Card" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4136,6 +4384,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Благодарности"
+          }
+        }
+      }
+    },
+    "Currency" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "货币"
           }
         }
       }
@@ -6703,6 +6961,16 @@
         }
       }
     },
+    "Everyday account" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日常账户"
+          }
+        }
+      }
+    },
     "Expense" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -6803,6 +7071,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "expenses"
+          }
+        }
+      }
+    },
+    "Explore sample data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "体验示例数据"
           }
         }
       }
@@ -7170,6 +7448,16 @@
     "Financial Colors" : {
 
     },
+    "First Account" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "首个账户"
+          }
+        }
+      }
+    },
     "Forecasting..." : {
       "localizations" : {
         "tr" : {
@@ -7444,6 +7732,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一般"
+          }
+        }
+      }
+    },
+    "Get Started" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始使用"
           }
         }
       }
@@ -8476,6 +8774,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Insights"
+          }
+        }
+      }
+    },
+    "Invalid account details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账户信息无效"
           }
         }
       }
@@ -10702,6 +11011,7 @@
       }
     },
     "No Database Connected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -11289,6 +11599,7 @@
       }
     },
     "Open Database" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -11426,6 +11737,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟資料庫"
+          }
+        }
+      }
+    },
+    "Open Existing Database" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打开已有账本"
           }
         }
       }
@@ -11818,6 +12139,7 @@
       }
     },
     "Please open or create a database to get started." : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -12257,6 +12579,16 @@
         }
       }
     },
+    "Remove the splits to use the selected category." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请移除拆分以使用所选分类。"
+          }
+        }
+      }
+    },
     "Repeat" : {
       "localizations" : {
         "es" : {
@@ -12512,6 +12844,7 @@
       }
     },
     "Sample Database in Memory" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -13534,6 +13867,16 @@
         }
       }
     },
+    "Set up your first account. You can change these details and add more accounts later." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置第一个账户。之后可以修改信息或添加更多账户。"
+          }
+        }
+      }
+    },
     "Settings" : {
       "localizations" : {
         "ar" : {
@@ -14099,6 +14442,16 @@
         }
       }
     },
+    "Split amounts must match the transaction amount." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拆分金额合计须与交易金额一致。"
+          }
+        }
+      }
+    },
     "Splits" : {
       "localizations" : {
         "cs" : {
@@ -14369,6 +14722,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start Date"
+          }
+        }
+      }
+    },
+    "Starting balance" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期初余额"
           }
         }
       }
@@ -15051,6 +15414,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Terms of Service"
+          }
+        }
+      }
+    },
+    "The database was saved, but could not be opened. Open it from Files." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账本已保存，但无法打开。请从“文件”中打开它。"
           }
         }
       }
@@ -16173,6 +16546,16 @@
         }
       }
     },
+    "Try Sample Data in Memory" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "临时体验示例数据"
+          }
+        }
+      }
+    },
     "Twitter" : {
       "localizations" : {
         "cs" : {
@@ -16343,6 +16726,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upcoming Features"
+          }
+        }
+      }
+    },
+    "Used for your first account and overall totals." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用于首个账户和总体汇总。"
           }
         }
       }
@@ -16988,6 +17381,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You must use the app in compliance with all applicable laws. Any misuse or illegal activities related to the app may result in termination of your access."
+          }
+        }
+      }
+    },
+    "Your finances, your data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理财务，掌控数据"
           }
         }
       }

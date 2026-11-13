@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     private static let overviewTab = 0
@@ -24,7 +25,11 @@ struct ContentView: View {
     @EnvironmentObject var pref: Preference
     @EnvironmentObject var vm: ViewModel
     @State private var isDocumentPickerPresented = false
-    @State private var isNewDocumentPickerPresented = false
+    @State private var isSetupPresented = false
+    @State private var stagedDatabaseURL: URL?
+    @State private var saveRequest: DatabaseSaveRequest?
+    @State private var setupError: String?
+    @State private var pendingSaveError: String?
     @State private var isAttachDocumentPickerPresented = false
     @State private var isSampleDocument = false
     @State private var selectedTab = Preference.selectedTab
@@ -113,13 +118,52 @@ struct ContentView: View {
             .frame(width: 300, height: 200)
         }
 
-        .fileExporter(
-            isPresented: $isNewDocumentPickerPresented,
-            document: MMEXDocument(),
-            contentType: .mmb,
-            defaultFilename: isSampleDocument ? "Sample.mmb" : "Untitled.mmb"
-        ) {
-            handleFileExport($0)
+        .sheet(isPresented: $isSetupPresented, onDismiss: {
+            if let url = stagedDatabaseURL {
+                saveRequest = DatabaseSaveRequest(url: url)
+            }
+        }) {
+            NewDatabaseSetupView { setup, chooseLocation in
+                if chooseLocation {
+                    stagedDatabaseURL = try vm.prepareDatabaseForExport(setup)
+                } else {
+                    try vm.createConfiguredDatabase(setup)
+                    selectedTab = ContentView.overviewTab
+                }
+            }
+        }
+        .sheet(item: $saveRequest, onDismiss: {
+            cleanupStagedDatabase()
+            setupError = pendingSaveError
+            pendingSaveError = nil
+        }) { request in
+            NavigationStack {
+                DatabaseSavePicker(url: request.url) { result in
+                    if let result {
+                        do {
+                            try vm.openExportedDatabase(at: result)
+                            selectedTab = ContentView.overviewTab
+                        } catch {
+                            log.error("Saved database could not be opened: \(error)")
+                            pendingSaveError = String(localized: "The database was saved, but could not be opened. Open it from Files.")
+                        }
+                    }
+                    saveRequest = nil
+                }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { saveRequest = nil }
+                    }
+                }
+            }
+        }
+        .alert("Could not create database", isPresented: Binding(
+            get: { setupError != nil },
+            set: { if !$0 { setupError = nil } }
+        )) {
+            Button("OK", role: .cancel) { setupError = nil }
+        } message: {
+            Text(setupError ?? "")
         }
 
         .autocorrectionDisabled()
@@ -144,7 +188,7 @@ struct ContentView: View {
                     TabContentView(
                         selectedTab: detailTabBinding,
                         isDocumentPickerPresented: $isDocumentPickerPresented,
-                        isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                        isNewDocumentPickerPresented: $isSetupPresented,
                         isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                         isSampleDocument: $isSampleDocument
                     )
@@ -180,51 +224,54 @@ struct ContentView: View {
     }
 
     private var disconnectedView: some View {
-        VStack(spacing: 30) {
-            Image(systemName: "tray.fill")
-                .resizable()
-                .frame(width: 80, height: 80)
+        VStack(spacing: 24) {
+            Image(systemName: "wallet.pass.fill")
+                .font(.system(size: 64))
                 .foregroundColor(.accentColor)
-            Text("No Database Connected")
-                .font(.headline)
-                .padding(.bottom, 10)
-            Text("Please open or create a database to get started.")
-                .font(.body)
+            Text("Your finances, your data")
+                .font(.title.bold())
+            Text("Create a personal database or open an existing MMEX file.")
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
-            Button(action: { isDocumentPickerPresented = true }) {
-                Label("Open Database", systemImage: "folder.fill")
+            Button(action: { isSetupPresented = true }) {
+                Label("Get Started", systemImage: "plus.circle.fill")
+                    .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
 
-            Button(action: { isNewDocumentPickerPresented = true; isSampleDocument = false }) {
-                Label("Create New Database", systemImage: "plus.app.fill")
+            Button(action: { isDocumentPickerPresented = true }) {
+                Label("Open Existing Database", systemImage: "folder")
+                    .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
 
-            Button(action: { isNewDocumentPickerPresented = true; isSampleDocument = true }) {
-                Label("Create Sample Database", systemImage: "doc.text.fill")
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-
-            Button(action: {
-                vm.createDatabase(at: nil, sampleData: true)
-                guard vm.isDatabaseConnected else { return }
-                log.info("Successfully created sample database in memory")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    selectedTab = horizontalSizeClass == .regular ? ContentView.overviewTab : Preference.selectedTab
+            Menu {
+                Button("Create Sample Database") {
+                    do {
+                        stagedDatabaseURL = try vm.prepareSampleDatabaseForExport()
+                        if let url = stagedDatabaseURL {
+                            saveRequest = DatabaseSaveRequest(url: url)
+                        }
+                    } catch {
+                        log.error("Failed to prepare sample database: \(error)")
+                        setupError = error.localizedDescription
+                    }
                 }
-            }) {
-                Label("Sample Database in Memory", systemImage: "memorychip.fill")
+                Button("Try Sample Data in Memory") {
+                    vm.createDatabase(at: nil, sampleData: true)
+                    guard vm.isDatabaseConnected else { return }
+                    selectedTab = ContentView.overviewTab
+                }
+            } label: {
+                Label("Explore sample data", systemImage: "sparkles")
             }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
         }
         .padding()
+        .frame(maxWidth: 420)
         .onAppear {
             vm.unloadAll()
         }
@@ -249,7 +296,7 @@ struct ContentView: View {
             case .manage:
                 ManageView(
                     isDocumentPickerPresented: $isDocumentPickerPresented,
-                    isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                    isNewDocumentPickerPresented: $isSetupPresented,
                     isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                     isSampleDocument: $isSampleDocument
                 )
@@ -314,7 +361,7 @@ struct ContentView: View {
         NavigationView {
             ManageView(
                 isDocumentPickerPresented: $isDocumentPickerPresented,
-                isNewDocumentPickerPresented: $isNewDocumentPickerPresented,
+                isNewDocumentPickerPresented: $isSetupPresented,
                 isAttachDocumentPickerPresented: $isAttachDocumentPickerPresented,
                 isSampleDocument: $isSampleDocument
             )
@@ -382,18 +429,153 @@ struct ContentView: View {
         }
     }
     
-    // File export handling
-    private func handleFileExport(_ result: Result<URL, Error>) {
-        switch result {
-        case .success(let url):
-            vm.createDatabase(at: url, sampleData: isSampleDocument)
-            guard vm.isDatabaseConnected else { return }
-            log.info("Successfully created database: \(url)")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                selectedTab = horizontalSizeClass == .regular ? ContentView.overviewTab : Preference.selectedTab
+    private func cleanupStagedDatabase() {
+        guard let url = stagedDatabaseURL else { return }
+        stagedDatabaseURL = nil
+        do {
+            try FileManager.default.removeItem(at: url.deletingLastPathComponent())
+        } catch {
+            log.error("Failed to remove temporary database: \(error)")
+        }
+    }
+}
+
+private struct DatabaseSaveRequest: Identifiable {
+    let id = UUID()
+    let url: URL
+}
+
+private struct DatabaseSavePicker: UIViewControllerRepresentable {
+    let url: URL
+    let completion: (URL?) -> Void
+
+    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+        let picker = UIDocumentPickerViewController(forExporting: [url], asCopy: false)
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ controller: UIDocumentPickerViewController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator { Coordinator(completion: completion) }
+
+    final class Coordinator: NSObject, UIDocumentPickerDelegate {
+        let completion: (URL?) -> Void
+
+        init(completion: @escaping (URL?) -> Void) {
+            self.completion = completion
+        }
+
+        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+            completion(urls.first)
+        }
+
+        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+            completion(nil)
+        }
+    }
+}
+
+private struct NewDatabaseSetupView: View {
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var vm: ViewModel
+    let onCreate: (NewDatabaseSetup, Bool) throws -> Void
+
+    @State private var currencies: [CurrencyData] = []
+    @State private var currencyId: DataId = .void
+    @State private var accountName = String(localized: "Everyday account")
+    @State private var accountType: AccountType = .checking
+    @State private var initialBalance = 0.0
+    @State private var chooseLocation = false
+    @State private var errorMessage: String?
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    Text("Set up your first account. You can change these details and add more accounts later.")
+                        .foregroundStyle(.secondary)
+                }
+                Section {
+                    Picker("Currency", selection: $currencyId) {
+                        ForEach(currencies, id: \.id) { currency in
+                            Text("\(currency.localizedName()) (\(currency.symbol))").tag(currency.id)
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
+                } header: {
+                    Text("Base Currency")
+                } footer: {
+                    Text("Used for your first account and overall totals.")
+                }
+                Section("First Account") {
+                    TextField("Account name", text: $accountName)
+                    Picker("Account type", selection: $accountType) {
+                        Text("Checking").tag(AccountType.checking)
+                        Text("Cash").tag(AccountType.cash)
+                        Text("Credit Card").tag(AccountType.creditCard)
+                        Text("Term").tag(AccountType.term)
+                    }
+                    TextField("Starting balance", value: $initialBalance, format: .number)
+                        .keyboardType(.numbersAndPunctuation)
+                }
+                Section {
+                    Toggle("Choose a save location", isOn: $chooseLocation)
+                } footer: {
+                    Text("By default, the database is saved on this device in Files under On My iPhone or On My iPad. It is not automatically synced. Back it up before deleting the app.")
+                }
+                Section {
+                    Label("Common categories are included. No sample transactions are added.", systemImage: "checkmark.circle")
+                        .foregroundStyle(.secondary)
+                }
             }
-        case .failure(let error):
-            log.error("Failed to pick a document: \(error.localizedDescription)")
+            .navigationTitle("Create Your Database")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        let setup = NewDatabaseSetup(
+                            currencyId: currencyId,
+                            accountName: accountName.trimmingCharacters(in: .whitespacesAndNewlines),
+                            accountType: accountType,
+                            initialBalance: initialBalance
+                        )
+                        do {
+                            try onCreate(setup, chooseLocation)
+                            dismiss()
+                        } catch {
+                            log.error("Failed to create database: \(error)")
+                            errorMessage = error.localizedDescription
+                        }
+                    } label: {
+                        if chooseLocation { Text("Continue") } else { Text("Create") }
+                    }
+                    .disabled(currencyId.isVoid || accountName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+            }
+            .task {
+                do {
+                    currencies = try vm.availableSetupCurrencies()
+                    let preferredCode = Locale.current.currency?.identifier
+                    currencyId = (currencies.first { $0.symbol == preferredCode }
+                        ?? currencies.first { $0.symbol == "USD" }
+                        ?? currencies[0]).id
+                } catch {
+                    log.error("Failed to load setup currencies: \(error)")
+                    errorMessage = error.localizedDescription
+                }
+            }
+            .alert("Could not create database", isPresented: Binding(
+                get: { errorMessage != nil },
+                set: { if !$0 { errorMessage = nil } }
+            )) {
+                Button("OK", role: .cancel) { errorMessage = nil }
+            } message: {
+                Text(errorMessage ?? "")
+            }
         }
     }
 }

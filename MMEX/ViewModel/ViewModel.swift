@@ -15,6 +15,7 @@ class ViewModel: ObservableObject {
     @Published var isDatabaseConnected = false
     var db: Connection?
     var databaseURL: URL?
+    var securityScopedDatabaseURL: URL?
 
     @Published var journalList  : LoadState = .init()
     @Published var insightsList : LoadState = .init()

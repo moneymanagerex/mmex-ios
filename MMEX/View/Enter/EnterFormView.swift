@@ -159,7 +159,7 @@ struct EnterFormView: View {
                 // Category picker
                 Picker("Select Category", selection: $journal.categId) {
                     if (journal.categId.isVoid) {
-                        Text("Category:").tag(DataId.void)
+                        Text("Choose category").tag(DataId.void)
                     }
                     ForEach(vm.categoryList.evalTree.readyValue?.order ?? [], id: \.dataId) { node in
                         if let path = vm.categoryList.evalPath.readyValue?[node.dataId] {
@@ -171,7 +171,28 @@ struct EnterFormView: View {
                 .disabled(!journal.splits.isEmpty)
             }
             .padding(.horizontal, 0)
-            
+
+            if let categories = vm.categoryList.data.readyValue,
+               categories.isEmpty, journal.splits.isEmpty, journal.categId.isVoid {
+                Button {
+                    prepareCreateCategory()
+                } label: {
+                    Label("Add your first category", systemImage: "plus.circle")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            } else if vm.categoryList.evalTree.readyValue != nil {
+                categoryHint
+            }
+
+            if journal.transCode != .transfer, vm.payeeList.order.readyValue?.isEmpty == true {
+                Button {
+                    prepareCreatePayee()
+                } label: {
+                    Label("Add your first payee", systemImage: "plus.circle")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
             // 6.
             if journal.type == .scheduled {
                 Group {
@@ -411,6 +432,33 @@ struct EnterFormView: View {
                 } : nil
             )
         }
+    }
+
+    @ViewBuilder
+    private var categoryHint: some View {
+        switch journal.categoryIssue {
+        case .missingCategory:
+            if journal.transCode == .transfer {
+                hint("Choose a category to continue.")
+            } else {
+                hint("Choose a category or add splits to continue.")
+            }
+        case .tooFewSplits:
+            hint("Add at least two splits to continue.")
+        case .splitAmountMismatch:
+            hint("Split amounts must match the transaction amount.")
+        case .categoryAndSplits:
+            hint("Remove the splits to use the selected category.")
+        case nil:
+            EmptyView()
+        }
+    }
+
+    private func hint(_ text: LocalizedStringKey) -> some View {
+        Text(text)
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, alignment: .trailing)
     }
 
     private func prepareCreateAccount() {

@@ -8,13 +8,21 @@
 import Foundation
 import SQLite
 
+struct NewDatabaseSetup {
+    let currencyId: DataId
+    let accountName: String
+    let accountType: AccountType
+    let initialBalance: Double
+}
+
 extension ViewModel {
     func openDatabase(at url: URL?, isNew: Bool = false, password: String? = nil) {
         unloadAll()
         db = nil
+        releaseDatabaseAccess()
         if let url {
-            if url.startAccessingSecurityScopedResource() {
-                defer { url.stopAccessingSecurityScopedResource() }
+            let hasScopedAccess = url.startAccessingSecurityScopedResource()
+            if hasScopedAccess || isLocalDocument(url) {
                 let fileCoordinator = NSFileCoordinator()
                 var error: NSError?
 
@@ -56,9 +64,11 @@ extension ViewModel {
                         }
                     }
                     saveBookmark(for: url)
+                    if hasScopedAccess { securityScopedDatabaseURL = url }
                     log.info("Successfully connected to database: \(url.path)")
                 } catch {
                     db = nil
+                    if hasScopedAccess { url.stopAccessingSecurityScopedResource() }
                     log.error("Failed to connect to database: \(error)")
                 }
             } else {
@@ -186,14 +196,171 @@ extension ViewModel {
         }
     }
 
+    func availableSetupCurrencies() throws -> [CurrencyData] {
+        guard let tables = Bundle.main.url(forResource: "tables", withExtension: "sql") else {
+            throw setupError("Cannot find tables.sql")
+        }
+        let connection = try Connection()
+        guard Repository(connection).execute(url: tables),
+              let currencies: [CurrencyData] = CurrencyRepository(connection).select(), !currencies.isEmpty else {
+            throw setupError("Cannot load currencies")
+        }
+        return currencies.sorted { $0.localizedName().localizedStandardCompare($1.localizedName()) == .orderedAscending }
+    }
+
+    func createConfiguredDatabase(_ setup: NewDatabaseSetup) throws {
+        let documents = try FileManager.default.url(
+            for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true
+        )
+        let url = documents.appendingPathComponent("My Finances-\(UUID().uuidString).mmb")
+        do {
+            let connection = try initializeDatabase(setup, at: url)
+            guard saveBookmark(for: url) else { throw setupError("Cannot save database access") }
+            unloadAll()
+            db = nil
+            releaseDatabaseAccess()
+            db = connection
+            databaseURL = url
+            isDatabaseConnected = true
+        } catch {
+            log.error("Failed to create configured database: \(error)")
+            if FileManager.default.fileExists(atPath: url.path) {
+                do {
+                    try FileManager.default.removeItem(at: url)
+                } catch {
+                    log.error("Failed to remove incomplete database: \(error)")
+                }
+            }
+            throw error
+        }
+    }
+
+    func prepareDatabaseForExport(_ setup: NewDatabaseSetup) throws -> URL {
+        try prepareDatabaseForExport(filename: "My Finances.mmb") { url in
+            _ = try initializeDatabase(setup, at: url)
+        }
+    }
+
+    func prepareSampleDatabaseForExport() throws -> URL {
+        try prepareDatabaseForExport(filename: "Sample.mmb") { url in
+            guard let tables = Bundle.main.url(forResource: "tables", withExtension: "sql") else {
+                throw setupError("Cannot find tables.sql")
+            }
+            let connection = try Connection(url.path)
+            let repository = Repository(connection)
+            repository.setUserVersion(21)
+            guard repository.execute(url: tables), repository.insertSampleData(),
+                  repository.setPragma(name: "journal_mode", value: "MEMORY") else {
+                throw setupError("Cannot initialize database")
+            }
+        }
+    }
+
+    private func prepareDatabaseForExport(filename: String, initialize: (URL) throws -> Void) throws -> URL {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("MMEX-setup-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+        let url = directory.appendingPathComponent(filename)
+        do {
+            try initialize(url)
+            return url
+        } catch {
+            do { try FileManager.default.removeItem(at: directory) }
+            catch { log.error("Failed to remove temporary database: \(error)") }
+            throw error
+        }
+    }
+
+    func openExportedDatabase(at url: URL) throws {
+        let hasScopedAccess = url.startAccessingSecurityScopedResource()
+        guard hasScopedAccess || isLocalDocument(url) else {
+            throw setupError("The database was saved, but could not be opened. Open it from Files.")
+        }
+        do {
+            let connection = try Connection(url.path)
+            guard AccountRepository(connection).count() != nil, saveBookmark(for: url) else {
+                throw setupError("The database was saved, but could not be opened. Open it from Files.")
+            }
+            unloadAll()
+            db = nil
+            releaseDatabaseAccess()
+            db = connection
+            databaseURL = url
+            if hasScopedAccess { securityScopedDatabaseURL = url }
+            isDatabaseConnected = true
+        } catch {
+            if hasScopedAccess { url.stopAccessingSecurityScopedResource() }
+            throw error
+        }
+    }
+
+    private func initializeDatabase(_ setup: NewDatabaseSetup, at url: URL) throws -> Connection {
+        guard !setup.currencyId.isVoid,
+              !setup.accountName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              setup.initialBalance.isFinite else {
+            throw setupError("Invalid account details")
+        }
+        guard let tables = Bundle.main.url(forResource: "tables", withExtension: "sql") else {
+            throw setupError("Cannot find tables.sql")
+        }
+        let connection = try Connection(url.path)
+        let repository = Repository(connection)
+        repository.setUserVersion(21)
+        guard repository.execute(url: tables) else { throw setupError("Cannot initialize database") }
+        let currency: CurrencyData? = CurrencyRepository(connection).pluck(id: setup.currencyId).toOptional()
+        guard currency != nil else { throw setupError("Cannot find the selected currency") }
+        var account = AccountData(
+            name: setup.accountName, type: setup.accountType, status: .open,
+            initialDate: DateString(Date()), initialBal: setup.initialBalance,
+            favoriteAcct: .boolTrue, currencyId: setup.currencyId
+        )
+        guard AccountRepository(connection).insert(&account) else {
+            throw setupError("Cannot initialize the first account or database settings")
+        }
+        let settings = [
+            InfotableData(name: InfoKey.baseCurrencyID.id, value: String(setup.currencyId.value)),
+            InfotableData(name: InfoKey.defaultAccountID.id, value: String(account.id.value)),
+            InfotableData(name: InfoKey.createDate.id, value: DateString(Date()).string),
+            InfotableData(name: InfoKey.categDelimiter.id, value: ":"),
+            InfotableData(name: InfoKey.uid.id, value: "ios_\(UUID().uuidString)")
+        ]
+        for setting in settings {
+            try connection.run(InfotableRepository.table.insert(InfotableRepository.itemSetters(setting)))
+        }
+        guard repository.setPragma(name: "journal_mode", value: "MEMORY") else {
+            throw setupError("Cannot initialize the first account or database settings")
+        }
+        return connection
+    }
+
+    private func releaseDatabaseAccess() {
+        securityScopedDatabaseURL?.stopAccessingSecurityScopedResource()
+        securityScopedDatabaseURL = nil
+    }
+
+    private func setupError(_ message: String) -> NSError {
+        NSError(domain: "MMEX.DatabaseSetup", code: 1, userInfo: [
+            NSLocalizedDescriptionKey: NSLocalizedString(message, comment: "Database setup error")
+        ])
+    }
+
+    private func isLocalDocument(_ url: URL) -> Bool {
+        guard let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return false
+        }
+        let directory = documents.standardizedFileURL.path + "/"
+        return url.standardizedFileURL.path.hasPrefix(directory)
+    }
+
     /// Closes the current database connection and resets related states.
     func closeDatabase() {
         // Write any unsaved changes back to the original file
         if let databaseURL = databaseURL {
             log.info("Attempting to merge changes to: \(databaseURL.path)")
             // Ensure the file is a security-scoped resource
-            if databaseURL.startAccessingSecurityScopedResource() {
-                defer { databaseURL.stopAccessingSecurityScopedResource() }
+            let hasScopedAccess = databaseURL.startAccessingSecurityScopedResource()
+            if hasScopedAccess || isLocalDocument(databaseURL) {
+                defer { if hasScopedAccess { databaseURL.stopAccessingSecurityScopedResource() } }
 
                 // Using NSFileCoordinator to handle cloud files correctly
                 let fileCoordinator = NSFileCoordinator()
@@ -219,6 +386,7 @@ extension ViewModel {
         unloadAll()
         isDatabaseConnected = false
         db = nil
+        releaseDatabaseAccess()
         databaseURL = nil
         log.info("Database connection closed.")
     }
@@ -235,13 +403,16 @@ extension ViewModel {
         return self.db?.sqliteVersion
     }
 
-    private func saveBookmark(for url: URL) {
+    @discardableResult
+    private func saveBookmark(for url: URL) -> Bool {
         do {
             let bookmarkData = try url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: nil, relativeTo: nil)
             UserDefaults.standard.set(bookmarkData, forKey: "DatabaseBookmark")
             log.info("Bookmark saved successfully.")
+            return true
         } catch {
             log.error("Failed to save bookmark: \(error)")
+            return false
         }
     }
 }

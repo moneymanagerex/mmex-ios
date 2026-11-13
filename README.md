@@ -30,7 +30,7 @@ Money Manager Ex for iOS (MMEX4iOS) is the mobile companion to the Money Manager
 - **MMEX-compatible workflow** — work with the same data model used by [MMEX Desktop](https://github.com/moneymanagerex/moneymanagerex) and [MMEX Android](https://github.com/moneymanagerex/android-money-manager-ex/).
 - **Useful day-to-day finance tools** — record regular, split, and transfer transactions; manage accounts, categories, payees, and more.
 - **Clear insights** — review balances, trends, and recent activity with SwiftUI-based dashboards and charts.
-- **Document-based sync model** — use the iOS Files workflow to open and manage databases.
+- **Your choice of storage** — create a local database without a file picker, or use Files to open or save a database elsewhere.
 
 ## Screenshots
 
@@ -97,6 +97,12 @@ For the next App Store recapture, the recommended order is:
 - AES-256 encrypted database support
 - MMEX data model compatibility
 - Files-based database workflow
+
+### Getting started
+
+Choose **Get Started**, select a base currency, and create your first account. Common categories and the currency list are included; no sample transactions are added. To record a transaction, select or create a payee in the entry screen.
+
+By default, the database is stored locally in the app's folder in Files under **On My iPhone/iPad**. It is not automatically synced. Copy it to a safe location for backup before deleting the app. You can instead choose a save location during setup, or open an existing MMEX database from Files.
 
 ## App Store release assets
 
