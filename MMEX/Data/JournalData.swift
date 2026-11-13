@@ -30,6 +30,13 @@ enum JournalType: Int, CaseIterable, Identifiable, Codable {
     var name: String { Self.names[self.rawValue] }
 }
 
+enum JournalCategoryIssue {
+    case missingCategory
+    case tooFewSplits
+    case splitAmountMismatch
+    case categoryAndSplits
+}
+
 struct JournalData: ExportableEntity {
     // type == .transaction:
     //   transactionId : same as TransactionData.id
@@ -229,6 +236,16 @@ extension JournalData {
         ) : nil
     }
     
+    var categoryIssue: JournalCategoryIssue? {
+        if !categId.isVoid {
+            return splits.isEmpty ? nil : .categoryAndSplits
+        }
+        guard !splits.isEmpty else { return .missingCategory }
+        guard splits.count >= 2 else { return .tooFewSplits }
+        let totalSplit = splits.reduce(0) { $0 + $1.amount }
+        return abs(abs(totalSplit) - transAmount) < 0.000001 ? nil : .splitAmountMismatch
+    }
+
     var isValid: Bool {
         guard [.withdrawal, .deposit, .transfer].contains(transCode) else { return false }
 
@@ -239,14 +256,7 @@ extension JournalData {
         }
         guard transAmount >= 0 else { return false }
 
-        if !categId.isVoid {
-            return splits.isEmpty
-        } else {
-            guard splits.count >= 2 else { return false }
-            let totalSplit = splits.reduce(0) { $0 + $1.amount }
-            let absTotal = abs(totalSplit)
-            return abs(absTotal - transAmount) < 0.000001
-        }
+        return categoryIssue == nil
     }
 
     var id: DataId {
