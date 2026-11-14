@@ -5,7 +5,7 @@
 //  Created by Lisheng Guan on 2026/6/23.
 //
 
-struct JournalSplitData: Identifiable, Codable {
+struct JournalSplitData: Identifiable, Codable, Equatable {
     var id: DataId = .void
     var categId: DataId = .void
     var amount: Double = 0.0

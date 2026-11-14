@@ -102,9 +102,13 @@ For the next App Store recapture, the recommended order is:
 
 Choose **Get Started**, select a base currency, and create your first account. Common categories and the currency list are included; no sample transactions are added. To record a transaction, select or create a payee in the entry screen.
 
-By default, the database is stored locally in the app's folder in Files under **On My iPhone/iPad**. It is not automatically synced. Copy it to a safe location for backup before deleting the app. You can instead choose a save location during setup, or open an existing MMEX database from Files.
+By default, the database is stored locally in the app's folder in Files under **On My iPhone/iPad**. It is not automatically synced. Copy it to a safe location for backup before deleting the app. You can instead choose a filename and save location during setup, or open an existing MMEX database from Files. The `.mmb` extension is added automatically.
+
+New databases use a default name such as `MMEX-2026-11-13-213451.mmb`, based on local creation time. If that name already exists, a numeric suffix keeps the existing file intact.
 
 Use **Recent Databases** on the welcome screen or under **Manage** to reopen one of the ten most recently opened files. Swipe left to remove an entry; this does not delete the file. If a file has moved or access has expired, choose it again in Files. Encrypted files still require their password.
+
+Swipe a recent database and choose **Rename** to set a display name without changing the file. When entering a transaction, search or create accounts, payees and categories from their selectors, use an offered payee category if appropriate, or choose **Save and Add Another** to continue with the same account.
 
 ## App Store release assets
 

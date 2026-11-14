@@ -37,7 +37,7 @@ enum JournalCategoryIssue {
     case categoryAndSplits
 }
 
-struct JournalData: ExportableEntity {
+struct JournalData: ExportableEntity, Equatable {
     // type == .transaction:
     //   transactionId : same as TransactionData.id
     //   scheduledId   = .void
@@ -248,6 +248,7 @@ extension JournalData {
 
     var isValid: Bool {
         guard [.withdrawal, .deposit, .transfer].contains(transCode) else { return false }
+        guard !accountId.isVoid else { return false }
 
         if transCode == .transfer {
             guard !toAccountId.isVoid, toAccountId != accountId else { return false }

@@ -177,6 +177,13 @@ extension TransactionRepository {
 
     // TODO: update payee's category mapping after insert & update ?
 
+    func recentForEntry() -> [TransactionData]? {
+        select(from: Self.table
+            .filter(Self.col_deletedTime == nil || Self.col_deletedTime == "")
+            .order(Self.col_id.desc)
+            .limit(50))
+    }
+
     // Fetch the latest record, filtered by account (optional)
     func latest(accountID: DataId? = nil) -> RepositoryPluckResult<RepositoryData> {
         var query = Self.table.order(Self.col_id.desc) // Order by descending ID

@@ -52,7 +52,7 @@ extension DateStringProtocal {
     }
 }
 
-struct DateString: DateStringProtocal {
+struct DateString: DateStringProtocal, Equatable {
     var string: String
 
     static var formatter: DateFormatter {
@@ -62,7 +62,7 @@ struct DateString: DateStringProtocal {
     }
 }
 
-struct DateTimeString: DateStringProtocal {
+struct DateTimeString: DateStringProtocal, Equatable {
     var string: String
 
     static var formatter: DateFormatter {

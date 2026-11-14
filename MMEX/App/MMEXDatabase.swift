@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Darwin
 import SQLite
 
 struct NewDatabaseSetup {
@@ -13,11 +14,31 @@ struct NewDatabaseSetup {
     let accountName: String
     let accountType: AccountType
     let initialBalance: Double
+
+    static func defaultDatabaseName(at date: Date = Date()) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyy-MM-dd-HHmmss"
+        return "MMEX-\(formatter.string(from: date))"
+    }
+
+    static func exportFilename(_ name: String) -> String? {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.contains("/"),
+              trimmed.rangeOfCharacter(from: .controlCharacters) == nil else { return nil }
+        let base = trimmed.lowercased().hasSuffix(".mmb") ? String(trimmed.dropLast(4)) : trimmed
+        guard !base.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              base != ".", base != ".." else { return nil }
+        return base + ".mmb"
+    }
 }
 
 struct RecentDatabase: Codable, Identifiable {
     let id: UUID
     let name: String
+    var displayName: String?
     let location: String
     let path: String
     let bookmark: Data
@@ -243,7 +264,7 @@ extension ViewModel {
         let documents = try FileManager.default.url(
             for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true
         )
-        let url = documents.appendingPathComponent("My Finances-\(UUID().uuidString).mmb")
+        let url = try reserveDatabaseURL(in: documents)
         do {
             let connection = try initializeDatabase(setup, at: url)
             guard saveBookmark(for: url) else { throw setupError("Cannot save database access") }
@@ -267,8 +288,35 @@ extension ViewModel {
         }
     }
 
-    func prepareDatabaseForExport(_ setup: NewDatabaseSetup) throws -> URL {
-        try prepareDatabaseForExport(filename: "My Finances.mmb") { url in
+    private func reserveDatabaseURL(in directory: URL) throws -> URL {
+        let name = NewDatabaseSetup.defaultDatabaseName()
+        var index = 1
+        while true {
+            let suffix = index == 1 ? "" : "-\(index)"
+            let url = directory.appendingPathComponent("\(name)\(suffix).mmb")
+            let descriptor = Darwin.open(url.path, O_WRONLY | O_CREAT | O_EXCL, 0o600)
+            if descriptor >= 0 {
+                if Darwin.close(descriptor) != 0 {
+                    let error = NSError(domain: NSPOSIXErrorDomain, code: Int(errno), userInfo: [NSFilePathErrorKey: url.path])
+                    do { try FileManager.default.removeItem(at: url) }
+                    catch { log.error("Failed to remove reserved database: \(error)") }
+                    throw error
+                }
+                return url
+            }
+            let error = errno
+            guard error == EEXIST else {
+                throw NSError(domain: NSPOSIXErrorDomain, code: Int(error), userInfo: [NSFilePathErrorKey: url.path])
+            }
+            index += 1
+        }
+    }
+
+    func prepareDatabaseForExport(_ setup: NewDatabaseSetup, name: String) throws -> URL {
+        guard let filename = NewDatabaseSetup.exportFilename(name) else {
+            throw setupError("Invalid database filename")
+        }
+        return try prepareDatabaseForExport(filename: filename) { url in
             _ = try initializeDatabase(setup, at: url)
         }
     }
@@ -459,6 +507,18 @@ extension ViewModel {
         }
     }
 
+    func renameRecentDatabase(_ recent: RecentDatabase, to name: String) throws {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        var updated = recentDatabases
+        guard let index = updated.firstIndex(where: { $0.id == recent.id }) else {
+            throw setupError("Cannot find the selected database")
+        }
+        updated[index].displayName = trimmed.isEmpty ? nil : trimmed
+        let data = try JSONEncoder().encode(updated)
+        UserDefaults.standard.set(data, forKey: RecentDatabase.defaultsKey)
+        recentDatabases = updated
+    }
+
     @discardableResult
     private func saveBookmark(for url: URL) -> Bool {
         do {
@@ -470,7 +530,7 @@ extension ViewModel {
             }
             let previous = recentDatabases.first(where: matches)
             let recent = RecentDatabase(
-                id: previous?.id ?? UUID(), name: url.lastPathComponent,
+                id: previous?.id ?? UUID(), name: url.lastPathComponent, displayName: previous?.displayName,
                 location: url.deletingLastPathComponent().lastPathComponent,
                 path: path, bookmark: bookmarkData, lastOpened: Date()
             )

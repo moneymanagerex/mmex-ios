@@ -16,7 +16,12 @@ struct TransactionDetailView: View {
     @State private var focus = false
 
     @State private var editSheetIsPresented = false
+    @State private var editHasChanges = false
     @State private var isExporting = false
+    @State private var showingCopyOptions = false
+    @State private var copyDraft: JournalData?
+    @State private var copySelectedTab = 0
+    @State private var copyHasChanges = false
 
     var body: some View {
         List {
@@ -140,25 +145,47 @@ struct TransactionDetailView: View {
                 Button("Export as JSON File") {
                     isExporting = true
                 }
+                Button("Create Similar Transaction") {
+                    showingCopyOptions = true
+                }
             } label: {
                 Image(systemName: "square.and.arrow.up")
                     .font(.footnote)
             }
+            .accessibilityLabel("Transaction actions")
             Button {
                 editSheetIsPresented = true
             } label: {
                 Image(systemName: "square.and.pencil")
                     .font(.footnote)
             }
+            .accessibilityLabel("Edit transaction")
         }
 
         .sheet(isPresented: $editSheetIsPresented) {
             NavigationView {
                 TransactionEditView(
                     isPresented: $editSheetIsPresented,
-                    journal: $journal
+                    journal: $journal,
+                    hasChanges: $editHasChanges
                 )
             }
+            .interactiveDismissDisabled(editHasChanges)
+            .onAppear { editHasChanges = false }
+        }
+        .confirmationDialog("Copy the amount too?", isPresented: $showingCopyOptions) {
+            Button("Copy with Amount") { copyDraft = similarTransaction(includeAmount: true) }
+            Button("Copy without Amount") { copyDraft = similarTransaction(includeAmount: false) }
+            Button("Cancel", role: .cancel) { }
+        }
+        .sheet(item: $copyDraft) { draft in
+            NavigationStack {
+                EnterView(selectedTab: $copySelectedTab, hasChanges: $copyHasChanges, newJournal: draft)
+                    .navigationTitle("New Transaction")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .interactiveDismissDisabled(copyHasChanges)
+            .onAppear { copyHasChanges = false }
         }
         .fileExporter(
             isPresented: $isExporting,
@@ -173,6 +200,24 @@ struct TransactionDetailView: View {
                 log.error("Error exporting file: \(error)")
             }
         }
+
+    }
+
+    private func similarTransaction(includeAmount: Bool) -> JournalData {
+        var draft = JournalData.newTransaction()
+        draft.accountId = journal.accountId
+        draft.toAccountId = journal.toAccountId
+        draft.payeeId = journal.payeeId
+        draft.transCode = journal.transCode
+        draft.categId = journal.categId
+        if includeAmount {
+            draft.transAmount = journal.transAmount
+            draft.toTransAmount = journal.toTransAmount
+            draft.splits = journal.splits.map {
+                JournalSplitData(categId: $0.categId, amount: $0.amount, notes: $0.notes)
+            }
+        }
+        return draft
     }
 }
 

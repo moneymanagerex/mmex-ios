@@ -14,9 +14,20 @@ struct EnterView: View {
     @EnvironmentObject var journalViewModel: JournalViewModel
     @EnvironmentObject var context: AppContext
     @Binding var selectedTab: Int
+    @Binding var hasChanges: Bool
 
     @State private var focus = false
     @State var newJournal: JournalData = .newTransaction()
+    @State private var initialJournal: JournalData?
+    @State private var showingDiscardConfirmation = false
+    @State private var showingSaveError = false
+    @State private var justSaved = false
+
+    init(selectedTab: Binding<Int>, hasChanges: Binding<Bool> = .constant(false), newJournal: JournalData = .newTransaction()) {
+        self._selectedTab = selectedTab
+        self._hasChanges = hasChanges
+        self._newJournal = State(initialValue: newJournal)
+    }
     
     var body: some View {
         EnterFormView(
@@ -27,9 +38,11 @@ struct EnterView: View {
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
-                    dismiss()
-                    selectedTab = Preference.selectedTab
-                    resetJournal()
+                    if let initialJournal, initialJournal != newJournal {
+                        showingDiscardConfirmation = true
+                    } else {
+                        discard()
+                    }
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
@@ -39,8 +52,8 @@ struct EnterView: View {
                         selectedTab = Preference.selectedTab
                         resetJournal()
                     } else {
-                        // TODO
-                        log.warning("Failed to save journal: (newJournal)")
+                        log.warning("Failed to save journal")
+                        showingSaveError = true
                     }
                 }
                 .disabled(!newJournal.isValid)
@@ -49,11 +62,55 @@ struct EnterView: View {
                 KeyboardFocus(focus: $focus)
             }
         }
+        .safeAreaInset(edge: .bottom) {
+            VStack(spacing: 4) {
+                if justSaved {
+                    Text("Saved. Ready for another transaction.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+                Button("Save and Add Another") {
+                    let account = newJournal.accountId
+                    let transCode = newJournal.transCode
+                    if journalViewModel.save(&newJournal, to: vm.db) {
+                        resetJournal()
+                        newJournal.accountId = account
+                        newJournal.transCode = transCode
+                        newJournal.status = pref.enter.defaultStatus
+                        initialJournal = newJournal
+                        justSaved = true
+                    } else {
+                        log.warning("Failed to save journal")
+                        showingSaveError = true
+                    }
+                }
+                .buttonStyle(.bordered)
+                .disabled(!newJournal.isValid)
+            }
+            .padding(.bottom, 4)
+        }
+        .alert("Discard changes?", isPresented: $showingDiscardConfirmation) {
+            Button("Discard Changes", role: .destructive) { discard() }
+            Button("Keep Editing", role: .cancel) { }
+        }
+        .alert("Could not save transaction", isPresented: $showingSaveError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Your changes are still here. Please try again.")
+        }
+        .onChange(of: newJournal) { _, journal in
+            if journal != initialJournal { justSaved = false }
+            hasChanges = initialJournal != nil && journal != initialJournal
+        }
+        .interactiveDismissDisabled(initialJournal != nil && initialJournal != newJournal)
         .task {
             await load()
+            initialJournal = newJournal
+            hasChanges = false
         }
     }
 
+    @MainActor
     private func load() async {
         log.trace("DEBUG: EnterView.load(main=\(Thread.isMainThread))")
         await vm.loadEnterList(pref)
@@ -91,15 +148,18 @@ struct EnterView: View {
         newJournal = .newTransaction()
     }
 
+    private func discard() {
+        dismiss()
+        selectedTab = Preference.selectedTab
+        resetJournal()
+    }
+
+    @MainActor
     func loadLatestTxn(for accountId: DataId) {
         let repository = TransactionRepository(vm.db)
         if let latestTxn = repository?.latest(accountID: accountId).toOptional() ?? repository?.latest().toOptional() {
-            // Update UI on the main thread
-            DispatchQueue.main.async {
-                if newJournal.payeeId.isVoid {
-                    newJournal.payeeId = latestTxn.payeeId
-                    // txn.categId = latestTxn.categId
-                }
+            if newJournal.payeeId.isVoid {
+                newJournal.payeeId = latestTxn.payeeId
             }
         }
     }
