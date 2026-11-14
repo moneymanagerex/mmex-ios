@@ -280,7 +280,7 @@ extension JournalData {
         case .withdrawal: return -transAmount
         case .deposit: return transAmount
         case .transfer:
-            guard let accountId else { return 0 }
+            guard let accountId, !accountId.isVoid else { return 0 }
             if accountId == self.accountId { return -transAmount }
             if accountId == toAccountId { return toTransAmount == 0 ? transAmount : toTransAmount }
             return 0
