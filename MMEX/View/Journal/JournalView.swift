@@ -180,7 +180,7 @@ struct JournalView: View {
                         Text(displayAmount.formatted(by: currencyInfo.formatter))
                         .frame(alignment: .trailing) // Ensure it's aligned to the right
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(pref.theme.changeColor(for: txn.actual(for: context.selectedAccountId.isVoid ? nil : context.selectedAccountId)))
+                        .foregroundColor(pref.theme.changeColor(for: txn.actual(for: context.selectedAccountId)))
                         // amount in base currency
                         if let baseCurrencyId = vm.infotableList.baseCurrencyId.readyValue,
                            baseCurrencyId != currencyId
@@ -190,7 +190,7 @@ struct JournalView: View {
                             )
                             .frame(alignment: .trailing) // Ensure it's aligned to the right
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(pref.theme.changeColor(for: txn.actual(for: context.selectedAccountId.isVoid ? nil : context.selectedAccountId)))
+                            .foregroundColor(pref.theme.changeColor(for: txn.actual(for: context.selectedAccountId)))
                         }
                     }
                 } else {
@@ -234,7 +234,7 @@ struct JournalView: View {
 
     func calculateTotal(for journals: [JournalData]) -> String {
         let totalAmount = journals.reduce(0.0) {
-            $0 + $1.actual(for: context.selectedAccountId.isVoid ? nil : context.selectedAccountId)
+            $0 + $1.actual(for: context.selectedAccountId)
         }
         let account = vm.accountList.data.readyValue?[context.selectedAccountId]
         let formatter = vm.currencyList.info.readyValue?[account?.currencyId ?? .void]?.formatter

@@ -40,7 +40,7 @@ struct JournalRepository {
         // 1. 加载交易（Transaction）
         var transQuery = TransactionRepository.table
             .filter(TransactionRepository.col_deletedTime == "")
-        if let accountId {
+        if let accountId, !accountId.isVoid {
             transQuery = transQuery.filter(
                 TransactionRepository.col_accountId == Int64(accountId) ||
                 TransactionRepository.col_toAccountId == Int64(accountId)
@@ -72,7 +72,7 @@ struct JournalRepository {
             // 2. 加载计划交易（Scheduled）
             var schedQuery = ScheduledRepository.table
                 .filter(ScheduledRepository.col_status != "V")  // 排除已作废
-            if let accountId {
+            if let accountId, !accountId.isVoid {
                 schedQuery = schedQuery.filter(
                     ScheduledRepository.col_accountId == Int64(accountId) ||
                     ScheduledRepository.col_toAccountId == Int64(accountId)
